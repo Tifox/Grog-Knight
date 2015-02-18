@@ -74,25 +74,7 @@ Hero::~Hero(void) {
  * @param: elem (Elements *)
  */
 void	Hero::callback(Elements * elem) {
-	if (elem->getAttributes()["type"] == "wall" ||
-		elem->getAttributes()["type"] == "ground" ||
-		elem->getAttributes()["type"] == "corner") {
-		if (this->GetBody()->GetWorldCenter().y > elem->GetBody()->GetWorldCenter().y + HERO_SIZE) {
-			//touching ground
-			this->_jumping = MAX_JUMP;
-			std::cout << "lol" << std::endl;
-			if (this->_isJump < 3) {
-				this->_isJump++;
-			} else if (this->_isJump == 3) {
-				this->PlaySpriteAnimation(0.1f, SAT_OneShot, 27, 27, "base");
-				this->_isJump = 0;
-			}
-		}
-		else {
-			//Touching wall
-		}
-	}
-	else if (elem->getAttributes()["type"] == "enemy") {
+	if (elem->getAttributes()["type"] == "enemy") {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		this->_canMove = false;
 		this->_invincibility = true;
@@ -120,6 +102,8 @@ void	Hero::ReceiveMessage(Message *m) {
 	if (this->_canMove == false)
 		return;
 	else if (m->GetMessageName() == "Jump") {
+		if (this->_grounds.size() == 0)
+			this->_jumping--;
 		this->ApplyLinearImpulse(Vector2(0, 10), Vector2(0, 0));
 		this->PlaySpriteAnimation(0.1f, SAT_OneShot, 16, 26, "Jump");
 		this->_isJump = 1;
@@ -165,6 +149,56 @@ void	Hero::ReceiveMessage(Message *m) {
 	else if (m->GetMessageName() == "downPressed") {
 		this->_orientation == 0;
 		this->_up = -1;
+	}
+}
+
+/*
+** Callback before contact in order to disable it if necessary
+** @params: Elements*, b2Contact*
+*/
+
+void	Hero::BeginContact(Elements *elem, b2Contact *contact) {
+	if (elem->getAttributes()["type"] == "wall" ||
+		elem->getAttributes()["type"] == "ground" ||
+		elem->getAttributes()["type"] == "corner") {
+		if (this->GetBody()->GetWorldCenter().y > elem->GetBody()->GetWorldCenter().y + HERO_SIZE) {
+			if (this->_grounds.size() > 0)
+				contact->SetEnabled(false);
+			this->_grounds.push_back(elem);
+			this->_jumping = MAX_JUMP;
+			if (this->_isJump < 3) {
+				this->_isJump++;
+			}
+			else if (this->_isJump == 3) {
+				this->PlaySpriteAnimation(0.1f, SAT_OneShot, 27, 27, "base");
+				this->_isJump = 0;
+			}
+		}
+		else {
+			if (this->_walls.size() > 0)
+				contact->SetEnabled(false);
+			this->_walls.push_back(elem);
+		}
+	}
+}
+
+/*
+** Callback when a contact is lost
+** @params: Elements*, b2Contact*
+*/
+
+void	Hero::EndContact(Elements *elem, b2Contact *contact) {
+	if (elem->getAttributes()["type"] == "wall" ||
+		elem->getAttributes()["type"] == "ground" ||
+		elem->getAttributes()["type"] == "corner") {
+		if (this->GetBody()->GetWorldCenter().y > elem->GetBody()->GetWorldCenter().y + HERO_SIZE) {
+			this->_grounds.remove(elem);
+			if (this->_grounds.size() == 0)
+				this->_jumping--;
+		}
+		else {
+			this->_walls.remove(elem);
+		}
 	}
 }
 

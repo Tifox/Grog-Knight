@@ -37,6 +37,8 @@ class Weapon: public Elements {
 public:
 	Weapon(Elements *m);
 	~Weapon();
+	void	BeginContact(Elements *elem, b2Contact *contact);
+	void	EndContact(Elements *elem, b2Contact *contact);
 };
 
 #endif

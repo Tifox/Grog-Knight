@@ -18,46 +18,23 @@
  */
 
 /**
- * File: Hero.hpp
- * Creation: 2015-02-14 10:49
- * Louis Solofrizzo <louis@ne02ptzero.me>
+ * File: GameContactListener.hpp
+ * Creation: 2015-02-18 16:00
+ * Vincent Rey <vrey@student.42.fr>
  */
 
-#ifndef __Hero__
-# define __Hero__
+#ifndef __GameContactListener__
+# define __GameContactListener__
+
 
 # include "Elements.hpp"
+# include "Game.hpp"
+# include "../../Angel/Angel.h"
 
-# define RUN_SPEED 4
-# define MAX_RUN_SPEED 10
-# define MAX_JUMP 2
-# define HERO_SIZE 1
-
-class Hero : public Elements {
+class GameContactListener: public b2ContactListener {
 public:
-	Hero();
-	~Hero();
-
-	virtual void	callback(Elements * elem);
-	virtual void	EndContact(Elements * elem, b2Contact *contact);
-	virtual void	BeginContact(Elements * elem, b2Contact *contact);
-	virtual void	AnimCallback(String name);
-	void			ReceiveMessage(Message *m);
-	void			init();
-
-private:
-	int						_jumping;
-	bool					_canMove;
-	bool					_invincibility;
-	bool					_meleeAttack;
-	bool					_rangedAttack;
-	bool					_smashing;
-	bool					_canSmash;
-	int						_orientation;
-	int						_up;
-	std::list<Elements*>	_grounds;
-	std::list<Elements*>	_walls;
-	int						_isJump;
+	void	BeginContact(b2Contact* contact);
+	void	EndContact(b2Contact* contact);
 };
 
 #endif

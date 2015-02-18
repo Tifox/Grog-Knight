@@ -50,6 +50,8 @@ class Elements : public PhysicsActor {
 
 		/* Virtual function, overrited in Childs */
 		virtual void callback(Elements * elem) { };
+		virtual void BeginContact(Elements * elem, b2Contact *contact) { };
+		virtual void EndContact(Elements * elem, b2Contact *contact) { };
 
 	private:
 		float								_XStartPos;

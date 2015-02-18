@@ -47,3 +47,12 @@ Weapon::Weapon(Elements *m) {
 }
 
 Weapon::~Weapon(void) {}
+
+void	Weapon::BeginContact(Elements *elem, b2Contact *contact) {
+	std::cout << "TODO" << std::endl;
+}
+
+void	Weapon::EndContact(Elements *elem, b2Contact *contact) {
+	std::cout << "TODO" << std::endl;
+}
+

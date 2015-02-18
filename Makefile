@@ -59,7 +59,8 @@ SRCS =	./Sources/src/Elements.cpp \
 		./Sources/src/Game.cpp \
 		./Sources/src/main.cpp \
 		./Sources/src/Maps.cpp \
-		./Sources/src/Hero.cpp
+		./Sources/src/Hero.cpp \
+		./Sources/src/GameContactListener.cpp
 
 SYSOBJS = $(patsubst %.cpp,%.o,$(SYSSRCS))
 OBJS = $(patsubst %.cpp,%.o,$(SRCS))

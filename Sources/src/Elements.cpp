@@ -95,8 +95,7 @@ void	Elements::display(void) {
 		this->SetSprite(this->getAttribute("sprite"));
 	else if (this->getAttribute("spritesFrame") != "") {
 		this->LoadSpriteFrames(this->getAttribute("spritesFrame"));
-	}
-	else
+	} else
 		this->SetColor(0, 0, 0, 0);
 	this->SetSize(1.0f);
 	this->SetDrawShape(ADS_Square);
@@ -107,13 +106,12 @@ void	Elements::display(void) {
 	}
 	if (this->getAttribute("hero") == "1") {
 		this->SetShapeType(PhysicsActor::SHAPETYPE_HERO);
-	}
-	else {
+	} else {
 		this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	}
-	if (this->getAttribute("physic") != "") {
+
+	if (this->getAttribute("physic") != "")
 		this->InitPhysics();
-	}
 	theWorld.Add(this);
 }
 

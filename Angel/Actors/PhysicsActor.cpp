@@ -37,19 +37,20 @@
 
 #include <Box2D/Box2D.h>
 
+
 #define POST_PHYSICS_INIT_WARNING "WARNING: %s had no effect; don't change an actor after its physics have been initialized."
 #define PRE_PHYSICS_INIT_WARNING "WARNING: %s had no effect; this actor's physics were not initialized."
 
 PhysicsActor::PhysicsActor(void) :	
-_physBody(NULL),
-_density(1.f),
-_friction(0.3f),
-_restitution(0.0f),
-_shapeType(SHAPETYPE_BOX),
-_isSensor(false),
-_groupIndex(0), 
-_fixedRotation(false),
-_id(-1)
+	_physBody(NULL),
+	_density(1.f),
+	_friction(0.3f),
+	_restitution(0.0f),
+	_shapeType(SHAPETYPE_BOX),
+	_isSensor(false),
+	_groupIndex(0), 
+	_fixedRotation(false),
+	_id(-1)
 {
 }
 
@@ -130,7 +131,7 @@ void PhysicsActor::InitPhysics()
 		sysLog.Log("ERROR: World physics must be initialized before Actor's.");
 		return;
 	}
-	
+
 	b2CircleShape circle;
 	b2PolygonShape box;
 	b2Shape* shape = NULL;
@@ -146,44 +147,45 @@ void PhysicsActor::InitPhysics()
 		circle.m_radius = 0.5f*_size.X;
 		shape = &circle;
 	}
-    /* CODE MODIFIED BY NOICH */
-    else if (_shapeType == SHAPETYPE_HERO)
-    {
-        b2Vec2 vertices[8];
-        vertices[0].Set(-0.45, 0.5);
-        vertices[1].Set(-0.5, 0.45);
-        vertices[2].Set(-0.5, -0.45);
-        vertices[3].Set(-0.45, -0.5);
-        vertices[4].Set(0.45, -0.5);
-        vertices[5].Set(0.5, -0.45);
-        vertices[6].Set(0.5, 0.45);
-        vertices[7].Set(0.45, 0.5);
-        box.Set(vertices, 8);
-        shape = &box;
-    }
-    else if (_shapeType == SHAPETYPE_PROJECTILE)
-    {
-        box.SetAsBox(0.5f*_size.X, 0.25f*_size.Y);
-        shape = &box;
-    }
-    /* END OF CODE */
+	/* CODE MODIFIED BY NOICH */
+	else if (_shapeType == SHAPETYPE_HERO)
+	{
+	   b2Vec2 vertices[8];
+		vertices[0].Set(-0.45, 0.5);
+		vertices[1].Set(-0.5, 0.45);
+		vertices[2].Set(-0.5, -0.45);
+		vertices[3].Set(-0.45, -0.5);
+		vertices[4].Set(0.45, -0.5);
+		vertices[5].Set(0.5, -0.45);
+		vertices[6].Set(0.5, 0.45);
+		vertices[7].Set(0.45, 0.5);
+		box.Set(vertices, 8);
+		//box.SetAsBox(0.5f*_size.X, 0.5f*_size.Y);
+		shape = &box;
+	}
+	else if (_shapeType == SHAPETYPE_PROJECTILE)
+	{
+		box.SetAsBox(0.5f*_size.X, 0.25f*_size.Y);
+		shape = &box;
+	}
+	/* END OF CODE */
 	else
 	{
 		sysLog.Log("ERROR: Invalid shape type given.");
 		return;
 	}
-	
+
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = shape;
 	fixtureDef.density = _density;
 	fixtureDef.friction = _friction;
 	fixtureDef.restitution = _restitution;
-	
+
 	fixtureDef.filter.groupIndex = _groupIndex;
 	fixtureDef.isSensor = _isSensor;
-	
+
 	InitShape( shape );
-	
+
 	b2BodyDef bd;
 	bd.userData = this;
 	bd.position.Set(_position.X, _position.Y);
@@ -197,7 +199,7 @@ void PhysicsActor::InitPhysics()
 	{
 		bd.type = b2_dynamicBody;
 	}
-	
+
 	_physBody = theWorld.GetPhysicsWorld().CreateBody(&bd);
 	_physBody->CreateFixture(&fixtureDef);
 	_physBody->SetUserData(this);

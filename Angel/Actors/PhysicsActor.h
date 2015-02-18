@@ -32,7 +32,6 @@
 #include "../Actors/Actor.h"
 
 #include <Box2D/Box2D.h>
-
 struct b2ShapeDef;
 
 

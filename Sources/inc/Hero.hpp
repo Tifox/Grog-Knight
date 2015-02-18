@@ -28,6 +28,8 @@
 
 # include "Elements.hpp"
 
+# define RUN_SPEED 4
+# define MAX_RUN_SPEED 10
 # define MAX_JUMP 2
 # define HERO_SIZE 1
 

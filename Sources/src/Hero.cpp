@@ -48,7 +48,7 @@ Hero::Hero(void) {
 	theSwitchboard.SubscribeTo(this, "Smash");
 	theSwitchboard.SubscribeTo(this, "canMove");
 	theSwitchboard.SubscribeTo(this, "endInvincibility");
-	theSwitchboard.SubscribeTo(this, "forwardPress");
+	theSwitchboard.SubscribeTo(this, "forwardPressed");
 	theSwitchboard.SubscribeTo(this, "backPressed");
 	theSwitchboard.SubscribeTo(this, "upPressed");
 	theSwitchboard.SubscribeTo(this, "downPressed");
@@ -112,13 +112,19 @@ void	Hero::ReceiveMessage(Message *m) {
 	if (this->_canMove == false)
 		return;
 	else if (m->GetMessageName() == "Jump") {
-		this->ApplyLinearImpulse(Vector2(0, 6), Vector2(1, 1));
+		this->ApplyLinearImpulse(Vector2(0, 10), Vector2(0, 0));
 	}
 
-	if (m->GetMessageName() == "forwardPress") {
+	else if (m->GetMessageName() == "Smash") {
+		this->ApplyLinearImpulse(Vector2(0, -100), Vector2(0, 0));
+	}
+
+	else if (m->GetMessageName() == "forwardPressed") {
 		this->_orientation = 1;
 		this->_up = 0;
-		this->ApplyLinearImpulse(Vector2(4, 0), Vector2(1, 1));
+		if (this->GetBody()->GetLinearVelocity().x < MAX_RUN_SPEED) {
+			this->ApplyLinearImpulse(Vector2(RUN_SPEED, 0), Vector2(0, 0));
+		}
 		if (this->GetSpriteFrame() <= 3)
 			this->PlaySpriteAnimation(0.1f, SAT_Loop, 4, 9, "run");
 	}
@@ -130,7 +136,9 @@ void	Hero::ReceiveMessage(Message *m) {
 	else if (m->GetMessageName() == "backPressed") {
 		this->_orientation = -1;
 		this->_up = 0;
-		this->ApplyLinearImpulse(Vector2(4, 0), Vector2(1, 1));
+		if (this->GetBody()->GetLinearVelocity().x > -MAX_RUN_SPEED) {
+			this->ApplyLinearImpulse(Vector2(-RUN_SPEED, 0), Vector2(0, 0));
+		}
 		if (this->GetSpriteFrame() <= 3)
 			this->PlaySpriteAnimation(0.1f, SAT_Loop, 4, 9, "run");
 	}

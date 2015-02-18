@@ -36,6 +36,22 @@ Hero::Hero(void) {
 	this->SetFriction(1.0f);
 	this->SetRestitution(0.0f);
 	this->SetFixedRotation(true);
+	this->jumping = MAX_JUMP;
+	this->invincibility = false;
+	this->canMove = true;
+	theSwitchboard.SubscribeTo(this, "MeleeAttack");
+	theSwitchboard.SubscribeTo(this, "RangedAttack");
+	theSwitchboard.SubscribeTo(this, "SmashAttack");
+	theSwitchboard.SubscribeTo(this, "Jump");
+	theSwitchboard.SubscribeTo(this, "Smash");
+	theSwitchboard.SubscribeTo(this, "canMove");
+	theSwitchboard.SubscribeTo(this, "endInvincibility");
+	theSwitchboard.SubscribeTo(this, "BackPressed");
+	theSwitchboard.SubscribeTo(this, "UpPressed");
+	theSwitchboard.SubscribeTo(this, "DownPressed");
+	theSwitchboard.SubscribeTo(this, "BackReleased");
+	theSwitchboard.SubscribeTo(this, "UpReleased");
+	theSwitchboard.SubscribeTo(this, "DownReleased");
 	this->addAttribute("spritesFrame", "Resources/Images/Hero/hero_000.png");
 	//theSwitchboard.SubscribeTo(this, "callbackEndRun");
 	theSwitchboard.SubscribeTo(this, "forwardPress");
@@ -44,7 +60,7 @@ Hero::Hero(void) {
 }
 
 /**
- * Basic Deconstructor
+ * Basic Destructor
  */
 Hero::~Hero(void) {
 	return ;
@@ -55,8 +71,51 @@ Hero::~Hero(void) {
  * @param: elem (Elements *)
  */
 void	Hero::callback(Elements * elem) {
-	if (elem->getAttribute("type") == "ground") {
-		//this->PlaySpriteAnimation(0.5f, SAT_OneShot, 0, 2, "laul");
+	if (elem->getAttributes()["type"] == "wall" ||
+		elem->getAttributes()["type"] == "ground" ||
+		elem->getAttributes()["type"] == "corner") {
+		if (this->GetBody()->GetWorldCenter().y > elem->GetBody()->GetWorldCenter().y + HERO_SIZE) {
+			//touching ground
+			this->_jumping = MAX_JUMP;
+		}
+		else {
+			//Touching wall
+		}
+	}
+}
+
+void	Hero::ReceiveMessage(Message *m) {
+	if (this->_canMove == false)
+		return;
+	if (m->GetMessageName() == "forwardPress") {
+		this->ApplyLinearImpulse(Vector2(4, 0), Vector2(1, 1));
+		if (this->GetSpriteFrame() <= 3)
+			this->PlaySpriteAnimation(0.1f, SAT_Loop, 4, 9, "run");
+	}
+	else if (m->GetMessageName() == "forwardRealeased") {
+		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+		this->PlaySpriteAnimation(0.1f, SAT_OneShot, 0, 3, "base");
+	}
+
+	else if (m->GetMessageName() == "Jump") {
+		this->ApplyLinearImpulse(Vector2(0, 6), Vector2(1, 1));
+	}
+
+	else if (m->GetMessageName() == "BackPressed") {
+
+	}
+	else if (m->GetMessageName() == "BackReleased") {
+
+	}
+
+	else if (m->GetMessageName() == "UpPressed" || m->GetMessageName() == "UpReleased") {
+		this->_orientation == 0;
+		this->_up = 1;
+	}
+
+	else if (m->GetMessageName() == "DownPressed" || m->GetMessageName() == "DownReleased") {
+		this->_orientation == 0;
+		this->_up = -1;
 	}
 }
 
@@ -79,17 +138,6 @@ void	Hero::AnimCallback(String name) {
  */
 void	Hero::ReceiveMessage(Message *m) {
 	std::cout << m->GetMessageName() << std::endl;
-	if (m->GetMessageName() == "forwardPress") {
-		this->ApplyLinearImpulse(Vector2(4, 0), Vector2(1, 1));
-		if (this->GetSpriteFrame() <= 3)
-			this->PlaySpriteAnimation(0.1f, SAT_Loop, 4, 9, "run");
-	} else if (m->GetMessageName() == "forwardRealeased") {
-		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-		this->PlaySpriteAnimation(0.1f, SAT_OneShot, 0, 3, "base");
-	} else if (m->GetMessageName() == "Jump") {
-		this->ApplyLinearImpulse(Vector2(0, 6), Vector2(1, 1));
-	}
-}
 
 void	Hero::init(void) {
 	this->PlaySpriteAnimation(0.2f, SAT_OneShot, 0, 3, "base");

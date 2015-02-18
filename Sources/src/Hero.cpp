@@ -41,6 +41,7 @@ Hero::Hero(void) {
 	this->_canMove = true;
 	this->_orientation = 1;
 	this->_up = 0;
+	this->_isJump = 0;
 	theSwitchboard.SubscribeTo(this, "MeleeAttack");
 	theSwitchboard.SubscribeTo(this, "RangedAttack");
 	theSwitchboard.SubscribeTo(this, "SmashAttack");
@@ -79,6 +80,13 @@ void	Hero::callback(Elements * elem) {
 		if (this->GetBody()->GetWorldCenter().y > elem->GetBody()->GetWorldCenter().y + HERO_SIZE) {
 			//touching ground
 			this->_jumping = MAX_JUMP;
+			std::cout << "lol" << std::endl;
+			if (this->_isJump < 3) {
+				this->_isJump++;
+			} else if (this->_isJump == 3) {
+				this->PlaySpriteAnimation(0.1f, SAT_OneShot, 27, 27, "base");
+				this->_isJump = 0;
+			}
 		}
 		else {
 			//Touching wall
@@ -113,6 +121,8 @@ void	Hero::ReceiveMessage(Message *m) {
 		return;
 	else if (m->GetMessageName() == "Jump") {
 		this->ApplyLinearImpulse(Vector2(0, 10), Vector2(0, 0));
+		this->PlaySpriteAnimation(0.1f, SAT_OneShot, 16, 26, "Jump");
+		this->_isJump = 1;
 	}
 
 	else if (m->GetMessageName() == "Smash") {

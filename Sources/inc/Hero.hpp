@@ -55,7 +55,7 @@ private:
 	int						_up;
 	std::list<Elements*>	_grounds;
 	std::list<Elements*>	_walls;
-
+	int						_isJump;
 };
 
 #endif

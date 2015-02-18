@@ -29,13 +29,18 @@
  * Basic constructor
  */
 Hero::Hero(void) {
-	this->addAttribute("sprite", "Resources/Images/hero.png");
+	//this->addAttribute("sprite", "Resources/Images/test.png");
 	this->addAttribute("physic", "1");
 	this->addAttribute("type", "Hero");
 	this->SetDensity(1.0f);
 	this->SetFriction(1.0f);
 	this->SetRestitution(0.0f);
-	//this->SetFixedRotation(true);
+	this->SetFixedRotation(true);
+	this->addAttribute("spritesFrame", "Resources/Images/Hero/hero_000.png");
+	//theSwitchboard.SubscribeTo(this, "callbackEndRun");
+	theSwitchboard.SubscribeTo(this, "forwardPress");
+	theSwitchboard.SubscribeTo(this, "forwardRealeased");
+	theSwitchboard.SubscribeTo(this, "Jump");
 }
 
 /**
@@ -51,9 +56,41 @@ Hero::~Hero(void) {
  */
 void	Hero::callback(Elements * elem) {
 	if (elem->getAttribute("type") == "ground") {
-		std::cout << "Hero got a collision with " << elem->getAttribute("type") << ", " << elem->getId() <<  ",  << " << this->getId() << std::endl;
-		this->ApplyLinearImpulse(Vector2(4, 0), Vector2(1, 1));
-	} else {
-		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+		//this->PlaySpriteAnimation(0.5f, SAT_OneShot, 0, 2, "laul");
 	}
+}
+
+/**
+ * Callback for end of animation
+ * @param: name (String)
+ */
+void	Hero::AnimCallback(String name) {
+	std::cout << name << std::endl;
+	if (name == "base") {
+		this->PlaySpriteAnimation(0.2f, SAT_Loop, 0, 3, "base");
+ 	} else if (name == "run") {
+		this->PlaySpriteAnimation(0.1f, SAT_OneShot, 4, 9, "run");
+	}
+}
+
+/**
+ * Receive broadcasts message
+ * @param: (Message *)
+ */
+void	Hero::ReceiveMessage(Message *m) {
+	std::cout << m->GetMessageName() << std::endl;
+	if (m->GetMessageName() == "forwardPress") {
+		this->ApplyLinearImpulse(Vector2(4, 0), Vector2(1, 1));
+		if (this->GetSpriteFrame() <= 3)
+			this->PlaySpriteAnimation(0.1f, SAT_Loop, 4, 9, "run");
+	} else if (m->GetMessageName() == "forwardRealeased") {
+		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+		this->PlaySpriteAnimation(0.1f, SAT_OneShot, 0, 3, "base");
+	} else if (m->GetMessageName() == "Jump") {
+		this->ApplyLinearImpulse(Vector2(0, 6), Vector2(1, 1));
+	}
+}
+
+void	Hero::init(void) {
+	this->PlaySpriteAnimation(0.2f, SAT_OneShot, 0, 3, "base");
 }

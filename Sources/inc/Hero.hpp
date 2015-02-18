@@ -34,6 +34,9 @@ class Hero : public Elements {
 		~Hero();
 
 		virtual void	callback(Elements * elem);
+		virtual void	AnimCallback(String name);
+		void			ReceiveMessage(Message *m);
+		void			init();
 };
 
 #endif

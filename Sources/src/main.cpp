@@ -49,6 +49,7 @@ int		main(int ac, char **av) {
 	Hero	*hero = new Hero();
 	theCamera.LockTo(hero);
 	game->displayHero(*(hero));
+	hero->init();
 	//theWorld.SetSideBlockers(true, 0.7f);
 
 	Game::listElement();

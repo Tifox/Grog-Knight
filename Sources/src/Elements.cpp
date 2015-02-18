@@ -93,6 +93,9 @@ void	Elements::display(void) {
 	this->Tag(this->getAttribute("type"));
 	if (this->getAttribute("sprite") != "")
 		this->SetSprite(this->getAttribute("sprite"));
+	else if (this->getAttribute("spritesFrame") != "") {
+		this->LoadSpriteFrames(this->getAttribute("spritesFrame"));
+	}
 	else
 		this->SetColor(0, 0, 0, 0);
 	this->SetSize(1.0f);

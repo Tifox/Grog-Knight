@@ -131,6 +131,7 @@ void	Game::initMap(void) {
 void	Game::displayHero(Elements & Hero) {
 	Hero.setXStart(this->beginXHero);
 	Hero.setYStart(this->beginYHero);
+	Hero.addAttribute("hero", "1");
 	Hero.display();
 }
 

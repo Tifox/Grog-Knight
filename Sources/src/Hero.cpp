@@ -119,7 +119,7 @@ void	Hero::ReceiveMessage(Message *m) {
 		this->ApplyLinearImpulse(Vector2(0, -100), Vector2(0, 0));
 	}
 
-	else if (m->GetMessageName() == "forwardPressed") {
+ 	else if (m->GetMessageName() == "forwardPressed") {
 		this->_orientation = 1;
 		this->_up = 0;
 		if (this->GetBody()->GetLinearVelocity().x < MAX_RUN_SPEED) {

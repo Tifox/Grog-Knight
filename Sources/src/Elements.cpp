@@ -105,8 +105,15 @@ void	Elements::display(void) {
 		this->SetFriction(1);
 		this->SetRestitution(0);
 	}
-	if (this->getAttribute("physic") != "")
+	if (this->getAttribute("hero") == "1") {
+		this->SetShapeType(PhysicsActor::SHAPETYPE_HERO);
+	}
+	else {
+		this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
+	}
+	if (this->getAttribute("physic") != "") {
 		this->InitPhysics();
+	}
 	theWorld.Add(this);
 }
 

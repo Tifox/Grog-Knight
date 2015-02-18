@@ -37,6 +37,9 @@ public:
 	~Hero();
 
 	virtual void	callback(Elements * elem);
+	virtual void	AnimCallback(String name);
+	void			ReceiveMessage(Message *m);
+	void			init();
 
 private:
 	int						_jumping;
@@ -50,6 +53,7 @@ private:
 	int						_up;
 	std::list<Elements*>	_grounds;
 	std::list<Elements*>	_walls;
+
 };
 
 #endif

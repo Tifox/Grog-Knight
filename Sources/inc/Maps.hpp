@@ -26,7 +26,7 @@
 #ifndef __Maps__
 # define __Maps__
 
-# include "../../Tools/jsoncpp/include/json/json.h"
+# include <json/json.h>
 # include <dirent.h>
 # include <iostream>
 # include <string>

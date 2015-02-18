@@ -28,12 +28,28 @@
 
 # include "Elements.hpp"
 
-class Hero : public Elements {
-	public:
-		Hero();
-		~Hero();
+# define MAX_JUMP 2
+# define HERO_SIZE 1
 
-		virtual void	callback(Elements * elem);
+class Hero : public Elements {
+public:
+	Hero();
+	~Hero();
+
+	virtual void	callback(Elements * elem);
+
+private:
+	int						_jumping;
+	bool					_canMove;
+	bool					_invincibility;
+	bool					_meleeAttack;
+	bool					_rangedAttack;
+	bool					_smashing;
+	bool					_canSmash;
+	int						_orientation;
+	int						_up;
+	std::list<Elements*>	_grounds;
+	std::list<Elements*>	_walls;
 };
 
 #endif

@@ -35,11 +35,29 @@ Hero::Hero(void) {
 	this->SetDensity(1.0f);
 	this->SetFriction(1.0f);
 	this->SetRestitution(0.0f);
-	//this->SetFixedRotation(true);
+	this->SetFixedRotation(true);
+	this->jumping = MAX_JUMP;
+	this->invincibility = false;
+	this->canMove = true;
+	theSwitchboard.SubscribeTo(this, "MeleeAttack");
+	theSwitchboard.SubscribeTo(this, "RangedAttack");
+	theSwitchboard.SubscribeTo(this, "SmashAttack");
+	theSwitchboard.SubscribeTo(this, "Jump");
+	theSwitchboard.SubscribeTo(this, "Smash");
+	theSwitchboard.SubscribeTo(this, "canMove");
+	theSwitchboard.SubscribeTo(this, "endInvincibility");
+	theSwitchboard.SubscribeTo(this, "ForPressed");
+	theSwitchboard.SubscribeTo(this, "BackPressed");
+	theSwitchboard.SubscribeTo(this, "UpPressed");
+	theSwitchboard.SubscribeTo(this, "DownPressed");
+	theSwitchboard.SubscribeTo(this, "ForReleased");
+	theSwitchboard.SubscribeTo(this, "BackReleased");
+	theSwitchboard.SubscribeTo(this, "UpReleased");
+	theSwitchboard.SubscribeTo(this, "DownReleased");
 }
 
 /**
- * Basic Deconstructor
+ * Basic Destructor
  */
 Hero::~Hero(void) {
 	return ;
@@ -50,10 +68,47 @@ Hero::~Hero(void) {
  * @param: elem (Elements *)
  */
 void	Hero::callback(Elements * elem) {
-	if (elem->getAttribute("type") == "ground") {
-		std::cout << "Hero got a collision with " << elem->getAttribute("type") << ", " << elem->getId() <<  ",  << " << this->getId() << std::endl;
-		this->ApplyLinearImpulse(Vector2(4, 0), Vector2(1, 1));
-	} else {
-		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+	if (elem->getAttributes()["type"] == "wall" ||
+		elem->getAttributes()["type"] == "ground" ||
+		elem->getAttributes()["type"] == "corner") {
+		if (this->GetBody()->GetWorldCenter().y > elem->GetBody()->GetWorldCenter().y + HERO_SIZE) {
+			//touching ground
+			this->_jumping = MAX_JUMP;
+		}
+		else {
+			//Touching wall
+		}
+	}
+}
+
+void	Hero::ReceiveMessage(Message *m) {
+	if (this->_canMove == false)
+		return;
+	else if (m->GetMessageName() == "Jump") {
+
+	}
+
+	else if (m->GetMessageName() == "ForPressed") {
+
+	}
+	else if (m->GetMessageName() == "ForReleased") {
+
+	}
+
+	else if (m->GetMessageName() == "BackPressed") {
+
+	}
+	else if (m->GetMessageName() == "BackReleased") {
+
+	}
+
+	else if (m->GetMessageName() == "UpPressed" || m->GetMessageName() == "UpReleased") {
+		this->_orientation == 0;
+		this->_up = 1;
+	}
+
+	else if (m->GetMessageName() == "DownPressed" || m->GetMessageName() == "DownReleased") {
+		this->_orientation == 0;
+		this->_up = -1;
 	}
 }

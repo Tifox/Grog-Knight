@@ -1,0 +1,3 @@
+language: cpp
+script: make
+before_install: sudo ./nix-prereqs.sh

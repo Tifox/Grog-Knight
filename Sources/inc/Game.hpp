@@ -31,6 +31,7 @@
 #  include "main.hpp"
 #  include "Elements.hpp"
 # endif
+# include "GameContactListener.hpp"
 
 class Game {
 

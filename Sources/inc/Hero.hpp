@@ -28,15 +28,36 @@
 
 # include "Elements.hpp"
 
-class Hero : public Elements {
-	public:
-		Hero();
-		~Hero();
+# define RUN_SPEED 4
+# define MAX_RUN_SPEED 10
+# define MAX_JUMP 2
+# define HERO_SIZE 1
 
-		virtual void	callback(Elements * elem);
-		virtual void	AnimCallback(String name);
-		void			ReceiveMessage(Message *m);
-		void			init();
+class Hero : public Elements {
+public:
+	Hero();
+	~Hero();
+
+	virtual void	callback(Elements * elem);
+	virtual void	EndContact(Elements * elem, b2Contact *contact);
+	virtual void	BeginContact(Elements * elem, b2Contact *contact);
+	virtual void	AnimCallback(String name);
+	void			ReceiveMessage(Message *m);
+	void			init();
+
+private:
+	int						_jumping;
+	bool					_canMove;
+	bool					_invincibility;
+	bool					_meleeAttack;
+	bool					_rangedAttack;
+	bool					_smashing;
+	bool					_canSmash;
+	int						_orientation;
+	int						_up;
+	std::list<Elements*>	_grounds;
+	std::list<Elements*>	_walls;
+	int						_isJump;
 };
 
 #endif

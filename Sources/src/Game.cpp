@@ -25,7 +25,6 @@
 
 #include "../inc/Game.hpp"
 
-
 /**
  * Basic constructor, set the window to default value
  * (http://docs.angel2d.com/class_world.html#ae5d7e8d20d3e6fc93785ab2014ac0c13)
@@ -34,6 +33,8 @@ Game::Game(void) {
 	theWorld.Initialize(1024, 768, NAME);
 	theWorld.SetupPhysics();
 	//this->elements = new Elements();
+	GameContactListener *gListen = new GameContactListener();
+	theWorld.GetPhysicsWorld().SetContactListener(gListen);
 	this->maps = new Maps("Maps/");
 	return ;
 }
@@ -46,12 +47,14 @@ Game::Game(void) {
 Game::Game(unsigned int width, unsigned int height) {
 	theWorld.Initialize(width, height, NAME);
 	theWorld.SetupPhysics();
+	GameContactListener *gListen = new GameContactListener();
+	theWorld.GetPhysicsWorld().SetContactListener(gListen);
 	//this->elements = new Elements();
 	this->maps = new Maps("Maps/");
 }
 
 /**
- * Deconstructor
+ * Destructor
  */
 Game::~Game(void) {
 	//delete this->elements;
@@ -131,6 +134,7 @@ void	Game::initMap(void) {
 void	Game::displayHero(Elements & Hero) {
 	Hero.setXStart(this->beginXHero);
 	Hero.setYStart(this->beginYHero);
+	Hero.addAttribute("hero", "1");
 	Hero.display();
 }
 

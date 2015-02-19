@@ -31,28 +31,42 @@
 ** @param: Elements *
 */
 Weapon::Weapon(Elements *m) {
-	this->SetPosition(m->GetBody()->GetWorldCenter().x/* + m->GetOrientationX()*/, m->GetBody()->GetWorldCenter().y/* + m->getOrientationY()*/);
+	this->SetPosition(m->GetBody()->GetWorldCenter().x + m->getOrientationX(), m->GetBody()->GetWorldCenter().y + m->getOrientationY());
 	this->SetSize(1);
 	this->SetName("Weapon");
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	this->SetDensity(1.0f);
 	this->SetFriction(1.0f);
 	this->SetRestitution(0.0f);
+	this->SetDrawShape(ADS_Square);
 	this->SetFixedRotation(true);
 	this->Tag("weapon");
 	this->InitPhysics();
 	this->GetBody()->SetLinearVelocity(m->GetBody()->GetLinearVelocity());
+	theSwitchboard.DeferredBroadcast(new Message("DeleteWeapon"), 0.2f);
 	theWorld.Add(this);
-	theSwitchboard.DeferredBroadcast(new Message("DeleteWeapon"), 0.1f);
 }
 
-Weapon::~Weapon(void) {}
+Weapon::~Weapon(void) {
+	return;
+}
 
 void	Weapon::BeginContact(Elements *elem, b2Contact *contact) {
-	std::cout << "TODO" << std::endl;
+	if (elem->getAttributes()["type"] == "enemy") {
+		std::cout << "Enemy hit" << std::endl;
+	}
+	else if (elem->getAttributes()["type"] == "wall" ||
+			 elem->getAttributes()["type"] == "ground" ||
+			 elem->getAttributes()["type"] == "corner") {
+		std::cout << "Ground hit" << std::endl;
+	}
+	else if (elem->getAttributes()["type"] == "hero") {
+		std::cout << "Hero hit" << std::endl;
+		contact->SetEnabled(false);
+	}
 }
 
 void	Weapon::EndContact(Elements *elem, b2Contact *contact) {
-	std::cout << "TODO" << std::endl;
+	std::cout << "EndContact with: " << elem->getAttributes()["type"] << std::endl;
 }
 

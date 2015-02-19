@@ -23,10 +23,10 @@
  * Vincent Rey <vrey@student.42.fr>
  */
 
-#ifndef __Weapon
+#ifndef __Weapon__
 # define __Weapon__
 
-# include "Elements.hpp"
+#  include "Elements.hpp"
 
 /*
 ** Default constructor, using the element that called the attack
@@ -36,7 +36,7 @@
 class Weapon: public Elements {
 public:
 	Weapon(Elements *m);
-	~Weapon();
+	~Weapon(void);
 	void	BeginContact(Elements *elem, b2Contact *contact);
 	void	EndContact(Elements *elem, b2Contact *contact);
 };

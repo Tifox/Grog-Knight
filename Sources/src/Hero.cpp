@@ -43,6 +43,7 @@ Hero::Hero(void) {
 	this->_up = 0;
 	this->_isJump = 0;
 	theSwitchboard.SubscribeTo(this, "MeleeAttack");
+	theSwitchboard.SubscribeTo(this, "DeleteWeapon");
 	theSwitchboard.SubscribeTo(this, "RangedAttack");
 	theSwitchboard.SubscribeTo(this, "SmashAttack");
 	theSwitchboard.SubscribeTo(this, "Jump");
@@ -149,6 +150,20 @@ void	Hero::ReceiveMessage(Message *m) {
 	else if (m->GetMessageName() == "downPressed") {
 		this->_orientation == 0;
 		this->_up = -1;
+	}
+
+	else if (m->GetMessageName() == "MeleeAttack") {
+		if (this->_meleeAttack == false) {
+			this->_weapon = new Weapon(this);
+			this->_meleeAttack = true;
+		}
+	}
+
+	else if (m->GetMessageName() == "DeleteWeapon") {
+		theWorld.GetPhysicsWorld().DestroyBody(this->_weapon->GetBody());
+		theWorld.Remove(this->_weapon);
+		std::cout << this->_weapon->GetBody() << std::endl;
+		this->_meleeAttack = false;
 	}
 }
 

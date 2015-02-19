@@ -57,10 +57,9 @@ Elements::Elements(Elements & obj) : PhysicsActor(obj) {
 }
 
 /**
- * Basic deconstructor
+ * Basic destructor
  */
 Elements::~Elements(void) {
-	return ;
 }
 
 /**
@@ -122,3 +121,5 @@ void	Elements::setYStart(float Y) { this->_YStartPos = Y; };
 
 /* GETTERS */
 std::map<std::string, std::string>	Elements::getAttributes(void) { return this->_attributes; };
+int									Elements::getOrientationX(void) { return this->_orientation; }
+int									Elements::getOrientationY(void) { return this->_up; }

@@ -27,6 +27,7 @@
 # define __Hero__
 
 # include "Elements.hpp"
+# include "Weapon.hpp"
 
 # define RUN_SPEED 4
 # define MAX_RUN_SPEED 10
@@ -45,19 +46,6 @@ public:
 	void			ReceiveMessage(Message *m);
 	void			init();
 
-private:
-	int						_jumping;
-	bool					_canMove;
-	bool					_invincibility;
-	bool					_meleeAttack;
-	bool					_rangedAttack;
-	bool					_smashing;
-	bool					_canSmash;
-	int						_orientation;
-	int						_up;
-	std::list<Elements*>	_grounds;
-	std::list<Elements*>	_walls;
-	int						_isJump;
 };
 
 #endif

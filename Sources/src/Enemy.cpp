@@ -36,6 +36,8 @@ Enemy::Enemy(void) {
 	this->SetRestitution(0.0f);
 	this->SetFixedRotation(true);
 	this->SetDrawShape(ADS_Square);
+	this->addAttribute("spritesFrame", "Resources/Images/Enemy/enemy_000.png");
+
 }
 
 /**
@@ -69,7 +71,7 @@ void	Enemy::ReceiveMessage(Message *m) {
 
 
 void	Enemy::init(void) {
-	this->SetColor(1,1,1,1);
+	this->PlaySpriteAnimation(0.1f, SAT_Loop, 0, 4, "Jump");
 }
 
 /**

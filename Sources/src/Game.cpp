@@ -34,6 +34,8 @@ Game::Game(void) {
 	theWorld.SetupPhysics();
 	//this->elements = new Elements();
 	GameContactListener *gListen = new GameContactListener();
+	ContactFilter *filter = new ContactFilter();
+	theWorld.GetPhysicsWorld().SetContactFilter(filter);
 	theWorld.GetPhysicsWorld().SetContactListener(gListen);
 	this->maps = new Maps("Maps/");
 	return ;
@@ -48,6 +50,8 @@ Game::Game(unsigned int width, unsigned int height) {
 	theWorld.Initialize(width, height, NAME);
 	theWorld.SetupPhysics();
 	GameContactListener *gListen = new GameContactListener();
+	ContactFilter *filter = new ContactFilter();
+	theWorld.GetPhysicsWorld().SetContactFilter(filter);
 	theWorld.GetPhysicsWorld().SetContactListener(gListen);
 	//this->elements = new Elements();
 	this->maps = new Maps("Maps/");

@@ -18,49 +18,21 @@
  */
 
 /**
- * File: Game.hpp
- * Creation: 2015-02-13 07:20
- * Louis Solofrizzo <louis@ne02ptzero.me>
+ * File: ContactFilter.cpp
+ * Creation: 2015-02-23 12:40
+ * Vincent Rey <vrey@student.42.fr>
  */
 
-#ifndef __Game__
-# define __Game__
+#ifndef __ContactFilter__
+# define __ContactFilter__
 
-# include "Maps.hpp"
-# ifndef __Elements__
-#  include "main.hpp"
-#  include "Elements.hpp"
-# endif
-# include "GameContactListener.hpp"
-# include "ContactFilter.hpp"
+# include "Elements.hpp"
+# include "Game.hpp"
+# include "../../Angel/Angel.h"
 
-class Game {
-
-	public:
-		Game();
-		Game(unsigned int width, unsigned int height);
-		~Game();
-
-		void	grid(void);
-		void	start(void);
-		void	readMaps(void);
-		void	initMap(void);
-		void	displayMap(t_map map);
-		void	displayHero(Elements & Hero);
-
-		static int	getNextId(void);
-		static void	addElement(Elements & elem);
-		static void	listElement(void);
-		static void	callCallbacks(int a, int b);
-
-		Maps		*maps;
-		static int	currentIds;
-		static std::map<int, Elements *>	elementMap;
-
-	private:
-		float		beginXHero;
-		float		beginYHero;
+class ContactFilter: public b2ContactFilter {
+public:
+	bool ShouldCollide(b2Fixture *a, b2Fixture *b);
 };
-
 
 #endif

@@ -42,6 +42,10 @@ Weapon::Weapon(Elements *m) {
 	this->SetFixedRotation(true);
 	this->Tag("weapon");
 	this->InitPhysics();
+	if (m->getAttributes()["type"] == "Hero")
+		this->addAttribute("type", "heroWeapon");
+	else
+		this->addAttribute("type", "weapon");
 	this->GetBody()->SetLinearVelocity(m->GetBody()->GetLinearVelocity());
 	theSwitchboard.DeferredBroadcast(new Message("DeleteWeapon"), 0.2f);
 	theWorld.Add(this);
@@ -59,10 +63,6 @@ void	Weapon::BeginContact(Elements *elem, b2Contact *contact) {
 			 elem->getAttributes()["type"] == "ground" ||
 			 elem->getAttributes()["type"] == "corner") {
 		std::cout << "Ground hit" << std::endl;
-	}
-	else if (elem->getAttributes()["type"] == "hero") {
-		std::cout << "Hero hit" << std::endl;
-		contact->SetEnabled(false);
 	}
 }
 

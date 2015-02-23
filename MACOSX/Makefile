@@ -9,7 +9,8 @@ SRCS 	= ../Sources/src/Elements.cpp \
 		  ../Sources/src/Maps.cpp \
 		  ../Sources/src/main.cpp \
 		  ../Angel/Scripting/Interfaces/AngelLuaWrapping.cpp \
-		  ../Sources/src/GameContactListener.cpp
+		  ../Sources/src/GameContactListener.cpp \
+		  ../Sources/src/ContactFilter.cpp
 
 INCLUDES = -I../Angel/Libraries/FTGL/include \
 		   -I../Angel/Libraries/freetype-2.4.8/include \

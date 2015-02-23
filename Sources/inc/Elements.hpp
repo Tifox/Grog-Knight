@@ -43,6 +43,13 @@ public:
 	Elements(Elements & obj);
 	~Elements();
 
+	enum Orientation {
+		LEFT,
+		RIGHT,
+		UP,
+		DOWN,
+	};
+
 	void 		addAttribute(std::string name, std::string value);
 	std::string	getAttribute(std::string name);
 	void		setXStart(float X);
@@ -72,7 +79,6 @@ protected:
 	int									_smashing;
 	int									_canSmash;
 	int									_orientation;
-	int									_up;
 	int									_isJump;
 	Weapon*								_weapon;
 	std::list<Elements*>				_grounds;

@@ -39,8 +39,7 @@ Hero::Hero(void) {
 	this->_jumping = MAX_JUMP;
 	this->_invincibility = false;
 	this->_canMove = true;
-	this->_orientation = 1;
-	this->_up = 0;
+	this->_orientation = RIGHT;
 	this->_isJump = 0;
 	theSwitchboard.SubscribeTo(this, "MeleeAttack");
 	theSwitchboard.SubscribeTo(this, "DeleteWeapon");
@@ -115,8 +114,7 @@ void	Hero::ReceiveMessage(Message *m) {
 	}
 
  	else if (m->GetMessageName() == "forwardPressed") {
-		this->_orientation = 1;
-		this->_up = 0;
+		this->_orientation = RIGHT;
 		if (this->GetBody()->GetLinearVelocity().x < MAX_RUN_SPEED) {
 			this->ApplyLinearImpulse(Vector2(RUN_SPEED, 0), Vector2(0, 0));
 		}
@@ -129,8 +127,7 @@ void	Hero::ReceiveMessage(Message *m) {
 	}
 
 	else if (m->GetMessageName() == "backPressed") {
-		this->_orientation = -1;
-		this->_up = 0;
+		this->_orientation = LEFT;
 		if (this->GetBody()->GetLinearVelocity().x > -MAX_RUN_SPEED) {
 			this->ApplyLinearImpulse(Vector2(-RUN_SPEED, 0), Vector2(0, 0));
 		}
@@ -143,13 +140,11 @@ void	Hero::ReceiveMessage(Message *m) {
 	}
 
 	else if (m->GetMessageName() == "upPressed") {
-		this->_orientation == 0;
-		this->_up = 1;
+		this->_orientation = UP;
 	}
 
 	else if (m->GetMessageName() == "downPressed") {
-		this->_orientation == 0;
-		this->_up = -1;
+		this->_orientation = DOWN;
 	}
 
 	else if (m->GetMessageName() == "MeleeAttack") {
@@ -162,7 +157,6 @@ void	Hero::ReceiveMessage(Message *m) {
 	else if (m->GetMessageName() == "DeleteWeapon") {
 		theWorld.GetPhysicsWorld().DestroyBody(this->_weapon->GetBody());
 		theWorld.Remove(this->_weapon);
-		std::cout << this->_weapon->GetBody() << std::endl;
 		this->_meleeAttack = false;
 	}
 }

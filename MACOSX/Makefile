@@ -6,11 +6,13 @@ SRCS 	= ../Sources/src/Elements.cpp \
 		  ../Sources/src/Game.cpp \
 		  ../Sources/src/Weapon.cpp \
 		  ../Sources/src/Hero.cpp \
+		  ../Sources/src/Enemy.cpp \
 		  ../Sources/src/Maps.cpp \
 		  ../Sources/src/main.cpp \
 		  ../Angel/Scripting/Interfaces/AngelLuaWrapping.cpp \
 		  ../Sources/src/GameContactListener.cpp \
 		  ../Sources/src/ContactFilter.cpp
+
 
 INCLUDES = -I../Angel/Libraries/FTGL/include \
 		   -I../Angel/Libraries/freetype-2.4.8/include \
@@ -77,6 +79,6 @@ angel-clean:
 clean: angel-clean json-clean
 
 exec:
-	cd ../Angel/build/ && ./rogue-like
+	cd build/ && ./rogue-like
 
 re: clean all

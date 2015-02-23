@@ -47,6 +47,8 @@ class Game {
 		void	initMap(void);
 		void	displayMap(t_map map);
 		void	displayHero(Elements & Hero);
+		void	displayEnemy(Elements & Enemy);
+
 
 		static int	getNextId(void);
 		static void	addElement(Elements & elem);

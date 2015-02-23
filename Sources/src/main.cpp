@@ -25,6 +25,8 @@
 
 # include "../inc/Game.hpp"
 # include "../inc/Hero.hpp"
+# include "../inc/Enemy.hpp"
+
 
 class MouseDebugger: public MouseListener {
 	public:
@@ -47,9 +49,12 @@ int		main(int ac, char **av) {
 	MouseDebugger l;
 	theWorld.SetBackgroundColor(*(new Color(0.51f, 0.90f, 1)));
 	Hero	*hero = new Hero();
+	Enemy	*enemy = new Enemy();
 	theCamera.LockTo(hero);
 	game->displayHero(*(hero));
+	game->displayEnemy(*(enemy));
 	hero->init();
+	enemy->init();
 	//theWorld.SetSideBlockers(true, 0.7f);
 
 	Game::listElement();

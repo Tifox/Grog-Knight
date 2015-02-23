@@ -30,7 +30,7 @@
  * (http://docs.angel2d.com/class_world.html#ae5d7e8d20d3e6fc93785ab2014ac0c13)
  */
 Game::Game(void) {
-	theWorld.Initialize(1024, 768, NAME);
+	theWorld.Initialize(1920, 1080, NAME);
 	theWorld.SetupPhysics();
 	//this->elements = new Elements();
 	GameContactListener *gListen = new GameContactListener();
@@ -140,6 +140,17 @@ void	Game::displayHero(Elements & Hero) {
 	Hero.setYStart(this->beginYHero);
 	Hero.addAttribute("hero", "1");
 	Hero.display();
+}
+
+/**
+ * Display the Enemy
+ * @param: Enemy (Elements &)
+ */
+void	Game::displayEnemy(Elements & Enemy) {
+	Enemy.setXStart(3);
+	Enemy.setYStart(3);
+	Enemy.addAttribute("enemy", "1");
+	Enemy.display();
 }
 
 /**

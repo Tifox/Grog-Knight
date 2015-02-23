@@ -74,7 +74,7 @@ Hero::~Hero(void) {
  * @param: elem (Elements *)
  */
 void	Hero::callback(Elements * elem) {
-	if (elem->getAttributes()["type"] == "enemy") {
+	if (elem->getAttributes()["type"] == "Enemy") {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		this->_canMove = false;
 		this->_invincibility = true;

@@ -5,6 +5,8 @@ ANGEL_FLAG = -D ANGEL
 SRCS 	= ../Sources/src/Elements.cpp \
 		  ../Sources/src/Game.cpp \
 		  ../Sources/src/Weapon.cpp \
+		  ../Sources/src/Shooter.cpp \
+		  ../Sources/src/Projectile.cpp \
 		  ../Sources/src/Hero.cpp \
 		  ../Sources/src/Maps.cpp \
 		  ../Sources/src/main.cpp \

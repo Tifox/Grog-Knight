@@ -18,37 +18,29 @@
  */
 
 /**
- * File: Hero.hpp
- * Creation: 2015-02-14 10:49
- * Louis Solofrizzo <louis@ne02ptzero.me>
+ * File: Shooter.hpp
+ * Creation: 2015-02-23 16:14
+ * Matthieu Maudet <mmaudet@student.42.fr>
  */
 
-#ifndef __Hero__
-# define __Hero__
+#ifndef __Shooter__
+# define __Shooter__
 
-# include "Elements.hpp"
-# include "Weapon.hpp"
-# include "Shooter.hpp"
+# include <iostream>
 
-# define RUN_SPEED 4
-# define MAX_RUN_SPEED 10
-# define MAX_JUMP 2
-# define HERO_SIZE 1
-
-class Hero : public Elements {
+class Shooter {
 public:
-	Hero();
-	~Hero();
+	Shooter();
+	~Shooter();
 
-	virtual void	callback(Elements * elem);
-	virtual void	EndContact(Elements * elem, b2Contact *contact);
-	virtual void	BeginContact(Elements * elem, b2Contact *contact);
-	virtual void	AnimCallback(String name);
-	void			ReceiveMessage(Message *m);
-	void			init();
+	void fire(int x, int y);
 
 private:
-	Shooter *_shooter;
+	int _damage;
+	float _rate;
+	int _orientation;
+	bool _straight;
+	std::string _spriteName;	
 
 };
 

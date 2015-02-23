@@ -18,38 +18,31 @@
  */
 
 /**
- * File: Hero.hpp
- * Creation: 2015-02-14 10:49
- * Louis Solofrizzo <louis@ne02ptzero.me>
+ * File: Shooter.cpp
+ * Creation: 2015-02-23 16:14
+ * Matthieu Maudet <mmaudet@student.42.fr>
  */
 
-#ifndef __Hero__
-# define __Hero__
+# include "../inc/Shooter.hpp"
+# include "../inc/Projectile.hpp"
+# include "../inc/Elements.hpp"
 
-# include "Elements.hpp"
-# include "Weapon.hpp"
-# include "Shooter.hpp"
 
-# define RUN_SPEED 4
-# define MAX_RUN_SPEED 10
-# define MAX_JUMP 2
-# define HERO_SIZE 1
+/*
+** Default constructor
+*/
 
-class Hero : public Elements {
-public:
-	Hero();
-	~Hero();
+Shooter::Shooter(void) {
+	this->_damage = 10;
+	this->_rate = 1;
+	this->_orientation = 1;
+	this->_straight = true;
+	this->_spriteName = "PleaseChangeMe";
+}
 
-	virtual void	callback(Elements * elem);
-	virtual void	EndContact(Elements * elem, b2Contact *contact);
-	virtual void	BeginContact(Elements * elem, b2Contact *contact);
-	virtual void	AnimCallback(String name);
-	void			ReceiveMessage(Message *m);
-	void			init();
+Shooter::~Shooter(void) {}
 
-private:
-	Shooter *_shooter;
-
-};
-
-#endif
+void Shooter::fire(int x, int y) {
+	std::cout << "FIRE !" << std::endl;
+	Projectile *projectile = new Projectile(x, y);
+}

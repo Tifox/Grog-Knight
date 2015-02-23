@@ -41,6 +41,7 @@ Hero::Hero(void) {
 	this->_canMove = true;
 	this->_orientation = RIGHT;
 	this->_isJump = 0;
+	this->_shooter = new Shooter();
 	theSwitchboard.SubscribeTo(this, "MeleeAttack");
 	theSwitchboard.SubscribeTo(this, "DeleteWeapon");
 	theSwitchboard.SubscribeTo(this, "RangedAttack");
@@ -158,6 +159,11 @@ void	Hero::ReceiveMessage(Message *m) {
 		theWorld.GetPhysicsWorld().DestroyBody(this->_weapon->GetBody());
 		theWorld.Remove(this->_weapon);
 		this->_meleeAttack = false;
+	}
+
+	else if (m->GetMessageName() == "RangedAttack") {
+		std::cout << "Ranged" << std::endl;
+		this->_shooter->fire(this->GetBody()->GetWorldCenter().x + this->getOrientationX(), this->GetBody()->GetWorldCenter().y + this->getOrientationY());
 	}
 }
 

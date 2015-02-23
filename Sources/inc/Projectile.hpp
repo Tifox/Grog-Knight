@@ -18,38 +18,27 @@
  */
 
 /**
- * File: Hero.hpp
- * Creation: 2015-02-14 10:49
- * Louis Solofrizzo <louis@ne02ptzero.me>
+ * File: Projectile.hpp
+ * Creation: 2015-02-23 15:14
+ * Matthieu Maudet <mmaudet@student.42.fr>
  */
 
-#ifndef __Hero__
-# define __Hero__
+#ifndef __Projectile__
+# define __Projectile__
 
 # include "Elements.hpp"
-# include "Weapon.hpp"
-# include "Shooter.hpp"
 
-# define RUN_SPEED 4
-# define MAX_RUN_SPEED 10
-# define MAX_JUMP 2
-# define HERO_SIZE 1
+/*
+** Default constructor
+** @param: Elements *
+*/
 
-class Hero : public Elements {
+class Projectile: public Elements {
 public:
-	Hero();
-	~Hero();
-
-	virtual void	callback(Elements * elem);
-	virtual void	EndContact(Elements * elem, b2Contact *contact);
-	virtual void	BeginContact(Elements * elem, b2Contact *contact);
-	virtual void	AnimCallback(String name);
-	void			ReceiveMessage(Message *m);
-	void			init();
-
-private:
-	Shooter *_shooter;
-
+	Projectile(int x, int y);
+	~Projectile();
+	void	BeginContact(Elements *elem, b2Contact *contact);
+	void	EndContact(Elements *elem, b2Contact *contact);
 };
 
 #endif

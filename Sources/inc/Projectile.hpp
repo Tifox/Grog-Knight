@@ -35,7 +35,7 @@
 
 class Projectile: public Elements {
 public:
-	Projectile(int x, int y, int direction, std::string owner);
+	Projectile(float x, float y, int direction, std::string owner);
 	~Projectile();
 	void	BeginContact(Elements *elem, b2Contact *contact);
 	void	EndContact(Elements *elem, b2Contact *contact);

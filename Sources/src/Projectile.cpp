@@ -29,7 +29,7 @@
 /*
 ** Default constructor
 */
-Projectile::Projectile(int x, int y, int direction, std::string owner) {
+Projectile::Projectile(float x, float y, int direction, std::string owner) {
 	this->SetPosition(x, y);
 	this->SetSize(0.5f);
 	this->SetName("Projectile");

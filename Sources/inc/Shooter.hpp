@@ -34,7 +34,7 @@ public:
 	Shooter();
 	~Shooter();
 
-	void fire(int x, int y, int direction, std::string owner);
+	void fire(float x, float y, int direction, std::string owner);
 
 private:
 	int _damage;

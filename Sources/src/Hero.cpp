@@ -124,7 +124,7 @@ void	Hero::ReceiveMessage(Message *m) {
 			this->PlaySpriteAnimation(0.1f, SAT_Loop, 2, 9, "run");
 	}
 	else if (m->GetMessageName() == "forwardRealeased") {
-		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
 		this->PlaySpriteAnimation(0.1f, SAT_OneShot, 0, 0, "base");
 	}
 
@@ -138,7 +138,7 @@ void	Hero::ReceiveMessage(Message *m) {
 			this->PlaySpriteAnimation(0.1f, SAT_Loop, 2, 9, "run");
 	}
 	else if (m->GetMessageName() == "backReleased") {
-		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
 		this->PlaySpriteAnimation(0.1f, SAT_OneShot, 0, 0, "base");
 	}
 
@@ -170,7 +170,7 @@ void	Hero::ReceiveMessage(Message *m) {
 
 	else if (m->GetMessageName() == "RangedAttack") {
 		std::cout << "Ranged" << std::endl;
-		this->_shooter->fire(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y - 1, this->getLateralOrientation(), "hero");
+		this->_shooter->fire(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y, this->getLateralOrientation(), "hero");
 	}
 }
 

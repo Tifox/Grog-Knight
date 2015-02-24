@@ -27,13 +27,13 @@
 
 
 /*
-** Default constructor, using the element that called the attack
-** @param: Elements *
+** Default constructor
 */
-Projectile::Projectile(int x, int y) {
+Projectile::Projectile(int x, int y, int direction, std::string owner) {
 	this->SetPosition(x, y);
 	this->SetSize(0.5f);
 	this->SetName("Projectile");
+	this->addAttribute("type", owner+"Projectile");
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	this->SetDensity(1);
 	this->SetFriction(0);
@@ -42,9 +42,9 @@ Projectile::Projectile(int x, int y) {
 	this->Tag("projectile");
 	this->InitPhysics();
 	this->GetBody()->SetGravityScale(0.0f);
-	this->ApplyLinearImpulse(Vector2(5, 0), Vector2(0, 0));
+	this->ApplyLinearImpulse(Vector2(2 * direction, 0), Vector2(0, 0));
 	theWorld.Add(this);
-	theSwitchboard.DeferredBroadcast(new Message("DeleteProjectile"), 0.1f);
+	theSwitchboard.DeferredBroadcast(new Message("DeleteProjectile"), 0.5f);
 }
 
 Projectile::~Projectile(void) {
@@ -59,5 +59,17 @@ void	Projectile::BeginContact(Elements *elem, b2Contact *contact) {
 
 void	Projectile::EndContact(Elements *elem, b2Contact *contact) {
 	std::cout << "TODO" << std::endl;
+}
+
+
+/**
+ * Receive broadcasts message
+ * @param: (Message *)
+ */
+void	Projectile::ReceiveMessage(Message *m) {
+	if (m->GetMessageName() == "DeleteProjectile") {
+		theWorld.GetPhysicsWorld().DestroyBody(this->GetBody());
+		theWorld.Remove(this);
+	}
 }
 

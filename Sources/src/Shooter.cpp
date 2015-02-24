@@ -42,7 +42,7 @@ Shooter::Shooter(void) {
 
 Shooter::~Shooter(void) {}
 
-void Shooter::fire(int x, int y) {
+void Shooter::fire(int x, int y, int direction, std::string owner) {
 	std::cout << "FIRE !" << std::endl;
-	Projectile *projectile = new Projectile(x, y);
+	Projectile *projectile = new Projectile(x, y, direction, owner);
 }

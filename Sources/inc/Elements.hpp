@@ -64,6 +64,7 @@ public:
 
 	int				getOrientationX(void);
 	int				getOrientationY(void);
+	int				getLateralOrientation(void);
 
 private:
 	float								_XStartPos;
@@ -79,6 +80,7 @@ protected:
 	int									_smashing;
 	int									_canSmash;
 	int									_orientation;
+	int									_lateralOrientation;
 	int									_isJump;
 	Weapon*								_weapon;
 	std::list<Elements*>				_grounds;

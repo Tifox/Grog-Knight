@@ -36,8 +36,8 @@ bool	ContactFilter::ShouldCollide(b2Fixture* fixA, b2Fixture* fixB) {
 	std::cout << attrA << std::endl;
 	std::cout << attrB << std::endl;
 
-	if ((attrA == "Hero" || attrB == "Hero") && (attrA == "heroWeapon" || attrB == "heroWeapon")) {
-		std::cout << "hello" << std::endl;
+	if ((attrA == "Hero" || attrB == "Hero") && ((attrA == "heroWeapon" || attrB == "heroWeapon") || (attrA == "heroProjectile" || attrB == "heroProjectile"))) {
+		// std::cout << "hello" << std::endl;
 		return false;
 	}
 	else return true;

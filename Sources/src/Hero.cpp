@@ -116,6 +116,7 @@ void	Hero::ReceiveMessage(Message *m) {
 
  	else if (m->GetMessageName() == "forwardPressed") {
 		this->_orientation = RIGHT;
+		this->_lateralOrientation = RIGHT;
 		if (this->GetBody()->GetLinearVelocity().x < MAX_RUN_SPEED) {
 			this->ApplyLinearImpulse(Vector2(RUN_SPEED, 0), Vector2(0, 0));
 		}
@@ -129,6 +130,7 @@ void	Hero::ReceiveMessage(Message *m) {
 
 	else if (m->GetMessageName() == "backPressed") {
 		this->_orientation = LEFT;
+		this->_lateralOrientation = LEFT;
 		if (this->GetBody()->GetLinearVelocity().x > -MAX_RUN_SPEED) {
 			this->ApplyLinearImpulse(Vector2(-RUN_SPEED, 0), Vector2(0, 0));
 		}
@@ -161,9 +163,14 @@ void	Hero::ReceiveMessage(Message *m) {
 		this->_meleeAttack = false;
 	}
 
+	else if (m->GetMessageName() == "DeleteProjectile") {
+		theWorld.GetPhysicsWorld().DestroyBody(this->GetBody());
+		theWorld.Remove(this);
+	}
+
 	else if (m->GetMessageName() == "RangedAttack") {
 		std::cout << "Ranged" << std::endl;
-		this->_shooter->fire(this->GetBody()->GetWorldCenter().x + this->getOrientationX(), this->GetBody()->GetWorldCenter().y + this->getOrientationY());
+		this->_shooter->fire(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y - 1, this->getLateralOrientation(), "hero");
 	}
 }
 

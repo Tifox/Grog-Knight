@@ -63,6 +63,7 @@ class Console;
  * 
  * http://msdn.microsoft.com/en-us/library/ms954629.aspx
  */
+
 class World : public b2ContactListener, public MessageListener
 {
 public:

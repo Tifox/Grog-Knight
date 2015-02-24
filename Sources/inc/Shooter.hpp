@@ -27,13 +27,14 @@
 # define __Shooter__
 
 # include <iostream>
+# include "Elements.hpp"
 
-class Shooter {
+class Shooter : public Elements {
 public:
 	Shooter();
 	~Shooter();
 
-	void fire(int x, int y);
+	void fire(int x, int y, int direction, std::string owner);
 
 private:
 	int _damage;

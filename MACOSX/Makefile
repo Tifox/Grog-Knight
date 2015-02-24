@@ -15,6 +15,7 @@ SRCS 	= ../Sources/src/main.cpp \
 		  ../Sources/src/GameContactListener.cpp \
 		  ../Sources/src/ContactFilter.cpp
 
+OBJS 	 = $(SRCS:.cpp=.o)
 
 INCLUDES = -I../Angel/Libraries/FTGL/include \
 		   -I../Angel/Libraries/freetype-2.4.8/include \
@@ -55,17 +56,19 @@ LIBS_DIRS = -L../Angel/build \
 			-L../Tools/jsoncpp/src/lib_json/ \
 			-L../Angel/Libraries/DevIL-SDK-1.7.8/mac/lib
 
+
 all: $(NAME)
 
-$(NAME): angel json
-	$(CC) $(CFLAGS) $(ANGEL_FLAG) $(SRCS) $(INCLUDES) $(LIBS) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS) -o build/$(NAME)
+$(NAME): angel json $(OBJS)
+	$(CC) $(CFLAGS) $(ANGEL_FLAG) -o build/$@ $(OBJS) $(INCLUDES) $(LIBS) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS)
 	cd build/ && ./rogue-like
-%.o: %.cpp
-	$(CC) $(CFLAGS) -c $@ -o $^
 
-quick:
-	$(CC) $(CFLAGS) $(ANGEL_FLAG) $(SRCS) $(INCLUDES) $(LIBS) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS) -o build/$(NAME)
+quick: $(OBJS)
+	$(CC) $(CFLAGS) $(ANGEL_FLAG) -o build/$(NAME) $^ $(INCLUDES) $(LIBS) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS)
 	cd build/ && ./rogue-like
+
+%.o: %.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS) -o $@ -c $^ 
 
 json:
 	$(CC) $(CFLAGS) -I../Tools/jsoncpp/include/ -c $(wildcard ../Tools/jsoncpp/src/lib_json/*.cpp) \

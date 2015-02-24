@@ -106,7 +106,7 @@ void	Hero::ReceiveMessage(Message *m) {
 		if (this->_grounds.size() == 0)
 			this->_jumping--;
 		this->ApplyLinearImpulse(Vector2(0, 10), Vector2(0, 0));
-		this->PlaySpriteAnimation(0.1f, SAT_OneShot, 16, 26, "Jump");
+		this->PlaySpriteAnimation(0.1f, SAT_OneShot, 9, 9, "Jump");
 		this->_isJump = 1;
 	}
 
@@ -120,12 +120,12 @@ void	Hero::ReceiveMessage(Message *m) {
 		if (this->GetBody()->GetLinearVelocity().x < MAX_RUN_SPEED) {
 			this->ApplyLinearImpulse(Vector2(RUN_SPEED, 0), Vector2(0, 0));
 		}
-		if (this->GetSpriteFrame() <= 3)
-			this->PlaySpriteAnimation(0.1f, SAT_Loop, 4, 9, "run");
+		if (this->GetSpriteFrame() <= 1)
+			this->PlaySpriteAnimation(0.1f, SAT_Loop, 2, 9, "run");
 	}
 	else if (m->GetMessageName() == "forwardRealeased") {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-		this->PlaySpriteAnimation(0.1f, SAT_OneShot, 0, 3, "base");
+		this->PlaySpriteAnimation(0.1f, SAT_OneShot, 0, 0, "base");
 	}
 
 	else if (m->GetMessageName() == "backPressed") {
@@ -134,12 +134,12 @@ void	Hero::ReceiveMessage(Message *m) {
 		if (this->GetBody()->GetLinearVelocity().x > -MAX_RUN_SPEED) {
 			this->ApplyLinearImpulse(Vector2(-RUN_SPEED, 0), Vector2(0, 0));
 		}
-		if (this->GetSpriteFrame() <= 3)
-			this->PlaySpriteAnimation(0.1f, SAT_Loop, 4, 9, "run");
+		if (this->GetSpriteFrame() <= 1)
+			this->PlaySpriteAnimation(0.1f, SAT_Loop, 2, 9, "run");
 	}
 	else if (m->GetMessageName() == "backReleased") {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-		this->PlaySpriteAnimation(0.1f, SAT_OneShot, 0, 3, "base");
+		this->PlaySpriteAnimation(0.1f, SAT_OneShot, 0, 0, "base");
 	}
 
 	else if (m->GetMessageName() == "upPressed") {
@@ -188,13 +188,13 @@ void	Hero::BeginContact(Elements *elem, b2Contact *contact) {
 				contact->SetEnabled(false);
 			this->_grounds.push_back(elem);
 			this->_jumping = MAX_JUMP;
-			if (this->_isJump < 3) {
-				this->_isJump++;
-			}
-			else if (this->_isJump == 3) {
-				this->PlaySpriteAnimation(0.1f, SAT_OneShot, 27, 27, "base");
-				this->_isJump = 0;
-			}
+			// else if (this->_isJump < 3) {
+			// 	this->_isJump++;
+			// }
+			// else if (this->_isJump == 3) {
+			// 	this->PlaySpriteAnimation(0.1f, SAT_OneShot, 27, 27, "base");
+			// 	this->_isJump = 0;
+			// }
 		}
 		else {
 			if (this->_walls.size() > 0)

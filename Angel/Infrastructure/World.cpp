@@ -648,6 +648,7 @@ void World::EndContact(b2Contact* contact)
 void World::TickAndRender()
 {
 	Tick();
+	Game::destroyAllBodies();
 	Render();
 }
 

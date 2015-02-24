@@ -193,6 +193,10 @@ void	Game::listElement(void) {
 	}
 }
 
+void	Game::destroyAllBodies(void) {
+	std::cout << "DESTROY" << std::endl;
+}
+
 // Set for the statics
 int Game::currentIds = 0;
 std::map<int, Elements *> Game::elementMap = {};

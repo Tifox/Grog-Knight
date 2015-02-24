@@ -49,6 +49,8 @@ class Game {
 		void	displayHero(Elements & Hero);
 		void	displayEnemy(Elements & Enemy);
 
+		static void	destroyAllBodies(void);
+
 
 		static int	getNextId(void);
 		static void	addElement(Elements & elem);

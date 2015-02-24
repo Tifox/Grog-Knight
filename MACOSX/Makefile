@@ -15,7 +15,6 @@ SRCS 	= ../Sources/src/main.cpp \
 		  ../Sources/src/GameContactListener.cpp \
 		  ../Sources/src/ContactFilter.cpp
 
-OBJ 	 = $(SRCS:.cpp=.o)
 
 INCLUDES = -I../Angel/Libraries/FTGL/include \
 		   -I../Angel/Libraries/freetype-2.4.8/include \
@@ -58,15 +57,14 @@ LIBS_DIRS = -L../Angel/build \
 
 all: $(NAME)
 
-$(NAME): angel json $(OBJS)
-	$(CC) $(CFLAGS) $(ANGEL_FLAG) -o build/$@ -c $(OBJS) $(INCLUDES) $(LIBS) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS)
+$(NAME): angel json
+	$(CC) $(CFLAGS) $(ANGEL_FLAG) $(SRCS) $(INCLUDES) $(LIBS) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS) -o build/$(NAME)
 	cd build/ && ./rogue-like
-
 %.o: %.cpp
-	$(CC) $(CFLAGS) -c $@ -o $<
+	$(CC) $(CFLAGS) -c $@ -o $^
 
-quick: $(OBJS)
-	$(CC) $(CFLAGS) $(ANGEL_FLAG) -o build/$(NAME) -c $^ $(INCLUDES) $(LIBS) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS)
+quick:
+	$(CC) $(CFLAGS) $(ANGEL_FLAG) $(SRCS) $(INCLUDES) $(LIBS) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS) -o build/$(NAME)
 	cd build/ && ./rogue-like
 
 json:

@@ -2,7 +2,8 @@ NAME 	= rogue-like
 CC 		= g++
 CFLAGS 	= -std=c++0x -arch i386 -Wno-deprecated
 ANGEL_FLAG = -D ANGEL
-SRCS 	= ../Sources/src/Elements.cpp \
+SRCS 	= ../Sources/src/main.cpp \
+		  ../Sources/src/Elements.cpp \
 		  ../Sources/src/Game.cpp \
 		  ../Sources/src/Weapon.cpp \
 		  ../Sources/src/Shooter.cpp \
@@ -10,11 +11,11 @@ SRCS 	= ../Sources/src/Elements.cpp \
 		  ../Sources/src/Hero.cpp \
 		  ../Sources/src/Enemy.cpp \
 		  ../Sources/src/Maps.cpp \
-		  ../Sources/src/main.cpp \
 		  ../Angel/Scripting/Interfaces/AngelLuaWrapping.cpp \
 		  ../Sources/src/GameContactListener.cpp \
 		  ../Sources/src/ContactFilter.cpp
 
+OBJ 	 = $(SRCS:.cpp=.o)
 
 INCLUDES = -I../Angel/Libraries/FTGL/include \
 		   -I../Angel/Libraries/freetype-2.4.8/include \
@@ -57,12 +58,15 @@ LIBS_DIRS = -L../Angel/build \
 
 all: $(NAME)
 
-$(NAME): angel json
-	$(CC) $(CFLAGS) $(ANGEL_FLAG) $(SRCS) $(INCLUDES) $(LIBS) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS) -o build/$(NAME)
+$(NAME): angel json $(OBJS)
+	$(CC) $(CFLAGS) $(ANGEL_FLAG) -o build/$@ -c $(OBJS) $(INCLUDES) $(LIBS) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS)
 	cd build/ && ./rogue-like
 
-quick:
-	$(CC) $(CFLAGS) $(ANGEL_FLAG) $(SRCS) $(INCLUDES) $(LIBS) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS) -o build/$(NAME)
+%.o: %.cpp
+	$(CC) $(CFLAGS) -c $@ -o $<
+
+quick: $(OBJS)
+	$(CC) $(CFLAGS) $(ANGEL_FLAG) -o build/$(NAME) -c $^ $(INCLUDES) $(LIBS) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS)
 	cd build/ && ./rogue-like
 
 json:

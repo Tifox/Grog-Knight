@@ -1,0 +1,31 @@
+{
+	"infos": {
+		"name": "Hero",
+		"id": "0",
+		"HP": "100",
+		"sprites": "Resources/Images/Hero/hero_000.png",
+		"size": "1.3f"
+	},
+	"Actions": {
+		"runForward": {
+			"subscribe": "forward",
+			"beginFrame": "4",
+			"endFrame": "9",
+			"time": "0.1f"
+		},
+		"runBackward": {
+			"subscribe": "backward",
+			"beginFrame": "4",
+			"endFrame": "9",
+			"time": "0.1f"
+		},
+		"jump": {
+			"subscribe": "Jump",
+			"double": "1",
+			"force": "20"
+		},
+		"attack": {
+			"subscribe": "attack",
+		}
+	}
+}

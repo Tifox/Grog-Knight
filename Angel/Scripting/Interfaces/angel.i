@@ -82,7 +82,7 @@ typedef std::vector<String>	StringList;
 %include textures.i
 
 #ifndef INTROGAME
-%include ../../../ClientGame/script_interface.i
+%include ../../script_interface.i
 #else
 %include ../../../IntroGame/script_interface.i
 #endif

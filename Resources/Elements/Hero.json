@@ -1,0 +1,43 @@
+{
+	"infos": {
+		"name": "Hero",
+		"id": 0,
+		"HP": 100,
+		"sprites": "Resources/Images/Hero/hero_000.png",
+		"size": 1.3,
+		"maxSpeed": 5,
+		"weapon": "Sword"
+	},
+	"Actions": {
+		"forward": {
+			"subscribe": "forward",
+			"beginFrame": 4,
+			"endFrame": 9,
+			"time": 0.1,
+			"force": 5
+		},
+		"backward": {
+			"subscribe": "backward",
+			"beginFrame": 4,
+			"endFrame": 9,
+			"time": 0.1,
+			"force": 5
+		},
+		"jump": {
+			"subscribe": "jump",
+			"double": 1,
+			"force": 5,
+			"beginFrame": 16,
+			"endFrame": 27,
+			"time": 0.1
+		},
+		"attack": {
+			"subscribe": "attack"
+		},
+		"breath": {
+			"beginFrame": 1,
+			"endFrame": 3,
+			"time": 0.1
+		}
+	}
+}

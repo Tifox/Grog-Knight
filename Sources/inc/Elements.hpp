@@ -34,29 +34,41 @@
 # include "Maps.hpp"
 # include "../../Angel/Angel.h"
 
+class Weapon;
+
 class Elements : public PhysicsActor {
-	public:
-		Elements();
-		Elements(int id);
-		Elements(Elements & obj);
-		~Elements();
+public:
+	Elements();
+	Elements(int id);
+	Elements(Elements & obj);
+	~Elements();
 
-		void 		addAttribute(std::string name, std::string value);
-		std::string	getAttribute(std::string name);
-		void		setXStart(float X);
-		void		setYStart(float Y);
-		void		display(void);
-		std::map<std::string, std::string>		getAttributes(void);
+	enum Orientation {
+		LEFT,
+		RIGHT,
+		UP,
+		DOWN,
+	};
 
-		/* Virtual function, overrited in Childs */
-		virtual void callback(Elements * elem) { };
-		virtual void BeginContact(Elements * elem, b2Contact *contact) { };
-		virtual void EndContact(Elements * elem, b2Contact *contact) { };
+	void 		addAttribute(std::string name, std::string value);
+	std::string	getAttribute(std::string name);
+	void		setXStart(float X);
+	void		setYStart(float Y);
+	void		display(void);
+	std::map<std::string, std::string>		getAttributes(void);
 
-	private:
-		float								_XStartPos;
-		float								_YStartPos;
-		std::map<std::string, std::string>	_attributes;
+	/* Virtual function, overridden in Childs */
+	virtual void	callback(Elements * elem) { };
+	virtual void	BeginContact(Elements * elem, b2Contact *contact) { };
+	virtual void	EndContact(Elements * elem, b2Contact *contact) { };
 
+	int				getOrientationX(void);
+	int				getOrientationY(void);
+	int				getLateralOrientation(void);
+
+private:
+	float								_XStartPos;
+	float								_YStartPos;
+	std::map<std::string, std::string>	_attributes;
 };
 #endif

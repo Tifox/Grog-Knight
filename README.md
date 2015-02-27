@@ -1,7 +1,8 @@
 # Rogue-Like
-[![Build Status](https://travis-ci.org/Ne02ptzero/rogue-like.svg?branch=master)](https://travis-ci.org/Ne02ptzero/rogue-like)
-
-[![Join the chat at https://gitter.im/Ne02ptzero/rogue-like](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Ne02ptzero/rogue-like?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/Ne02ptzero/rogue-like.svg?branch=build)](https://travis-ci.org/Ne02ptzero/rogue-like)
+![Language](https://img.shields.io/badge/language-c%2B%2B-orange.svg)
+[![License](https://img.shields.io/badge/license-BSD-blue.svg)](LICENSE)
+[![Join the chat at https://gitter.im/Ne02ptzero/rogue-like](https://img.shields.io/badge/chat-gitter-red.svg)](https://gitter.im/Ne02ptzero/rogue-like?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ### First draft on open project thoughts and timeline
 

@@ -18,29 +18,30 @@
  */
 
 /**
- * File: Hero.hpp
- * Creation: 2015-02-14 10:49
- * Louis Solofrizzo <louis@ne02ptzero.me>
+ * File: Shooter.hpp
+ * Creation: 2015-02-23 16:14
+ * Matthieu Maudet <mmaudet@student.42.fr>
  */
 
-#ifndef __Hero__
-# define __Hero__
+#ifndef __Shooter__
+# define __Shooter__
 
-# include "Characters.hpp"
-# include "Weapon.hpp"
-# include "Shooter.hpp"
+# include <iostream>
+# include "Elements.hpp"
 
-class Hero : public Characters {
+class Shooter : public Elements {
+public:
+	Shooter();
+	~Shooter();
 
-	public:
-		Hero();
-		~Hero();
+	void fire(float x, float y, int direction, std::string owner);
 
-		void	init();
-		virtual void	actionCallback(std::string name, int status);
-
-	private:
-		Shooter *_shooter;
+private:
+	int _damage;
+	float _rate;
+	int _orientation;
+	bool _straight;
+	std::string _spriteName;	
 
 };
 

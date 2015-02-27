@@ -18,7 +18,8 @@ INCLUDE = 							\
 	-IAngel/Libraries/FTGL/include			\
 	-IAngel/Libraries/lua-5.2.1/src			\
 	-I/usr/include/freetype2				\
-	-I./Tools/jsoncpp/include
+	-I./Tools/jsoncpp/include				\
+	-ISources/inc/
 ifneq ($(ANGEL_DISABLE_FMOD), 1)
 	INCLUDE += -IAngel/Libraries/FMOD/inc
 endif
@@ -60,7 +61,14 @@ SRCS =	./Sources/src/Elements.cpp \
 		./Sources/src/main.cpp \
 		./Sources/src/Maps.cpp \
 		./Sources/src/Hero.cpp \
-		./Sources/src/GameContactListener.cpp
+		./Sources/src/Shooter.cpp \
+		./Sources/src/Projectile.cpp \
+       	./Sources/src/Enemy.cpp \
+		./Sources/src/GameContactListener.cpp \
+		./Sources/src/ContactFilter.cpp \
+		./Sources/src/Weapon.cpp \
+		./Sources/src/Log.cpp \
+		./Sources/src/Characters.cpp
 
 SYSOBJS = $(patsubst %.cpp,%.o,$(SYSSRCS))
 OBJS = $(patsubst %.cpp,%.o,$(SRCS))

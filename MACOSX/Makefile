@@ -2,14 +2,22 @@ NAME 	= rogue-like
 CC 		= g++
 CFLAGS 	= -std=c++0x -arch i386 -Wno-deprecated
 ANGEL_FLAG = -D ANGEL
-SRCS 	= ../Sources/src/Elements.cpp \
+SRCS 	= ../Sources/src/main.cpp \
+		  ../Sources/src/Elements.cpp \
 		  ../Sources/src/Game.cpp \
+		  ../Sources/src/Characters.cpp \
 		  ../Sources/src/Weapon.cpp \
+		  ../Sources/src/Shooter.cpp \
+		  ../Sources/src/Projectile.cpp \
 		  ../Sources/src/Hero.cpp \
+		  ../Sources/src/Enemy.cpp \
 		  ../Sources/src/Maps.cpp \
-		  ../Sources/src/main.cpp \
 		  ../Angel/Scripting/Interfaces/AngelLuaWrapping.cpp \
-		  ../Sources/src/GameContactListener.cpp
+		  ../Sources/src/GameContactListener.cpp \
+		  ../Sources/src/ContactFilter.cpp \
+		  ../Sources/src/Log.cpp
+
+OBJS 	 = $(SRCS:.cpp=.o)
 
 INCLUDES = -I../Angel/Libraries/FTGL/include \
 		   -I../Angel/Libraries/freetype-2.4.8/include \
@@ -22,7 +30,8 @@ INCLUDES = -I../Angel/Libraries/FTGL/include \
 		   -I../Angel/Libraries/FMOD/inc \
 		   -I../Angel/Libraries/HID\ Utilities \
 		   -I../Angel/Libraries/lua-5.2.1/src \
-		   -I../Tools/jsoncpp/include/
+		   -I../Tools/jsoncpp/include/			\
+		   -I../Sources/inc/
 
 LIBS	= ../Angel/build/libAngel.a \
 		  ../Angel/build/libBox2D.a \
@@ -50,15 +59,19 @@ LIBS_DIRS = -L../Angel/build \
 			-L../Tools/jsoncpp/src/lib_json/ \
 			-L../Angel/Libraries/DevIL-SDK-1.7.8/mac/lib
 
+
 all: $(NAME)
 
-$(NAME): angel json
-	$(CC) $(CFLAGS) $(ANGEL_FLAG) $(SRCS) $(INCLUDES) $(LIBS) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS) -o build/$(NAME)
+$(NAME): angel json $(OBJS)
+	$(CC) $(CFLAGS) $(ANGEL_FLAG) -o build/$@ $(OBJS) $(INCLUDES) $(LIBS) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS)
 	cd build/ && ./rogue-like
 
-quick:
-	$(CC) $(CFLAGS) $(ANGEL_FLAG) $(SRCS) $(INCLUDES) $(LIBS) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS) -o build/$(NAME)
+quick: $(OBJS)
+	$(CC) $(CFLAGS) $(ANGEL_FLAG) -o build/$(NAME) $^ $(INCLUDES) $(LIBS) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS)
 	cd build/ && ./rogue-like
+
+%.o: %.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS) -o $@ -c $^ 
 
 json:
 	$(CC) $(CFLAGS) -I../Tools/jsoncpp/include/ -c $(wildcard ../Tools/jsoncpp/src/lib_json/*.cpp) \
@@ -76,6 +89,6 @@ angel-clean:
 clean: angel-clean json-clean
 
 exec:
-	cd ../Angel/build/ && ./rogue-like
+	cd build/ && ./rogue-like
 
 re: clean all

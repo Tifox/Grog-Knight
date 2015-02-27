@@ -1,0 +1,35 @@
+{
+    "infos": {
+   	    "name": "Sword",
+		"flavor": "Hey look, its a sword. A pretty shitty one actually...",
+		"hitbox": "SWORD",
+		"size": 1,
+		"active": 0.2,
+		"lvlRequired": 1,
+	 	"damage": 1,
+		"recovery": 1,
+		"active": 0.2,
+		"attack": "melee",
+		"combo": true,
+		"particule": "la soeur de ryad",
+		"heroAnim": "sword_anim_1"
+	},
+	"combo": {
+		"1": {
+			"damage": 10,
+			"particule": "entrecote",
+			"heroAnim": "sword_anim_2"
+		},
+		"2": {
+			"damage": 100,
+			"specialEffect": "stunSpecial",
+			"heroAnim": "sword_anim_3"
+		}
+	},
+	"Capacities": {
+		"stunSpecial": {
+			"duration": 1,
+			"particule": "boom"
+		}
+	}
+}

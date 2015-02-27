@@ -18,30 +18,31 @@
  */
 
 /**
- * File: Hero.hpp
- * Creation: 2015-02-14 10:49
- * Louis Solofrizzo <louis@ne02ptzero.me>
+ * File: Shooter.cpp
+ * Creation: 2015-02-23 16:14
+ * Matthieu Maudet <mmaudet@student.42.fr>
  */
 
-#ifndef __Hero__
-# define __Hero__
+# include "../inc/Shooter.hpp"
+# include "../inc/Projectile.hpp"
+# include "../inc/Elements.hpp"
 
-# include "Characters.hpp"
-# include "Weapon.hpp"
-# include "Shooter.hpp"
 
-class Hero : public Characters {
+/*
+** Default constructor
+*/
 
-	public:
-		Hero();
-		~Hero();
+Shooter::Shooter(void) {
+	this->_damage = 10;
+	this->_rate = 1;
+	this->_orientation = 1;
+	this->_straight = true;
+	this->_spriteName = "PleaseChangeMe";
+}
 
-		void	init();
-		virtual void	actionCallback(std::string name, int status);
+Shooter::~Shooter(void) {}
 
-	private:
-		Shooter *_shooter;
-
-};
-
-#endif
+void Shooter::fire(float x, float y, int direction, std::string owner) {
+	std::cout << "FIRE !" << std::endl;
+	Projectile *projectile = new Projectile(x, y, direction, owner);
+}

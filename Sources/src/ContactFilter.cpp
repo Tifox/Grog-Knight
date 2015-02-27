@@ -18,30 +18,24 @@
  */
 
 /**
- * File: Hero.hpp
- * Creation: 2015-02-14 10:49
- * Louis Solofrizzo <louis@ne02ptzero.me>
+ * File: ContactFilter.hpp
+ * Creation: 2015-02-23 12:40
+ * Vincent Rey <vrey@student.42.fr>
  */
 
-#ifndef __Hero__
-# define __Hero__
 
-# include "Characters.hpp"
-# include "Weapon.hpp"
-# include "Shooter.hpp"
 
-class Hero : public Characters {
+#include "../inc/ContactFilter.hpp"
 
-	public:
-		Hero();
-		~Hero();
 
-		void	init();
-		virtual void	actionCallback(std::string name, int status);
+bool	ContactFilter::ShouldCollide(b2Fixture* fixA, b2Fixture* fixB) {
 
-	private:
-		Shooter *_shooter;
+	std::string attrA = static_cast<Elements*>(fixA->GetBody()->GetUserData())->getAttributes()["type"];
+	std::string attrB = static_cast<Elements*>(fixB->GetBody()->GetUserData())->getAttributes()["type"];
 
-};
-
-#endif
+	if ((attrA == "Hero" || attrB == "Hero") && ((attrA == "heroWeapon" || attrB == "heroWeapon") || (attrA == "heroProjectile" || attrB == "heroProjectile"))) {
+		// std::cout << "hello" << std::endl;
+		return false;
+	}
+	else return true;
+}

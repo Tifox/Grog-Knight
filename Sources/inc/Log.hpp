@@ -1,3 +1,4 @@
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,53 +19,27 @@
  */
 
 /**
- * File: Game.hpp
- * Creation: 2015-02-13 07:20
+ * File: Log.hpp
+ * Creation: 2015-02-27 04:51
  * Louis Solofrizzo <louis@ne02ptzero.me>
  */
 
-#ifndef __Game__
-# define __Game__
+#ifndef __Log__
+# define __Log__
 
-# include "Maps.hpp"
-# ifndef __Elements__
-#  include "main.hpp"
-#  include "Elements.hpp"
-# endif
-# include "GameContactListener.hpp"
-# include "ContactFilter.hpp"
+# include <iostream>
+# include <cstdlib>
 
-class Game {
+class	Log {
 
 	public:
-		Game();
-		Game(unsigned int width, unsigned int height);
-		~Game();
+		Log();
+		~Log();
 
-		void	grid(void);
-		void	start(void);
-		void	readMaps(void);
-		void	initMap(void);
-		void	displayMap(t_map map);
-		void	displayHero(Elements & Hero);
-		void	displayEnemy(Elements & Enemy);
+		static void		info(std::string name);
+		static void		warning(std::string name);
+		static void		error(std::string name);
 
-		static void	destroyAllBodies(void);
-
-
-		static int	getNextId(void);
-		static void	addElement(Elements & elem);
-		static void	listElement(void);
-		static void	callCallbacks(int a, int b);
-
-		Maps		*maps;
-		static int	currentIds;
-		static std::map<int, Elements *>	elementMap;
-
-	private:
-		float		beginXHero;
-		float		beginYHero;
 };
-
 
 #endif

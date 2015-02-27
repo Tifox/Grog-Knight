@@ -1,3 +1,4 @@
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -30,7 +31,6 @@
  */
 Elements::Elements(void) : PhysicsActor() {
 	this->setId(Game::getNextId());
-	std::cout << "L" << this->getId() << std::endl;
 	Game::addElement(*this);
 	return ;
 }
@@ -40,7 +40,6 @@ Elements::Elements(void) : PhysicsActor() {
  */
 Elements::Elements(int id) :  PhysicsActor() {
 	this->setId(Game::getNextId());
-	std::cout << ";" << this->getId() << std::endl;
 	Game::addElement(*this);
 	return ;
 }
@@ -53,14 +52,12 @@ Elements::Elements(Elements & obj) : PhysicsActor(obj) {
 	this->_attributes = obj.getAttributes();
 	this->setId(Game::getNextId());
 	Game::addElement(*this);
-	std::cout << "'" << this->getId() << std::endl;
 }
 
 /**
- * Basic deconstructor
+ * Basic destructor
  */
 Elements::~Elements(void) {
-	return ;
 }
 
 /**

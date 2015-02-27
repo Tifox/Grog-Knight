@@ -18,47 +18,21 @@
  */
 
 /**
- * File: Weapon.hpp
- * Creation: 2015-02-18 14:00
+ * File: ContactFilter.cpp
+ * Creation: 2015-02-23 12:40
  * Vincent Rey <vrey@student.42.fr>
  */
 
-#ifndef __Weapon__
-# define __Weapon__
+#ifndef __ContactFilter__
+# define __ContactFilter__
 
-# include "Log.hpp"
 # include "Elements.hpp"
-# include "json/json.h"
-/*
-** Default constructor, using the element that called the attack
-** @param: Elements *
-*/
+# include "Game.hpp"
+# include "../../Angel/Angel.h"
 
-class Weapon: public Elements {
+class ContactFilter: public b2ContactFilter {
 public:
-	Weapon(std::string name);
-	~Weapon(void);
-
-	void			attack(int, int, int, int, b2Vec2);
-	void			BeginContact(Elements *elem, b2Contact *contact);
-	void			EndContact(Elements *elem, b2Contact *contact);
-	void			ReceiveMessage(Message *m);
-
-private:
-	std::map<std::string, std::map<std::string, Json::Value> >	_attr;
-
-	std::string		_name;
-	std::string		_flavor;
-	int				_canAttack;
-	int				_recovery;
-	int				_active;
-	int				_size;
-	void			_readFile(std::string name);
-	void			_parseJson(std::string file);
-//	WeaponArea*		_attackBox;
-
-protected:
-	Json::Value     _getAttr(std::string category, std::string key);
+	bool ShouldCollide(b2Fixture *a, b2Fixture *b);
 };
 
 #endif

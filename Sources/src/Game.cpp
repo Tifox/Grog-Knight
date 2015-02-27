@@ -30,10 +30,12 @@
  * (http://docs.angel2d.com/class_world.html#ae5d7e8d20d3e6fc93785ab2014ac0c13)
  */
 Game::Game(void) {
-	theWorld.Initialize(1024, 768, NAME);
+	theWorld.Initialize(1920, 1080, NAME);
 	theWorld.SetupPhysics();
 	//this->elements = new Elements();
 	GameContactListener *gListen = new GameContactListener();
+	ContactFilter *filter = new ContactFilter();
+	theWorld.GetPhysicsWorld().SetContactFilter(filter);
 	theWorld.GetPhysicsWorld().SetContactListener(gListen);
 	this->maps = new Maps("Maps/");
 	return ;
@@ -48,6 +50,8 @@ Game::Game(unsigned int width, unsigned int height) {
 	theWorld.Initialize(width, height, NAME);
 	theWorld.SetupPhysics();
 	GameContactListener *gListen = new GameContactListener();
+	ContactFilter *filter = new ContactFilter();
+	theWorld.GetPhysicsWorld().SetContactFilter(filter);
 	theWorld.GetPhysicsWorld().SetContactListener(gListen);
 	//this->elements = new Elements();
 	this->maps = new Maps("Maps/");
@@ -139,6 +143,17 @@ void	Game::displayHero(Elements & Hero) {
 }
 
 /**
+ * Display the Enemy
+ * @param: Enemy (Elements &)
+ */
+void	Game::displayEnemy(Elements & Enemy) {
+	Enemy.setXStart(3);
+	Enemy.setYStart(3);
+	Enemy.addAttribute("enemy", "1");
+	Enemy.display();
+}
+
+/**
  * Get the current id, for the intern elements map
  */
 int		Game::getNextId(void) {
@@ -150,7 +165,6 @@ int		Game::getNextId(void) {
  * @param: elem (Elements &)
  */
 void	Game::addElement(Elements & elem) {
-	std::cout << Game::currentIds << std::endl;
 	Game::elementMap[Game::currentIds] = &elem;
 	Game::currentIds += 1;
 }
@@ -176,6 +190,9 @@ void	Game::listElement(void) {
 	for (i = 0; i < Game::currentIds; i++) {
 		std::cout << Game::elementMap[i] << std::endl;
 	}
+}
+
+void	Game::destroyAllBodies(void) {
 }
 
 // Set for the statics

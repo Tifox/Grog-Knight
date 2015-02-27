@@ -43,11 +43,13 @@ class MouseDebugger: public MouseListener {
 
 int		main(int ac, char **av) {
 	Game	*game = new Game();
+
 	game->grid();
-   game->readMaps();
+	game->readMaps();
 	game->initMap();
 	MouseDebugger l;
 	theWorld.SetBackgroundColor(*(new Color(0.51f, 0.90f, 1)));
+
 	Hero	*hero = new Hero();
 	Enemy	*enemy = new Enemy();
 	theCamera.LockTo(hero);

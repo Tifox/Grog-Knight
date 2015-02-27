@@ -90,6 +90,7 @@ void	Characters::_parseJson(std::string file) {
 	this->_id = json["infos"].get("id", "").asInt();
 	this->_size = json["infos"].get("size", "").asFloat();
 	this->_maxSpeed = json["infos"].get("maxSpeed", "").asFloat();
+	this->_weapon = new Weapon(json["infos"].get("weapon", "").asString());
 	this->addAttribute("spritesFrame", json["infos"].get("sprites", "").asString());
 
 	for (i = json["Actions"].begin(); i != json["Actions"].end(); i++) {
@@ -305,5 +306,5 @@ void	Characters::_jump(int status) {
  * @param: status (int)
  */
 void	Characters::_attack(int status) {
-	return ;
+	this->_weapon->attack(this->GetBody()->GetWorldCenter().x + 0.75f , this->GetBody()->GetWorldCenter().y, 0, 0, this->GetBody()->GetLinearVelocity());
 }

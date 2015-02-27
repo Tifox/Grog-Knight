@@ -5,6 +5,7 @@ ANGEL_FLAG = -D ANGEL
 SRCS 	= ../Sources/src/main.cpp \
 		  ../Sources/src/Elements.cpp \
 		  ../Sources/src/Game.cpp \
+		  ../Sources/src/Characters.cpp \
 		  ../Sources/src/Weapon.cpp \
 		  ../Sources/src/Shooter.cpp \
 		  ../Sources/src/Projectile.cpp \
@@ -13,7 +14,8 @@ SRCS 	= ../Sources/src/main.cpp \
 		  ../Sources/src/Maps.cpp \
 		  ../Angel/Scripting/Interfaces/AngelLuaWrapping.cpp \
 		  ../Sources/src/GameContactListener.cpp \
-		  ../Sources/src/ContactFilter.cpp
+		  ../Sources/src/ContactFilter.cpp \
+		  ../Sources/src/Log.cpp
 
 OBJS 	 = $(SRCS:.cpp=.o)
 
@@ -28,7 +30,8 @@ INCLUDES = -I../Angel/Libraries/FTGL/include \
 		   -I../Angel/Libraries/FMOD/inc \
 		   -I../Angel/Libraries/HID\ Utilities \
 		   -I../Angel/Libraries/lua-5.2.1/src \
-		   -I../Tools/jsoncpp/include/
+		   -I../Tools/jsoncpp/include/			\
+		   -I../Sources/inc/
 
 LIBS	= ../Angel/build/libAngel.a \
 		  ../Angel/build/libBox2D.a \

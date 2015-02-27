@@ -102,9 +102,7 @@ void	Maps::_getMap(void) {
 	for (index = 0; index < blocks.size(); index++) {
 		for (v = 0; v < blocks[index].size(); v++) {
 			tmp.push_back(blocks[index][v].asInt());
-			std::cout << blocks[index][v].asInt() << ", ";
 		}
-		std::cout << std::endl;
 		current.map.push_back(tmp);
 		tmp.clear();
 	}

@@ -52,13 +52,9 @@ Projectile::~Projectile(void) {
 }
 
 void	Projectile::BeginContact(Elements *elem, b2Contact *contact) {
-	std::cout << "TODO" << std::endl;
-	// theWorld.GetPhysicsWorld().DestroyBody(this->GetBody());
-	// theWorld.Remove(this);
 }
 
 void	Projectile::EndContact(Elements *elem, b2Contact *contact) {
-	std::cout << "TODO" << std::endl;
 }
 
 

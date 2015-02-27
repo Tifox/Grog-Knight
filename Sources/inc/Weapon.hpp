@@ -26,8 +26,9 @@
 #ifndef __Weapon__
 # define __Weapon__
 
-#  include "Elements.hpp"
-
+# include "Log.hpp"
+# include "Elements.hpp"
+# include "json/json.h"
 /*
 ** Default constructor, using the element that called the attack
 ** @param: Elements *
@@ -35,10 +36,29 @@
 
 class Weapon: public Elements {
 public:
-	Weapon(Elements *m);
+	Weapon(std::string name);
 	~Weapon(void);
-	void	BeginContact(Elements *elem, b2Contact *contact);
-	void	EndContact(Elements *elem, b2Contact *contact);
+
+	void			attack(int, int, int, int, b2Vec2);
+	void			BeginContact(Elements *elem, b2Contact *contact);
+	void			EndContact(Elements *elem, b2Contact *contact);
+	void			ReceiveMessage(Message *m);
+
+private:
+	std::map<std::string, std::map<std::string, Json::Value> >	_attr;
+
+	std::string		_name;
+	std::string		_flavor;
+	int				_canAttack;
+	int				_recovery;
+	int				_active;
+	int				_size;
+	void			_readFile(std::string name);
+	void			_parseJson(std::string file);
+//	WeaponArea*		_attackBox;
+
+protected:
+	Json::Value     _getAttr(std::string category, std::string key);
 };
 
 #endif

@@ -27,6 +27,7 @@
 #ifndef __Characters__
 # define __Characters__
 
+# include "Weapon.hpp"
 # include "Elements.hpp"
 # include "Log.hpp"
 # include "json/json.h"
@@ -51,6 +52,7 @@ class Characters : public Elements {
 		int				_size;
 		int				_maxSpeed;
 		int				_isJump;
+		Weapon*			_weapon;
 		std::list<Elements*>				_grounds;
 		std::list<Elements*> 				_walls;
 

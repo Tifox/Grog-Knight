@@ -33,9 +33,6 @@ bool	ContactFilter::ShouldCollide(b2Fixture* fixA, b2Fixture* fixB) {
 	std::string attrA = static_cast<Elements*>(fixA->GetBody()->GetUserData())->getAttributes()["type"];
 	std::string attrB = static_cast<Elements*>(fixB->GetBody()->GetUserData())->getAttributes()["type"];
 
-	std::cout << attrA << std::endl;
-	std::cout << attrB << std::endl;
-
 	if ((attrA == "Hero" || attrB == "Hero") && ((attrA == "heroWeapon" || attrB == "heroWeapon") || (attrA == "heroProjectile" || attrB == "heroProjectile"))) {
 		// std::cout << "hello" << std::endl;
 		return false;

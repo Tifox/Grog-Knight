@@ -30,23 +30,17 @@
 # include "Weapon.hpp"
 # include "Shooter.hpp"
 
-# define RUN_SPEED 4
-# define MAX_RUN_SPEED 10
-# define MAX_JUMP 2
-# define HERO_SIZE 1
-
 class Hero : public Characters {
-public:
-	Hero();
-	~Hero();
 
-	//virtual void	callback(Elements * elem);
-	//virtual void	EndContact(Elements * elem, b2Contact *contact);
-	//virtual void	BeginContact(Elements * elem, b2Contact *contact);
-	void			init();
+	public:
+		Hero();
+		~Hero();
 
-private:
-	Shooter *_shooter;
+		void	init();
+		virtual void	actionCallback(std::string name, int status);
+
+	private:
+		Shooter *_shooter;
 
 };
 

@@ -125,6 +125,25 @@ Json::Value		Characters::_getAttr(std::string category, std::string key) {
 }
 
 /**
+ * Set the current working category
+ * @param: category (std::string)
+ */
+void	Characters::_setCategory(std::string category) {
+	this->_category = category;
+}
+
+/**
+ * Get a Json::Value of a key in the config file, with a pre-set category
+ * @param: key (std::string)
+ */
+Json::Value		Characters::_getAttr(std::string key) {
+	if (this->_attr[this->_category].find(key) != this->_attr[this->_category].end())
+		return this->_attr[this->_category][key];
+	Log::warning("The key " + key + " not in the category " + this->_category);
+	return nullptr;
+}
+
+/**
  * Receive and redistribute broadcasts messages
  * @param: m (Message *)
  */
@@ -149,6 +168,7 @@ void	Characters::ReceiveMessage(Message *m) {
 			} else if ("attack") {
 				this->_attack(status);
 			}
+			this->actionCallback(attrName, status);
 		}
 	}
 }
@@ -159,10 +179,11 @@ void	Characters::ReceiveMessage(Message *m) {
  * @note: String is the std::string object used in Angel2d.
  */
 void	Characters::AnimCallback(String s) {
+	this->_setCategory("breath");
 	if (s == "base") {
-		this->PlaySpriteAnimation(this->_getAttr("breath", "time").asFloat(), SAT_OneShot,
-			this->_getAttr("breath", "beginFrame").asInt(),
-			this->_getAttr("breath", "endFrame").asInt(), "base");
+		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+			this->_getAttr("beginFrame").asInt(),
+			this->_getAttr("endFrame").asInt(), "base");
 	}
 }
 
@@ -226,13 +247,14 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
  * @param: status (int)
  */
 void	Characters::_forward(int status) {
+	this->_setCategory("forward");
 	if (status == 1) {
-		if (this->GetSpriteFrame() < this->_getAttr("forward", "beginFrame").asInt())
-			this->PlaySpriteAnimation(this->_getAttr("forward", "time").asFloat(), SAT_Loop,
-				this->_getAttr("forward", "beginFrame").asInt(),
-				this->_getAttr("forward", "endFrame").asInt());
+		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt())
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
+				this->_getAttr("beginFrame").asInt(),
+				this->_getAttr("endFrame").asInt());
 		if (this->GetBody()->GetLinearVelocity().x < this->_maxSpeed)
-			this->ApplyLinearImpulse(Vector2(this->_getAttr("forward", "force").asFloat(), 0), Vector2(0, 0));
+			this->ApplyLinearImpulse(Vector2(this->_getAttr("force").asFloat(), 0), Vector2(0, 0));
 	} else {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
 		this->AnimCallback("base");
@@ -245,13 +267,14 @@ void	Characters::_forward(int status) {
  * @param: status (int)
  */
 void	Characters::_backward(int status) {
+	this->_setCategory("backward");
 	if (status == 1) {
-		if (this->GetSpriteFrame() < this->_getAttr("forward", "beginFrame").asInt())
-			this->PlaySpriteAnimation(this->_getAttr("forward", "time").asFloat(), SAT_Loop,
-				this->_getAttr("forward", "beginFrame").asInt(),
-				this->_getAttr("forward", "endFrame").asInt());
+		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt())
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
+				this->_getAttr("beginFrame").asInt(),
+				this->_getAttr("endFrame").asInt());
 		if (this->GetBody()->GetLinearVelocity().x > -(this->_maxSpeed))
-			this->ApplyLinearImpulse(Vector2(-(this->_getAttr("forward", "force").asFloat()), 0), Vector2(0, 0));
+			this->ApplyLinearImpulse(Vector2(-(this->_getAttr("force").asFloat()), 0), Vector2(0, 0));
 	} else {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
 		this->AnimCallback("base");
@@ -264,13 +287,13 @@ void	Characters::_backward(int status) {
  * @param: status (int)
  */
 void	Characters::_jump(int status) {
+	this->_setCategory("jump");
 	if (status == 1) {
-		if (this->_isJump == 0 || (this->_isJump <= 1 && this->_getAttr("jump", "double").asInt() == 1)) {
-			this->ApplyLinearImpulse(Vector2(0, this->_getAttr("jump", "force").asFloat()), Vector2(0, 0));
-			this->PlaySpriteAnimation(this->_getAttr("jump", "time").asFloat(), SAT_OneShot,
-				this->_getAttr("jump", "beginFrame").asInt(),
-				this->_getAttr("jump", "endFrame").asInt() - 1,
-				"jump");
+		if (this->_isJump == 0 || (this->_isJump <= 1 && this->_getAttr("double").asInt() == 1)) {
+			this->ApplyLinearImpulse(Vector2(0, this->_getAttr("force").asFloat()), Vector2(0, 0));
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+				this->_getAttr("beginFrame").asInt(),
+				this->_getAttr("endFrame").asInt() - 1, "jump");
 			this->_isJump++;
 		}
 	}

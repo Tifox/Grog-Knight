@@ -42,6 +42,8 @@ class Characters : public Elements {
 		virtual void	AnimCallback(String s);
 		virtual void	BeginContact(Elements *elem, b2Contact *contact);
 		virtual void	EndContact(Elements *elem, b2Contact *contact);
+		// Virtual function, overwritten in childs
+		virtual void	actionCallback(std::string name, int status) {};
 
 	protected:
 		std::string		_name;
@@ -53,6 +55,8 @@ class Characters : public Elements {
 		std::list<Elements*> 				_walls;
 
 		Json::Value		_getAttr(std::string category, std::string key);
+		Json::Value		_getAttr(std::string key);
+		void			_setCategory(std::string category);
 		virtual void	_forward(int status);
 		virtual void	_backward(int status);
 		virtual void	_jump(int status);
@@ -60,6 +64,7 @@ class Characters : public Elements {
 
 	private:
 		std::map<std::string, std::map<std::string, Json::Value> >	_attr;
+		std::string		_category;
 
 		void	_readFile(std::string name);
 		void	_parseJson(std::string file);

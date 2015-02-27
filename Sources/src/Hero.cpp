@@ -32,7 +32,6 @@ Hero::Hero(void) : Characters("Hero") {
 	return ;
 }
 
-
 /**
  * Basic Destructor
  */
@@ -40,6 +39,19 @@ Hero::~Hero(void) {
 	return ;
 }
 
+/**
+ * Init Animation
+ */
 void	Hero::init(void) {
 	this->AnimCallback("base");
+}
+
+/**
+ * Mother's callback for actions
+ * @param: name (std::string)
+ * @param: status (int)
+ */
+void	Hero::actionCallback(std::string name, int status) {
+	std::cout << "CALLBACK " << name << std::endl;
+	return ;
 }

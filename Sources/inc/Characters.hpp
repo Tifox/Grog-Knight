@@ -39,17 +39,25 @@ class Characters : public Elements {
 		~Characters();
 
 		virtual void	ReceiveMessage(Message *m);
+		virtual void	AnimCallback(String s);
+		virtual void	BeginContact(Elements *elem, b2Contact *contact);
+		virtual void	EndContact(Elements *elem, b2Contact *contact);
 
 	protected:
 		std::string		_name;
 		int				_id;
 		int				_size;
+		int				_maxSpeed;
+		int				_isJump;
+		std::list<Elements*>				_grounds;
+		std::list<Elements*> 				_walls;
 
 		Json::Value		_getAttr(std::string category, std::string key);
 		virtual void	_forward(int status);
 		virtual void	_backward(int status);
 		virtual void	_jump(int status);
 		virtual void	_attack(int status);
+
 	private:
 		std::map<std::string, std::map<std::string, Json::Value> >	_attr;
 

@@ -37,7 +37,6 @@ Enemy::Enemy(void) {
 	this->SetFixedRotation(true);
 	this->SetDrawShape(ADS_Square);
 	this->addAttribute("spritesFrame", "Resources/Images/Enemy/enemy_000.png");
-
 }
 
 /**
@@ -47,8 +46,6 @@ Enemy::Enemy(void) {
 void	Enemy::callback(Elements * elem) {
 	if (elem->getAttributes()["type"] == "Hero") {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-		this->_canMove = false;
-		this->_invincibility = true;
 
 		if (this->GetBody()->GetWorldCenter().x > elem->GetBody()->GetWorldCenter().x)
 			this->ApplyLinearImpulse(Vector2(10, 10), Vector2(0, 0));

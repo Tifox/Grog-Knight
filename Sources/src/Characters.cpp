@@ -37,6 +37,12 @@ Characters::Characters(void) {
  * @param: name (std::string)
  */
 Characters::Characters(std::string name) : _name(name) {
+	this->addAttribute("physic", "1");
+	this->addAttribute("type", name);
+	this->SetDensity(1.0f);
+	this->SetFriction(1.0f);
+	this->SetRestitution(0.0f);
+	this->SetFixedRotation(true);
 	this->_readFile(name);
 }
 
@@ -83,6 +89,7 @@ void	Characters::_parseJson(std::string file) {
 	this->_name = json["infos"].get("name", "").asString();
 	this->_id = json["infos"].get("id", "").asInt();
 	this->_size = json["infos"].get("size", "").asFloat();
+	this->_maxSpeed = json["infos"].get("maxSpeed", "").asFloat();
 	this->addAttribute("spritesFrame", json["infos"].get("sprites", "").asString());
 
 	for (i = json["Actions"].begin(); i != json["Actions"].end(); i++) {
@@ -146,24 +153,134 @@ void	Characters::ReceiveMessage(Message *m) {
 	}
 }
 
+/**
+ * The animation callback
+ * @param: s (String)
+ * @note: String is the std::string object used in Angel2d.
+ */
+void	Characters::AnimCallback(String s) {
+	if (s == "base") {
+		this->PlaySpriteAnimation(this->_getAttr("breath", "time").asFloat(), SAT_OneShot,
+			this->_getAttr("breath", "beginFrame").asInt(),
+			this->_getAttr("breath", "endFrame").asInt(), "base");
+	}
+}
+
+/**
+ * Collision begin callback
+ * @param: elem (Elements *)
+ * @param: contact (b2Contact *)
+ * @note: This function is called just before a collision
+ */
+void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
+	if (elem->getAttributes()["type"] == "wall" ||
+		elem->getAttributes()["type"] == "ground" ||
+		elem->getAttributes()["type"] == "corner") {
+		if (this->GetBody()->GetWorldCenter().y > elem->GetBody()->GetWorldCenter().y + 1) {
+			if (this->_grounds.size() > 0)
+				contact->SetEnabled(false);
+			else {
+				if (this->_isJump > 0) {
+					this->_isJump = 0;
+					this->PlaySpriteAnimation(0.1f, SAT_OneShot, this->_getAttr("jump", "endFrame").asInt(),
+						this->_getAttr("jump", "endFrame").asInt(), "base");
+				}
+			}
+			this->_grounds.push_back(elem);
+		} else {
+			if (this->_walls.size() > 0)
+				contact->SetEnabled(false);
+			this->_walls.push_back(elem);
+		}
+	}
+
+}
+
+/**
+ * Collision end callback
+ * @param: elem (Elements *)
+ * @param: contact (b2Contact *)
+ * @note: This function is called just after the elements leave another
+ */
+void	Characters::EndContact(Elements *elem, b2Contact *contact) {
+	if (elem->getAttributes()["type"] == "wall" ||
+		elem->getAttributes()["type"] == "ground" ||
+		elem->getAttributes()["type"] == "corner") {
+		if (this->GetBody()->GetWorldCenter().y > elem->GetBody()->GetWorldCenter().y + 1) {
+			this->_grounds.remove(elem);
+		}
+		else {
+			this->_walls.remove(elem);
+		}
+	}
+}
+
 /****************************/
 /*                          */
 /*          ACTIONS         */
 /*                          */
 /****************************/
 
+/**
+ * Forward action
+ * @param: status (int)
+ */
 void	Characters::_forward(int status) {
+	if (status == 1) {
+		if (this->GetSpriteFrame() < this->_getAttr("forward", "beginFrame").asInt())
+			this->PlaySpriteAnimation(this->_getAttr("forward", "time").asFloat(), SAT_Loop,
+				this->_getAttr("forward", "beginFrame").asInt(),
+				this->_getAttr("forward", "endFrame").asInt());
+		if (this->GetBody()->GetLinearVelocity().x < this->_maxSpeed)
+			this->ApplyLinearImpulse(Vector2(this->_getAttr("forward", "force").asFloat(), 0), Vector2(0, 0));
+	} else {
+		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
+		this->AnimCallback("base");
+	}
 	return ;
 }
 
+/**
+ * Backward action
+ * @param: status (int)
+ */
 void	Characters::_backward(int status) {
+	if (status == 1) {
+		if (this->GetSpriteFrame() < this->_getAttr("forward", "beginFrame").asInt())
+			this->PlaySpriteAnimation(this->_getAttr("forward", "time").asFloat(), SAT_Loop,
+				this->_getAttr("forward", "beginFrame").asInt(),
+				this->_getAttr("forward", "endFrame").asInt());
+		if (this->GetBody()->GetLinearVelocity().x > -(this->_maxSpeed))
+			this->ApplyLinearImpulse(Vector2(-(this->_getAttr("forward", "force").asFloat()), 0), Vector2(0, 0));
+	} else {
+		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
+		this->AnimCallback("base");
+	}
 	return ;
 }
 
+/**
+ * Jump Action
+ * @param: status (int)
+ */
 void	Characters::_jump(int status) {
+	if (status == 1) {
+		if (this->_isJump == 0 || (this->_isJump <= 1 && this->_getAttr("jump", "double").asInt() == 1)) {
+			this->ApplyLinearImpulse(Vector2(0, this->_getAttr("jump", "force").asFloat()), Vector2(0, 0));
+			this->PlaySpriteAnimation(this->_getAttr("jump", "time").asFloat(), SAT_OneShot,
+				this->_getAttr("jump", "beginFrame").asInt(),
+				this->_getAttr("jump", "endFrame").asInt() - 1,
+				"jump");
+			this->_isJump++;
+		}
+	}
 	return ;
 }
 
+/**
+ * Attack action
+ * @param: status (int)
+ */
 void	Characters::_attack(int status) {
 	return ;
 }

@@ -119,24 +119,3 @@ void	Elements::setYStart(float Y) { this->_YStartPos = Y; };
 
 /* GETTERS */
 std::map<std::string, std::string>	Elements::getAttributes(void) { return this->_attributes; };
-int									Elements::getOrientationX(void) {
-	if (this->_orientation == LEFT)
-		return (-1);
-	else if (this->_orientation == RIGHT)
-		return (1);
-	return (0);
-}
-int									Elements::getOrientationY(void) {
-	if (this->_orientation == DOWN)
-		return (-1);
-	else if (this->_orientation == UP)
-		return (1);
-	return (0);
-}
-int									Elements::getLateralOrientation(void) {
-	if (this->_lateralOrientation == LEFT)
-		return (-1);
-	else if (this->_lateralOrientation == RIGHT)
-		return (1);
-	return (0);
-}

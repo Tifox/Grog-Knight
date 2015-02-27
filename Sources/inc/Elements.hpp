@@ -70,20 +70,5 @@ private:
 	float								_XStartPos;
 	float								_YStartPos;
 	std::map<std::string, std::string>	_attributes;
-
-protected:
-	int									_jumping;
-	int									_canMove;
-	int									_invincibility;
-	int									_meleeAttack;
-	int									_rangedAttack;
-	int									_smashing;
-	int									_canSmash;
-	int									_orientation;
-	int									_lateralOrientation;
-	int									_isJump;
-	Weapon*								_weapon;
-	std::list<Elements*>				_grounds;
-	std::list<Elements*> 				_walls;
 };
 #endif

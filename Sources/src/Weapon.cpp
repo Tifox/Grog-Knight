@@ -31,24 +31,6 @@
 ** @param: Elements *
 */
 Weapon::Weapon(Elements *m) {
-	this->SetPosition(m->GetBody()->GetWorldCenter().x + m->getOrientationX(), m->GetBody()->GetWorldCenter().y + m->getOrientationY());
-	this->SetSize(1);
-	this->SetName("Weapon");
-	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
-	this->SetDensity(1.0f);
-	this->SetFriction(1.0f);
-	this->SetRestitution(0.0f);
-	this->SetDrawShape(ADS_Square);
-	this->SetFixedRotation(true);
-	this->Tag("weapon");
-	this->InitPhysics();
-	if (m->getAttributes()["type"] == "Hero")
-		this->addAttribute("type", "heroWeapon");
-	else
-		this->addAttribute("type", "weapon");
-	this->GetBody()->SetLinearVelocity(m->GetBody()->GetLinearVelocity());
-	theSwitchboard.DeferredBroadcast(new Message("DeleteWeapon"), 0.2f);
-	theWorld.Add(this);
 }
 
 Weapon::~Weapon(void) {
@@ -56,17 +38,8 @@ Weapon::~Weapon(void) {
 }
 
 void	Weapon::BeginContact(Elements *elem, b2Contact *contact) {
-	if (elem->getAttributes()["type"] == "enemy") {
-		std::cout << "Enemy hit" << std::endl;
-	}
-	else if (elem->getAttributes()["type"] == "wall" ||
-			 elem->getAttributes()["type"] == "ground" ||
-			 elem->getAttributes()["type"] == "corner") {
-		std::cout << "Ground hit" << std::endl;
-	}
 }
 
 void	Weapon::EndContact(Elements *elem, b2Contact *contact) {
-	std::cout << "EndContact with: " << elem->getAttributes()["type"] << std::endl;
 }
 

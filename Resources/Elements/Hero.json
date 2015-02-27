@@ -1,31 +1,36 @@
 {
 	"infos": {
 		"name": "Hero",
-		"id": "0",
-		"HP": "100",
+		"id": 0,
+		"HP": 100,
 		"sprites": "Resources/Images/Hero/hero_000.png",
-		"size": "1.3f"
+		"size": 1.3
 	},
 	"Actions": {
-		"runForward": {
+		"forward": {
 			"subscribe": "forward",
-			"beginFrame": "4",
-			"endFrame": "9",
-			"time": "0.1f"
+			"beginFrame": 4,
+			"endFrame": 9,
+			"time": 0.1
 		},
-		"runBackward": {
+		"backward": {
 			"subscribe": "backward",
-			"beginFrame": "4",
-			"endFrame": "9",
-			"time": "0.1f"
+			"beginFrame": 4,
+			"endFrame": 9,
+			"time": 0.1
 		},
 		"jump": {
-			"subscribe": "Jump",
-			"double": "1",
-			"force": "20"
+			"subscribe": "jump",
+			"double": 1,
+			"force": 20
 		},
 		"attack": {
-			"subscribe": "attack",
+			"subscribe": "attack"
+		},
+		"breath": {
+			"beginFrame": 1,
+			"endFrame": 3,
+			"time": 0.1
 		}
 	}
 }

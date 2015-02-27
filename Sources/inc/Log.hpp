@@ -1,3 +1,4 @@
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,45 +19,27 @@
  */
 
 /**
- * File: main.cpp
- * Creation: 2015-02-13 10:30
+ * File: Log.hpp
+ * Creation: 2015-02-27 04:51
  * Louis Solofrizzo <louis@ne02ptzero.me>
  */
 
-# include "../inc/Game.hpp"
-# include "../inc/Hero.hpp"
-# include "../inc/Enemy.hpp"
+#ifndef __Log__
+# define __Log__
 
+# include <iostream>
+# include <cstdlib>
 
-class MouseDebugger: public MouseListener {
+class	Log {
+
 	public:
-		MouseDebugger(void) {
-		};
-		~MouseDebugger(void) {
-		};
-		void MouseDownEvent(Vec2i sc, MouseButtonInput button) {
-			Vector2 w;
-			w = MathUtil::ScreenToWorld(sc.X, sc.Y);
-			std::cout << w.X << ":" << w.Y << std::endl;
-		};
+		Log();
+		~Log();
+
+		static void		info(std::string name);
+		static void		warning(std::string name);
+		static void		error(std::string name);
+
 };
 
-int		main(int ac, char **av) {
-	Game	*game = new Game();
-	game->grid();
-   game->readMaps();
-	game->initMap();
-	MouseDebugger l;
-	theWorld.SetBackgroundColor(*(new Color(0.51f, 0.90f, 1)));
-	Hero	*hero = new Hero();
-	Enemy	*enemy = new Enemy();
-	theCamera.LockTo(hero);
-	game->displayHero(*(hero));
-	game->displayEnemy(*(enemy));
-	hero->init();
-	enemy->init();
-	//theWorld.SetSideBlockers(true, 0.7f);
-
-	game->start();
-	return 0;
-}
+#endif

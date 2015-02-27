@@ -18,45 +18,48 @@
  */
 
 /**
- * File: main.cpp
- * Creation: 2015-02-13 10:30
+ * File: Log.cpp
+ * Creation: 2015-02-27 04:51
  * Louis Solofrizzo <louis@ne02ptzero.me>
  */
 
-# include "../inc/Game.hpp"
-# include "../inc/Hero.hpp"
-# include "../inc/Enemy.hpp"
+# include "Log.hpp"
 
+/**
+ * Base constructor
+ */
+Log::Log(void) {
+	return ;
+}
 
-class MouseDebugger: public MouseListener {
-	public:
-		MouseDebugger(void) {
-		};
-		~MouseDebugger(void) {
-		};
-		void MouseDownEvent(Vec2i sc, MouseButtonInput button) {
-			Vector2 w;
-			w = MathUtil::ScreenToWorld(sc.X, sc.Y);
-			std::cout << w.X << ":" << w.Y << std::endl;
-		};
-};
+/**
+ * Base destructor
+ */
+Log::~Log(void) {
+	return ;
+}
 
-int		main(int ac, char **av) {
-	Game	*game = new Game();
-	game->grid();
-   game->readMaps();
-	game->initMap();
-	MouseDebugger l;
-	theWorld.SetBackgroundColor(*(new Color(0.51f, 0.90f, 1)));
-	Hero	*hero = new Hero();
-	Enemy	*enemy = new Enemy();
-	theCamera.LockTo(hero);
-	game->displayHero(*(hero));
-	game->displayEnemy(*(enemy));
-	hero->init();
-	enemy->init();
-	//theWorld.SetSideBlockers(true, 0.7f);
+/**
+ * Log INFO level
+ * @param: str (std::string)
+ */
+void		Log::info(std::string str) {
+	std::cout << "\033[1;34m[INFO]\033[0m " << str << std::endl;
+}
 
-	game->start();
-	return 0;
+/**
+ * Log WARNING level
+ * @param: str (std::string)
+ */
+void		Log::warning(std::string str) {
+	std::cout << "\033[1;33m[WARNING]\033[0m " << str << std::endl;
+}
+
+/**
+ * Log ERROR log
+ * @param: str (std::string)
+ */
+void		Log::error(std::string str) {
+	std::cout << "\033[1;31m[ERROR]\033[0m " << str << std::endl;
+	exit(1);
 }

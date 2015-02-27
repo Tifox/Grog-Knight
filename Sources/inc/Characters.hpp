@@ -1,3 +1,4 @@
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,45 +19,42 @@
  */
 
 /**
- * File: main.cpp
- * Creation: 2015-02-13 10:30
+ * File: Characters.hpp
+ * Creation: 2015-02-27 04:45
  * Louis Solofrizzo <louis@ne02ptzero.me>
  */
 
-# include "../inc/Game.hpp"
-# include "../inc/Hero.hpp"
-# include "../inc/Enemy.hpp"
+#ifndef __Characters__
+# define __Characters__
 
+# include "Elements.hpp"
+# include "Log.hpp"
+# include "json/json.h"
 
-class MouseDebugger: public MouseListener {
+class Characters : public Elements {
+
 	public:
-		MouseDebugger(void) {
-		};
-		~MouseDebugger(void) {
-		};
-		void MouseDownEvent(Vec2i sc, MouseButtonInput button) {
-			Vector2 w;
-			w = MathUtil::ScreenToWorld(sc.X, sc.Y);
-			std::cout << w.X << ":" << w.Y << std::endl;
-		};
+		Characters(void);
+		Characters(std::string name);
+		~Characters();
+
+		virtual void	ReceiveMessage(Message *m);
+
+	protected:
+		std::string		_name;
+		int				_id;
+		int				_size;
+
+		Json::Value		_getAttr(std::string category, std::string key);
+		virtual void	_forward(int status);
+		virtual void	_backward(int status);
+		virtual void	_jump(int status);
+		virtual void	_attack(int status);
+	private:
+		std::map<std::string, std::map<std::string, Json::Value> >	_attr;
+
+		void	_readFile(std::string name);
+		void	_parseJson(std::string file);
 };
 
-int		main(int ac, char **av) {
-	Game	*game = new Game();
-	game->grid();
-   game->readMaps();
-	game->initMap();
-	MouseDebugger l;
-	theWorld.SetBackgroundColor(*(new Color(0.51f, 0.90f, 1)));
-	Hero	*hero = new Hero();
-	Enemy	*enemy = new Enemy();
-	theCamera.LockTo(hero);
-	game->displayHero(*(hero));
-	game->displayEnemy(*(enemy));
-	hero->init();
-	enemy->init();
-	//theWorld.SetSideBlockers(true, 0.7f);
-
-	game->start();
-	return 0;
-}
+#endif

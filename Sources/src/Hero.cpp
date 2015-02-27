@@ -28,7 +28,7 @@
 /**
  * Basic constructor
  */
-Hero::Hero(void) {
+Hero::Hero(void) : Characters("Hero") {
 	//this->addAttribute("sprite", "Resources/Images/test.png");
 	this->addAttribute("physic", "1");
 	this->addAttribute("type", "Hero");
@@ -41,26 +41,26 @@ Hero::Hero(void) {
 	this->_canMove = true;
 	this->_orientation = RIGHT;
 	this->_isJump = 0;
-	this->_shooter = new Shooter();
-	theSwitchboard.SubscribeTo(this, "MeleeAttack");
-	theSwitchboard.SubscribeTo(this, "DeleteWeapon");
-	theSwitchboard.SubscribeTo(this, "RangedAttack");
-	theSwitchboard.SubscribeTo(this, "SmashAttack");
-	theSwitchboard.SubscribeTo(this, "Jump");
-	theSwitchboard.SubscribeTo(this, "Smash");
-	theSwitchboard.SubscribeTo(this, "canMove");
-	theSwitchboard.SubscribeTo(this, "endInvincibility");
-	theSwitchboard.SubscribeTo(this, "forwardPressed");
-	theSwitchboard.SubscribeTo(this, "backPressed");
-	theSwitchboard.SubscribeTo(this, "upPressed");
-	theSwitchboard.SubscribeTo(this, "downPressed");
-	theSwitchboard.SubscribeTo(this, "forwardRealeased");
-	theSwitchboard.SubscribeTo(this, "backReleased");
-	theSwitchboard.SubscribeTo(this, "upReleased");
-	theSwitchboard.SubscribeTo(this, "downReleased");
-	this->addAttribute("spritesFrame", "Resources/Images/Hero/hero_000.png");
-	//theSwitchboard.SubscribeTo(this, "callbackEndRun");
-	theSwitchboard.SubscribeTo(this, "Jump");
+   /* this->_shooter = new Shooter();*/
+	//theSwitchboard.SubscribeTo(this, "MeleeAttack");
+	//theSwitchboard.SubscribeTo(this, "DeleteWeapon");
+	//theSwitchboard.SubscribeTo(this, "RangedAttack");
+	//theSwitchboard.SubscribeTo(this, "SmashAttack");
+	//theSwitchboard.SubscribeTo(this, "Jump");
+	//theSwitchboard.SubscribeTo(this, "Smash");
+	//theSwitchboard.SubscribeTo(this, "canMove");
+	//theSwitchboard.SubscribeTo(this, "endInvincibility");
+	//theSwitchboard.SubscribeTo(this, "forwardPressed");
+	//theSwitchboard.SubscribeTo(this, "backPressed");
+	//theSwitchboard.SubscribeTo(this, "upPressed");
+	//theSwitchboard.SubscribeTo(this, "downPressed");
+	//theSwitchboard.SubscribeTo(this, "forwardRealeased");
+	//theSwitchboard.SubscribeTo(this, "backReleased");
+	//theSwitchboard.SubscribeTo(this, "upReleased");
+	//theSwitchboard.SubscribeTo(this, "downReleased");
+	//this->addAttribute("spritesFrame", "Resources/Images/Hero/hero_000.png");
+	////theSwitchboard.SubscribeTo(this, "callbackEndRun");
+	/*theSwitchboard.SubscribeTo(this, "Jump");*/
 }
 
 /**
@@ -94,85 +94,85 @@ void	Hero::callback(Elements * elem) {
  * Receive broadcasts message
  * @param: (Message *)
  */
-void	Hero::ReceiveMessage(Message *m) {
-	if (m->GetMessageName() == "canMove")
-		this->_canMove = true;
-	else if (m->GetMessageName() == "endInvincibility")
-		this->_invincibility = false;
+//void	Hero::ReceiveMessage(Message *m) {
+	//if (m->GetMessageName() == "canMove")
+		//this->_canMove = true;
+	//else if (m->GetMessageName() == "endInvincibility")
+		//this->_invincibility = false;
 
-	if (this->_canMove == false)
-		return;
-	else if (m->GetMessageName() == "Jump") {
-		if (this->_grounds.size() == 0)
-			this->_jumping--;
-		this->ApplyLinearImpulse(Vector2(0, 10), Vector2(0, 0));
-		this->PlaySpriteAnimation(0.1f, SAT_OneShot, 9, 9, "Jump");
-		this->_isJump = 1;
-	}
+	//if (this->_canMove == false)
+		//return;
+	//else if (m->GetMessageName() == "Jump") {
+		//if (this->_grounds.size() == 0)
+			//this->_jumping--;
+		//this->ApplyLinearImpulse(Vector2(0, 10), Vector2(0, 0));
+		//this->PlaySpriteAnimation(0.1f, SAT_OneShot, 9, 9, "Jump");
+		//this->_isJump = 1;
+	//}
 
-	else if (m->GetMessageName() == "Smash") {
-		this->ApplyLinearImpulse(Vector2(0, -100), Vector2(0, 0));
-	}
+	//else if (m->GetMessageName() == "Smash") {
+		//this->ApplyLinearImpulse(Vector2(0, -100), Vector2(0, 0));
+	//}
 
- 	else if (m->GetMessageName() == "forwardPressed") {
-		this->_orientation = RIGHT;
-		this->_lateralOrientation = RIGHT;
-		if (this->GetBody()->GetLinearVelocity().x < MAX_RUN_SPEED) {
-			this->ApplyLinearImpulse(Vector2(RUN_SPEED, 0), Vector2(0, 0));
-		}
-		if (this->GetSpriteFrame() <= 1)
-			this->PlaySpriteAnimation(0.1f, SAT_Loop, 2, 9, "run");
-	}
-	else if (m->GetMessageName() == "forwardRealeased") {
-		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
-		this->PlaySpriteAnimation(0.1f, SAT_OneShot, 0, 0, "base");
-	}
+     //else if (m->GetMessageName() == "forwardPressed") {
+		//this->_orientation = RIGHT;
+		//this->_lateralOrientation = RIGHT;
+		//if (this->GetBody()->GetLinearVelocity().x < MAX_RUN_SPEED) {
+			//this->ApplyLinearImpulse(Vector2(RUN_SPEED, 0), Vector2(0, 0));
+		//}
+		//if (this->GetSpriteFrame() <= 1)
+			//this->PlaySpriteAnimation(0.1f, SAT_Loop, 2, 9, "run");
+	//}
+	//else if (m->GetMessageName() == "forwardRealeased") {
+		//this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
+		//this->PlaySpriteAnimation(0.1f, SAT_OneShot, 0, 0, "base");
+	//}
 
-	else if (m->GetMessageName() == "backPressed") {
-		this->_orientation = LEFT;
-		this->_lateralOrientation = LEFT;
-		if (this->GetBody()->GetLinearVelocity().x > -MAX_RUN_SPEED) {
-			this->ApplyLinearImpulse(Vector2(-RUN_SPEED, 0), Vector2(0, 0));
-		}
-		if (this->GetSpriteFrame() <= 1)
-			this->PlaySpriteAnimation(0.1f, SAT_Loop, 2, 9, "run");
-	}
-	else if (m->GetMessageName() == "backReleased") {
-		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
-		this->PlaySpriteAnimation(0.1f, SAT_OneShot, 0, 0, "base");
-	}
+	//else if (m->GetMessageName() == "backPressed") {
+		//this->_orientation = LEFT;
+		//this->_lateralOrientation = LEFT;
+		//if (this->GetBody()->GetLinearVelocity().x > -MAX_RUN_SPEED) {
+			//this->ApplyLinearImpulse(Vector2(-RUN_SPEED, 0), Vector2(0, 0));
+		//}
+		//if (this->GetSpriteFrame() <= 1)
+			//this->PlaySpriteAnimation(0.1f, SAT_Loop, 2, 9, "run");
+	//}
+	//else if (m->GetMessageName() == "backReleased") {
+		//this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
+		//this->PlaySpriteAnimation(0.1f, SAT_OneShot, 0, 0, "base");
+	//}
 
-	else if (m->GetMessageName() == "upPressed") {
-		this->_orientation = UP;
-	}
+	//else if (m->GetMessageName() == "upPressed") {
+		//this->_orientation = UP;
+	//}
 
-	else if (m->GetMessageName() == "downPressed") {
-		this->_orientation = DOWN;
-	}
+	//else if (m->GetMessageName() == "downPressed") {
+		//this->_orientation = DOWN;
+	//}
 
-	else if (m->GetMessageName() == "MeleeAttack") {
-		if (this->_meleeAttack == false) {
-			this->_weapon = new Weapon(this);
-			this->_meleeAttack = true;
-		}
-	}
+	//else if (m->GetMessageName() == "MeleeAttack") {
+		//if (this->_meleeAttack == false) {
+			//this->_weapon = new Weapon(this);
+			//this->_meleeAttack = true;
+		//}
+	//}
 
-	else if (m->GetMessageName() == "DeleteWeapon") {
-		theWorld.GetPhysicsWorld().DestroyBody(this->_weapon->GetBody());
-		theWorld.Remove(this->_weapon);
-		this->_meleeAttack = false;
-	}
+	//else if (m->GetMessageName() == "DeleteWeapon") {
+		//theWorld.GetPhysicsWorld().DestroyBody(this->_weapon->GetBody());
+		//theWorld.Remove(this->_weapon);
+		//this->_meleeAttack = false;
+	//}
 
-	else if (m->GetMessageName() == "DeleteProjectile") {
-		theWorld.GetPhysicsWorld().DestroyBody(this->GetBody());
-		theWorld.Remove(this);
-	}
+	//else if (m->GetMessageName() == "DeleteProjectile") {
+		//theWorld.GetPhysicsWorld().DestroyBody(this->GetBody());
+		//theWorld.Remove(this);
+	//}
 
-	else if (m->GetMessageName() == "RangedAttack") {
-		std::cout << "Ranged" << std::endl;
-		this->_shooter->fire(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y, this->getLateralOrientation(), "hero");
-	}
-}
+	//else if (m->GetMessageName() == "RangedAttack") {
+		//std::cout << "Ranged" << std::endl;
+		//this->_shooter->fire(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y, this->getLateralOrientation(), "hero");
+	//}
+//}
 
 /*
 ** Callback before contact in order to disable it if necessary

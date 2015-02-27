@@ -26,7 +26,7 @@
 #ifndef __Hero__
 # define __Hero__
 
-# include "Elements.hpp"
+# include "Characters.hpp"
 # include "Weapon.hpp"
 # include "Shooter.hpp"
 
@@ -35,7 +35,7 @@
 # define MAX_JUMP 2
 # define HERO_SIZE 1
 
-class Hero : public Elements {
+class Hero : public Characters {
 public:
 	Hero();
 	~Hero();
@@ -44,7 +44,6 @@ public:
 	virtual void	EndContact(Elements * elem, b2Contact *contact);
 	virtual void	BeginContact(Elements * elem, b2Contact *contact);
 	virtual void	AnimCallback(String name);
-	void			ReceiveMessage(Message *m);
 	void			init();
 
 private:

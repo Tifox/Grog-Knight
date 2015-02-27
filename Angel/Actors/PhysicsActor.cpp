@@ -55,7 +55,6 @@ PhysicsActor::PhysicsActor(void) :
 }
 
 void	PhysicsActor::setId(int i) { 
-	std::cout << "New set id " << i  << " (" << this->_id << "),  " << Game::currentIds<< std::endl;
 	this->_id = i; 
 }
 PhysicsActor::~PhysicsActor()

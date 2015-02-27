@@ -165,7 +165,6 @@ int		Game::getNextId(void) {
  * @param: elem (Elements &)
  */
 void	Game::addElement(Elements & elem) {
-	std::cout << Game::currentIds << std::endl;
 	Game::elementMap[Game::currentIds] = &elem;
 	Game::currentIds += 1;
 }
@@ -194,7 +193,6 @@ void	Game::listElement(void) {
 }
 
 void	Game::destroyAllBodies(void) {
-	std::cout << "DESTROY" << std::endl;
 }
 
 // Set for the statics

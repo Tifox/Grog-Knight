@@ -20,7 +20,8 @@
 			"subscribe": "backward",
 			"beginFrame": 4,
 			"endFrame": 9,
-			"time": 0.1
+			"time": 0.1,
+			"force": 5
 		},
 		"jump": {
 			"subscribe": "jump",

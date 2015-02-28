@@ -49,14 +49,15 @@ int		main(int ac, char **av) {
 	game->initMap();
 	MouseDebugger l;
 	theWorld.SetBackgroundColor(*(new Color(0.51f, 0.90f, 1)));
-
 	Hero	*hero = new Hero();
 	Enemy	*enemy = new Enemy();
+
 	theCamera.LockTo(hero);
 	game->displayHero(*(hero));
 	game->displayEnemy(*(enemy));
 	hero->init();
 	enemy->init();
+	
 	//theWorld.SetSideBlockers(true, 0.7f);
 
 	game->start();

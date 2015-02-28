@@ -25,56 +25,30 @@
 
  #include "../inc/Enemy.hpp"
 
-/**
- * Basic Constructor
- */
-Enemy::Enemy(void) {
-	this->addAttribute("physic", "1");
-	this->addAttribute("type", "Enemy");
-	this->SetDensity(1.0f);
-	this->SetFriction(1.0f);
-	this->SetRestitution(0.0f);
-	this->SetFixedRotation(true);
-	this->SetDrawShape(ADS_Square);
-	this->addAttribute("spritesFrame", "Resources/Images/Enemy/enemy_000.png");
-}
-
-/**
- * Collision with another element
- * @param: elem (Elements *)
- */
-void	Enemy::callback(Elements * elem) {
-	if (elem->getAttributes()["type"] == "Hero") {
-		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-
-		if (this->GetBody()->GetWorldCenter().x > elem->GetBody()->GetWorldCenter().x)
-			this->ApplyLinearImpulse(Vector2(10, 10), Vector2(0, 0));
-		else
-			this->ApplyLinearImpulse(Vector2(-10, 10), Vector2(0, 0));
-		theSwitchboard.DeferredBroadcast(new Message("canMove"), 1);
-		theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1.5);
-	}
-}
-
-
-/**
- * Receive broadcasts message
- * @param: (Message *)
- */
-void	Enemy::ReceiveMessage(Message *m) {
-	return;
-}
-
-
-
-void	Enemy::init(void) {
-	this->PlaySpriteAnimation(0.1f, SAT_Loop, 0, 4, "Jump");
+Enemy::Enemy(void) : Characters("Enemy") {
+	return ;
 }
 
 /**
  * Basic Destructor
  */
 Enemy::~Enemy(void) {
-	return;
+	return ;
+} 
+
+/**
+ * Init Animation
+ */
+void	Enemy::init(void) {
+	this->AnimCallback("base");
 }
 
+/**
+ * Mother's callback for actions
+ * @param: name (std::string)
+ * @param: status (int)
+ */
+void	Enemy::actionCallback(std::string name, int status) {
+	std::cout << "CALLBACK " << name << std::endl;
+	return ;
+}

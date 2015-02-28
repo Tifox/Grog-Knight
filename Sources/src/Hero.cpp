@@ -37,7 +37,7 @@ Hero::Hero(void) : Characters("Hero") {
  */
 Hero::~Hero(void) {
 	return ;
-}
+} 
 
 /**
  * Init Animation

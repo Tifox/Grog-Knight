@@ -44,6 +44,8 @@ Characters::Characters(std::string name) : _name(name) {
 	this->SetRestitution(0.0f);
 	this->SetFixedRotation(true);
 	this->_readFile(name);
+
+
 }
 
 /**
@@ -63,6 +65,7 @@ void	Characters::_readFile(std::string name) {
 	std::ifstream		fd;
 
 	file = "./Resources/Elements/" + name + ".json";
+
 	fd.open(file.c_str());
 	if (!fd.is_open())
 		Log::error("Can't open the file for the " + 
@@ -90,7 +93,7 @@ void	Characters::_parseJson(std::string file) {
 	this->_id = json["infos"].get("id", "").asInt();
 	this->_size = json["infos"].get("size", "").asFloat();
 	this->_maxSpeed = json["infos"].get("maxSpeed", "").asFloat();
-	this->_weapon = new Weapon(json["infos"].get("weapon", "").asString());
+//	this->_weapon = new Weapon(json["infos"].get("weapon", "").asString()); ==> Tests de Noich
 	this->addAttribute("spritesFrame", json["infos"].get("sprites", "").asString());
 
 	for (i = json["Actions"].begin(); i != json["Actions"].end(); i++) {

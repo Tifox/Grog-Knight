@@ -1,0 +1,17 @@
+{
+	"infos": {
+		"name": "Enemy",
+		"id": 1,
+		"HP": 50,
+		"sprites": "Resources/Images/Enemy/enemy_000.png",
+		"size": 1.3,
+		"maxSpeed": 5
+	},
+	"Actions": {
+		"breath": {
+				"beginFrame": 1,
+				"endFrame": 4,
+				"time": 0.1
+			}
+	}
+}

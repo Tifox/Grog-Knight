@@ -28,7 +28,7 @@
 
 /*
 ** Default constructor, using the element that called the attack
-** @param: Elements *
+** @param: name (std::string)
 */
 Weapon::Weapon(std::string name) : _name(name) {
 	theSwitchboard.SubscribeTo(this, "deleteWeapon");
@@ -36,6 +36,16 @@ Weapon::Weapon(std::string name) : _name(name) {
 	this->_readFile(name);
 	this->_canAttack = 1;
 }
+
+/**
+ * Constructor for the WeaponList
+ * @param: filename (std::string)
+ */
+
+Weapon::Weapon(std::string filename, int flag) {
+	this->_readFileFromFilename(filename);
+}
+
 Weapon::~Weapon(void) {
 	return;
 }
@@ -54,7 +64,24 @@ void	Weapon::_readFile(std::string name) {
 	fd.open(file.c_str());
 	if (!fd.is_open())
 		Log::error("Can't open the file for the " +
-				   name + " class. (Supposed path is Resources/Elements/" + name +".json)");
+				   name + " class. (Expected path is Resources/Elements/" + name +".json)");
+	buffer << fd.rdbuf();
+	this->_parseJson(buffer.str());
+}
+
+
+/**
+ * Read a config file, base on the name of the class
+ * @param: name (std::string)
+ */
+
+void	Weapon::_readFileFromFilename(std::string filename) {
+	std::stringstream	buffer;
+	std::ifstream		fd;
+
+	fd.open(filename.c_str());
+	if (!fd.is_open())
+		Log::error("Can't open file. (Expected path is "+ filename +")");
 	buffer << fd.rdbuf();
 	this->_parseJson(buffer.str());
 }
@@ -141,6 +168,14 @@ void	Weapon::ReceiveMessage(Message *m) {
 		this->_canAttack = 1;
 	}
 }
+
+std::string		Weapon::getName(void) { return this->_name; }
+
+std::string		Weapon::getFlavor(void) { return this->_flavor; }
+
+int				Weapon::getActive(void) { return this->_active; }
+
+int				Weapon::getRecovery(void) { return this->_recovery; }
 
 void	Weapon::BeginContact(Elements *elem, b2Contact *contact) {
 }

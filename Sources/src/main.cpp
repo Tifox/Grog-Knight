@@ -26,6 +26,7 @@
 # include "../inc/Game.hpp"
 # include "../inc/Hero.hpp"
 # include "../inc/Enemy.hpp"
+# include "../inc/WeaponList.hpp"
 
 
 class MouseDebugger: public MouseListener {
@@ -51,7 +52,10 @@ int		main(int ac, char **av) {
 	theWorld.SetBackgroundColor(*(new Color(0.51f, 0.90f, 1)));
 	Hero	*hero = new Hero();
 	Enemy	*enemy = new Enemy();
+	WeaponList	*wList = new WeaponList();
 
+	wList->statWeapon("Sword");
+	wList->statWeapon("Bow");
 	theCamera.LockTo(hero);
 	game->displayHero(*(hero));
 	game->displayEnemy(*(enemy));

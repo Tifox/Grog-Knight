@@ -18,53 +18,39 @@
  */
 
 /**
- * File: Weapon.hpp
+ * File: WeaponList.cpp
  * Creation: 2015-02-18 14:00
  * Vincent Rey <vrey@student.42.fr>
  */
 
-#ifndef __Weapon__
-# define __Weapon__
+# include "WeaponList.hpp"
 
-# include "Log.hpp"
-# include "Elements.hpp"
-# include "json/json.h"
+
 /*
 ** Default constructor, using the element that called the attack
 ** @param: Elements *
 */
+WeaponList::WeaponList(void) {
+	DIR *Dir;
+	struct dirent *DirEntry;
+	Dir = opendir("./Resources/Elements/Weapons/");
+	while(DirEntry=readdir(Dir))
+	{
+		if( strcmp(DirEntry->d_name, ".") != 0 && strcmp(DirEntry->d_name, "..") != 0 )
+			this->_allWeapons.push_back(new Weapon(std::string("./Resources/Elements/Weapons/") + std::string(DirEntry->d_name), 1));
+	}
+}
+WeaponList::~WeaponList(void) {
+	return;
+}
 
-class Weapon: public Elements {
-public:
-	Weapon(std::string name);
-	Weapon(std::string filename, int flag);
-	~Weapon(void);
+void		WeaponList::statWeapon(std::string name) {
+	std::list<Weapon*>::iterator it;
 
-	void			attack(int, int, int, int, b2Vec2);
-	void			BeginContact(Elements *elem, b2Contact *contact);
-	void			EndContact(Elements *elem, b2Contact *contact);
-	void			ReceiveMessage(Message *m);
-
-	std::string		getName(void);
-	std::string		getFlavor(void);
-	int				getActive(void);
-	int				getRecovery(void);
-
-private:
-	std::map<std::string, std::map<std::string, Json::Value> >	_attr;
-
-	std::string		_name;
-	std::string		_flavor;
-	int				_canAttack;
-	int				_recovery;
-	int				_active;
-	int				_size;
-	void			_readFile(std::string name);
-	void			_readFileFromFilename(std::string name);
-	void			_parseJson(std::string file);
-
-protected:
-	Json::Value     _getAttr(std::string category, std::string key);
-};
-
-#endif
+	for (it = this->_allWeapons.begin(); it != this->_allWeapons.end(); it++) {
+		if (name == (*it)->getName()) {
+			std::cout << (*it)->getName() << std::endl;
+			std::cout << (*it)->getFlavor() << std::endl;
+		}
+	}
+}

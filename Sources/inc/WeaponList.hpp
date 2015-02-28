@@ -37,6 +37,8 @@ public:
 	~WeaponList(void);
 
 	void	statWeapon(std::string);
+	Weapon*	equipWeapon(std::string);
+
 private:
 	std::list<Weapon*> _allWeapons;
 

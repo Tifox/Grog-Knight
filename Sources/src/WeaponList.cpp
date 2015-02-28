@@ -54,3 +54,13 @@ void		WeaponList::statWeapon(std::string name) {
 		}
 	}
 }
+
+Weapon		*WeaponList::equipWeapon(std::string name) {
+	std::list<Weapon*>::iterator it;
+
+	for (it = this->_allWeapons.begin(); it != this->_allWeapons.end(); it++) {
+		if (name == (*it)->getName()) {
+			return ((*it));
+		}
+	}
+}

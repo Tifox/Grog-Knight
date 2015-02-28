@@ -56,12 +56,14 @@ int		main(int ac, char **av) {
 
 	wList->statWeapon("Sword");
 	wList->statWeapon("Bow");
+	std::cout << wList->equipWeapon("Sword") << std::endl;
+
 	theCamera.LockTo(hero);
 	game->displayHero(*(hero));
 	game->displayEnemy(*(enemy));
 	hero->init();
 	enemy->init();
-	
+
 	//theWorld.SetSideBlockers(true, 0.7f);
 
 	game->start();

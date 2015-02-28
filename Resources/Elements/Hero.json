@@ -18,8 +18,8 @@
 		},
 		"backward": {
 			"subscribe": "backward",
-			"beginFrame": 4,
-			"endFrame": 9,
+			"beginFrame": 10,
+			"endFrame": 15,
 			"time": 0.1,
 			"force": 5
 		},

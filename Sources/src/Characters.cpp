@@ -36,7 +36,7 @@ Characters::Characters(void) {
  * Main constructor
  * @param: name (std::string)
  */
-Characters::Characters(std::string name) : _name(name) {
+Characters::Characters(std::string name) : _name(name), _isRunning(0) {
 	this->addAttribute("physic", "1");
 	this->addAttribute("type", name);
 	this->SetDensity(1.0f);
@@ -93,7 +93,6 @@ void	Characters::_parseJson(std::string file) {
 	this->_id = json["infos"].get("id", "").asInt();
 	this->_size = json["infos"].get("size", "").asFloat();
 	this->_maxSpeed = json["infos"].get("maxSpeed", "").asFloat();
-//	this->_weapon = new Weapon(json["infos"].get("weapon", "").asString()); ==> Tests de Noich
 	this->addAttribute("spritesFrame", json["infos"].get("sprites", "").asString());
 
 	for (i = json["Actions"].begin(); i != json["Actions"].end(); i++) {
@@ -163,13 +162,14 @@ void	Characters::ReceiveMessage(Message *m) {
 
 			// Get the key status (1 = Pressed, 0 = Released)
 			status = (m->GetMessageName().substr(strlen(attrName.c_str()), 7) == "Pressed" ? 1 : 0);
+			std::cout << "==========\n" << attrName << std::endl;
 			if (attrName == "forward") {
 				this->_forward(status);
 			} else if (attrName == "backward") {
 				this->_backward(status);
 			} else if (attrName == "jump") {
 				this->_jump(status);
-			} else if ("attack") {
+			} else if (attrName == "attack") {
 				this->_attack(status);
 			}
 			this->actionCallback(attrName, status);
@@ -185,9 +185,16 @@ void	Characters::ReceiveMessage(Message *m) {
 void	Characters::AnimCallback(String s) {
 	this->_setCategory("breath");
 	if (s == "base") {
-		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-			this->_getAttr("beginFrame").asInt(),
-			this->_getAttr("endFrame").asInt(), "base");
+		if (this->_isRunning == 0) {
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+				this->_getAttr("beginFrame").asInt(),
+				this->_getAttr("endFrame").asInt(), "base");
+		} else {
+			this->_setCategory("forward");
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
+				this->_getAttr("beginFrame").asInt(),
+				this->_getAttr("endFrame").asInt());
+		}
 	}
 }
 
@@ -240,6 +247,13 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 	}
 }
 
+void	Characters::_run(void) {
+	if (this->_isRunning == 1)
+		this->_forward(2);
+	else if (this->_isRunning == 2)
+		this->_backward(2);
+}
+
 /****************************/
 /*                          */
 /*          ACTIONS         */
@@ -257,12 +271,19 @@ void	Characters::_forward(int status) {
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 				this->_getAttr("beginFrame").asInt(),
 				this->_getAttr("endFrame").asInt());
-		if (this->GetBody()->GetLinearVelocity().x < this->_maxSpeed)
-			this->ApplyLinearImpulse(Vector2(this->_getAttr("force").asFloat(), 0), Vector2(0, 0));
-	} else {
+		Game::startRunning(this);
+		if (this->_isRunning == 2)
+			this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
+		this->_isRunning = 1;
+	} else if (status == 0) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
+		Game::stopRunning(this);
+		this->_isRunning = 0;
 		if (!this->_isJump)
 			this->AnimCallback("base");
+	} else {
+		if (this->GetBody()->GetLinearVelocity().x < this->_maxSpeed)
+			this->ApplyLinearImpulse(Vector2(this->_getAttr("force").asFloat(), 0), Vector2(0, 0));
 	}
 	return ;
 }
@@ -272,18 +293,25 @@ void	Characters::_forward(int status) {
  * @param: status (int)
  */
 void	Characters::_backward(int status) {
-	this->_setCategory("backward");
+   this->_setCategory("backward");
 	if (status == 1) {
 		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() && !this->_isJump)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 				this->_getAttr("beginFrame").asInt(),
 				this->_getAttr("endFrame").asInt());
-		if (this->GetBody()->GetLinearVelocity().x > -(this->_maxSpeed))
-			this->ApplyLinearImpulse(Vector2(-(this->_getAttr("force").asFloat()), 0), Vector2(0, 0));
-	} else {
+		Game::startRunning(this);
+		if (this->_isRunning == 1)
+			this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
+		this->_isRunning = 2;
+	} else if (status == 0) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
 		if (!this->_isJump)
 			this->AnimCallback("base");
+		this->_isRunning = 0;
+		Game::stopRunning(this);
+	} else {
+		if (this->GetBody()->GetLinearVelocity().x > -(this->_maxSpeed))
+			this->ApplyLinearImpulse(Vector2(-(this->_getAttr("force").asFloat()), 0), Vector2(0, 0));
 	}
 	return ;
 }

@@ -30,6 +30,7 @@
 # include "Elements.hpp"
 # include "Weapon.hpp"
 # include "json/json.h"
+# include <sstream>
 
 class WeaponList: public Elements {
 public:

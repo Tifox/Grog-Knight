@@ -29,10 +29,6 @@
 # include "Log.hpp"
 # include "Elements.hpp"
 # include "json/json.h"
-/*
-** Default constructor, using the element that called the attack
-** @param: Elements *
-*/
 
 class Weapon: public Elements {
 public:

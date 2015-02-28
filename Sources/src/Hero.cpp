@@ -52,6 +52,5 @@ void	Hero::init(void) {
  * @param: status (int)
  */
 void	Hero::actionCallback(std::string name, int status) {
-	std::cout << "CALLBACK " << name << std::endl;
 	return ;
 }

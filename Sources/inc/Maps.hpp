@@ -37,11 +37,9 @@
 # include <string>
 # include <vector>
 
-# include "Elements.hpp"
 # include "main.hpp"
 
-class	Elements;
-
+class Elements;
 typedef struct		s_map {
 	int								id;
 	std::string						name;
@@ -52,6 +50,7 @@ typedef struct		s_map {
 	std::vector<std::vector<int> >	map;
 
 }					t_map;
+
 
 class Maps {
 	public:
@@ -71,4 +70,5 @@ class Maps {
 		std::list<t_map>	_maps;
 };
 
+# include "Elements.hpp"
 #endif

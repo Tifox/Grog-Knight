@@ -33,6 +33,7 @@
 # endif
 # include "GameContactListener.hpp"
 # include "ContactFilter.hpp"
+# include "Characters.hpp"
 
 class Game {
 
@@ -56,10 +57,14 @@ class Game {
 		static void	addElement(Elements & elem);
 		static void	listElement(void);
 		static void	callCallbacks(int a, int b);
+		static void	startRunning(Elements *c);
+		static void	stopRunning(Elements *c);
+		static void	makeItRun(void);
 
 		Maps		*maps;
 		static int	currentIds;
 		static std::map<int, Elements *>	elementMap;
+		static std::list<Elements *>	runningCharac;
 
 	private:
 		float		beginXHero;

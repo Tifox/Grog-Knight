@@ -30,6 +30,8 @@
 #include "stdafx.h"
 #include "../Actors/Actor.h"
 
+#include "../../Sources/inc/Game.hpp"
+
 #include "../Infrastructure/TagCollection.h"
 #include "../Infrastructure/Textures.h"
 #include "../Infrastructure/TextRendering.h"
@@ -272,6 +274,10 @@ void Actor::Render()
 	glRotatef(_rotation, 0, 0, 1);
 	glScalef(_size.X, _size.Y, 1.0f);
 	glColor4f(_color.R, _color.G, _color.B, _color.A);
+
+	/* CODE MODIFIED BY LOUIS */
+		Game::makeItRun();
+	/* END */
 
 	int textureReference = _spriteTextureReferences[_spriteCurrentFrame];
 	if (textureReference >= 0)

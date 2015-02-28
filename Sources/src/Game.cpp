@@ -32,7 +32,6 @@
 Game::Game(void) {
 	theWorld.Initialize(1920, 1080, NAME);
 	theWorld.SetupPhysics();
-	//this->elements = new Elements();
 	GameContactListener *gListen = new GameContactListener();
 	ContactFilter *filter = new ContactFilter();
 	theWorld.GetPhysicsWorld().SetContactFilter(filter);
@@ -53,7 +52,6 @@ Game::Game(unsigned int width, unsigned int height) {
 	ContactFilter *filter = new ContactFilter();
 	theWorld.GetPhysicsWorld().SetContactFilter(filter);
 	theWorld.GetPhysicsWorld().SetContactListener(gListen);
-	//this->elements = new Elements();
 	this->maps = new Maps("Maps/");
 }
 
@@ -61,7 +59,6 @@ Game::Game(unsigned int width, unsigned int height) {
  * Destructor
  */
 Game::~Game(void) {
-	//delete this->elements;
 	return ;
 }
 
@@ -195,6 +192,23 @@ void	Game::listElement(void) {
 void	Game::destroyAllBodies(void) {
 }
 
+void	Game::startRunning(Elements *c) {
+	Game::runningCharac.push_back(c);
+}
+
+void	Game::stopRunning(Elements *c) {
+	Game::runningCharac.remove(c);
+}
+
+void	Game::makeItRun(void) {
+	std::list<Elements *>::iterator	i;
+
+	for (i = Game::runningCharac.begin(); i != Game::runningCharac.end(); i++) {
+		(*i)->_run();
+	}
+}
+
 // Set for the statics
 int Game::currentIds = 0;
 std::map<int, Elements *> Game::elementMap = {};
+std::list<Elements *> Game::runningCharac;

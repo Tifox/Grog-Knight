@@ -45,7 +45,6 @@ class MouseDebugger: public MouseListener {
 int		main(int ac, char **av) {
 	Game	*game = new Game();
 
-	game->grid();
 	game->readMaps();
 	game->initMap();
 	MouseDebugger l;

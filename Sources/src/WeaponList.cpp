@@ -26,20 +26,29 @@
 # include "WeaponList.hpp"
 
 
-/*
-** Default constructor, using the element that called the attack
-** @param: Elements *
-*/
+/**
+ * Default constructor, using the element that called the attack
+ * @param: Elements *
+ */
 WeaponList::WeaponList(void) {
-	DIR *Dir;
-	struct dirent *DirEntry;
-	Dir = opendir("./Resources/Elements/Weapons/");
-	while(DirEntry=readdir(Dir))
-	{
-		if( strcmp(DirEntry->d_name, ".") != 0 && strcmp(DirEntry->d_name, "..") != 0 )
-			this->_allWeapons.push_back(new Weapon(std::string("./Resources/Elements/Weapons/") + std::string(DirEntry->d_name), 1));
+	DIR				*dir;
+	struct dirent	*dirEntry;
+	std::istringstream	iss;
+	std::string		res;
+
+	dir = opendir("./Resources/Elements/Weapons/");
+	while (dirEntry = readdir(dir)) {
+		if (strcmp(dirEntry->d_name, ".") != 0 && strcmp(dirEntry->d_name, "..") != 0) {
+			iss.str(dirEntry->d_name);
+			std::getline(iss, res, '.');
+			this->_allWeapons.push_back(new Weapon(res));
+		}
 	}
 }
+
+/**
+ * Basic destructor
+ */
 WeaponList::~WeaponList(void) {
 	return;
 }
@@ -55,6 +64,11 @@ void		WeaponList::statWeapon(std::string name) {
 	}
 }
 
+/**
+ * Get a weapon obj by name
+ * @param: name (std::string)
+ * @return: *it
+ */
 Weapon		*WeaponList::equipWeapon(std::string name) {
 	std::list<Weapon*>::iterator it;
 

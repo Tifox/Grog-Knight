@@ -26,18 +26,16 @@
 
 #ifndef __Elements__
 # define __Elements__
+
 # include <map>
 # include <string>
-# ifndef __Maps__
-#  include "../inc/Game.hpp"
-# endif
-# include "Maps.hpp"
 # include "../../Angel/Angel.h"
 
 class Weapon;
 
 class Elements : public PhysicsActor {
 public:
+	friend class Game;
 	Elements();
 	Elements(int id);
 	Elements(Elements & obj);
@@ -66,9 +64,17 @@ public:
 	int				getOrientationY(void);
 	int				getLateralOrientation(void);
 
+protected:
+	virtual void	_run() {};
+
 private:
 	float								_XStartPos;
 	float								_YStartPos;
 	std::map<std::string, std::string>	_attributes;
 };
+
+# include "Characters.hpp"
+# include "Maps.hpp"
+# include "Game.hpp"
+
 #endif

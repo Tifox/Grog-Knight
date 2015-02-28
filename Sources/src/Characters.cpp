@@ -253,7 +253,7 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 void	Characters::_forward(int status) {
 	this->_setCategory("forward");
 	if (status == 1) {
-		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt())
+		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() && !this->_isJump)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 				this->_getAttr("beginFrame").asInt(),
 				this->_getAttr("endFrame").asInt());
@@ -261,7 +261,8 @@ void	Characters::_forward(int status) {
 			this->ApplyLinearImpulse(Vector2(this->_getAttr("force").asFloat(), 0), Vector2(0, 0));
 	} else {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
-		this->AnimCallback("base");
+		if (!this->_isJump)
+			this->AnimCallback("base");
 	}
 	return ;
 }
@@ -273,7 +274,7 @@ void	Characters::_forward(int status) {
 void	Characters::_backward(int status) {
 	this->_setCategory("backward");
 	if (status == 1) {
-		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt())
+		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() && !this->_isJump)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 				this->_getAttr("beginFrame").asInt(),
 				this->_getAttr("endFrame").asInt());
@@ -281,7 +282,8 @@ void	Characters::_backward(int status) {
 			this->ApplyLinearImpulse(Vector2(-(this->_getAttr("force").asFloat()), 0), Vector2(0, 0));
 	} else {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
-		this->AnimCallback("base");
+		if (!this->_isJump)
+			this->AnimCallback("base");
 	}
 	return ;
 }

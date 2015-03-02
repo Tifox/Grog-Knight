@@ -10,6 +10,8 @@ SRCS 	= ../Sources/src/main.cpp \
 		  ../Sources/src/Weapon.cpp \
 		  ../Sources/src/Shooter.cpp \
 		  ../Sources/src/Projectile.cpp \
+		  ../Sources/src/Room.cpp \
+		  ../Sources/src/LevelGenerator.cpp \
 		  ../Sources/src/Hero.cpp \
 		  ../Sources/src/Enemy.cpp \
 		  ../Sources/src/Maps.cpp \

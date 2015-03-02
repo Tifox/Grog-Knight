@@ -29,7 +29,13 @@
 
 # include "Weapon.hpp"
 # include "Log.hpp"
-# include "json/json.h"
+
+# ifdef __APPLE__
+#  include "../../Tools/jsoncpp/include/json/json.h"
+# else
+#  include "json/json.h"
+# endif
+
 # include <list>
 # include "../../Angel/Angel.h"
 # ifndef __Elements__

@@ -28,8 +28,11 @@
 
 # include "Log.hpp"
 # include "Elements.hpp"
-# include "json/json.h"
-
+# ifdef __APPLE__
+#  include "../../Tools/jsoncpp/include/json/json.h"
+# else
+#  include "json/json.h"
+# endif
 class Weapon: public Elements {
 public:
 	Weapon(std::string name);

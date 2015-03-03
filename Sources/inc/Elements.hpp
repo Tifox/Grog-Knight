@@ -54,6 +54,7 @@ public:
 	void		setYStart(float Y);
 	void		display(void);
 	std::map<std::string, std::string>		getAttributes(void);
+	void		setFrameSprite(int frame);
 
 	/* Virtual function, overridden in Childs */
 	virtual void	callback(Elements * elem) { };

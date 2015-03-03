@@ -162,7 +162,6 @@ void	Characters::ReceiveMessage(Message *m) {
 
 			// Get the key status (1 = Pressed, 0 = Released)
 			status = (m->GetMessageName().substr(strlen(attrName.c_str()), 7) == "Pressed" ? 1 : 0);
-			std::cout << "==========\n" << attrName << std::endl;
 			if (attrName == "forward") {
 				this->_forward(status);
 			} else if (attrName == "backward") {
@@ -190,7 +189,11 @@ void	Characters::AnimCallback(String s) {
 				this->_getAttr("beginFrame").asInt(),
 				this->_getAttr("endFrame").asInt(), "base");
 		} else {
-			this->_setCategory("forward");
+			if (this->_isRunning == 1) {
+				this->_setCategory("forward");
+			} else if (this->_isRunning == 2) {
+				this->_setCategory("backward");
+			}
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 				this->_getAttr("beginFrame").asInt(),
 				this->_getAttr("endFrame").asInt());

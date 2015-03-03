@@ -63,6 +63,8 @@ SRCS =	./Sources/src/Elements.cpp \
 		./Sources/src/Hero.cpp \
 		./Sources/src/Shooter.cpp \
 		./Sources/src/Projectile.cpp \
+		./Sources/src/Room.cpp \
+		./Sources/src/LevelGenerator.cpp \
        	./Sources/src/Enemy.cpp \
 		./Sources/src/GameContactListener.cpp \
 		./Sources/src/ContactFilter.cpp \

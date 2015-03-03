@@ -26,6 +26,7 @@
 # include "../inc/Game.hpp"
 # include "../inc/Hero.hpp"
 # include "../inc/Enemy.hpp"
+ # include "../inc/Object.hpp"
 # include "../inc/WeaponList.hpp"
 
 
@@ -49,8 +50,9 @@ int		main(int ac, char **av) {
 	game->initMap();
 	MouseDebugger l;
 	theWorld.SetBackgroundColor(*(new Color(0.51f, 0.90f, 1)));
-	Hero	*hero = new Hero();
-	Enemy	*enemy = new Enemy();
+	Hero		*hero = new Hero();
+	Enemy		*enemy = new Enemy();
+	Object		*object = new Object();
 	WeaponList	*wList = new WeaponList();
 
 	wList->statWeapon("Sword");
@@ -60,8 +62,10 @@ int		main(int ac, char **av) {
 	theCamera.LockTo(hero);
 	game->displayHero(*(hero));
 	game->displayEnemy(*(enemy));
+	game->displayObject(*(object));
 	hero->init();
 	enemy->init();
+	object->init();
 
 	//theWorld.SetSideBlockers(true, 0.7f);
 

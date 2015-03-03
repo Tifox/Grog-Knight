@@ -18,7 +18,8 @@ SRCS 	= ../Sources/src/main.cpp \
 		  ../Angel/Scripting/Interfaces/AngelLuaWrapping.cpp \
 		  ../Sources/src/GameContactListener.cpp \
 		  ../Sources/src/ContactFilter.cpp \
-		  ../Sources/src/Log.cpp
+		  ../Sources/src/Log.cpp \
+		  ../Sources/src/Object.cpp
 
 OBJS 	 = $(SRCS:.cpp=.o)
 

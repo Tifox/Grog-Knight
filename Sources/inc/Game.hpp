@@ -49,6 +49,7 @@ class Game {
 		void	displayMap(t_map map);
 		void	displayHero(Elements & Hero);
 		void	displayEnemy(Elements & Enemy);
+		void	displayObject(Elements & Object);
 
 		static void	destroyAllBodies(void);
 

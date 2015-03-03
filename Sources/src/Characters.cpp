@@ -370,7 +370,6 @@ void	Characters::_down(int status) {
  */
 void	Characters::_attack(int status) {
 	if (status == 1 && this->_weapon->attackReady() == 1) {
-		std::cout << "weapon created" << std::endl;
 		this->_weapon->attack(this);
 	}
 }

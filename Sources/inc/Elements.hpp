@@ -31,6 +31,7 @@
 # include <string>
 # include "../../Angel/Angel.h"
 
+class Weapon;
 
 class Elements : public PhysicsActor {
 public:

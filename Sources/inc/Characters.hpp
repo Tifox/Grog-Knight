@@ -30,7 +30,7 @@
 # include "Weapon.hpp"
 # include "Log.hpp"
 
-class Weapon;
+//class Weapon;
 
 # ifdef __APPLE__
 #  include "../../Tools/jsoncpp/include/json/json.h"

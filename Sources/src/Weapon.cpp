@@ -25,7 +25,6 @@
 
 # include "Weapon.hpp"
 
-
 /**
  * Default constructor, using the element that called the attack
  * @param: name (std::string)
@@ -56,8 +55,13 @@ Weapon::Weapon(Weapon* weapon) {
 }
 
 Weapon::Weapon(Weapon* w, Characters* c) {
-	this->_canAttack = 1;
-	this->SetSize(1);
+	float xDecal = 0;
+	float yDecal = 0;
+	float xjoint1 = 0;
+	float xjoint2 = 0;
+	float yjoint1 = 0;
+	float yjoint2 = 0;
+	this->SetSize(w->getSize());
 	this->SetName("WeaponHitbox");
 	this->addAttribute("type", "WeaponHitBox");
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
@@ -72,67 +76,47 @@ Weapon::Weapon(Weapon* w, Characters* c) {
 	theSwitchboard.SubscribeTo(this, "deleteWeapon");
 	theSwitchboard.DeferredBroadcast(new Message("deleteWeapon"), w->getActive());
 	theSwitchboard.DeferredBroadcast(new Message("canAttack"), w->getRecovery());
-
 	if (c->getOrientation() == Characters::RIGHT) {
-		this->SetPosition(c->GetBody()->GetWorldCenter().x + 1, c->GetBody()->GetWorldCenter().y);
-		this->InitPhysics();
-		b2DistanceJointDef jointDef1;
-		jointDef1.Initialize(c->GetBody(), this->GetBody(), b2Vec2(c->GetBody()->GetWorldCenter().x + 0.5, c->GetBody()->GetWorldCenter().y + 0.5),
-							 this->GetBody()->GetWorldCenter());
-		jointDef1.collideConnected = false;
-		b2DistanceJointDef jointDef2;
-		jointDef2.Initialize(c->GetBody(), this->GetBody(), b2Vec2(c->GetBody()->GetWorldCenter().x + 0.5, c->GetBody()->GetWorldCenter().y - 0.5),
-							 this->GetBody()->GetWorldCenter());
-		jointDef2.collideConnected = false;
-		b2DistanceJoint *joint1 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef1);
-		b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
+		xDecal = 1;
+		yDecal = 0;
+		xjoint1 = 0.5;
+		yjoint1 = 0.5;
+		xjoint2 = 0.5;
+		yjoint2 = -0.5;
+	} else if (c->getOrientation() == Characters::LEFT) {
+		xDecal = -1;
+		yDecal = 0;
+		xjoint1 = -0.5;
+		yjoint1 = 0.5;
+		xjoint2 = -0.5;
+		yjoint2 = -0.5;
+	} else if (c->getOrientation() == Characters::UP) {
+		xDecal = 0;
+		yDecal = 1;
+		xjoint1 = 0.5;
+		yjoint1 = 0.5;
+		xjoint2 = -0.5;
+		yjoint2 = 0.5;
+	} else if (c->getOrientation() == Characters::DOWN) {
+		xDecal = 0;
+		yDecal = -1;
+		xjoint1 = -0.5;
+		yjoint1 = -0.5;
+		xjoint2 = 0.5;
+		yjoint2 = -0.5;
 	}
-
-	else if (c->getOrientation() == Characters::LEFT) {
-		this->SetPosition(c->GetBody()->GetWorldCenter().x - 1, c->GetBody()->GetWorldCenter().y);
-		this->InitPhysics();
-		b2DistanceJointDef jointDef1;
-		jointDef1.Initialize(c->GetBody(), this->GetBody(), b2Vec2(c->GetBody()->GetWorldCenter().x - 0.5, c->GetBody()->GetWorldCenter().y + 0.5),
-							 this->GetBody()->GetWorldCenter());
-		jointDef1.collideConnected = false;
-		b2DistanceJointDef jointDef2;
-		jointDef2.Initialize(c->GetBody(), this->GetBody(), b2Vec2(c->GetBody()->GetWorldCenter().x - 0.5, c->GetBody()->GetWorldCenter().y - 0.5),
-							 this->GetBody()->GetWorldCenter());
-		jointDef2.collideConnected = false;
-		b2DistanceJoint *joint1 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef1);
-		b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
-	}
-
-	else if (c->getOrientation() == Characters::UP) {
-		std::cout << "DEBUG TA RACE" << std::endl;
-		this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y + 1);
-		this->InitPhysics();
-		b2DistanceJointDef jointDef1;
-		jointDef1.Initialize(c->GetBody(), this->GetBody(), b2Vec2(c->GetBody()->GetWorldCenter().x + 0.5, c->GetBody()->GetWorldCenter().y + 0.5),
-							 this->GetBody()->GetWorldCenter());
-		jointDef1.collideConnected = false;
-		b2DistanceJointDef jointDef2;
-		jointDef2.Initialize(c->GetBody(), this->GetBody(), b2Vec2(c->GetBody()->GetWorldCenter().x - 0.5, c->GetBody()->GetWorldCenter().y + 0.5),
-							 this->GetBody()->GetWorldCenter());
-		jointDef2.collideConnected = false;
-		b2DistanceJoint *joint1 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef1);
-		b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
-	}
-
-	else if (c->getOrientation() == Characters::DOWN) {
-		this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y - 1);
-		this->InitPhysics();
-		b2DistanceJointDef jointDef1;
-		jointDef1.Initialize(c->GetBody(), this->GetBody(), b2Vec2(c->GetBody()->GetWorldCenter().x - 0.5, c->GetBody()->GetWorldCenter().y - 0.5),
-							 this->GetBody()->GetWorldCenter());
-		jointDef1.collideConnected = false;
-		b2DistanceJointDef jointDef2;
-		jointDef2.Initialize(c->GetBody(), this->GetBody(), b2Vec2(c->GetBody()->GetWorldCenter().x + 0.5, c->GetBody()->GetWorldCenter().y - 0.5),
-							 this->GetBody()->GetWorldCenter());
-		jointDef2.collideConnected = false;
-		b2DistanceJoint *joint1 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef1);
-		b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
-	}
+	this->SetPosition(c->GetBody()->GetWorldCenter().x + xDecal, c->GetBody()->GetWorldCenter().y + yDecal);
+	this->InitPhysics();
+	b2DistanceJointDef jointDef1;
+	jointDef1.Initialize(c->GetBody(), this->GetBody(), b2Vec2(c->GetBody()->GetWorldCenter().x + xjoint1, c->GetBody()->GetWorldCenter().y + yjoint1),
+						 this->GetBody()->GetWorldCenter());
+	jointDef1.collideConnected = false;
+	b2DistanceJointDef jointDef2;
+	jointDef2.Initialize(c->GetBody(), this->GetBody(), b2Vec2(c->GetBody()->GetWorldCenter().x + xjoint2, c->GetBody()->GetWorldCenter().y + yjoint2),
+						 this->GetBody()->GetWorldCenter());
+	jointDef2.collideConnected = false;
+	b2DistanceJoint *joint1 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef1);
+	b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
 	theWorld.Add(this);
 }
 
@@ -181,7 +165,7 @@ void    Weapon::_parseJson(std::string file) {
 	this->_recovery = json["infos"].get("recovery", "").asFloat();
 	this->_size = json["infos"].get("size", "").asFloat();
 	this->_damage = json["infos"].get("damage", "").asFloat();
-	this->_attack = json["infos"].get("damage", "").asString();
+	this->_attack = json["infos"].get("attack", "").asString();
 }
 
 /**
@@ -212,7 +196,10 @@ Json::Value     Weapon::_getAttr(std::string category, std::string key) {
  */
 void	Weapon::attack(Characters *c) {
 	this->_canAttack = 0;
-	Weapon *_attackBox = new Weapon(this, c);
+	if (this->_attack == "melee")
+		new Weapon(this, c);
+	else if (this->_attack == "ranged")
+		new Projectile(this, c);
 }
 
 void	Weapon::ReceiveMessage(Message *m) {

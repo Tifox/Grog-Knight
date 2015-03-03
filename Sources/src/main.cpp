@@ -53,20 +53,16 @@ int		main(int ac, char **av) {
 	Hero		*hero = new Hero();
 	Enemy		*enemy = new Enemy();
 	Object		*object = new Object();
-	WeaponList	*wList = new WeaponList();
+	Game::wList = new WeaponList();
 
-	wList->statWeapon("Sword");
-	wList->statWeapon("Bow");
-	std::cout << wList->equipWeapon("Sword") << std::endl;
+	std::cout << Game::wList->getWeapon("Sword") << std::endl;
 
 	theCamera.LockTo(hero);
 	game->displayHero(*(hero));
 	game->displayEnemy(*(enemy));
-	game->displayObject(*(object));
 	hero->init();
 	enemy->init();
-	hero->equipWeapon(wList->equipWeapon("Sword"));
-	object->init();
+	hero->equipWeapon(Game::wList->getWeapon("Sword"));
 
 	//theWorld.SetSideBlockers(true, 0.7f);
 

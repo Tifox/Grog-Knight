@@ -44,15 +44,60 @@ Projectile::Projectile(float x, float y, int direction, std::string owner) {
 	this->GetBody()->SetGravityScale(0.0f);
 	this->ApplyLinearImpulse(Vector2(2 * direction, 0), Vector2(0, 0));
 	theWorld.Add(this);
-	theSwitchboard.DeferredBroadcast(new Message("DeleteProjectile"), 0.5f);
+}
+
+Projectile::Projectile(Weapon* w, Characters* c) {
+	int xDecal;
+	int yDecal;
+	int xOrient;
+	int yOrient;
+	this->SetSize(0.5f);
+	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
+	this->SetDensity(1);
+	this->SetFriction(0);
+	this->SetRestitution(0.0f);
+	this->SetFixedRotation(true);
+	this->SetIsSensor(true);
+	this->Tag("projectile");
+	if (c->getOrientation() == Characters::RIGHT) {
+		xOrient = 1;
+		xDecal = 1;
+		yDecal = 0;
+		yOrient = 0;
+	}
+	if (c->getOrientation() == Characters::LEFT) {
+		xOrient = -1;
+		xDecal = -1;
+		yDecal = 0;
+		yOrient = 0;
+	}
+	if (c->getOrientation() == Characters::UP) {
+		xOrient = 0;
+		xDecal = 0;
+		yDecal = 1;
+		yOrient = 1;
+	}
+	if (c->getOrientation() == Characters::DOWN) {
+		xOrient = 0;
+		xDecal = 0;
+		yDecal = -1;
+		yOrient = -1;
+	}
+	this->SetPosition(c->GetBody()->GetWorldCenter().x + xDecal, c->GetBody()->GetWorldCenter().y + yDecal);
+	this->InitPhysics();
+	this->GetBody()->SetGravityScale(0.0f);
+	this->GetBody()->SetBullet(true);
+	this->ApplyLinearImpulse(Vector2(2 * xOrient, 2 * yOrient), Vector2(0, 0));
+	std::cout << w->getRecovery() << std::endl;
+
+	theSwitchboard.DeferredBroadcast(new Message("canAttack"), w->getRecovery());
+	theWorld.Add(this);
 }
 
 Projectile::~Projectile(void) {
 	return;
 }
 
-void	Projectile::BeginContact(Elements *elem, b2Contact *contact) {
-}
 
 void	Projectile::EndContact(Elements *elem, b2Contact *contact) {
 }
@@ -63,9 +108,8 @@ void	Projectile::EndContact(Elements *elem, b2Contact *contact) {
  * @param: (Message *)
  */
 void	Projectile::ReceiveMessage(Message *m) {
-	if (m->GetMessageName() == "DeleteProjectile") {
-		theWorld.GetPhysicsWorld().DestroyBody(this->GetBody());
-		theWorld.Remove(this);
-	}
 }
 
+void	Projectile::BeginContact(Elements *m, b2Contact *c) {
+	Game::bodiesToDestroy.push_back(this);
+}

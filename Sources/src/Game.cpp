@@ -151,6 +151,17 @@ void	Game::displayEnemy(Elements & Enemy) {
 }
 
 /**
+ * Display the Object
+ * @param: Object (Elements &)
+ */
+void	Game::displayObject(Elements & Object) {
+	Object.setXStart(6);
+	Object.setYStart(6);
+	Object.addAttribute("Object", "1");
+	Object.display();
+}
+
+/**
  * Get the current id, for the intern elements map
  */
 int		Game::getNextId(void) {

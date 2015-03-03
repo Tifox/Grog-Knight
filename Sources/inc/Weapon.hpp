@@ -28,6 +28,7 @@
 
 # include "Log.hpp"
 # include "Elements.hpp"
+# include "Projectile.hpp"
 # ifdef __APPLE__
 #  include "../../Tools/jsoncpp/include/json/json.h"
 # else
@@ -35,6 +36,7 @@
 # endif
 
 class Characters;
+
 
 class Weapon: public Elements {
 public:

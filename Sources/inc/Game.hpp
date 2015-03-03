@@ -34,6 +34,9 @@
 # include "GameContactListener.hpp"
 # include "ContactFilter.hpp"
 # include "Characters.hpp"
+# include "WeaponList.hpp"
+
+class WeaponList;
 
 class Game {
 
@@ -68,6 +71,7 @@ class Game {
 		static std::map<int, Elements *>	elementMap;
 		static std::list<Elements *>	bodiesToDestroy;
 		static std::list<Elements *>	runningCharac;
+		static WeaponList*				wList;
 
 	private:
 		float		beginXHero;

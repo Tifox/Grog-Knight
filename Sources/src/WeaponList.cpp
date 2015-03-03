@@ -69,7 +69,7 @@ void		WeaponList::statWeapon(std::string name) {
  * @param: name (std::string)
  * @return: *it
  */
-Weapon		*WeaponList::equipWeapon(std::string name) {
+Weapon		*WeaponList::getWeapon(std::string name) {
 	std::list<Weapon*>::iterator it;
 
 	for (it = this->_allWeapons.begin(); it != this->_allWeapons.end(); it++) {

@@ -238,6 +238,7 @@ void	Game::makeItRun(void) {
 
 // Set for the statics
 int Game::currentIds = 0;
-std::map<int, Elements *> Game::elementMap = {};
-std::list<Elements *> Game::runningCharac;
-std::list<Elements *> Game::bodiesToDestroy;
+std::map<int, Elements *>	Game::elementMap = {};
+std::list<Elements *>		Game::runningCharac;
+std::list<Elements *>		Game::bodiesToDestroy;
+WeaponList*					Game::wList;

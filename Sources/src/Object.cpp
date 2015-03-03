@@ -23,7 +23,8 @@
  * Manon Budin <mbudin@student.42.fr>
  */
 
- #include "../inc/Object.hpp"
+#include "Object.hpp"
+
 
 /**
  * Basic Constructor
@@ -31,21 +32,26 @@
 Object::Object(void) {
 	this->addAttribute("physic", "1");
 	this->addAttribute("type", "Object");
-	this->SetDensity(1.0f);
+	this->SetDensity(0.0f);
 	this->SetFriction(1.0f);
 	this->SetRestitution(0.0f);
 	this->SetFixedRotation(true);
 	this->SetDrawShape(ADS_Circle);
+	this->SetIsSensor(true);
+	this->SetColor(1,1,1,1);
+	this->SetPosition(0, 0);
+	this->InitPhysics();
+	theWorld.Add(this);
 }
 
 void	Object::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "Hero"){
-		theWorld.Remove(this);
+		static_cast<Characters*>(elem)->equipWeapon(Game::wList->getWeapon("Bow"));
+		Game::bodiesToDestroy.push_back(this);
 	}
 }
 
 void	Object::init(void) {
-	this->SetColor(1,1,1,1);
 }
 
 /*

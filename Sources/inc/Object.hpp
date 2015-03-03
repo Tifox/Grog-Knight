@@ -28,6 +28,7 @@
 
 # include "Elements.hpp"
 # include "Hero.hpp"
+# include "WeaponList.hpp"
 
 class Object : public Elements {
 public:

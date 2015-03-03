@@ -341,3 +341,8 @@ void	Characters::_jump(int status) {
 void	Characters::_attack(int status) {
 	this->_weapon->attack(this->GetBody()->GetWorldCenter().x + 0.75f , this->GetBody()->GetWorldCenter().y, 0, 0, this->GetBody()->GetLinearVelocity());
 }
+
+void	Characters::equipWeapon(Weapon* weapon) {
+	this->_weapon = new Weapon(weapon);
+	this->_weapon->Tag("heroWeapon");
+}

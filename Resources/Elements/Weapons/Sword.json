@@ -4,7 +4,6 @@
 		"flavor": "Hey look, its a sword. A pretty shitty one actually...",
 		"hitbox": "SWORD",
 		"size": 1,
-		"active": 0.2,
 		"lvlRequired": 1,
 	 	"damage": 1,
 		"recovery": 1,
@@ -26,7 +25,7 @@
 			"heroAnim": "sword_anim_3"
 		}
 	},
-	"Capacities": {
+	"capacities": {
 		"stunSpecial": {
 			"duration": 1,
 			"particule": "boom"

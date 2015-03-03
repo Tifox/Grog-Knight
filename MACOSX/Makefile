@@ -87,7 +87,10 @@ angel:
 angel-clean:
 	cd ../Angel && xcodebuild -scheme Angel -project Angel.xcodeproj CONFIGURATION_BUILD_DIR='build' clean
 
-clean: angel-clean json-clean
+clean: angel-clean json-clean quick-clean
+
+quick-clean:
+	rm $(OBJS)
 
 exec:
 	cd build/ && ./rogue-like

@@ -49,12 +49,14 @@ class Game {
 		void	displayMap(t_map map);
 		void	displayHero(Elements & Hero);
 		void	displayEnemy(Elements & Enemy);
+		void	displayObject(Elements & Object);
 
 		static void	destroyAllBodies(void);
 
 
 		static int	getNextId(void);
 		static void	addElement(Elements & elem);
+		static void	delElement(Elements *elem);
 		static void	listElement(void);
 		static void	callCallbacks(int a, int b);
 		static void	startRunning(Elements *c);
@@ -64,6 +66,7 @@ class Game {
 		Maps		*maps;
 		static int	currentIds;
 		static std::map<int, Elements *>	elementMap;
+		static std::list<Elements *>	bodiesToDestroy;
 		static std::list<Elements *>	runningCharac;
 
 	private:

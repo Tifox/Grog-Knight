@@ -33,31 +33,41 @@
 # else
 #  include "json/json.h"
 # endif
+
+class Characters;
+
 class Weapon: public Elements {
 public:
 	Weapon(std::string name);
-	Weapon(std::string filename, int flag);
+	Weapon(Weapon* weapon);
+	Weapon(Weapon* weapon, Characters* c);
 	~Weapon(void);
 
-	void			attack(int, int, int, int, b2Vec2);
+	void			attack(Characters *c);
 	void			BeginContact(Elements *elem, b2Contact *contact);
 	void			EndContact(Elements *elem, b2Contact *contact);
 	void			ReceiveMessage(Message *m);
 
 	std::string		getName(void);
 	std::string		getFlavor(void);
-	int				getActive(void);
-	int				getRecovery(void);
+	std::string		getAttack(void);
+	float			getActive(void);
+	int				getSize(void);
+	int				getDamage(void);
+	float			getRecovery(void);
+	int				attackReady(void);
 
 private:
 	std::map<std::string, std::map<std::string, Json::Value> >	_attr;
 
 	std::string		_name;
 	std::string		_flavor;
+	std::string		_attack;
 	int				_canAttack;
-	int				_recovery;
-	int				_active;
+	float			_recovery;
+	float			_active;
 	int				_size;
+	int				_damage;
 	void			_readFile(std::string name);
 	void			_readFileFromFilename(std::string name);
 	void			_parseJson(std::string file);

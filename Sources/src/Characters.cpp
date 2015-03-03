@@ -43,6 +43,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0) {
 	this->SetFriction(1.0f);
 	this->SetRestitution(0.0f);
 	this->SetFixedRotation(true);
+	this->_orientation = RIGHT;
 	this->_readFile(name);
 
 
@@ -166,6 +167,10 @@ void	Characters::ReceiveMessage(Message *m) {
 				this->_forward(status);
 			} else if (attrName == "backward") {
 				this->_backward(status);
+			} else if (attrName == "up") {
+				this->_up(status);
+			} else if (attrName == "down") {
+				this->_down(status);
 			} else if (attrName == "jump") {
 				this->_jump(status);
 			} else if (attrName == "attack") {
@@ -270,6 +275,7 @@ void	Characters::_run(void) {
 void	Characters::_forward(int status) {
 	this->_setCategory("forward");
 	if (status == 1) {
+		this->_orientation = RIGHT;
 		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() && !this->_isJump)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 				this->_getAttr("beginFrame").asInt(),
@@ -298,6 +304,7 @@ void	Characters::_forward(int status) {
 void	Characters::_backward(int status) {
    this->_setCategory("backward");
 	if (status == 1) {
+		this->_orientation = LEFT;
 		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() && !this->_isJump)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 				this->_getAttr("beginFrame").asInt(),
@@ -338,9 +345,38 @@ void	Characters::_jump(int status) {
 }
 
 /**
+ * Called when pressing the UP button
+ * @param: status (int)
+ */
+
+void	Characters::_up(int status) {
+	if (status == 1)
+		this->_orientation = UP;
+}
+
+/**
+ * Called when pressing the DOWN button
+ * @param: status (int)
+ */
+
+void	Characters::_down(int status) {
+	if (status == 1)
+		this->_orientation = DOWN;
+}
+
+/**
  * Attack action
  * @param: status (int)
  */
 void	Characters::_attack(int status) {
-	this->_weapon->attack(this->GetBody()->GetWorldCenter().x + 0.75f , this->GetBody()->GetWorldCenter().y, 0, 0, this->GetBody()->GetLinearVelocity());
+	if (status == 1 && this->_weapon->attackReady() == 1) {
+		std::cout << "weapon created" << std::endl;
+		this->_weapon->attack(this);
+	}
 }
+
+void	Characters::equipWeapon(Weapon* weapon) {
+		this->_weapon = new Weapon(weapon);
+}
+
+Characters::Orientation		Characters::getOrientation(void) { return this->_orientation; }

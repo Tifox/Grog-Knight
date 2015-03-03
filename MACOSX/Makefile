@@ -1,6 +1,6 @@
 NAME 	= rogue-like
 CC 		= g++
-CFLAGS 	= -std=c++0x -arch i386 -Wno-deprecated
+CFLAGS 	= -std=c++0x -arch i386 -Wno-deprecated -g
 ANGEL_FLAG = -D ANGEL
 SRCS 	= ../Sources/src/main.cpp \
 		  ../Sources/src/Elements.cpp \
@@ -18,7 +18,8 @@ SRCS 	= ../Sources/src/main.cpp \
 		  ../Angel/Scripting/Interfaces/AngelLuaWrapping.cpp \
 		  ../Sources/src/GameContactListener.cpp \
 		  ../Sources/src/ContactFilter.cpp \
-		  ../Sources/src/Log.cpp
+		  ../Sources/src/Log.cpp \
+		  ../Sources/src/Object.cpp
 
 OBJS 	 = $(SRCS:.cpp=.o)
 
@@ -89,7 +90,10 @@ angel:
 angel-clean:
 	cd ../Angel && xcodebuild -scheme Angel -project Angel.xcodeproj CONFIGURATION_BUILD_DIR='build' clean
 
-clean: angel-clean json-clean
+clean: angel-clean json-clean quick-clean
+
+quick-clean:
+	rm $(OBJS)
 
 exec:
 	cd build/ && ./rogue-like

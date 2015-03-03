@@ -18,31 +18,39 @@
  */
 
 /**
- * File: Shooter.hpp
- * Creation: 2015-02-23 16:14
- * Matthieu Maudet <mmaudet@student.42.fr>
+ * File: Object.cpp
+ * Creation: 2015-03-03 13:08
+ * Manon Budin <mbudin@student.42.fr>
  */
 
-#ifndef __Shooter__
-# define __Shooter__
+ #include "../inc/Object.hpp"
 
-# include <iostream>
-# include "Elements.hpp"
+/**
+ * Basic Constructor
+ */
+Object::Object(void) {
+	this->addAttribute("physic", "1");
+	this->addAttribute("type", "Object");
+	this->SetDensity(1.0f);
+	this->SetFriction(1.0f);
+	this->SetRestitution(0.0f);
+	this->SetFixedRotation(true);
+	this->SetDrawShape(ADS_Circle);
+}
 
-class Shooter : public Elements {
-public:
-	Shooter();
-	~Shooter();
+void	Object::BeginContact(Elements *elem, b2Contact *contact) {
+	if (elem->getAttributes()["type"] == "Hero"){
+		theWorld.Remove(this);
+	}
+}
 
-	void fire(float x, float y, int direction, std::string owner);
+void	Object::init(void) {
+	this->SetColor(1,1,1,1);
+}
 
-private:
-	int _damage;
-	float _rate;
-	int _orientation;
-	bool _straight;
-	std::string _spriteName;
-
-};
-
-#endif
+/*
+ * Basic Destructor
+ */
+Object::~Object(void) {
+	return;
+}

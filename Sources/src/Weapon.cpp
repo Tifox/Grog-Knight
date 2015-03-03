@@ -31,17 +31,115 @@
  * @param: name (std::string)
  */
 Weapon::Weapon(std::string name) : _name(name) {
-	theSwitchboard.SubscribeTo(this, "deleteWeapon");
-	theSwitchboard.SubscribeTo(this, "canAttack");
 	this->_readFile(name);
 	this->_canAttack = 1;
+}
+
+/**
+ * Copy constructor
+ * @param weapon (Weapon*)
+ */
+
+Weapon::Weapon(Weapon* weapon) {
+	std::cout << this << std::endl;
+	this->_name = weapon->getName();
+	this->_flavor = weapon->getFlavor();
+	this->_damage = weapon->getDamage();
+	this->_recovery = weapon->getRecovery();
+	this->_active = weapon->getActive();
+	this->_size = weapon->getSize();
+	this->_attack = weapon->getAttack();
+	this->_canAttack = 1;
+	std::cout << this->_canAttack << std::endl;
+
+	theSwitchboard.SubscribeTo(this, "canAttack");
+}
+
+Weapon::Weapon(Weapon* w, Characters* c) {
+	this->_canAttack = 1;
+	this->SetSize(1);
+	this->SetName("WeaponHitbox");
+	this->addAttribute("type", "WeaponHitBox");
+	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
+	this->SetDrawShape(ADS_Square);
+	this->SetColor(1,1,1);
+	this->SetDensity(0.0001);
+	this->SetFriction(0);
+	this->SetRestitution(0.0f);
+	this->SetFixedRotation(true);
+	this->Tag("weaponhitbox");
+	this->SetIsSensor(true);
+	theSwitchboard.SubscribeTo(this, "deleteWeapon");
+	theSwitchboard.DeferredBroadcast(new Message("deleteWeapon"), w->getActive());
+	theSwitchboard.DeferredBroadcast(new Message("canAttack"), w->getRecovery());
+
+	if (c->getOrientation() == Characters::RIGHT) {
+		this->SetPosition(c->GetBody()->GetWorldCenter().x + 1, c->GetBody()->GetWorldCenter().y);
+		this->InitPhysics();
+		b2DistanceJointDef jointDef1;
+		jointDef1.Initialize(c->GetBody(), this->GetBody(), b2Vec2(c->GetBody()->GetWorldCenter().x + 0.5, c->GetBody()->GetWorldCenter().y + 0.5),
+							 this->GetBody()->GetWorldCenter());
+		jointDef1.collideConnected = false;
+		b2DistanceJointDef jointDef2;
+		jointDef2.Initialize(c->GetBody(), this->GetBody(), b2Vec2(c->GetBody()->GetWorldCenter().x + 0.5, c->GetBody()->GetWorldCenter().y - 0.5),
+							 this->GetBody()->GetWorldCenter());
+		jointDef2.collideConnected = false;
+		b2DistanceJoint *joint1 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef1);
+		b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
+	}
+
+	else if (c->getOrientation() == Characters::LEFT) {
+		this->SetPosition(c->GetBody()->GetWorldCenter().x - 1, c->GetBody()->GetWorldCenter().y);
+		this->InitPhysics();
+		b2DistanceJointDef jointDef1;
+		jointDef1.Initialize(c->GetBody(), this->GetBody(), b2Vec2(c->GetBody()->GetWorldCenter().x - 0.5, c->GetBody()->GetWorldCenter().y + 0.5),
+							 this->GetBody()->GetWorldCenter());
+		jointDef1.collideConnected = false;
+		b2DistanceJointDef jointDef2;
+		jointDef2.Initialize(c->GetBody(), this->GetBody(), b2Vec2(c->GetBody()->GetWorldCenter().x - 0.5, c->GetBody()->GetWorldCenter().y - 0.5),
+							 this->GetBody()->GetWorldCenter());
+		jointDef2.collideConnected = false;
+		b2DistanceJoint *joint1 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef1);
+		b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
+	}
+
+	else if (c->getOrientation() == Characters::UP) {
+		std::cout << "DEBUG TA RACE" << std::endl;
+		this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y + 1);
+		this->InitPhysics();
+		b2DistanceJointDef jointDef1;
+		jointDef1.Initialize(c->GetBody(), this->GetBody(), b2Vec2(c->GetBody()->GetWorldCenter().x + 0.5, c->GetBody()->GetWorldCenter().y + 0.5),
+							 this->GetBody()->GetWorldCenter());
+		jointDef1.collideConnected = false;
+		b2DistanceJointDef jointDef2;
+		jointDef2.Initialize(c->GetBody(), this->GetBody(), b2Vec2(c->GetBody()->GetWorldCenter().x - 0.5, c->GetBody()->GetWorldCenter().y + 0.5),
+							 this->GetBody()->GetWorldCenter());
+		jointDef2.collideConnected = false;
+		b2DistanceJoint *joint1 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef1);
+		b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
+	}
+
+	else if (c->getOrientation() == Characters::DOWN) {
+		this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y - 1);
+		this->InitPhysics();
+		b2DistanceJointDef jointDef1;
+		jointDef1.Initialize(c->GetBody(), this->GetBody(), b2Vec2(c->GetBody()->GetWorldCenter().x - 0.5, c->GetBody()->GetWorldCenter().y - 0.5),
+							 this->GetBody()->GetWorldCenter());
+		jointDef1.collideConnected = false;
+		b2DistanceJointDef jointDef2;
+		jointDef2.Initialize(c->GetBody(), this->GetBody(), b2Vec2(c->GetBody()->GetWorldCenter().x + 0.5, c->GetBody()->GetWorldCenter().y - 0.5),
+							 this->GetBody()->GetWorldCenter());
+		jointDef2.collideConnected = false;
+		b2DistanceJoint *joint1 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef1);
+		b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
+	}
+	theWorld.Add(this);
 }
 
 /**
  * Basic destructor
  */
 Weapon::~Weapon(void) {
-	return;
 }
 
 /**
@@ -82,12 +180,8 @@ void    Weapon::_parseJson(std::string file) {
 	this->_active = json["infos"].get("active", "").asFloat();
 	this->_recovery = json["infos"].get("recovery", "").asFloat();
 	this->_size = json["infos"].get("size", "").asFloat();
-	for (i = json["Actions"].begin(); i != json["Actions"].end(); i++) {
-		for (v = (*i).begin(); v != (*i).end(); v++) {
-			tmp[v.key().asString()] = (*v);
-			this->_attr[i.key().asString()] = tmp;
-		}
-	}
+	this->_damage = json["infos"].get("damage", "").asFloat();
+	this->_attack = json["infos"].get("damage", "").asString();
 }
 
 /**
@@ -116,26 +210,29 @@ Json::Value     Weapon::_getAttr(std::string category, std::string key) {
  * @param: orientationY (int)
  * @param: linearVelocity (b2Vec2)
  */
-void	Weapon::attack(int x, int y, int orientationX, int orientationY, b2Vec2 linearVelocity) {
-   /* if (this->_canAttack == 1) {*/
-		//this->_canAttack = 0;
-		////Waiting for orientation vars, have some rude code
-		//int centerX = x + (this->_size / 2);
-		//int	centerY = y;
-////	this->_attackBox = new WeaponArea(centerX, centerY, linearVelocity);
-		//theSwitchboard.DeferredBroadcast(new Message("deleteWeapon"), this->_active);
-		//theSwitchboard.DeferredBroadcast(new Message("canAttack"), this->_recovery);
-	/*}*/
+void	Weapon::attack(Characters *c) {
+	this->_canAttack = 0;
+	Weapon *_attackBox = new Weapon(this, c);
 }
 
 void	Weapon::ReceiveMessage(Message *m) {
+	if (m->GetMessageName() == "deleteWeapon") {
+		Game::bodiesToDestroy.push_back(this);
+		theSwitchboard.UnsubscribeFrom(this, "deleteWeapon");
+	}
+	if (m->GetMessageName() == "canAttack")
+		this->_canAttack = 1;
 }
 
 /* GETTERS */
 std::string		Weapon::getName(void) { return this->_name; }
 std::string		Weapon::getFlavor(void) { return this->_flavor; }
-int				Weapon::getActive(void) { return this->_active; }
-int				Weapon::getRecovery(void) { return this->_recovery; }
+std::string		Weapon::getAttack(void) { return this->_attack; }
+float			Weapon::getActive(void) { return this->_active; }
+int				Weapon::getSize(void) { return this->_size; }
+int				Weapon::getDamage(void) { return this->_damage; }
+float			Weapon::getRecovery(void) { return this->_recovery; }
+int				Weapon::attackReady(void) { return this->_canAttack; }
 
 void	Weapon::BeginContact(Elements *elem, b2Contact *contact) {
 }

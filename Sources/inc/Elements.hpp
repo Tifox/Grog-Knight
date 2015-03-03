@@ -31,7 +31,6 @@
 # include <string>
 # include "../../Angel/Angel.h"
 
-class Weapon;
 
 class Elements : public PhysicsActor {
 public:
@@ -40,13 +39,6 @@ public:
 	Elements(int id);
 	Elements(Elements & obj);
 	~Elements();
-
-	enum Orientation {
-		LEFT,
-		RIGHT,
-		UP,
-		DOWN,
-	};
 
 	void 		addAttribute(std::string name, std::string value);
 	std::string	getAttribute(std::string name);

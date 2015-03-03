@@ -18,31 +18,24 @@
  */
 
 /**
- * File: Shooter.hpp
- * Creation: 2015-02-23 16:14
- * Matthieu Maudet <mmaudet@student.42.fr>
+ * File: Object.hpp
+ * Creation: 2015-03-03 13:10
+ * Manon Budin <mbudin@student.42.fr>
  */
 
-#ifndef __Shooter__
-# define __Shooter__
+#ifndef __Object__
+# define __Object__
 
-# include <iostream>
 # include "Elements.hpp"
+# include "Hero.hpp"
 
-class Shooter : public Elements {
+class Object : public Elements {
 public:
-	Shooter();
-	~Shooter();
+	Object();
+	~Object();
 
-	void fire(float x, float y, int direction, std::string owner);
-
-private:
-	int _damage;
-	float _rate;
-	int _orientation;
-	bool _straight;
-	std::string _spriteName;
-
+	void			init(void);
+	void	BeginContact(Elements *elem, b2Contact *contact);
 };
 
 #endif

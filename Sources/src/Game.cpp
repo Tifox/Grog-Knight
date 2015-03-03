@@ -151,6 +151,17 @@ void	Game::displayEnemy(Elements & Enemy) {
 }
 
 /**
+ * Display the Object
+ * @param: Object (Elements &)
+ */
+void	Game::displayObject(Elements & Object) {
+	Object.setXStart(6);
+	Object.setYStart(6);
+	Object.addAttribute("Object", "1");
+	Object.display();
+}
+
+/**
  * Get the current id, for the intern elements map
  */
 int		Game::getNextId(void) {
@@ -164,6 +175,17 @@ int		Game::getNextId(void) {
 void	Game::addElement(Elements & elem) {
 	Game::elementMap[Game::currentIds] = &elem;
 	Game::currentIds += 1;
+}
+
+/**
+ * Deletes an element from the intern map
+ * @param: elem (Elements &)
+ */
+void	Game::delElement(Elements* elem) {
+	for (int i = 0; Game::elementMap[i]; i++) {
+		if (Game::elementMap[i] == elem)
+			Game::elementMap.erase(i);
+	}
 }
 
 /**
@@ -190,6 +212,12 @@ void	Game::listElement(void) {
 }
 
 void	Game::destroyAllBodies(void) {
+	for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
+		theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
+		theWorld.Remove(*it);
+		Game::delElement(*it);
+	}
+	Game::bodiesToDestroy.clear();
 }
 
 void	Game::startRunning(Elements *c) {
@@ -212,3 +240,4 @@ void	Game::makeItRun(void) {
 int Game::currentIds = 0;
 std::map<int, Elements *> Game::elementMap = {};
 std::list<Elements *> Game::runningCharac;
+std::list<Elements *> Game::bodiesToDestroy;

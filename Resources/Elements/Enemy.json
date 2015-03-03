@@ -12,6 +12,11 @@
 				"beginFrame": 1,
 				"endFrame": 4,
 				"time": 0.1
+			},
+		"jump": {
+				"beginFrame": 1,
+				"endFrame": 4,
+				"time": 0.1
 			}
 	}
 }

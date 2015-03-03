@@ -1,6 +1,6 @@
 NAME 	= rogue-like
 CC 		= g++
-CFLAGS 	= -std=c++0x -arch i386 -Wno-deprecated
+CFLAGS 	= -std=c++0x -arch i386 -Wno-deprecated -g
 ANGEL_FLAG = -D ANGEL
 SRCS 	= ../Sources/src/main.cpp \
 		  ../Sources/src/Elements.cpp \

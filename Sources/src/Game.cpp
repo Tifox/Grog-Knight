@@ -167,6 +167,17 @@ void	Game::addElement(Elements & elem) {
 }
 
 /**
+ * Deletes an element from the intern map
+ * @param: elem (Elements &)
+ */
+void	Game::delElement(Elements* elem) {
+	for (int i = 0; Game::elementMap[i]; i++) {
+		if (Game::elementMap[i] == elem)
+			Game::elementMap.erase(i);
+	}
+}
+
+/**
  * Call the collision callbacks on two objects
  * @param: a (int)
  * @param: b (int)
@@ -190,6 +201,12 @@ void	Game::listElement(void) {
 }
 
 void	Game::destroyAllBodies(void) {
+	for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
+		theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
+		theWorld.Remove(*it);
+		Game::delElement(*it);
+	}
+	Game::bodiesToDestroy.clear();
 }
 
 void	Game::startRunning(Elements *c) {
@@ -212,3 +229,4 @@ void	Game::makeItRun(void) {
 int Game::currentIds = 0;
 std::map<int, Elements *> Game::elementMap = {};
 std::list<Elements *> Game::runningCharac;
+std::list<Elements *> Game::bodiesToDestroy;

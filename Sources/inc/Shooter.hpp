@@ -41,7 +41,7 @@ private:
 	float _rate;
 	int _orientation;
 	bool _straight;
-	std::string _spriteName;	
+	std::string _spriteName;
 
 };
 

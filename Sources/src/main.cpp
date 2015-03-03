@@ -62,6 +62,7 @@ int		main(int ac, char **av) {
 	game->displayEnemy(*(enemy));
 	hero->init();
 	enemy->init();
+	hero->equipWeapon(wList->equipWeapon("Sword"));
 
 	//theWorld.SetSideBlockers(true, 0.7f);
 

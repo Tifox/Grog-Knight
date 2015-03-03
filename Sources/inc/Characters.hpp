@@ -30,6 +30,8 @@
 # include "Weapon.hpp"
 # include "Log.hpp"
 
+class Weapon;
+
 # ifdef __APPLE__
 #  include "../../Tools/jsoncpp/include/json/json.h"
 # else
@@ -47,6 +49,13 @@ class Characters : public Elements {
 	public:
 		friend	class	Game;
 
+		enum Orientation {
+			UP,
+			DOWN,
+			LEFT,
+			RIGHT
+		};
+
 		Characters(void);
 		Characters(std::string name);
 		~Characters();
@@ -55,6 +64,7 @@ class Characters : public Elements {
 		virtual void	AnimCallback(String s);
 		virtual void	BeginContact(Elements *elem, b2Contact *contact);
 		virtual void	EndContact(Elements *elem, b2Contact *contact);
+		Characters::Orientation			getOrientation(void);
 		// Virtual function, overwritten in childs
 		virtual void	actionCallback(std::string name, int status) {};
 		virtual void	equipWeapon(Weapon* weapon);
@@ -67,6 +77,7 @@ class Characters : public Elements {
 		int				_isJump;
 		int				_isRunning;
 		Weapon*			_weapon;
+		Characters::Orientation				_orientation;
 		std::list<Elements*>				_grounds;
 		std::list<Elements*> 				_walls;
 
@@ -75,6 +86,8 @@ class Characters : public Elements {
 		void			_setCategory(std::string category);
 		virtual void	_forward(int status);
 		virtual void	_backward(int status);
+		virtual void	_up(int status);
+		virtual void	_down(int status);
 		virtual void	_jump(int status);
 		virtual void	_attack(int status);
 		virtual void	_run(void);

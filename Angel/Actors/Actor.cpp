@@ -45,7 +45,7 @@
 
 #include <sstream>
 
-const float Actor::_squareVertices[] = {
+float Actor::_squareVertices[] = {
 	-0.5f,  0.5f,
 	-0.5f, -0.5f,
 	 0.5f,  0.5f,

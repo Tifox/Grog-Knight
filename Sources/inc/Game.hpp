@@ -26,7 +26,11 @@
 #ifndef __Game__
 # define __Game__
 
+class	Map;
+class	Maps;
+# ifndef __Map__
 # include "Maps.hpp"
+# endif
 # ifndef __Elements__
 #  include "main.hpp"
 #  include "Elements.hpp"
@@ -35,7 +39,6 @@
 # include "ContactFilter.hpp"
 # include "Characters.hpp"
 # include "WeaponList.hpp"
-
 class WeaponList;
 
 class Game {
@@ -48,11 +51,10 @@ class Game {
 		void	grid(void);
 		void	start(void);
 		void	readMaps(void);
-		void	initMap(void);
-		void	displayMap(t_map map);
 		void	displayHero(Elements & Hero);
 		void	displayEnemy(Elements & Enemy);
 		void	displayObject(Elements & Object);
+		void	showMap(void);
 
 		static void	destroyAllBodies(void);
 

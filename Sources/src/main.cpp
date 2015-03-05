@@ -47,7 +47,6 @@ int		main(int ac, char **av) {
 	Game	*game = new Game();
 
 	game->readMaps();
-	game->initMap();
 	MouseDebugger l;
 	theWorld.SetBackgroundColor(*(new Color(0.51f, 0.90f, 1)));
 	Hero		*hero = new Hero();
@@ -55,6 +54,7 @@ int		main(int ac, char **av) {
 	Object		*object = new Object();
 	Game::wList = new WeaponList();
 
+	game->showMap();
 	std::cout << Game::wList->getWeapon("Sword") << std::endl;
 
 	theCamera.LockTo(hero);

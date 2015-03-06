@@ -20,7 +20,9 @@ SRCS 	= ../Sources/src/main.cpp \
 		  ../Sources/src/GameContactListener.cpp \
 		  ../Sources/src/ContactFilter.cpp \
 		  ../Sources/src/Log.cpp \
-		  ../Sources/src/Object.cpp
+		  ../Sources/src/Object.cpp \
+		  ../Sources/src/Equipment.cpp \
+		  ../Sources/src/Consumable.cpp 
 
 OBJS 	 = $(SRCS:.cpp=.o)
 

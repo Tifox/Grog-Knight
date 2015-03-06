@@ -46,6 +46,11 @@ void	Hero::init(void) {
 	this->AnimCallback("base");
 }
 
+
+void	Hero::BeginContact(Elements *elem, b2Contact *contact) {
+
+}
+
 /**
  * Mother's callback for actions
  * @param: name (std::string)

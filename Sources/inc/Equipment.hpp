@@ -18,27 +18,29 @@
  */
 
 /**
- * File: ContactFilter.hpp
- * Creation: 2015-02-23 12:40
- * Vincent Rey <vrey@student.42.fr>
+ * File: Equipment.hpp
+ * Creation: 2015-03-06 15:51
+ * Manon Budin <mbudin@student.42.fr>
  */
 
+#ifndef __Equipment__
+# define __Equipment__
 
+# include "Elements.hpp"
+# include "Hero.hpp"
+# include "WeaponList.hpp"
+# include "Object.hpp"
 
-#include "../inc/ContactFilter.hpp"
+class Equipment : public Object {
+public:
+	Equipment();
+	~Equipment();
 
+	void			init(void);
+	Weapon* 	getWeapon(void);
+	void	BeginContact(Elements *elem, b2Contact *contact);
+private:
+	Weapon*			_weapon;
+};
 
-bool	ContactFilter::ShouldCollide(b2Fixture* fixA, b2Fixture* fixB) {
-
-	std::string attrA = static_cast<Elements*>(fixA->GetBody()->GetUserData())->getAttributes()["type"];
-	std::string attrB = static_cast<Elements*>(fixB->GetBody()->GetUserData())->getAttributes()["type"];
-
-	if ((attrA == "Hero" || attrB == "Hero") && ((attrA == "heroWeapon" || attrB == "heroWeapon") || (attrA == "heroProjectile" || attrB == "heroProjectile"))) {
-		// std::cout << "hello" << std::endl;
-		return false;
-	}
-	if ((attrA == "Object" || attrB == "Object") && !((attrA == "ground" || attrB == "ground") || (attrA == "Hero" || attrB == "Hero"))) {
-		return false;
-	}
-	else return true;
-}
+#endif

@@ -14,6 +14,7 @@ SRCS 	= ../Sources/src/main.cpp \
 		  ../Sources/src/LevelGenerator.cpp \
 		  ../Sources/src/Hero.cpp \
 		  ../Sources/src/Enemy.cpp \
+		  ../Sources/src/Map.cpp \
 		  ../Sources/src/Maps.cpp \
 		  ../Angel/Scripting/Interfaces/AngelLuaWrapping.cpp \
 		  ../Sources/src/GameContactListener.cpp \

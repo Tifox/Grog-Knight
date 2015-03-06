@@ -23,14 +23,26 @@
  * Vincent Rey <vrey@student.42.fr>
  */
 
+
 #ifndef __WeaponList__
 # define __WeaponList__
 
+# include "Weapon.hpp"
 # include "Log.hpp"
 # include "Elements.hpp"
-# include "Weapon.hpp"
-# include "json/json.h"
 # include <sstream>
+
+# ifdef __APPLE__
+#  include "../../Tools/jsoncpp/include/json/json.h"
+# else
+#  include "json/json.h"
+# endif
+
+# include <list>
+# include "../../Angel/Angel.h"
+# ifndef __Elements__
+# include "Elements.hpp"
+#endif
 
 class WeaponList: public Elements {
 public:

@@ -29,8 +29,13 @@
 # include <vector>
 # include <list>
 # include <iostream>
-# include "json/json.h"
 # include "Game.hpp"
+
+# ifdef __APPLE__
+#  include "../../Tools/jsoncpp/include/json/json.h"
+# else
+#  include "json/json.h"
+# endif
 
 class	Map {
 

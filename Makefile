@@ -73,7 +73,7 @@ SRCS =	./Sources/src/Elements.cpp \
 		./Sources/src/Characters.cpp \
 		./Sources/src/Object.cpp \
 		./Sources/src/WeaponList.cpp \
-		./Sources/src/Map.cpp
+		./Sources/src/Map.cpp \
 		./Sources/src/Equipment.cpp \
 		./Sources/src/Consumable.cpp 
 

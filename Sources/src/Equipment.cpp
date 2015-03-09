@@ -18,27 +18,42 @@
  */
 
 /**
- * File: ContactFilter.hpp
- * Creation: 2015-02-23 12:40
- * Vincent Rey <vrey@student.42.fr>
+ * File: Equipment.cpp
+ * Creation: 2015-03-06 15:51
+ * Manon Budin <mbudin@student.42.fr>
  */
 
+#include "Equipment.hpp"
 
 
-#include "../inc/ContactFilter.hpp"
+/**
+ * Basic Constructor
+ */
+Equipment::Equipment(void) {
+	this->addAttribute("type2", "Equipment");
+	std::cout << "lol" << std::endl;
+	this->SetColor(0,1,1,1);
+	this->_weapon = new Weapon(Game::wList->getWeapon("Bow"));
+}
 
-
-bool	ContactFilter::ShouldCollide(b2Fixture* fixA, b2Fixture* fixB) {
-
-	std::string attrA = static_cast<Elements*>(fixA->GetBody()->GetUserData())->getAttributes()["type"];
-	std::string attrB = static_cast<Elements*>(fixB->GetBody()->GetUserData())->getAttributes()["type"];
-
-	if ((attrA == "Hero" || attrB == "Hero") && ((attrA == "heroWeapon" || attrB == "heroWeapon") || (attrA == "heroProjectile" || attrB == "heroProjectile"))) {
-		// std::cout << "hello" << std::endl;
-		return false;
+void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
+	if (elem->getAttributes()["type"] == "Hero"){
+		static_cast<Characters*>(elem)->equipWeapon(this->_weapon);
+		Game::bodiesToDestroy.push_back(this);
+		contact->SetEnabled(false);
 	}
-	if ((attrA == "Object" || attrB == "Object") && !((attrA == "ground" || attrB == "ground") || (attrA == "Hero" || attrB == "Hero"))) {
-		return false;
-	}
-	else return true;
+}
+
+void	Equipment::init(void) {
+}
+
+Weapon*		Equipment::getWeapon(void) {
+	return this->_weapon;
+}
+
+/*
+ * Basic Destructor
+ */
+Equipment::~Equipment(void) {
+	return;
 }

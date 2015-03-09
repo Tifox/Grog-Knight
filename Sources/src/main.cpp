@@ -26,8 +26,10 @@
 # include "../inc/Game.hpp"
 # include "../inc/Hero.hpp"
 # include "../inc/Enemy.hpp"
- # include "../inc/Object.hpp"
+# include "../inc/Object.hpp"
 # include "../inc/WeaponList.hpp"
+# include "../inc/Equipment.hpp"
+# include "../inc/Consumable.hpp"
 
 
 class MouseDebugger: public MouseListener {
@@ -51,18 +53,18 @@ int		main(int ac, char **av) {
 	theWorld.SetBackgroundColor(*(new Color(0.51f, 0.90f, 1)));
 	Hero		*hero = new Hero();
 	Enemy		*enemy = new Enemy();
-	Object		*object = new Object();
 	Game::wList = new WeaponList();
 
 	game->showMap();
-	std::cout << Game::wList->getWeapon("Sword") << std::endl;
 
 	theCamera.LockTo(hero);
 	game->displayHero(*(hero));
 	game->displayEnemy(*(enemy));
 	hero->init();
 	enemy->init();
-	hero->equipWeapon(Game::wList->getWeapon("Bow"));
+	Equipment		*equip = new Equipment();
+
+	hero->equipWeapon(Game::wList->getWeapon("Sword"));
 
 	//theWorld.SetSideBlockers(true, 0.7f);
 

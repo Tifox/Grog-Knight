@@ -32,14 +32,13 @@
 Object::Object(void) {
 	this->addAttribute("physic", "1");
 	this->addAttribute("type", "Object");
-	this->SetDensity(0.0f);
+	this->SetDensity(1.0f);
 	this->SetFriction(1.0f);
 	this->SetRestitution(0.0f);
 	this->SetFixedRotation(true);
 	this->SetDrawShape(ADS_Circle);
-	this->SetIsSensor(true);
-	this->SetColor(1,1,1,1);
-	this->SetPosition(0, 0);
+	this->SetIsSensor(false);
+	this->SetPosition(5, -10);
 	this->InitPhysics();
 	theWorld.Add(this);
 }

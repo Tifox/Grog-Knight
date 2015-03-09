@@ -47,10 +47,6 @@ void	Hero::init(void) {
 }
 
 
-void	Hero::BeginContact(Elements *elem, b2Contact *contact) {
-
-}
-
 /**
  * Mother's callback for actions
  * @param: name (std::string)

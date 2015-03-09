@@ -14,19 +14,24 @@
 			"beginFrame": 4,
 			"endFrame": 9,
 			"time": 0.1,
-			"force": 5
+			"fallingFrame": 23,
+			"endFallingFrame": 27,
+			"force": 10
 		},
 		"backward": {
 			"subscribe": "backward",
 			"beginFrame": 10,
 			"endFrame": 15,
 			"time": 0.1,
-			"force": 5
+			"fallingFrame": 23,
+			"endFallingFrame": 27,
+			"force": 10
 		},
 		"jump": {
 			"subscribe": "jump",
 			"double": 1,
-			"force": 5,
+			"force": 6,
+			"rejump": 7,
 			"beginFrame": 16,
 			"endFrame": 27,
 			"time": 0.1

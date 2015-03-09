@@ -173,6 +173,23 @@ void	Game::listElement(void) {
 	}
 }
 
+/**
+ * Call to add an element to the destroy list after the tick()
+ * @param: m (Elements*)
+ */
+
+void	Game::addToDestroyList(Elements *m) {
+	for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
+		if ((*it) == m)
+			return;
+	}
+	Game::bodiesToDestroy.push_back(m);
+}
+
+/**
+ * Called after each tick() in order to destroy all elements set to destroy
+ */
+
 void	Game::destroyAllBodies(void) {
 	for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
 		theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());

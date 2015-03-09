@@ -204,7 +204,7 @@ void	Weapon::attack(Characters *c) {
 
 void	Weapon::ReceiveMessage(Message *m) {
 	if (m->GetMessageName() == "deleteWeapon") {
-		Game::bodiesToDestroy.push_back(this);
+		Game::addToDestroyList(this);
 		theSwitchboard.UnsubscribeFrom(this, "deleteWeapon");
 	}
 	if (m->GetMessageName() == "canAttack")

@@ -7,8 +7,7 @@
 		"active": 0.2,
 		"lvlRequired": 1,
 	 	"damage": 0.5,
-		"recovery": 1,
-		"active": 0.2,
+		"recovery": 0.1,
 		"attack": "ranged",
 		"particule": "la soeur de ryadv2.0",
 		"heroAnim": "sword_anim_1"

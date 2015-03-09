@@ -57,6 +57,7 @@ class Game {
 		void	showMap(void);
 
 		static void	destroyAllBodies(void);
+		static void	addToDestroyList(Elements *m);
 
 
 		static int	getNextId(void);

@@ -111,5 +111,5 @@ void	Projectile::ReceiveMessage(Message *m) {
 }
 
 void	Projectile::BeginContact(Elements *m, b2Contact *c) {
-	Game::bodiesToDestroy.push_back(this);
+	Game::addToDestroyList(this);
 }

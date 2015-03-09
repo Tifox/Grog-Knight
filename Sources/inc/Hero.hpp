@@ -37,7 +37,6 @@ class Hero : public Characters {
 		~Hero();
 
 		void	init();
-		void	BeginContact(Elements *elem, b2Contact *contact);
 		virtual void	actionCallback(std::string name, int status);
 
 	private:

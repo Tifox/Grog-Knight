@@ -77,9 +77,13 @@ class Characters : public Elements {
 		int				_isJump;
 		int				_isRunning;
 		Weapon*			_weapon;
+		bool			_touchingLeft;
+		bool			_touchingRight;
 		Characters::Orientation				_orientation;
 		std::list<Elements*>				_grounds;
+		std::list<Elements*> 				_wallsLeft;
 		std::list<Elements*> 				_walls;
+		std::list<Elements*> 				_wallsRight;
 
 		Json::Value		_getAttr(std::string category, std::string key);
 		Json::Value		_getAttr(std::string key);

@@ -14,8 +14,6 @@
 			"beginFrame": 4,
 			"endFrame": 9,
 			"time": 0.1,
-			"fallingFrame": 23,
-			"endFallingFrame": 27,
 			"force": 10
 		},
 		"backward": {
@@ -23,8 +21,6 @@
 			"beginFrame": 10,
 			"endFrame": 15,
 			"time": 0.1,
-			"fallingFrame": 23,
-			"endFallingFrame": 27,
 			"force": 10
 		},
 		"jump": {
@@ -33,6 +29,7 @@
 			"force": 6,
 			"rejump": 7,
 			"beginFrame": 16,
+			"fallingFrame": 23,
 			"endFrame": 27,
 			"time": 0.1
 		},

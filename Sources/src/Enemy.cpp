@@ -52,3 +52,22 @@ void	Enemy::actionCallback(std::string name, int status) {
 	std::cout << "CALLBACK " << name << std::endl;
 	return ;
 }
+
+void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
+	Characters::BeginContact(m, contact);
+	Weapon* w = static_cast<Weapon*>(m);
+	Projectile* p = static_cast<Projectile*>(m);
+	if (m->getAttributes()["type"] == "HeroWeaponHitBox") {
+		if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
+			this->ApplyLinearImpulse(Vector2(w->getPushback(), w->getPushback()), Vector2(0,0));
+		} else {
+			this->ApplyLinearImpulse(Vector2(-w->getPushback(), w->getPushback()), Vector2(0,0));
+		}
+	} else if (m->getAttributes()["type"] == "HeroProjectile") {
+		if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
+			this->ApplyLinearImpulse(Vector2(p->getPushback(), p->getPushback()), Vector2(0,0));
+		} else {
+			this->ApplyLinearImpulse(Vector2(-p->getPushback(), p->getPushback()), Vector2(0,0));
+		}
+	}
+}

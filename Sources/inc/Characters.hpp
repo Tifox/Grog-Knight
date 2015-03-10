@@ -76,9 +76,9 @@ class Characters : public Elements {
 		int				_maxSpeed;
 		int				_isJump;
 		int				_isRunning;
+		bool			_canMove;
+		bool			_invincibility;
 		Weapon*			_weapon;
-		bool			_touchingLeft;
-		bool			_touchingRight;
 		Characters::Orientation				_orientation;
 		std::list<Elements*>				_grounds;
 		std::list<Elements*> 				_wallsLeft;

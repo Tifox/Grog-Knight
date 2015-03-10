@@ -33,9 +33,10 @@ class Enemy : public Characters {
 public:
 	Enemy();
 	~Enemy();
-	
+
 	void			actionCallback(std::string name, int status);
 	void			init(void);
+	void			BeginContact(Elements* m, b2Contact* contact);
 };
 
 #endif

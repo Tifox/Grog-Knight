@@ -45,8 +45,8 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->SetFixedRotation(true);
 	this->_orientation = RIGHT;
 	this->_readFile(name);
-	this->_touchingLeft = false;
-	this->_touchingRight = false;
+	this->_canMove = true;
+	this->_invincibility = false;
 }
 
 /**
@@ -157,12 +157,22 @@ void	Characters::ReceiveMessage(Message *m) {
 	int				status;
 
 	Log::info(m->GetMessageName());
+	if (m->GetMessageName() == "canMove") {
+		this->_canMove = true;
+		return;
+	}
+	else if (m->GetMessageName() == "endInvincibility") {
+		this->_invincibility = false;
+		return;
+	}
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
 		attrName = this->_getAttr(i->first, "subscribe").asString();
 		if (!strncmp(attrName.c_str(), m->GetMessageName().c_str(), strlen(attrName.c_str()))) {
 
 			// Get the key status (1 = Pressed, 0 = Released)
 			status = (m->GetMessageName().substr(strlen(attrName.c_str()), 7) == "Pressed" ? 1 : 0);
+			if (this->_canMove == false)
+				return;
 			if (attrName == "forward") {
 				this->_forward(status);
 			} else if (attrName == "backward") {
@@ -213,12 +223,10 @@ void	Characters::AnimCallback(String s) {
  * @note: This function is called just before a collision
  */
 void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
+	if (this->getAttributes()["type"] != "Hero")
+		return;
 	if (elem->getAttributes()["type"] == "ground") {
-		std::cout << elem->GetBody()->GetWorldCenter().x << ":" << elem->GetBody()->GetWorldCenter().y << std::endl;
-		std::cout << this->GetBody()->GetWorldCenter().x << ":" << this->GetBody()->GetWorldCenter().y << std::endl;
 		if (this->GetBody()->GetWorldCenter().y - 1 >= elem->GetBody()->GetWorldCenter().y) {
-			std::cout << "GroundHit" << std::endl;
-
 			if (this->_grounds.size() > 0)
 				contact->SetEnabled(false);
 			if (this->_isJump > 0) {
@@ -253,9 +261,9 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 		if (this->GetBody()->GetWorldCenter().y >= elem->GetBody()->GetWorldCenter().y + 1) {
 			if (this->_grounds.size() == 0) {
 				this->_isJump++;
-				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-										  this->_getAttr("fallingFrame").asInt(),
-										  this->_getAttr("endFallingFrame").asInt() - 1, "jump");
+// 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+// 										  this->_getAttr("jump", "fallingFrame").asInt(),
+// 										  this->_getAttr("jump", "endFallingFrame").asInt() - 1, "jump");
 			}
 		}
 		else {
@@ -290,7 +298,7 @@ void	Characters::_forward(int status) {
 				this->_getAttr("endFrame").asInt());
 		Game::startRunning(this);
 		if (this->_isRunning == 2)
-			this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
+			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
 		this->_isRunning = 1;
 	} else if (status == 0) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
@@ -300,7 +308,7 @@ void	Characters::_forward(int status) {
 			this->AnimCallback("base");
 	} else {
 		if (this->GetBody()->GetLinearVelocity().x < this->_maxSpeed) {
-			if (this->_wallsRight.size() == 0)
+			if (this->_wallsRight.size() == 0 && this->_canMove == true)
 				this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
 		}
 	}
@@ -321,7 +329,7 @@ void	Characters::_backward(int status) {
 				this->_getAttr("endFrame").asInt());
 		Game::startRunning(this);
 		if (this->_isRunning == 1)
-			this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
+			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
 		this->_isRunning = 2;
 	} else if (status == 0) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
@@ -331,7 +339,8 @@ void	Characters::_backward(int status) {
 		Game::stopRunning(this);
 	} else {
 		if (this->GetBody()->GetLinearVelocity().x > -(this->_maxSpeed)) {
-			if (this->_wallsLeft.size() == 0)
+			std::cout << "backward launched" << std::endl;
+			if (this->_wallsLeft.size() == 0 && this->_canMove == true)
 				this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
 		}
 	}

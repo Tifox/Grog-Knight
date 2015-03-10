@@ -40,7 +40,6 @@ Weapon::Weapon(std::string name) : _name(name) {
  */
 
 Weapon::Weapon(Weapon* weapon) {
-	std::cout << this << std::endl;
 	this->_name = weapon->getName();
 	this->_flavor = weapon->getFlavor();
 	this->_damage = weapon->getDamage();
@@ -48,8 +47,8 @@ Weapon::Weapon(Weapon* weapon) {
 	this->_active = weapon->getActive();
 	this->_size = weapon->getSize();
 	this->_attack = weapon->getAttack();
+	this->_pushback = weapon->getPushback();
 	this->_canAttack = 1;
-	std::cout << this->_canAttack << std::endl;
 
 	theSwitchboard.SubscribeTo(this, "canAttack");
 }
@@ -61,9 +60,21 @@ Weapon::Weapon(Weapon* w, Characters* c) {
 	float xjoint2 = 0;
 	float yjoint1 = 0;
 	float yjoint2 = 0;
+	this->_name = w->getName();
+	this->_flavor = w->getFlavor();
+	this->_damage = w->getDamage();
+	this->_recovery = w->getRecovery();
+	this->_active = w->getActive();
+	this->_size = w->getSize();
+	this->_attack = w->getAttack();
+	this->_pushback = w->getPushback();
+	this->_canAttack = 1;
 	this->SetSize(w->getSize());
-	this->SetName("WeaponHitbox");
-	this->addAttribute("type", "WeaponHitBox");
+	this->SetName("HeroWeaponHitbox");
+	if (c->getAttributes()["type"] == "Hero")
+		this->addAttribute("type", "HeroWeaponHitBox");
+	else
+		this->addAttribute("type", "WeaponHitBox");
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	this->SetDrawShape(ADS_Square);
 	this->SetColor(1,1,1);
@@ -107,6 +118,7 @@ Weapon::Weapon(Weapon* w, Characters* c) {
 	}
 	this->SetPosition(c->GetBody()->GetWorldCenter().x + xDecal, c->GetBody()->GetWorldCenter().y + yDecal);
 	this->InitPhysics();
+	this->GetBody()->SetBullet(true);
 	b2DistanceJointDef jointDef1;
 	jointDef1.Initialize(c->GetBody(), this->GetBody(), b2Vec2(c->GetBody()->GetWorldCenter().x + xjoint1, c->GetBody()->GetWorldCenter().y + yjoint1),
 						 this->GetBody()->GetWorldCenter());
@@ -165,6 +177,7 @@ void    Weapon::_parseJson(std::string file) {
 	this->_recovery = json["infos"].get("recovery", "").asFloat();
 	this->_size = json["infos"].get("size", "").asFloat();
 	this->_damage = json["infos"].get("damage", "").asFloat();
+	this->_pushback = json["infos"].get("pushback", "").asFloat();
 	this->_attack = json["infos"].get("attack", "").asString();
 }
 
@@ -218,6 +231,7 @@ std::string		Weapon::getAttack(void) { return this->_attack; }
 float			Weapon::getActive(void) { return this->_active; }
 int				Weapon::getSize(void) { return this->_size; }
 int				Weapon::getDamage(void) { return this->_damage; }
+int				Weapon::getPushback(void) { return this->_pushback; }
 float			Weapon::getRecovery(void) { return this->_recovery; }
 int				Weapon::attackReady(void) { return this->_canAttack; }
 

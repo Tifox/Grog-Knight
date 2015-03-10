@@ -7,6 +7,7 @@
 		"lvlRequired": 1,
 	 	"damage": 1,
 		"recovery": 1,
+		"pushback": 5,
 		"active": 0.2,
 		"attack": "melee",
 		"combo": true,

@@ -106,8 +106,8 @@ void	Game::displayHero(Elements & Hero) {
  * @param: Enemy (Elements &)
  */
 void	Game::displayEnemy(Elements & Enemy) {
-	Enemy.setXStart(3);
-	Enemy.setYStart(3);
+	Enemy.setXStart(5);
+	Enemy.setYStart(-5);
 	Enemy.addAttribute("enemy", "1");
 	Enemy.display();
 }

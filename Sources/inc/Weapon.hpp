@@ -56,6 +56,7 @@ public:
 	float			getActive(void);
 	int				getSize(void);
 	int				getDamage(void);
+	int				getPushback(void);
 	float			getRecovery(void);
 	int				attackReady(void);
 
@@ -70,6 +71,7 @@ private:
 	float			_active;
 	int				_size;
 	int				_damage;
+	int				_pushback;
 	void			_readFile(std::string name);
 	void			_readFileFromFilename(std::string name);
 	void			_parseJson(std::string file);

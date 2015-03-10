@@ -38,7 +38,7 @@ WeaponList::WeaponList(void) {
 
 	dir = opendir("./Resources/Elements/Weapons/");
 	while (dirEntry = readdir(dir)) {
-		if (strcmp(dirEntry->d_name, ".") != 0 && strcmp(dirEntry->d_name, "..") != 0) {
+		if (dirEntry && strcmp(dirEntry->d_name, ".") != 0 && strcmp(dirEntry->d_name, "..") != 0) {
 			iss.str(dirEntry->d_name);
 			std::getline(iss, res, '.');
 			this->_allWeapons.push_back(new Weapon(res));

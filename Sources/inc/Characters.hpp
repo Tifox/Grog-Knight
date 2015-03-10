@@ -65,12 +65,14 @@ class Characters : public Elements {
 		virtual void	BeginContact(Elements *elem, b2Contact *contact);
 		virtual void	EndContact(Elements *elem, b2Contact *contact);
 		Characters::Orientation			getOrientation(void);
+		std::string						getLastAction(void);
 		// Virtual function, overwritten in childs
 		virtual void	actionCallback(std::string name, int status) {};
 		virtual void	equipWeapon(Weapon* weapon);
 
 	protected:
 		std::string		_name;
+		std::string		_lastAction;
 		int				_id;
 		int				_size;
 		int				_maxSpeed;

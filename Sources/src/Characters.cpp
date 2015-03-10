@@ -186,6 +186,7 @@ void	Characters::ReceiveMessage(Message *m) {
 			} else if (attrName == "attack") {
 				this->_attack(status);
 			}
+			this->_lastAction = attrName;
 			this->actionCallback(attrName, status);
 		}
 	}
@@ -408,3 +409,4 @@ void	Characters::equipWeapon(Weapon* weapon) {
 }
 
 Characters::Orientation		Characters::getOrientation(void) { return this->_orientation; }
+std::string					Characters::getLastAction(void) { return this->_lastAction; };

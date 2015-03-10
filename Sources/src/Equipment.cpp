@@ -31,16 +31,21 @@
  */
 Equipment::Equipment(void) {
 	this->addAttribute("type2", "Equipment");
-	std::cout << "lol" << std::endl;
 	this->SetColor(0,1,1,1);
+	this->SetPosition(5, -10);
+	this->InitPhysics();
+	theWorld.Add(this);
 	this->_weapon = new Weapon(Game::wList->getWeapon("Bow"));
 }
 
 void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "Hero"){
-		static_cast<Characters*>(elem)->equipWeapon(this->_weapon);
-		Game::bodiesToDestroy.push_back(this);
-		contact->SetEnabled(false);
+		TextActor 	*t;
+
+		//static_cast<Characters*>(elem)->equipWeapon(this->_weapon);
+		t = new TextActor("Console", "Lolilol");
+		t->SetPosition(5, -10);
+		theWorld.Add(t);
 	}
 }
 

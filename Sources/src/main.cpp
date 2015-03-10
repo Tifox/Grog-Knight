@@ -23,13 +23,14 @@
  * Louis Solofrizzo <louis@ne02ptzero.me>
  */
 
-# include "../inc/Game.hpp"
-# include "../inc/Hero.hpp"
-# include "../inc/Enemy.hpp"
-# include "../inc/Object.hpp"
-# include "../inc/WeaponList.hpp"
-# include "../inc/Equipment.hpp"
-# include "../inc/Consumable.hpp"
+# include "Game.hpp"
+# include "Hero.hpp"
+# include "Enemy.hpp"
+# include "Object.hpp"
+# include "WeaponList.hpp"
+# include "Equipment.hpp"
+# include "Consumable.hpp"
+# include "Window.hpp"
 
 
 class MouseDebugger: public MouseListener {
@@ -51,20 +52,27 @@ int		main(int ac, char **av) {
 	game->readMaps();
 	MouseDebugger l;
 	theWorld.SetBackgroundColor(*(new Color(0.51f, 0.90f, 1)));
-	Hero		*hero = new Hero();
-	Enemy		*enemy = new Enemy();
 	Game::wList = new WeaponList();
 
 	game->showMap();
+
+	Equipment		*equip = new Equipment();
+	Consumable		*lol = new Consumable();
+	Hero		*hero = new Hero();
+	Enemy		*enemy = new Enemy();
+
 
 	theCamera.LockTo(hero);
 	game->displayHero(*(hero));
 	game->displayEnemy(*(enemy));
 	hero->init();
 	enemy->init();
-	Equipment		*equip = new Equipment();
+
 
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
+	//Window *w = new Window("Asterix");
+	//w->SetPosition(0, 0);
+	//w->add();
 
 	//theWorld.SetSideBlockers(true, 0.7f);
 

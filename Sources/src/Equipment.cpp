@@ -41,11 +41,7 @@ Equipment::Equipment(void) {
 void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "Hero"){
 		TextActor 	*t;
-
 		//static_cast<Characters*>(elem)->equipWeapon(this->_weapon);
-		t = new TextActor("Console", "Lolilol");
-		t->SetPosition(5, -10);
-		theWorld.Add(t);
 	}
 }
 

@@ -156,14 +156,11 @@ void	Characters::ReceiveMessage(Message *m) {
 	std::string		name, attrName;
 	int				status;
 
-	Log::info(m->GetMessageName());
 	if (m->GetMessageName() == "canMove") {
 		this->_canMove = true;
-		return;
 	}
 	else if (m->GetMessageName() == "endInvincibility") {
 		this->_invincibility = false;
-		return;
 	}
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
 		attrName = this->_getAttr(i->first, "subscribe").asString();
@@ -340,7 +337,6 @@ void	Characters::_backward(int status) {
 		Game::stopRunning(this);
 	} else {
 		if (this->GetBody()->GetLinearVelocity().x > -(this->_maxSpeed)) {
-			std::cout << "backward launched" << std::endl;
 			if (this->_wallsLeft.size() == 0 && this->_canMove == true)
 				this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
 		}
@@ -354,7 +350,6 @@ void	Characters::_backward(int status) {
  */
 void	Characters::_jump(int status) {
 	this->_setCategory("jump");
-	std::cout << this->_isJump << std::endl;
 
 	if (status == 1) {
 		if (this->_isJump == 0 || (this->_isJump <= 1 && this->_getAttr("double").asInt() == 1)) {
@@ -410,3 +405,4 @@ void	Characters::equipWeapon(Weapon* weapon) {
 
 Characters::Orientation		Characters::getOrientation(void) { return this->_orientation; }
 std::string					Characters::getLastAction(void) { return this->_lastAction; };
+void						Characters::changeCanMove(void) { this->_canMove = (this->_canMove ? false : true); };

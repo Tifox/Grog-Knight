@@ -32,7 +32,6 @@
 # include "Consumable.hpp"
 
 
-
 class MouseDebugger: public MouseListener {
 	public:
 		MouseDebugger(void) {
@@ -72,10 +71,6 @@ int		main(int ac, char **av) {
 
 
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
-	//Window *w = new Window("Asterix");
-	//w->SetPosition(0, 0);
-	//w->add();
-
 	//theWorld.SetSideBlockers(true, 0.7f);
 
 	game->start();

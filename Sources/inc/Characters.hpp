@@ -69,6 +69,7 @@ class Characters : public Elements {
 		// Virtual function, overwritten in childs
 		virtual void	actionCallback(std::string name, int status) {};
 		virtual void	equipWeapon(Weapon* weapon);
+		void			changeCanMove(void);
 
 	protected:
 		std::string		_name;

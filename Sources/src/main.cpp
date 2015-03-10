@@ -30,7 +30,7 @@
 # include "WeaponList.hpp"
 # include "Equipment.hpp"
 # include "Consumable.hpp"
-# include "Window.hpp"
+
 
 
 class MouseDebugger: public MouseListener {
@@ -53,8 +53,6 @@ int		main(int ac, char **av) {
 	MouseDebugger l;
 	theWorld.SetBackgroundColor(*(new Color(0.51f, 0.90f, 1)));
 
-	Hero		*hero = new Hero();
-	Enemy		*enemy = new Enemy();
 
 	Game::wList = new WeaponList();
 

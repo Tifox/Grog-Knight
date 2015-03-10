@@ -97,7 +97,7 @@ void	Map::display(void) {
 		elem->addAttribute("spriteMap", "TRUE");
 		if (this->_properties.find(*it) == this->_properties.end()) {
 			elem->addAttribute("physic", "TRUE");
-			std::cout << "Ph elem:" << x << ", " << y << std::endl;
+			std::cout << "Ph elem ("<< *it << "):" << x << ", " << y << std::endl;
 		} else {
 			std::cout << "===== HERE ====\n" << *it << std::endl;
 		}

@@ -226,7 +226,7 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "ground") {
 		std::cout << this->GetBody()->GetWorldCenter().y << elem->GetBody()->GetWorldCenter().y << std::endl;
 
-		if (this->GetBody()->GetWorldCenter().y - 0.85 >= elem->GetBody()->GetWorldCenter().y) {
+		if (this->GetBody()->GetWorldCenter().y - 1 >= elem->GetBody()->GetWorldCenter().y) {
 			if (this->_grounds.size() > 0)
 				contact->SetEnabled(false);
 			if (this->_isJump > 0) {

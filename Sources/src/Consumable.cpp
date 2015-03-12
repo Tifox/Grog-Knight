@@ -32,12 +32,16 @@
 Consumable::Consumable(void) {
 	this->addAttribute("type2", "Consumable");
 	this->SetColor(1,1,1,1);
+	this->SetPosition(6, -11);
+	this->InitPhysics();
+	theWorld.Add(this);
+	Log::info("wjorwbgurw");
 }
 
 void	Consumable::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "Hero"){
-		contact->SetEnabled(false);
 		Game::bodiesToDestroy.push_back(this);
+		contact->SetEnabled(false);
 	}
 }
 

@@ -156,14 +156,11 @@ void	Characters::ReceiveMessage(Message *m) {
 	std::string		name, attrName;
 	int				status;
 
-	Log::info(m->GetMessageName());
 	if (m->GetMessageName() == "canMove") {
 		this->_canMove = true;
-		return;
 	}
 	else if (m->GetMessageName() == "endInvincibility") {
 		this->_invincibility = false;
-		return;
 	}
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
 		attrName = this->_getAttr(i->first, "subscribe").asString();
@@ -186,6 +183,7 @@ void	Characters::ReceiveMessage(Message *m) {
 			} else if (attrName == "attack") {
 				this->_attack(status);
 			}
+			this->_lastAction = attrName;
 			this->actionCallback(attrName, status);
 		}
 	}
@@ -406,3 +404,5 @@ void	Characters::equipWeapon(Weapon* weapon) {
 }
 
 Characters::Orientation		Characters::getOrientation(void) { return this->_orientation; }
+std::string					Characters::getLastAction(void) { return this->_lastAction; };
+void						Characters::changeCanMove(void) { this->_canMove = (this->_canMove ? false : true); };

@@ -30,8 +30,7 @@
 # include "WeaponList.hpp"
 # include "Equipment.hpp"
 # include "Consumable.hpp"
-# include "Hitbox.hpp"
-
+//# include "Hitbox.hpp"
 
 class MouseDebugger: public MouseListener {
 	public:
@@ -47,28 +46,34 @@ class MouseDebugger: public MouseListener {
 };
 
 int		main(int ac, char **av) {
+
 	Game	*game = new Game();
 
+	std::cout << "123" << std::endl;
 	game->readMaps();
+	std::cout << "123" << std::endl;
 	MouseDebugger l;
 	theWorld.SetBackgroundColor(*(new Color(0.51f, 0.90f, 1)));
 
-	Hero		*hero = new Hero();
-	Enemy		*enemy = new Enemy();
+
 	Game::wList = new WeaponList();
 
 	game->showMap();
+
+	Equipment		*equip = new Equipment();
+	Consumable		*lol = new Consumable();
+	Hero		*hero = new Hero();
+	Enemy		*enemy = new Enemy();
+
 
 	theCamera.LockTo(hero);
 	game->displayHero(*(hero));
 	game->displayEnemy(*(enemy));
 	hero->init();
 	enemy->init();
-	Equipment		*equip = new Equipment();
 
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
-	new Hitbox();
-
+//	new Hitbox();
 	//theWorld.SetSideBlockers(true, 0.7f);
 
 	game->start();

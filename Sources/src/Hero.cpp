@@ -67,7 +67,7 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		Game::stopRunning(this);
 		this->_isRunning = 0;
 		//Damage here
-		this->_canMove = false;
+		Characters::changeCanMove();
 		this->_invincibility = true;
 		theSwitchboard.DeferredBroadcast(new Message("canMove"), 1);
 		theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1);

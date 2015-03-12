@@ -47,6 +47,8 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_readFile(name);
 	this->_canMove = true;
 	this->_invincibility = false;
+	this->_grounds.clear();
+	this->_walls.clear();
 }
 
 /**
@@ -221,10 +223,10 @@ void	Characters::AnimCallback(String s) {
  * @note: This function is called just before a collision
  */
 void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
-	if (this->getAttributes()["type"] != "Hero")
-		return;
 	if (elem->getAttributes()["type"] == "ground") {
-		if (this->GetBody()->GetWorldCenter().y - 1 >= elem->GetBody()->GetWorldCenter().y) {
+		std::cout << this->GetBody()->GetWorldCenter().y << elem->GetBody()->GetWorldCenter().y << std::endl;
+
+		if (this->GetBody()->GetWorldCenter().y - 0.85 >= elem->GetBody()->GetWorldCenter().y) {
 			if (this->_grounds.size() > 0)
 				contact->SetEnabled(false);
 			if (this->_isJump > 0) {

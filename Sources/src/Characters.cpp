@@ -224,8 +224,6 @@ void	Characters::AnimCallback(String s) {
  */
 void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "ground") {
-		std::cout << this->GetBody()->GetWorldCenter().y << elem->GetBody()->GetWorldCenter().y << std::endl;
-
 		if (this->GetBody()->GetWorldCenter().y - 1 >= elem->GetBody()->GetWorldCenter().y) {
 			if (this->_grounds.size() > 0)
 				contact->SetEnabled(false);
@@ -254,20 +252,19 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
  * @note: This function is called just after the elements leave another
  */
 void	Characters::EndContact(Elements *elem, b2Contact *contact) {
-	this->_grounds.remove(elem);
-	this->_wallsLeft.remove(elem);
-	this->_wallsRight.remove(elem);
 	if (elem->getAttributes()["type"] == "ground") {
-		if (this->GetBody()->GetWorldCenter().y >= elem->GetBody()->GetWorldCenter().y + 1) {
-			if (this->_grounds.size() == 0) {
+		this->_wallsLeft.remove(elem);
+		this->_wallsRight.remove(elem);
+		if (this->_grounds.size() == 1) {
+			this->_grounds.remove(elem);
+			if (this->_grounds.size() == 0)
 				this->_isJump++;
 // 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 // 										  this->_getAttr("jump", "fallingFrame").asInt(),
 // 										  this->_getAttr("jump", "endFallingFrame").asInt() - 1, "jump");
-			}
 		}
-		else {
-		}
+		else
+			this->_grounds.remove(elem);
 	}
 }
 

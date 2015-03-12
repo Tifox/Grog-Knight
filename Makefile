@@ -61,14 +61,21 @@ SRCS =	./Sources/src/Elements.cpp \
 		./Sources/src/main.cpp \
 		./Sources/src/Maps.cpp \
 		./Sources/src/Hero.cpp \
-		./Sources/src/Shooter.cpp \
 		./Sources/src/Projectile.cpp \
-       	./Sources/src/Enemy.cpp \
+		./Sources/src/Room.cpp \
+		./Sources/src/LevelGenerator.cpp \
+		./Sources/src/Enemy.cpp \
 		./Sources/src/GameContactListener.cpp \
 		./Sources/src/ContactFilter.cpp \
 		./Sources/src/Weapon.cpp \
 		./Sources/src/Log.cpp \
-		./Sources/src/Characters.cpp
+		./Sources/src/Characters.cpp \
+		./Sources/src/Object.cpp \
+		./Sources/src/WeaponList.cpp \
+		./Sources/src/Map.cpp \
+		./Sources/src/Equipment.cpp \
+		./Sources/src/Consumable.cpp \
+		./Sources/src/Hitbox.cpp
 
 SYSOBJS = $(patsubst %.cpp,%.o,$(SYSSRCS))
 OBJS = $(patsubst %.cpp,%.o,$(SRCS))

@@ -172,6 +172,14 @@ Also, we gain 1.3s at the build.
 "
 ```
 
+### Working Space
+
+We working on the branch [build](https://github.com/Ne02ptzero/rogue-like/tree/build)
+
+So, if you have modifications to make (Code, docs or even pictures), please do it on this branch.
+
+The master __must__ be buildable and stable.
+
 ### Build
 
 *For main contributors:*

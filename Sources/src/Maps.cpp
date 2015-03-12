@@ -77,38 +77,46 @@ void	Maps::readMaps(void) {
  * Feed the empty list
  */
 void	Maps::_getMap(void) {
-	t_map				current;
 	int					index, v;
-	Json::Value			blocks;
+	Json::Value			blocks, itr, vtr;
 	Elements			*currentBlock;
-	Json::ValueIterator	itr;
+	Json::ValueIterator	j, k;
+	Map					*map;
+	std::map<int, std::map<std::string, Json::Value> >	tileproperties;
+	std::vector<int>	intMap;
 
-	current.id = this->_root["general"].get("id", 0).asInt();
-	current.name = this->_root["general"].get("name", "Map").asString();
-	current.world = this->_root["general"].get("world", "Base").asString();
-	current.callbackBegin = this->_root["general"].get("callbackBegin", "basic").asString();
-	current.callbackEnd = this->_root["general"].get("callbackEnd", "basic").asString();
-	blocks = this->_root["Blocks"];
+	map = new Map(this->_root["tilesets"][0].get("name", "").asString());
+	map->setHeight(this->_root["height"].asInt());
+	map->setWidth(this->_root["width"].asInt());
+	itr = this->_root["tilesets"];
 
-	for (index = 0; index < blocks.size(); index++) {
-		currentBlock = new Elements(index);
-		for (itr = blocks[std::to_string(index)].begin(); itr != blocks[std::to_string(index)].end(); itr++)
-			currentBlock->addAttribute(itr.key().asString(), (*itr).asString());
-		current.elements[index] = currentBlock;
-	}
+	for (index = 0; index < itr.size(); index++) {
 
-	blocks = this->_root["Map"];
-	std::vector<int> 	tmp;
-	for (index = 0; index < blocks.size(); index++) {
-		for (v = 0; v < blocks[index].size(); v++) {
-			tmp.push_back(blocks[index][v].asInt());
+		map->setImage(itr[index].get("image", "").asString());
+		map->setImageHeight(itr[index].get("imageheight", 0).asInt());
+		map->setImageWidth(itr[index].get("imagewidth", 0).asInt());
+		map->setTileHeight(itr[index].get("tileheight", 0).asInt());
+		map->setTileWidth(itr[index].get("tilewidth", 0).asInt());
+
+
+		vtr = itr[index].get("tileproperties", "");
+		for (j = vtr.begin(); j != vtr.end(); j++) {
+			for (k = (*j).begin(); k != (*j).end(); k++)
+				tileproperties[atoi(j.key().asString().c_str())][k.key().asString()] = *k;
 		}
-		current.map.push_back(tmp);
-		tmp.clear();
 	}
-	this->_maps.push_back(current);
+	map->setProperties(tileproperties);
+	itr = this->_root["layers"][0]["data"];
+	for (index = 0; index < itr.size(); index++) {
+		intMap.insert(intMap.begin() + index, itr[index].asInt());
+	}
+	map->setMap(intMap);
+	this->_maps.push_back(map);
 }
 
-/* GETTERS */
-
-std::list<t_map>	Maps::getFormattedMaps(void) { return this->_maps; };
+/**
+ * Display the map at the top of list
+ */
+void	Maps::firstOne(void) {
+	this->_maps.front()->display();
+}

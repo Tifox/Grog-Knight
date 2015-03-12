@@ -1,4 +1,3 @@
-
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -28,13 +27,34 @@
 # define __Characters__
 
 # include "Weapon.hpp"
-# include "Elements.hpp"
 # include "Log.hpp"
-# include "json/json.h"
+
+//class Weapon;
+
+# ifdef __APPLE__
+#  include "../../Tools/jsoncpp/include/json/json.h"
+# else
+#  include "json/json.h"
+# endif
+
+# include <list>
+# include "../../Angel/Angel.h"
+# ifndef __Elements__
+# include "Elements.hpp"
+#endif
 
 class Characters : public Elements {
 
 	public:
+		friend	class	Game;
+
+		enum Orientation {
+			UP,
+			DOWN,
+			LEFT,
+			RIGHT
+		};
+
 		Characters(void);
 		Characters(std::string name);
 		~Characters();
@@ -43,26 +63,40 @@ class Characters : public Elements {
 		virtual void	AnimCallback(String s);
 		virtual void	BeginContact(Elements *elem, b2Contact *contact);
 		virtual void	EndContact(Elements *elem, b2Contact *contact);
+		Characters::Orientation			getOrientation(void);
+		std::string						getLastAction(void);
 		// Virtual function, overwritten in childs
 		virtual void	actionCallback(std::string name, int status) {};
+		virtual void	equipWeapon(Weapon* weapon);
+		void			changeCanMove(void);
 
 	protected:
 		std::string		_name;
+		std::string		_lastAction;
 		int				_id;
 		int				_size;
 		int				_maxSpeed;
 		int				_isJump;
+		int				_isRunning;
+		bool			_canMove;
+		bool			_invincibility;
 		Weapon*			_weapon;
+		Characters::Orientation				_orientation;
 		std::list<Elements*>				_grounds;
+		std::list<Elements*> 				_wallsLeft;
 		std::list<Elements*> 				_walls;
+		std::list<Elements*> 				_wallsRight;
 
 		Json::Value		_getAttr(std::string category, std::string key);
 		Json::Value		_getAttr(std::string key);
 		void			_setCategory(std::string category);
 		virtual void	_forward(int status);
 		virtual void	_backward(int status);
+		virtual void	_up(int status);
+		virtual void	_down(int status);
 		virtual void	_jump(int status);
 		virtual void	_attack(int status);
+		virtual void	_run(void);
 
 	private:
 		std::map<std::string, std::map<std::string, Json::Value> >	_attr;
@@ -71,5 +105,7 @@ class Characters : public Elements {
 		void	_readFile(std::string name);
 		void	_parseJson(std::string file);
 };
+
+# include "Game.hpp"
 
 #endif

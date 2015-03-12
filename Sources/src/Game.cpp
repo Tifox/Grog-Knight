@@ -32,7 +32,6 @@
 Game::Game(void) {
 	theWorld.Initialize(1920, 1080, NAME);
 	theWorld.SetupPhysics();
-	//this->elements = new Elements();
 	GameContactListener *gListen = new GameContactListener();
 	ContactFilter *filter = new ContactFilter();
 	theWorld.GetPhysicsWorld().SetContactFilter(filter);
@@ -53,7 +52,6 @@ Game::Game(unsigned int width, unsigned int height) {
 	ContactFilter *filter = new ContactFilter();
 	theWorld.GetPhysicsWorld().SetContactFilter(filter);
 	theWorld.GetPhysicsWorld().SetContactListener(gListen);
-	//this->elements = new Elements();
 	this->maps = new Maps("Maps/");
 }
 
@@ -61,7 +59,6 @@ Game::Game(unsigned int width, unsigned int height) {
  * Destructor
  */
 Game::~Game(void) {
-	//delete this->elements;
 	return ;
 }
 
@@ -87,48 +84,10 @@ void	Game::readMaps(void) {
 }
 
 /**
- * Display a map
- * @param: map (t_map)
- */
-void	Game::displayMap(t_map map) {
-	std::vector<std::vector<int> >::iterator	i;
-	std::vector<int>::iterator			v;
-	float								x = 0.0f, y = -10.0f;
-	Elements							*block;
-	Elements							&tmp = *(new Elements());
-
-	for (i = map.map.begin(); i != map.map.end(); i++, x -= 1.0f) {
-		for (y = -10.0f, v = i->begin(); v != i->end(); v++, y += 1.0f) {
-			if ((*v) == 0)
-				block = new Elements();
-			else {
-				tmp = (*(map.elements[(*v)]));
-				block = new Elements(tmp);
-			}
-			block->setXStart(y);
-			block->setYStart(x);
-			block->display();
-			if (block->getAttribute("attribute") == "start") {
-				this->beginXHero = y;
-				this->beginYHero = x;
-			}
-		}
-	}
-}
-
-/**
  * Display the first map
  */
-void	Game::initMap(void) {
-	std::list<t_map> 	maps = this->maps->getFormattedMaps();
-	std::list<t_map>::iterator	it;
-
-	for (it = maps.begin(); it != maps.end(); it++) {
-		if ((*it).id == 1) {
-			this->displayMap(*it);
-		}
-		std::cout << (*it).id << std::endl;
-	}
+void	Game::showMap(void) {
+	this->maps->firstOne();
 }
 
 /**
@@ -136,8 +95,8 @@ void	Game::initMap(void) {
  * @param: Hero (Elements &)
  */
 void	Game::displayHero(Elements & Hero) {
-	Hero.setXStart(this->beginXHero);
-	Hero.setYStart(this->beginYHero);
+	Hero.setXStart(10);
+	Hero.setYStart(-10);
 	Hero.addAttribute("hero", "1");
 	Hero.display();
 }
@@ -147,10 +106,21 @@ void	Game::displayHero(Elements & Hero) {
  * @param: Enemy (Elements &)
  */
 void	Game::displayEnemy(Elements & Enemy) {
-	Enemy.setXStart(3);
-	Enemy.setYStart(3);
+	Enemy.setXStart(5);
+	Enemy.setYStart(-5);
 	Enemy.addAttribute("enemy", "1");
 	Enemy.display();
+}
+
+/**
+ * Display the Object
+ * @param: Object (Elements &)
+ */
+void	Game::displayObject(Elements & Object) {
+	Object.setXStart(6);
+	Object.setYStart(6);
+	Object.addAttribute("Object", "1");
+	Object.display();
 }
 
 /**
@@ -167,6 +137,17 @@ int		Game::getNextId(void) {
 void	Game::addElement(Elements & elem) {
 	Game::elementMap[Game::currentIds] = &elem;
 	Game::currentIds += 1;
+}
+
+/**
+ * Deletes an element from the intern map
+ * @param: elem (Elements &)
+ */
+void	Game::delElement(Elements* elem) {
+	for (int i = 0; Game::elementMap[i]; i++) {
+		if (Game::elementMap[i] == elem)
+			Game::elementMap.erase(i);
+	}
 }
 
 /**
@@ -192,9 +173,51 @@ void	Game::listElement(void) {
 	}
 }
 
+/**
+ * Call to add an element to the destroy list after the tick()
+ * @param: m (Elements*)
+ */
+
+void	Game::addToDestroyList(Elements *m) {
+	for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
+		if ((*it) == m)
+			return;
+	}
+	Game::bodiesToDestroy.push_back(m);
+}
+
+/**
+ * Called after each tick() in order to destroy all elements set to destroy
+ */
+
 void	Game::destroyAllBodies(void) {
+	for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
+		theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
+		theWorld.Remove(*it);
+		Game::delElement(*it);
+	}
+	Game::bodiesToDestroy.clear();
+}
+
+void	Game::startRunning(Elements *c) {
+	Game::runningCharac.push_back(c);
+}
+
+void	Game::stopRunning(Elements *c) {
+	Game::runningCharac.remove(c);
+}
+
+void	Game::makeItRun(void) {
+	std::list<Elements *>::iterator	i;
+
+	for (i = Game::runningCharac.begin(); i != Game::runningCharac.end(); i++) {
+		(*i)->_run();
+	}
 }
 
 // Set for the statics
 int Game::currentIds = 0;
-std::map<int, Elements *> Game::elementMap = {};
+std::map<int, Elements *>	Game::elementMap = {};
+std::list<Elements *>		Game::runningCharac;
+std::list<Elements *>		Game::bodiesToDestroy;
+WeaponList*					Game::wList;

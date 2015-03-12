@@ -172,13 +172,13 @@
 		345AAD5311CB376A002B4471 /* StringUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A187BC0E283FF3001C79A5 /* StringUtil.cpp */; };
 		345AAD5411CB376A002B4471 /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A181B30E283FF1001C79A5 /* Input.cpp */; };
 		345AAD5511CB376A002B4471 /* MouseInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A181B80E283FF1001C79A5 /* MouseInput.cpp */; };
-		345AAD5611CB376A002B4471 /* PhysicsActor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A181AB0E283FF1001C79A5 /* PhysicsActor.cpp */; };
+		345AAD5611CB376A002B4471 /* PhysicsActor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A181AB0E283FF1001C79A5 /* PhysicsActor.cpp */; settings = {COMPILER_FLAGS = "-I ../Tools/jsoncpp/include/"; }; };
 		345AAD5811CB376A002B4471 /* GotoAIEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A181760E283FF1001C79A5 /* GotoAIEvent.cpp */; };
 		345AAD5911CB376A002B4471 /* GotoTargetAIEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A181780E283FF1001C79A5 /* GotoTargetAIEvent.cpp */; };
 		345AAD5A11CB376A002B4471 /* NamedEventAIEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A1817A0E283FF1001C79A5 /* NamedEventAIEvent.cpp */; };
 		345AAD5B11CB376A002B4471 /* TimerAIEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A1817C0E283FF1001C79A5 /* TimerAIEvent.cpp */; };
 		345AAD5C11CB376A002B4471 /* TraversalAIEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A1817E0E283FF1001C79A5 /* TraversalAIEvent.cpp */; };
-		345AAD5D11CB376A002B4471 /* Actor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A1815B0E283FE0001C79A5 /* Actor.cpp */; };
+		345AAD5D11CB376A002B4471 /* Actor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A1815B0E283FE0001C79A5 /* Actor.cpp */; settings = {COMPILER_FLAGS = "-I ../Tools/jsoncpp/include/"; }; };
 		345AAD5E11CB376A002B4471 /* FullScreenActor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A1815F0E283FE0001C79A5 /* FullScreenActor.cpp */; };
 		345AAD5F11CB376A002B4471 /* GridActor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A181610E283FE0001C79A5 /* GridActor.cpp */; };
 		345AAD6011CB376A002B4471 /* ParticleActor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A181630E283FE0001C79A5 /* ParticleActor.cpp */; };
@@ -1348,6 +1348,7 @@
 		34FB48961638FDFB002EB836 /* UnitTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnitTest.h; path = Libraries/gwen/include/Gwen/UnitTest/UnitTest.h; sourceTree = "<group>"; };
 		34FB48991638FE0A002EB836 /* ControlFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ControlFactory.h; path = Libraries/gwen/include/Gwen/Util/ControlFactory.h; sourceTree = "<group>"; };
 		34FB489A1638FE0A002EB836 /* ImportExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImportExport.h; path = Libraries/gwen/include/Gwen/Util/ImportExport.h; sourceTree = "<group>"; };
+		67E4EBC11AA479E80003D115 /* include */ = {isa = PBXFileReference; lastKnownFileType = folder; name = include; path = ../Tools/jsoncpp/include; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1449,6 +1450,7 @@
 		29B97314FDCFA39411CA2CEA /* Angel */ = {
 			isa = PBXGroup;
 			children = (
+				67E4EBC11AA479E80003D115 /* include */,
 				34A18BAD0E2841CC001C79A5 /* Angel Framework */,
 				34A18C990E284421001C79A5 /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,

@@ -615,7 +615,7 @@ protected:
 	float _UV[8];
 	
 	actorDrawShape _drawShape;
-	static const float _squareVertices[];
+	static float _squareVertices[];
 	static float _circleVertices[];
 	static float _circleTextureCoords[];
 

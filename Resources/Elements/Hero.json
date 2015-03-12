@@ -14,25 +14,33 @@
 			"beginFrame": 4,
 			"endFrame": 9,
 			"time": 0.1,
-			"force": 5
+			"force": 10
 		},
 		"backward": {
 			"subscribe": "backward",
-			"beginFrame": 4,
-			"endFrame": 9,
+			"beginFrame": 10,
+			"endFrame": 15,
 			"time": 0.1,
-			"force": 5
+			"force": 10
 		},
 		"jump": {
 			"subscribe": "jump",
 			"double": 1,
-			"force": 5,
+			"force": 6,
+			"rejump": 7,
 			"beginFrame": 16,
+			"fallingFrame": 23,
 			"endFrame": 27,
 			"time": 0.1
 		},
 		"attack": {
 			"subscribe": "attack"
+		},
+		"down": {
+			"subscribe": "down"
+		},
+		"up": {
+			"subscribe": "up"
 		},
 		"breath": {
 			"beginFrame": 1,

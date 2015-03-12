@@ -28,34 +28,53 @@
 
 # include "Log.hpp"
 # include "Elements.hpp"
-# include "json/json.h"
-/*
-** Default constructor, using the element that called the attack
-** @param: Elements *
-*/
+# include "Projectile.hpp"
+# ifdef __APPLE__
+#  include "../../Tools/jsoncpp/include/json/json.h"
+# else
+#  include "json/json.h"
+# endif
+
+class Characters;
+
 
 class Weapon: public Elements {
 public:
 	Weapon(std::string name);
+	Weapon(Weapon* weapon);
+	Weapon(Weapon* weapon, Characters* c);
 	~Weapon(void);
 
-	void			attack(int, int, int, int, b2Vec2);
+	void			attack(Characters *c);
 	void			BeginContact(Elements *elem, b2Contact *contact);
 	void			EndContact(Elements *elem, b2Contact *contact);
 	void			ReceiveMessage(Message *m);
+
+	std::string		getName(void);
+	std::string		getFlavor(void);
+	std::string		getAttack(void);
+	float			getActive(void);
+	int				getSize(void);
+	int				getDamage(void);
+	int				getPushback(void);
+	float			getRecovery(void);
+	int				attackReady(void);
 
 private:
 	std::map<std::string, std::map<std::string, Json::Value> >	_attr;
 
 	std::string		_name;
 	std::string		_flavor;
+	std::string		_attack;
 	int				_canAttack;
-	int				_recovery;
-	int				_active;
+	float			_recovery;
+	float			_active;
 	int				_size;
+	int				_damage;
+	int				_pushback;
 	void			_readFile(std::string name);
+	void			_readFileFromFilename(std::string name);
 	void			_parseJson(std::string file);
-//	WeaponArea*		_attackBox;
 
 protected:
 	Json::Value     _getAttr(std::string category, std::string key);

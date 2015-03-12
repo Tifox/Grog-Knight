@@ -26,13 +26,20 @@
 #ifndef __Game__
 # define __Game__
 
+class	Map;
+class	Maps;
+# ifndef __Map__
 # include "Maps.hpp"
+# endif
 # ifndef __Elements__
 #  include "main.hpp"
 #  include "Elements.hpp"
 # endif
 # include "GameContactListener.hpp"
 # include "ContactFilter.hpp"
+# include "Characters.hpp"
+# include "WeaponList.hpp"
+class WeaponList;
 
 class Game {
 
@@ -44,22 +51,30 @@ class Game {
 		void	grid(void);
 		void	start(void);
 		void	readMaps(void);
-		void	initMap(void);
-		void	displayMap(t_map map);
 		void	displayHero(Elements & Hero);
 		void	displayEnemy(Elements & Enemy);
+		void	displayObject(Elements & Object);
+		void	showMap(void);
 
 		static void	destroyAllBodies(void);
+		static void	addToDestroyList(Elements *m);
 
 
 		static int	getNextId(void);
 		static void	addElement(Elements & elem);
+		static void	delElement(Elements *elem);
 		static void	listElement(void);
 		static void	callCallbacks(int a, int b);
+		static void	startRunning(Elements *c);
+		static void	stopRunning(Elements *c);
+		static void	makeItRun(void);
 
 		Maps		*maps;
 		static int	currentIds;
 		static std::map<int, Elements *>	elementMap;
+		static std::list<Elements *>	bodiesToDestroy;
+		static std::list<Elements *>	runningCharac;
+		static WeaponList*				wList;
 
 	private:
 		float		beginXHero;

@@ -26,36 +26,34 @@
 
 #ifndef __Elements__
 # define __Elements__
+
 # include <map>
 # include <string>
-# ifndef __Maps__
-#  include "../inc/Game.hpp"
-# endif
-# include "Maps.hpp"
 # include "../../Angel/Angel.h"
 
 class Weapon;
 
 class Elements : public PhysicsActor {
 public:
+	friend class Game;
 	Elements();
 	Elements(int id);
 	Elements(Elements & obj);
 	~Elements();
 
-	enum Orientation {
-		LEFT,
-		RIGHT,
-		UP,
-		DOWN,
-	};
-
-	void 		addAttribute(std::string name, std::string value);
-	std::string	getAttribute(std::string name);
 	void		setXStart(float X);
 	void		setYStart(float Y);
+	void		setWidth(int w);
+	void		setHeight(int h);
+	void		setCutWidth(int w);
+	void		setCutHeight(int h);
+	void		setFrame(int n);
+	void 		addAttribute(std::string name, std::string value);
+	std::string	getAttribute(std::string name);
+	void		removeAttr(std::string name);
 	void		display(void);
 	std::map<std::string, std::string>		getAttributes(void);
+	void		setFrameSprite(int frame);
 
 	/* Virtual function, overridden in Childs */
 	virtual void	callback(Elements * elem) { };
@@ -66,9 +64,22 @@ public:
 	int				getOrientationY(void);
 	int				getLateralOrientation(void);
 
+protected:
+	virtual void	_run() {};
+
 private:
 	float								_XStartPos;
 	float								_YStartPos;
 	std::map<std::string, std::string>	_attributes;
+	int									_height;
+	int									_width;
+	int									_cutHeight;
+	int									_cutWidth;
+	int									_frame;
 };
+
+# include "Characters.hpp"
+# include "Maps.hpp"
+# include "Game.hpp"
+
 #endif

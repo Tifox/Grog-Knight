@@ -28,18 +28,29 @@
 
 # include "Elements.hpp"
 
-/*
-** Default constructor
-** @param: Elements *
-*/
+class Characters;
 
 class Projectile: public Elements {
 public:
 	Projectile(float x, float y, int direction, std::string owner);
+	Projectile(Weapon *w, Characters *c);
 	~Projectile();
+
+	std::string     getName(void);
+	std::string     getFlavor(void);
+	std::string     getAttack(void);
+    float           getActive(void);
+    int             getSize(void);
+    int             getDamage(void);
+    int             getPushback(void);
+    float           getRecovery(void);
+    int             attackReady(void);
+
 	void	BeginContact(Elements *elem, b2Contact *contact);
 	void	EndContact(Elements *elem, b2Contact *contact);
-	void			ReceiveMessage(Message *m);
+	void	ReceiveMessage(Message *m);
+private:
+	Weapon* _weapon;
 };
 
 #endif

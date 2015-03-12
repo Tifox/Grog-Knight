@@ -1,21 +1,28 @@
 NAME 	= rogue-like
 CC 		= g++
-CFLAGS 	= -std=c++0x -arch i386 -Wno-deprecated
+CFLAGS 	= -std=c++0x -arch i386 -Wno-deprecated -g
 ANGEL_FLAG = -D ANGEL
 SRCS 	= ../Sources/src/main.cpp \
 		  ../Sources/src/Elements.cpp \
 		  ../Sources/src/Game.cpp \
 		  ../Sources/src/Characters.cpp \
+		  ../Sources/src/WeaponList.cpp \
 		  ../Sources/src/Weapon.cpp \
-		  ../Sources/src/Shooter.cpp \
 		  ../Sources/src/Projectile.cpp \
+		  ../Sources/src/Room.cpp \
+		  ../Sources/src/LevelGenerator.cpp \
 		  ../Sources/src/Hero.cpp \
 		  ../Sources/src/Enemy.cpp \
+		  ../Sources/src/Map.cpp \
 		  ../Sources/src/Maps.cpp \
-		  ../Angel/Scripting/Interfaces/AngelLuaWrapping.cpp \
 		  ../Sources/src/GameContactListener.cpp \
 		  ../Sources/src/ContactFilter.cpp \
-		  ../Sources/src/Log.cpp
+		  ../Sources/src/Log.cpp \
+		  ../Sources/src/Object.cpp \
+		  ../Sources/src/Equipment.cpp \
+		  ../Sources/src/Consumable.cpp \
+		  ../Sources/src/Hitbox.cpp \
+		  ../Angel/Scripting/Interfaces/AngelLuaWrapping.cpp
 
 OBJS 	 = $(SRCS:.cpp=.o)
 
@@ -86,7 +93,10 @@ angel:
 angel-clean:
 	cd ../Angel && xcodebuild -scheme Angel -project Angel.xcodeproj CONFIGURATION_BUILD_DIR='build' clean
 
-clean: angel-clean json-clean
+clean: angel-clean json-clean quick-clean
+
+quick-clean:
+	rm $(OBJS)
 
 exec:
 	cd build/ && ./rogue-like

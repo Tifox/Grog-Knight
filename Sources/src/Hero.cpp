@@ -29,6 +29,8 @@
  * Basic constructor
  */
 Hero::Hero(void) : Characters("Hero") {
+	theSwitchboard.SubscribeTo(this, "canMove");
+	theSwitchboard.SubscribeTo(this, "endInvincibility");
 	return ;
 }
 
@@ -46,12 +48,34 @@ void	Hero::init(void) {
 	this->AnimCallback("base");
 }
 
+
 /**
  * Mother's callback for actions
  * @param: name (std::string)
  * @param: status (int)
  */
 void	Hero::actionCallback(std::string name, int status) {
-	std::cout << "CALLBACK " << name << std::endl;
 	return ;
+}
+
+void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
+	Characters::BeginContact(elem, contact);
+	if (elem->getAttributes()["type"] == "Enemy") {
+		if (this->_invincibility == true)
+			return;
+		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+		Game::stopRunning(this);
+		this->_isRunning = 0;
+		//Damage here
+		Characters::changeCanMove();
+		this->_invincibility = true;
+		theSwitchboard.DeferredBroadcast(new Message("canMove"), 1);
+		theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1);
+		if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
+			this->ApplyLinearImpulse(Vector2(10, 10), Vector2(0, 0));
+		}
+		else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x) {
+			this->ApplyLinearImpulse(Vector2(-10, 10), Vector2(0, 0));
+		}
+	}
 }

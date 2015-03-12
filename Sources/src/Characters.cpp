@@ -36,14 +36,19 @@ Characters::Characters(void) {
  * Main constructor
  * @param: name (std::string)
  */
-Characters::Characters(std::string name) : _name(name) {
+Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0) {
 	this->addAttribute("physic", "1");
 	this->addAttribute("type", name);
 	this->SetDensity(1.0f);
 	this->SetFriction(1.0f);
 	this->SetRestitution(0.0f);
 	this->SetFixedRotation(true);
+	this->_orientation = RIGHT;
 	this->_readFile(name);
+	this->_canMove = true;
+	this->_invincibility = false;
+	this->_grounds.clear();
+	this->_walls.clear();
 }
 
 /**
@@ -63,6 +68,7 @@ void	Characters::_readFile(std::string name) {
 	std::ifstream		fd;
 
 	file = "./Resources/Elements/" + name + ".json";
+
 	fd.open(file.c_str());
 	if (!fd.is_open())
 		Log::error("Can't open the file for the " + 
@@ -90,7 +96,6 @@ void	Characters::_parseJson(std::string file) {
 	this->_id = json["infos"].get("id", "").asInt();
 	this->_size = json["infos"].get("size", "").asFloat();
 	this->_maxSpeed = json["infos"].get("maxSpeed", "").asFloat();
-	this->_weapon = new Weapon(json["infos"].get("weapon", "").asString());
 	this->addAttribute("spritesFrame", json["infos"].get("sprites", "").asString());
 
 	for (i = json["Actions"].begin(); i != json["Actions"].end(); i++) {
@@ -153,22 +158,34 @@ void	Characters::ReceiveMessage(Message *m) {
 	std::string		name, attrName;
 	int				status;
 
-	Log::info(m->GetMessageName());
+	if (m->GetMessageName() == "canMove") {
+		this->_canMove = true;
+	}
+	else if (m->GetMessageName() == "endInvincibility") {
+		this->_invincibility = false;
+	}
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
 		attrName = this->_getAttr(i->first, "subscribe").asString();
 		if (!strncmp(attrName.c_str(), m->GetMessageName().c_str(), strlen(attrName.c_str()))) {
 
 			// Get the key status (1 = Pressed, 0 = Released)
 			status = (m->GetMessageName().substr(strlen(attrName.c_str()), 7) == "Pressed" ? 1 : 0);
+			if (this->_canMove == false)
+				return;
 			if (attrName == "forward") {
 				this->_forward(status);
 			} else if (attrName == "backward") {
 				this->_backward(status);
+			} else if (attrName == "up") {
+				this->_up(status);
+			} else if (attrName == "down") {
+				this->_down(status);
 			} else if (attrName == "jump") {
 				this->_jump(status);
-			} else if ("attack") {
+			} else if (attrName == "attack") {
 				this->_attack(status);
 			}
+			this->_lastAction = attrName;
 			this->actionCallback(attrName, status);
 		}
 	}
@@ -182,9 +199,20 @@ void	Characters::ReceiveMessage(Message *m) {
 void	Characters::AnimCallback(String s) {
 	this->_setCategory("breath");
 	if (s == "base") {
-		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-			this->_getAttr("beginFrame").asInt(),
-			this->_getAttr("endFrame").asInt(), "base");
+		if (this->_isRunning == 0) {
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+				this->_getAttr("beginFrame").asInt(),
+				this->_getAttr("endFrame").asInt(), "base");
+		} else {
+			if (this->_isRunning == 1) {
+				this->_setCategory("forward");
+			} else if (this->_isRunning == 2) {
+				this->_setCategory("backward");
+			}
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
+				this->_getAttr("beginFrame").asInt(),
+				this->_getAttr("endFrame").asInt());
+		}
 	}
 }
 
@@ -195,27 +223,26 @@ void	Characters::AnimCallback(String s) {
  * @note: This function is called just before a collision
  */
 void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
-	if (elem->getAttributes()["type"] == "wall" ||
-		elem->getAttributes()["type"] == "ground" ||
-		elem->getAttributes()["type"] == "corner") {
-		if (this->GetBody()->GetWorldCenter().y > elem->GetBody()->GetWorldCenter().y + 1) {
+	if (elem->getAttributes()["type"] == "ground") {
+		if (this->GetBody()->GetWorldCenter().y - 1 >= elem->GetBody()->GetWorldCenter().y) {
 			if (this->_grounds.size() > 0)
 				contact->SetEnabled(false);
-			else {
-				if (this->_isJump > 0) {
-					this->_isJump = 0;
-					this->PlaySpriteAnimation(0.1f, SAT_OneShot, this->_getAttr("jump", "endFrame").asInt(),
-						this->_getAttr("jump", "endFrame").asInt(), "base");
-				}
+			if (this->_isJump > 0) {
+				this->_isJump = 0;
+				this->PlaySpriteAnimation(0.1f, SAT_OneShot, this->_getAttr("jump", "endFrame").asInt(),
+										  this->_getAttr("jump", "endFrame").asInt(), "base");
 			}
 			this->_grounds.push_back(elem);
-		} else {
-			if (this->_walls.size() > 0)
+		} else if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
+			if (this->_wallsLeft.size() > 0)
 				contact->SetEnabled(false);
-			this->_walls.push_back(elem);
+			this->_wallsLeft.push_back(elem);
+		} else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x) {
+			if (this->_wallsRight.size() > 0)
+				contact->SetEnabled(false);
+			this->_wallsRight.push_back(elem);
 		}
 	}
-
 }
 
 /**
@@ -225,16 +252,27 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
  * @note: This function is called just after the elements leave another
  */
 void	Characters::EndContact(Elements *elem, b2Contact *contact) {
-	if (elem->getAttributes()["type"] == "wall" ||
-		elem->getAttributes()["type"] == "ground" ||
-		elem->getAttributes()["type"] == "corner") {
-		if (this->GetBody()->GetWorldCenter().y > elem->GetBody()->GetWorldCenter().y + 1) {
+	if (elem->getAttributes()["type"] == "ground") {
+		this->_wallsLeft.remove(elem);
+		this->_wallsRight.remove(elem);
+		if (this->_grounds.size() == 1) {
 			this->_grounds.remove(elem);
+			if (this->_grounds.size() == 0)
+				this->_isJump++;
+// 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+// 										  this->_getAttr("jump", "fallingFrame").asInt(),
+// 										  this->_getAttr("jump", "endFallingFrame").asInt() - 1, "jump");
 		}
-		else {
-			this->_walls.remove(elem);
-		}
+		else
+			this->_grounds.remove(elem);
 	}
+}
+
+void	Characters::_run(void) {
+	if (this->_isRunning == 1)
+		this->_forward(2);
+	else if (this->_isRunning == 2)
+		this->_backward(2);
 }
 
 /****************************/
@@ -249,16 +287,27 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
  */
 void	Characters::_forward(int status) {
 	this->_setCategory("forward");
-	if (status == 1) {
-		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt())
+	if (status == 1){
+		this->_orientation = RIGHT;
+		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() && !this->_isJump)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 				this->_getAttr("beginFrame").asInt(),
 				this->_getAttr("endFrame").asInt());
-		if (this->GetBody()->GetLinearVelocity().x < this->_maxSpeed)
-			this->ApplyLinearImpulse(Vector2(this->_getAttr("force").asFloat(), 0), Vector2(0, 0));
-	} else {
+		Game::startRunning(this);
+		if (this->_isRunning == 2)
+			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
+		this->_isRunning = 1;
+	} else if (status == 0) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
-		this->AnimCallback("base");
+		Game::stopRunning(this);
+		this->_isRunning = 0;
+		if (!this->_isJump)
+			this->AnimCallback("base");
+	} else {
+		if (this->GetBody()->GetLinearVelocity().x < this->_maxSpeed) {
+			if (this->_wallsRight.size() == 0 && this->_canMove == true)
+				this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
+		}
 	}
 	return ;
 }
@@ -268,17 +317,28 @@ void	Characters::_forward(int status) {
  * @param: status (int)
  */
 void	Characters::_backward(int status) {
-	this->_setCategory("backward");
+   this->_setCategory("backward");
 	if (status == 1) {
-		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt())
+		this->_orientation = LEFT;
+		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() && !this->_isJump)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 				this->_getAttr("beginFrame").asInt(),
 				this->_getAttr("endFrame").asInt());
-		if (this->GetBody()->GetLinearVelocity().x > -(this->_maxSpeed))
-			this->ApplyLinearImpulse(Vector2(-(this->_getAttr("force").asFloat()), 0), Vector2(0, 0));
-	} else {
+		Game::startRunning(this);
+		if (this->_isRunning == 1)
+			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
+		this->_isRunning = 2;
+	} else if (status == 0) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
-		this->AnimCallback("base");
+		if (!this->_isJump)
+			this->AnimCallback("base");
+		this->_isRunning = 0;
+		Game::stopRunning(this);
+	} else {
+		if (this->GetBody()->GetLinearVelocity().x > -(this->_maxSpeed)) {
+			if (this->_wallsLeft.size() == 0 && this->_canMove == true)
+				this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
+		}
 	}
 	return ;
 }
@@ -289,16 +349,43 @@ void	Characters::_backward(int status) {
  */
 void	Characters::_jump(int status) {
 	this->_setCategory("jump");
+
 	if (status == 1) {
 		if (this->_isJump == 0 || (this->_isJump <= 1 && this->_getAttr("double").asInt() == 1)) {
-			this->ApplyLinearImpulse(Vector2(0, this->_getAttr("force").asFloat()), Vector2(0, 0));
+			if (this->_isJump >= 1) {
+				this->GetBody()->SetLinearVelocity(b2Vec2(this->GetBody()->GetLinearVelocity().x, this->_getAttr("rejump").asFloat()));
+			}
+			else {
+				this->ApplyLinearImpulse(Vector2(0, this->_getAttr("force").asFloat()), Vector2(0, 0));
+			}
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 				this->_getAttr("beginFrame").asInt(),
 				this->_getAttr("endFrame").asInt() - 1, "jump");
-			this->_isJump++;
+			if (this->_grounds.size() == 0)
+				this->_isJump++;
 		}
 	}
 	return ;
+}
+
+/**
+ * Called when pressing the UP button
+ * @param: status (int)
+ */
+
+void	Characters::_up(int status) {
+	if (status == 1)
+		this->_orientation = UP;
+}
+
+/**
+ * Called when pressing the DOWN button
+ * @param: status (int)
+ */
+
+void	Characters::_down(int status) {
+	if (status == 1)
+		this->_orientation = DOWN;
 }
 
 /**
@@ -306,5 +393,15 @@ void	Characters::_jump(int status) {
  * @param: status (int)
  */
 void	Characters::_attack(int status) {
-	this->_weapon->attack(this->GetBody()->GetWorldCenter().x + 0.75f , this->GetBody()->GetWorldCenter().y, 0, 0, this->GetBody()->GetLinearVelocity());
+	if (status == 1 && this->_weapon->attackReady() == 1) {
+		this->_weapon->attack(this);
+	}
 }
+
+void	Characters::equipWeapon(Weapon* weapon) {
+		this->_weapon = new Weapon(weapon);
+}
+
+Characters::Orientation		Characters::getOrientation(void) { return this->_orientation; }
+std::string					Characters::getLastAction(void) { return this->_lastAction; };
+void						Characters::changeCanMove(void) { this->_canMove = (this->_canMove ? false : true); };

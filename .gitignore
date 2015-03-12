@@ -1,0 +1,6 @@
+*.o
+rogue-like
+Tools/jsoncpp/
+*.a
+*.lo
+Angel/Libraries/Box2D-2.2.1/Build

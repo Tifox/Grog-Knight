@@ -27,17 +27,16 @@
 #ifndef __Enemy__
 # define __Enemy__
 
-# include "Elements.hpp"
-# include "Hero.hpp"
+# include "Characters.hpp"
 
-class Enemy : public Elements {
+class Enemy : public Characters {
 public:
 	Enemy();
 	~Enemy();
 
-	virtual void	callback(Elements * elem);
-	void			ReceiveMessage(Message *m);
+	void			actionCallback(std::string name, int status);
 	void			init(void);
+	void			BeginContact(Elements* m, b2Contact* contact);
 };
 
 #endif

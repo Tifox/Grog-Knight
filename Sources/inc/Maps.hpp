@@ -36,22 +36,13 @@
 # include <list>
 # include <string>
 # include <vector>
+# include <map>
 
-# include "Elements.hpp"
 # include "main.hpp"
+# include "Elements.hpp"
+# include "Map.hpp"
 
-class	Elements;
-
-typedef struct		s_map {
-	int								id;
-	std::string						name;
-	std::string						world;
-	std::string						callbackBegin;
-	std::string						callbackEnd;
-	std::map<int, Elements *>		elements;
-	std::vector<std::vector<int> >	map;
-
-}					t_map;
+class Elements;
 
 class Maps {
 	public:
@@ -59,8 +50,8 @@ class Maps {
 		Maps(std::string directory);
 		~Maps();
 
-		std::list<t_map>	getFormattedMaps(void);
 		void	readMaps(void);
+		void	firstOne(void);
 
 	private:
 		void	_getMap(void);
@@ -68,7 +59,8 @@ class Maps {
 		std::string			_directory;
 		Json::Value			_root;
 		Json::Reader		_reader;
-		std::list<t_map>	_maps;
+		std::list<Map *>	_maps;
 };
 
+# include "Elements.hpp"
 #endif

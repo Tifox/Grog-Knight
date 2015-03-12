@@ -41,7 +41,7 @@ Hitbox::Hitbox(void) {
 		if (dirEntry && strcmp(dirEntry->d_name, ".") && strcmp(dirEntry->d_name, "..")) {
 			iss.str(dirEntry->d_name);
 			std::getline(iss, res, '.');
-//			this->_hitboxes.push_back(this->_getPolygon(res));
+			this->_hitboxes.push_back(this->_getPolygon(res));
 		}
 	}
 }
@@ -64,15 +64,33 @@ b2PolygonShape	Hitbox::_parseJson(std::string file) {
 	Json::Reader    read;
 	Json::Value     json;
 	Json::Value		hitbox;
-	int				vertices = 0;
+	int				v, i, j;
+	std::vector<std::vector<int> >		map;
+	std::vector<int>					tmp;
 
     if (!read.parse(file, json))
 		Log::error("Error in json syntax :\n" + read.getFormattedErrorMessages());
-// 	for (int i = 0; hitbox[i]; i++) {
-// 		if (hitbox[i] == 1)
-// 			vertices++;
-// 	}
-// 	std::cout << vertices << std::endl;
+
+	hitbox = json["data"]["hitbox"];
+	for (v = i = j = 0; i < hitbox.size(); i++, v++) {
+		if (v == 10) {
+			map.insert(map.begin() + j, tmp);
+			j++;
+			v = 0;
+			tmp.clear();
+		}
+		tmp.insert(tmp.begin() + v, hitbox[i].asInt());
+	}
+	map.insert(map.begin() + j, tmp);
+
+	std::vector<std::vector<int> >::iterator	itr;
+	std::vector<int>::iterator	itr2;
+	for (itr = map.begin(); itr != map.end(); itr++) {
+		for (itr2 = (*itr).begin(); itr2 != (*itr).end(); itr2++) {
+			std::cout << (*itr2) << ", ";
+		}
+		std::cout << std::endl;
+	}
 }
 
 /**

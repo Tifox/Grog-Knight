@@ -73,10 +73,8 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1);
 		if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
 			this->ApplyLinearImpulse(Vector2(10, 10), Vector2(0, 0));
-			std::cout << "Positif" << std::endl;
 		}
 		else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x) {
-			std::cout << "Negatif" << std::endl;
 			this->ApplyLinearImpulse(Vector2(-10, 10), Vector2(0, 0));
 		}
 	}

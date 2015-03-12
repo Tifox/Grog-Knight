@@ -150,14 +150,22 @@ void PhysicsActor::InitPhysics()
 	else if (_shapeType == SHAPETYPE_HERO)
 	{
 	   b2Vec2 vertices[8];
-		vertices[0].Set(-0.45, 0.5);
-		vertices[1].Set(-0.5, 0.45);
-		vertices[2].Set(-0.5, -0.45);
-		vertices[3].Set(-0.45, -0.5);
-		vertices[4].Set(0.45, -0.5);
-		vertices[5].Set(0.5, -0.45);
-		vertices[6].Set(0.5, 0.45);
-		vertices[7].Set(0.45, 0.5);
+// 		vertices[0].Set(-0.45, 0.5);
+// 		vertices[1].Set(-0.5, 0.45);
+// 		vertices[2].Set(-0.5, -0.45);
+// 		vertices[3].Set(-0.45, -0.5);
+// 		vertices[4].Set(0.45, -0.5);
+// 		vertices[5].Set(0.5, -0.45);
+// 		vertices[6].Set(0.5, 0.45);
+// 		vertices[7].Set(0.45, 0.5);
+		vertices[0].Set(-0.2, 0.5);
+		vertices[1].Set(-0.3, 0.4);
+		vertices[2].Set(-0.3, -0.4);
+		vertices[3].Set(-0.2, -0.5);
+		vertices[4].Set(0.2, -0.5);
+		vertices[5].Set(0.3, -0.5);
+		vertices[6].Set(0.3, 0.2);
+		vertices[7].Set(0.2, 0.5);
 		box.Set(vertices, 8);
 		//box.SetAsBox(0.5f*_size.X, 0.5f*_size.Y);
 		shape = &box;
@@ -166,6 +174,9 @@ void PhysicsActor::InitPhysics()
 	{
 		box.SetAsBox(0.5f*_size.X, 0.25f*_size.Y);
 		shape = &box;
+	}
+	else if (_shapeType == SHAPETYPE_LOADED) {
+		shape = &_box;
 	}
 	/* END OF CODE */
 	else

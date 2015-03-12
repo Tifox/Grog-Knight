@@ -49,7 +49,6 @@ void	Enemy::init(void) {
  * @param: status (int)
  */
 void	Enemy::actionCallback(std::string name, int status) {
-	std::cout << "CALLBACK " << name << std::endl;
 	return ;
 }
 

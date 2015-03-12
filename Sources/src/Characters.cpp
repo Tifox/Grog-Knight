@@ -339,7 +339,6 @@ void	Characters::_backward(int status) {
 		Game::stopRunning(this);
 	} else {
 		if (this->GetBody()->GetLinearVelocity().x > -(this->_maxSpeed)) {
-			std::cout << "backward launched" << std::endl;
 			if (this->_wallsLeft.size() == 0 && this->_canMove == true)
 				this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
 		}
@@ -353,7 +352,6 @@ void	Characters::_backward(int status) {
  */
 void	Characters::_jump(int status) {
 	this->_setCategory("jump");
-	std::cout << this->_isJump << std::endl;
 
 	if (status == 1) {
 		if (this->_isJump == 0 || (this->_isJump <= 1 && this->_getAttr("double").asInt() == 1)) {

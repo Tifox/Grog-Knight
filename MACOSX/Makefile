@@ -15,13 +15,14 @@ SRCS 	= ../Sources/src/main.cpp \
 		  ../Sources/src/Enemy.cpp \
 		  ../Sources/src/Map.cpp \
 		  ../Sources/src/Maps.cpp \
-		  ../Angel/Scripting/Interfaces/AngelLuaWrapping.cpp \
 		  ../Sources/src/GameContactListener.cpp \
 		  ../Sources/src/ContactFilter.cpp \
 		  ../Sources/src/Log.cpp \
 		  ../Sources/src/Object.cpp \
 		  ../Sources/src/Equipment.cpp \
-		  ../Sources/src/Consumable.cpp 
+		  ../Sources/src/Consumable.cpp \
+		  ../Sources/src/Hitbox.cpp \
+		  ../Angel/Scripting/Interfaces/AngelLuaWrapping.cpp
 
 OBJS 	 = $(SRCS:.cpp=.o)
 

@@ -72,6 +72,7 @@ public:
 		SHAPETYPE_CIRCLE,
 		SHAPETYPE_HERO,
 		SHAPETYPE_PROJECTILE,
+		SHAPETYPE_LOADED
 	};
 	
 	/**
@@ -335,7 +336,7 @@ public:
 protected:
 	virtual void InitShape(b2Shape* /*shapeDef*/ ) {}
 	b2Body *_physBody;
-	
+	b2PolygonShape	_box;
 	float _density;
 	float _friction;
 	float _restitution;

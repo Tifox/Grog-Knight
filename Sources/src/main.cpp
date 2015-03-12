@@ -23,13 +23,14 @@
  * Louis Solofrizzo <louis@ne02ptzero.me>
  */
 
-# include "../inc/Game.hpp"
-# include "../inc/Hero.hpp"
-# include "../inc/Enemy.hpp"
-# include "../inc/Object.hpp"
-# include "../inc/WeaponList.hpp"
-# include "../inc/Equipment.hpp"
-# include "../inc/Consumable.hpp"
+# include "Game.hpp"
+# include "Hero.hpp"
+# include "Enemy.hpp"
+# include "Object.hpp"
+# include "WeaponList.hpp"
+# include "Equipment.hpp"
+# include "Consumable.hpp"
+# include "Hitbox.hpp"
 
 
 class MouseDebugger: public MouseListener {
@@ -66,6 +67,7 @@ int		main(int ac, char **av) {
 	Equipment		*equip = new Equipment();
 
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
+	new Hitbox();
 
 	//theWorld.SetSideBlockers(true, 0.7f);
 

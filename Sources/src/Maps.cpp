@@ -104,7 +104,6 @@ void	Maps::_getMap(void) {
 		}
 	}
 	map->setProperties(tileproperties);
-	itr = this->_root["layers"][0]["data"];
 	for (index = 0; index < itr.size(); index++) {
 		intMap.insert(intMap.begin() + index, itr[index].asInt());
 	}

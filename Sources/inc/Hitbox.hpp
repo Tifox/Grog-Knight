@@ -18,41 +18,25 @@
  */
 
 /**
- * File: Equipment.cpp
- * Creation: 2015-03-06 15:51
- * Manon Budin <mbudin@student.42.fr>
+ * File: Hitbox.hpp
+ * Creation: 2015-02-27 04:45
+ * Vincent Rey <vrey@student.42.fr>
  */
 
-#include "Equipment.hpp"
+#ifndef __Hitbox__
+# define __Hitbox__
 
+# include "main.hpp"
 
-/**
- * Basic Constructor
- */
-Equipment::Equipment(void) {
-	this->addAttribute("type2", "Equipment");
-	this->SetColor(0,1,1,1);
-	this->_weapon = new Weapon(Game::wList->getWeapon("Bow"));
-}
+class Hitbox {
+public:
+	Hitbox();
+	~Hitbox();
+private:
+	b2PolygonShape	_getPolygon(std::string res);
+	b2PolygonShape	_parseJson(std::string res);
 
-void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
-	if (elem->getAttributes()["type"] == "Hero"){
-		static_cast<Characters*>(elem)->equipWeapon(this->_weapon);
-		Game::bodiesToDestroy.push_back(this);
-		contact->SetEnabled(false);
-	}
-}
+	std::list<b2PolygonShape>	_hitboxes;
+};
 
-void	Equipment::init(void) {
-}
-
-Weapon*		Equipment::getWeapon(void) {
-	return this->_weapon;
-}
-
-/*
- * Basic Destructor
- */
-Equipment::~Equipment(void) {
-	return;
-}
+#endif

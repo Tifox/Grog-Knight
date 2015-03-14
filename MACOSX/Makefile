@@ -22,7 +22,8 @@ SRCS 	= ../Sources/src/main.cpp \
 		  ../Sources/src/Equipment.cpp \
 		  ../Sources/src/Consumable.cpp \
 		  ../Sources/src/Hitbox.cpp \
-		  ../Angel/Scripting/Interfaces/AngelLuaWrapping.cpp
+		  ../Angel/Scripting/Interfaces/AngelLuaWrapping.cpp \
+		  ../Sources/src/HUDWindow.cpp \
 
 OBJS 	 = $(SRCS:.cpp=.o)
 

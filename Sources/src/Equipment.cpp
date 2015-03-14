@@ -38,18 +38,20 @@ Equipment::Equipment(void) {
 	this->_weapon = new Weapon(Game::wList->getWeapon("Bow"));
 }
 
+/**
+ * Collision begin callback
+ * @param: elem (Elements *)
+ * @param: contact (b2Contact *)
+ * @note: This function is called just before a collision
+ */
 void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "Hero"){
 		Game::getHUD()->setText(this->_weapon->getFlavor(), 0, 0);
 	}
 }
 
-void	Equipment::init(void) {
-}
-
-Weapon*		Equipment::getWeapon(void) {
-	return this->_weapon;
-}
+/*GETTERS*/
+Weapon*		Equipment::getWeapon(void) { return this->_weapon; }
 
 /*
  * Basic Destructor

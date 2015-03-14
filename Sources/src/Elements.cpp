@@ -29,7 +29,7 @@
 /**
  * Main constructor
  */
-Elements::Elements(void) : PhysicsActor() {
+Elements::Elements(int id) :  PhysicsActor() {
 	this->setId(Game::getNextId());
 	Game::addElement(*this);
 	return ;
@@ -38,7 +38,7 @@ Elements::Elements(void) : PhysicsActor() {
 /**
  * Main constructor
  */
-Elements::Elements(int id) :  PhysicsActor() {
+Elements::Elements(void) :  PhysicsActor() {
 	this->setId(Game::getNextId());
 	Game::addElement(*this);
 	return ;

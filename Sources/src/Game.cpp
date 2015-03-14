@@ -30,7 +30,11 @@
  * (http://docs.angel2d.com/class_world.html#ae5d7e8d20d3e6fc93785ab2014ac0c13)
  */
 Game::Game(void) {
-	theWorld.Initialize(1920, 1080, NAME);
+	#ifdef __APPLE__
+		theWorld.Initialize(1920, 1080, NAME);
+	#else
+		theWorld.Initialize(1600, 1200, NAME, false, true);
+	#endif
 	theWorld.SetupPhysics();
 	GameContactListener *gListen = new GameContactListener();
 	ContactFilter *filter = new ContactFilter();
@@ -215,9 +219,26 @@ void	Game::makeItRun(void) {
 	}
 }
 
+void	Game::showText(void) {
+	std::list<HUDWindow *>::iterator i;
+
+	for (i = Game::windows.begin(); i != Game::windows.end(); i++) {
+		(*i)->displayText();
+	}
+}
+
+void	Game::addHUDWindow(HUDWindow *w) {
+	Game::windows.push_back(w);
+}
+
+HUDWindow	*Game::getHUD(void) {
+	return Game::windows.front();
+}
+
 // Set for the statics
 int Game::currentIds = 0;
 std::map<int, Elements *>	Game::elementMap = {};
 std::list<Elements *>		Game::runningCharac;
 std::list<Elements *>		Game::bodiesToDestroy;
+std::list<HUDWindow *>		Game::windows;
 WeaponList*					Game::wList;

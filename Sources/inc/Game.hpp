@@ -39,7 +39,9 @@ class	Maps;
 # include "ContactFilter.hpp"
 # include "Characters.hpp"
 # include "WeaponList.hpp"
+# include "HUDWindow.hpp"
 class WeaponList;
+class HUDWindow;
 
 class Game {
 
@@ -68,12 +70,16 @@ class Game {
 		static void	startRunning(Elements *c);
 		static void	stopRunning(Elements *c);
 		static void	makeItRun(void);
+		static void	showText(void);
+		static void	addHUDWindow(HUDWindow *);
+		static HUDWindow*	getHUD(void);
 
 		Maps		*maps;
 		static int	currentIds;
 		static std::map<int, Elements *>	elementMap;
 		static std::list<Elements *>	bodiesToDestroy;
 		static std::list<Elements *>	runningCharac;
+		static std::list<HUDWindow *>	windows;
 		static WeaponList*				wList;
 
 	private:

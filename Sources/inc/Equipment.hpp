@@ -30,6 +30,7 @@
 # include "Hero.hpp"
 # include "WeaponList.hpp"
 # include "Object.hpp"
+# include "Game.hpp"
 
 class Equipment : public Object {
 public:

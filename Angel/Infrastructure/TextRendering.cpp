@@ -107,6 +107,7 @@ Vector2 DrawGameText(const String& text, const String& nickname, int pixelX, int
 {
 	Vector2 forReturn;
 
+
 	std::map<String,FTFont*>::iterator it = _fontCache.find(nickname);
 	if (it == _fontCache.end())
 	{
@@ -132,10 +133,10 @@ Vector2 DrawGameText(const String& text, const String& nickname, int pixelX, int
 	glRotatef(angle, 0.0f, 0.0f, 1.0f);
 
 	glEnable(GL_TEXTURE_2D);
-	glDisable(GL_DEPTH_TEST);
+	//glDisable(GL_DEPTH_TEST);
 	it->second->Render(text.c_str());
 	glDisable(GL_TEXTURE_2D);
-	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_DEPTH_TEST);
 
 	glPopMatrix();
 	glMatrixMode(GL_PROJECTION);

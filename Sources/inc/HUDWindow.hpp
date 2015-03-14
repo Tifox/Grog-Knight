@@ -1,3 +1,4 @@
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,42 +19,28 @@
  */
 
 /**
- * File: Equipment.cpp
- * Creation: 2015-03-06 15:51
- * Manon Budin <mbudin@student.42.fr>
+ * File: HUDWindow.hpp
+ * Creation: 2015-03-14 05:35
+ * Louis Solofrizzo <louis@ne02ptzero.me>
  */
 
-#include "Equipment.hpp"
+#ifndef __HUDWindow__
+# define __HUDWindow__
 
+# include "../../Angel/Angel.h"
+# include "Game.hpp"
 
-/**
- * Basic Constructor
- */
-Equipment::Equipment(void) {
-	this->addAttribute("type2", "Equipment");
-	this->SetColor(0,1,1,1);
-	this->SetPosition(5, -10);
-	this->InitPhysics();
-	theWorld.Add(this);
-	this->_weapon = new Weapon(Game::wList->getWeapon("Bow"));
-}
+class	HUDWindow : public HUDActor {
+	public:
+		HUDWindow(void);
+		~HUDWindow(void);
 
-void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
-	if (elem->getAttributes()["type"] == "Hero"){
-		Game::getHUD()->setText(this->_weapon->getFlavor(), 0, 0);
-	}
-}
+		void	setText(std::string str, int x, int y);
+		void	displayText(void);
+		void	addImage(std::string p, int x, int y);
 
-void	Equipment::init(void) {
-}
+	private:
+		std::string	_text;
+};
 
-Weapon*		Equipment::getWeapon(void) {
-	return this->_weapon;
-}
-
-/*
- * Basic Destructor
- */
-Equipment::~Equipment(void) {
-	return;
-}
+#endif

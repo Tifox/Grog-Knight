@@ -221,3 +221,4 @@ std::map<int, Elements *>	Game::elementMap = {};
 std::list<Elements *>		Game::runningCharac;
 std::list<Elements *>		Game::bodiesToDestroy;
 WeaponList*					Game::wList;
+Hitbox*						Game::hList;

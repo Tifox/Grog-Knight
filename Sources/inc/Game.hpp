@@ -39,7 +39,9 @@ class	Maps;
 # include "ContactFilter.hpp"
 # include "Characters.hpp"
 # include "WeaponList.hpp"
+# include "Hitbox.hpp"
 class WeaponList;
+class Hitbox;
 
 class Game {
 
@@ -75,6 +77,7 @@ class Game {
 		static std::list<Elements *>	bodiesToDestroy;
 		static std::list<Elements *>	runningCharac;
 		static WeaponList*				wList;
+		static Hitbox*					hList;
 
 	private:
 		float		beginXHero;

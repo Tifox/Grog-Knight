@@ -29,15 +29,6 @@
 /**
  * Main constructor
  */
-Elements::Elements(void) : PhysicsActor() {
-	this->setId(Game::getNextId());
-	Game::addElement(*this);
-	return ;
-}
-
-/**
- * Main constructor
- */
 Elements::Elements(int id) :  PhysicsActor() {
 	this->setId(Game::getNextId());
 	Game::addElement(*this);

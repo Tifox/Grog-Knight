@@ -29,15 +29,12 @@
 # include "Elements.hpp"
 # include "Hero.hpp"
 # include "WeaponList.hpp"
-// # include "Equipment.hpp"
-// # include "Consumable.hpp"
 
 class Object : public Elements {
 public:
 	Object();
 	~Object();
 
-	void			init(void);
 	void	BeginContact(Elements *elem, b2Contact *contact);
 };
 

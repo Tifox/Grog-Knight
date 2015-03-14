@@ -40,14 +40,17 @@ Object::Object(void) {
 	this->SetIsSensor(true);
 }
 
+/**
+ * Collision begin callback
+ * @param: elem (Elements *)
+ * @param: contact (b2Contact *)
+ * @note: This function is called just before a collision
+ */
 void	Object::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "Hero"){
 		static_cast<Characters*>(elem)->equipWeapon(Game::wList->getWeapon("Bow"));
 		Game::bodiesToDestroy.push_back(this);
 	}
-}
-
-void	Object::init(void) {
 }
 
 /*

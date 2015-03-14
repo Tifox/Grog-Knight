@@ -35,17 +35,18 @@ Consumable::Consumable(void) {
 	this->SetPosition(6, -11);
 	this->InitPhysics();
 	theWorld.Add(this);
-	Log::info("wjorwbgurw");
 }
-
+/**
+ * Collision begin callback
+ * @param: elem (Elements *)
+ * @param: contact (b2Contact *)
+ * @note: This function is called just before a collision
+ */
 void	Consumable::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "Hero"){
 		Game::bodiesToDestroy.push_back(this);
 		contact->SetEnabled(false);
 	}
-}
-
-void	Consumable::init(void) {
 }
 
 /*

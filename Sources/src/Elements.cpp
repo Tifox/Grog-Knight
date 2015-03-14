@@ -36,6 +36,15 @@ Elements::Elements(int id) :  PhysicsActor() {
 }
 
 /**
+ * Main constructor
+ */
+Elements::Elements(void) :  PhysicsActor() {
+	this->setId(Game::getNextId());
+	Game::addElement(*this);
+	return ;
+}
+
+/**
  * Copy constructor
  * @param: obj (Elements & obj)
  */

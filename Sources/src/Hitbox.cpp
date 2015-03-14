@@ -41,6 +41,7 @@ Hitbox::Hitbox(void) {
 		if (dirEntry && strcmp(dirEntry->d_name, ".") && strcmp(dirEntry->d_name, "..")) {
 			iss.str(dirEntry->d_name);
 			std::getline(iss, res, '.');
+			this->_hitboxName.push_back(res);
 			this->_hitboxes.push_back(this->_getPolygon(res));
 		}
 	}
@@ -64,7 +65,7 @@ b2PolygonShape	Hitbox::_parseJson(std::string file) {
 	Json::Reader    read;
 	Json::Value     json;
 	Json::Value		hitbox;
-	int				v, i, j;
+	int				v, i, j, vertices = 0;
 	std::vector<std::vector<int> >		map;
 	std::vector<int>					tmp;
 
@@ -73,7 +74,7 @@ b2PolygonShape	Hitbox::_parseJson(std::string file) {
 
 	hitbox = json["data"]["hitbox"];
 	for (v = i = j = 0; i < hitbox.size(); i++, v++) {
-		if (v == 10) {
+		if (v == 11) {
 			map.insert(map.begin() + j, tmp);
 			j++;
 			v = 0;
@@ -85,12 +86,85 @@ b2PolygonShape	Hitbox::_parseJson(std::string file) {
 
 	std::vector<std::vector<int> >::iterator	itr;
 	std::vector<int>::iterator	itr2;
+
 	for (itr = map.begin(); itr != map.end(); itr++) {
 		for (itr2 = (*itr).begin(); itr2 != (*itr).end(); itr2++) {
 			std::cout << (*itr2) << ", ";
+			if ((*itr2) == 1)
+				vertices++;
 		}
 		std::cout << std::endl;
 	}
+	std::cout << vertices << std::endl;
+
+	if (vertices < 4 || vertices > 8)
+		Log::error(file + " contains an invalid hitbox");
+	return this->_parseVertices(vertices, map);
+}
+
+b2PolygonShape	Hitbox::_parseVertices(int v, std::vector<std::vector<int> > map) {
+	std::vector<std::vector<int> >::iterator	itr;
+	std::vector<int>::iterator	itr2;
+	b2Vec2 vertices[v];
+	b2PolygonShape box;
+	int i = 0;
+	float x2, y2, x, y = 0;
+
+	for (itr = map.begin(); itr != map.end(); itr++, y++) {
+		for (itr2 = (*itr).begin(), x = 0; itr2 != (*itr).end(); itr2++, x++) {
+			if ((*itr2) == 1) {
+				vertices[i].Set((x - 5) / 10, -(y - 5)/ 10 );
+				std::cout << (x - 5) / 10 << ":" << -(y - 5) / 10 << std::endl;
+				i++;
+				x = 0;
+				break ;
+			}
+		}
+	}
+	for (itr = map.end(), y = 11; itr != map.begin(); itr--, y--) {
+		for (itr2 = (*itr).end(), x = 11; itr2 != (*itr).begin(); itr2--, x--) {
+			if ((*itr2) == 1) {
+				vertices[i].Set((x - 5) / 10, -(y - 5)/ 10 );
+				std::cout << (x - 5) / 10 << ":" << -(y - 5) / 10 << std::endl;
+				i++;
+				break ;
+			}
+		}
+	}
+	for (itr2 = (*itr).end(), x = 11; itr2 != (*itr).begin(); itr2--, x--) {
+		if ((*itr2) == 1) {
+			vertices[i].Set((x - 5) / 10, -(y - 5)/ 10 );
+			std::cout << (x - 5) / 10 << ":" << -(y - 5) / 10 << std::endl;
+			i++;
+			break ;
+		}
+	}
+	box.Set(vertices, i);
+	return box;
+}
+
+int			Hitbox::checkExists(std::string n) {
+	std::list<std::string>::iterator	it;
+
+	for (it = this->_hitboxName.begin(); it != this->_hitboxName.end(); it++) {
+		std::cout << (*it) << std::endl;
+
+	}
+	return 0;
+}
+
+b2PolygonShape	Hitbox::getHitbox(std::string n) {
+	std::list<std::string>::iterator	it;
+	std::list<b2PolygonShape>::iterator	it2;
+	int		i, j = 0;
+
+	for (it = this->_hitboxName.begin(); it != this->_hitboxName.end(); it++) {
+		if (n == (*it))
+			break;
+		i++;
+	}
+	for (j = 0, it2 = this->_hitboxes.begin(); i < j; i++, it2++) {}
+	return (*it2);
 }
 
 /**

@@ -32,11 +32,16 @@ class Hitbox {
 public:
 	Hitbox();
 	~Hitbox();
+	b2PolygonShape		getHitbox(std::string);
+	int					checkExists(std::string);
+
 private:
 	b2PolygonShape	_getPolygon(std::string res);
 	b2PolygonShape	_parseJson(std::string res);
+	b2PolygonShape	_parseVertices(int v, std::vector<std::vector<int> >map);
 
 	std::list<b2PolygonShape>	_hitboxes;
+	std::list<std::string>		_hitboxName;
 };
 
 #endif

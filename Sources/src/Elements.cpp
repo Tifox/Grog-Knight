@@ -140,7 +140,9 @@ void	Elements::display(void) {
 		this->SetRestitution(0);
 	}
 	if (this->getAttribute("hero") == "1") {
-		this->SetShapeType(PhysicsActor::SHAPETYPE_HERO);
+		this->SetShapeType(PhysicsActor::SHAPETYPE_LOADED);
+ 		Game::hList->checkExists("heroHitbox");
+ 		this->setBox(Game::hList->getHitbox("heroHitbox"));
 	} else {
 		this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	}

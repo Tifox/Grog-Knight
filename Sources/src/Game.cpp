@@ -255,3 +255,4 @@ std::list<Elements *>		Game::runningCharac;
 std::list<Elements *>		Game::bodiesToDestroy;
 std::list<HUDWindow *>		Game::windows;
 WeaponList*					Game::wList;
+Hitbox*						Game::hList;

@@ -30,13 +30,13 @@
 # include "Hero.hpp"
 # include "WeaponList.hpp"
 # include "Object.hpp"
+# include "Game.hpp"
 
 class Equipment : public Object {
 public:
 	Equipment();
 	~Equipment();
 
-	void			init(void);
 	Weapon* 	getWeapon(void);
 	void	BeginContact(Elements *elem, b2Contact *contact);
 private:

@@ -36,7 +36,6 @@ public:
 	Consumable();
 	~Consumable();
 
-	void			init(void);
 	void	BeginContact(Elements *elem, b2Contact *contact);
 };
 

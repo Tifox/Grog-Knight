@@ -75,7 +75,8 @@ SRCS =	./Sources/src/Elements.cpp \
 		./Sources/src/Map.cpp \
 		./Sources/src/Equipment.cpp \
 		./Sources/src/Consumable.cpp \
-		./Sources/src/Hitbox.cpp
+		./Sources/src/Hitbox.cpp \
+		./Sources/src/HUDWindow.cpp
 
 SYSOBJS = $(patsubst %.cpp,%.o,$(SYSSRCS))
 OBJS = $(patsubst %.cpp,%.o,$(SRCS))

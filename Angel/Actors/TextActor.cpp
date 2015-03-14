@@ -58,6 +58,8 @@ void TextActor::Render()
 	for(unsigned int i=0; i < _displayStrings.size(); i++)
 	{
 		DrawGameText(_displayStrings[i]._string, _fontNickname, (int)_displayStrings[i]._position.X, (int)_displayStrings[i]._position.Y, _rotation + theCamera.GetRotation());
+
+		std::cout << "Call DrawGameText('" << _displayStrings[i]._string << "', " << _fontNickname << "," << (int)_displayStrings[i]._position.X << "," << (int)_displayStrings[i]._position.Y << "," << _rotation + theCamera.GetRotation() << ");" << std::endl;
 	}
 }
 

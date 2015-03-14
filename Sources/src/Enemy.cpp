@@ -52,6 +52,12 @@ void	Enemy::actionCallback(std::string name, int status) {
 	return ;
 }
 
+/**
+ * Collision begin callback
+ * @param: elem (Elements *)
+ * @param: contact (b2Contact *)
+ * @note: This function is called just before a collision
+ */
 void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 	Characters::BeginContact(m, contact);
 	Weapon* w = static_cast<Weapon*>(m);

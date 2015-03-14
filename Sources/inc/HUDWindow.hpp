@@ -1,3 +1,4 @@
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,24 +19,28 @@
  */
 
 /**
- * File: Object.hpp
- * Creation: 2015-03-03 13:10
- * Manon Budin <mbudin@student.42.fr>
+ * File: HUDWindow.hpp
+ * Creation: 2015-03-14 05:35
+ * Louis Solofrizzo <louis@ne02ptzero.me>
  */
 
-#ifndef __Object__
-# define __Object__
+#ifndef __HUDWindow__
+# define __HUDWindow__
 
-# include "Elements.hpp"
-# include "Hero.hpp"
-# include "WeaponList.hpp"
+# include "../../Angel/Angel.h"
+# include "Game.hpp"
 
-class Object : public Elements {
-public:
-	Object();
-	~Object();
+class	HUDWindow : public HUDActor {
+	public:
+		HUDWindow(void);
+		~HUDWindow(void);
 
-	void	BeginContact(Elements *elem, b2Contact *contact);
+		void	setText(std::string str, int x, int y);
+		void	displayText(void);
+		void	addImage(std::string p, int x, int y);
+
+	private:
+		std::string	_text;
 };
 
 #endif

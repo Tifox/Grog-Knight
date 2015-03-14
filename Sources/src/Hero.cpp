@@ -58,6 +58,12 @@ void	Hero::actionCallback(std::string name, int status) {
 	return ;
 }
 
+/**
+ * Collision begin callback
+ * @param: elem (Elements *)
+ * @param: contact (b2Contact *)
+ * @note: This function is called just before a collision
+ */
 void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 	Characters::BeginContact(elem, contact);
 	if (elem->getAttributes()["type"] == "Enemy") {

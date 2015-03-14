@@ -49,7 +49,6 @@ class MouseDebugger: public MouseListener {
 int		main(int ac, char **av) {
 
 	Game	*game = new Game();
-	HUDWindow *w = new HUDWindow();
 
 	game->readMaps();
 	MouseDebugger l;
@@ -71,19 +70,11 @@ int		main(int ac, char **av) {
 	game->displayEnemy(*(enemy));
 	hero->init();
 	enemy->init();
+	game->displayHUD();
 
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
 	//new Hitbox();
 	//theWorld.SetSideBlockers(true, 0.7f);
-	w->SetPosition(theCamera.GetWindowWidth() / 2, 50);
-	w->SetSize(theCamera.GetWindowWidth(), 100.0f);
-	w->SetColor(0, 0, 0, 1);
-	w->SetDrawShape(ADS_Square);
-	w->SetLayer(-1);
-	w->addImage("Resources/Images/bourse.png", 100, 50);
-
-	theWorld.Add(w);
-	w->setText(std::string("Laul"), 500.0f, 100.0f);
 
 	game->start();
 	return 0;

@@ -57,6 +57,7 @@ class Game {
 		void	displayEnemy(Elements & Enemy);
 		void	displayObject(Elements & Object);
 		void	showMap(void);
+		void	displayHUD(void);
 
 		static void	destroyAllBodies(void);
 		static void	addToDestroyList(Elements *m);

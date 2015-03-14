@@ -235,6 +235,19 @@ HUDWindow	*Game::getHUD(void) {
 	return Game::windows.front();
 }
 
+void		Game::displayHUD(void) {
+	HUDWindow *w = new HUDWindow();
+	w->SetPosition(theCamera.GetWindowWidth() / 2, 50);
+	w->SetSize(theCamera.GetWindowWidth(), 100.0f);
+	w->SetColor(1.13f, 0.94f, 0.86f, 1);
+	w->SetDrawShape(ADS_Square);
+	w->SetLayer(-1);
+	w->addImage("Resources/Images/bourse.png", 100, 50);
+	w->addImage("Resources/Images/HUD/heart.png", 900, 50);
+	theWorld.Add(w);
+	w->setText(std::string("Laul"), 500.0f, 100.0f);
+}
+
 // Set for the statics
 int Game::currentIds = 0;
 std::map<int, Elements *>	Game::elementMap = {};

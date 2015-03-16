@@ -31,7 +31,7 @@
  */
 Game::Game(void) {
 	#ifdef __APPLE__
-		theWorld.Initialize(1920, 1080, NAME);
+		theWorld.Initialize(1920, 1080, NAME, false, false);
 	#else
 		theWorld.Initialize(1600, 1200, NAME, false, true);
 	#endif

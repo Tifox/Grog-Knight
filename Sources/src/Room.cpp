@@ -37,4 +37,16 @@ Room::Room(int id, int y, int x, int mapId) : _id(id), _y(y), _x(x), _mapId(mapI
  */
 Room::~Room(void) {
 	return ;
-} 
+}
+
+int Room::getX(void) {
+	return this->_x;
+}
+
+int Room::getY(void) {
+	return this->_y;
+}
+
+int Room::getMapId(void) {
+	return this->_mapId;
+}

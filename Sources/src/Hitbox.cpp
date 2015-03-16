@@ -42,9 +42,7 @@ Hitbox::Hitbox(void) {
 			iss.str(dirEntry->d_name);
 			std::getline(iss, res, '.');
 			Log::info("Parsing " + res + " hitbox");
-
-			this->_hitboxName.push_back(res);
-			this->_hitboxes.push_back(this->_getPolygon(res));
+			this->_hitboxes[res] = this->_getPolygon(res);
 		}
 	}
 }
@@ -139,27 +137,11 @@ b2PolygonShape	Hitbox::_parseVertices(int v, std::vector<std::vector<int> > map)
 }
 
 int			Hitbox::checkExists(std::string n) {
-	std::list<std::string>::iterator	it;
-
-	for (it = this->_hitboxName.begin(); it != this->_hitboxName.end(); it++) {
-		if (*it == n)
-			return 1;
-	}
-	return 0;
+	return 1;
 }
 
 b2PolygonShape	Hitbox::getHitbox(std::string n) {
-	std::list<std::string>::iterator	it;
-	std::list<b2PolygonShape>::iterator	it2;
-	int		i, j = 0;
-
-	for (it = this->_hitboxName.begin(); it != this->_hitboxName.end(); it++) {
-		if (n == (*it))
-			break;
-		i++;
-	}
-	for (j = 0, it2 = this->_hitboxes.begin(); i < j; i++, it2++) {}
-	return (*it2);
+	return this->_hitboxes[n];
 }
 
 /**

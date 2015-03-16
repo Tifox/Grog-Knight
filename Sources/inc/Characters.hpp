@@ -79,9 +79,11 @@ class Characters : public Elements {
 		int				_isJump;
 		int				_isRunning;
 		bool			_canMove;
+		bool			_canJump;
 		bool			_invincibility;
 		Weapon*			_weapon;
 		Characters::Orientation				_orientation;
+		Characters::Orientation				_latOrientation;
 		std::list<Elements*>				_grounds;
 		std::list<Elements*> 				_wallsLeft;
 		std::list<Elements*> 				_walls;

@@ -11,15 +11,15 @@
 	"Actions": {
 		"forward": {
 			"subscribe": "forward",
-			"beginFrame": 4,
-			"endFrame": 9,
+			"beginFrame": 8,
+			"endFrame": 13,
 			"time": 0.1,
 			"force": 5
 		},
 		"backward": {
 			"subscribe": "backward",
-			"beginFrame": 10,
-			"endFrame": 15,
+			"beginFrame": 14,
+			"endFrame": 19,
 			"time": 0.1,
 			"force": 5
 		},
@@ -28,9 +28,9 @@
 			"double": 1,
 			"force": 4,
 			"rejump": 7,
-			"beginFrame": 16,
-			"fallingFrame": 23,
-			"endFrame": 27,
+			"beginFrame": 20,
+			"fallingFrame": 28,
+			"endFrame": 31,
 			"time": 0.1
 		},
 		"attack": {
@@ -43,8 +43,10 @@
 			"subscribe": "up"
 		},
 		"breath": {
-			"beginFrame": 1,
-			"endFrame": 3,
+			"beginFrame_right": 0,
+			"endFrame_right": 3,
+			"beginFrame_left": 4,
+			"endFrame_left": 7,
 			"time": 0.1
 		}
 	}

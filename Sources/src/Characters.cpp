@@ -200,9 +200,19 @@ void	Characters::AnimCallback(String s) {
 	this->_setCategory("breath");
 	if (s == "base") {
 		if (this->_isRunning == 0) {
-			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-				this->_getAttr("beginFrame").asInt(),
-				this->_getAttr("endFrame").asInt(), "base");
+			if (this->_latOrientation == LEFT) {
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+				this->_getAttr("beginFrame_left").asInt(),
+				this->_getAttr("endFrame_left").asInt(), "base");
+			} else if (this->_latOrientation == RIGHT) {
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+				this->_getAttr("beginFrame_right").asInt(),
+				this->_getAttr("endFrame_right").asInt(), "base");
+			  } else {
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+				this->_getAttr("beginFrame_right").asInt(),
+				this->_getAttr("endFrame_right").asInt(), "base");
+			}
 		} else {
 			if (this->_isRunning == 1) {
 				this->_setCategory("forward");
@@ -290,6 +300,7 @@ void	Characters::_forward(int status) {
 	this->_setCategory("forward");
 	if (status == 1){
 		this->_orientation = RIGHT;
+		this->_latOrientation = RIGHT;
 		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() && !this->_isJump)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 				this->_getAttr("beginFrame").asInt(),
@@ -321,6 +332,7 @@ void	Characters::_backward(int status) {
    this->_setCategory("backward");
 	if (status == 1) {
 		this->_orientation = LEFT;
+		this->_latOrientation = LEFT;
 		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() && !this->_isJump)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 				this->_getAttr("beginFrame").asInt(),

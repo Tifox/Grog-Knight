@@ -82,6 +82,7 @@ class Characters : public Elements {
 		bool			_invincibility;
 		Weapon*			_weapon;
 		Characters::Orientation				_orientation;
+		Characters::Orientation				_latOrientation;
 		std::list<Elements*>				_grounds;
 		std::list<Elements*> 				_wallsLeft;
 		std::list<Elements*> 				_walls;

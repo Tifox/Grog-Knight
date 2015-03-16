@@ -104,7 +104,7 @@ void	Characters::_parseJson(std::string file) {
 			this->_attr[i.key().asString()] = tmp;
 			// Subcribe to the broadcasts
 			if (v.key().asString() == "subscribe") {
-				Log::info("SubscribeTo " + (*v).asString());
+//				Log::info("SubscribeTo " + (*v).asString());
 				theSwitchboard.SubscribeTo(this, (*v).asString() + "Pressed");
 				theSwitchboard.SubscribeTo(this, (*v).asString() + "Released");
 			}

@@ -72,7 +72,7 @@ Projectile::Projectile(Weapon* w, Characters* c) {
 	this->GetBody()->SetGravityScale(0.0f);
 	this->GetBody()->SetBullet(true);
 	this->ApplyLinearImpulse(Vector2(2 * xOrient, 2 * yOrient), Vector2(0, 0));
-	std::cout << w->getRecovery() << std::endl;
+//	std::cout << w->getRecovery() << std::endl;
 
 	theSwitchboard.DeferredBroadcast(new Message("canAttack"), w->getRecovery());
 	theWorld.Add(this);

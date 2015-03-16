@@ -41,6 +41,8 @@ Hitbox::Hitbox(void) {
 		if (dirEntry && strcmp(dirEntry->d_name, ".") && strcmp(dirEntry->d_name, "..")) {
 			iss.str(dirEntry->d_name);
 			std::getline(iss, res, '.');
+			Log::info("Parsing " + res + " hitbox");
+
 			this->_hitboxName.push_back(res);
 			this->_hitboxes.push_back(this->_getPolygon(res));
 		}
@@ -89,22 +91,23 @@ b2PolygonShape	Hitbox::_parseJson(std::string file) {
 
 	for (itr = map.begin(); itr != map.end(); itr++) {
 		for (itr2 = (*itr).begin(); itr2 != (*itr).end(); itr2++) {
-			std::cout << (*itr2) << ", ";
+//			std::cout << (*itr2) << ", ";
 			if ((*itr2) == 1)
 				vertices++;
 		}
-		std::cout << std::endl;
+//		std::cout << std::endl;
 	}
-	std::cout << vertices << std::endl;
 
 	if (vertices < 4 || vertices > 8)
-		Log::error(file + " contains an invalid hitbox");
+		Log::error(json["data"]["name"].asString() + " contains an invalid hitbox");
 	return this->_parseVertices(vertices, map);
 }
 
 b2PolygonShape	Hitbox::_parseVertices(int v, std::vector<std::vector<int> > map) {
 	std::vector<std::vector<int> >::iterator	itr;
 	std::vector<int>::iterator	itr2;
+	std::vector<std::vector<int> >::reverse_iterator	ritr;
+	std::vector<int>::reverse_iterator	ritr2;
 	b2Vec2 vertices[v];
 	b2PolygonShape box;
 	int i = 0;
@@ -113,30 +116,22 @@ b2PolygonShape	Hitbox::_parseVertices(int v, std::vector<std::vector<int> > map)
 	for (itr = map.begin(); itr != map.end(); itr++, y++) {
 		for (itr2 = (*itr).begin(), x = 0; itr2 != (*itr).end(); itr2++, x++) {
 			if ((*itr2) == 1) {
+				std::cout << x - 5 << ":" << -(y - 5) << std::endl;
 				vertices[i].Set((x - 5) / 10, -(y - 5)/ 10 );
-				std::cout << (x - 5) / 10 << ":" << -(y - 5) / 10 << std::endl;
 				i++;
 				x = 0;
 				break ;
 			}
 		}
 	}
-	for (itr = map.end(), y = 11; itr != map.begin(); itr--, y--) {
-		for (itr2 = (*itr).end(), x = 11; itr2 != (*itr).begin(); itr2--, x--) {
-			if ((*itr2) == 1) {
+	for (ritr = map.rbegin(), y = 10; ritr != map.rend(); ritr++, y--) {
+		for (ritr2 = (*ritr).rbegin(), x = 10; ritr2 != (*ritr).rend(); ritr2++, x--) {
+			if ((*ritr2) == 1) {
 				vertices[i].Set((x - 5) / 10, -(y - 5)/ 10 );
-				std::cout << (x - 5) / 10 << ":" << -(y - 5) / 10 << std::endl;
+				std::cout << x - 5 << ":" << -(y - 5) << std::endl;
 				i++;
 				break ;
 			}
-		}
-	}
-	for (itr2 = (*itr).end(), x = 11; itr2 != (*itr).begin(); itr2--, x--) {
-		if ((*itr2) == 1) {
-			vertices[i].Set((x - 5) / 10, -(y - 5)/ 10 );
-			std::cout << (x - 5) / 10 << ":" << -(y - 5) / 10 << std::endl;
-			i++;
-			break ;
 		}
 	}
 	box.Set(vertices, i);
@@ -147,8 +142,8 @@ int			Hitbox::checkExists(std::string n) {
 	std::list<std::string>::iterator	it;
 
 	for (it = this->_hitboxName.begin(); it != this->_hitboxName.end(); it++) {
-		std::cout << (*it) << std::endl;
-
+		if (*it == n)
+			return 1;
 	}
 	return 0;
 }

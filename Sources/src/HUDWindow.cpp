@@ -63,5 +63,5 @@ void	HUDWindow::addImage(std::string path, int x, int y) {
 	tmp->SetDrawShape(ADS_Square);
 	tmp->SetLayer(100);
 	theWorld.Add(tmp);
-	std::cout << "Adding an element" << std::endl;
+//	std::cout << "Adding an element" << std::endl;
 }

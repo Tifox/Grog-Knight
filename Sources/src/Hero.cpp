@@ -75,13 +75,14 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		//Damage here
 		Characters::changeCanMove();
 		this->_invincibility = true;
+		this->_isJump = 1;
 		theSwitchboard.DeferredBroadcast(new Message("canMove"), 1);
 		theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1);
 		if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
-			this->ApplyLinearImpulse(Vector2(10, 10), Vector2(0, 0));
+			this->ApplyLinearImpulse(Vector2(2, 2), Vector2(0, 0));
 		}
 		else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x) {
-			this->ApplyLinearImpulse(Vector2(-10, 10), Vector2(0, 0));
+			this->ApplyLinearImpulse(Vector2(-2, 2), Vector2(0, 0));
 		}
 	}
 }

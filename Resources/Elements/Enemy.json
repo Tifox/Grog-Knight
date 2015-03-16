@@ -9,8 +9,10 @@
 	},
 	"Actions": {
 		"breath": {
-				"beginFrame": 1,
-				"endFrame": 4,
+				"beginFrame_right": 1,
+				"endFrame_right": 4,
+				"beginFrame_left": 1,
+				"endFrame_left": 4,
 				"time": 0.1
 			},
 		"jump": {

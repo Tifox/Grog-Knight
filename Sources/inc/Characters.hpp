@@ -79,6 +79,7 @@ class Characters : public Elements {
 		int				_isJump;
 		int				_isRunning;
 		bool			_canMove;
+		bool			_canJump;
 		bool			_invincibility;
 		Weapon*			_weapon;
 		Characters::Orientation				_orientation;

@@ -46,6 +46,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_orientation = RIGHT;
 	this->_readFile(name);
 	this->_canMove = true;
+	this->_canJump = true;
 	this->_invincibility = false;
 	this->_grounds.clear();
 	this->_walls.clear();
@@ -234,7 +235,7 @@ void	Characters::AnimCallback(String s) {
  */
 void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "ground") {
-		if (this->GetBody()->GetWorldCenter().y - 1 >= elem->GetBody()->GetWorldCenter().y) {
+		if (this->GetBody()->GetWorldCenter().y - 0.92 >= elem->GetBody()->GetWorldCenter().y) {
 			if (this->_grounds.size() > 0)
 				contact->SetEnabled(false);
 			if (this->_isJump > 0) {
@@ -267,12 +268,13 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 		this->_wallsRight.remove(elem);
 		if (this->_grounds.size() == 1) {
 			this->_grounds.remove(elem);
-			if (this->_grounds.size() == 0)
+			if (this->_grounds.size() == 0) {
 				this->_isJump++;
-			if (this->_lastAction == "forward" || this->_lastAction == "backward")
-				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+				if (this->_lastAction == "forward" || this->_lastAction == "backward")
+					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 										  this->_getAttr("jump", "fallingFrame").asInt(),
 										  this->_getAttr("jump", "endFrame").asInt() - 1, "jump");
+			}
 		}
 		else
 			this->_grounds.remove(elem);
@@ -301,7 +303,7 @@ void	Characters::_forward(int status) {
 	if (status == 1){
 		this->_orientation = RIGHT;
 		this->_latOrientation = RIGHT;
-		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() && !this->_isJump)
+		if ((this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() || (this->GetSpriteFrame() >= this->_getAttr("backward", "beginFrame").asInt() && this->GetSpriteFrame() <= this->_getAttr("backward", "endFrame").asInt()))  && !this->_isJump)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 				this->_getAttr("beginFrame").asInt(),
 				this->_getAttr("endFrame").asInt());
@@ -309,7 +311,7 @@ void	Characters::_forward(int status) {
 		if (this->_isRunning == 2)
 			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
 		this->_isRunning = 1;
-	} else if (status == 0) {
+	} else if (status == 0 && this->_latOrientation == RIGHT) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
 		Game::stopRunning(this);
 		this->_isRunning = 0;
@@ -341,12 +343,12 @@ void	Characters::_backward(int status) {
 		if (this->_isRunning == 1)
 			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
 		this->_isRunning = 2;
-	} else if (status == 0) {
+	} else if (status == 0 && this->_latOrientation == LEFT) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
+		Game::stopRunning(this);
+		this->_isRunning = 0;
 		if (!this->_isJump)
 			this->AnimCallback("base");
-		this->_isRunning = 0;
-		Game::stopRunning(this);
 	} else {
 		if (this->GetBody()->GetLinearVelocity().x > -(this->_maxSpeed)) {
 			if (this->_wallsLeft.size() == 0 && this->_canMove == true)
@@ -363,7 +365,8 @@ void	Characters::_backward(int status) {
 void	Characters::_jump(int status) {
 	this->_setCategory("jump");
 
-	if (status == 1) {
+	if (status == 1 && this->_canJump == true) {
+		this->_canJump = false;
 		if (this->_isJump == 0 || (this->_isJump <= 1 && this->_getAttr("double").asInt() == 1)) {
 			if (this->_isJump >= 1) {
 				this->GetBody()->SetLinearVelocity(b2Vec2(this->GetBody()->GetLinearVelocity().x, this->_getAttr("rejump").asFloat()));
@@ -377,6 +380,9 @@ void	Characters::_jump(int status) {
 			if (this->_grounds.size() == 0)
 				this->_isJump++;
 		}
+	}
+	else if (status == 0) {
+		this->_canJump = true;
 	}
 	return ;
 }

@@ -27,11 +27,16 @@
 # include "../inc/Room.hpp"
 
 /**
- * Basic constructor
+ * Standard constructor with :
+ * - Height and Width
+ * - minPathLenght : Min path between entry and exit rooms
+ * - roomPopRate (of 100%) : Chances for a room to pop on given slot
+ * - doorsPopRate (of 100%) : Chances for a door to pop on given wall
+ * - nbMaps : Number of different maps
  */
 LevelGenerator::LevelGenerator(int height, int width, int minPathLenght, int roomPopRate, int doorsPopRate) : _height(height), _width(width), _minPathLenght(minPathLenght), _roomPopRate(roomPopRate), _doorsPopRate(doorsPopRate) {
 	srand(time(NULL));
-	_rooms = new std::list<Room>;
+	_rooms = new std::vector<Room>;
 	_nbMaps = 10;
 	return ;
 }
@@ -48,10 +53,57 @@ void LevelGenerator::execute(void) {
 
 	for (int i = 0; i < _width; i++) {
 		for (int j = 0; j < _height; j++) {
-			if (_roomPopRate < (rand() % 100)) {
+			if (_roomPopRate > (rand() % 100)) {
 				Room *newRoom = new Room(id, i, j, rand() % _nbMaps);
 				_rooms->push_back(*newRoom);
+				id++;
 			}
 		}
+	}
+}
+
+void LevelGenerator::print(void) {
+	int n = 0;
+	Room *room;
+	Log::info("Printing generated level");
+	for (int i = 0; i < _width; i++) {
+		for (int j = 0; j < _height; j++) {
+			if (n < _rooms->size()) {
+				*room = _rooms->at(n);
+				if (room->getX() == j && room->getY() == i) {
+					std::cout << room->getMapId();
+					n++;
+				}
+				else
+					std::cout << "-";
+				std::cout << " ";
+			}
+			else
+				std::cout << "- ";
+		}
+		std::cout << std::endl;
+	}
+}
+
+void LevelGenerator::secondPass(void) {
+	int n = 0;
+	int size = _rooms->size();
+	Room *room;
+	for (int i = 0; i < _width; i++) {
+		for (int j = 0; j < _height; j++) {
+			if (n < _rooms->size()) {
+				*room = _rooms->at(n);
+				if (room->getX() == j && room->getY() == i) {
+					std::cout << room->getMapId();
+					n++;
+				}
+				else
+					std::cout << "-";
+				std::cout << " ";
+			}
+			else
+				std::cout << "- ";
+		}
+		std::cout << std::endl;
 	}
 }

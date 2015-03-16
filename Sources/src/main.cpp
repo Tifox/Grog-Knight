@@ -32,6 +32,7 @@
 # include "Consumable.hpp"
 # include "Hitbox.hpp"
 # include "HUDWindow.hpp"
+# include "LevelGenerator.hpp"
 
 class MouseDebugger: public MouseListener {
 	public:
@@ -66,6 +67,14 @@ int		main(int ac, char **av) {
 
 	Game::hList = new Hitbox();
 
+	//===== I temp map generation test =====
+
+	LevelGenerator *levelGenerator = new LevelGenerator(6, 6, 5, 70, 70);
+	levelGenerator->execute();
+	levelGenerator->print();
+
+	//===== O temp map generation test =====
+
 	theCamera.LockTo(hero);
 	game->displayHero(*(hero));
 	game->displayEnemy(*(enemy));
@@ -86,5 +95,6 @@ int		main(int ac, char **av) {
 
 
 	game->start();
+
 	return 0;
 }

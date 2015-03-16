@@ -30,8 +30,10 @@
 # include <list>
 # include <cstdlib>
 # include <ctime>
+# include <iostream>
 
 # include "Room.hpp"
+# include "main.hpp"
 
 class LevelGenerator {
 
@@ -39,7 +41,9 @@ class LevelGenerator {
 		LevelGenerator(int height, int width, int minPathLenght, int roomPopRate, int doorsPopRate);
 		~LevelGenerator();
 
+		void print(void);
 		void execute();
+		void secondPass();
 
 	private:
 		int								_height;
@@ -49,7 +53,7 @@ class LevelGenerator {
 		int								_roomPopRate;
 		int								_doorsPopRate;
 		std::vector<std::vector<int> >	_graph;
-		std::list<Room>					*_rooms;
+		std::vector<Room>				*_rooms;
 
 		LevelGenerator();
 };

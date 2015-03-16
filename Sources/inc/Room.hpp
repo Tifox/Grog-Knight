@@ -36,6 +36,10 @@ class Room {
 		Room(int id, int x, int y, int mapId);
 		~Room();
 
+		int getX();
+		int getY();
+		int getMapId();
+
 	private:
 		int					_id;
 		int					_y;
@@ -43,6 +47,7 @@ class Room {
 		int					_mapId;
 		DepthType			_depthType;
 		SpecialType			_specialType;
+		int					_distance;
 		bool				_topDoor;
 		bool				_leftDoor;
 		bool				_bottomDoor;

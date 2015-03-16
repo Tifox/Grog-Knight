@@ -29,6 +29,12 @@
  * Basic constructor
  */
 Room::Room(int id, int y, int x, int mapId) : _id(id), _y(y), _x(x), _mapId(mapId) {
+	_topDoor = false;
+	_leftDoor = false;
+	_bottomDoor = false;
+	_rightDoor = false;
+	_distance = 9;
+	_links = 0;
 	return ;
 }
 
@@ -49,4 +55,36 @@ int Room::getY(void) {
 
 int Room::getMapId(void) {
 	return this->_mapId;
+}
+
+int Room::getDistance(void) {
+	return this->_distance;
+}
+
+int Room::getLinks(void) {
+	return this->_links;
+}
+
+void Room::setTopDoor(bool state) {
+	this->_topDoor = state;
+}
+
+void Room::setLeftDoor(bool state) {
+	this->_leftDoor = state;
+}
+
+void Room::setBottomDoor(bool state) {
+	this->_bottomDoor = state;
+}
+
+void Room::setRightDoor(bool state) {
+	this->_rightDoor = state;
+}
+
+void Room::setDistance(int distance) {
+	this->_distance = distance;
+}
+
+void Room::addLink(void) {
+	this->_links++;
 }

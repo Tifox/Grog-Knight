@@ -116,6 +116,7 @@ b2PolygonShape	Hitbox::_parseVertices(int v, std::vector<std::vector<int> > map)
 	for (itr = map.begin(); itr != map.end(); itr++, y++) {
 		for (itr2 = (*itr).begin(), x = 0; itr2 != (*itr).end(); itr2++, x++) {
 			if ((*itr2) == 1) {
+				std::cout << x - 5 << ":" << -(y - 5) << std::endl;
 				vertices[i].Set((x - 5) / 10, -(y - 5)/ 10 );
 				i++;
 				x = 0;
@@ -123,10 +124,11 @@ b2PolygonShape	Hitbox::_parseVertices(int v, std::vector<std::vector<int> > map)
 			}
 		}
 	}
-	for (ritr = map.rbegin(), y = 11; ritr != map.rend(); ritr++, y--) {
-		for (ritr2 = (*ritr).rbegin(), x = 11; ritr2 != (*ritr).rend(); ritr2++, x--) {
+	for (ritr = map.rbegin(), y = 10; ritr != map.rend(); ritr++, y--) {
+		for (ritr2 = (*ritr).rbegin(), x = 10; ritr2 != (*ritr).rend(); ritr2++, x--) {
 			if ((*ritr2) == 1) {
 				vertices[i].Set((x - 5) / 10, -(y - 5)/ 10 );
+				std::cout << x - 5 << ":" << -(y - 5) << std::endl;
 				i++;
 				break ;
 			}

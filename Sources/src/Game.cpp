@@ -172,9 +172,9 @@ void	Game::callCallbacks(int a, int b) {
 void	Game::listElement(void) {
 	int		i;
 
-	for (i = 0; i < Game::currentIds; i++) {
-		std::cout << Game::elementMap[i] << std::endl;
-	}
+//	for (i = 0; i < Game::currentIds; i++) {
+//		std::cout << Game::elementMap[i] << std::endl;
+//	}
 }
 
 /**

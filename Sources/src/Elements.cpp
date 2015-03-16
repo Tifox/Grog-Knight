@@ -149,7 +149,7 @@ void	Elements::display(void) {
 
 	if (this->getAttribute("physic") != "") {
 		this->InitPhysics();
-		std::cout << "Init phy" << std::endl;
+//		std::cout << "Init phy" << std::endl;
 	}
 	theWorld.Add(this);
 }

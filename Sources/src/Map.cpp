@@ -36,7 +36,7 @@ Map::Map(void) : _mapCount(0) {
  * Main constructor
  */
 Map::Map(std::string name) : _name(name), _mapCount(0) {
-	std::cout << name << std::endl;
+//	std::cout << name << std::endl;
 	return ;
 }
 
@@ -84,7 +84,7 @@ void	Map::display(void) {
 		elem = new Elements();
 		elem->removeAttr("physic");
 		elem->addAttribute("image", this->_image);
-		std::cout << this->_image << std::endl;
+//		std::cout << this->_image << std::endl;
 		elem->setFrame(*(it));
 		elem->setXStart(x);
 		elem->setYStart(y);
@@ -92,16 +92,16 @@ void	Map::display(void) {
 		elem->setCutHeight(this->_tileHeight);
 		elem->setWidth(this->_imageWidth);
 		elem->setHeight(this->_imageHeight);
-		std::cout << this->_imageHeight << std::endl;
+//		std::cout << this->_imageHeight << std::endl;
 		elem->addAttribute("type", "ground");
 		elem->addAttribute("spriteMap", "TRUE");
 		if (this->_properties.find(*it) == this->_properties.end()) {
 			elem->addAttribute("physic", "TRUE");
-			std::cout << "Ph elem ("<< *it << "):" << x << ", " << y << std::endl;
+//			std::cout << "Ph elem ("<< *it << "):" << x << ", " << y << std::endl;
 		} else {
-			std::cout << "===== HERE ====\n" << *it << std::endl;
+//			std::cout << "===== HERE ====\n" << *it << std::endl;
 		}
-		std::cout << "NEW ELEM" << std::endl;
+//		std::cout << "NEW ELEM" << std::endl;
 		elem->display();
 	}
 	//exit(0);

@@ -40,8 +40,7 @@ private:
 	b2PolygonShape	_parseJson(std::string res);
 	b2PolygonShape	_parseVertices(int v, std::vector<std::vector<int> >map);
 
-	std::list<b2PolygonShape>	_hitboxes;
-	std::list<std::string>		_hitboxName;
+	std::map<std::string, b2PolygonShape>		_hitboxes;
 };
 
 #endif

@@ -14,19 +14,19 @@
 			"beginFrame": 4,
 			"endFrame": 9,
 			"time": 0.1,
-			"force": 10
+			"force": 5
 		},
 		"backward": {
 			"subscribe": "backward",
 			"beginFrame": 10,
 			"endFrame": 15,
 			"time": 0.1,
-			"force": 10
+			"force": 5
 		},
 		"jump": {
 			"subscribe": "jump",
 			"double": 1,
-			"force": 6,
+			"force": 4,
 			"rejump": 7,
 			"beginFrame": 16,
 			"fallingFrame": 23,

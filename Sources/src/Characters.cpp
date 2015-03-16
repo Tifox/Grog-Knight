@@ -259,9 +259,10 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 			this->_grounds.remove(elem);
 			if (this->_grounds.size() == 0)
 				this->_isJump++;
-// 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-// 										  this->_getAttr("jump", "fallingFrame").asInt(),
-// 										  this->_getAttr("jump", "endFallingFrame").asInt() - 1, "jump");
+			if (this->_lastAction == "forward" || this->_lastAction == "backward")
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+										  this->_getAttr("jump", "fallingFrame").asInt(),
+										  this->_getAttr("jump", "endFrame").asInt() - 1, "jump");
 		}
 		else
 			this->_grounds.remove(elem);

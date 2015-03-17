@@ -48,7 +48,6 @@ class MouseDebugger: public MouseListener {
 };
 
 int		main(int ac, char **av) {
-
 	Game	*game = new Game();
 
 	game->readMaps();
@@ -79,11 +78,12 @@ int		main(int ac, char **av) {
 	game->displayEnemy(*(enemy));
 	hero->init();
 	enemy->init();
-	game->displayHUD();
+	game->setHero(*hero);
 
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
 	//theWorld.SetSideBlockers(true, 0.7f);
 
+	game->displayHUD();
 
 	game->start();
 

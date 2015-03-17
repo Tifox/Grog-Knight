@@ -50,11 +50,20 @@ void	HUDWindow::setText(std::string str, int x, int y) {
 	Game::addHUDWindow(this);
 }
 
+/**
+ * Display a text in the HUD
+ */
 void	HUDWindow::displayText(void) {
 	glColor4f(1, 1, 1, 1);
 	DrawGameText(this->_text, "Console", 150.0f, 50.0f, theCamera.GetRotation());
 }
 
+/**
+ * Add an image in the HUD
+ * @param: path (std::string)
+ * @param: x (int)
+ * @param: y (int)
+ */
 void	HUDWindow::addImage(std::string path, int x, int y) {
 	HUDActor *tmp = new HUDActor();
 	tmp->SetSprite(path);
@@ -65,3 +74,32 @@ void	HUDWindow::addImage(std::string path, int x, int y) {
 	theWorld.Add(tmp);
 //	std::cout << "Adding an element" << std::endl;
 }
+
+/**
+ * Life is life (lalala)
+ */
+void	HUDWindow::life(int life) {
+	int		x;
+	std::list<HUDActor *>::iterator	i;
+	int		index;
+	HUDActor *tmp;
+
+	for (i = this->_hearts.begin(), index = 0; i != this->_hearts.end(); i++, index++)
+		theWorld.Remove(*(i));
+	this->_hearts.clear();
+	for (x = 900; life > 0; x += 35) {
+		if (life >= 25) {
+			tmp = new HUDActor();
+			tmp->SetSprite("Resources/Images/HUD/heart.png");
+			tmp->SetPosition(x, 50);
+			tmp->SetSize(30.0f);
+			tmp->SetDrawShape(ADS_Square);
+			tmp->SetLayer(100);
+			theWorld.Add(tmp);
+			this->_hearts.push_back(tmp);
+			life -= 25;
+		}
+	}
+}
+
+void	HUDWindow::setGame(Game *g) { this->_g = g; };

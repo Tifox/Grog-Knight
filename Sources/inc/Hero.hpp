@@ -26,8 +26,8 @@
 #ifndef __Hero__
 # define __Hero__
 
-# include "Characters.hpp"
 # include "Weapon.hpp"
+# include "Characters.hpp"
 
 class Hero : public Characters {
 

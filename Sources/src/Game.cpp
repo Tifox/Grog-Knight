@@ -29,11 +29,11 @@
  * Basic constructor, set the window to default value
  * (http://docs.angel2d.com/class_world.html#ae5d7e8d20d3e6fc93785ab2014ac0c13)
  */
-Game::Game(void) {
+Game::Game(void) : _hero(*(new Characters())) {
 	#ifdef __APPLE__
 		theWorld.Initialize(1920, 1080, NAME, false, false);
 	#else
-		theWorld.Initialize(1600, 1200, NAME, false, true);
+		theWorld.Initialize(1600, 1200, NAME, false, false);
 	#endif
 	theWorld.SetupPhysics();
 	GameContactListener *gListen = new GameContactListener();
@@ -49,7 +49,7 @@ Game::Game(void) {
  * @param: width (unsigned int)
  * @param: heigh (unsigned int)
  */
-Game::Game(unsigned int width, unsigned int height) {
+Game::Game(unsigned int width, unsigned int height) : _hero(*(new Characters())) {
 	theWorld.Initialize(width, height, NAME);
 	theWorld.SetupPhysics();
 	GameContactListener *gListen = new GameContactListener();
@@ -239,14 +239,20 @@ void		Game::displayHUD(void) {
 	HUDWindow *w = new HUDWindow();
 	w->SetPosition(theCamera.GetWindowWidth() / 2, 50);
 	w->SetSize(theCamera.GetWindowWidth(), 100.0f);
-	w->SetColor(1.13f, 0.94f, 0.86f, 1);
+	w->SetColor(0, 0, 0, 1);
 	w->SetDrawShape(ADS_Square);
 	w->SetLayer(-1);
 	w->addImage("Resources/Images/bourse.png", 100, 50);
-	w->addImage("Resources/Images/HUD/heart.png", 900, 50);
+	w->setText("", 500, 50);
 	theWorld.Add(w);
-	w->setText(std::string("Laul"), 500.0f, 100.0f);
+	std::cout << this << std::endl;
+	Game	*g = this;
+	w->setGame(g);
+	w->life(100);
 }
+
+void		Game::setHero(Characters & h) { this->_hero = h; };
+Characters	&Game::getHero(void) { return this->_hero; };
 
 // Set for the statics
 int Game::currentIds = 0;

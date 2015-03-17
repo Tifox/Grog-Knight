@@ -76,8 +76,12 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		this->changeCanMove();
 		this->_invincibility = true;
 		this->_isJump = 1;
+		std::cout << this << std::endl;
+		this->setHP(this->getHP() - 25);
+		std::cout << ">> HP: " << this->getHP() << std::endl;
 		theSwitchboard.DeferredBroadcast(new Message("canMove"), 0.5f);
 		theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1);
+		Game::getHUD()->life(this->getHP());
 		if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
 			this->ApplyLinearImpulse(Vector2(2, 2), Vector2(0, 0));
 		}

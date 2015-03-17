@@ -39,19 +39,30 @@ class Room {
 		int getX();
 		int getY();
 		int getMapId();
+		int getDistance();
+		int getLinks();
+
+		void addLink();
+
+		void setTopDoor(bool state);
+		void setLeftDoor(bool state);
+		void setBottomDoor(bool state);
+		void setRightDoor(bool state);
+		void setDistance(int distance);
 
 	private:
-		int					_id;
-		int					_y;
-		int					_x;
-		int					_mapId;
-		DepthType			_depthType;
-		SpecialType			_specialType;
-		int					_distance;
-		bool				_topDoor;
-		bool				_leftDoor;
-		bool				_bottomDoor;
-		bool				_rightDoor;
+		int					_id;			//uniqueid
+		int					_y;				//width position
+		int					_x;				//height position
+		int					_mapId;			//map prefab id
+		DepthType			_depthType;		//depth in level (Ceil => y = 0 / Floor => y = mapWidth / Std = other width)
+		SpecialType			_specialType;	//special type of room
+		int					_distance;		//distance from starting point for shockwave algorythm
+		int					_links;			//number of links between this room and surrounding ones
+		bool				_topDoor;		//has top door
+		bool				_leftDoor;		//has left door
+		bool				_bottomDoor;	//has bottom door
+		bool				_rightDoor;		//has right door
 		
 		Room(void);
 };

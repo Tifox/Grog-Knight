@@ -49,8 +49,35 @@ LevelGenerator::~LevelGenerator(void) {
 } 
 
 void LevelGenerator::execute(void) {
-	int id = 0;
+	firstPass();
+	secondPass();
+	// thirdPass();
+}
 
+void LevelGenerator::print(void) {
+	int n = 0;
+	Log::info("Printing generated level : debug displays the number of links between rooms");
+	for (int i = 0; i < _width; i++) {
+		for (int j = 0; j < _height; j++) {
+			if (n < _rooms->size()) {
+				Room room = _rooms->at(n);
+				if (room.getX() == j && room.getY() == i) {
+					std::cout << room.getLinks();
+					n++;
+				}
+				else
+					std::cout << "-";
+				std::cout << " ";
+			}
+			else
+				std::cout << "- ";
+		}
+		std::cout << std::endl;
+	}
+}
+
+void LevelGenerator::firstPass(void) {
+	int id = 0;
 	for (int i = 0; i < _width; i++) {
 		for (int j = 0; j < _height; j++) {
 			if (_roomPopRate > (rand() % 100)) {
@@ -62,48 +89,62 @@ void LevelGenerator::execute(void) {
 	}
 }
 
-void LevelGenerator::print(void) {
-	int n = 0;
-	Room *room;
-	Log::info("Printing generated level");
-	for (int i = 0; i < _width; i++) {
-		for (int j = 0; j < _height; j++) {
-			if (n < _rooms->size()) {
-				*room = _rooms->at(n);
-				if (room->getX() == j && room->getY() == i) {
-					std::cout << room->getMapId();
-					n++;
-				}
-				else
-					std::cout << "-";
-				std::cout << " ";
-			}
-			else
-				std::cout << "- ";
-		}
-		std::cout << std::endl;
-	}
-}
-
 void LevelGenerator::secondPass(void) {
 	int n = 0;
 	int size = _rooms->size();
-	Room *room;
 	for (int i = 0; i < _width; i++) {
 		for (int j = 0; j < _height; j++) {
-			if (n < _rooms->size()) {
-				*room = _rooms->at(n);
+			if (n < size) {
+				Room *room = &_rooms->at(n);
 				if (room->getX() == j && room->getY() == i) {
-					std::cout << room->getMapId();
+					linkAdjacentRooms(room);
 					n++;
 				}
-				else
-					std::cout << "-";
-				std::cout << " ";
 			}
-			else
-				std::cout << "- ";
 		}
-		std::cout << std::endl;
+	}
+}
+
+// void LevelGenerator::thirdPass(void) {
+// 	int n = 0;
+// 	int size = _rooms->size();
+// 	_rooms[0].setDistance(0);
+// 	for (int i = 0; i < _width; i++) {
+// 		for (int j = 0; j < _height; j++) {
+// 			// std::cout << i << " " << j << std::endl; 
+// 			// if (n < size) {
+// 			// 	Room *room = &_rooms->at(n);
+// 			// 	if (room->getX() == j && room->getY() == i) {
+// 			// 		shockwave();
+// 			// 		n++;
+// 			// 	}
+// 			// }
+// 		}
+// 	}
+// }
+
+void LevelGenerator::linkAdjacentRooms(Room *room) {
+	for (int n = 0; n < _rooms->size(); ++n)	{
+		Room *tmp = &_rooms->at(n);
+		if (room->getY() == tmp->getY() && room->getX() == tmp->getX() - 1 ) {
+			room->setRightDoor(true);
+			tmp->setLeftDoor(true);
+			room->addLink();
+		}
+		else if (room->getY() == tmp->getY() && room->getX() == tmp->getX() + 1 ) {
+			room->setLeftDoor(true);
+			tmp->setRightDoor(true);
+			room->addLink();
+		}
+		else if (room->getY() == tmp->getY() - 1 && room->getX() == tmp->getX()) {
+			room->setBottomDoor(true);
+			tmp->setTopDoor(true);
+			room->addLink();
+		}
+		else if (room->getY() == tmp->getY() + 1 && room->getX() == tmp->getX()) {
+			room->setTopDoor(true);
+			tmp->setBottomDoor(true);
+			room->addLink();
+		}
 	}
 }

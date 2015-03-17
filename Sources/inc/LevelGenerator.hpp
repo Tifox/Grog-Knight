@@ -42,8 +42,12 @@ class LevelGenerator {
 		~LevelGenerator();
 
 		void print(void);
-		void execute();
-		void secondPass();
+		void execute();			//execute generation process
+		void firstPass();		//generate base rooms
+		void secondPass();		//generate links
+		void thirdPass();		//generate distance
+
+		void linkAdjacentRooms(Room *room);
 
 	private:
 		int								_height;

@@ -23,7 +23,7 @@
  * Louis Solofrizzo <louis@ne02ptzero.me>
  */
 
-# include "../inc/Hero.hpp"
+# include "Hero.hpp"
 
 /**
  * Basic constructor
@@ -93,7 +93,16 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		if (elem->getAttributes()["type2"] == "Consumable") {}
 			//TODO
 		else if (elem->getAttributes()["type2"] == "Equipment") {
-//			this->_item = static_cast<Equipment*>(elem);
+			this->_item = elem;
+		}
+	}
+}
+
+void	Hero::EndContact(Elements *elem, b2Contact *contact) {
+	Characters::EndContact(elem, contact);
+	if (elem->getAttributes()["type"] == "Object") {
+		if (elem->getAttributes()["type2"] == "Equipment") {
+			this->_item = nullptr;
 		}
 	}
 }

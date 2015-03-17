@@ -36,6 +36,7 @@ Equipment::Equipment(void) {
 	this->InitPhysics();
 	theWorld.Add(this);
 	this->_weapon = new Weapon(Game::wList->getWeapon("Bow"));
+	theSwitchboard.SubscribeTo(this, "DeleteEquipment");
 }
 
 /**
@@ -52,6 +53,11 @@ void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
 
 /*GETTERS*/
 Weapon*		Equipment::getWeapon(void) { return this->_weapon; }
+
+void		Equipment::ReceiveMessage(Message *m) {
+	if (m->GetMessageName() == "DeleteEquipment")
+		Game::addToDestroyList(this);
+}
 
 /*
  * Basic Destructor

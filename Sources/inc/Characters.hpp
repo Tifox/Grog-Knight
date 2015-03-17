@@ -43,8 +43,6 @@ class Weapon;
 #  include "Elements.hpp"
 # endif
 
-class Equipment;
-
 class Characters : public Elements {
 
 	public:
@@ -87,7 +85,7 @@ class Characters : public Elements {
 		bool			_canJump;
 		bool			_invincibility;
 		Weapon*			_weapon;
-		Equipment*		_item;
+		Elements*		_item;
 		Characters::Orientation				_orientation;
 		Characters::Orientation				_latOrientation;
 		std::list<Elements*>				_grounds;
@@ -114,6 +112,10 @@ class Characters : public Elements {
 		void	_readFile(std::string name);
 		void	_parseJson(std::string file);
 };
+
+# ifndef __Object__
+#  include "Equipment.hpp"
+# endif
 
 # include "Game.hpp"
 

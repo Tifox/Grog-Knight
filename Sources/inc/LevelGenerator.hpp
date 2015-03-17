@@ -45,9 +45,14 @@ class LevelGenerator {
 		void execute();			//execute generation process
 		void firstPass();		//generate base rooms
 		void secondPass();		//generate links
-		void thirdPass();		//generate distance
+		void thirdPass();		//delete isolated rooms
+		void fourthPass();		//generate entry
 
 		void linkAdjacentRooms(Room *room);
+		void shockwave();
+		int getEntryId();
+		int addDistanceToAdjacentRooms(Room *room, int searchDistance);
+		Room *findRoomByPos(int x, int y);
 
 	private:
 		int								_height;
@@ -56,6 +61,7 @@ class LevelGenerator {
 		int								_minPathLenght;
 		int								_roomPopRate;
 		int								_doorsPopRate;
+		int								_maxSearchDistance;
 		std::vector<std::vector<int> >	_graph;
 		std::vector<Room>				*_rooms;
 

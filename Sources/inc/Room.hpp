@@ -28,7 +28,7 @@
 
 enum DepthType {CEIL, STD, FLOOR};
 
-enum SpecialType {ENTRY, BOSS, CHEST, MONSTER, MINIBOSS, ITEM};
+enum SpecialType {NONE, ENTRY, BOSS, CHEST, MONSTER, MINIBOSS, ITEM};
 
 class Room {
 
@@ -36,11 +36,18 @@ class Room {
 		Room(int id, int x, int y, int mapId);
 		~Room();
 
-		int getX();
-		int getY();
-		int getMapId();
-		int getDistance();
-		int getLinks();
+		int getX() const;
+		int getY() const;
+		int getMapId() const;
+		int getId() const;
+		int getDistance() const;
+		int getLinks() const;
+		SpecialType getSpecialType() const;
+		bool getTopDoor() const;
+		bool getLeftDoor() const;
+		bool getBottomDoor() const;
+		bool getRightDoor() const;
+
 
 		void addLink();
 
@@ -49,6 +56,7 @@ class Room {
 		void setBottomDoor(bool state);
 		void setRightDoor(bool state);
 		void setDistance(int distance);
+		void setSpecialType(SpecialType type);
 
 	private:
 		int					_id;			//uniqueid

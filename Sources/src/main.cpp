@@ -68,7 +68,7 @@ int		main(int ac, char **av) {
 
 	//===== I temp map generation test =====
 
-	LevelGenerator *levelGenerator = new LevelGenerator(6, 6, 5, 70, 70);
+	LevelGenerator *levelGenerator = new LevelGenerator(6, 6, 5, 60, 80);
 	levelGenerator->execute();
 	levelGenerator->print();
 

@@ -38,6 +38,7 @@ LevelGenerator::LevelGenerator(int height, int width, int minPathLenght, int roo
 	srand(time(NULL));
 	_rooms = new std::vector<Room>;
 	_nbMaps = 10;
+	_maxSearchDistance = height * width / 2;
 	return ;
 }
 
@@ -51,7 +52,10 @@ LevelGenerator::~LevelGenerator(void) {
 void LevelGenerator::execute(void) {
 	firstPass();
 	secondPass();
-	// thirdPass();
+	print();
+	thirdPass();
+	fourthPass();
+	shockwave();
 }
 
 void LevelGenerator::print(void) {
@@ -62,7 +66,7 @@ void LevelGenerator::print(void) {
 			if (n < _rooms->size()) {
 				Room room = _rooms->at(n);
 				if (room.getX() == j && room.getY() == i) {
-					std::cout << room.getLinks();
+					std::cout << room.getDistance();
 					n++;
 				}
 				else
@@ -76,6 +80,8 @@ void LevelGenerator::print(void) {
 	}
 }
 
+
+//Generating base level with random rooms
 void LevelGenerator::firstPass(void) {
 	int id = 0;
 	for (int i = 0; i < _width; i++) {
@@ -89,6 +95,7 @@ void LevelGenerator::firstPass(void) {
 	}
 }
 
+//Linking rooms beteween them
 void LevelGenerator::secondPass(void) {
 	int n = 0;
 	int size = _rooms->size();
@@ -105,23 +112,126 @@ void LevelGenerator::secondPass(void) {
 	}
 }
 
-// void LevelGenerator::thirdPass(void) {
-// 	int n = 0;
-// 	int size = _rooms->size();
-// 	_rooms[0].setDistance(0);
-// 	for (int i = 0; i < _width; i++) {
-// 		for (int j = 0; j < _height; j++) {
-// 			// std::cout << i << " " << j << std::endl; 
-// 			// if (n < size) {
-// 			// 	Room *room = &_rooms->at(n);
-// 			// 	if (room->getX() == j && room->getY() == i) {
-// 			// 		shockwave();
-// 			// 		n++;
-// 			// 	}
-// 			// }
-// 		}
-// 	}
-// }
+// 3rd pass => supprimer les salles avec 0 liens
+// 4th pass => shockwave pour tester que toutes les rooms sont reachable
+// 5th pass => tester si on peut ajouter des rooms pour rendre reachable
+// restart si ca foire
+// 6th pass => ajouter entree
+// 7th pass => shockwave depuis entree
+// 8th pass => ajouter salle du boss
+// 9th pass => ajouter salles speciales
+
+//Deleting isolated rooms
+void LevelGenerator::thirdPass(void) {
+	int size = _rooms->size();
+	int deleted = 0;
+	for(int i = 0; i + deleted < size; i++) {
+		Room *room = &_rooms->at(i);
+		if (room->getLinks() == 0){
+			std::cout << "erase room n" << room->getId() << std::endl; 
+			_rooms->erase(_rooms->begin() + i);
+			deleted++;
+			i--;
+		}
+	}
+}
+
+//Creating entry room
+void LevelGenerator::fourthPass(void) {
+	int size = _rooms->size();
+	Room *room = &_rooms->at(rand() % size);
+	room->setSpecialType(ENTRY);
+	room->setDistance(1);
+}
+
+//Computing distance between entry and other rooms
+void LevelGenerator::shockwave() {
+	int size = _rooms->size();
+	int searchDistance = 1;
+	while(searchDistance < _maxSearchDistance) {
+		for(int i = 0; i < size; i++) {
+			Room *room = &_rooms->at(i);
+			if (room->getDistance() == searchDistance) {
+				addDistanceToAdjacentRooms(room, searchDistance);
+			}	
+		}
+		searchDistance++;
+	}
+}
+
+int LevelGenerator::addDistanceToAdjacentRooms(Room *room, int searchDistance) {
+	int x = room->getX();
+	int y = room->getY();
+	bool top = room->getTopDoor();
+	bool left = room->getLeftDoor();
+	bool bottom = room->getBottomDoor();
+	bool right = room->getRightDoor();
+	int toReturn;
+
+	if (top == true) {
+		Room *topRoom = findRoomByPos(x, y - 1);
+		int distance = topRoom->getDistance();
+		if (distance != 0 && distance < searchDistance)
+			toReturn += 0;
+		else {
+			topRoom->setDistance(searchDistance + 1);
+			toReturn += 1;
+		}
+	}
+	if (left == true) {
+		Room *leftRoom = findRoomByPos(x - 1, y);
+		int distance = leftRoom->getDistance();
+		if (distance != 0 && distance < searchDistance)
+			toReturn += 0;
+		else {
+			leftRoom->setDistance(searchDistance + 1);
+			toReturn += 1;
+		}
+	}
+	if (bottom == true) {
+		Room *bottomRoom = findRoomByPos(x, y + 1);
+		int distance = bottomRoom->getDistance();
+		if (distance != 0 && distance < searchDistance)
+			toReturn += 0;
+		else {
+			bottomRoom->setDistance(searchDistance + 1);
+			toReturn += 1;
+		}
+	}
+	if (right == true) {
+		Room *rightRoom = findRoomByPos(x + 1, y);
+		int distance = rightRoom->getDistance();
+		if (distance != 0 && distance < searchDistance)
+			toReturn += 0;
+		else {
+			rightRoom->setDistance(searchDistance + 1);
+			toReturn += 1;
+		}
+	}
+	return toReturn;
+}
+
+Room *LevelGenerator::findRoomByPos(int x, int y) {
+	int size = _rooms->size();
+	for(int i = 0; i < size; i++) {
+		Room *room = &_rooms->at(i);
+		if (room->getX() == x && room->getY() == y) {
+			return room;
+		}
+	}
+	return NULL;
+}
+
+int LevelGenerator::getEntryId() {
+	int size = _rooms->size();
+	for(int i = 0; i < size; i++) {
+		Room *room = &_rooms->at(i);
+		if (room->getSpecialType() == ENTRY) {
+			std::cout << "ENTRY found in " << room->getY() << "." << room->getX() << std::endl; 
+			return i;
+		}
+	}
+}
 
 void LevelGenerator::linkAdjacentRooms(Room *room) {
 	for (int n = 0; n < _rooms->size(); ++n)	{

@@ -203,7 +203,6 @@ void	Characters::ReceiveMessage(Message *m) {
 			} else if (attrName == "attack") {
 				this->_attack(status);
 			} else if (attrName == "pickupItem") {
-				std::cout << "allol" << std::endl;
 				this->_pickupItem(status);
 			}
 			this->_lastAction = attrName;
@@ -442,8 +441,9 @@ void	Characters::_attack(int status) {
 void	Characters::_pickupItem(int status) {
 	if (this->_item == nullptr)
 		return;
-//	this->equipWeapon(this->_item->getWeapon());
+	this->equipWeapon(static_cast<Equipment*>(this->_item)->getWeapon());
 	this->_item = nullptr;
+	theSwitchboard.Broadcast(new Message("DeleteEquipment"));
 }
 
 void	Characters::equipWeapon(Weapon* weapon) {

@@ -81,6 +81,7 @@ class Characters : public Elements {
 		int				_isJump;
 		int				_isRunning;
 		int				_hp;
+		int				_maxHp;
 		bool			_canMove;
 		bool			_canJump;
 		bool			_invincibility;

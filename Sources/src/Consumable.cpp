@@ -31,7 +31,9 @@
  */
 Consumable::Consumable(void) {
 	this->addAttribute("type2", "Consumable");
-	this->SetColor(1,1,1,1);
+	this->addAttribute("type3", "HP");
+	this->addAttribute("value", "50");
+	this->SetSprite("Resources/Images/HUD/heart.png");
 	this->SetPosition(9, -4);
 	this->InitPhysics();
 	theWorld.Add(this);
@@ -43,10 +45,10 @@ Consumable::Consumable(void) {
  * @note: This function is called just before a collision
  */
 void	Consumable::BeginContact(Elements *elem, b2Contact *contact) {
-	if (elem->getAttributes()["type"] == "Hero"){
-		Game::bodiesToDestroy.push_back(this);
-		contact->SetEnabled(false);
-	}
+	// if (elem->getAttributes()["type"] == "Hero"){
+	// 	Game::bodiesToDestroy.push_back(this);
+	// 	contact->SetEnabled(false);
+	// }
 }
 
 /*

@@ -83,14 +83,22 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1);
 		Game::getHUD()->life(this->getHP());
 		if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
-			this->ApplyLinearImpulse(Vector2(2, 2), Vector2(0, 0));
+			this->ApplyLinearImpulse(Vector2(4, 4), Vector2(0, 0));
 		}
 		else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x) {
-			this->ApplyLinearImpulse(Vector2(-2, 2), Vector2(0, 0));
+			this->ApplyLinearImpulse(Vector2(-4, 4), Vector2(0, 0));
 		}
 	}
 	else if (elem->getAttributes()["type"] == "Object") {
-		if (elem->getAttributes()["type2"] == "Consumable") {}
+		if (elem->getAttributes()["type2"] == "Consumable") {
+			if (elem->getAttributes()["type3"] == "HP") {
+				if (this->_hp != this->_maxHp) {
+					Game::addToDestroyList(elem);
+					this->setHP(this->getHP() + 50);
+					Game::getHUD()->life(this->getHP());
+				}
+			}
+		}
 			//TODO
 		else if (elem->getAttributes()["type2"] == "Equipment") {
 			this->_item = elem;

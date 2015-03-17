@@ -32,6 +32,7 @@ Projectile::Projectile(Weapon* w, Characters* c) {
 	int yOrient;
 	this->SetSize(0.5f);
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
+	this->SetSprite("Resources/Images/kappa.png");
 	this->SetDensity(1);
 	this->SetFriction(0);
 	this->SetRestitution(0.0f);

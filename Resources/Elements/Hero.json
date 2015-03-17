@@ -16,20 +16,20 @@
 			"beginFrame": 20,
 			"endFrame": 27,
 			"time": 0.1,
-			"force": 5
+			"force": 7
 		},
 		"backward": {
 			"subscribe": "backward",
 			"beginFrame": 28,
 			"endFrame": 35,
 			"time": 0.1,
-			"force": 5
+			"force": 7
 		},
 		"jump": {
 			"subscribe": "jump",
 			"double": 1,
-			"force": 4,
-			"rejump": 7,
+			"force": 6,
+			"rejump": 10,
 			"beginFrame": 4,
 			"fallingFrame": 8,
 			"endFrame": 11,

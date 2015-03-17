@@ -261,7 +261,7 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				contact->SetEnabled(false);
 			if (this->_isJump > 0) {
 				this->_isJump = 0;
-				this->PlaySpriteAnimation(0.1f, SAT_OneShot, this->_getAttr("jump", "endFrame").asInt(),
+				this->PlaySpriteAnimation(0.1f, SAT_OneShot, this->_getAttr("jump", "endFrame").asInt() - 2,
 										  this->_getAttr("jump", "endFrame").asInt(), "base");
 			}
 			this->_grounds.push_back(elem);
@@ -294,7 +294,7 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 				if (this->_lastAction == "forward" || this->_lastAction == "backward")
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 										  this->_getAttr("jump", "fallingFrame").asInt(),
-										  this->_getAttr("jump", "endFrame").asInt() - 1, "jump");
+										  this->_getAttr("jump", "endFrame").asInt() - 3, "jump");
 			}
 		}
 		else
@@ -399,7 +399,7 @@ void	Characters::_jump(int status) {
 			}
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 				this->_getAttr("beginFrame").asInt(),
-				this->_getAttr("endFrame").asInt() - 1, "jump");
+				this->_getAttr("endFrame").asInt() - 3, "jump");
 			if (this->_grounds.size() == 0)
 				this->_isJump++;
 		}

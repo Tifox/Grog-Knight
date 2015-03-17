@@ -98,6 +98,7 @@ void	Characters::_parseJson(std::string file) {
 	this->_id = json["infos"].get("id", "").asInt();
 	this->_size = json["infos"].get("size", "").asFloat();
 	this->_maxSpeed = json["infos"].get("maxSpeed", "").asFloat();
+	this->_hp = json["infos"].get("HP", "").asInt();
 	this->_hitboxType = json["infos"].get("hitboxType", "").asString();
 	this->_hitbox = json["infos"].get("hitbox", "").asString();
 	this->addAttribute("spritesFrame", json["infos"].get("sprites", "").asString());
@@ -450,6 +451,9 @@ void	Characters::equipWeapon(Weapon* weapon) {
 		this->_weapon = new Weapon(weapon);
 }
 
+void						Characters::setHP(int hp) { this->_hp = hp; };
+
 Characters::Orientation		Characters::getOrientation(void) { return this->_orientation; }
 std::string					Characters::getLastAction(void) { return this->_lastAction; };
+int							Characters::getHP(void) { return this->_hp; };
 void						Characters::changeCanMove(void) { this->_canMove = (this->_canMove ? false : true); };

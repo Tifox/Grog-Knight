@@ -65,6 +65,8 @@ class Characters : public Elements {
 		virtual void	EndContact(Elements *elem, b2Contact *contact);
 		Characters::Orientation			getOrientation(void);
 		std::string						getLastAction(void);
+		int								getHP(void);
+		void							setHP(int h);
 		// Virtual function, overwritten in childs
 		virtual void	actionCallback(std::string name, int status) {};
 		virtual void	equipWeapon(Weapon* weapon);
@@ -78,6 +80,7 @@ class Characters : public Elements {
 		int				_maxSpeed;
 		int				_isJump;
 		int				_isRunning;
+		int				_hp;
 		bool			_canMove;
 		bool			_canJump;
 		bool			_invincibility;

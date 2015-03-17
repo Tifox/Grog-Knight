@@ -45,6 +45,7 @@ class	Maps;
 class WeaponList;
 class Hitbox;
 class HUDWindow;
+class Characters;
 
 class Game {
 
@@ -60,6 +61,9 @@ class Game {
 		void	displayEnemy(Elements & Enemy);
 		void	displayObject(Elements & Object);
 		void	showMap(void);
+		void	displayHUD(void);
+		void	setHero(Characters &h);
+		Characters	&getHero(void);
 
 		static void	destroyAllBodies(void);
 		static void	addToDestroyList(Elements *m);
@@ -89,6 +93,7 @@ class Game {
 	private:
 		float		beginXHero;
 		float		beginYHero;
+		Characters	&_hero;
 };
 
 

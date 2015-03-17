@@ -29,6 +29,9 @@
 
 # include "../../Angel/Angel.h"
 # include "Game.hpp"
+class	Game;
+
+# include <iostream>
 
 class	HUDWindow : public HUDActor {
 	public:
@@ -38,9 +41,13 @@ class	HUDWindow : public HUDActor {
 		void	setText(std::string str, int x, int y);
 		void	displayText(void);
 		void	addImage(std::string p, int x, int y);
+		void	life(int l);
+		void	setGame(Game *);
 
 	private:
 		std::string	_text;
+		Game		*_g;
+		std::list<HUDActor *>	_hearts;
 };
 
 #endif

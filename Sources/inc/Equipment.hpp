@@ -26,10 +26,10 @@
 #ifndef __Equipment__
 # define __Equipment__
 
-# include "Elements.hpp"
 # include "WeaponList.hpp"
 # include "Object.hpp"
 # include "Game.hpp"
+# include "Elements.hpp"
 
 class Equipment : public Object {
 public:

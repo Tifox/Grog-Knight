@@ -113,7 +113,10 @@ class Characters : public Elements {
 		void	_parseJson(std::string file);
 };
 
-# include "Equipment.hpp"
+# ifndef __Object__
+#  include "Equipment.hpp"
+# endif
+
 # include "Game.hpp"
 
 #endif

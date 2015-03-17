@@ -37,7 +37,6 @@
 
 class Characters;
 
-
 class Weapon: public Elements {
 public:
 	Weapon(std::string name);

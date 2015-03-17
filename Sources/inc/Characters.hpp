@@ -29,7 +29,7 @@
 # include "Weapon.hpp"
 # include "Log.hpp"
 
-//class Weapon;
+class Weapon;
 
 # ifdef __APPLE__
 #  include "../../Tools/jsoncpp/include/json/json.h"
@@ -40,8 +40,10 @@
 # include <list>
 # include "../../Angel/Angel.h"
 # ifndef __Elements__
-# include "Elements.hpp"
-#endif
+#  include "Elements.hpp"
+# endif
+
+class Equipment;
 
 class Characters : public Elements {
 
@@ -82,6 +84,7 @@ class Characters : public Elements {
 		bool			_canJump;
 		bool			_invincibility;
 		Weapon*			_weapon;
+		Equipment*		_item;
 		Characters::Orientation				_orientation;
 		Characters::Orientation				_latOrientation;
 		std::list<Elements*>				_grounds;
@@ -98,6 +101,7 @@ class Characters : public Elements {
 		virtual void	_down(int status);
 		virtual void	_jump(int status);
 		virtual void	_attack(int status);
+		virtual void	_pickupItem(int status);
 		virtual void	_run(void);
 
 	private:

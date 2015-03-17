@@ -85,4 +85,11 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 			this->ApplyLinearImpulse(Vector2(-2, 2), Vector2(0, 0));
 		}
 	}
+	else if (elem->getAttributes()["type"] == "Object") {
+		if (elem->getAttributes()["type2"] == "Consumable") {}
+			//TODO
+		else if (elem->getAttributes()["type2"] == "Equipment") {
+//			this->_item = static_cast<Equipment*>(elem);
+		}
+	}
 }

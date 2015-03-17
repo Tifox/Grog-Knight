@@ -6,7 +6,9 @@
 		"sprites": "Resources/Images/Hero/hero_000.png",
 		"size": 1.3,
 		"maxSpeed": 5,
-		"weapon": "Sword"
+		"weapon": "Sword",
+		"hitboxType": "special",
+		"hitbox": "heroHitbox"
 	},
 	"Actions": {
 		"forward": {
@@ -31,6 +33,12 @@
 			"beginFrame": 20,
 			"fallingFrame": 28,
 			"endFrame": 31,
+			"time": 0.1
+		},
+		"pickupItem": {
+			"subscribe": "pickupItem",
+			"beginFrame": 8,
+			"endFrame": 10,
 			"time": 0.1
 		},
 		"attack": {

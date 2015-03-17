@@ -26,6 +26,7 @@
 #ifndef __Hero__
 # define __Hero__
 
+
 # include "Characters.hpp"
 # include "Weapon.hpp"
 

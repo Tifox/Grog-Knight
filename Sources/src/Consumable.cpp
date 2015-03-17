@@ -32,7 +32,7 @@
 Consumable::Consumable(void) {
 	this->addAttribute("type2", "Consumable");
 	this->SetColor(1,1,1,1);
-	this->SetPosition(6, -11);
+	this->SetPosition(9, -4);
 	this->InitPhysics();
 	theWorld.Add(this);
 }

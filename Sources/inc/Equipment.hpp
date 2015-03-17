@@ -27,7 +27,6 @@
 # define __Equipment__
 
 # include "Elements.hpp"
-# include "Hero.hpp"
 # include "WeaponList.hpp"
 # include "Object.hpp"
 # include "Game.hpp"

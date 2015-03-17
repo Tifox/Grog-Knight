@@ -26,6 +26,8 @@
  #include "../inc/Enemy.hpp"
 
 Enemy::Enemy(void) : Characters("Enemy") {
+	theSwitchboard.SubscribeTo(this, "startPathing");
+	theSwitchboard.Broadcast(new Message("startPathing"));
 	return ;
 }
 
@@ -34,13 +36,14 @@ Enemy::Enemy(void) : Characters("Enemy") {
  */
 Enemy::~Enemy(void) {
 	return ;
-} 
+}
 
 /**
  * Init Animation
  */
 void	Enemy::init(void) {
 	this->AnimCallback("base");
+	this->_orientation = RIGHT;
 }
 
 /**
@@ -74,5 +77,11 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 		} else {
 			this->ApplyLinearImpulse(Vector2(-p->getPushback(), p->getPushback()), Vector2(0,0));
 		}
+	}
+	else if (m->getAttributes()["type"] == "Hero") {
+		if (this->_orientation == LEFT)
+			this->_orientation = RIGHT;
+		else
+			this->_orientation = LEFT;
 	}
 }

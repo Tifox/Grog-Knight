@@ -66,6 +66,8 @@ public:
 
 protected:
 	virtual void	_run() {};
+	std::string							_hitboxType;
+	std::string							_hitbox;
 
 private:
 	float								_XStartPos;

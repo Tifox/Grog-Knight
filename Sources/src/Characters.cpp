@@ -50,6 +50,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_invincibility = false;
 	this->_grounds.clear();
 	this->_walls.clear();
+	this->_item = nullptr;
 }
 
 /**
@@ -72,7 +73,7 @@ void	Characters::_readFile(std::string name) {
 
 	fd.open(file.c_str());
 	if (!fd.is_open())
-		Log::error("Can't open the file for the " + 
+		Log::error("Can't open the file for the " +
 		name + " class. (Supposed path is Resources/Elements/" + name +".json)");
 	buffer << fd.rdbuf();
 	this->_parseJson(buffer.str());
@@ -98,6 +99,8 @@ void	Characters::_parseJson(std::string file) {
 	this->_size = json["infos"].get("size", "").asFloat();
 	this->_maxSpeed = json["infos"].get("maxSpeed", "").asFloat();
 	this->_hp = json["infos"].get("HP", "").asInt();
+	this->_hitboxType = json["infos"].get("hitboxType", "").asString();
+	this->_hitbox = json["infos"].get("hitbox", "").asString();
 	this->addAttribute("spritesFrame", json["infos"].get("sprites", "").asString());
 
 	for (i = json["Actions"].begin(); i != json["Actions"].end(); i++) {
@@ -161,10 +164,24 @@ void	Characters::ReceiveMessage(Message *m) {
 	int				status;
 
 	if (m->GetMessageName() == "canMove") {
-		this->_canMove = true;
+		this->changeCanMove();
 	}
 	else if (m->GetMessageName() == "endInvincibility") {
 		this->_invincibility = false;
+	}
+	else if (m->GetMessageName() == "startPathing") {
+		if (this->_grounds.size() > 0) {
+			if (this->_wallsLeft.size() > 0)
+				this->_orientation = RIGHT;
+			else if (this->_wallsRight.size() > 0)
+				this->_orientation = LEFT;
+			if (this->_orientation == RIGHT)
+				this->GetBody()->SetLinearVelocity(b2Vec2(5,0));
+			if (this->_orientation == LEFT)
+				this->GetBody()->SetLinearVelocity(b2Vec2(-5,0));
+		}
+		theSwitchboard.DeferredBroadcast(new Message("startPathing"), 0.2f);
+		return;
 	}
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
 		attrName = this->_getAttr(i->first, "subscribe").asString();
@@ -186,6 +203,9 @@ void	Characters::ReceiveMessage(Message *m) {
 				this->_jump(status);
 			} else if (attrName == "attack") {
 				this->_attack(status);
+			} else if (attrName == "pickupItem") {
+				std::cout << "allol" << std::endl;
+				this->_pickupItem(status);
 			}
 			this->_lastAction = attrName;
 			this->actionCallback(attrName, status);
@@ -222,8 +242,8 @@ void	Characters::AnimCallback(String s) {
 				this->_setCategory("backward");
 			}
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-				this->_getAttr("beginFrame").asInt(),
-				this->_getAttr("endFrame").asInt());
+									  this->_getAttr("beginFrame").asInt(),
+									  this->_getAttr("endFrame").asInt());
 		}
 	}
 }
@@ -301,10 +321,12 @@ void	Characters::_run(void) {
  */
 void	Characters::_forward(int status) {
 	this->_setCategory("forward");
-	if (status == 1){
+	if (status == 1) {
 		this->_orientation = RIGHT;
 		this->_latOrientation = RIGHT;
-		if ((this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() || (this->GetSpriteFrame() >= this->_getAttr("backward", "beginFrame").asInt() && this->GetSpriteFrame() <= this->_getAttr("backward", "endFrame").asInt()))  && !this->_isJump)
+		if ((this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() ||
+			 (this->GetSpriteFrame() >= this->_getAttr("backward", "beginFrame").asInt() &&
+			  this->GetSpriteFrame() <= this->_getAttr("backward", "endFrame").asInt()))  && !this->_isJump)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 				this->_getAttr("beginFrame").asInt(),
 				this->_getAttr("endFrame").asInt());
@@ -416,6 +438,13 @@ void	Characters::_attack(int status) {
 	if (status == 1 && this->_weapon->attackReady() == 1) {
 		this->_weapon->attack(this);
 	}
+}
+
+void	Characters::_pickupItem(int status) {
+	if (this->_item == nullptr)
+		return;
+//	this->equipWeapon(this->_item->getWeapon());
+	this->_item = nullptr;
 }
 
 void	Characters::equipWeapon(Weapon* weapon) {

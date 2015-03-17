@@ -121,8 +121,6 @@ void	Elements::setFrameSprite(int frame) {
 void	Elements::display(void) {
 	this->SetPosition(this->_XStartPos, this->_YStartPos);
 	this->Tag(this->getAttribute("type"));
-	//std::cout << "Add an object at: " << this->_XStartPos << ", " << this->_YStartPos << std::endl;
-	this->Tag(this->getAttribute("type"));
 	if (this->getAttribute("sprite") != "")
 		this->SetSprite(this->getAttribute("sprite"));
 	else if (this->getAttribute("spritesFrame") != "") {
@@ -139,10 +137,10 @@ void	Elements::display(void) {
 		this->SetFriction(1);
 		this->SetRestitution(0);
 	}
-	if (this->getAttribute("hero") == "1") {
+	if (this->_hitboxType == "special") {
 		this->SetShapeType(PhysicsActor::SHAPETYPE_LOADED);
- 		Game::hList->checkExists("heroHitbox");
- 		this->setBox(Game::hList->getHitbox("heroHitbox"));
+ 		Game::hList->checkExists(this->_hitbox);
+ 		this->setBox(Game::hList->getHitbox(this->_hitbox));
 	} else {
 		this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	}

@@ -63,6 +63,7 @@ int		main(int ac, char **av) {
 	Hero		*hero = new Hero();
 	Enemy		*enemy = new Enemy();
 
+
 	Game::hList = new Hitbox();
 
 	//===== I temp map generation test =====

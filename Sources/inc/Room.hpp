@@ -48,7 +48,7 @@ class Room {
 		void setLeftDoor(bool state);
 		void setBottomDoor(bool state);
 		void setRightDoor(bool state);
-		// void setDistance(int distance);
+		void setDistance(int distance);
 
 	private:
 		int					_id;			//uniqueid

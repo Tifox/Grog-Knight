@@ -38,6 +38,7 @@ public:
 
 	Weapon* 	getWeapon(void);
 	void		BeginContact(Elements *elem, b2Contact *contact);
+	void		EndContact(Elements *elem, b2Contact *contact);
 	void		ReceiveMessage(Message* m);
 
 private:

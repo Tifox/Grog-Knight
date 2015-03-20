@@ -28,7 +28,7 @@
 /**
  * Basic constructor
  */
-HUDWindow::HUDWindow(void) : HUDActor() {
+HUDWindow::HUDWindow(void) : HUDActor(), _text("") {
 	return;
 }
 
@@ -46,8 +46,12 @@ HUDWindow::~HUDWindow(void) {
  * @param: y (int)
  */
 void	HUDWindow::setText(std::string str, int x, int y) {
-	this->_text = str;
-	Game::addHUDWindow(this);
+	if (this->_text != "") {
+		this->_text = str;
+	} else {
+		this->_text = str;
+		Game::addHUDWindow(this);
+	}
 }
 
 /**

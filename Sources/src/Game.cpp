@@ -33,7 +33,7 @@ Game::Game(void) : _hero(*(new Characters())) {
 	#ifdef __APPLE__
 		theWorld.Initialize(1920, 1080, NAME, false, true);
 	#else
-		theWorld.Initialize(1920, 1080, NAME, false, true);
+		theWorld.Initialize(1920, 1080, NAME, false, false);
 		//heWorld.Initialize(1600, 1200, NAME, false, false);
 	#endif
 	theWorld.SetupPhysics(Vector2(0, -20));
@@ -204,14 +204,27 @@ void	Game::destroyAllBodies(void) {
 	Game::bodiesToDestroy.clear();
 }
 
+/**
+ * Make an element running
+ * @param: c (Elements *)
+ * @note: This function do not make the element 'running', just add them to the callback list.
+ */
 void	Game::startRunning(Elements *c) {
 	Game::runningCharac.push_back(c);
 }
 
+/**
+ * Make an element stop running
+ * @param: c (Elements *)
+ * @note: Same as Game::startRunning(), but the object is remove from the list.
+ */
 void	Game::stopRunning(Elements *c) {
 	Game::runningCharac.remove(c);
 }
 
+/**
+ * The callback for each frame, making the call to the interns callbacks.
+ */
 void	Game::makeItRun(void) {
 	std::list<Elements *>::iterator	i;
 
@@ -220,6 +233,9 @@ void	Game::makeItRun(void) {
 	}
 }
 
+/**
+ * Callback for each frame, to display the text in the HUDs.
+ */
 void	Game::showText(void) {
 	std::list<HUDWindow *>::iterator i;
 
@@ -228,14 +244,37 @@ void	Game::showText(void) {
 	}
 }
 
+/**
+ * Add a HUDWindow object to the callback list
+ * @param: w (HUDWindow *)
+ */
 void	Game::addHUDWindow(HUDWindow *w) {
-	Game::windows.push_back(w);
+	if (std::find(Game::windows.begin(), Game::windows.end(), w) == Game::windows.end())
+		Game::windows.push_back(w);
 }
 
+/**
+ * Remove a HUDWindow from the callback list.
+ * @param: w (HUDWindow *)
+ */
+void	Game::removeHUDWindow(HUDWindow *w) {
+	std::list<HUDWindow *>::iterator 	it;
+
+	it = std::find(Game::windows.begin(), Game::windows.end(), w);
+	if (it != Game::windows.end())
+		Game::windows.erase(it);
+}
+
+/**
+ * Get the first HUD from the list. (Assuming there is an element)
+ */
 HUDWindow	*Game::getHUD(void) {
 	return Game::windows.front();
 }
 
+/**
+ * The init function for display the base HUD.
+ */
 void		Game::displayHUD(void) {
 	HUDWindow *w = new HUDWindow();
 	w->SetPosition(theCamera.GetWindowWidth() / 2, 50);
@@ -252,6 +291,7 @@ void		Game::displayHUD(void) {
 	w->life(100);
 }
 
+/* SETTERS */
 void		Game::setHero(Characters & h) { this->_hero = h; };
 Characters	&Game::getHero(void) { return this->_hero; };
 

@@ -79,7 +79,9 @@ class Game {
 		static void	makeItRun(void);
 		static void	showText(void);
 		static void	addHUDWindow(HUDWindow *);
+		static void	removeHUDWindow(HUDWindow *);
 		static HUDWindow*	getHUD(void);
+		static int			lol;
 
 		Maps		*maps;
 		static int	currentIds;

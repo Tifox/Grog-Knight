@@ -51,6 +51,17 @@ void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
 	}
 }
 
+/**
+ * End of contact
+ * @param: elem (Elements *)
+ * @param: contact (b2Contact *)
+ */
+void	Equipment::EndContact(Elements *elem, b2Contact *contact) {
+	if (elem->getAttributes()["type"] == "Hero"){
+		Game::getHUD()->setText("", 0, 0);
+	}
+}
+
 /*GETTERS*/
 Weapon*		Equipment::getWeapon(void) { return this->_weapon; }
 

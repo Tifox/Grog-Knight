@@ -34,6 +34,7 @@ public:
 	Enemy();
 	~Enemy();
 
+	int				takeDamage(int damage);
 	void			actionCallback(std::string name, int status);
 	void			init(void);
 	void			BeginContact(Elements* m, b2Contact* contact);

@@ -105,6 +105,7 @@ class Characters : public Elements {
 		virtual void	_attack(int status);
 		virtual void	_pickupItem(int status);
 		virtual void	_run(void);
+		void			_destroyEnemy(void);
 
 	private:
 		std::map<std::string, std::map<std::string, Json::Value> >	_attr;

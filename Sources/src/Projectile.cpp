@@ -67,12 +67,12 @@ Projectile::Projectile(Weapon* w, Characters* c) {
 		yDecal = -1;
 		yOrient = -1;
 	}
-	this->_weapon = w;
+	this->_weapon = new Weapon(w);
 	this->SetPosition(c->GetBody()->GetWorldCenter().x + xDecal, c->GetBody()->GetWorldCenter().y + yDecal);
 	this->InitPhysics();
 	this->GetBody()->SetGravityScale(0.0f);
 	this->GetBody()->SetBullet(true);
-	this->ApplyLinearImpulse(Vector2(2 * xOrient, 2 * yOrient), Vector2(0, 0));
+	this->ApplyLinearImpulse(Vector2(3 * xOrient, 3 * yOrient), Vector2(0, 0));
 //	std::cout << w->getRecovery() << std::endl;
 
 	theSwitchboard.DeferredBroadcast(new Message("canAttack"), w->getRecovery());

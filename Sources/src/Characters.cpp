@@ -184,6 +184,10 @@ void	Characters::ReceiveMessage(Message *m) {
 		theSwitchboard.DeferredBroadcast(new Message("startPathing"), 0.2f);
 		return;
 	}
+	else if (m->GetMessageName() == "destroyEnemy") {
+		this->_destroyEnemy();
+		return;
+	}
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
 		attrName = this->_getAttr(i->first, "subscribe").asString();
 		if (!strncmp(attrName.c_str(), m->GetMessageName().c_str(), strlen(attrName.c_str()))) {
@@ -456,8 +460,13 @@ void						Characters::setHP(int hp) {
 	if (hp > this->_maxHp)
 		this->_hp = this->_maxHp;
 	else
-		this->_hp = hp; 
+		this->_hp = hp;
 };
+
+void						Characters::_destroyEnemy(void) {
+	theSwitchboard.UnsubscribeFrom(this, "destroyEnemy");
+	Game::addToDestroyList(this);
+}
 
 Characters::Orientation		Characters::getOrientation(void) { return this->_orientation; }
 std::string					Characters::getLastAction(void) { return this->_lastAction; };

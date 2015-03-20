@@ -66,22 +66,45 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 	Weapon* w = static_cast<Weapon*>(m);
 	Projectile* p = static_cast<Projectile*>(m);
 	if (m->getAttributes()["type"] == "HeroWeaponHitBox") {
-		if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
-			this->ApplyLinearImpulse(Vector2(w->getPushback(), w->getPushback()), Vector2(0,0));
-		} else {
-			this->ApplyLinearImpulse(Vector2(-w->getPushback(), w->getPushback()), Vector2(0,0));
+		if (this->takeDamage(w->getDamage()) == 1) {
+			if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
+				this->ApplyLinearImpulse(Vector2(w->getPushback(), w->getPushback()), Vector2(0,0));
+			} else {
+				this->ApplyLinearImpulse(Vector2(-w->getPushback(), w->getPushback()), Vector2(0,0));
+			}
 		}
 	} else if (m->getAttributes()["type"] == "HeroProjectile") {
-		if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
-			this->ApplyLinearImpulse(Vector2(p->getPushback(), p->getPushback()), Vector2(0,0));
-		} else {
-			this->ApplyLinearImpulse(Vector2(-p->getPushback(), p->getPushback()), Vector2(0,0));
+		if (this->takeDamage(w->getDamage()) == 1) {
+			if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
+				this->ApplyLinearImpulse(Vector2(p->getPushback(), p->getPushback()), Vector2(0,0));
+			} else {
+				this->ApplyLinearImpulse(Vector2(-p->getPushback(), p->getPushback()), Vector2(0,0));
+			}
 		}
-	}
-	else if (m->getAttributes()["type"] == "Hero") {
+	} else if (m->getAttributes()["type"] == "Hero") {
 		if (this->_orientation == LEFT)
 			this->_orientation = RIGHT;
 		else
 			this->_orientation = LEFT;
 	}
+}
+
+
+/**
+ * Function that applies damage
+ * @param: damage (int)
+ */
+
+int		Enemy::takeDamage(int damage) {
+	std::cout << damage << std::endl;
+	if (this->_hp - damage <= 0) {
+		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+		this->PlaySpriteAnimation(0.1, SAT_OneShot, 5, 5, "destroyEnemy");
+		theSwitchboard.SubscribeTo(this, "destroyEnemy");
+		theSwitchboard.DeferredBroadcast(new Message("destroyEnemy"), 0.1);
+		theSwitchboard.UnsubscribeFrom(this, "startPathing");
+		return 0;
+	}
+	this->_hp -= damage;
+	return 1;
 }

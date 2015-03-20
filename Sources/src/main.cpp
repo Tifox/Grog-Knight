@@ -60,8 +60,8 @@ int		main(int ac, char **av) {
 
 	Equipment		*equip = new Equipment();
 	Consumable		*lol = new Consumable();
-	Hero		*hero = new Hero();
-	Enemy		*enemy = new Enemy();
+	Hero			*hero = new Hero();
+	Enemy			*enemy = new Enemy();
 
 
 	Game::hList = new Hitbox();

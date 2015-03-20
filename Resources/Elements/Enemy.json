@@ -2,7 +2,7 @@
 	"infos": {
 		"name": "Enemy",
 		"id": 1,
-		"HP": 50,
+		"HP": 10,
 		"sprites": "Resources/Images/Enemy/enemy_000.png",
 		"size": 1.3,
 		"maxSpeed": 5,

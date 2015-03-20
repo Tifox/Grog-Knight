@@ -33,7 +33,7 @@ Game::Game(void) : _hero(*(new Characters())) {
 	#ifdef __APPLE__
 		theWorld.Initialize(1920, 1080, NAME, false, true);
 	#else
-		theWorld.Initialize(1920, 1080, NAME, false, false);
+		theWorld.Initialize(2000, 1150, NAME, false, true);
 		//heWorld.Initialize(1600, 1200, NAME, false, false);
 	#endif
 	theWorld.SetupPhysics(Vector2(0, -20));

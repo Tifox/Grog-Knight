@@ -43,6 +43,7 @@
 		},
 		"attack": {
 			"subscribe": "attack"
+
 		},
 		"down": {
 			"subscribe": "down"

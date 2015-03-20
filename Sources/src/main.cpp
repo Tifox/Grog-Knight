@@ -52,7 +52,7 @@ int		main(int ac, char **av) {
 
 	game->readMaps();
 	MouseDebugger l;
-	theWorld.SetBackgroundColor(*(new Color(0.51f, 0.90f, 1)));
+	theWorld.SetBackgroundColor(*(new Color(0, 0, 0)));
 
 	Game::wList = new WeaponList();
 
@@ -74,7 +74,8 @@ int		main(int ac, char **av) {
 
 	//===== O temp map generation test =====
 
-	theCamera.LockTo(hero);
+	//theCamera.LockTo(hero);
+	theCamera.SetPosition(13, -7);
 	game->displayHero(*(hero));
 	game->displayEnemy(*(enemy));
 	hero->init();

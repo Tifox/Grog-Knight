@@ -161,6 +161,7 @@ void	Elements::setHeight(int h) { this->_height = h; };
 void	Elements::setCutWidth(int w) { this->_cutWidth = w; };
 void	Elements::setCutHeight(int h) { this->_cutHeight = h; };
 void	Elements::setFrame(int n) { this->_frame = n; };
+void	Elements::setHitbox(std::string n) { this->_hitbox = n; this->_hitboxType = "special"; };
 
 /* GETTERS */
 std::map<std::string, std::string>	Elements::getAttributes(void) { return this->_attributes; };

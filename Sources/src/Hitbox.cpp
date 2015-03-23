@@ -106,7 +106,7 @@ b2PolygonShape	Hitbox::_parseVertices(int v, std::vector<std::vector<int> > map)
 	std::vector<int>::iterator	itr2;
 	std::vector<std::vector<int> >::reverse_iterator	ritr;
 	std::vector<int>::reverse_iterator	ritr2;
-	b2Vec2 *vertices =  new b2Vec2[v];
+	b2Vec2 vertices[v]/* =  new b2Vec2[v]*/;
 	b2PolygonShape box;
 	int i = 0;
 	float x2, y2, x, y = 0;

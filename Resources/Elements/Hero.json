@@ -42,8 +42,10 @@
 			"time": 0.1
 		},
 		"attack": {
-			"subscribe": "attack"
-
+			"subscribe": "attack",
+			"beginFrame": 37,
+			"endFrame": 40,
+			"time": 0.5
 		},
 		"down": {
 			"subscribe": "down"

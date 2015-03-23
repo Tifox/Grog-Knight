@@ -49,6 +49,7 @@ class MouseDebugger: public MouseListener {
 
 int		main(int ac, char **av) {
 	Game	*game = new Game();
+	Game::hList = new Hitbox();
 
 	game->readMaps();
 	MouseDebugger l;
@@ -64,7 +65,6 @@ int		main(int ac, char **av) {
 	Enemy			*enemy = new Enemy();
 
 
-	Game::hList = new Hitbox();
 
 	//===== I temp map generation test =====
 
@@ -74,7 +74,7 @@ int		main(int ac, char **av) {
 
 	//===== O temp map generation test =====
 
-	//theCamera.LockTo(hero);
+	theCamera.LockTo(hero);
 	theCamera.SetPosition(13, -7);
 	game->displayHero(*(hero));
 	game->displayEnemy(*(enemy));

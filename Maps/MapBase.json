@@ -79,6 +79,10 @@
                 {
                  "physic":"0"
                 },
+             "117":
+                {
+                 "physic":"0"
+                },
              "124":
                 {
                  "physic":"0"
@@ -96,6 +100,10 @@
                  "physic":"0"
                 },
              "130":
+                {
+                 "physic":"0"
+                },
+             "131":
                 {
                  "physic":"0"
                 },
@@ -117,7 +125,11 @@
                 },
              "36":
                 {
-				 //"hitbox":"platform_up"
+                 "hitbox":"platform_up"
+                },
+             "37":
+                {
+                 "hitbox":"platform_up"
                 },
              "40":
                 {

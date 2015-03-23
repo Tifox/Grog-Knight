@@ -100,8 +100,8 @@ void	Game::showMap(void) {
  * @param: Hero (Elements &)
  */
 void	Game::displayHero(Elements & Hero) {
-	Hero.setXStart(10);
-	Hero.setYStart(-10);
+	Hero.setXStart(0);
+	Hero.setYStart(0);
 	Hero.addAttribute("hero", "1");
 	Hero.display();
 }

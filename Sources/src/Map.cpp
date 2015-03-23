@@ -96,7 +96,19 @@ void	Map::display(void) {
 		if (this->_properties.find(*it) == this->_properties.end()) {
 			elem->addAttribute("physic", "TRUE");
 		} else {
-//			std::cout << "===== HERE ====\n" << *it << std::endl;
+			std::map<std::string, Json::Value>::iterator	it2;
+			int												isPhysic = 1;
+
+			for (it2 = this->_properties.find(*it)->second.begin();
+			it2 != this->_properties.find(*it)->second.end(); it2++) {
+				if (it2->first == "physic") {
+					isPhysic = 0;
+				} else if (it2->first == "hitbox") {
+					elem->setHitbox(it2->second.asString());
+				}
+			}
+			if (isPhysic)
+				elem->addAttribute("physic", "TRUE");
 		}
 		elem->display();
 	}

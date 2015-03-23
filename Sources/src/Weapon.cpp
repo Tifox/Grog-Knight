@@ -53,6 +53,9 @@ Weapon::Weapon(Weapon* weapon) {
 	theSwitchboard.SubscribeTo(this, "canAttack");
 }
 
+
+/* fonctionsale.com */
+
 Weapon::Weapon(Weapon* w, Characters* c) {
 	float xDecal = 0;
 	float yDecal = 0;

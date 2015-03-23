@@ -54,6 +54,7 @@ public:
 	void		display(void);
 	std::map<std::string, std::string>		getAttributes(void);
 	void		setFrameSprite(int frame);
+	void		setHitbox(std::string);
 
 	/* Virtual function, overridden in Childs */
 	virtual void	callback(Elements * elem) { };

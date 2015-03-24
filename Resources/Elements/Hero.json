@@ -30,9 +30,12 @@
 			"double": 1,
 			"force": 6,
 			"rejump": 10,
-			"beginFrame": 4,
-			"fallingFrame": 8,
-			"endFrame": 11,
+			"beginFrame_right": 4,
+			"beginFrame_left": 12,
+			"fallingFrame_right": 8,
+			"fallingFrame_left": 16,
+			"endFrame_right": 11,
+			"endFrame_left": 19,
 			"time": 0.1
 		},
 		"pickupItem": {

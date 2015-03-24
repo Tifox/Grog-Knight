@@ -265,8 +265,14 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				contact->SetEnabled(false);
 			if (this->_isJump > 0) {
 				this->_isJump = 0;
-				this->PlaySpriteAnimation(0.1f, SAT_OneShot, this->_getAttr("jump", "endFrame").asInt() - 2,
-										  this->_getAttr("jump", "endFrame").asInt(), "base");
+				if (this->_latOrientation == RIGHT)
+				this->PlaySpriteAnimation(0.1f, SAT_OneShot,
+										  this->_getAttr("jump", "endFrame_right").asInt() - 2,
+										  this->_getAttr("jump", "endFrame_right").asInt(), "base");
+				if (this->_latOrientation == LEFT)
+				this->PlaySpriteAnimation(0.1f, SAT_OneShot,
+										  this->_getAttr("jump", "endFrame_left").asInt() - 2,
+										  this->_getAttr("jump", "endFrame_left").asInt(), "base");
 			}
 			this->_grounds.push_back(elem);
 		} else if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
@@ -295,10 +301,14 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 			this->_grounds.remove(elem);
 			if (this->_grounds.size() == 0) {
 				this->_isJump++;
-				if (this->_lastAction == "forward" || this->_lastAction == "backward")
+				if (this->_lastAction == "forward")
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-										  this->_getAttr("jump", "fallingFrame").asInt(),
-										  this->_getAttr("jump", "endFrame").asInt() - 3, "jump");
+										  this->_getAttr("jump", "fallingFrame_right").asInt(),
+										  this->_getAttr("jump", "endFrame_right").asInt() - 3, "jump");
+				else if (this->_lastAction == "backward")
+					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+										  this->_getAttr("jump", "fallingFrame_left").asInt(),
+										  this->_getAttr("jump", "endFrame_left").asInt() - 3, "jump");
 			}
 		}
 		else
@@ -332,8 +342,15 @@ void	Characters::_forward(int status) {
 			 (this->GetSpriteFrame() >= this->_getAttr("backward", "beginFrame").asInt() &&
 			  this->GetSpriteFrame() <= this->_getAttr("backward", "endFrame").asInt()))  && !this->_isJump)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-				this->_getAttr("beginFrame").asInt(),
-				this->_getAttr("endFrame").asInt());
+				this->_getAttr("beginFrame").asInt(), this->_getAttr("endFrame").asInt());
+		else if (this->_isJump) {
+			this->_setCategory("jump");
+			if (this->GetSpriteFrame() >= this->_getAttr("beginFrame_left").asInt() && this->GetSpriteFrame() <= this->_getAttr("endFrame_left").asInt())
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+										  this->GetSpriteFrame() - 8,
+										  this->_getAttr("endFrame_right").asInt() - 3, "jump");
+			this->_setCategory("forward");
+		}
 		Game::startRunning(this);
 		if (this->_isRunning == 2)
 			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
@@ -366,6 +383,14 @@ void	Characters::_backward(int status) {
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 				this->_getAttr("beginFrame").asInt(),
 				this->_getAttr("endFrame").asInt());
+		else if (this->_isJump) {
+			this->_setCategory("jump");
+			if (this->GetSpriteFrame() >= this->_getAttr("beginFrame_right").asInt() && this->GetSpriteFrame() <= this->_getAttr("endFrame_right").asInt())
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+										  this->GetSpriteFrame() + 8,
+										  this->_getAttr("endFrame_left").asInt() - 3, "jump");
+			this->_setCategory("backward");
+		}
 		Game::startRunning(this);
 		if (this->_isRunning == 1)
 			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
@@ -401,9 +426,16 @@ void	Characters::_jump(int status) {
 			else {
 				this->ApplyLinearImpulse(Vector2(0, this->_getAttr("force").asFloat()), Vector2(0, 0));
 			}
-			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-				this->_getAttr("beginFrame").asInt(),
-				this->_getAttr("endFrame").asInt() - 3, "jump");
+			if (this->_latOrientation == RIGHT) {
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+										  this->_getAttr("beginFrame_right").asInt(),
+										  this->_getAttr("endFrame_right").asInt() - 3, "jump");
+			}
+			else if (this->_latOrientation == LEFT) {
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+										  this->_getAttr("beginFrame_left").asInt(),
+										  this->_getAttr("endFrame_left").asInt() - 3, "jump");
+}
 			if (this->_grounds.size() == 0)
 				this->_isJump++;
 		}

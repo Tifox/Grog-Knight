@@ -301,11 +301,11 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 			this->_grounds.remove(elem);
 			if (this->_grounds.size() == 0) {
 				this->_isJump++;
-				if (this->_lastAction == "forward")
+				if (this->_lastAction == "forward" && this->_canMove)
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 										  this->_getAttr("jump", "fallingFrame_right").asInt(),
 										  this->_getAttr("jump", "endFrame_right").asInt() - 3, "jump");
-				else if (this->_lastAction == "backward")
+				else if (this->_lastAction == "backward" && this->_canMove)
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 										  this->_getAttr("jump", "fallingFrame_left").asInt(),
 										  this->_getAttr("jump", "endFrame_left").asInt() - 3, "jump");

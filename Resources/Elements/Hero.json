@@ -62,6 +62,13 @@
 			"beginFrame_left": 2,
 			"endFrame_left": 3,
 			"time": 0.3
+		},
+		"takeDamage": {
+			"beginFrame_right": 0,
+			"endFrame_right": 1,
+			"beginFrame_left": 2,
+			"endFrame_left": 3,
+			"time": 0.1
 		}
 	}
 }

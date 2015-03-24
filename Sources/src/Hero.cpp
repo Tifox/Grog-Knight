@@ -67,27 +67,32 @@ void	Hero::actionCallback(std::string name, int status) {
 void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 	Characters::BeginContact(elem, contact);
 	if (elem->getAttributes()["type"] == "Enemy") {
-		if (this->_invincibility == true)
-			return;
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		Game::stopRunning(this);
 		this->_isRunning = 0;
-		//Damage here
-		this->changeCanMove();
-		this->_invincibility = true;
 		this->_isJump = 1;
-		std::cout << this << std::endl;
-		this->setHP(this->getHP() - 25);
-		std::cout << ">> HP: " << this->getHP() << std::endl;
-		theSwitchboard.DeferredBroadcast(new Message("canMove"), 0.5f);
-		theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1);
-		Game::getHUD()->life(this->getHP());
+		if (this->_invincibility == false) {
+			this->changeCanMove();
+			this->setHP(this->getHP() - 25);
+			theSwitchboard.DeferredBroadcast(new Message("canMove"), 0.5f);
+			theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1);
+			Game::getHUD()->life(this->getHP());
+		}
 		if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
 			this->ApplyLinearImpulse(Vector2(4, 4), Vector2(0, 0));
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
+									  this->_getAttr("takeDamage", "beginFrame_right").asInt(),
+									  this->_getAttr("takeDamage", "endFrame_right").asInt() - 3,
+											  "takeDamage");
 		}
 		else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x) {
 			this->ApplyLinearImpulse(Vector2(-4, 4), Vector2(0, 0));
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
+									  this->_getAttr("takeDamage", "beginFrame_left").asInt(),
+									  this->_getAttr("takeDamage", "endFrame_left").asInt() - 3,
+									  "takeDamage");
 		}
+		this->_invincibility = true;
 	}
 	else if (elem->getAttributes()["type"] == "Object") {
 		if (elem->getAttributes()["type2"] == "Consumable") {
@@ -99,7 +104,6 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 				}
 			}
 		}
-			//TODO
 		else if (elem->getAttributes()["type2"] == "Equipment") {
 			this->_item = elem;
 		}

@@ -39,6 +39,6 @@ class Hero : public Characters {
 		virtual void	BeginContact(Elements* m, b2Contact* contact);
 		virtual void	EndContact(Elements* m, b2Contact* contact);
 		virtual void	actionCallback(std::string name, int status);
-};
 
+};
 #endif

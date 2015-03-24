@@ -50,7 +50,16 @@ public:
 	void	EndContact(Elements *elem, b2Contact *contact);
 	void	ReceiveMessage(Message *m);
 private:
-	Weapon* _weapon;
-};
 
+	void		_initDirection(Weapon* w, Characters* c);
+
+	std::string _name;
+	std::string _flavor;
+	std::string _attack;
+	float		_active;
+	int			_size;
+	int			_damage;
+	int			_pushback;
+	float		_recovery;
+};
 #endif

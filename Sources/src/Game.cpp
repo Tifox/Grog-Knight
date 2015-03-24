@@ -33,7 +33,7 @@ Game::Game(void) : _hero(*(new Characters())) {
 	#ifdef __APPLE__
 		theWorld.Initialize(1920, 1080, NAME, false, false);
 	#else
-		theWorld.Initialize(2000, 1150, NAME, false, true);
+		theWorld.Initialize(720, 480, NAME, false, false);
 		//heWorld.Initialize(1600, 1200, NAME, false, false);
 	#endif
 	theWorld.SetupPhysics(Vector2(0, -20));
@@ -100,8 +100,8 @@ void	Game::showMap(void) {
  * @param: Hero (Elements &)
  */
 void	Game::displayHero(Elements & Hero) {
-	Hero.setXStart(0);
-	Hero.setYStart(0);
+	Hero.setXStart(4);
+	Hero.setYStart(-10);
 	Hero.addAttribute("hero", "1");
 	Hero.display();
 }

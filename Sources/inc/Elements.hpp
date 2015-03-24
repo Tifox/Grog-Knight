@@ -73,12 +73,12 @@ protected:
 private:
 	float								_XStartPos;
 	float								_YStartPos;
-	std::map<std::string, std::string>	_attributes;
-	int									_height;
-	int									_width;
-	int									_cutHeight;
-	int									_cutWidth;
-	int									_frame;
+	std::map<std::string, std::string>				_attributes;
+	int								_height;
+	int								_width;
+	int								_cutHeight;
+	int								_cutWidth;
+	int								_frame;
 };
 
 # include "Characters.hpp"

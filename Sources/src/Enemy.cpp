@@ -74,7 +74,7 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 			}
 		}
 	} else if (m->getAttributes()["type"] == "HeroProjectile") {
-		if (this->takeDamage(w->getDamage()) == 1) {
+		if (this->takeDamage(p->getDamage()) == 1) {
 			if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
 				this->ApplyLinearImpulse(Vector2(p->getPushback(), p->getPushback()), Vector2(0,0));
 			} else {

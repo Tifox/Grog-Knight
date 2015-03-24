@@ -54,15 +54,13 @@ Weapon::Weapon(Weapon* weapon) {
 }
 
 
-/* fonctionsale.com */
+/**
+ * Constructor for creating the weapon area-of-effect
+ * @param: w (Weapon*)
+ * @param: c (Characters*)
+ */
 
 Weapon::Weapon(Weapon* w, Characters* c) {
-	float xDecal = 0;
-	float yDecal = 0;
-	float xjoint1 = 0;
-	float xjoint2 = 0;
-	float yjoint1 = 0;
-	float yjoint2 = 0;
 	this->_name = w->getName();
 	this->_flavor = w->getFlavor();
 	this->_damage = w->getDamage();
@@ -90,6 +88,17 @@ Weapon::Weapon(Weapon* w, Characters* c) {
 	theSwitchboard.SubscribeTo(this, "deleteWeapon");
 	theSwitchboard.DeferredBroadcast(new Message("deleteWeapon"), w->getActive());
 	theSwitchboard.DeferredBroadcast(new Message("canAttack"), w->getRecovery());
+	this->_initDirection(w, c);
+	theWorld.Add(this);
+}
+
+void	Weapon::_initDirection(Weapon* w, Characters* c) {
+	float xDecal = 0;
+	float yDecal = 0;
+	float xjoint1 = 0;
+	float xjoint2 = 0;
+	float yjoint1 = 0;
+	float yjoint2 = 0;
 	if (c->getOrientation() == Characters::RIGHT) {
 		xDecal = 1;
 		yDecal = 0;
@@ -132,7 +141,6 @@ Weapon::Weapon(Weapon* w, Characters* c) {
 	jointDef2.collideConnected = false;
 	b2DistanceJoint *joint1 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef1);
 	b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
-	theWorld.Add(this);
 }
 
 /**

@@ -99,7 +99,6 @@ Projectile::~Projectile(void) {
 	return;
 }
 
-
 void	Projectile::EndContact(Elements *elem, b2Contact *contact) {
 }
 

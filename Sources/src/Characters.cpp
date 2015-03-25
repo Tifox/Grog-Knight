@@ -40,7 +40,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->addAttribute("physic", "1");
 	this->addAttribute("type", name);
 	this->SetDensity(1.0f);
-	this->SetFriction(1.0f);
+	this->SetFriction(1);
 	this->SetRestitution(0.0f);
 	this->SetFixedRotation(true);
 	this->_orientation = RIGHT;
@@ -260,7 +260,7 @@ void	Characters::AnimCallback(String s) {
  */
 void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "ground") {
-		if (this->GetBody()->GetWorldCenter().y - 0.92 >= elem->GetBody()->GetWorldCenter().y) {
+		if (this->GetBody()->GetWorldCenter().y - 0.905 >= elem->GetBody()->GetWorldCenter().y) {
 			if (this->_grounds.size() > 0)
 				contact->SetEnabled(false);
 			if (this->_isJump > 0) {

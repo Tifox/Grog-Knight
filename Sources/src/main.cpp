@@ -74,7 +74,7 @@ int		main(int ac, char **av) {
 
 	//===== O temp map generation test =====
 
-	theCamera.LockTo(hero);
+	//	theCamera.LockTo(hero);
 	theCamera.SetPosition(13, -7);
 	game->displayHero(*(hero));
 	game->displayEnemy(*(enemy));

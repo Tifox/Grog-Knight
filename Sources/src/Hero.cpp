@@ -82,16 +82,20 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 			this->ApplyLinearImpulse(Vector2(4, 4), Vector2(0, 0));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 									  this->_getAttr("takeDamage", "beginFrame_right").asInt(),
-									  this->_getAttr("takeDamage", "endFrame_right").asInt() - 3,
-											  "takeDamage");
+									  this->_getAttr("takeDamage", "endFrame_right").asInt(),
+									  "takeDamage");
 		}
 		else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x) {
 			this->ApplyLinearImpulse(Vector2(-4, 4), Vector2(0, 0));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 									  this->_getAttr("takeDamage", "beginFrame_left").asInt(),
-									  this->_getAttr("takeDamage", "endFrame_left").asInt() - 3,
+									  this->_getAttr("takeDamage", "endFrame_left").asInt(),
 									  "takeDamage");
 		}
+		this->SetColor(1,0,0,0.8f);
+		theSwitchboard.SubscribeTo(this, "colorDamageBlink1");
+		theSwitchboard.SubscribeTo(this, "colorDamageBlink2");
+		theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
 		this->_invincibility = true;
 	}
 	else if (elem->getAttributes()["type"] == "Object") {

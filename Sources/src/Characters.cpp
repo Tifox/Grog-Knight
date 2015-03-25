@@ -168,7 +168,18 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->changeCanMove();
 	}
 	else if (m->GetMessageName() == "endInvincibility") {
+		theSwitchboard.UnsubscribeFrom(this, "colorDamageBlink1");
+		theSwitchboard.UnsubscribeFrom(this, "colorDamageBlink2");
 		this->_invincibility = false;
+		this->SetColor(1,1,1,1);
+	}
+	else if (m->GetMessageName() == "colorDamageBlink1") {
+		theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink2"), 0.1f);
+		this->SetColor(1,1,1,1);
+	}
+	else if (m->GetMessageName() == "colorDamageBlink2") {
+		theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
+		this->SetColor(1,0,0,0.8f);
 	}
 	else if (m->GetMessageName() == "startPathing") {
 		if (this->_grounds.size() > 0) {

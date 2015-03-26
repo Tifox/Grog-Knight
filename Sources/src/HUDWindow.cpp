@@ -28,7 +28,7 @@
 /**
  * Basic constructor
  */
-HUDWindow::HUDWindow(void) : HUDActor(), _text("") {
+HUDWindow::HUDWindow(void) : HUDActor() {
 	return;
 }
 
@@ -46,20 +46,56 @@ HUDWindow::~HUDWindow(void) {
  * @param: y (int)
  */
 void	HUDWindow::setText(std::string str, int x, int y) {
-	if (this->_text != "") {
-		this->_text = str;
-	} else {
-		this->_text = str;
-		Game::addHUDWindow(this);
+	HUDWindow::Text		*t = new HUDWindow::Text();
+	t->str = str;
+	t->x = x;
+	t->y = y;
+	t->colorR = t->colorG = t->colorB = t->colorA = 1;
+	this->_text.push_back(t);
+}
+
+/**
+ * Set a text in the window
+ * @param: str (std::string)
+ * @param: x (int)
+ * @param: y (int)
+ * @param: color (Vector3)
+ * @param: alpha (int)
+ * @note: This function is an overload of ^
+ */
+void	HUDWindow::setText(std::string str, int x, int y, Vector3 color, int alpha) {
+	HUDWindow::Text		*t = new HUDWindow::Text();
+	t->str = str;
+	t->x = x;
+	t->y = y;
+	t->colorR = color.X;
+	t->colorG = color.Y;
+	t->colorB = color.Z;
+	t->colorA = alpha;
+	this->_text.push_back(t);
+}
+
+void	HUDWindow::removeText(std::string str) {
+	std::list<HUDWindow::Text *>::iterator	i;
+
+	for (i = this->_text.begin(); i != this->_text.end(); i++) {
+		if ((*i)->str == str)
+			break ;
 	}
+	if (i != this->_text.end())
+		this->_text.erase(i);
 }
 
 /**
  * Display a text in the HUD
  */
 void	HUDWindow::displayText(void) {
-	glColor4f(1, 1, 1, 1);
-	DrawGameText(this->_text, "Console", 150.0f, 50.0f, theCamera.GetRotation());
+	std::list<HUDWindow::Text *>::iterator	i;
+
+	for (i = this->_text.begin(); i != this->_text.end(); i++) {
+		glColor4f((*i)->colorR, (*i)->colorG, (*i)->colorB, (*i)->colorA);
+		DrawGameText((*i)->str, "Console", (*i)->x, (*i)->y, theCamera.GetRotation());
+	}
 }
 
 /**
@@ -76,7 +112,24 @@ void	HUDWindow::addImage(std::string path, int x, int y) {
 	tmp->SetDrawShape(ADS_Square);
 	tmp->SetLayer(100);
 	theWorld.Add(tmp);
-//	std::cout << "Adding an element" << std::endl;
+}
+
+/**
+ * Add an image in the HUD
+ * @param: path (std::string)
+ * @param: x (int)
+ * @param: y (int)
+ * @param: size (float)
+ * @note: This function is an overload of ^
+ */
+void	HUDWindow::addImage(std::string path, int x, int y, float size) {
+	HUDActor *tmp = new HUDActor();
+	tmp->SetSprite(path);
+	tmp->SetPosition(x, y);
+	tmp->SetSize(size);
+	tmp->SetDrawShape(ADS_Square);
+	tmp->SetLayer(100);
+	theWorld.Add(tmp);
 }
 
 /**
@@ -91,19 +144,51 @@ void	HUDWindow::life(int life) {
 	for (i = this->_hearts.begin(), index = 0; i != this->_hearts.end(); i++, index++)
 		theWorld.Remove(*(i));
 	this->_hearts.clear();
-	for (x = 900; life > 0; x += 35) {
-		if (life >= 25) {
+	for (x = 200; life > 0; x += 25) {
+		if (x == 200) {
+			this->addImage("Resources/Images/HUD/hp.png", (x - 30), 35, 28.0f);
+		} if (life >= 25) {
 			tmp = new HUDActor();
 			tmp->SetSprite("Resources/Images/HUD/heart.png");
-			tmp->SetPosition(x, 50);
+			tmp->SetPosition(x, 35);
 			tmp->SetSize(30.0f);
-			tmp->SetDrawShape(ADS_Square);
-			tmp->SetLayer(100);
 			theWorld.Add(tmp);
 			this->_hearts.push_back(tmp);
 			life -= 25;
 		}
 	}
+}
+
+/**
+ * Show the mana in the HUD
+ */
+void	HUDWindow::mana(int mana) {
+	std::list<HUDActor *>::iterator	i;
+	int								x = 200, y, max = 90;
+
+	for (i = this->_mana.begin(); i != this->_mana.end(); i++)
+		theWorld.Remove(*(i));
+	this->_mana.clear();
+	this->addImage("Resources/Images/HUD/mp.png", (x - 30), 60, 26.0f);
+	this->addImage("Resources/Images/HUD/mp_bar_first.png", x, 60, 12.0f);
+	x += 11;
+	for (y = 0; y < (mana - 1); y += 10, x += 11) {
+		this->addImage("Resources/Images/HUD/mp_bar_mid.png", x, 60, 12.0f);
+	}
+	if (y == max)
+		this->addImage("Resources/Images/HUD/mp_bar_full_end.png", x, 60, 12.0f);
+	else
+		this->addImage("Resources/Images/HUD/mp_bar_end.png", x, 60, 12.0f);
+}
+
+/**
+ * Make it rain baby
+ * @param: gold (int)
+ */
+void	HUDWindow::gold(int gold) {
+	this->addImage("Resources/Images/HUD/xp.png", 340, 50, 20.0f);
+	this->addImage("Resources/Images/HUD/gold.png", 360, 50, 20.0f);
+	this->setText(std::to_string(gold), 380, 57);
 }
 
 void	HUDWindow::setGame(Game *g) { this->_g = g; };

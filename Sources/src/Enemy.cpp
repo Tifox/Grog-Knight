@@ -96,7 +96,6 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
  */
 
 int		Enemy::takeDamage(int damage) {
-	std::cout << damage << std::endl;
 	if (this->_hp - damage <= 0) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		this->PlaySpriteAnimation(0.1, SAT_OneShot, 5, 5, "destroyEnemy");

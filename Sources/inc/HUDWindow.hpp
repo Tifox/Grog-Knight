@@ -34,20 +34,40 @@ class	Game;
 # include <iostream>
 
 class	HUDWindow : public HUDActor {
+
+	class	Text {
+		public:
+			Text() {};
+			~Text() {};
+			std::string		str;
+			int				x;
+			int				y;
+			int				colorR;
+			int				colorG;
+			int				colorB;
+			int				colorA;
+	};
+
 	public:
 		HUDWindow(void);
 		~HUDWindow(void);
 
 		void	setText(std::string str, int x, int y);
+		void	setText(std::string str, int x, int y, Vector3 color, int alpha);
+		void	removeText(std::string str);
 		void	displayText(void);
 		void	addImage(std::string p, int x, int y);
+		void	addImage(std::string path, int x, int y, float size);
 		void	life(int l);
+		void	mana(int mana);
+		void	gold(int g);
 		void	setGame(Game *);
 
 	private:
-		std::string	_text;
 		Game		*_g;
 		std::list<HUDActor *>	_hearts;
+		std::list<HUDActor *>	_mana;
+		std::list<HUDWindow::Text *>	_text;
 };
 
 #endif

@@ -175,11 +175,11 @@ void	Characters::ReceiveMessage(Message *m) {
 	}
 	else if (m->GetMessageName() == "colorDamageBlink1") {
 		theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink2"), 0.1f);
-		this->SetColor(1,1,1,1);
+		this->SetColor(1,1,1,0.5f);
 	}
 	else if (m->GetMessageName() == "colorDamageBlink2") {
 		theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
-		this->SetColor(1,0,0,0.8f);
+		this->SetColor(1,0,0,0.9f);
 	}
 	else if (m->GetMessageName() == "startPathing") {
 		if (this->_grounds.size() > 0) {

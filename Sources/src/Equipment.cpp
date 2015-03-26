@@ -47,7 +47,7 @@ Equipment::Equipment(void) {
  */
 void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "Hero"){
-		Game::getHUD()->setText(this->_weapon->getFlavor(), 0, 0);
+		Game::getHUD()->setText(this->_weapon->getFlavor(), 450, 50);
 	}
 }
 
@@ -58,7 +58,7 @@ void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
  */
 void	Equipment::EndContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "Hero"){
-		Game::getHUD()->setText("", 0, 0);
+		Game::getHUD()->removeText(this->_weapon->getFlavor());
 	}
 }
 

@@ -54,14 +54,6 @@ WeaponList::~WeaponList(void) {
 }
 
 void		WeaponList::statWeapon(std::string name) {
-	std::list<Weapon*>::iterator it;
-
-	for (it = this->_allWeapons.begin(); it != this->_allWeapons.end(); it++) {
-		if (name == (*it)->getName()) {
-			std::cout << (*it)->getName() << std::endl;
-			std::cout << (*it)->getFlavor() << std::endl;
-		}
-	}
 }
 
 /**

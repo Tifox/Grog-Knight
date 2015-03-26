@@ -32,24 +32,42 @@
 Equipment::Equipment(void) {
 	this->addAttribute("type2", "Equipment");
 	this->SetColor(0,1,1,1);
-	this->SetPosition(5, -10);
+	this->SetPosition(5, -12);
 	this->InitPhysics();
 	theWorld.Add(this);
 	this->_weapon = new Weapon(Game::wList->getWeapon("Bow"));
+	theSwitchboard.SubscribeTo(this, "DeleteEquipment");
 }
 
+/**
+ * Collision begin callback
+ * @param: elem (Elements *)
+ * @param: contact (b2Contact *)
+ * @note: This function is called just before a collision
+ */
 void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "Hero"){
-		TextActor 	*t;
-		//static_cast<Characters*>(elem)->equipWeapon(this->_weapon);
+		Game::getHUD()->setText(this->_weapon->getFlavor(), 450, 50);
 	}
 }
 
-void	Equipment::init(void) {
+/**
+ * End of contact
+ * @param: elem (Elements *)
+ * @param: contact (b2Contact *)
+ */
+void	Equipment::EndContact(Elements *elem, b2Contact *contact) {
+	if (elem->getAttributes()["type"] == "Hero"){
+		Game::getHUD()->removeText(this->_weapon->getFlavor());
+	}
 }
 
-Weapon*		Equipment::getWeapon(void) {
-	return this->_weapon;
+/*GETTERS*/
+Weapon*		Equipment::getWeapon(void) { return this->_weapon; }
+
+void		Equipment::ReceiveMessage(Message *m) {
+	if (m->GetMessageName() == "DeleteEquipment")
+		Game::addToDestroyList(this);
 }
 
 /*

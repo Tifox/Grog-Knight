@@ -37,7 +37,6 @@
 
 class Characters;
 
-
 class Weapon: public Elements {
 public:
 	Weapon(std::string name);
@@ -72,6 +71,7 @@ private:
 	int				_size;
 	int				_damage;
 	int				_pushback;
+	void			_initDirection(Weapon* w, Characters* c);
 	void			_readFile(std::string name);
 	void			_readFileFromFilename(std::string name);
 	void			_parseJson(std::string file);

@@ -30,7 +30,9 @@
 # include "WeaponList.hpp"
 # include "Equipment.hpp"
 # include "Consumable.hpp"
-//# include "Hitbox.hpp"
+# include "Hitbox.hpp"
+# include "HUDWindow.hpp"
+# include "LevelGenerator.hpp"
 
 class MouseDebugger: public MouseListener {
 	public:
@@ -41,20 +43,16 @@ class MouseDebugger: public MouseListener {
 		void MouseDownEvent(Vec2i sc, MouseButtonInput button) {
 			Vector2 w;
 			w = MathUtil::ScreenToWorld(sc.X, sc.Y);
-			std::cout << w.X << ":" << w.Y << std::endl;
 		};
 };
 
 int		main(int ac, char **av) {
-
 	Game	*game = new Game();
+	Game::hList = new Hitbox();
 
-	std::cout << "123" << std::endl;
 	game->readMaps();
-	std::cout << "123" << std::endl;
 	MouseDebugger l;
-	theWorld.SetBackgroundColor(*(new Color(0.51f, 0.90f, 1)));
-
+	theWorld.SetBackgroundColor(*(new Color(0, 0, 0)));
 
 	Game::wList = new WeaponList();
 
@@ -62,20 +60,33 @@ int		main(int ac, char **av) {
 
 	Equipment		*equip = new Equipment();
 	Consumable		*lol = new Consumable();
-	Hero		*hero = new Hero();
-	Enemy		*enemy = new Enemy();
+	Hero			*hero = new Hero();
+	Enemy			*enemy = new Enemy();
 
 
-	theCamera.LockTo(hero);
+
+	//===== I temp map generation test =====
+
+	LevelGenerator *levelGenerator = new LevelGenerator(6, 6, 5, 60, 80);
+	levelGenerator->execute();
+	levelGenerator->print();
+
+	//===== O temp map generation test =====
+
+//	theCamera.LockTo(hero);
+	theCamera.SetPosition(13, -7);
 	game->displayHero(*(hero));
 	game->displayEnemy(*(enemy));
 	hero->init();
 	enemy->init();
+	game->setHero(*hero);
 
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
-//	new Hitbox();
 	//theWorld.SetSideBlockers(true, 0.7f);
 
+	game->displayHUD();
+
 	game->start();
+
 	return 0;
 }

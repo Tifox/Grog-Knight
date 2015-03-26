@@ -36,7 +36,7 @@ Map::Map(void) : _mapCount(0) {
  * Main constructor
  */
 Map::Map(std::string name) : _name(name), _mapCount(0) {
-	std::cout << name << std::endl;
+//	std::cout << name << std::endl;
 	return ;
 }
 
@@ -84,7 +84,6 @@ void	Map::display(void) {
 		elem = new Elements();
 		elem->removeAttr("physic");
 		elem->addAttribute("image", this->_image);
-		std::cout << this->_image << std::endl;
 		elem->setFrame(*(it));
 		elem->setXStart(x);
 		elem->setYStart(y);
@@ -92,17 +91,25 @@ void	Map::display(void) {
 		elem->setCutHeight(this->_tileHeight);
 		elem->setWidth(this->_imageWidth);
 		elem->setHeight(this->_imageHeight);
-		std::cout << this->_imageHeight << std::endl;
 		elem->addAttribute("type", "ground");
 		elem->addAttribute("spriteMap", "TRUE");
 		if (this->_properties.find(*it) == this->_properties.end()) {
 			elem->addAttribute("physic", "TRUE");
-			std::cout << "Ph elem ("<< *it << "):" << x << ", " << y << std::endl;
 		} else {
-			std::cout << "===== HERE ====\n" << *it << std::endl;
+			std::map<std::string, Json::Value>::iterator	it2;
+			int												isPhysic = 1;
+
+			for (it2 = this->_properties.find(*it)->second.begin();
+			it2 != this->_properties.find(*it)->second.end(); it2++) {
+				if (it2->first == "physic") {
+					isPhysic = 0;
+				} else if (it2->first == "hitbox") {
+					elem->setHitbox(it2->second.asString());
+				}
+			}
+			if (isPhysic)
+				elem->addAttribute("physic", "TRUE");
 		}
-		std::cout << "NEW ELEM" << std::endl;
 		elem->display();
 	}
-	//exit(0);
 }

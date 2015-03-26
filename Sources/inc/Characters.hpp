@@ -29,7 +29,7 @@
 # include "Weapon.hpp"
 # include "Log.hpp"
 
-//class Weapon;
+class Weapon;
 
 # ifdef __APPLE__
 #  include "../../Tools/jsoncpp/include/json/json.h"
@@ -40,8 +40,8 @@
 # include <list>
 # include "../../Angel/Angel.h"
 # ifndef __Elements__
-# include "Elements.hpp"
-#endif
+#  include "Elements.hpp"
+# endif
 
 class Characters : public Elements {
 
@@ -65,6 +65,8 @@ class Characters : public Elements {
 		virtual void	EndContact(Elements *elem, b2Contact *contact);
 		Characters::Orientation			getOrientation(void);
 		std::string						getLastAction(void);
+		int								getHP(void);
+		void							setHP(int h);
 		// Virtual function, overwritten in childs
 		virtual void	actionCallback(std::string name, int status) {};
 		virtual void	equipWeapon(Weapon* weapon);
@@ -78,10 +80,15 @@ class Characters : public Elements {
 		int				_maxSpeed;
 		int				_isJump;
 		int				_isRunning;
+		int				_hp;
+		int				_maxHp;
 		bool			_canMove;
+		bool			_canJump;
 		bool			_invincibility;
 		Weapon*			_weapon;
+		Elements*		_item;
 		Characters::Orientation				_orientation;
+		Characters::Orientation				_latOrientation;
 		std::list<Elements*>				_grounds;
 		std::list<Elements*> 				_wallsLeft;
 		std::list<Elements*> 				_walls;
@@ -96,7 +103,9 @@ class Characters : public Elements {
 		virtual void	_down(int status);
 		virtual void	_jump(int status);
 		virtual void	_attack(int status);
+		virtual void	_pickupItem(int status);
 		virtual void	_run(void);
+		void			_destroyEnemy(void);
 
 	private:
 		std::map<std::string, std::map<std::string, Json::Value> >	_attr;
@@ -105,6 +114,10 @@ class Characters : public Elements {
 		void	_readFile(std::string name);
 		void	_parseJson(std::string file);
 };
+
+# ifndef __Object__
+#  include "Equipment.hpp"
+# endif
 
 # include "Game.hpp"
 

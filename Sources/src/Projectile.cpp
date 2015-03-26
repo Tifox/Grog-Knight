@@ -25,13 +25,18 @@
 
 # include "../inc/Projectile.hpp"
 
-Projectile::Projectile(Weapon* w, Characters* c) {
-	int xDecal;
-	int yDecal;
-	int xOrient;
-	int yOrient;
+Projectile::Projectile(Weapon* w, Characters* c){
+
+	this->_name = w->getName();
+	this->_flavor = w->getFlavor();
+	this->_attack = w->getAttack();
+	this->_active = w->getActive();
+	this->_damage = w->getDamage();
+	this->_pushback = w->getPushback();
+	this->_recovery = w->getRecovery();
 	this->SetSize(0.5f);
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
+	this->SetSprite("Resources/Images/kappa.png");
 	this->SetDensity(1);
 	this->SetFriction(0);
 	this->SetRestitution(0.0f);
@@ -42,6 +47,23 @@ Projectile::Projectile(Weapon* w, Characters* c) {
 	else
 		this->addAttribute("type", "Projectile");
 	this->Tag("projectile");
+	this->_initDirection(w, c);
+	theSwitchboard.DeferredBroadcast(new Message("canAttack"), this->_recovery);
+	theWorld.Add(this);
+}
+
+/**
+ * Called during construction for clarity, used to determine projectile direction
+ * @param: w (Weapon*)
+ * @param: c (Characters*)
+ */
+
+void	Projectile::_initDirection(Weapon* w, Characters* c) {
+	int xDecal;
+	int yDecal;
+	int xOrient;
+	int yOrient;
+
 	if (c->getOrientation() == Characters::RIGHT) {
 		xOrient = 1;
 		xDecal = 1;
@@ -66,36 +88,29 @@ Projectile::Projectile(Weapon* w, Characters* c) {
 		yDecal = -1;
 		yOrient = -1;
 	}
-	this->_weapon = w;
 	this->SetPosition(c->GetBody()->GetWorldCenter().x + xDecal, c->GetBody()->GetWorldCenter().y + yDecal);
 	this->InitPhysics();
 	this->GetBody()->SetGravityScale(0.0f);
 	this->GetBody()->SetBullet(true);
-	this->ApplyLinearImpulse(Vector2(2 * xOrient, 2 * yOrient), Vector2(0, 0));
-	std::cout << w->getRecovery() << std::endl;
-
-	theSwitchboard.DeferredBroadcast(new Message("canAttack"), w->getRecovery());
-	theWorld.Add(this);
+	this->ApplyLinearImpulse(Vector2(3 * xOrient, 3 * yOrient), Vector2(0, 0));
 }
 
 Projectile::~Projectile(void) {
 	return;
 }
 
-
 void	Projectile::EndContact(Elements *elem, b2Contact *contact) {
 }
 
 /* GETTERS */
-std::string     Projectile::getName(void) { return this->_weapon->getName(); }
-std::string     Projectile::getFlavor(void) { return this->_weapon->getFlavor(); }
-std::string     Projectile::getAttack(void) { return this->_weapon->getAttack(); }
-float           Projectile::getActive(void) { return this->_weapon->getActive(); }
-int             Projectile::getSize(void) { return this->_weapon->getSize(); }
-int             Projectile::getDamage(void) { return this->_weapon->getDamage(); }
-int             Projectile::getPushback(void) { return this->_weapon->getPushback(); }
-float           Projectile::getRecovery(void) { return this->_weapon->getRecovery(); }
-int             Projectile::attackReady(void) { return this->_weapon->attackReady(); }
+std::string     Projectile::getName(void) { return this->_name; }
+std::string     Projectile::getFlavor(void) { return this->_flavor; }
+std::string     Projectile::getAttack(void) { return this->_attack; }
+float           Projectile::getActive(void) { return this->_active; }
+int             Projectile::getSize(void) { return this->_size; }
+int             Projectile::getDamage(void) { return this->_damage; }
+int             Projectile::getPushback(void) { return this->_pushback; }
+float           Projectile::getRecovery(void) { return this->_recovery; }
 
 /**
  * Receive broadcasts message

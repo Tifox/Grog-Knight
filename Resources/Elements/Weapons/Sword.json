@@ -5,7 +5,7 @@
 		"hitbox": "SWORD",
 		"size": 1,
 		"lvlRequired": 1,
-	 	"damage": 1,
+	 	"damage": 5,
 		"recovery": 1,
 		"pushback": 5,
 		"active": 0.2,

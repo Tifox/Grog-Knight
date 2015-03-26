@@ -333,6 +333,10 @@ public:
 	int		getId(void) { return this->_id; };
 	/* END */
 
+	/* Modified code by Noich 14/03/15 */
+	void	setBox(b2PolygonShape b);
+	/* END */
+
 protected:
 	virtual void InitShape(b2Shape* /*shapeDef*/ ) {}
 	b2Body *_physBody;

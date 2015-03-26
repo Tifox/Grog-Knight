@@ -26,8 +26,8 @@
 #ifndef __Hero__
 # define __Hero__
 
-# include "Characters.hpp"
 # include "Weapon.hpp"
+# include "Characters.hpp"
 
 class Hero : public Characters {
 
@@ -37,7 +37,8 @@ class Hero : public Characters {
 
 		void	init();
 		virtual void	BeginContact(Elements* m, b2Contact* contact);
+		virtual void	EndContact(Elements* m, b2Contact* contact);
 		virtual void	actionCallback(std::string name, int status);
-};
 
+};
 #endif

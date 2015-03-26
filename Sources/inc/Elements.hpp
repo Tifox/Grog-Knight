@@ -54,6 +54,7 @@ public:
 	void		display(void);
 	std::map<std::string, std::string>		getAttributes(void);
 	void		setFrameSprite(int frame);
+	void		setHitbox(std::string);
 
 	/* Virtual function, overridden in Childs */
 	virtual void	callback(Elements * elem) { };
@@ -66,16 +67,18 @@ public:
 
 protected:
 	virtual void	_run() {};
+	std::string							_hitboxType;
+	std::string							_hitbox;
 
 private:
 	float								_XStartPos;
 	float								_YStartPos;
-	std::map<std::string, std::string>	_attributes;
-	int									_height;
-	int									_width;
-	int									_cutHeight;
-	int									_cutWidth;
-	int									_frame;
+	std::map<std::string, std::string>				_attributes;
+	int								_height;
+	int								_width;
+	int								_cutHeight;
+	int								_cutWidth;
+	int								_frame;
 };
 
 # include "Characters.hpp"

@@ -57,6 +57,11 @@ PhysicsActor::PhysicsActor(void) :
 void	PhysicsActor::setId(int i) { 
 	this->_id = i; 
 }
+
+void	PhysicsActor::setBox(b2PolygonShape b) { 
+	this->_box = b; 
+}
+
 PhysicsActor::~PhysicsActor()
 {
 	if( _physBody != NULL )

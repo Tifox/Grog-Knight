@@ -29,7 +29,7 @@
 /**
  * Main constructor
  */
-Elements::Elements(void) : PhysicsActor() {
+Elements::Elements(int id) :  PhysicsActor() {
 	this->setId(Game::getNextId());
 	Game::addElement(*this);
 	return ;
@@ -38,7 +38,7 @@ Elements::Elements(void) : PhysicsActor() {
 /**
  * Main constructor
  */
-Elements::Elements(int id) :  PhysicsActor() {
+Elements::Elements(void) :  PhysicsActor() {
 	this->setId(Game::getNextId());
 	Game::addElement(*this);
 	return ;
@@ -121,8 +121,6 @@ void	Elements::setFrameSprite(int frame) {
 void	Elements::display(void) {
 	this->SetPosition(this->_XStartPos, this->_YStartPos);
 	this->Tag(this->getAttribute("type"));
-	//std::cout << "Add an object at: " << this->_XStartPos << ", " << this->_YStartPos << std::endl;
-	this->Tag(this->getAttribute("type"));
 	if (this->getAttribute("sprite") != "")
 		this->SetSprite(this->getAttribute("sprite"));
 	else if (this->getAttribute("spritesFrame") != "") {
@@ -139,15 +137,18 @@ void	Elements::display(void) {
 		this->SetFriction(1);
 		this->SetRestitution(0);
 	}
-	if (this->getAttribute("hero") == "1") {
-		this->SetShapeType(PhysicsActor::SHAPETYPE_HERO);
+	else if (this->getAttribute("type") == "Hero")
+	  this->SetFriction(0.7f);
+	if (this->_hitboxType == "special") {
+		this->SetShapeType(PhysicsActor::SHAPETYPE_LOADED);
+ 		Game::hList->checkExists(this->_hitbox);
+ 		this->setBox(Game::hList->getHitbox(this->_hitbox));
 	} else {
 		this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	}
 
 	if (this->getAttribute("physic") != "") {
 		this->InitPhysics();
-		std::cout << "Init phy" << std::endl;
 	}
 	theWorld.Add(this);
 }
@@ -161,6 +162,7 @@ void	Elements::setHeight(int h) { this->_height = h; };
 void	Elements::setCutWidth(int w) { this->_cutWidth = w; };
 void	Elements::setCutHeight(int h) { this->_cutHeight = h; };
 void	Elements::setFrame(int n) { this->_frame = n; };
+void	Elements::setHitbox(std::string n) { this->_hitbox = n; this->_hitboxType = "special"; };
 
 /* GETTERS */
 std::map<std::string, std::string>	Elements::getAttributes(void) { return this->_attributes; };

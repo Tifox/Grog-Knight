@@ -650,6 +650,7 @@ void World::TickAndRender()
 	Tick();
 	Game::destroyAllBodies();
 	Render();
+	Game::showText();
 }
 
 void World::Tick()

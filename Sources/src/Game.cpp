@@ -29,9 +29,14 @@
  * Basic constructor, set the window to default value
  * (http://docs.angel2d.com/class_world.html#ae5d7e8d20d3e6fc93785ab2014ac0c13)
  */
-Game::Game(void) {
-	theWorld.Initialize(1920, 1080, NAME);
-	theWorld.SetupPhysics();
+Game::Game(void) : _hero(*(new Characters())) {
+	#ifdef __APPLE__
+		theWorld.Initialize(1920, 1080, NAME, false, false);
+	#else
+		theWorld.Initialize(1024, 720, NAME, false, false);
+		//heWorld.Initialize(1600, 1200, NAME, false, false);
+	#endif
+	theWorld.SetupPhysics(Vector2(0, -20));
 	GameContactListener *gListen = new GameContactListener();
 	ContactFilter *filter = new ContactFilter();
 	theWorld.GetPhysicsWorld().SetContactFilter(filter);
@@ -45,7 +50,7 @@ Game::Game(void) {
  * @param: width (unsigned int)
  * @param: heigh (unsigned int)
  */
-Game::Game(unsigned int width, unsigned int height) {
+Game::Game(unsigned int width, unsigned int height) : _hero(*(new Characters())) {
 	theWorld.Initialize(width, height, NAME);
 	theWorld.SetupPhysics();
 	GameContactListener *gListen = new GameContactListener();
@@ -95,7 +100,7 @@ void	Game::showMap(void) {
  * @param: Hero (Elements &)
  */
 void	Game::displayHero(Elements & Hero) {
-	Hero.setXStart(10);
+	Hero.setXStart(4);
 	Hero.setYStart(-10);
 	Hero.addAttribute("hero", "1");
 	Hero.display();
@@ -168,9 +173,9 @@ void	Game::callCallbacks(int a, int b) {
 void	Game::listElement(void) {
 	int		i;
 
-	for (i = 0; i < Game::currentIds; i++) {
-		std::cout << Game::elementMap[i] << std::endl;
-	}
+//	for (i = 0; i < Game::currentIds; i++) {
+//		std::cout << Game::elementMap[i] << std::endl;
+//	}
 }
 
 /**
@@ -199,14 +204,27 @@ void	Game::destroyAllBodies(void) {
 	Game::bodiesToDestroy.clear();
 }
 
+/**
+ * Make an element running
+ * @param: c (Elements *)
+ * @note: This function do not make the element 'running', just add them to the callback list.
+ */
 void	Game::startRunning(Elements *c) {
 	Game::runningCharac.push_back(c);
 }
 
+/**
+ * Make an element stop running
+ * @param: c (Elements *)
+ * @note: Same as Game::startRunning(), but the object is remove from the list.
+ */
 void	Game::stopRunning(Elements *c) {
 	Game::runningCharac.remove(c);
 }
 
+/**
+ * The callback for each frame, making the call to the interns callbacks.
+ */
 void	Game::makeItRun(void) {
 	std::list<Elements *>::iterator	i;
 
@@ -215,9 +233,74 @@ void	Game::makeItRun(void) {
 	}
 }
 
+/**
+ * Callback for each frame, to display the text in the HUDs.
+ */
+void	Game::showText(void) {
+	std::list<HUDWindow *>::iterator i;
+
+	for (i = Game::windows.begin(); i != Game::windows.end(); i++) {
+		(*i)->displayText();
+	}
+}
+
+/**
+ * Add a HUDWindow object to the callback list
+ * @param: w (HUDWindow *)
+ */
+void	Game::addHUDWindow(HUDWindow *w) {
+	if (std::find(Game::windows.begin(), Game::windows.end(), w) == Game::windows.end())
+		Game::windows.push_back(w);
+}
+
+/**
+ * Remove a HUDWindow from the callback list.
+ * @param: w (HUDWindow *)
+ */
+void	Game::removeHUDWindow(HUDWindow *w) {
+	std::list<HUDWindow *>::iterator 	it;
+
+	it = std::find(Game::windows.begin(), Game::windows.end(), w);
+	if (it != Game::windows.end())
+		Game::windows.erase(it);
+}
+
+/**
+ * Get the first HUD from the list. (Assuming there is an element)
+ */
+HUDWindow	*Game::getHUD(void) {
+	return Game::windows.front();
+}
+
+/**
+ * The init function for display the base HUD.
+ */
+void		Game::displayHUD(void) {
+	HUDWindow *w = new HUDWindow();
+	w->SetPosition(theCamera.GetWindowWidth() / 2, 50);
+	w->SetSize(theCamera.GetWindowWidth(), 100.0f);
+	w->SetSprite("Resources/Images/HUD/background_hud.png");
+	w->SetDrawShape(ADS_Square);
+	w->SetLayer(-1);
+	w->addImage("Resources/Images/HUD/perso.png", 100, 50);
+	theWorld.Add(w);
+	Game	*g = this;
+	w->setGame(g);
+	w->life(125);
+	w->mana(90);
+	w->gold(200);
+	Game::addHUDWindow(w);
+}
+
+/* SETTERS */
+void		Game::setHero(Characters & h) { this->_hero = h; };
+Characters	&Game::getHero(void) { return this->_hero; };
+
 // Set for the statics
 int Game::currentIds = 0;
 std::map<int, Elements *>	Game::elementMap = {};
 std::list<Elements *>		Game::runningCharac;
 std::list<Elements *>		Game::bodiesToDestroy;
+std::list<HUDWindow *>		Game::windows;
 WeaponList*					Game::wList;
+Hitbox*						Game::hList;

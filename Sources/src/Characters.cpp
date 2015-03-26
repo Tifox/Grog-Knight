@@ -40,15 +40,17 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->addAttribute("physic", "1");
 	this->addAttribute("type", name);
 	this->SetDensity(1.0f);
-	this->SetFriction(1.0f);
+	this->SetFriction(1);
 	this->SetRestitution(0.0f);
 	this->SetFixedRotation(true);
 	this->_orientation = RIGHT;
 	this->_readFile(name);
 	this->_canMove = true;
+	this->_canJump = true;
 	this->_invincibility = false;
 	this->_grounds.clear();
 	this->_walls.clear();
+	this->_item = nullptr;
 }
 
 /**
@@ -71,7 +73,7 @@ void	Characters::_readFile(std::string name) {
 
 	fd.open(file.c_str());
 	if (!fd.is_open())
-		Log::error("Can't open the file for the " + 
+		Log::error("Can't open the file for the " +
 		name + " class. (Supposed path is Resources/Elements/" + name +".json)");
 	buffer << fd.rdbuf();
 	this->_parseJson(buffer.str());
@@ -96,6 +98,10 @@ void	Characters::_parseJson(std::string file) {
 	this->_id = json["infos"].get("id", "").asInt();
 	this->_size = json["infos"].get("size", "").asFloat();
 	this->_maxSpeed = json["infos"].get("maxSpeed", "").asFloat();
+	this->_hp = json["infos"].get("HP", "").asInt();
+	this->_maxHp = json["infos"].get("HP", "").asInt();
+	this->_hitboxType = json["infos"].get("hitboxType", "").asString();
+	this->_hitbox = json["infos"].get("hitbox", "").asString();
 	this->addAttribute("spritesFrame", json["infos"].get("sprites", "").asString());
 
 	for (i = json["Actions"].begin(); i != json["Actions"].end(); i++) {
@@ -104,7 +110,7 @@ void	Characters::_parseJson(std::string file) {
 			this->_attr[i.key().asString()] = tmp;
 			// Subcribe to the broadcasts
 			if (v.key().asString() == "subscribe") {
-				Log::info("SubscribeTo " + (*v).asString());
+//				Log::info("SubscribeTo " + (*v).asString());
 				theSwitchboard.SubscribeTo(this, (*v).asString() + "Pressed");
 				theSwitchboard.SubscribeTo(this, (*v).asString() + "Released");
 			}
@@ -159,10 +165,39 @@ void	Characters::ReceiveMessage(Message *m) {
 	int				status;
 
 	if (m->GetMessageName() == "canMove") {
-		this->_canMove = true;
+		this->changeCanMove();
 	}
 	else if (m->GetMessageName() == "endInvincibility") {
+		theSwitchboard.UnsubscribeFrom(this, "colorDamageBlink1");
+		theSwitchboard.UnsubscribeFrom(this, "colorDamageBlink2");
 		this->_invincibility = false;
+		this->SetColor(1,1,1,1);
+	}
+	else if (m->GetMessageName() == "colorDamageBlink1") {
+		theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink2"), 0.1f);
+		this->SetColor(1,1,1,0.5f);
+	}
+	else if (m->GetMessageName() == "colorDamageBlink2") {
+		theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
+		this->SetColor(1,0,0,0.9f);
+	}
+	else if (m->GetMessageName() == "startPathing") {
+		if (this->_grounds.size() > 0) {
+			if (this->_wallsLeft.size() > 0)
+				this->_orientation = RIGHT;
+			else if (this->_wallsRight.size() > 0)
+				this->_orientation = LEFT;
+			if (this->_orientation == RIGHT)
+				this->GetBody()->SetLinearVelocity(b2Vec2(5,0));
+			if (this->_orientation == LEFT)
+				this->GetBody()->SetLinearVelocity(b2Vec2(-5,0));
+		}
+		theSwitchboard.DeferredBroadcast(new Message("startPathing"), 0.2f);
+		return;
+	}
+	else if (m->GetMessageName() == "destroyEnemy") {
+		this->_destroyEnemy();
+		return;
 	}
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
 		attrName = this->_getAttr(i->first, "subscribe").asString();
@@ -184,6 +219,8 @@ void	Characters::ReceiveMessage(Message *m) {
 				this->_jump(status);
 			} else if (attrName == "attack") {
 				this->_attack(status);
+			} else if (attrName == "pickupItem") {
+				this->_pickupItem(status);
 			}
 			this->_lastAction = attrName;
 			this->actionCallback(attrName, status);
@@ -200,9 +237,19 @@ void	Characters::AnimCallback(String s) {
 	this->_setCategory("breath");
 	if (s == "base") {
 		if (this->_isRunning == 0) {
-			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-				this->_getAttr("beginFrame").asInt(),
-				this->_getAttr("endFrame").asInt(), "base");
+			if (this->_latOrientation == LEFT) {
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+				this->_getAttr("beginFrame_left").asInt(),
+				this->_getAttr("endFrame_left").asInt(), "base");
+			} else if (this->_latOrientation == RIGHT) {
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+				this->_getAttr("beginFrame_right").asInt(),
+				this->_getAttr("endFrame_right").asInt(), "base");
+			  } else {
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+				this->_getAttr("beginFrame_right").asInt(),
+				this->_getAttr("endFrame_right").asInt(), "base");
+			}
 		} else {
 			if (this->_isRunning == 1) {
 				this->_setCategory("forward");
@@ -210,8 +257,8 @@ void	Characters::AnimCallback(String s) {
 				this->_setCategory("backward");
 			}
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-				this->_getAttr("beginFrame").asInt(),
-				this->_getAttr("endFrame").asInt());
+									  this->_getAttr("beginFrame").asInt(),
+									  this->_getAttr("endFrame").asInt());
 		}
 	}
 }
@@ -224,13 +271,19 @@ void	Characters::AnimCallback(String s) {
  */
 void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "ground") {
-		if (this->GetBody()->GetWorldCenter().y - 1 >= elem->GetBody()->GetWorldCenter().y) {
+		if (this->GetBody()->GetWorldCenter().y - 0.905 >= elem->GetBody()->GetWorldCenter().y) {
 			if (this->_grounds.size() > 0)
 				contact->SetEnabled(false);
 			if (this->_isJump > 0) {
 				this->_isJump = 0;
-				this->PlaySpriteAnimation(0.1f, SAT_OneShot, this->_getAttr("jump", "endFrame").asInt(),
-										  this->_getAttr("jump", "endFrame").asInt(), "base");
+				if (this->_latOrientation == RIGHT)
+				this->PlaySpriteAnimation(0.1f, SAT_OneShot,
+										  this->_getAttr("jump", "endFrame_right").asInt() - 2,
+										  this->_getAttr("jump", "endFrame_right").asInt(), "base");
+				if (this->_latOrientation == LEFT)
+				this->PlaySpriteAnimation(0.1f, SAT_OneShot,
+										  this->_getAttr("jump", "endFrame_left").asInt() - 2,
+										  this->_getAttr("jump", "endFrame_left").asInt(), "base");
 			}
 			this->_grounds.push_back(elem);
 		} else if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
@@ -257,11 +310,17 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 		this->_wallsRight.remove(elem);
 		if (this->_grounds.size() == 1) {
 			this->_grounds.remove(elem);
-			if (this->_grounds.size() == 0)
+			if (this->_grounds.size() == 0) {
 				this->_isJump++;
-// 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-// 										  this->_getAttr("jump", "fallingFrame").asInt(),
-// 										  this->_getAttr("jump", "endFallingFrame").asInt() - 1, "jump");
+				if (this->_lastAction == "forward" && this->_canMove)
+					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+										  this->_getAttr("jump", "fallingFrame_right").asInt(),
+										  this->_getAttr("jump", "endFrame_right").asInt() - 3, "jump");
+				else if (this->_lastAction == "backward" && this->_canMove)
+					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+										  this->_getAttr("jump", "fallingFrame_left").asInt(),
+										  this->_getAttr("jump", "endFrame_left").asInt() - 3, "jump");
+			}
 		}
 		else
 			this->_grounds.remove(elem);
@@ -287,17 +346,27 @@ void	Characters::_run(void) {
  */
 void	Characters::_forward(int status) {
 	this->_setCategory("forward");
-	if (status == 1){
+	if (status == 1) {
 		this->_orientation = RIGHT;
-		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() && !this->_isJump)
+		this->_latOrientation = RIGHT;
+		if ((this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() ||
+			 (this->GetSpriteFrame() >= this->_getAttr("backward", "beginFrame").asInt() &&
+			  this->GetSpriteFrame() <= this->_getAttr("backward", "endFrame").asInt()))  && !this->_isJump)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-				this->_getAttr("beginFrame").asInt(),
-				this->_getAttr("endFrame").asInt());
+				this->_getAttr("beginFrame").asInt(), this->_getAttr("endFrame").asInt());
+		else if (this->_isJump) {
+			this->_setCategory("jump");
+			if (this->GetSpriteFrame() >= this->_getAttr("beginFrame_left").asInt() && this->GetSpriteFrame() <= this->_getAttr("endFrame_left").asInt())
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+										  this->GetSpriteFrame() - 8,
+										  this->_getAttr("endFrame_right").asInt() - 3, "jump");
+			this->_setCategory("forward");
+		}
 		Game::startRunning(this);
 		if (this->_isRunning == 2)
 			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
 		this->_isRunning = 1;
-	} else if (status == 0) {
+	} else if (status == 0 && this->_latOrientation == RIGHT) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
 		Game::stopRunning(this);
 		this->_isRunning = 0;
@@ -320,20 +389,29 @@ void	Characters::_backward(int status) {
    this->_setCategory("backward");
 	if (status == 1) {
 		this->_orientation = LEFT;
+		this->_latOrientation = LEFT;
 		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() && !this->_isJump)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 				this->_getAttr("beginFrame").asInt(),
 				this->_getAttr("endFrame").asInt());
+		else if (this->_isJump) {
+			this->_setCategory("jump");
+			if (this->GetSpriteFrame() >= this->_getAttr("beginFrame_right").asInt() && this->GetSpriteFrame() <= this->_getAttr("endFrame_right").asInt())
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+										  this->GetSpriteFrame() + 8,
+										  this->_getAttr("endFrame_left").asInt() - 3, "jump");
+			this->_setCategory("backward");
+		}
 		Game::startRunning(this);
 		if (this->_isRunning == 1)
 			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
 		this->_isRunning = 2;
-	} else if (status == 0) {
+	} else if (status == 0 && this->_latOrientation == LEFT) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
+		Game::stopRunning(this);
+		this->_isRunning = 0;
 		if (!this->_isJump)
 			this->AnimCallback("base");
-		this->_isRunning = 0;
-		Game::stopRunning(this);
 	} else {
 		if (this->GetBody()->GetLinearVelocity().x > -(this->_maxSpeed)) {
 			if (this->_wallsLeft.size() == 0 && this->_canMove == true)
@@ -350,7 +428,8 @@ void	Characters::_backward(int status) {
 void	Characters::_jump(int status) {
 	this->_setCategory("jump");
 
-	if (status == 1) {
+	if (status == 1 && this->_canJump == true) {
+		this->_canJump = false;
 		if (this->_isJump == 0 || (this->_isJump <= 1 && this->_getAttr("double").asInt() == 1)) {
 			if (this->_isJump >= 1) {
 				this->GetBody()->SetLinearVelocity(b2Vec2(this->GetBody()->GetLinearVelocity().x, this->_getAttr("rejump").asFloat()));
@@ -358,12 +437,22 @@ void	Characters::_jump(int status) {
 			else {
 				this->ApplyLinearImpulse(Vector2(0, this->_getAttr("force").asFloat()), Vector2(0, 0));
 			}
-			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-				this->_getAttr("beginFrame").asInt(),
-				this->_getAttr("endFrame").asInt() - 1, "jump");
+			if (this->_latOrientation == RIGHT) {
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+										  this->_getAttr("beginFrame_right").asInt(),
+										  this->_getAttr("endFrame_right").asInt() - 3, "jump");
+			}
+			else if (this->_latOrientation == LEFT) {
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+										  this->_getAttr("beginFrame_left").asInt(),
+										  this->_getAttr("endFrame_left").asInt() - 3, "jump");
+}
 			if (this->_grounds.size() == 0)
 				this->_isJump++;
 		}
+	}
+	else if (status == 0) {
+		this->_canJump = true;
 	}
 	return ;
 }
@@ -393,15 +482,42 @@ void	Characters::_down(int status) {
  * @param: status (int)
  */
 void	Characters::_attack(int status) {
+	this->_setCategory("attack");
+
 	if (status == 1 && this->_weapon->attackReady() == 1) {
 		this->_weapon->attack(this);
+   /*     this->ChangeSizeTo(Vector2(2.0f, 2.0f), 4.0f);*/
+		//this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+			//this->_getAttr("beginFrame").asInt(),
+			/*this->_getAttr("endFrame").asInt(), "base");*/
 	}
+}
+
+void	Characters::_pickupItem(int status) {
+	if (this->_item == nullptr)
+		return;
+	this->equipWeapon(static_cast<Equipment*>(this->_item)->getWeapon());
+	this->_item = nullptr;
+	theSwitchboard.Broadcast(new Message("DeleteEquipment"));
 }
 
 void	Characters::equipWeapon(Weapon* weapon) {
 		this->_weapon = new Weapon(weapon);
 }
 
+void						Characters::setHP(int hp) {
+	if (hp > this->_maxHp)
+		this->_hp = this->_maxHp;
+	else
+		this->_hp = hp;
+};
+
+void						Characters::_destroyEnemy(void) {
+	theSwitchboard.UnsubscribeFrom(this, "destroyEnemy");
+	Game::addToDestroyList(this);
+}
+
 Characters::Orientation		Characters::getOrientation(void) { return this->_orientation; }
 std::string					Characters::getLastAction(void) { return this->_lastAction; };
+int							Characters::getHP(void) { return this->_hp; };
 void						Characters::changeCanMove(void) { this->_canMove = (this->_canMove ? false : true); };

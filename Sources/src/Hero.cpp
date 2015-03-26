@@ -23,7 +23,7 @@
  * Louis Solofrizzo <louis@ne02ptzero.me>
  */
 
-# include "../inc/Hero.hpp"
+# include "Hero.hpp"
 
 /**
  * Basic constructor
@@ -58,24 +58,67 @@ void	Hero::actionCallback(std::string name, int status) {
 	return ;
 }
 
+/**
+ * Collision begin callback
+ * @param: elem (Elements *)
+ * @param: contact (b2Contact *)
+ * @note: This function is called just before a collision
+ */
 void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 	Characters::BeginContact(elem, contact);
 	if (elem->getAttributes()["type"] == "Enemy") {
-		if (this->_invincibility == true)
-			return;
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		Game::stopRunning(this);
 		this->_isRunning = 0;
-		//Damage here
-		Characters::changeCanMove();
-		this->_invincibility = true;
-		theSwitchboard.DeferredBroadcast(new Message("canMove"), 1);
-		theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1);
+		this->_isJump = 1;
+		if (this->_invincibility == false) {
+			this->changeCanMove();
+			this->setHP(this->getHP() - 25);
+			theSwitchboard.DeferredBroadcast(new Message("canMove"), 0.5f);
+			theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1);
+			Game::getHUD()->life(this->getHP());
+		}
 		if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
-			this->ApplyLinearImpulse(Vector2(10, 10), Vector2(0, 0));
+			this->ApplyLinearImpulse(Vector2(4, 4), Vector2(0, 0));
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
+									  this->_getAttr("takeDamage", "beginFrame_right").asInt(),
+									  this->_getAttr("takeDamage", "endFrame_right").asInt(),
+									  "takeDamage");
 		}
 		else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x) {
-			this->ApplyLinearImpulse(Vector2(-10, 10), Vector2(0, 0));
+			this->ApplyLinearImpulse(Vector2(-4, 4), Vector2(0, 0));
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
+									  this->_getAttr("takeDamage", "beginFrame_left").asInt(),
+									  this->_getAttr("takeDamage", "endFrame_left").asInt(),
+									  "takeDamage");
+		}
+		this->SetColor(1,0,0,0.8f);
+		theSwitchboard.SubscribeTo(this, "colorDamageBlink1");
+		theSwitchboard.SubscribeTo(this, "colorDamageBlink2");
+		theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
+		this->_invincibility = true;
+	}
+	else if (elem->getAttributes()["type"] == "Object") {
+		if (elem->getAttributes()["type2"] == "Consumable") {
+			if (elem->getAttributes()["type3"] == "HP") {
+				if (this->_hp != this->_maxHp) {
+					Game::addToDestroyList(elem);
+					this->setHP(this->getHP() + 50);
+					Game::getHUD()->life(this->getHP());
+				}
+			}
+		}
+		else if (elem->getAttributes()["type2"] == "Equipment") {
+			this->_item = elem;
+		}
+	}
+}
+
+void	Hero::EndContact(Elements *elem, b2Contact *contact) {
+	Characters::EndContact(elem, contact);
+	if (elem->getAttributes()["type"] == "Object") {
+		if (elem->getAttributes()["type2"] == "Equipment") {
+			this->_item = nullptr;
 		}
 	}
 }

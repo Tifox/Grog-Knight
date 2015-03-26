@@ -26,19 +26,21 @@
 #ifndef __Equipment__
 # define __Equipment__
 
-# include "Elements.hpp"
-# include "Hero.hpp"
 # include "WeaponList.hpp"
 # include "Object.hpp"
+# include "Game.hpp"
+# include "Elements.hpp"
 
 class Equipment : public Object {
 public:
 	Equipment();
 	~Equipment();
 
-	void			init(void);
 	Weapon* 	getWeapon(void);
-	void	BeginContact(Elements *elem, b2Contact *contact);
+	void		BeginContact(Elements *elem, b2Contact *contact);
+	void		EndContact(Elements *elem, b2Contact *contact);
+	void		ReceiveMessage(Message* m);
+
 private:
 	Weapon*			_weapon;
 };

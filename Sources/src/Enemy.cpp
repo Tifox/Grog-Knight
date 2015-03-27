@@ -26,8 +26,25 @@
  #include "../inc/Enemy.hpp"
 
 Enemy::Enemy(void) : Characters("Enemy") {
-	theSwitchboard.SubscribeTo(this, "startPathing");
-	theSwitchboard.Broadcast(new Message("startPathing"));
+	return ;
+}
+
+Enemy::Enemy(std::string str) : Characters(str) {
+	this->setXStart(15);
+	this->setYStart(-3);
+	if (str == "Enemy") {
+		theSwitchboard.SubscribeTo(this, "startPathing");
+		theSwitchboard.Broadcast(new Message("startPathing"));
+		this->setXStart(5);
+		this->setYStart(-5);
+	} else {
+		
+	}
+	this->addAttribute("name", str);
+	std::cout << str << std::endl;
+
+	this->addAttribute("enemy", "1");
+	this->display();
 	return ;
 }
 

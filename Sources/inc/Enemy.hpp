@@ -32,6 +32,7 @@
 class Enemy : public Characters {
 public:
 	Enemy();
+	Enemy(std::string);
 	~Enemy();
 
 	int				takeDamage(int damage);

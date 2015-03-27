@@ -1,0 +1,26 @@
+{
+	"infos": {
+		"name": "Enemy2",
+		"id": 1,
+		"HP": 10,
+		"sprites": "Resources/Images/Hero/hero_000.png",
+		"size": 1.3,
+		"maxSpeed": 5,
+		"hitboxType": "special",
+		"hitbox": "enemyHitbox"
+	},
+	"Actions": {
+		"breath": {
+				"beginFrame_right": 37,
+				"endFrame_right": 40,
+				"beginFrame_left": 37,
+				"endFrame_left": 40,
+				"time": 0.1
+			},
+		"jump": {
+				"beginFrame": 1,
+				"endFrame": 4,
+				"time": 0.1
+			}
+	}
+}

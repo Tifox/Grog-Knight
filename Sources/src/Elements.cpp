@@ -138,7 +138,7 @@ void	Elements::display(void) {
 		this->SetRestitution(0);
 	}
 	else if (this->getAttribute("type") == "Hero")
-	  this->SetFriction(0.7f);
+	  this->SetFriction(0.15f);
 	if (this->_hitboxType == "special") {
 		this->SetShapeType(PhysicsActor::SHAPETYPE_LOADED);
  		Game::hList->checkExists(this->_hitbox);

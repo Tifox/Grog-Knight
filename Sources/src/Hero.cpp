@@ -55,6 +55,12 @@ void	Hero::init(void) {
  * @param: status (int)
  */
 void	Hero::actionCallback(std::string name, int status) {
+	if (name == "attack" && status == 1) {
+		this->ChangeSizeTo(Vector2(1.5f, 1), 1.0f);
+		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+								  this->_getAttr("beginFrame").asInt(),
+								  this->_getAttr("endFrame").asInt(), "base");
+	}
 	return ;
 }
 

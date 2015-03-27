@@ -486,10 +486,6 @@ void	Characters::_attack(int status) {
 
 	if (status == 1 && this->_weapon->attackReady() == 1) {
 		this->_weapon->attack(this);
-   /*     this->ChangeSizeTo(Vector2(2.0f, 2.0f), 4.0f);*/
-		//this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-			//this->_getAttr("beginFrame").asInt(),
-			/*this->_getAttr("endFrame").asInt(), "base");*/
 	}
 }
 

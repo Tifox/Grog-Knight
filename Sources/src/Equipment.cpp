@@ -31,11 +31,14 @@
  */
 Equipment::Equipment(void) {
 	this->addAttribute("type2", "Equipment");
-	this->SetColor(0,1,1,1);
+//	this->SetColor(0,1,1,1);
 	this->SetPosition(5, -12);
 	this->InitPhysics();
 	theWorld.Add(this);
 	this->_weapon = new Weapon(Game::wList->getWeapon("Bow"));
+	std::cout << this->_weapon->getSprite() << std::endl;
+
+	this->SetSprite(this->_weapon->getSprite());
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment");
 }
 

@@ -52,6 +52,7 @@ public:
 	std::string		getName(void);
 	std::string		getFlavor(void);
 	std::string		getAttack(void);
+	std::string		getSprite(void);
 	float			getActive(void);
 	int				getSize(void);
 	int				getDamage(void);
@@ -66,6 +67,7 @@ private:
 
 	std::string		_name;
 	std::string		_flavor;
+	std::string		_sprite;
 	std::string		_attack;
 	int				_canAttack;
 	float			_recovery;

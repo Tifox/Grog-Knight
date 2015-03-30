@@ -78,7 +78,7 @@ Weapon::Weapon(Weapon* w, Characters* c) {
 		this->addAttribute("type", "WeaponHitBox");
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	this->SetDrawShape(ADS_Square);
-	this->SetColor(1,1,1);
+	this->SetColor(1,1,1,0);
 	this->SetDensity(0.0001);
 	this->SetFriction(0);
 	this->SetRestitution(0.0f);

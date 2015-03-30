@@ -236,6 +236,7 @@ void	Characters::ReceiveMessage(Message *m) {
 void	Characters::AnimCallback(String s) {
 	this->_setCategory("breath");
 	if (s == "base") {
+		this->changeSizeTo(Vector2(1, 1));
 		if (this->_isRunning == 0) {
 			if (this->_latOrientation == LEFT) {
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,

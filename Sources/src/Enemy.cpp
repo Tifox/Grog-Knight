@@ -40,6 +40,7 @@ Enemy::Enemy(std::string str) : Characters(str) {
 	} else {
 		
 	}
+	this->addAttribute("type", "Enemy");
 	this->addAttribute("name", str);
 	std::cout << str << std::endl;
 

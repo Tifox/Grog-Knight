@@ -175,7 +175,7 @@ void	Characters::ReceiveMessage(Message *m) {
 	}
 	else if (m->GetMessageName() == "colorDamageBlink1") {
 		theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink2"), 0.1f);
-		this->SetColor(1,1,1,0.5f);
+		this->SetColor(1,1,1,1);
 	}
 	else if (m->GetMessageName() == "colorDamageBlink2") {
 		theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);

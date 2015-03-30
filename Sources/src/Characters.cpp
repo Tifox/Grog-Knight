@@ -275,6 +275,8 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 		if (this->GetBody()->GetWorldCenter().y - 0.905 >= elem->GetBody()->GetWorldCenter().y) {
 			if (this->_grounds.size() > 0)
 				contact->SetEnabled(false);
+			else
+				this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
 			if (this->_isJump > 0) {
 				this->_isJump = 0;
 				if (this->_latOrientation == RIGHT)

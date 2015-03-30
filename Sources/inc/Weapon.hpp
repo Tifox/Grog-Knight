@@ -59,6 +59,8 @@ public:
 	float			getRecovery(void);
 	int				attackReady(void);
 
+	void			isAttacking(int i);
+
 private:
 	std::map<std::string, std::map<std::string, Json::Value> >	_attr;
 

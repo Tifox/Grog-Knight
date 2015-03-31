@@ -67,6 +67,7 @@ class Characters : public Elements {
 		std::string						getLastAction(void);
 		int								getHP(void);
 		void							setHP(int h);
+		Weapon							*getWeapon(void);
 		// Virtual function, overwritten in childs
 		virtual void	actionCallback(std::string name, int status) {};
 		virtual void	equipWeapon(Weapon* weapon);

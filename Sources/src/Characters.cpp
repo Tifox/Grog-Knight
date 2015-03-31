@@ -511,6 +511,7 @@ void	Characters::_pickupItem(int status) {
 
 void	Characters::equipWeapon(Weapon* weapon) {
 		this->_weapon = new Weapon(weapon);
+		Game::getHUD()->items(this->_weapon);
 }
 
 void						Characters::setHP(int hp) {
@@ -544,3 +545,4 @@ Characters::Orientation		Characters::getOrientation(void) { return this->_orient
 std::string					Characters::getLastAction(void) { return this->_lastAction; };
 int							Characters::getHP(void) { return this->_hp; };
 void						Characters::changeCanMove(void) { this->_canMove = (this->_canMove ? false : true); };
+Weapon						*Characters::getWeapon(void) { return this->_weapon; };

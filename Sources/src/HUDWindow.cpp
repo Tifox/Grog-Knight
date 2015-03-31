@@ -94,7 +94,7 @@ void	HUDWindow::displayText(void) {
 
 	for (i = this->_text.begin(); i != this->_text.end(); i++) {
 		glColor4f((*i)->colorR, (*i)->colorG, (*i)->colorB, (*i)->colorA);
-		DrawGameText((*i)->str, "Console", (*i)->x, (*i)->y, theCamera.GetRotation());
+		DrawGameText((*i)->str, "Gamefont", (*i)->x, (*i)->y, theCamera.GetRotation());
 	}
 }
 
@@ -188,7 +188,42 @@ void	HUDWindow::mana(int mana) {
 void	HUDWindow::gold(int gold) {
 	this->addImage("Resources/Images/HUD/xp.png", 340, 50, 20.0f);
 	this->addImage("Resources/Images/HUD/gold.png", 360, 50, 20.0f);
-	this->setText(std::to_string(gold), 380, 57);
+	RegisterFont("Resources/font.ttf", 14, "Gamefont");
+	this->setText(std::to_string(gold), 380, 55, Vector3(246.0f, 255.0f, 0.0f), 1);
+}
+
+void	HUDWindow::items(Weapon *w) {
+	this->addImage("Resources/Images/HUD/weapon_background.png", 770, 50, 60.0f);
+	this->addImage(w->getSprite(), 770, 50, 40.0f);
+}
+
+void	HUDWindow::armor(void) {
+	this->addImage("Resources/Images/HUD/item_background.png", 710, 50, 40.0f);
+	this->addImage("Resources/Images/HUD/armor.png", 710, 50, 30.0f);
+}
+
+void	HUDWindow::boots(void) {
+	this->addImage("Resources/Images/HUD/item_background.png", 660, 50, 40.0f);
+	this->addImage("Resources/Images/HUD/boots.png", 660, 50, 30.0f);
+}
+
+void	HUDWindow::consumable(void) {
+	this->addImage("Resources/Images/HUD/consumable_background.png", 500, 50, 40.0f);
+	this->addImage("Resources/Images/HUD/potion_life.png", 500, 50, 25.0f);
+	this->addImage("Resources/Images/HUD/consumable_background.png", 550, 50, 40.0f);
+	this->addImage("Resources/Images/HUD/potion_life.png", 550, 50, 25.0f);
+	this->addImage("Resources/Images/HUD/consumable_background.png", 600, 50, 40.0f);
+	this->addImage("Resources/Images/HUD/potion_mana.png", 600, 50, 25.0f);
+}
+
+void	HUDWindow::minimap(void) {
+	HUDActor *minimap = new HUDActor();
+
+	minimap->SetSize(200, 100);
+	minimap->SetPosition(theCamera.GetWindowWidth() - 100, 50);
+	minimap->SetColor(1, 0, 0);
+	minimap->SetDrawShape(ADS_Square);
+	theWorld.Add(minimap);
 }
 
 void	HUDWindow::setGame(Game *g) { this->_g = g; };

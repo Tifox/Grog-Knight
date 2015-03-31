@@ -34,7 +34,6 @@ Game::Game(void) : _hero(*(new Characters())) {
 		theWorld.Initialize(1920, 1080, NAME, false, false);
 	#else
 		theWorld.Initialize(1024, 720, NAME, false, false);
-		//heWorld.Initialize(1600, 1200, NAME, false, false);
 	#endif
 	theWorld.SetupPhysics(Vector2(0, -20));
 	GameContactListener *gListen = new GameContactListener();
@@ -286,8 +285,9 @@ HUDWindow	*Game::getHUD(void) {
  */
 void		Game::displayHUD(void) {
 	HUDWindow *w = new HUDWindow();
-	w->SetPosition(theCamera.GetWindowWidth() / 2, 50);
-	w->SetSize(theCamera.GetWindowWidth(), 100.0f);
+	Characters	&lol = Game::getHero();
+	w->SetPosition(theCamera.GetWindowWidth() / 2 - 100, 50);
+	w->SetSize(theCamera.GetWindowWidth() - 200, 100.0f);
 	w->SetSprite("Resources/Images/HUD/background_hud.png");
 	w->SetDrawShape(ADS_Square);
 	w->SetLayer(-1);
@@ -298,6 +298,10 @@ void		Game::displayHUD(void) {
 	w->life(125);
 	w->mana(90);
 	w->gold(200);
+	w->armor();
+	w->boots();
+	w->consumable();
+	w->minimap();
 	Game::addHUDWindow(w);
 }
 

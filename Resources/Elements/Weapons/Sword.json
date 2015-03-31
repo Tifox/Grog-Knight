@@ -11,7 +11,7 @@
 		"active": 0.2,
 		"attack": "melee",
 		"combo": true,
-		"sprites": "la soeur de ryad",
+		"sprites": "Resources/Images/Sword.png",
 		"heroAnim": "sword_anim_1"
 	},
 	"combo": {

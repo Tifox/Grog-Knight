@@ -2,7 +2,7 @@
 	"infos": {
 		"name": "Hero",
 		"id": 0,
-		"HP": 25,
+		"HP": 125,
 		"sprites": "Resources/Images/Hero/hero_000.png",
 		"size": 1.3,
 		"maxSpeed": 5,

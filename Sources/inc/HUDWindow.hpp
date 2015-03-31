@@ -61,6 +61,11 @@ class	HUDWindow : public HUDActor {
 		void	life(int l);
 		void	mana(int mana);
 		void	gold(int g);
+		void	items(Weapon *w);
+		void	armor(void);
+		void	boots(void);
+		void	consumable(void);
+		void	minimap(void);
 		void	setGame(Game *);
 
 	private:

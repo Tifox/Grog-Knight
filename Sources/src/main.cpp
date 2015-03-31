@@ -80,15 +80,9 @@ int		main(int ac, char **av) {
 	hero->init();
 	enemy->init();
 	enemy2->init();
-	game->setHero(*hero);
-
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
-	//theWorld.SetSideBlockers(true, 0.7f);
+	game->setHero(*hero);
 	game->displayHUD();
-
 	game->start();
-
-	std::cout << "allol" << std::endl;
-
 	return 0;
 }

@@ -36,8 +36,6 @@ Equipment::Equipment(void) {
 	this->InitPhysics();
 	theWorld.Add(this);
 	this->_weapon = new Weapon(Game::wList->getWeapon("Bow"));
-	std::cout << this->_weapon->getSprite() << std::endl;
-
 	this->SetSprite(this->_weapon->getSprite());
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment");
 }

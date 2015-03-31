@@ -287,11 +287,11 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 			}
 			if (this->_isJump > 0) {
 				this->_isJump = 0;
-				if (this->_latOrientation == RIGHT)
+				if (this->_latOrientation == RIGHT && this->_isAttacking == false)
 				this->PlaySpriteAnimation(0.1f, SAT_OneShot,
 										  this->_getAttr("jump", "endFrame_right").asInt() - 2,
 										  this->_getAttr("jump", "endFrame_right").asInt(), "base");
-				if (this->_latOrientation == LEFT)
+				if (this->_latOrientation == LEFT && this->_isAttacking == false)
 				this->PlaySpriteAnimation(0.1f, SAT_OneShot,
 										  this->_getAttr("jump", "endFrame_left").asInt() - 2,
 										  this->_getAttr("jump", "endFrame_left").asInt(), "base");
@@ -323,11 +323,11 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 			this->_grounds.remove(elem);
 			if (this->_grounds.size() == 0) {
 				this->_isJump++;
-				if (this->_lastAction == "forward" && this->_canMove)
+				if (this->_lastAction == "forward" && this->_canMove && this->_isAttacking == false)
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 										  this->_getAttr("jump", "fallingFrame_right").asInt(),
 										  this->_getAttr("jump", "endFrame_right").asInt() - 3, "jump");
-				else if (this->_lastAction == "backward" && this->_canMove)
+				else if (this->_lastAction == "backward" && this->_canMove && this->_isAttacking == false)
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 										  this->_getAttr("jump", "fallingFrame_left").asInt(),
 										  this->_getAttr("jump", "endFrame_left").asInt() - 3, "jump");
@@ -448,16 +448,18 @@ void	Characters::_jump(int status) {
 			else {
 				this->ApplyLinearImpulse(Vector2(0, this->_getAttr("force").asFloat()), Vector2(0, 0));
 			}
-			if (this->_latOrientation == RIGHT) {
-				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-										  this->_getAttr("beginFrame_right").asInt(),
-										  this->_getAttr("endFrame_right").asInt() - 3, "jump");
+			if (this->_isAttacking == false) {
+				if (this->_latOrientation == RIGHT) {
+					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+											  this->_getAttr("beginFrame_right").asInt(),
+											  this->_getAttr("endFrame_right").asInt() - 3, "jump");
+				}
+				else if (this->_latOrientation == LEFT) {
+					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+											  this->_getAttr("beginFrame_left").asInt(),
+											  this->_getAttr("endFrame_left").asInt() - 3, "jump");
+				}
 			}
-			else if (this->_latOrientation == LEFT) {
-				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-										  this->_getAttr("beginFrame_left").asInt(),
-										  this->_getAttr("endFrame_left").asInt() - 3, "jump");
-}
 			if (this->_grounds.size() == 0)
 				this->_isJump++;
 		}
@@ -532,12 +534,12 @@ void						Characters::_heroDeath(void) {
 							  this->_getAttr("endFrame_right").asInt(), "death");
 	Game::endGame = true;
 	Actor* ghost = new Actor();
-	ghost->SetPosition(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y + 1);
+	ghost->SetPosition(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y - 1.7f);
 	ghost->SetSprite("Resources/Images/Ghost/ghost_000.png", 0);
 	ghost->LoadSpriteFrames("Resources/Images/Ghost/ghost_000.png");
 	ghost->MoveTo(Vector2(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y + 7), 4);
 	theWorld.Add(ghost);
-	ghost->PlaySpriteAnimation(0.3f, SAT_OneShot, 0, 6, "ghost");
+	ghost->PlaySpriteAnimation(0.2f, SAT_OneShot, 0, 10, "ghost");
 }
 
 Characters::Orientation		Characters::getOrientation(void) { return this->_orientation; }

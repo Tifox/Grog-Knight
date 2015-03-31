@@ -42,8 +42,6 @@ Enemy::Enemy(std::string str) : Characters(str) {
 	}
 	this->addAttribute("type", "Enemy");
 	this->addAttribute("name", str);
-	std::cout << str << std::endl;
-
 	this->addAttribute("enemy", "1");
 	this->display();
 	return ;
@@ -104,6 +102,11 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 			this->_orientation = RIGHT;
 		else
 			this->_orientation = LEFT;
+		if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
+			this->GetBody()->SetLinearVelocity(b2Vec2(2, 2));
+		} else {
+			this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
+		}
 	}
 }
 

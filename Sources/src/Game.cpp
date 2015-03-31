@@ -197,13 +197,13 @@ void	Game::addToDestroyList(Elements *m) {
 
 void	Game::destroyAllBodies(void) {
 	if (Game::endGame == true) {
+		theWorld.PausePhysics();
 		int i;
 		for (i = 0; elementMap[i]; i++) {
 			if (elementMap[i]->getAttribute("type") != "Hero")
-			elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1);
+				elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1);
 		}
-	}
-	else {
+	} else {
 		for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
 			theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
 			theWorld.Remove(*it);

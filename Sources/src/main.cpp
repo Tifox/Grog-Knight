@@ -88,5 +88,7 @@ int		main(int ac, char **av) {
 
 	game->start();
 
+	std::cout << "allol" << std::endl;
+
 	return 0;
 }

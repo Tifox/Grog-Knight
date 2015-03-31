@@ -530,8 +530,12 @@ void						Characters::_heroDeath(void) {
 	this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 							  this->_getAttr("beginFrame_right").asInt(),
 							  this->_getAttr("endFrame_right").asInt(), "death");
-	theWorld.PausePhysics();
 	Game::endGame = true;
+	Actor* ghost = new Actor();
+	ghost->SetPosition(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y + 1);
+	ghost->SetSprite("Resources/Images/Hero/hero_000.png");
+	ghost->MoveTo(Vector2(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y + 7), 4);
+	theWorld.Add(ghost);
 }
 
 Characters::Orientation		Characters::getOrientation(void) { return this->_orientation; }

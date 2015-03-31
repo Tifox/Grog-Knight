@@ -529,7 +529,9 @@ void						Characters::_heroDeath(void) {
 	this->_setCategory("death");
 	this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 							  this->_getAttr("beginFrame_right").asInt(),
-							  this->_getAttr("endFrame_right").asInt(), "death");	
+							  this->_getAttr("endFrame_right").asInt(), "death");
+	theWorld.PausePhysics();
+	Game::endGame = true;
 }
 
 Characters::Orientation		Characters::getOrientation(void) { return this->_orientation; }

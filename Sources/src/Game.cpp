@@ -196,12 +196,21 @@ void	Game::addToDestroyList(Elements *m) {
  */
 
 void	Game::destroyAllBodies(void) {
-	for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
-		theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
-		theWorld.Remove(*it);
-		Game::delElement(*it);
+	if (Game::endGame == true) {
+		int i;
+		for (i = 0; elementMap[i]; i++) {
+			if (elementMap[i]->getAttribute("type") != "Hero")
+			elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1);
+		}
 	}
-	Game::bodiesToDestroy.clear();
+	else {
+		for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
+			theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
+			theWorld.Remove(*it);
+			Game::delElement(*it);
+		}
+		Game::bodiesToDestroy.clear();
+	}
 }
 
 /**
@@ -304,3 +313,4 @@ std::list<Elements *>		Game::bodiesToDestroy;
 std::list<HUDWindow *>		Game::windows;
 WeaponList*					Game::wList;
 Hitbox*						Game::hList;
+bool						Game::endGame = false;

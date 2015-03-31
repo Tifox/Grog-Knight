@@ -51,6 +51,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_grounds.clear();
 	this->_walls.clear();
 	this->_item = nullptr;
+	this->_isAttacking = 0;
 }
 
 /**
@@ -237,6 +238,7 @@ void	Characters::AnimCallback(String s) {
 	this->_setCategory("breath");
 	if (s == "base") {
 		this->changeSizeTo(Vector2(1, 1));
+		this->_isAttacking = 0;
 		if (this->_isRunning == 0) {
 			if (this->_latOrientation == LEFT) {
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
@@ -373,7 +375,7 @@ void	Characters::_forward(int status) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
 		Game::stopRunning(this);
 		this->_isRunning = 0;
-		if (!this->_isJump)
+		if (!this->_isJump && !this->_isAttacking)
 			this->AnimCallback("base");
 	} else {
 		if (this->GetBody()->GetLinearVelocity().x < this->_maxSpeed) {
@@ -413,7 +415,7 @@ void	Characters::_backward(int status) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
 		Game::stopRunning(this);
 		this->_isRunning = 0;
-		if (!this->_isJump)
+		if (!this->_isJump && !this->_isAttacking)
 			this->AnimCallback("base");
 	} else {
 		if (this->GetBody()->GetLinearVelocity().x > -(this->_maxSpeed)) {
@@ -488,6 +490,7 @@ void	Characters::_attack(int status) {
 	this->_setCategory("attack");
 
 	if (status == 1 && this->_weapon->attackReady() == 1) {
+		this->_isAttacking = 1;
 		this->_weapon->attack(this);
 	}
 }

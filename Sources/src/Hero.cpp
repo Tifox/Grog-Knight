@@ -89,15 +89,15 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
 			this->ApplyLinearImpulse(Vector2(4, 4), Vector2(0, 0));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-									  this->_getAttr("takeDamage", "beginFrame_right").asInt(),
-									  this->_getAttr("takeDamage", "endFrame_right").asInt(),
+									  this->_getAttr("takeDamage", "beginFrame_left").asInt(),
+									  this->_getAttr("takeDamage", "endFrame_left").asInt(),
 									  "takeDamage");
 		}
 		else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x) {
 			this->ApplyLinearImpulse(Vector2(-4, 4), Vector2(0, 0));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-									  this->_getAttr("takeDamage", "beginFrame_left").asInt(),
-									  this->_getAttr("takeDamage", "endFrame_left").asInt(),
+									  this->_getAttr("takeDamage", "beginFrame_right").asInt(),
+									  this->_getAttr("takeDamage", "endFrame_right").asInt(),
 									  "takeDamage");
 		}
 		this->SetColor(1,0,0,0.8f);

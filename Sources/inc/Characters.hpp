@@ -80,6 +80,7 @@ class Characters : public Elements {
 		int				_maxSpeed;
 		int				_isJump;
 		int				_isRunning;
+		int				_isAttacking;
 		int				_hp;
 		int				_maxHp;
 		bool			_canMove;

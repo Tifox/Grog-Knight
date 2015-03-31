@@ -66,8 +66,8 @@
 		"takeDamage": {
 			"beginFrame_right": 40,
 			"endFrame_right": 42,
-			"beginFrame_left": 40,
-			"endFrame_left": 42,
+			"beginFrame_left": 43,
+			"endFrame_left": 45,
 			"time": 0.1
 		}
 	}

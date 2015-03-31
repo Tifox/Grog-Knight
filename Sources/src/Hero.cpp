@@ -57,11 +57,15 @@ void	Hero::init(void) {
 void	Hero::actionCallback(std::string name, int status) {
 	if (name == "attack" && status == 1 && this->_weapon->attackReady() == 1) {
 		this->_weapon->isAttacking(0);
-		// To be used later
-		//this->changeSizeTo(Vector2(1.5f, 1));
-		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-								  this->_getAttr("beginFrame").asInt(),
-								  this->_getAttr("endFrame").asInt(), "base");
+		this->changeSizeTo(Vector2(1.75f, 1));
+		if (this->_orientation == RIGHT)
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+									  this->_getAttr("beginFrame_right").asInt(),
+									  this->_getAttr("endFrame_right").asInt(), "base");
+		else
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+									  this->_getAttr("beginFrame_left").asInt(),
+									  this->_getAttr("endFrame_left").asInt(), "base");
 	}
 	return ;
 }
@@ -79,6 +83,7 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		Game::stopRunning(this);
 		this->_isRunning = 0;
 		this->_isJump = 1;
+		this->changeSizeTo(Vector2(1, 1));
 		if (this->_invincibility == false) {
 			this->changeCanMove();
 			this->setHP(this->getHP() - 25);

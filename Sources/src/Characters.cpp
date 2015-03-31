@@ -166,7 +166,8 @@ void	Characters::ReceiveMessage(Message *m) {
 	int				status;
 
 	if (m->GetMessageName() == "canMove") {
-		this->changeCanMove();
+		if (this->getHP() > 0)
+			this->changeCanMove();
 	}
 	else if (m->GetMessageName() == "endInvincibility") {
 		theSwitchboard.UnsubscribeFrom(this, "colorDamageBlink1");
@@ -277,8 +278,13 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 		if (this->GetBody()->GetWorldCenter().y - 0.905 >= elem->GetBody()->GetWorldCenter().y) {
 			if (this->_grounds.size() > 0)
 				contact->SetEnabled(false);
-			else
+			else {
 				this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
+				if (this->_hp <= 0) {
+					this->_heroDeath();
+					return;
+				}
+			}
 			if (this->_isJump > 0) {
 				this->_isJump = 0;
 				if (this->_latOrientation == RIGHT)
@@ -517,6 +523,13 @@ void						Characters::setHP(int hp) {
 void						Characters::_destroyEnemy(void) {
 	theSwitchboard.UnsubscribeFrom(this, "destroyEnemy");
 	Game::addToDestroyList(this);
+}
+
+void						Characters::_heroDeath(void) {
+	this->_setCategory("death");
+	this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+							  this->_getAttr("beginFrame_right").asInt(),
+							  this->_getAttr("endFrame_right").asInt(), "death");	
 }
 
 Characters::Orientation		Characters::getOrientation(void) { return this->_orientation; }

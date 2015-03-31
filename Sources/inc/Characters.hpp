@@ -112,6 +112,7 @@ class Characters : public Elements {
 		std::map<std::string, std::map<std::string, Json::Value> >	_attr;
 		std::string		_category;
 
+		void	_heroDeath();
 		void	_readFile(std::string name);
 		void	_parseJson(std::string file);
 };

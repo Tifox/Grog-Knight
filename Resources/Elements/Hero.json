@@ -69,6 +69,13 @@
 			"beginFrame_left": 43,
 			"endFrame_left": 45,
 			"time": 0.1
+		},
+		"death": {
+			"beginFrame_right": 46,
+			"endFrame_right": 53,
+			"beginFrame_left": 43,
+			"endFrame_left": 45,
+			"time": 0.2
 		}
 	}
 }

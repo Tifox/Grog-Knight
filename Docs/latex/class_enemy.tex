@@ -7,8 +7,7 @@
 
 
 
-Inheritance diagram for Enemy\-:
-\nopagebreak
+Inheritance diagram for Enemy\-:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -17,8 +16,7 @@ Inheritance diagram for Enemy\-:
 \end{figure}
 
 
-Collaboration diagram for Enemy\-:
-\nopagebreak
+Collaboration diagram for Enemy\-:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -29,19 +27,19 @@ Collaboration diagram for Enemy\-:
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{class_enemy_a94f30d348b6d2840fd71675472ba38dd}{Enemy} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Basic constructor. \end{DoxyCompactList}\item 
 \hyperlink{class_enemy_a258ddb71f2f298663dc1ff988dcfd2e2}{Enemy} (std\-::string)
-\item 
+\begin{DoxyCompactList}\small\item\em Main constructor. \end{DoxyCompactList}\item 
 \hyperlink{class_enemy_ac0eec4755e28c02688065f9657150ac3}{$\sim$\-Enemy} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
 int \hyperlink{class_enemy_ae4335909ac929e5e5db7eb01b15fbce8}{take\-Damage} (int damage)
-\item 
+\begin{DoxyCompactList}\small\item\em Take Damage. \end{DoxyCompactList}\item 
 void \hyperlink{class_enemy_a2f1157b7c8d74371c2b06493563423ee}{action\-Callback} (std\-::string name, int status)
-\item 
+\begin{DoxyCompactList}\small\item\em Action callback. \end{DoxyCompactList}\item 
 void \hyperlink{class_enemy_a4ed496f92f8c791133494d24b4eeaff6}{init} (void)
-\item 
+\begin{DoxyCompactList}\small\item\em Init Animation. \end{DoxyCompactList}\item 
 void \hyperlink{class_enemy_a3938e3e2cf5f07d809e1f1927b09539a}{Begin\-Contact} (\hyperlink{class_elements}{Elements} $\ast$m, b2\-Contact $\ast$contact)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Begin collision function. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Additional Inherited Members}
 
 
@@ -60,17 +58,30 @@ Unless required by applicable law or agreed to in writing, software distributed 
 \item[{void}]{}
 \end{DoxyParamCaption}
 )}}\label{class_enemy_a94f30d348b6d2840fd71675472ba38dd}
+
+
+Basic constructor. 
+
 Licensed to the Apache Software Foundation (A\-S\-F) under one or more contributor license agreements. See the N\-O\-T\-I\-C\-E file distributed with this work for additional information regarding copyright ownership. The A\-S\-F licenses this file to you under the Apache License, Version 2.\-0 (the \char`\"{}\-License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
 \href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\-://www.\-apache.\-org/licenses/\-L\-I\-C\-E\-N\-S\-E-\/2.\-0}
 
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\-A\-S I\-S\char`\"{} B\-A\-S\-I\-S, W\-I\-T\-H\-O\-U\-T W\-A\-R\-R\-A\-N\-T\-I\-E\-S O\-R C\-O\-N\-D\-I\-T\-I\-O\-N\-S O\-F A\-N\-Y K\-I\-N\-D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\-: \hyperlink{_enemy_8cpp}{Enemy.\-cpp} Creation\-: 2015-\/02-\/23 14\-:26 Manon Budin \href{mailto:mbudin@student.42.fr}{\tt mbudin@student.\-42.\-fr} \hypertarget{class_enemy_a258ddb71f2f298663dc1ff988dcfd2e2}{\index{Enemy@{Enemy}!Enemy@{Enemy}}
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\-A\-S I\-S\char`\"{} B\-A\-S\-I\-S, W\-I\-T\-H\-O\-U\-T W\-A\-R\-R\-A\-N\-T\-I\-E\-S O\-R C\-O\-N\-D\-I\-T\-I\-O\-N\-S O\-F A\-N\-Y K\-I\-N\-D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\-: \hyperlink{_enemy_8cpp}{Enemy.\-cpp} Creation\-: 2015-\/02-\/23 14\-:26 Manon Budin \href{mailto:mbudin@student.42.fr}{\tt mbudin@student.\-42.\-fr} A basic constructor, with an mother (\hyperlink{class_characters}{Characters}) init. \hypertarget{class_enemy_a258ddb71f2f298663dc1ff988dcfd2e2}{\index{Enemy@{Enemy}!Enemy@{Enemy}}
 \index{Enemy@{Enemy}!Enemy@{Enemy}}
 \subsubsection[{Enemy}]{\setlength{\rightskip}{0pt plus 5cm}Enemy\-::\-Enemy (
 \begin{DoxyParamCaption}
 \item[{std\-::string}]{str}
 \end{DoxyParamCaption}
 )}}\label{class_enemy_a258ddb71f2f298663dc1ff988dcfd2e2}
+
+
+Main constructor. 
+
+The main constructor, init with a name. This constructor set position the hard way, may be better to use the config file info ? 
+\begin{DoxyParams}{Parameters}
+{\em str} & Name of the new \hyperlink{class_enemy}{Enemy} \\
+\hline
+\end{DoxyParams}
 \hypertarget{class_enemy_ac0eec4755e28c02688065f9657150ac3}{\index{Enemy@{Enemy}!$\sim$\-Enemy@{$\sim$\-Enemy}}
 \index{$\sim$\-Enemy@{$\sim$\-Enemy}!Enemy@{Enemy}}
 \subsubsection[{$\sim$\-Enemy}]{\setlength{\rightskip}{0pt plus 5cm}Enemy\-::$\sim$\-Enemy (
@@ -78,6 +89,10 @@ Unless required by applicable law or agreed to in writing, software distributed 
 \item[{void}]{}
 \end{DoxyParamCaption}
 )}}\label{class_enemy_ac0eec4755e28c02688065f9657150ac3}
+
+
+Destructor. 
+
 Basic Destructor 
 
 \subsection{Member Function Documentation}
@@ -89,13 +104,20 @@ Basic Destructor
 \item[{int}]{status}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_enemy_a2f1157b7c8d74371c2b06493563423ee}
-Mother's callback for actions 
+
+
+Action callback. 
+
+Mother's callback for actions See \hyperlink{class_characters_ae6b55c4269efc485d7926f62544eef4e}{Characters\-::\-Receive\-Message} for more information 
 \begin{DoxyParams}{Parameters}
-{\em } & name (std\-::string) \\
+{\em } & name The name of the action \\
 \hline
-{\em } & status (int) \\
+{\em } & status The key status (1 $|$ 0) \\
 \hline
 \end{DoxyParams}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_characters_ae6b55c4269efc485d7926f62544eef4e}{Characters\-::\-Receive\-Message} 
+\end{DoxySeeAlso}
 
 
 Reimplemented from \hyperlink{class_characters_a76e565eca6d40dc04119697e1218d24d}{Characters}.
@@ -108,16 +130,17 @@ Reimplemented from \hyperlink{class_characters_a76e565eca6d40dc04119697e1218d24d
 \item[{b2\-Contact $\ast$}]{contact}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_enemy_a3938e3e2cf5f07d809e1f1927b09539a}
-Collision begin callback 
+
+
+Begin collision function. 
+
+Collision begin callback /!\textbackslash{} This function is called just before a collision 
 \begin{DoxyParams}{Parameters}
-{\em } & elem (\hyperlink{class_elements}{Elements} $\ast$) \\
+{\em } & elem The \hyperlink{class_elements}{Elements} who collide \\
 \hline
-{\em } & contact (b2\-Contact $\ast$) \\
+{\em } & contact The Box2\-D contact object \\
 \hline
 \end{DoxyParams}
-\begin{DoxyNote}{Note}
-\-: This function is called just before a collision 
-\end{DoxyNote}
 
 
 Reimplemented from \hyperlink{class_characters_ae1b52f35e60cd23ec118595a9a8e8760}{Characters}.
@@ -129,16 +152,24 @@ Reimplemented from \hyperlink{class_characters_ae1b52f35e60cd23ec118595a9a8e8760
 \item[{void}]{}
 \end{DoxyParamCaption}
 )}}\label{class_enemy_a4ed496f92f8c791133494d24b4eeaff6}
-Init Animation \hypertarget{class_enemy_ae4335909ac929e5e5db7eb01b15fbce8}{\index{Enemy@{Enemy}!take\-Damage@{take\-Damage}}
+
+
+Init Animation. 
+
+Do the first animation call. \hypertarget{class_enemy_ae4335909ac929e5e5db7eb01b15fbce8}{\index{Enemy@{Enemy}!take\-Damage@{take\-Damage}}
 \index{take\-Damage@{take\-Damage}!Enemy@{Enemy}}
 \subsubsection[{take\-Damage}]{\setlength{\rightskip}{0pt plus 5cm}int Enemy\-::take\-Damage (
 \begin{DoxyParamCaption}
 \item[{int}]{damage}
 \end{DoxyParamCaption}
 )}}\label{class_enemy_ae4335909ac929e5e5db7eb01b15fbce8}
-Function that applies damage 
+
+
+Take Damage. 
+
+Function that applies damage In this function, we reduce the H\-P (no way ?), reduce the speed, play a sprite animation. 
 \begin{DoxyParams}{Parameters}
-{\em } & damage (int) \\
+{\em } & damage The damage amount \\
 \hline
 \end{DoxyParams}
 

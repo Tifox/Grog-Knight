@@ -23,12 +23,22 @@
  * Manon Budin <mbudin@student.42.fr>
  */
 
- #include "../inc/Enemy.hpp"
+# include "../inc/Enemy.hpp"
 
+//! Basic constructor
+/**
+ * A basic constructor, with an mother (Characters) init.
+ */
 Enemy::Enemy(void) : Characters("Enemy") {
 	return ;
 }
 
+//! Main constructor
+/**
+ * The main constructor, init with a name.
+ * This constructor set position the hard way, may be better to use the config file info ?
+ * @param str Name of the new Enemy
+ */
 Enemy::Enemy(std::string str) : Characters(str) {
 	this->setXStart(15);
 	this->setYStart(-3);
@@ -38,7 +48,7 @@ Enemy::Enemy(std::string str) : Characters(str) {
 		this->setXStart(5);
 		this->setYStart(-5);
 	} else {
-		
+		// ????
 	}
 	this->addAttribute("type", "Enemy");
 	this->addAttribute("name", str);
@@ -47,6 +57,7 @@ Enemy::Enemy(std::string str) : Characters(str) {
 	return ;
 }
 
+//! Destructor
 /**
  * Basic Destructor
  */
@@ -54,28 +65,33 @@ Enemy::~Enemy(void) {
 	return ;
 }
 
+//! Init Animation
 /**
- * Init Animation
+ * Do the first animation call.
  */
 void	Enemy::init(void) {
 	this->AnimCallback("base");
 	this->_orientation = RIGHT;
 }
 
+//! Action callback
 /**
  * Mother's callback for actions
- * @param: name (std::string)
- * @param: status (int)
+ * See Characters::ReceiveMessage for more information
+ * @param: name The name of the action
+ * @param: status The key status (1 | 0)
+ * @sa Characters::ReceiveMessage
  */
 void	Enemy::actionCallback(std::string name, int status) {
 	return ;
 }
 
+//! Begin collision function
 /**
  * Collision begin callback
- * @param: elem (Elements *)
- * @param: contact (b2Contact *)
- * @note: This function is called just before a collision
+ * /!\ This function is called just before a collision
+ * @param: elem The Elements who collide
+ * @param: contact The Box2D contact object
  */
 void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 	Characters::BeginContact(m, contact);
@@ -110,12 +126,12 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 	}
 }
 
-
+//! Take Damage
 /**
  * Function that applies damage
- * @param: damage (int)
+ * In this function, we reduce the HP (no way ?), reduce the speed, play a sprite animation.
+ * @param: damage The damage amount
  */
-
 int		Enemy::takeDamage(int damage) {
 	if (this->_hp - damage <= 0) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));

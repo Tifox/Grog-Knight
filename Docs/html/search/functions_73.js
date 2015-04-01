@@ -1,10 +1,7 @@
 var searchData=
 [
-  ['searchbox',['SearchBox',['../search_8js.html#a52066106482f8136aa9e0ec859e8188f',1,'search.js']]],
-  ['searchresults',['SearchResults',['../search_8js.html#a9189b9f7a32b6bc78240f40348f7fe03',1,'search.js']]],
   ['secondpass',['secondPass',['../class_level_generator.html#aaed4a6d35bf4ea14a1d472b247720f46',1,'LevelGenerator']]],
   ['setbottomdoor',['setBottomDoor',['../class_room.html#a6bd75cbe373514583b67b6131e484814',1,'Room']]],
-  ['setclassattr',['setClassAttr',['../search_8js.html#a499422fc054a5278ae32801ec0082c56',1,'search.js']]],
   ['setcutheight',['setCutHeight',['../class_elements.html#a58ffc59bb3226e252ca50bdc67db46b5',1,'Elements']]],
   ['setcutwidth',['setCutWidth',['../class_elements.html#ad82fc7032101163c452a9469a095acab',1,'Elements']]],
   ['setdistance',['setDistance',['../class_room.html#a8515625370a9aec953f76efded718e4b',1,'Room']]],
@@ -18,7 +15,6 @@ var searchData=
   ['setimage',['setImage',['../class_map.html#a7ac17b33fc7266fcc30b19c33c70c3ca',1,'Map']]],
   ['setimageheight',['setImageHeight',['../class_map.html#ada51d21543808fa10d085c3c09bda7f9',1,'Map']]],
   ['setimagewidth',['setImageWidth',['../class_map.html#a38f4a514bf3993ef816b6feda56ab36e',1,'Map']]],
-  ['setkeyactions',['setKeyActions',['../search_8js.html#a98192fa2929bb8e4b0a890a4909ab9b2',1,'search.js']]],
   ['setleftdoor',['setLeftDoor',['../class_room.html#afe6694b78ba1754048dcba4e6036c9a5',1,'Room']]],
   ['setmap',['setMap',['../class_map.html#a6a1130ac8c3c4d6dcf636759aa970b9b',1,'Map']]],
   ['setproperties',['setProperties',['../class_map.html#a391c92153c0a6134bec05ae442d4fff0',1,'Map']]],

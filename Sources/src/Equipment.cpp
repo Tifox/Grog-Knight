@@ -26,12 +26,14 @@
 #include "Equipment.hpp"
 
 
+//! Basic constructor
 /**
- * Basic Constructor
+ * The basic constructor.
+ * In this constructor, we get the sprite and InitPhysics.
+ * @todo: The position is actually in the hard-way. Config file needed.
  */
 Equipment::Equipment(void) {
 	this->addAttribute("type2", "Equipment");
-//	this->SetColor(0,1,1,1);
 	this->SetPosition(5, -12);
 	this->InitPhysics();
 	theWorld.Add(this);
@@ -40,11 +42,20 @@ Equipment::Equipment(void) {
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment");
 }
 
+//! Destructor
+/*
+ * Basic Destructor
+ */
+Equipment::~Equipment(void) {
+	return;
+}
+
+//! Collision begin callback
 /**
- * Collision begin callback
- * @param: elem (Elements *)
- * @param: contact (b2Contact *)
- * @note: This function is called just before a collision
+ * The contact begin function
+ * /!\ This function is actually called just BEFORE a collision
+ * @param: elem The Elements who collide with.
+ * @param: contact The Box2D contact object.
  */
 void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "Hero"){
@@ -52,10 +63,12 @@ void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
 	}
 }
 
+//! End of collision callback
 /**
- * End of contact
- * @param: elem (Elements *)
- * @param: contact (b2Contact *)
+ * End of contact function
+ * /!\ This function is called just after the collision is over,
+ * @param: elem The other element
+ * @param: contact The Box2D contact object
  */
 void	Equipment::EndContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "Hero"){
@@ -66,14 +79,12 @@ void	Equipment::EndContact(Elements *elem, b2Contact *contact) {
 /*GETTERS*/
 Weapon*		Equipment::getWeapon(void) { return this->_weapon; }
 
+//! Intern broadcasts function.
+/**
+ * The Receive Message function.
+ * @param: m The Broadcasted message. (See Angel2D docs for more info.)
+ */
 void		Equipment::ReceiveMessage(Message *m) {
 	if (m->GetMessageName() == "DeleteEquipment")
 		Game::addToDestroyList(this);
-}
-
-/*
- * Basic Destructor
- */
-Equipment::~Equipment(void) {
-	return;
 }

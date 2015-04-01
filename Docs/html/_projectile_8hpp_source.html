@@ -98,8 +98,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
 <div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="class_projectile.html">   33</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_projectile.html">Projectile</a>: <span class="keyword">public</span> <a class="code" href="class_elements.html">Elements</a> {</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="class_projectile.html#aa77304b2b631673899c673ea5ff660bd">Projectile</a>(<span class="keywordtype">float</span> <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a>, <span class="keywordtype">float</span> y, <span class="keywordtype">int</span> direction, std::string owner);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <a class="code" href="class_projectile.html#aa77304b2b631673899c673ea5ff660bd">Projectile</a>(<a class="code" href="class_weapon.html">Weapon</a> *w, <a class="code" href="class_characters.html">Characters</a> *<a class="code" href="jquery_8js.html#abce695e0af988ece0826d9ad59b8160d">c</a>);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="class_projectile.html#aa77304b2b631673899c673ea5ff660bd">Projectile</a>(<span class="keywordtype">float</span> x, <span class="keywordtype">float</span> y, <span class="keywordtype">int</span> direction, std::string owner);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <a class="code" href="class_projectile.html#aa77304b2b631673899c673ea5ff660bd">Projectile</a>(<a class="code" href="class_weapon.html">Weapon</a> *w, <a class="code" href="class_characters.html">Characters</a> *c);</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="class_projectile.html#a94903e021fa2edab60ba3836ca0b937d">~Projectile</a>();</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    std::string     <a class="code" href="class_projectile.html#ace3baa31fb47d65321b3091e55ea0214">getName</a>(<span class="keywordtype">void</span>);</div>
@@ -135,9 +135,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="ttc" id="class_projectile_html_a284ae1c52821f8a9bd5972793eb210d8"><div class="ttname"><a href="class_projectile.html#a284ae1c52821f8a9bd5972793eb210d8">Projectile::getSize</a></div><div class="ttdeci">int getSize(void)</div><div class="ttdef"><b>Definition:</b> Projectile.cpp:95</div></div>
 <div class="ttc" id="class_projectile_html_a3d296e98b7227371fdfcfd9fef8bf505"><div class="ttname"><a href="class_projectile.html#a3d296e98b7227371fdfcfd9fef8bf505">Projectile::getAttack</a></div><div class="ttdeci">std::string getAttack(void)</div><div class="ttdef"><b>Definition:</b> Projectile.cpp:93</div></div>
 <div class="ttc" id="class_projectile_html_a259c762588761610eb08f4590409be47"><div class="ttname"><a href="class_projectile.html#a259c762588761610eb08f4590409be47">Projectile::getFlavor</a></div><div class="ttdeci">std::string getFlavor(void)</div><div class="ttdef"><b>Definition:</b> Projectile.cpp:92</div></div>
-<div class="ttc" id="jquery_8js_html_a4c3eadaa5164016d2c340d495fc6e55e"><div class="ttname"><a href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a></div><div class="ttdeci">function x(bx)</div><div class="ttdef"><b>Definition:</b> jquery.js:30</div></div>
 <div class="ttc" id="class_elements_html"><div class="ttname"><a href="class_elements.html">Elements</a></div><div class="ttdef"><b>Definition:</b> Elements.hpp:36</div></div>
-<div class="ttc" id="jquery_8js_html_abce695e0af988ece0826d9ad59b8160d"><div class="ttname"><a href="jquery_8js.html#abce695e0af988ece0826d9ad59b8160d">c</a></div><div class="ttdeci">var c</div><div class="ttdef"><b>Definition:</b> jquery.js:29</div></div>
 <div class="ttc" id="class_projectile_html_acdc9aa548f9606221bb3fe15e4a7dfa7"><div class="ttname"><a href="class_projectile.html#acdc9aa548f9606221bb3fe15e4a7dfa7">Projectile::attackReady</a></div><div class="ttdeci">int attackReady(void)</div></div>
 <div class="ttc" id="class_projectile_html_a2342bda48bea3511d0b97f5cba7b095f"><div class="ttname"><a href="class_projectile.html#a2342bda48bea3511d0b97f5cba7b095f">Projectile::getActive</a></div><div class="ttdeci">float getActive(void)</div><div class="ttdef"><b>Definition:</b> Projectile.cpp:94</div></div>
 <div class="ttc" id="class_projectile_html_a9f8fa9403a414fa1fd6ee092720ca4e6"><div class="ttname"><a href="class_projectile.html#a9f8fa9403a414fa1fd6ee092720ca4e6">Projectile::EndContact</a></div><div class="ttdeci">void EndContact(Elements *elem, b2Contact *contact)</div><div class="ttdef"><b>Definition:</b> Projectile.cpp:87</div></div>
@@ -153,7 +151,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Apr 1 2015 12:53:30 for Grogue-like by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 1 2015 14:09:00 for Grogue-like by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

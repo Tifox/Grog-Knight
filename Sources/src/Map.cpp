@@ -25,24 +25,20 @@
 
 # include "Map.hpp"
 
-/**
- * Basic constructor
- */
+//! Basic constructor
 Map::Map(void) : _mapCount(0) {
 	return ;
 }
 
+//! Main constructor
 /**
- * Main constructor
+ * @param: name The name of the map
  */
 Map::Map(std::string name) : _name(name), _mapCount(0) {
-//	std::cout << name << std::endl;
 	return ;
 }
 
-/**
- * Basic destructor
- */
+//! Basic destructor
 Map::~Map(void) {
 	return ;
 }
@@ -58,17 +54,13 @@ void	Map::setImageHeight(int h) { this->_imageHeight = h; };
 void	Map::setImageWidth(int w) { this->_imageWidth = w; };
 void	Map::setMap(std::vector<int> map) { this->_map = map; };
 void	Map::setProperties(std::map<int, std::map<std::string, Json::Value> > p) { this->_properties = p; };
+void	Map::addElement(Elements *e) { this->_elems.push_back(e); };
+void	Map::addMapElement(int n) { this->_map[this->_mapCount++] = n; };
 
-void	Map::addElement(Elements *e) {
-	this->_elems.push_back(e);
-}
-
-void	Map::addMapElement(int n) {
-	this->_map[this->_mapCount++] = n;
-}
-
+//! Display the map
 /**
- * Display the map
+ * Iterate and display the element of a map.
+ * Lot's of stuff in this function, but the code's pretty clear, see source for more information
  */
 void	Map::display(void) {
 	float						x = 0, y = 0;

@@ -26,8 +26,13 @@
 #include "Consumable.hpp"
 
 
+//! Basic Constructor
 /**
  * Basic Constructor
+ * This constructor sets a lots of attributes, like the sprite, the position. etc...
+ * That also init the physics.
+ * @todo: This function setting attributes the hard-way. Maybe a name based config, like Characters,
+ * would be better ?
  */
 Consumable::Consumable(void) {
 	this->addAttribute("type2", "Consumable");
@@ -38,19 +43,23 @@ Consumable::Consumable(void) {
 	this->InitPhysics();
 	theWorld.Add(this);
 }
+
+//! Collision begin callback
 /**
- * Collision begin callback
- * @param: elem (Elements *)
- * @param: contact (b2Contact *)
- * @note: This function is called just before a collision
+ * Collision begin function
+ * /!\ This function is called just before a collision
+ * @param: elem The Elements who collide.
+ * @param: contact The Box2D contact object. See Box2D docs for more information.
+ * @todo: This function is actually doing nothing.
  */
 void	Consumable::BeginContact(Elements *elem, b2Contact *contact) {
-	// if (elem->getAttributes()["type"] == "Hero"){
-	// 	Game::bodiesToDestroy.push_back(this);
-	// 	contact->SetEnabled(false);
+	// if (elem->getattributes()["type"] == "hero"){
+	// 	game::bodiestodestroy.push_back(this);
+	// 	contact->setenabled(false);
 	// }
 }
 
+//! Destructor
 /*
  * Basic Destructor
  */

@@ -7,7 +7,6 @@ var searchData=
   ['weaponlist',['WeaponList',['../class_weapon_list.html',1,'WeaponList'],['../class_weapon_list.html#ac3a994cd2844ac00fcf09011f4209f48',1,'WeaponList::WeaponList()']]],
   ['weaponlist_2ecpp',['WeaponList.cpp',['../_weapon_list_8cpp.html',1,'']]],
   ['weaponlist_2ehpp',['WeaponList.hpp',['../_weapon_list_8hpp.html',1,'']]],
-  ['window',['window',['../jquery_8js.html#a04a8a2bbfa9c15500892b8e5033d625b',1,'jquery.js']]],
   ['windows',['windows',['../class_game.html#afa3edaf9ec297d522ea19cd48c77a53a',1,'Game']]],
   ['wlist',['wList',['../class_game.html#afa1de8c59db49bc9239f6bb87465351b',1,'Game']]]
 ];

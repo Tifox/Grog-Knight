@@ -109,10 +109,13 @@ Collaboration diagram for Consumable:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ae374944f6333618dd08318b98b6950c7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_consumable.html#ae374944f6333618dd08318b98b6950c7">Consumable</a> ()</td></tr>
+<tr class="memdesc:ae374944f6333618dd08318b98b6950c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Basic Constructor.  <a href="#ae374944f6333618dd08318b98b6950c7">More...</a><br/></td></tr>
 <tr class="separator:ae374944f6333618dd08318b98b6950c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed7671d58f80f5244e5851f591e4b8a2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_consumable.html#aed7671d58f80f5244e5851f591e4b8a2">~Consumable</a> ()</td></tr>
+<tr class="memdesc:aed7671d58f80f5244e5851f591e4b8a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#aed7671d58f80f5244e5851f591e4b8a2">More...</a><br/></td></tr>
 <tr class="separator:aed7671d58f80f5244e5851f591e4b8a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb866e69c3796edffad832b88e527518"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_consumable.html#adb866e69c3796edffad832b88e527518">BeginContact</a> (<a class="el" href="class_elements.html">Elements</a> *elem, b2Contact *contact)</td></tr>
+<tr class="memdesc:adb866e69c3796edffad832b88e527518"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collision begin callback.  <a href="#adb866e69c3796edffad832b88e527518">More...</a><br/></td></tr>
 <tr class="separator:adb866e69c3796edffad832b88e527518"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_object"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_object')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_object.html">Object</a></td></tr>
 <tr class="memitem:a40860402e64d8008fb42329df7097cdb inherit pub_methods_class_object"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a40860402e64d8008fb42329df7097cdb">Object</a> ()</td></tr>
@@ -208,9 +211,12 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Basic Constructor. </p>
 <p>Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at</p>
 <p><a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
-<p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. File: <a class="el" href="_consumable_8cpp.html">Consumable.cpp</a> Creation: 2015-03-06 15:37 Manon Budin <a href="#" onclick="location.href='mai'+'lto:'+'mbu'+'di'+'n@s'+'tu'+'den'+'t.'+'42.'+'fr'; return false;">mbudi<span style="display: none;">.nosp@m.</span>n@st<span style="display: none;">.nosp@m.</span>udent<span style="display: none;">.nosp@m.</span>.42.<span style="display: none;">.nosp@m.</span>fr</a> Basic Constructor </p>
+<p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. File: <a class="el" href="_consumable_8cpp.html">Consumable.cpp</a> Creation: 2015-03-06 15:37 Manon Budin <a href="#" onclick="location.href='mai'+'lto:'+'mbu'+'di'+'n@s'+'tu'+'den'+'t.'+'42.'+'fr'; return false;">mbudi<span style="display: none;">.nosp@m.</span>n@st<span style="display: none;">.nosp@m.</span>udent<span style="display: none;">.nosp@m.</span>.42.<span style="display: none;">.nosp@m.</span>fr</a> Basic Constructor This constructor sets a lots of attributes, like the sprite, the position. etc... That also init the physics. </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>: This function setting attributes the hard-way. Maybe a name based config, like <a class="el" href="class_characters.html">Characters</a>, would be better ? </dd></dl>
 
 </div>
 </div>
@@ -227,6 +233,8 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Destructor. </p>
 
 </div>
 </div>
@@ -262,15 +270,17 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Collision begin callback </p>
+
+<p>Collision begin callback. </p>
+<p>Collision begin function /!\ This function is called just before a collision </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname"></td><td>elem (<a class="el" href="class_elements.html">Elements</a> *) </td></tr>
-    <tr><td class="paramname"></td><td>contact (b2Contact *) </td></tr>
+    <tr><td class="paramname"></td><td>elem The <a class="el" href="class_elements.html">Elements</a> who collide. </td></tr>
+    <tr><td class="paramname"></td><td>contact The Box2D contact object. See Box2D docs for more information. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>: This function is called just before a collision </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>: This function is actually doing nothing. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_elements.html#a108938e08197adc349e98fb91abe1b5a">Elements</a>.</p>
 
@@ -283,7 +293,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Apr 1 2015 12:53:30 for Grogue-like by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 1 2015 14:09:00 for Grogue-like by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

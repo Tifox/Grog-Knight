@@ -25,8 +25,9 @@
 
 # include "Hero.hpp"
 
+//! Constructor
 /**
- * Basic constructor
+ * This constructor is making some subscribtions for himself.
  */
 Hero::Hero(void) : Characters("Hero") {
 	theSwitchboard.SubscribeTo(this, "canMove");
@@ -34,6 +35,7 @@ Hero::Hero(void) : Characters("Hero") {
 	return ;
 }
 
+//! Destructor
 /**
  * Basic Destructor
  */
@@ -41,18 +43,21 @@ Hero::~Hero(void) {
 	return ;
 }
 
+//! Init Animation function
 /**
- * Init Animation
+ * This function making the first animation call.
  */
 void	Hero::init(void) {
 	this->AnimCallback("base");
 }
 
-
+//! Action callback function
 /**
  * Mother's callback for actions
- * @param: name (std::string)
- * @param: status (int)
+ * See Characters::ReceiveMessage for more information.
+ * @param: name The action name
+ * @param: status The key status (1 | 0)
+ * @sa: Characters::ReceiveMessage
  */
 void	Hero::actionCallback(std::string name, int status) {
 	if (name == "attack" && status == 1 && this->_weapon->attackReady() == 1) {
@@ -70,11 +75,12 @@ void	Hero::actionCallback(std::string name, int status) {
 	return ;
 }
 
+//! Begin collision function
 /**
  * Collision begin callback
- * @param: elem (Elements *)
- * @param: contact (b2Contact *)
- * @note: This function is called just before a collision
+ * /!\ This function is called just before a collision
+ * @param: elem The other Element
+ * @param: contact The Box2D contact object
  */
 void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 	Characters::BeginContact(elem, contact);
@@ -127,6 +133,13 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 	}
 }
 
+//! End collision function
+/**
+ * End contact callback.
+ * /!\ This function is actually called after a collision.
+ * @param: elem The other Element.
+ * @param contact The Box2D contact object
+ */
 void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 	Characters::EndContact(elem, contact);
 	if (elem->getAttributes()["type"] == "Object") {

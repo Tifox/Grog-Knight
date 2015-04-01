@@ -34,9 +34,7 @@ var searchData=
   ['gettopdoor',['getTopDoor',['../class_room.html#ad490b94e5406c002c875b4a507674008',1,'Room']]],
   ['getweapon',['getWeapon',['../class_characters.html#aae885a7d773657cdf18f8dfced51d1a8',1,'Characters::getWeapon()'],['../class_equipment.html#a54fd1c2d6cca6b4d2584eb0cf8725bd2',1,'Equipment::getWeapon()'],['../class_weapon_list.html#a97b9173cefa20573ed27d52d58d1292e',1,'WeaponList::getWeapon()']]],
   ['getx',['getX',['../class_room.html#a067f0dbf1e1981f3f53692c454032bad',1,'Room']]],
-  ['getxpos',['getXPos',['../search_8js.html#a76d24aea0009f892f8ccc31d941c0a2b',1,'search.js']]],
   ['gety',['getY',['../class_room.html#a36707f281040aa8d27f13070b1a35b20',1,'Room']]],
-  ['getypos',['getYPos',['../search_8js.html#a8d7b405228661d7b6216b6925d2b8a69',1,'search.js']]],
   ['gold',['gold',['../class_h_u_d_window.html#a4eb34de71e2ea671f637381ac255edab',1,'HUDWindow']]],
   ['grid',['grid',['../class_game.html#a616466e4850732139841c148ed18c05f',1,'Game']]]
 ];

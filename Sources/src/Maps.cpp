@@ -25,30 +25,29 @@
 
 # include "../inc/Maps.hpp"
 
-/**
- * Base constructor
- */
+//! Base constructor
 Maps::Maps(void) {
 	return ;
 };
 
+//! Main constructor
 /**
  * Constructor with a map directory
- * @param: directory (std::string)
+ * @param: directory The path of the directory
  */
 Maps::Maps(std::string directory) : _directory(directory) {
 	return ;
 }
 
-/**
- * Base Deconstructor
- */
+//! Base Deconstructor
 Maps::~Maps(void) {
 	return ;
 }
 
+//! Read map function
 /**
- * Read the maps into a list
+ * Read the maps into a list.
+ * This function list all the .json in the directory specificied, and parse each one.
  */
 void	Maps::readMaps(void) {
 	DIR		*dir = opendir(this->_directory.c_str());
@@ -73,8 +72,10 @@ void	Maps::readMaps(void) {
 	}
 }
 
+//! Parsing the Map
 /**
- * Feed the empty list
+ * This function parse the json of the map, and create a new Map object with it.
+ * @sa Map
  */
 void	Maps::_getMap(void) {
 	int					index, v;
@@ -114,9 +115,7 @@ void	Maps::_getMap(void) {
 	this->_maps.push_back(map);
 }
 
-/**
- * Display the map at the top of list
- */
+//! Display the first map at the top of list
 void	Maps::firstOne(void) {
 	this->_maps.front()->display();
 }

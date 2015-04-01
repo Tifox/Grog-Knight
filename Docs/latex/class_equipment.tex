@@ -7,8 +7,7 @@
 
 
 
-Inheritance diagram for Equipment\-:
-\nopagebreak
+Inheritance diagram for Equipment\-:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -17,8 +16,7 @@ Inheritance diagram for Equipment\-:
 \end{figure}
 
 
-Collaboration diagram for Equipment\-:
-\nopagebreak
+Collaboration diagram for Equipment\-:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -29,17 +27,17 @@ Collaboration diagram for Equipment\-:
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{class_equipment_a2bd67c4254f2074f4f7469f29a20e760}{Equipment} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Basic constructor. \end{DoxyCompactList}\item 
 \hyperlink{class_equipment_a3e7f53e57fa3004b5a4490e2c7a1fbaf}{$\sim$\-Equipment} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
 \hyperlink{class_weapon}{Weapon} $\ast$ \hyperlink{class_equipment_a54fd1c2d6cca6b4d2584eb0cf8725bd2}{get\-Weapon} (void)
 \item 
 void \hyperlink{class_equipment_a0c706b45578e8d01fec7b8ee1b773987}{Begin\-Contact} (\hyperlink{class_elements}{Elements} $\ast$elem, b2\-Contact $\ast$contact)
-\item 
+\begin{DoxyCompactList}\small\item\em Collision begin callback. \end{DoxyCompactList}\item 
 void \hyperlink{class_equipment_abda1acd976a1c33f3aa398b3a9a64555}{End\-Contact} (\hyperlink{class_elements}{Elements} $\ast$elem, b2\-Contact $\ast$contact)
-\item 
+\begin{DoxyCompactList}\small\item\em End of collision callback. \end{DoxyCompactList}\item 
 void \hyperlink{class_equipment_ab195be955597ce6f64c117d675df3af4}{Receive\-Message} (Message $\ast$m)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Intern broadcasts function. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Additional Inherited Members}
 
 
@@ -58,17 +56,27 @@ Unless required by applicable law or agreed to in writing, software distributed 
 \item[{void}]{}
 \end{DoxyParamCaption}
 )}}\label{class_equipment_a2bd67c4254f2074f4f7469f29a20e760}
+
+
+Basic constructor. 
+
 Licensed to the Apache Software Foundation (A\-S\-F) under one or more contributor license agreements. See the N\-O\-T\-I\-C\-E file distributed with this work for additional information regarding copyright ownership. The A\-S\-F licenses this file to you under the Apache License, Version 2.\-0 (the \char`\"{}\-License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
 \href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\-://www.\-apache.\-org/licenses/\-L\-I\-C\-E\-N\-S\-E-\/2.\-0}
 
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\-A\-S I\-S\char`\"{} B\-A\-S\-I\-S, W\-I\-T\-H\-O\-U\-T W\-A\-R\-R\-A\-N\-T\-I\-E\-S O\-R C\-O\-N\-D\-I\-T\-I\-O\-N\-S O\-F A\-N\-Y K\-I\-N\-D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\-: \hyperlink{_equipment_8cpp}{Equipment.\-cpp} Creation\-: 2015-\/03-\/06 15\-:51 Manon Budin \href{mailto:mbudin@student.42.fr}{\tt mbudin@student.\-42.\-fr} Basic Constructor \hypertarget{class_equipment_a3e7f53e57fa3004b5a4490e2c7a1fbaf}{\index{Equipment@{Equipment}!$\sim$\-Equipment@{$\sim$\-Equipment}}
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\-A\-S I\-S\char`\"{} B\-A\-S\-I\-S, W\-I\-T\-H\-O\-U\-T W\-A\-R\-R\-A\-N\-T\-I\-E\-S O\-R C\-O\-N\-D\-I\-T\-I\-O\-N\-S O\-F A\-N\-Y K\-I\-N\-D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\-: \hyperlink{_equipment_8cpp}{Equipment.\-cpp} Creation\-: 2015-\/03-\/06 15\-:51 Manon Budin \href{mailto:mbudin@student.42.fr}{\tt mbudin@student.\-42.\-fr} The basic constructor. In this constructor, we get the sprite and Init\-Physics. \begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000004}{Todo}]\-: The position is actually in the hard-\/way. Config file needed. \end{DoxyRefDesc}
+\hypertarget{class_equipment_a3e7f53e57fa3004b5a4490e2c7a1fbaf}{\index{Equipment@{Equipment}!$\sim$\-Equipment@{$\sim$\-Equipment}}
 \index{$\sim$\-Equipment@{$\sim$\-Equipment}!Equipment@{Equipment}}
 \subsubsection[{$\sim$\-Equipment}]{\setlength{\rightskip}{0pt plus 5cm}Equipment\-::$\sim$\-Equipment (
 \begin{DoxyParamCaption}
 \item[{void}]{}
 \end{DoxyParamCaption}
 )}}\label{class_equipment_a3e7f53e57fa3004b5a4490e2c7a1fbaf}
+
+
+Destructor. 
+
 
 
 \subsection{Member Function Documentation}
@@ -80,16 +88,17 @@ Unless required by applicable law or agreed to in writing, software distributed 
 \item[{b2\-Contact $\ast$}]{contact}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_equipment_a0c706b45578e8d01fec7b8ee1b773987}
-Collision begin callback 
+
+
+Collision begin callback. 
+
+The contact begin function /!\textbackslash{} This function is actually called just B\-E\-F\-O\-R\-E a collision 
 \begin{DoxyParams}{Parameters}
-{\em } & elem (\hyperlink{class_elements}{Elements} $\ast$) \\
+{\em } & elem The \hyperlink{class_elements}{Elements} who collide with. \\
 \hline
-{\em } & contact (b2\-Contact $\ast$) \\
+{\em } & contact The Box2\-D contact object. \\
 \hline
 \end{DoxyParams}
-\begin{DoxyNote}{Note}
-\-: This function is called just before a collision 
-\end{DoxyNote}
 
 
 Reimplemented from \hyperlink{class_elements_a108938e08197adc349e98fb91abe1b5a}{Elements}.
@@ -102,11 +111,15 @@ Reimplemented from \hyperlink{class_elements_a108938e08197adc349e98fb91abe1b5a}{
 \item[{b2\-Contact $\ast$}]{contact}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_equipment_abda1acd976a1c33f3aa398b3a9a64555}
-End of contact 
+
+
+End of collision callback. 
+
+End of contact function /!\textbackslash{} This function is called just after the collision is over, 
 \begin{DoxyParams}{Parameters}
-{\em } & elem (\hyperlink{class_elements}{Elements} $\ast$) \\
+{\em } & elem The other element \\
 \hline
-{\em } & contact (b2\-Contact $\ast$) \\
+{\em } & contact The Box2\-D contact object \\
 \hline
 \end{DoxyParams}
 
@@ -127,6 +140,15 @@ Reimplemented from \hyperlink{class_elements_a42c3b694edefcc789109bd952a66d918}{
 \item[{Message $\ast$}]{m}
 \end{DoxyParamCaption}
 )}}\label{class_equipment_ab195be955597ce6f64c117d675df3af4}
+
+
+Intern broadcasts function. 
+
+The Receive Message function. 
+\begin{DoxyParams}{Parameters}
+{\em } & m The Broadcasted message. (See Angel2\-D docs for more info.) \\
+\hline
+\end{DoxyParams}
 
 
 The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}

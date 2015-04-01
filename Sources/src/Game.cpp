@@ -19,15 +19,18 @@
 
 /**
  * File: Game.cpp
- * Creation: 2015-02-13 07:20
- * Louis Solofrizzo <louis@ne02ptzero.me>
+ * @date 2015-02-13 07:20
+ * @author Louis Solofrizzo <louis@ne02ptzero.me>
  */
 
 #include "../inc/Game.hpp"
 
+//! Basic constructor, set the window to default value
 /**
- * Basic constructor, set the window to default value
+ * Initialize the world window, init Physics.
  * (http://docs.angel2d.com/class_world.html#ae5d7e8d20d3e6fc93785ab2014ac0c13)
+ * Load the maps with Maps::Maps
+ * @sa Maps
  */
 Game::Game(void) : _hero(*(new Characters())) {
 	#ifdef __APPLE__
@@ -46,8 +49,8 @@ Game::Game(void) : _hero(*(new Characters())) {
 
 /**
  * Constructor with custom window width & height
- * @param: width (unsigned int)
- * @param: heigh (unsigned int)
+ * @param width The width of the window
+ * @param heigh The height of the window
  */
 Game::Game(unsigned int width, unsigned int height) : _hero(*(new Characters())) {
 	theWorld.Initialize(width, height, NAME);
@@ -80,23 +83,28 @@ void	Game::start(void) {
 	theWorld.StartGame();
 }
 
+//! Read the maps
 /**
- * Read the maps
+ * Launch Maps::readMaps
+ * @sa Maps
  */
 void	Game::readMaps(void) {
 	this->maps->readMaps();
 }
 
+//! Display the first map
 /**
- * Display the first map
+ * Call the function Maps::firstOne
+ * @sa Maps
  */
 void	Game::showMap(void) {
 	this->maps->firstOne();
 }
 
+//! Display the Hero
 /**
- * Display the Hero
- * @param: Hero (Elements &)
+ * We add the hero to the world, with an init position (x, y)
+ * @param Hero The Hero Object
  */
 void	Game::displayHero(Elements & Hero) {
 	Hero.setXStart(4);
@@ -105,9 +113,10 @@ void	Game::displayHero(Elements & Hero) {
 	Hero.display();
 }
 
+//! Display the Enemy
 /**
- * Display the Enemy
- * @param: Enemy (Elements &)
+ * Add an Enemy to the world, with an init position (x, y)
+ * @param Enemy The enemy object
  */
 void	Game::displayEnemy(Elements & Enemy) {
 	Enemy.setXStart(5);
@@ -116,9 +125,11 @@ void	Game::displayEnemy(Elements & Enemy) {
 	Enemy.display();
 }
 
+//! Display the object
 /**
- * Display the Object
- * @param: Object (Elements &)
+ * Display the Object ?!
+ * @fixme Does this function have a real utility now ?
+ * @param Object The Object
  */
 void	Game::displayObject(Elements & Object) {
 	Object.setXStart(6);
@@ -127,25 +138,30 @@ void	Game::displayObject(Elements & Object) {
 	Object.display();
 }
 
+//! Get an id, in order.
 /**
  * Get the current id, for the intern elements map
+ * @return The next id
  */
 int		Game::getNextId(void) {
 	return Game::currentIds;
 }
 
+//! Add an Element
 /**
- * Add an element to the intern map
- * @param: elem (Elements &)
+ * Add an element to the intern map, to the static elements map.
+ * This map is usefull for cleaning an all level, or fading out at death, etc.
+ * @param elem The Elements to add at the list
  */
 void	Game::addElement(Elements & elem) {
 	Game::elementMap[Game::currentIds] = &elem;
 	Game::currentIds += 1;
 }
 
+//! Delete an element
 /**
- * Deletes an element from the intern map
- * @param: elem (Elements &)
+ * Delete an element from the intern map
+ * @param elem The element to delete (The reference is important !)
  */
 void	Game::delElement(Elements* elem) {
 	for (int i = 0; Game::elementMap[i]; i++) {
@@ -154,10 +170,11 @@ void	Game::delElement(Elements* elem) {
 	}
 }
 
+//! Collision intern callbacks
 /**
  * Call the collision callbacks on two objects
- * @param: a (int)
- * @param: b (int)
+ * @param a The ID of the first object
+ * @param: b The ID of the second object
  */
 void	Game::callCallbacks(int a, int b) {
 	if (a != -1 && b != -1) {
@@ -166,20 +183,12 @@ void	Game::callCallbacks(int a, int b) {
 	}
 }
 
-/**
- * List all Elements
- */
-void	Game::listElement(void) {
-	int		i;
-
-//	for (i = 0; i < Game::currentIds; i++) {
-//		std::cout << Game::elementMap[i] << std::endl;
-//	}
-}
-
+//! Destroy an element at the right time.
 /**
  * Call to add an element to the destroy list after the tick()
- * @param: m (Elements*)
+ * This function DO NOT remove an element itself. We stock in a list, and after the World::tick,
+ * we call a function to destroying each element of the list.
+ * @param m The Element to destroy
  */
 
 void	Game::addToDestroyList(Elements *m) {
@@ -190,10 +199,12 @@ void	Game::addToDestroyList(Elements *m) {
 	Game::bodiesToDestroy.push_back(m);
 }
 
+//! Intern callback for destroying an element.
 /**
- * Called after each tick() in order to destroy all elements set to destroy
+ * Called after each tick() in order to destroy all elements set to destroy.
+ * This function destroy each element in Game::bodiesToDestroy.
+ * So, call this function outisde of this goal is useless.
  */
-
 void	Game::destroyAllBodies(void) {
 	if (Game::endGame == true) {
 		theWorld.PausePhysics();
@@ -212,26 +223,32 @@ void	Game::destroyAllBodies(void) {
 	}
 }
 
+//! Intern callback for staring running
 /**
  * Make an element running
- * @param: c (Elements *)
- * @note: This function do not make the element 'running', just add them to the callback list.
+ * This function do not make the element 'running', just add them to the callback list.
+ * @param c The Element who start running.
  */
 void	Game::startRunning(Elements *c) {
 	Game::runningCharac.push_back(c);
 }
 
+//! Intern callback for stoping running
 /**
- * Make an element stop running
- * @param: c (Elements *)
- * @note: Same as Game::startRunning(), but the object is remove from the list.
+ * Make an element stop running.
+ * Same as Game::startRunning(), but the object is remove from the list.
+ * @param c The Elements who stop running.
  */
 void	Game::stopRunning(Elements *c) {
 	Game::runningCharac.remove(c);
 }
 
+//! World Callback for making elements running.
 /**
  * The callback for each frame, making the call to the interns callbacks.
+ * This function call the function _run for each member of the list Game::runningCharac
+ * Keep this in mind, you won't probably call this function.
+ * @sa Characters
  */
 void	Game::makeItRun(void) {
 	std::list<Elements *>::iterator	i;
@@ -241,8 +258,11 @@ void	Game::makeItRun(void) {
 	}
 }
 
+//! Intern callback for display text
 /**
  * Callback for each frame, to display the text in the HUDs.
+ * This function is just call the function displayText() on each member of the HUDList.
+ * Keep this in mind, you won't probably call this function.
  */
 void	Game::showText(void) {
 	std::list<HUDWindow *>::iterator i;
@@ -252,18 +272,20 @@ void	Game::showText(void) {
 	}
 }
 
+//! Register an HUD to the Game list.
 /**
- * Add a HUDWindow object to the callback list
- * @param: w (HUDWindow *)
+ * Add a HUDWindow object to the callback list.
+ * @param w The new HUD to add in Game.
  */
 void	Game::addHUDWindow(HUDWindow *w) {
 	if (std::find(Game::windows.begin(), Game::windows.end(), w) == Game::windows.end())
 		Game::windows.push_back(w);
 }
 
+//! Unregister an HUD to the Game list.
 /**
  * Remove a HUDWindow from the callback list.
- * @param: w (HUDWindow *)
+ * @param w The HUDWindow to delete.
  */
 void	Game::removeHUDWindow(HUDWindow *w) {
 	std::list<HUDWindow *>::iterator 	it;
@@ -273,15 +295,20 @@ void	Game::removeHUDWindow(HUDWindow *w) {
 		Game::windows.erase(it);
 }
 
+//! Get the first / main HUD
 /**
  * Get the first HUD from the list. (Assuming there is an element)
+ * This function is generaly use for getting the main HUD (life, xp, items) object,
+ * assuming this object is the first added to the list.
  */
 HUDWindow	*Game::getHUD(void) {
 	return Game::windows.front();
 }
 
+//! Display the base HUD
 /**
  * The init function for display the base HUD.
+ * @todo This function is nasty, we need a recap here.
  */
 void		Game::displayHUD(void) {
 	HUDWindow *w = new HUDWindow();

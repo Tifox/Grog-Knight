@@ -1,0 +1,394 @@
+\hypertarget{class_elements}{\section{Elements Class Reference}
+\label{class_elements}\index{Elements@{Elements}}
+}
+
+
+{\ttfamily \#include $<$Elements.\-hpp$>$}
+
+
+
+Inheritance diagram for Elements\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_elements__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Elements\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=154pt]{class_elements__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_elements_aaf76c70282b6997fc20f1d8c751d7146}{Elements} ()
+\begin{DoxyCompactList}\small\item\em Base constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_elements_a15505a7088b59b169943cf0b3883d859}{Elements} (int id)
+\begin{DoxyCompactList}\small\item\em Main constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_elements_a2a0658f7634191593c7d6eeab1556adc}{Elements} (\hyperlink{class_elements}{Elements} \&obj)
+\begin{DoxyCompactList}\small\item\em Copy constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_elements_a28037b21a12317e69d6160da9f4844de}{$\sim$\-Elements} ()
+\begin{DoxyCompactList}\small\item\em Basic destructor. \end{DoxyCompactList}\item 
+void \hyperlink{class_elements_a23add0eda070fb51f84eab6b94d5b886}{set\-X\-Start} (float X)
+\item 
+void \hyperlink{class_elements_a2214c37dc1288a3763db6780bf7d6ee5}{set\-Y\-Start} (float Y)
+\item 
+void \hyperlink{class_elements_a16f6accfe5a20c996dae8154132e4bf7}{set\-Width} (int w)
+\item 
+void \hyperlink{class_elements_ad778acde74a8640958c6db2b7dd782bc}{set\-Height} (int h)
+\item 
+void \hyperlink{class_elements_ad82fc7032101163c452a9469a095acab}{set\-Cut\-Width} (int w)
+\item 
+void \hyperlink{class_elements_a58ffc59bb3226e252ca50bdc67db46b5}{set\-Cut\-Height} (int h)
+\item 
+void \hyperlink{class_elements_a9ba8c94a6f92d510d60b51239a42b67c}{set\-Frame} (int n)
+\item 
+void \hyperlink{class_elements_a4aac83563af945cf6c05af4e4d6a173b}{add\-Attribute} (std\-::string name, std\-::string value)
+\begin{DoxyCompactList}\small\item\em Add an attribute. \end{DoxyCompactList}\item 
+std\-::string \hyperlink{class_elements_ab35a8e49a075adca1dee3e941865e20f}{get\-Attribute} (std\-::string name)
+\begin{DoxyCompactList}\small\item\em A getter for attribute. \end{DoxyCompactList}\item 
+void \hyperlink{class_elements_ae549e0c8599f06b42126c67c5dd68fd2}{remove\-Attr} (std\-::string name)
+\begin{DoxyCompactList}\small\item\em Remove an attribute. \end{DoxyCompactList}\item 
+void \hyperlink{class_elements_adeca7401d8bc32fa75e2c2a0b2627412}{display} (void)
+\begin{DoxyCompactList}\small\item\em Display an element. \end{DoxyCompactList}\item 
+std\-::map$<$ std\-::string, \\*
+std\-::string $>$ \hyperlink{class_elements_aff6b1b8c11e8579384461eadc63ee39e}{get\-Attributes} (void)
+\item 
+void \hyperlink{class_elements_a3bb4cc2e2009d0e447fbdd0212a57b73}{set\-Frame\-Sprite} (int frame)
+\begin{DoxyCompactList}\small\item\em Set frame in a sprite\-File. \end{DoxyCompactList}\item 
+void \hyperlink{class_elements_ad7e4ecb2ecc2402cf892e60d8d803070}{set\-Hitbox} (std\-::string)
+\item 
+virtual void \hyperlink{class_elements_a85bc66fe037551fcfa0b606cf32c4478}{callback} (\hyperlink{class_elements}{Elements} $\ast$elem)
+\item 
+virtual void \hyperlink{class_elements_a108938e08197adc349e98fb91abe1b5a}{Begin\-Contact} (\hyperlink{class_elements}{Elements} $\ast$elem, b2\-Contact $\ast$contact)
+\item 
+virtual void \hyperlink{class_elements_a42c3b694edefcc789109bd952a66d918}{End\-Contact} (\hyperlink{class_elements}{Elements} $\ast$elem, b2\-Contact $\ast$contact)
+\item 
+int \hyperlink{class_elements_a2dd2e1e757c9077755bbe309c504740b}{get\-Orientation\-X} (void)
+\item 
+int \hyperlink{class_elements_a58d9facbd7f6264e8b4e2ff49f20d939}{get\-Orientation\-Y} (void)
+\item 
+int \hyperlink{class_elements_add4340c523571631da317d8a64fc1368}{get\-Lateral\-Orientation} (void)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{class_elements_aa367c1471a9fc7f1a9b7b124e69c3ef3}{\-\_\-run} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\-::string \hyperlink{class_elements_a8968fcb76f2c8473b2715415ddc2d8be}{\-\_\-hitbox\-Type}
+\item 
+std\-::string \hyperlink{class_elements_a7e38d955602d5ea837411a6ffcb0d2cd}{\-\_\-hitbox}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_elements_aa2fab026580d6f14280c2ffb8063a314}{Game}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_elements_aaf76c70282b6997fc20f1d8c751d7146}{\index{Elements@{Elements}!Elements@{Elements}}
+\index{Elements@{Elements}!Elements@{Elements}}
+\subsubsection[{Elements}]{\setlength{\rightskip}{0pt plus 5cm}Elements\-::\-Elements (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_elements_aaf76c70282b6997fc20f1d8c751d7146}
+
+
+Base constructor. 
+
+\hypertarget{class_elements_a15505a7088b59b169943cf0b3883d859}{\index{Elements@{Elements}!Elements@{Elements}}
+\index{Elements@{Elements}!Elements@{Elements}}
+\subsubsection[{Elements}]{\setlength{\rightskip}{0pt plus 5cm}Elements\-::\-Elements (
+\begin{DoxyParamCaption}
+\item[{int}]{id}
+\end{DoxyParamCaption}
+)}}\label{class_elements_a15505a7088b59b169943cf0b3883d859}
+
+
+Main constructor. 
+
+Licensed to the Apache Software Foundation (A\-S\-F) under one or more contributor license agreements. See the N\-O\-T\-I\-C\-E file distributed with this work for additional information regarding copyright ownership. The A\-S\-F licenses this file to you under the Apache License, Version 2.\-0 (the \char`\"{}\-License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+\href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\-://www.\-apache.\-org/licenses/\-L\-I\-C\-E\-N\-S\-E-\/2.\-0}
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\-A\-S I\-S\char`\"{} B\-A\-S\-I\-S, W\-I\-T\-H\-O\-U\-T W\-A\-R\-R\-A\-N\-T\-I\-E\-S O\-R C\-O\-N\-D\-I\-T\-I\-O\-N\-S O\-F A\-N\-Y K\-I\-N\-D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\-: \hyperlink{_elements_8cpp}{Elements.\-cpp} \begin{DoxyDate}{Date}
+2015-\/02-\/13 07\-:39 
+\end{DoxyDate}
+\begin{DoxyAuthor}{Author}
+Louis Solofrizzo \href{mailto:louis@ne02ptzero.me}{\tt louis@ne02ptzero.\-me} 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em id} & The future id of the element  This function is outdated due to recent changes in the A\-P\-I. \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_elements_a2a0658f7634191593c7d6eeab1556adc}{\index{Elements@{Elements}!Elements@{Elements}}
+\index{Elements@{Elements}!Elements@{Elements}}
+\subsubsection[{Elements}]{\setlength{\rightskip}{0pt plus 5cm}Elements\-::\-Elements (
+\begin{DoxyParamCaption}
+\item[{{\bf Elements} \&}]{obj}
+\end{DoxyParamCaption}
+)}}\label{class_elements_a2a0658f7634191593c7d6eeab1556adc}
+
+
+Copy constructor. 
+
+The constructor by Copy, thank's to the Coplien's form. 
+\begin{DoxyParams}{Parameters}
+{\em obj} & The object we have to copy. \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_elements_a28037b21a12317e69d6160da9f4844de}{\index{Elements@{Elements}!$\sim$\-Elements@{$\sim$\-Elements}}
+\index{$\sim$\-Elements@{$\sim$\-Elements}!Elements@{Elements}}
+\subsubsection[{$\sim$\-Elements}]{\setlength{\rightskip}{0pt plus 5cm}Elements\-::$\sim$\-Elements (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_elements_a28037b21a12317e69d6160da9f4844de}
+
+
+Basic destructor. 
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_elements_aa367c1471a9fc7f1a9b7b124e69c3ef3}{\index{Elements@{Elements}!\-\_\-run@{\-\_\-run}}
+\index{\-\_\-run@{\-\_\-run}!Elements@{Elements}}
+\subsubsection[{\-\_\-run}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Elements\-::\-\_\-run (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}}\label{class_elements_aa367c1471a9fc7f1a9b7b124e69c3ef3}
+
+
+Reimplemented in \hyperlink{class_characters_aa59e298bef3e58fc7c82deb86e762200}{Characters}.
+
+\hypertarget{class_elements_a4aac83563af945cf6c05af4e4d6a173b}{\index{Elements@{Elements}!add\-Attribute@{add\-Attribute}}
+\index{add\-Attribute@{add\-Attribute}!Elements@{Elements}}
+\subsubsection[{add\-Attribute}]{\setlength{\rightskip}{0pt plus 5cm}void Elements\-::add\-Attribute (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{name, }
+\item[{std\-::string}]{value}
+\end{DoxyParamCaption}
+)}}\label{class_elements_a4aac83563af945cf6c05af4e4d6a173b}
+
+
+Add an attribute. 
+
+Add an attribute to the Element 
+\begin{DoxyParams}{Parameters}
+{\em name} & Name of the attribute \\
+\hline
+{\em value} & Value of the attribute  This method of attribute is outdated due to the new Json\-::\-Value politic in the A\-P\-I, more flexible. \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_elements_a108938e08197adc349e98fb91abe1b5a}{\index{Elements@{Elements}!Begin\-Contact@{Begin\-Contact}}
+\index{Begin\-Contact@{Begin\-Contact}!Elements@{Elements}}
+\subsubsection[{Begin\-Contact}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Elements\-::\-Begin\-Contact (
+\begin{DoxyParamCaption}
+\item[{{\bf Elements} $\ast$}]{elem, }
+\item[{b2\-Contact $\ast$}]{contact}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{class_elements_a108938e08197adc349e98fb91abe1b5a}
+
+
+Reimplemented in \hyperlink{class_characters_ae1b52f35e60cd23ec118595a9a8e8760}{Characters}, \hyperlink{class_projectile_a7347375e9c8cae921709ba56265af0fd}{Projectile}, \hyperlink{class_weapon_a866884395ed4c0e7a972bb18e8d7d030}{Weapon}, \hyperlink{class_enemy_a3938e3e2cf5f07d809e1f1927b09539a}{Enemy}, \hyperlink{class_equipment_a0c706b45578e8d01fec7b8ee1b773987}{Equipment}, \hyperlink{class_consumable_adb866e69c3796edffad832b88e527518}{Consumable}, \hyperlink{class_hero_ac23c090d8f5e2768b4175580a0d53d1b}{Hero}, and \hyperlink{class_object_a5681745b50d64994e00fe519bbb4cd31}{Object}.
+
+\hypertarget{class_elements_a85bc66fe037551fcfa0b606cf32c4478}{\index{Elements@{Elements}!callback@{callback}}
+\index{callback@{callback}!Elements@{Elements}}
+\subsubsection[{callback}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Elements\-::callback (
+\begin{DoxyParamCaption}
+\item[{{\bf Elements} $\ast$}]{elem}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{class_elements_a85bc66fe037551fcfa0b606cf32c4478}
+\hypertarget{class_elements_adeca7401d8bc32fa75e2c2a0b2627412}{\index{Elements@{Elements}!display@{display}}
+\index{display@{display}!Elements@{Elements}}
+\subsubsection[{display}]{\setlength{\rightskip}{0pt plus 5cm}void Elements\-::display (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_elements_adeca7401d8bc32fa75e2c2a0b2627412}
+
+
+Display an element. 
+
+Load physics on element, and add him to the World.  This function is quite nasty, maybe a rework on it should be better. \hypertarget{class_elements_a42c3b694edefcc789109bd952a66d918}{\index{Elements@{Elements}!End\-Contact@{End\-Contact}}
+\index{End\-Contact@{End\-Contact}!Elements@{Elements}}
+\subsubsection[{End\-Contact}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Elements\-::\-End\-Contact (
+\begin{DoxyParamCaption}
+\item[{{\bf Elements} $\ast$}]{elem, }
+\item[{b2\-Contact $\ast$}]{contact}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{class_elements_a42c3b694edefcc789109bd952a66d918}
+
+
+Reimplemented in \hyperlink{class_characters_a87c76bb34f5c11e2da4537be07d2f846}{Characters}, \hyperlink{class_projectile_a9f8fa9403a414fa1fd6ee092720ca4e6}{Projectile}, \hyperlink{class_weapon_a1860f840f8c75555de52450300139d9b}{Weapon}, \hyperlink{class_equipment_abda1acd976a1c33f3aa398b3a9a64555}{Equipment}, and \hyperlink{class_hero_a9fee92d1b0df478f95bc10ba84015d2a}{Hero}.
+
+\hypertarget{class_elements_ab35a8e49a075adca1dee3e941865e20f}{\index{Elements@{Elements}!get\-Attribute@{get\-Attribute}}
+\index{get\-Attribute@{get\-Attribute}!Elements@{Elements}}
+\subsubsection[{get\-Attribute}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Elements\-::get\-Attribute (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{name}
+\end{DoxyParamCaption}
+)}}\label{class_elements_ab35a8e49a075adca1dee3e941865e20f}
+
+
+A getter for attribute. 
+
+Get an attribute value 
+\begin{DoxyParams}{Parameters}
+{\em name} & The Name of the attribute \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The value of attribute if found, else \char`\"{}\char`\"{} 
+\end{DoxyReturn}
+\hypertarget{class_elements_aff6b1b8c11e8579384461eadc63ee39e}{\index{Elements@{Elements}!get\-Attributes@{get\-Attributes}}
+\index{get\-Attributes@{get\-Attributes}!Elements@{Elements}}
+\subsubsection[{get\-Attributes}]{\setlength{\rightskip}{0pt plus 5cm}std\-::map$<$ std\-::string, std\-::string $>$ Elements\-::get\-Attributes (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_elements_aff6b1b8c11e8579384461eadc63ee39e}
+\hypertarget{class_elements_add4340c523571631da317d8a64fc1368}{\index{Elements@{Elements}!get\-Lateral\-Orientation@{get\-Lateral\-Orientation}}
+\index{get\-Lateral\-Orientation@{get\-Lateral\-Orientation}!Elements@{Elements}}
+\subsubsection[{get\-Lateral\-Orientation}]{\setlength{\rightskip}{0pt plus 5cm}int Elements\-::get\-Lateral\-Orientation (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_elements_add4340c523571631da317d8a64fc1368}
+\hypertarget{class_elements_a2dd2e1e757c9077755bbe309c504740b}{\index{Elements@{Elements}!get\-Orientation\-X@{get\-Orientation\-X}}
+\index{get\-Orientation\-X@{get\-Orientation\-X}!Elements@{Elements}}
+\subsubsection[{get\-Orientation\-X}]{\setlength{\rightskip}{0pt plus 5cm}int Elements\-::get\-Orientation\-X (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_elements_a2dd2e1e757c9077755bbe309c504740b}
+\hypertarget{class_elements_a58d9facbd7f6264e8b4e2ff49f20d939}{\index{Elements@{Elements}!get\-Orientation\-Y@{get\-Orientation\-Y}}
+\index{get\-Orientation\-Y@{get\-Orientation\-Y}!Elements@{Elements}}
+\subsubsection[{get\-Orientation\-Y}]{\setlength{\rightskip}{0pt plus 5cm}int Elements\-::get\-Orientation\-Y (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_elements_a58d9facbd7f6264e8b4e2ff49f20d939}
+\hypertarget{class_elements_ae549e0c8599f06b42126c67c5dd68fd2}{\index{Elements@{Elements}!remove\-Attr@{remove\-Attr}}
+\index{remove\-Attr@{remove\-Attr}!Elements@{Elements}}
+\subsubsection[{remove\-Attr}]{\setlength{\rightskip}{0pt plus 5cm}void Elements\-::remove\-Attr (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{name}
+\end{DoxyParamCaption}
+)}}\label{class_elements_ae549e0c8599f06b42126c67c5dd68fd2}
+
+
+Remove an attribute. 
+
+Remove an attribute form the list 
+\begin{DoxyParams}{Parameters}
+{\em name} & The name of the attribute we have to remove \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_elements_a58ffc59bb3226e252ca50bdc67db46b5}{\index{Elements@{Elements}!set\-Cut\-Height@{set\-Cut\-Height}}
+\index{set\-Cut\-Height@{set\-Cut\-Height}!Elements@{Elements}}
+\subsubsection[{set\-Cut\-Height}]{\setlength{\rightskip}{0pt plus 5cm}void Elements\-::set\-Cut\-Height (
+\begin{DoxyParamCaption}
+\item[{int}]{h}
+\end{DoxyParamCaption}
+)}}\label{class_elements_a58ffc59bb3226e252ca50bdc67db46b5}
+\hypertarget{class_elements_ad82fc7032101163c452a9469a095acab}{\index{Elements@{Elements}!set\-Cut\-Width@{set\-Cut\-Width}}
+\index{set\-Cut\-Width@{set\-Cut\-Width}!Elements@{Elements}}
+\subsubsection[{set\-Cut\-Width}]{\setlength{\rightskip}{0pt plus 5cm}void Elements\-::set\-Cut\-Width (
+\begin{DoxyParamCaption}
+\item[{int}]{w}
+\end{DoxyParamCaption}
+)}}\label{class_elements_ad82fc7032101163c452a9469a095acab}
+\hypertarget{class_elements_a9ba8c94a6f92d510d60b51239a42b67c}{\index{Elements@{Elements}!set\-Frame@{set\-Frame}}
+\index{set\-Frame@{set\-Frame}!Elements@{Elements}}
+\subsubsection[{set\-Frame}]{\setlength{\rightskip}{0pt plus 5cm}void Elements\-::set\-Frame (
+\begin{DoxyParamCaption}
+\item[{int}]{n}
+\end{DoxyParamCaption}
+)}}\label{class_elements_a9ba8c94a6f92d510d60b51239a42b67c}
+\hypertarget{class_elements_a3bb4cc2e2009d0e447fbdd0212a57b73}{\index{Elements@{Elements}!set\-Frame\-Sprite@{set\-Frame\-Sprite}}
+\index{set\-Frame\-Sprite@{set\-Frame\-Sprite}!Elements@{Elements}}
+\subsubsection[{set\-Frame\-Sprite}]{\setlength{\rightskip}{0pt plus 5cm}void Elements\-::set\-Frame\-Sprite (
+\begin{DoxyParamCaption}
+\item[{int}]{frame}
+\end{DoxyParamCaption}
+)}}\label{class_elements_a3bb4cc2e2009d0e447fbdd0212a57b73}
+
+
+Set frame in a sprite\-File. 
+
+Set a specific frame from a sprite file. This function is currently used only by the the background elements. 
+\begin{DoxyParams}{Parameters}
+{\em frame} & The frame to display (Reading size left to right)  The height and width of the cutting size is write down in the code (16x16). \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_elements_ad778acde74a8640958c6db2b7dd782bc}{\index{Elements@{Elements}!set\-Height@{set\-Height}}
+\index{set\-Height@{set\-Height}!Elements@{Elements}}
+\subsubsection[{set\-Height}]{\setlength{\rightskip}{0pt plus 5cm}void Elements\-::set\-Height (
+\begin{DoxyParamCaption}
+\item[{int}]{h}
+\end{DoxyParamCaption}
+)}}\label{class_elements_ad778acde74a8640958c6db2b7dd782bc}
+\hypertarget{class_elements_ad7e4ecb2ecc2402cf892e60d8d803070}{\index{Elements@{Elements}!set\-Hitbox@{set\-Hitbox}}
+\index{set\-Hitbox@{set\-Hitbox}!Elements@{Elements}}
+\subsubsection[{set\-Hitbox}]{\setlength{\rightskip}{0pt plus 5cm}void Elements\-::set\-Hitbox (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{n}
+\end{DoxyParamCaption}
+)}}\label{class_elements_ad7e4ecb2ecc2402cf892e60d8d803070}
+\hypertarget{class_elements_a16f6accfe5a20c996dae8154132e4bf7}{\index{Elements@{Elements}!set\-Width@{set\-Width}}
+\index{set\-Width@{set\-Width}!Elements@{Elements}}
+\subsubsection[{set\-Width}]{\setlength{\rightskip}{0pt plus 5cm}void Elements\-::set\-Width (
+\begin{DoxyParamCaption}
+\item[{int}]{w}
+\end{DoxyParamCaption}
+)}}\label{class_elements_a16f6accfe5a20c996dae8154132e4bf7}
+\hypertarget{class_elements_a23add0eda070fb51f84eab6b94d5b886}{\index{Elements@{Elements}!set\-X\-Start@{set\-X\-Start}}
+\index{set\-X\-Start@{set\-X\-Start}!Elements@{Elements}}
+\subsubsection[{set\-X\-Start}]{\setlength{\rightskip}{0pt plus 5cm}void Elements\-::set\-X\-Start (
+\begin{DoxyParamCaption}
+\item[{float}]{X}
+\end{DoxyParamCaption}
+)}}\label{class_elements_a23add0eda070fb51f84eab6b94d5b886}
+\hypertarget{class_elements_a2214c37dc1288a3763db6780bf7d6ee5}{\index{Elements@{Elements}!set\-Y\-Start@{set\-Y\-Start}}
+\index{set\-Y\-Start@{set\-Y\-Start}!Elements@{Elements}}
+\subsubsection[{set\-Y\-Start}]{\setlength{\rightskip}{0pt plus 5cm}void Elements\-::set\-Y\-Start (
+\begin{DoxyParamCaption}
+\item[{float}]{Y}
+\end{DoxyParamCaption}
+)}}\label{class_elements_a2214c37dc1288a3763db6780bf7d6ee5}
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{class_elements_aa2fab026580d6f14280c2ffb8063a314}{\index{Elements@{Elements}!Game@{Game}}
+\index{Game@{Game}!Elements@{Elements}}
+\subsubsection[{Game}]{\setlength{\rightskip}{0pt plus 5cm}friend class {\bf Game}\hspace{0.3cm}{\ttfamily [friend]}}}\label{class_elements_aa2fab026580d6f14280c2ffb8063a314}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_elements_a7e38d955602d5ea837411a6ffcb0d2cd}{\index{Elements@{Elements}!\-\_\-hitbox@{\-\_\-hitbox}}
+\index{\-\_\-hitbox@{\-\_\-hitbox}!Elements@{Elements}}
+\subsubsection[{\-\_\-hitbox}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Elements\-::\-\_\-hitbox\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_elements_a7e38d955602d5ea837411a6ffcb0d2cd}
+\hypertarget{class_elements_a8968fcb76f2c8473b2715415ddc2d8be}{\index{Elements@{Elements}!\-\_\-hitbox\-Type@{\-\_\-hitbox\-Type}}
+\index{\-\_\-hitbox\-Type@{\-\_\-hitbox\-Type}!Elements@{Elements}}
+\subsubsection[{\-\_\-hitbox\-Type}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Elements\-::\-\_\-hitbox\-Type\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_elements_a8968fcb76f2c8473b2715415ddc2d8be}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/louis/\-Documents/rogue-\/like/\-Sources/inc/\hyperlink{_elements_8hpp}{Elements.\-hpp}\item 
+/home/louis/\-Documents/rogue-\/like/\-Sources/src/\hyperlink{_elements_8cpp}{Elements.\-cpp}\end{DoxyCompactItemize}

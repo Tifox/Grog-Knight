@@ -1,0 +1,151 @@
+\hypertarget{class_hero}{\section{Hero Class Reference}
+\label{class_hero}\index{Hero@{Hero}}
+}
+
+
+{\ttfamily \#include $<$Hero.\-hpp$>$}
+
+
+
+Inheritance diagram for Hero\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=154pt]{class_hero__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Hero\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=215pt]{class_hero__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_hero_ab5920677a4b5cb59d6f513922d037dca}{Hero} ()
+\item 
+\hyperlink{class_hero_a5aeef41ede5a80dc29c5acd7b553c4da}{$\sim$\-Hero} ()
+\item 
+void \hyperlink{class_hero_ae67cc4b7770083755895b78664d0ea34}{init} ()
+\item 
+virtual void \hyperlink{class_hero_ac23c090d8f5e2768b4175580a0d53d1b}{Begin\-Contact} (\hyperlink{class_elements}{Elements} $\ast$m, b2\-Contact $\ast$contact)
+\item 
+virtual void \hyperlink{class_hero_a9fee92d1b0df478f95bc10ba84015d2a}{End\-Contact} (\hyperlink{class_elements}{Elements} $\ast$m, b2\-Contact $\ast$contact)
+\begin{DoxyCompactList}\small\item\em End collision function. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_hero_aa41ef53abd25057ceb431811ccf80ad5}{action\-Callback} (std\-::string name, int status)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Licensed to the Apache Software Foundation (A\-S\-F) under one or more contributor license agreements. See the N\-O\-T\-I\-C\-E file distributed with this work for additional information regarding copyright ownership. The A\-S\-F licenses this file to you under the Apache License, Version 2.\-0 (the \char`\"{}\-License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+\href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\-://www.\-apache.\-org/licenses/\-L\-I\-C\-E\-N\-S\-E-\/2.\-0}
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\-A\-S I\-S\char`\"{} B\-A\-S\-I\-S, W\-I\-T\-H\-O\-U\-T W\-A\-R\-R\-A\-N\-T\-I\-E\-S O\-R C\-O\-N\-D\-I\-T\-I\-O\-N\-S O\-F A\-N\-Y K\-I\-N\-D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\-: \hyperlink{_hero_8hpp}{Hero.\-hpp} Creation\-: 2015-\/02-\/14 10\-:49 Louis Solofrizzo \href{mailto:louis@ne02ptzero.me}{\tt louis@ne02ptzero.\-me} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_hero_ab5920677a4b5cb59d6f513922d037dca}{\index{Hero@{Hero}!Hero@{Hero}}
+\index{Hero@{Hero}!Hero@{Hero}}
+\subsubsection[{Hero}]{\setlength{\rightskip}{0pt plus 5cm}Hero\-::\-Hero (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_hero_ab5920677a4b5cb59d6f513922d037dca}
+Licensed to the Apache Software Foundation (A\-S\-F) under one or more contributor license agreements. See the N\-O\-T\-I\-C\-E file distributed with this work for additional information regarding copyright ownership. The A\-S\-F licenses this file to you under the Apache License, Version 2.\-0 (the \char`\"{}\-License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+\href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\-://www.\-apache.\-org/licenses/\-L\-I\-C\-E\-N\-S\-E-\/2.\-0}
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\-A\-S I\-S\char`\"{} B\-A\-S\-I\-S, W\-I\-T\-H\-O\-U\-T W\-A\-R\-R\-A\-N\-T\-I\-E\-S O\-R C\-O\-N\-D\-I\-T\-I\-O\-N\-S O\-F A\-N\-Y K\-I\-N\-D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\-: \hyperlink{_hero_8cpp}{Hero.\-cpp} Creation\-: 2015-\/02-\/14 10\-:49 Louis Solofrizzo \href{mailto:louis@ne02ptzero.me}{\tt louis@ne02ptzero.\-me} Basic constructor \hypertarget{class_hero_a5aeef41ede5a80dc29c5acd7b553c4da}{\index{Hero@{Hero}!$\sim$\-Hero@{$\sim$\-Hero}}
+\index{$\sim$\-Hero@{$\sim$\-Hero}!Hero@{Hero}}
+\subsubsection[{$\sim$\-Hero}]{\setlength{\rightskip}{0pt plus 5cm}Hero\-::$\sim$\-Hero (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_hero_a5aeef41ede5a80dc29c5acd7b553c4da}
+Basic Destructor 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_hero_aa41ef53abd25057ceb431811ccf80ad5}{\index{Hero@{Hero}!action\-Callback@{action\-Callback}}
+\index{action\-Callback@{action\-Callback}!Hero@{Hero}}
+\subsubsection[{action\-Callback}]{\setlength{\rightskip}{0pt plus 5cm}void Hero\-::action\-Callback (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{name, }
+\item[{int}]{status}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_hero_aa41ef53abd25057ceb431811ccf80ad5}
+Mother's callback for actions 
+\begin{DoxyParams}{Parameters}
+{\em } & name (std\-::string) \\
+\hline
+{\em } & status (int) \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_characters_a76e565eca6d40dc04119697e1218d24d}{Characters}.
+
+\hypertarget{class_hero_ac23c090d8f5e2768b4175580a0d53d1b}{\index{Hero@{Hero}!Begin\-Contact@{Begin\-Contact}}
+\index{Begin\-Contact@{Begin\-Contact}!Hero@{Hero}}
+\subsubsection[{Begin\-Contact}]{\setlength{\rightskip}{0pt plus 5cm}void Hero\-::\-Begin\-Contact (
+\begin{DoxyParamCaption}
+\item[{{\bf Elements} $\ast$}]{elem, }
+\item[{b2\-Contact $\ast$}]{contact}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_hero_ac23c090d8f5e2768b4175580a0d53d1b}
+Collision begin callback 
+\begin{DoxyParams}{Parameters}
+{\em } & elem (\hyperlink{class_elements}{Elements} $\ast$) \\
+\hline
+{\em } & contact (b2\-Contact $\ast$) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+\-: This function is called just before a collision 
+\end{DoxyNote}
+
+
+Reimplemented from \hyperlink{class_characters_ae1b52f35e60cd23ec118595a9a8e8760}{Characters}.
+
+\hypertarget{class_hero_a9fee92d1b0df478f95bc10ba84015d2a}{\index{Hero@{Hero}!End\-Contact@{End\-Contact}}
+\index{End\-Contact@{End\-Contact}!Hero@{Hero}}
+\subsubsection[{End\-Contact}]{\setlength{\rightskip}{0pt plus 5cm}void Hero\-::\-End\-Contact (
+\begin{DoxyParamCaption}
+\item[{{\bf Elements} $\ast$}]{elem, }
+\item[{b2\-Contact $\ast$}]{contact}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_hero_a9fee92d1b0df478f95bc10ba84015d2a}
+
+
+End collision function. 
+
+Collision end callback /!\textbackslash{} This function is called A\-F\-T\-E\-R the elements leave another 
+\begin{DoxyParams}{Parameters}
+{\em elem} & The Element who left collision \\
+\hline
+{\em } & contact The b2\-Contact object of the collided element. See Box2\-D docs for more info. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_characters_a87c76bb34f5c11e2da4537be07d2f846}{Characters}.
+
+\hypertarget{class_hero_ae67cc4b7770083755895b78664d0ea34}{\index{Hero@{Hero}!init@{init}}
+\index{init@{init}!Hero@{Hero}}
+\subsubsection[{init}]{\setlength{\rightskip}{0pt plus 5cm}void Hero\-::init (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_hero_ae67cc4b7770083755895b78664d0ea34}
+Init Animation 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/louis/\-Documents/rogue-\/like/\-Sources/inc/\hyperlink{_hero_8hpp}{Hero.\-hpp}\item 
+/home/louis/\-Documents/rogue-\/like/\-Sources/src/\hyperlink{_hero_8cpp}{Hero.\-cpp}\end{DoxyCompactItemize}

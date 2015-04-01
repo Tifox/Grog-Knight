@@ -20,33 +20,34 @@
 
 /**
  * File: Elements.cpp
- * Creation: 2015-02-13 07:39
- * Louis Solofrizzo <louis@ne02ptzero.me>
+ * @date 2015-02-13 07:39
+ * @author Louis Solofrizzo <louis@ne02ptzero.me>
  */
 
 # include "../inc/Elements.hpp"
 
+//! Main constructor
 /**
- * Main constructor
+ * @param id The future id of the element
+ * @fixme This function is outdated due to recent changes in the API.
  */
-Elements::Elements(int id) :  PhysicsActor() {
+Elements::Elements(int id) : PhysicsActor() {
 	this->setId(Game::getNextId());
 	Game::addElement(*this);
 	return ;
 }
 
-/**
- * Main constructor
- */
-Elements::Elements(void) :  PhysicsActor() {
+//! Base constructor
+Elements::Elements(void) : PhysicsActor() {
 	this->setId(Game::getNextId());
 	Game::addElement(*this);
 	return ;
 }
 
+//! Copy constructor
 /**
- * Copy constructor
- * @param: obj (Elements & obj)
+ * The constructor by Copy, thank's to the Coplien's form.
+ * @param obj The object we have to copy.
  */
 Elements::Elements(Elements & obj) : PhysicsActor(obj) {
 	this->_attributes = obj.getAttributes();
@@ -54,34 +55,36 @@ Elements::Elements(Elements & obj) : PhysicsActor(obj) {
 	Game::addElement(*this);
 }
 
-/**
- * Basic destructor
- */
+//! Basic destructor
 Elements::~Elements(void) {
 }
 
+//! Add an attribute.
 /**
  * Add an attribute to the Element
- * @param: name (std::string)
- * @param: value (std::string)
+ * @param name Name of the attribute
+ * @param value Value of the attribute
+ * @fixme This method of attribute is outdated due to the new Json::Value politic in the API, more flexible.
  */
 void	Elements::addAttribute(std::string name, std::string value) {
 	this->_attributes[name] = value;
 }
 
+//! Remove an attribute
 /**
  * Remove an attribute form the list
- * @param: name (std::string)
+ * @param name The name of the attribute we have to remove
  */
 void	Elements::removeAttr(std::string name) {
 	if (this->_attributes.find(name) != this->_attributes.end())
 		this->_attributes.erase(this->_attributes.find(name));
 }
 
+//! A getter for attribute
 /**
  * Get an attribute value
- * @param: name (std::string)
- * @return: this->_attributes[name]
+ * @param name The Name of the attribute
+ * @return The value of attribute if found, else ""
  */
 std::string	Elements::getAttribute(std::string name) {
 	if (this->_attributes.find(name) != this->_attributes.end())
@@ -89,6 +92,13 @@ std::string	Elements::getAttribute(std::string name) {
 	return "";
 }
 
+//! Set frame in a spriteFile
+/**
+ * Set a specific frame from a sprite file.
+ * This function is currently used only by the the background elements.
+ * @param frame The frame to display (Reading size left to right)
+ * @fixme The height and width of the cutting size is write down in the code (16x16).
+ */
 void	Elements::setFrameSprite(int frame) {
 	int imgHeight = this->_height;
 	int imgWidth = this->_width;
@@ -115,8 +125,10 @@ void	Elements::setFrameSprite(int frame) {
 	this->SetUVs(Vector2(tX, tY), Vector2(tX2, tY2));
 }
 
+//! Display an element
 /**
- * Display the Element on the screen
+ * Load physics on element, and add him to the World.
+ * @fixme This function is quite nasty, maybe a rework on it should be better.
  */
 void	Elements::display(void) {
 	this->SetPosition(this->_XStartPos, this->_YStartPos);

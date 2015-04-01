@@ -25,16 +25,15 @@
 
 # include "Characters.hpp"
 
-/**
- * Base constructor
- */
+//! Base constructor
 Characters::Characters(void) {
 	return ;
 }
 
+//! Main constructor
 /**
- * Main constructor
- * @param: name (std::string)
+ * Setting base physic, some attributes and some intern variables
+ * @param name The name of the character (Enemy, Hero, etc ...)
  */
 Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0) {
 	this->addAttribute("physic", "1");
@@ -54,16 +53,16 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_isAttacking = 0;
 }
 
-/**
- * Basic destructor
- */
+//! Basic destructor
 Characters::~Characters(void) {
 	return ;
 }
 
+//! Read the json config file
 /**
- * Read a config file, base on the name of the class
- * @param: name (std::string)
+ * Read a json config file, based on the name of the class
+ * For more documentation on the json style, uh, just wait we write it.
+ * @param name (std::string)
  */
 void	Characters::_readFile(std::string name) {
 	std::string			file;
@@ -80,10 +79,10 @@ void	Characters::_readFile(std::string name) {
 	this->_parseJson(buffer.str());
 }
 
+//! Parse the json into workable value
 /**
  * Parse, read and stock the info in the config file
- * @param: file (std::string)
- * @note: file is the whole file content
+ * @param file The file (A string contain the all content of a file, not is name.)
  */
 void	Characters::_parseJson(std::string file) {
 	Json::Reader	read;
@@ -111,7 +110,6 @@ void	Characters::_parseJson(std::string file) {
 			this->_attr[i.key().asString()] = tmp;
 			// Subcribe to the broadcasts
 			if (v.key().asString() == "subscribe") {
-//				Log::info("SubscribeTo " + (*v).asString());
 				theSwitchboard.SubscribeTo(this, (*v).asString() + "Pressed");
 				theSwitchboard.SubscribeTo(this, (*v).asString() + "Released");
 			}
@@ -119,11 +117,12 @@ void	Characters::_parseJson(std::string file) {
 	}
 }
 
+//! Get an attribute load in the conf file.
 /**
  * Get a Json::Value of a key in the config file
- * @param: category (std::string)
- * @param: key (std::string)
- * @note: See the docs for the utilisation of Json::Value
+ * @param category The category of the attribute
+ * @param: key The name of the attribute
+ * @return A Json::Value, See the docs of jsoncpp for the utilisation of Json::Value
  */
 Json::Value		Characters::_getAttr(std::string category, std::string key) {
 	if (this->_attr.find(category) != this->_attr.end()) {
@@ -137,17 +136,24 @@ Json::Value		Characters::_getAttr(std::string category, std::string key) {
 	return nullptr;
 }
 
+//! Set the current working category
 /**
- * Set the current working category
- * @param: category (std::string)
+ * This function is made for gain time and money, set first the category in this functions
+ * then call the function _getAttr(std::string key).
+ * See _getAttr(std::string key) for more info.
+ * @param category The name of the category
+ * @sa Characters::_getAttr
  */
 void	Characters::_setCategory(std::string category) {
 	this->_category = category;
 }
 
+//! Get an attribute with a pre-set category
 /**
  * Get a Json::Value of a key in the config file, with a pre-set category
- * @param: key (std::string)
+ * See Characters::_setCategory for more info.
+ * @param: key The name of the attribute
+ * @sa Characters::_setCategory
  */
 Json::Value		Characters::_getAttr(std::string key) {
 	if (this->_attr[this->_category].find(key) != this->_attr[this->_category].end())
@@ -156,9 +162,13 @@ Json::Value		Characters::_getAttr(std::string key) {
 	return nullptr;
 }
 
+//! The Broadcast function of Characters
 /**
  * Receive and redistribute broadcasts messages
- * @param: m (Message *)
+ * In this function, we call also the callback function of the child.
+ * For more info on this, go to Characters::callback
+ * @param: m The Message object
+ * @sa Characters::callback
  */
 void	Characters::ReceiveMessage(Message *m) {
 	std::map<std::string, std::map<std::string, Json::Value> >::iterator	i;
@@ -230,10 +240,12 @@ void	Characters::ReceiveMessage(Message *m) {
 	}
 }
 
+//! Animation callback
 /**
  * The animation callback
- * @param: s (String)
- * @note: String is the std::string object used in Angel2d.
+ * See Angel doc for more information
+ * String is the std::string object used in Angel2d.
+ * @param s The name of the callback
  */
 void	Characters::AnimCallback(String s) {
 	this->_setCategory("breath");
@@ -267,11 +279,13 @@ void	Characters::AnimCallback(String s) {
 	}
 }
 
+//! Collision function
 /**
  * Collision begin callback
- * @param: elem (Elements *)
- * @param: contact (b2Contact *)
- * @note: This function is called just before a collision
+ * See Angel docs for more information.
+ * /!\ This function is called BEFORE a collision happened.
+ * @param elem The Element who collide
+ * @param contact The b2Contact object of the collision. See Box2D docs for more info.
  */
 void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "ground") {
@@ -309,11 +323,12 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 	}
 }
 
+//! End collision function
 /**
  * Collision end callback
- * @param: elem (Elements *)
- * @param: contact (b2Contact *)
- * @note: This function is called just after the elements leave another
+ * /!\ This function is called AFTER the elements leave another
+ * @param elem The Element who left collision
+ * @param: contact The b2Contact object of the collided element. See Box2D docs for more info.
  */
 void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "ground") {
@@ -338,6 +353,13 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 	}
 }
 
+//! Intern callbacks for moving
+/**
+ * Intern callbacks for making a character move.
+ * This function handle the direction of the character.
+ * This callback is called in Game::makeItRun, so you probalby don't want to call it.
+ * @sa Game::makeItRun
+ */
 void	Characters::_run(void) {
 	if (this->_isRunning == 1)
 		this->_forward(2);
@@ -351,9 +373,14 @@ void	Characters::_run(void) {
 /*                          */
 /****************************/
 
+//! Forward action
 /**
- * Forward action
- * @param: status (int)
+ * Making a Characters run forward.
+ * This function handle the power size for moving, sprite animation, basicly everything.
+ * So, if you want to make some modification, use the intern callback (Characters::callback), or override 
+ * this function in the children.
+ * But, please, DO NOT modify this one.
+ * @param status The status of the key (0 | 1)
  */
 void	Characters::_forward(int status) {
 	this->_setCategory("forward");
@@ -392,9 +419,12 @@ void	Characters::_forward(int status) {
 	return ;
 }
 
+//! Backward action
 /**
- * Backward action
- * @param: status (int)
+ * Make the character go backward
+ * Same as forward.
+ * @param status The status of the key (1 | 0)
+ * @sa Characters::_forward
  */
 void	Characters::_backward(int status) {
    this->_setCategory("backward");
@@ -432,9 +462,12 @@ void	Characters::_backward(int status) {
 	return ;
 }
 
+//! Jump action
 /**
- * Jump Action
- * @param: status (int)
+ * Make the character jump.
+ * Same as forward.
+ * @param: status The key status (1 | 0)
+ * @sa Characters::_forward
  */
 void	Characters::_jump(int status) {
 	this->_setCategory("jump");
@@ -470,9 +503,11 @@ void	Characters::_jump(int status) {
 	return ;
 }
 
+//! Up button action
 /**
  * Called when pressing the UP button
- * @param: status (int)
+ * This function handle just the Orientation.
+ * @param status The key status (1 | 0)
  */
 
 void	Characters::_up(int status) {
@@ -480,9 +515,12 @@ void	Characters::_up(int status) {
 		this->_orientation = UP;
 }
 
+//! Down button action
 /**
  * Called when pressing the DOWN button
- * @param: status (int)
+ * Same as Characters::_up
+ * @param status The key status (1 | 0)
+ * @sa Characters::_up
  */
 
 void	Characters::_down(int status) {
@@ -490,9 +528,12 @@ void	Characters::_down(int status) {
 		this->_orientation = DOWN;
 }
 
+//! Attack action
 /**
  * Attack action
- * @param: status (int)
+ * Call the weapon attack() function.
+ * @param status The key status (1 | 0)
+ * @sa Weapon::attack
  */
 void	Characters::_attack(int status) {
 	this->_setCategory("attack");
@@ -503,6 +544,13 @@ void	Characters::_attack(int status) {
 	}
 }
 
+//! Pick an item
+/**
+ * Pick an item on the floor
+ * Replace the current relatable item by the new one.
+ * @todo Making throw the old item.
+ * @param status The key status (1 | 0)
+ */
 void	Characters::_pickupItem(int status) {
 	if (this->_item == nullptr)
 		return;
@@ -511,11 +559,21 @@ void	Characters::_pickupItem(int status) {
 	theSwitchboard.Broadcast(new Message("DeleteEquipment"));
 }
 
+//! Equip a weapon
+/**
+ * Equip a new weapon to the Character, and update the HUD.
+ * @weapon The Weapon object
+ */
 void	Characters::equipWeapon(Weapon* weapon) {
 		this->_weapon = new Weapon(weapon);
 		Game::getHUD()->items(this->_weapon);
 }
 
+//! Set basics hp
+/**
+ * Set HP to the Character.
+ * @param hp The HP number
+ */
 void						Characters::setHP(int hp) {
 	if (hp > this->_maxHp)
 		this->_hp = this->_maxHp;
@@ -523,11 +581,20 @@ void						Characters::setHP(int hp) {
 		this->_hp = hp;
 };
 
+//! Destroy an Enemy.
+/**
+ * Made theSwitchboard Unsubscribe from the object, and destroy it.
+ */
 void						Characters::_destroyEnemy(void) {
 	theSwitchboard.UnsubscribeFrom(this, "destroyEnemy");
 	Game::addToDestroyList(this);
 }
 
+//! Animation for the Hero death
+/**
+ * A beautiful for the Hero death.
+ * Make things black, ang get a beer.
+ */
 void						Characters::_heroDeath(void) {
 	this->_setCategory("death");
 	this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,

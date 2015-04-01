@@ -1,0 +1,168 @@
+\hypertarget{class_map}{\section{Map Class Reference}
+\label{class_map}\index{Map@{Map}}
+}
+
+
+{\ttfamily \#include $<$Map.\-hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_map_a0f5ad0fd4563497b4214038cbca8b582}{Map} ()
+\item 
+\hyperlink{class_map_aeec3ac95150a6a9df4a417be707bcf9d}{Map} (std\-::string name)
+\item 
+\hyperlink{class_map_aa403fbe09394ccf39747588f5168e3b2}{$\sim$\-Map} ()
+\item 
+void \hyperlink{class_map_affab3537641a7985559f83ea083e00ca}{set\-Height} (int h)
+\item 
+void \hyperlink{class_map_a2915ccde4d8a2ba8142677baea803467}{set\-Width} (int w)
+\item 
+void \hyperlink{class_map_a7ac17b33fc7266fcc30b19c33c70c3ca}{set\-Image} (std\-::string n)
+\item 
+void \hyperlink{class_map_a7faf61ea4f43b4c1e15bd3d8744366b6}{set\-Tile\-Height} (int h)
+\item 
+void \hyperlink{class_map_a88d4cda4b476ae4ee3487786b0feccd9}{set\-Tile\-Width} (int w)
+\item 
+void \hyperlink{class_map_ada51d21543808fa10d085c3c09bda7f9}{set\-Image\-Height} (int h)
+\item 
+void \hyperlink{class_map_a38f4a514bf3993ef816b6feda56ab36e}{set\-Image\-Width} (int w)
+\item 
+void \hyperlink{class_map_a8b3a39287db471b6faec3cfb281b2da6}{add\-Element} (\hyperlink{class_elements}{Elements} $\ast$e)
+\item 
+void \hyperlink{class_map_a4352368e79238539142cf1397c992c65}{add\-Map\-Element} (int n)
+\item 
+void \hyperlink{class_map_a6a1130ac8c3c4d6dcf636759aa970b9b}{set\-Map} (std\-::vector$<$ int $>$ map)
+\item 
+void \hyperlink{class_map_a391c92153c0a6134bec05ae442d4fff0}{set\-Properties} (std\-::map$<$ int, std\-::map$<$ std\-::string, Json\-::\-Value $>$ $>$ \hyperlink{jquery_8js_a2335e57f79b6acfb6de59c235dc8a83e}{p})
+\item 
+void \hyperlink{class_map_aba8bab272a45054368279643d75fa3ba}{display} (void)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Licensed to the Apache Software Foundation (A\-S\-F) under one or more contributor license agreements. See the N\-O\-T\-I\-C\-E file distributed with this work for additional information regarding copyright ownership. The A\-S\-F licenses this file to you under the Apache License, Version 2.\-0 (the \char`\"{}\-License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+\href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\-://www.\-apache.\-org/licenses/\-L\-I\-C\-E\-N\-S\-E-\/2.\-0}
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\-A\-S I\-S\char`\"{} B\-A\-S\-I\-S, W\-I\-T\-H\-O\-U\-T W\-A\-R\-R\-A\-N\-T\-I\-E\-S O\-R C\-O\-N\-D\-I\-T\-I\-O\-N\-S O\-F A\-N\-Y K\-I\-N\-D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\-: \hyperlink{_map_8hpp}{Map.\-hpp} Creation\-: 2015-\/02-\/02 19\-:06 Louis Solofrizzo \href{mailto:louis@ne02ptzero.me}{\tt louis@ne02ptzero.\-me} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_map_a0f5ad0fd4563497b4214038cbca8b582}{\index{Map@{Map}!Map@{Map}}
+\index{Map@{Map}!Map@{Map}}
+\subsubsection[{Map}]{\setlength{\rightskip}{0pt plus 5cm}Map\-::\-Map (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_map_a0f5ad0fd4563497b4214038cbca8b582}
+Licensed to the Apache Software Foundation (A\-S\-F) under one or more contributor license agreements. See the N\-O\-T\-I\-C\-E file distributed with this work for additional information regarding copyright ownership. The A\-S\-F licenses this file to you under the Apache License, Version 2.\-0 (the \char`\"{}\-License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+\href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\-://www.\-apache.\-org/licenses/\-L\-I\-C\-E\-N\-S\-E-\/2.\-0}
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\-A\-S I\-S\char`\"{} B\-A\-S\-I\-S, W\-I\-T\-H\-O\-U\-T W\-A\-R\-R\-A\-N\-T\-I\-E\-S O\-R C\-O\-N\-D\-I\-T\-I\-O\-N\-S O\-F A\-N\-Y K\-I\-N\-D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\-: \hyperlink{_map_8hpp}{Map.\-hpp} Creation\-: 2015-\/03-\/02 19\-:10 Louis Solofrizzo \href{mailto:louis@ne02ptzero.me}{\tt louis@ne02ptzero.\-me} Basic constructor \hypertarget{class_map_aeec3ac95150a6a9df4a417be707bcf9d}{\index{Map@{Map}!Map@{Map}}
+\index{Map@{Map}!Map@{Map}}
+\subsubsection[{Map}]{\setlength{\rightskip}{0pt plus 5cm}Map\-::\-Map (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{name}
+\end{DoxyParamCaption}
+)}}\label{class_map_aeec3ac95150a6a9df4a417be707bcf9d}
+Main constructor \hypertarget{class_map_aa403fbe09394ccf39747588f5168e3b2}{\index{Map@{Map}!$\sim$\-Map@{$\sim$\-Map}}
+\index{$\sim$\-Map@{$\sim$\-Map}!Map@{Map}}
+\subsubsection[{$\sim$\-Map}]{\setlength{\rightskip}{0pt plus 5cm}Map\-::$\sim$\-Map (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_map_aa403fbe09394ccf39747588f5168e3b2}
+Basic destructor 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_map_a8b3a39287db471b6faec3cfb281b2da6}{\index{Map@{Map}!add\-Element@{add\-Element}}
+\index{add\-Element@{add\-Element}!Map@{Map}}
+\subsubsection[{add\-Element}]{\setlength{\rightskip}{0pt plus 5cm}void Map\-::add\-Element (
+\begin{DoxyParamCaption}
+\item[{{\bf Elements} $\ast$}]{e}
+\end{DoxyParamCaption}
+)}}\label{class_map_a8b3a39287db471b6faec3cfb281b2da6}
+\hypertarget{class_map_a4352368e79238539142cf1397c992c65}{\index{Map@{Map}!add\-Map\-Element@{add\-Map\-Element}}
+\index{add\-Map\-Element@{add\-Map\-Element}!Map@{Map}}
+\subsubsection[{add\-Map\-Element}]{\setlength{\rightskip}{0pt plus 5cm}void Map\-::add\-Map\-Element (
+\begin{DoxyParamCaption}
+\item[{int}]{n}
+\end{DoxyParamCaption}
+)}}\label{class_map_a4352368e79238539142cf1397c992c65}
+\hypertarget{class_map_aba8bab272a45054368279643d75fa3ba}{\index{Map@{Map}!display@{display}}
+\index{display@{display}!Map@{Map}}
+\subsubsection[{display}]{\setlength{\rightskip}{0pt plus 5cm}void Map\-::display (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_map_aba8bab272a45054368279643d75fa3ba}
+Display the map \hypertarget{class_map_affab3537641a7985559f83ea083e00ca}{\index{Map@{Map}!set\-Height@{set\-Height}}
+\index{set\-Height@{set\-Height}!Map@{Map}}
+\subsubsection[{set\-Height}]{\setlength{\rightskip}{0pt plus 5cm}void Map\-::set\-Height (
+\begin{DoxyParamCaption}
+\item[{int}]{h}
+\end{DoxyParamCaption}
+)}}\label{class_map_affab3537641a7985559f83ea083e00ca}
+\hypertarget{class_map_a7ac17b33fc7266fcc30b19c33c70c3ca}{\index{Map@{Map}!set\-Image@{set\-Image}}
+\index{set\-Image@{set\-Image}!Map@{Map}}
+\subsubsection[{set\-Image}]{\setlength{\rightskip}{0pt plus 5cm}void Map\-::set\-Image (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{n}
+\end{DoxyParamCaption}
+)}}\label{class_map_a7ac17b33fc7266fcc30b19c33c70c3ca}
+\hypertarget{class_map_ada51d21543808fa10d085c3c09bda7f9}{\index{Map@{Map}!set\-Image\-Height@{set\-Image\-Height}}
+\index{set\-Image\-Height@{set\-Image\-Height}!Map@{Map}}
+\subsubsection[{set\-Image\-Height}]{\setlength{\rightskip}{0pt plus 5cm}void Map\-::set\-Image\-Height (
+\begin{DoxyParamCaption}
+\item[{int}]{h}
+\end{DoxyParamCaption}
+)}}\label{class_map_ada51d21543808fa10d085c3c09bda7f9}
+\hypertarget{class_map_a38f4a514bf3993ef816b6feda56ab36e}{\index{Map@{Map}!set\-Image\-Width@{set\-Image\-Width}}
+\index{set\-Image\-Width@{set\-Image\-Width}!Map@{Map}}
+\subsubsection[{set\-Image\-Width}]{\setlength{\rightskip}{0pt plus 5cm}void Map\-::set\-Image\-Width (
+\begin{DoxyParamCaption}
+\item[{int}]{w}
+\end{DoxyParamCaption}
+)}}\label{class_map_a38f4a514bf3993ef816b6feda56ab36e}
+\hypertarget{class_map_a6a1130ac8c3c4d6dcf636759aa970b9b}{\index{Map@{Map}!set\-Map@{set\-Map}}
+\index{set\-Map@{set\-Map}!Map@{Map}}
+\subsubsection[{set\-Map}]{\setlength{\rightskip}{0pt plus 5cm}void Map\-::set\-Map (
+\begin{DoxyParamCaption}
+\item[{std\-::vector$<$ int $>$}]{map}
+\end{DoxyParamCaption}
+)}}\label{class_map_a6a1130ac8c3c4d6dcf636759aa970b9b}
+\hypertarget{class_map_a391c92153c0a6134bec05ae442d4fff0}{\index{Map@{Map}!set\-Properties@{set\-Properties}}
+\index{set\-Properties@{set\-Properties}!Map@{Map}}
+\subsubsection[{set\-Properties}]{\setlength{\rightskip}{0pt plus 5cm}void Map\-::set\-Properties (
+\begin{DoxyParamCaption}
+\item[{std\-::map$<$ int, std\-::map$<$ std\-::string, Json\-::\-Value $>$ $>$}]{p}
+\end{DoxyParamCaption}
+)}}\label{class_map_a391c92153c0a6134bec05ae442d4fff0}
+\hypertarget{class_map_a7faf61ea4f43b4c1e15bd3d8744366b6}{\index{Map@{Map}!set\-Tile\-Height@{set\-Tile\-Height}}
+\index{set\-Tile\-Height@{set\-Tile\-Height}!Map@{Map}}
+\subsubsection[{set\-Tile\-Height}]{\setlength{\rightskip}{0pt plus 5cm}void Map\-::set\-Tile\-Height (
+\begin{DoxyParamCaption}
+\item[{int}]{h}
+\end{DoxyParamCaption}
+)}}\label{class_map_a7faf61ea4f43b4c1e15bd3d8744366b6}
+\hypertarget{class_map_a88d4cda4b476ae4ee3487786b0feccd9}{\index{Map@{Map}!set\-Tile\-Width@{set\-Tile\-Width}}
+\index{set\-Tile\-Width@{set\-Tile\-Width}!Map@{Map}}
+\subsubsection[{set\-Tile\-Width}]{\setlength{\rightskip}{0pt plus 5cm}void Map\-::set\-Tile\-Width (
+\begin{DoxyParamCaption}
+\item[{int}]{w}
+\end{DoxyParamCaption}
+)}}\label{class_map_a88d4cda4b476ae4ee3487786b0feccd9}
+\hypertarget{class_map_a2915ccde4d8a2ba8142677baea803467}{\index{Map@{Map}!set\-Width@{set\-Width}}
+\index{set\-Width@{set\-Width}!Map@{Map}}
+\subsubsection[{set\-Width}]{\setlength{\rightskip}{0pt plus 5cm}void Map\-::set\-Width (
+\begin{DoxyParamCaption}
+\item[{int}]{w}
+\end{DoxyParamCaption}
+)}}\label{class_map_a2915ccde4d8a2ba8142677baea803467}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/louis/\-Documents/rogue-\/like/\-Sources/inc/\hyperlink{_map_8hpp}{Map.\-hpp}\item 
+/home/louis/\-Documents/rogue-\/like/\-Sources/src/\hyperlink{_map_8cpp}{Map.\-cpp}\end{DoxyCompactItemize}

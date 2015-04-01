@@ -1,0 +1,201 @@
+\hypertarget{class_projectile}{\section{Projectile Class Reference}
+\label{class_projectile}\index{Projectile@{Projectile}}
+}
+
+
+{\ttfamily \#include $<$Projectile.\-hpp$>$}
+
+
+
+Inheritance diagram for Projectile\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=154pt]{class_projectile__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Projectile\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=154pt]{class_projectile__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_projectile_aa77304b2b631673899c673ea5ff660bd}{Projectile} (float \hyperlink{jquery_8js_a4c3eadaa5164016d2c340d495fc6e55e}{x}, float y, int direction, std\-::string owner)
+\item 
+\hyperlink{class_projectile_a2131209b192886d9be4fcabe3511a1d3}{Projectile} (\hyperlink{class_weapon}{Weapon} $\ast$w, \hyperlink{class_characters}{Characters} $\ast$\hyperlink{jquery_8js_abce695e0af988ece0826d9ad59b8160d}{c})
+\item 
+\hyperlink{class_projectile_a94903e021fa2edab60ba3836ca0b937d}{$\sim$\-Projectile} ()
+\item 
+std\-::string \hyperlink{class_projectile_ace3baa31fb47d65321b3091e55ea0214}{get\-Name} (void)
+\item 
+std\-::string \hyperlink{class_projectile_a259c762588761610eb08f4590409be47}{get\-Flavor} (void)
+\item 
+std\-::string \hyperlink{class_projectile_a3d296e98b7227371fdfcfd9fef8bf505}{get\-Attack} (void)
+\item 
+float \hyperlink{class_projectile_a2342bda48bea3511d0b97f5cba7b095f}{get\-Active} (void)
+\item 
+int \hyperlink{class_projectile_a284ae1c52821f8a9bd5972793eb210d8}{get\-Size} (void)
+\item 
+int \hyperlink{class_projectile_ab86af40b130ac18871e9a4baec80dc85}{get\-Damage} (void)
+\item 
+int \hyperlink{class_projectile_ad54c17a658890109a332e643bb8446f2}{get\-Pushback} (void)
+\item 
+float \hyperlink{class_projectile_acf9cf10cbb254d444c9b617bd0baf075}{get\-Recovery} (void)
+\item 
+int \hyperlink{class_projectile_acdc9aa548f9606221bb3fe15e4a7dfa7}{attack\-Ready} (void)
+\item 
+void \hyperlink{class_projectile_a7347375e9c8cae921709ba56265af0fd}{Begin\-Contact} (\hyperlink{class_elements}{Elements} $\ast$elem, b2\-Contact $\ast$contact)
+\item 
+void \hyperlink{class_projectile_a9f8fa9403a414fa1fd6ee092720ca4e6}{End\-Contact} (\hyperlink{class_elements}{Elements} $\ast$elem, b2\-Contact $\ast$contact)
+\item 
+void \hyperlink{class_projectile_aa5247586a6ca84625abed35767b8f282}{Receive\-Message} (Message $\ast$m)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_projectile_aa77304b2b631673899c673ea5ff660bd}{\index{Projectile@{Projectile}!Projectile@{Projectile}}
+\index{Projectile@{Projectile}!Projectile@{Projectile}}
+\subsubsection[{Projectile}]{\setlength{\rightskip}{0pt plus 5cm}Projectile\-::\-Projectile (
+\begin{DoxyParamCaption}
+\item[{float}]{x, }
+\item[{float}]{y, }
+\item[{int}]{direction, }
+\item[{std\-::string}]{owner}
+\end{DoxyParamCaption}
+)}}\label{class_projectile_aa77304b2b631673899c673ea5ff660bd}
+\hypertarget{class_projectile_a2131209b192886d9be4fcabe3511a1d3}{\index{Projectile@{Projectile}!Projectile@{Projectile}}
+\index{Projectile@{Projectile}!Projectile@{Projectile}}
+\subsubsection[{Projectile}]{\setlength{\rightskip}{0pt plus 5cm}Projectile\-::\-Projectile (
+\begin{DoxyParamCaption}
+\item[{{\bf Weapon} $\ast$}]{w, }
+\item[{{\bf Characters} $\ast$}]{c}
+\end{DoxyParamCaption}
+)}}\label{class_projectile_a2131209b192886d9be4fcabe3511a1d3}
+Licensed to the Apache Software Foundation (A\-S\-F) under one or more contributor license agreements. See the N\-O\-T\-I\-C\-E file distributed with this work for additional information regarding copyright ownership. The A\-S\-F licenses this file to you under the Apache License, Version 2.\-0 (the \char`\"{}\-License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+\href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\-://www.\-apache.\-org/licenses/\-L\-I\-C\-E\-N\-S\-E-\/2.\-0}
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\-A\-S I\-S\char`\"{} B\-A\-S\-I\-S, W\-I\-T\-H\-O\-U\-T W\-A\-R\-R\-A\-N\-T\-I\-E\-S O\-R C\-O\-N\-D\-I\-T\-I\-O\-N\-S O\-F A\-N\-Y K\-I\-N\-D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\-: \hyperlink{_projectile_8cpp}{Projectile.\-cpp} Creation\-: 2015-\/02-\/23 15\-:140 Matthieu Maudet \href{mailto:mmaudet@student.42.fr}{\tt mmaudet@student.\-42.\-fr} \hypertarget{class_projectile_a94903e021fa2edab60ba3836ca0b937d}{\index{Projectile@{Projectile}!$\sim$\-Projectile@{$\sim$\-Projectile}}
+\index{$\sim$\-Projectile@{$\sim$\-Projectile}!Projectile@{Projectile}}
+\subsubsection[{$\sim$\-Projectile}]{\setlength{\rightskip}{0pt plus 5cm}Projectile\-::$\sim$\-Projectile (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_projectile_a94903e021fa2edab60ba3836ca0b937d}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_projectile_acdc9aa548f9606221bb3fe15e4a7dfa7}{\index{Projectile@{Projectile}!attack\-Ready@{attack\-Ready}}
+\index{attack\-Ready@{attack\-Ready}!Projectile@{Projectile}}
+\subsubsection[{attack\-Ready}]{\setlength{\rightskip}{0pt plus 5cm}int Projectile\-::attack\-Ready (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_projectile_acdc9aa548f9606221bb3fe15e4a7dfa7}
+\hypertarget{class_projectile_a7347375e9c8cae921709ba56265af0fd}{\index{Projectile@{Projectile}!Begin\-Contact@{Begin\-Contact}}
+\index{Begin\-Contact@{Begin\-Contact}!Projectile@{Projectile}}
+\subsubsection[{Begin\-Contact}]{\setlength{\rightskip}{0pt plus 5cm}void Projectile\-::\-Begin\-Contact (
+\begin{DoxyParamCaption}
+\item[{{\bf Elements} $\ast$}]{elem, }
+\item[{b2\-Contact $\ast$}]{contact}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_projectile_a7347375e9c8cae921709ba56265af0fd}
+
+
+Reimplemented from \hyperlink{class_elements_a108938e08197adc349e98fb91abe1b5a}{Elements}.
+
+\hypertarget{class_projectile_a9f8fa9403a414fa1fd6ee092720ca4e6}{\index{Projectile@{Projectile}!End\-Contact@{End\-Contact}}
+\index{End\-Contact@{End\-Contact}!Projectile@{Projectile}}
+\subsubsection[{End\-Contact}]{\setlength{\rightskip}{0pt plus 5cm}void Projectile\-::\-End\-Contact (
+\begin{DoxyParamCaption}
+\item[{{\bf Elements} $\ast$}]{elem, }
+\item[{b2\-Contact $\ast$}]{contact}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_projectile_a9f8fa9403a414fa1fd6ee092720ca4e6}
+
+
+Reimplemented from \hyperlink{class_elements_a42c3b694edefcc789109bd952a66d918}{Elements}.
+
+\hypertarget{class_projectile_a2342bda48bea3511d0b97f5cba7b095f}{\index{Projectile@{Projectile}!get\-Active@{get\-Active}}
+\index{get\-Active@{get\-Active}!Projectile@{Projectile}}
+\subsubsection[{get\-Active}]{\setlength{\rightskip}{0pt plus 5cm}float Projectile\-::get\-Active (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_projectile_a2342bda48bea3511d0b97f5cba7b095f}
+\hypertarget{class_projectile_a3d296e98b7227371fdfcfd9fef8bf505}{\index{Projectile@{Projectile}!get\-Attack@{get\-Attack}}
+\index{get\-Attack@{get\-Attack}!Projectile@{Projectile}}
+\subsubsection[{get\-Attack}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Projectile\-::get\-Attack (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_projectile_a3d296e98b7227371fdfcfd9fef8bf505}
+\hypertarget{class_projectile_ab86af40b130ac18871e9a4baec80dc85}{\index{Projectile@{Projectile}!get\-Damage@{get\-Damage}}
+\index{get\-Damage@{get\-Damage}!Projectile@{Projectile}}
+\subsubsection[{get\-Damage}]{\setlength{\rightskip}{0pt plus 5cm}int Projectile\-::get\-Damage (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_projectile_ab86af40b130ac18871e9a4baec80dc85}
+\hypertarget{class_projectile_a259c762588761610eb08f4590409be47}{\index{Projectile@{Projectile}!get\-Flavor@{get\-Flavor}}
+\index{get\-Flavor@{get\-Flavor}!Projectile@{Projectile}}
+\subsubsection[{get\-Flavor}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Projectile\-::get\-Flavor (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_projectile_a259c762588761610eb08f4590409be47}
+\hypertarget{class_projectile_ace3baa31fb47d65321b3091e55ea0214}{\index{Projectile@{Projectile}!get\-Name@{get\-Name}}
+\index{get\-Name@{get\-Name}!Projectile@{Projectile}}
+\subsubsection[{get\-Name}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Projectile\-::get\-Name (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_projectile_ace3baa31fb47d65321b3091e55ea0214}
+\hypertarget{class_projectile_ad54c17a658890109a332e643bb8446f2}{\index{Projectile@{Projectile}!get\-Pushback@{get\-Pushback}}
+\index{get\-Pushback@{get\-Pushback}!Projectile@{Projectile}}
+\subsubsection[{get\-Pushback}]{\setlength{\rightskip}{0pt plus 5cm}int Projectile\-::get\-Pushback (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_projectile_ad54c17a658890109a332e643bb8446f2}
+\hypertarget{class_projectile_acf9cf10cbb254d444c9b617bd0baf075}{\index{Projectile@{Projectile}!get\-Recovery@{get\-Recovery}}
+\index{get\-Recovery@{get\-Recovery}!Projectile@{Projectile}}
+\subsubsection[{get\-Recovery}]{\setlength{\rightskip}{0pt plus 5cm}float Projectile\-::get\-Recovery (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_projectile_acf9cf10cbb254d444c9b617bd0baf075}
+\hypertarget{class_projectile_a284ae1c52821f8a9bd5972793eb210d8}{\index{Projectile@{Projectile}!get\-Size@{get\-Size}}
+\index{get\-Size@{get\-Size}!Projectile@{Projectile}}
+\subsubsection[{get\-Size}]{\setlength{\rightskip}{0pt plus 5cm}int Projectile\-::get\-Size (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_projectile_a284ae1c52821f8a9bd5972793eb210d8}
+\hypertarget{class_projectile_aa5247586a6ca84625abed35767b8f282}{\index{Projectile@{Projectile}!Receive\-Message@{Receive\-Message}}
+\index{Receive\-Message@{Receive\-Message}!Projectile@{Projectile}}
+\subsubsection[{Receive\-Message}]{\setlength{\rightskip}{0pt plus 5cm}void Projectile\-::\-Receive\-Message (
+\begin{DoxyParamCaption}
+\item[{Message $\ast$}]{m}
+\end{DoxyParamCaption}
+)}}\label{class_projectile_aa5247586a6ca84625abed35767b8f282}
+Receive broadcasts message 
+\begin{DoxyParams}{Parameters}
+{\em } & (Message $\ast$) \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/louis/\-Documents/rogue-\/like/\-Sources/inc/\hyperlink{_projectile_8hpp}{Projectile.\-hpp}\item 
+/home/louis/\-Documents/rogue-\/like/\-Sources/src/\hyperlink{_projectile_8cpp}{Projectile.\-cpp}\end{DoxyCompactItemize}

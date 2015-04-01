@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['_5fcanjump',['_canJump',['../class_characters.html#a7488ab360a4a770d46a2578f87f02511',1,'Characters']]],
+  ['_5fcanmove',['_canMove',['../class_characters.html#a817a390b358c806dd3e5c353a815871c',1,'Characters']]],
+  ['_5fgrounds',['_grounds',['../class_characters.html#a35ee6e0ded905f63112a08cd3ad76435',1,'Characters']]],
+  ['_5fhitbox',['_hitbox',['../class_elements.html#a7e38d955602d5ea837411a6ffcb0d2cd',1,'Elements']]],
+  ['_5fhitboxtype',['_hitboxType',['../class_elements.html#a8968fcb76f2c8473b2715415ddc2d8be',1,'Elements']]],
+  ['_5fhp',['_hp',['../class_characters.html#a08ee77521ac4ceaf02fc663e41251e6d',1,'Characters']]],
+  ['_5fid',['_id',['../class_characters.html#a1ea81e7d8e2bfb27f9a55b9aa6fbdd2a',1,'Characters']]],
+  ['_5finvincibility',['_invincibility',['../class_characters.html#a6a43d519e518708eddef2438dae04a1f',1,'Characters']]],
+  ['_5fisattacking',['_isAttacking',['../class_characters.html#a19ecafdcd8a707d8b3e0fe3c7069b99e',1,'Characters']]],
+  ['_5fisjump',['_isJump',['../class_characters.html#a05cdafb4f63caae675982af22c32fba5',1,'Characters']]],
+  ['_5fisrunning',['_isRunning',['../class_characters.html#a9a8242e24955e5a0c75e69598687c55f',1,'Characters']]],
+  ['_5fitem',['_item',['../class_characters.html#a0befc3d5cf681d5cd555929ffde0d25a',1,'Characters']]],
+  ['_5flastaction',['_lastAction',['../class_characters.html#a7fd13ae98277d01b16ad744852d5bd9a',1,'Characters']]],
+  ['_5flatorientation',['_latOrientation',['../class_characters.html#a1d78d9a93ebfad3f058a155505257c91',1,'Characters']]],
+  ['_5fmaxhp',['_maxHp',['../class_characters.html#abc14e96e35df47aba94dbf23b3dbdba6',1,'Characters']]],
+  ['_5fmaxspeed',['_maxSpeed',['../class_characters.html#a71736ea7efb50f0174865607d715c8f1',1,'Characters']]],
+  ['_5fname',['_name',['../class_characters.html#aa07da1842926f30143e7504fb6cbeb18',1,'Characters']]],
+  ['_5forientation',['_orientation',['../class_characters.html#ad1f8866efe25f7c8997a134f536fe121',1,'Characters']]],
+  ['_5fsize',['_size',['../class_characters.html#aceee7dd6aae36a7eacefcc276f3423c0',1,'Characters']]],
+  ['_5fwalls',['_walls',['../class_characters.html#af296e78457066933b426e1a1e950a9d4',1,'Characters']]],
+  ['_5fwallsleft',['_wallsLeft',['../class_characters.html#a7a12ea35974e9b9d5fce08b194c37df0',1,'Characters']]],
+  ['_5fwallsright',['_wallsRight',['../class_characters.html#a60b4de9d954c3de8093bfce23e0e0cec',1,'Characters']]],
+  ['_5fweapon',['_weapon',['../class_characters.html#aee5f545db9a5e0ee19af66dc0754b602',1,'Characters']]]
+];

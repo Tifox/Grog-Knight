@@ -67,6 +67,7 @@ class Characters : public Elements {
 		std::string						getLastAction(void);
 		int								getHP(void);
 		void							setHP(int h);
+		Weapon							*getWeapon(void);
 		// Virtual function, overwritten in childs
 		virtual void	actionCallback(std::string name, int status) {};
 		virtual void	equipWeapon(Weapon* weapon);
@@ -80,6 +81,7 @@ class Characters : public Elements {
 		int				_maxSpeed;
 		int				_isJump;
 		int				_isRunning;
+		int				_isAttacking;
 		int				_hp;
 		int				_maxHp;
 		bool			_canMove;
@@ -111,6 +113,7 @@ class Characters : public Elements {
 		std::map<std::string, std::map<std::string, Json::Value> >	_attr;
 		std::string		_category;
 
+		void	_heroDeath();
 		void	_readFile(std::string name);
 		void	_parseJson(std::string file);
 };

@@ -52,6 +52,7 @@ public:
 	std::string		getName(void);
 	std::string		getFlavor(void);
 	std::string		getAttack(void);
+	std::string		getSprite(void);
 	float			getActive(void);
 	int				getSize(void);
 	int				getDamage(void);
@@ -59,11 +60,14 @@ public:
 	float			getRecovery(void);
 	int				attackReady(void);
 
+	void			isAttacking(int i);
+
 private:
 	std::map<std::string, std::map<std::string, Json::Value> >	_attr;
 
 	std::string		_name;
 	std::string		_flavor;
+	std::string		_sprite;
 	std::string		_attack;
 	int				_canAttack;
 	float			_recovery;

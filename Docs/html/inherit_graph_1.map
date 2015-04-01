@@ -1,0 +1,13 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node3" href="$class_elements.html" title="Elements" alt="" coords="155,192,232,221"/>
+<area shape="rect" id="node5" href="$class_characters.html" title="Characters" alt="" coords="283,59,368,88"/>
+<area shape="rect" id="node11" href="$class_object.html" title="Object" alt="" coords="296,112,355,141"/>
+<area shape="rect" id="node17" href="$class_projectile.html" title="Projectile" alt="" coords="288,165,363,195"/>
+<area shape="rect" id="node19" href="$class_shooter.html" title="Shooter" alt="" coords="292,219,359,248"/>
+<area shape="rect" id="node21" href="$class_weapon.html" title="Weapon" alt="" coords="291,272,360,301"/>
+<area shape="rect" id="node23" href="$class_weapon_list.html" title="WeaponList" alt="" coords="280,325,371,355"/>
+<area shape="rect" id="node7" href="$class_enemy.html" title="Enemy" alt="" coords="436,5,497,35"/>
+<area shape="rect" id="node9" href="$class_hero.html" title="Hero" alt="" coords="441,59,492,88"/>
+<area shape="rect" id="node13" href="$class_consumable.html" title="Consumable" alt="" coords="420,112,513,141"/>
+<area shape="rect" id="node15" href="$class_equipment.html" title="Equipment" alt="" coords="425,165,508,195"/>
+</map>

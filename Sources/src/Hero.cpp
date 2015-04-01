@@ -25,8 +25,9 @@
 
 # include "Hero.hpp"
 
+//! Constructor
 /**
- * Basic constructor
+ * This constructor is making some subscribtions for himself.
  */
 Hero::Hero(void) : Characters("Hero") {
 	theSwitchboard.SubscribeTo(this, "canMove");
@@ -34,6 +35,7 @@ Hero::Hero(void) : Characters("Hero") {
 	return ;
 }
 
+//! Destructor
 /**
  * Basic Destructor
  */
@@ -41,28 +43,44 @@ Hero::~Hero(void) {
 	return ;
 }
 
+//! Init Animation function
 /**
- * Init Animation
+ * This function making the first animation call.
  */
 void	Hero::init(void) {
 	this->AnimCallback("base");
 }
 
-
+//! Action callback function
 /**
  * Mother's callback for actions
- * @param: name (std::string)
- * @param: status (int)
+ * See Characters::ReceiveMessage for more information.
+ * @param: name The action name
+ * @param: status The key status (1 | 0)
+ * @sa: Characters::ReceiveMessage
  */
 void	Hero::actionCallback(std::string name, int status) {
+	if (name == "attack" && status == 1 && this->_weapon->attackReady() == 1) {
+		this->_weapon->isAttacking(0);
+		this->changeSizeTo(Vector2(1.75f, 1));
+		if (this->_orientation == RIGHT)
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+									  this->_getAttr("beginFrame_right").asInt(),
+									  this->_getAttr("endFrame_right").asInt(), "base");
+		else
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+									  this->_getAttr("beginFrame_left").asInt(),
+									  this->_getAttr("endFrame_left").asInt(), "base");
+	}
 	return ;
 }
 
+//! Begin collision function
 /**
  * Collision begin callback
- * @param: elem (Elements *)
- * @param: contact (b2Contact *)
- * @note: This function is called just before a collision
+ * /!\ This function is called just before a collision
+ * @param: elem The other Element
+ * @param: contact The Box2D contact object
  */
 void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 	Characters::BeginContact(elem, contact);
@@ -71,6 +89,7 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		Game::stopRunning(this);
 		this->_isRunning = 0;
 		this->_isJump = 1;
+		this->changeSizeTo(Vector2(1, 1));
 		if (this->_invincibility == false) {
 			this->changeCanMove();
 			this->setHP(this->getHP() - 25);
@@ -81,15 +100,15 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
 			this->ApplyLinearImpulse(Vector2(4, 4), Vector2(0, 0));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-									  this->_getAttr("takeDamage", "beginFrame_right").asInt(),
-									  this->_getAttr("takeDamage", "endFrame_right").asInt(),
+									  this->_getAttr("takeDamage", "beginFrame_left").asInt(),
+									  this->_getAttr("takeDamage", "endFrame_left").asInt(),
 									  "takeDamage");
 		}
 		else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x) {
 			this->ApplyLinearImpulse(Vector2(-4, 4), Vector2(0, 0));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-									  this->_getAttr("takeDamage", "beginFrame_left").asInt(),
-									  this->_getAttr("takeDamage", "endFrame_left").asInt(),
+									  this->_getAttr("takeDamage", "beginFrame_right").asInt(),
+									  this->_getAttr("takeDamage", "endFrame_right").asInt(),
 									  "takeDamage");
 		}
 		this->SetColor(1,0,0,0.8f);
@@ -114,6 +133,13 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 	}
 }
 
+//! End collision function
+/**
+ * End contact callback.
+ * /!\ This function is actually called after a collision.
+ * @param: elem The other Element.
+ * @param contact The Box2D contact object
+ */
 void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 	Characters::EndContact(elem, contact);
 	if (elem->getAttributes()["type"] == "Object") {

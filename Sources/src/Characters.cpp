@@ -25,16 +25,15 @@
 
 # include "Characters.hpp"
 
-/**
- * Base constructor
- */
+//! Base constructor
 Characters::Characters(void) {
 	return ;
 }
 
+//! Main constructor
 /**
- * Main constructor
- * @param: name (std::string)
+ * Setting base physic, some attributes and some intern variables
+ * @param name The name of the character (Enemy, Hero, etc ...)
  */
 Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0) {
 	this->addAttribute("physic", "1");
@@ -51,18 +50,19 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_grounds.clear();
 	this->_walls.clear();
 	this->_item = nullptr;
+	this->_isAttacking = 0;
 }
 
-/**
- * Basic destructor
- */
+//! Basic destructor
 Characters::~Characters(void) {
 	return ;
 }
 
+//! Read the json config file
 /**
- * Read a config file, base on the name of the class
- * @param: name (std::string)
+ * Read a json config file, based on the name of the class
+ * For more documentation on the json style, uh, just wait we write it.
+ * @param name (std::string)
  */
 void	Characters::_readFile(std::string name) {
 	std::string			file;
@@ -79,10 +79,10 @@ void	Characters::_readFile(std::string name) {
 	this->_parseJson(buffer.str());
 }
 
+//! Parse the json into workable value
 /**
  * Parse, read and stock the info in the config file
- * @param: file (std::string)
- * @note: file is the whole file content
+ * @param file The file (A string contain the all content of a file, not is name.)
  */
 void	Characters::_parseJson(std::string file) {
 	Json::Reader	read;
@@ -110,7 +110,6 @@ void	Characters::_parseJson(std::string file) {
 			this->_attr[i.key().asString()] = tmp;
 			// Subcribe to the broadcasts
 			if (v.key().asString() == "subscribe") {
-//				Log::info("SubscribeTo " + (*v).asString());
 				theSwitchboard.SubscribeTo(this, (*v).asString() + "Pressed");
 				theSwitchboard.SubscribeTo(this, (*v).asString() + "Released");
 			}
@@ -118,11 +117,12 @@ void	Characters::_parseJson(std::string file) {
 	}
 }
 
+//! Get an attribute load in the conf file.
 /**
  * Get a Json::Value of a key in the config file
- * @param: category (std::string)
- * @param: key (std::string)
- * @note: See the docs for the utilisation of Json::Value
+ * @param category The category of the attribute
+ * @param: key The name of the attribute
+ * @return A Json::Value, See the docs of jsoncpp for the utilisation of Json::Value
  */
 Json::Value		Characters::_getAttr(std::string category, std::string key) {
 	if (this->_attr.find(category) != this->_attr.end()) {
@@ -136,17 +136,24 @@ Json::Value		Characters::_getAttr(std::string category, std::string key) {
 	return nullptr;
 }
 
+//! Set the current working category
 /**
- * Set the current working category
- * @param: category (std::string)
+ * This function is made for gain time and money, set first the category in this functions
+ * then call the function _getAttr(std::string key).
+ * See _getAttr(std::string key) for more info.
+ * @param category The name of the category
+ * @sa Characters::_getAttr
  */
 void	Characters::_setCategory(std::string category) {
 	this->_category = category;
 }
 
+//! Get an attribute with a pre-set category
 /**
  * Get a Json::Value of a key in the config file, with a pre-set category
- * @param: key (std::string)
+ * See Characters::_setCategory for more info.
+ * @param: key The name of the attribute
+ * @sa Characters::_setCategory
  */
 Json::Value		Characters::_getAttr(std::string key) {
 	if (this->_attr[this->_category].find(key) != this->_attr[this->_category].end())
@@ -155,9 +162,13 @@ Json::Value		Characters::_getAttr(std::string key) {
 	return nullptr;
 }
 
+//! The Broadcast function of Characters
 /**
  * Receive and redistribute broadcasts messages
- * @param: m (Message *)
+ * In this function, we call also the callback function of the child.
+ * For more info on this, go to Characters::callback
+ * @param: m The Message object
+ * @sa Characters::callback
  */
 void	Characters::ReceiveMessage(Message *m) {
 	std::map<std::string, std::map<std::string, Json::Value> >::iterator	i;
@@ -165,7 +176,8 @@ void	Characters::ReceiveMessage(Message *m) {
 	int				status;
 
 	if (m->GetMessageName() == "canMove") {
-		this->changeCanMove();
+		if (this->getHP() > 0)
+			this->changeCanMove();
 	}
 	else if (m->GetMessageName() == "endInvincibility") {
 		theSwitchboard.UnsubscribeFrom(this, "colorDamageBlink1");
@@ -175,7 +187,7 @@ void	Characters::ReceiveMessage(Message *m) {
 	}
 	else if (m->GetMessageName() == "colorDamageBlink1") {
 		theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink2"), 0.1f);
-		this->SetColor(1,1,1,0.5f);
+		this->SetColor(1,1,1,1);
 	}
 	else if (m->GetMessageName() == "colorDamageBlink2") {
 		theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
@@ -228,14 +240,18 @@ void	Characters::ReceiveMessage(Message *m) {
 	}
 }
 
+//! Animation callback
 /**
  * The animation callback
- * @param: s (String)
- * @note: String is the std::string object used in Angel2d.
+ * See Angel doc for more information
+ * String is the std::string object used in Angel2d.
+ * @param s The name of the callback
  */
 void	Characters::AnimCallback(String s) {
 	this->_setCategory("breath");
 	if (s == "base") {
+		this->changeSizeTo(Vector2(1, 1));
+		this->_isAttacking = 0;
 		if (this->_isRunning == 0) {
 			if (this->_latOrientation == LEFT) {
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
@@ -263,24 +279,33 @@ void	Characters::AnimCallback(String s) {
 	}
 }
 
+//! Collision function
 /**
  * Collision begin callback
- * @param: elem (Elements *)
- * @param: contact (b2Contact *)
- * @note: This function is called just before a collision
+ * See Angel docs for more information.
+ * /!\ This function is called BEFORE a collision happened.
+ * @param elem The Element who collide
+ * @param contact The b2Contact object of the collision. See Box2D docs for more info.
  */
 void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "ground") {
 		if (this->GetBody()->GetWorldCenter().y - 0.905 >= elem->GetBody()->GetWorldCenter().y) {
 			if (this->_grounds.size() > 0)
 				contact->SetEnabled(false);
+			else {
+				this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
+				if (this->_hp <= 0) {
+					this->_heroDeath();
+					return;
+				}
+			}
 			if (this->_isJump > 0) {
 				this->_isJump = 0;
-				if (this->_latOrientation == RIGHT)
+				if (this->_latOrientation == RIGHT && this->_isAttacking == false)
 				this->PlaySpriteAnimation(0.1f, SAT_OneShot,
 										  this->_getAttr("jump", "endFrame_right").asInt() - 2,
 										  this->_getAttr("jump", "endFrame_right").asInt(), "base");
-				if (this->_latOrientation == LEFT)
+				if (this->_latOrientation == LEFT && this->_isAttacking == false)
 				this->PlaySpriteAnimation(0.1f, SAT_OneShot,
 										  this->_getAttr("jump", "endFrame_left").asInt() - 2,
 										  this->_getAttr("jump", "endFrame_left").asInt(), "base");
@@ -298,11 +323,12 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 	}
 }
 
+//! End collision function
 /**
  * Collision end callback
- * @param: elem (Elements *)
- * @param: contact (b2Contact *)
- * @note: This function is called just after the elements leave another
+ * /!\ This function is called AFTER the elements leave another
+ * @param elem The Element who left collision
+ * @param: contact The b2Contact object of the collided element. See Box2D docs for more info.
  */
 void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "ground") {
@@ -312,11 +338,11 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 			this->_grounds.remove(elem);
 			if (this->_grounds.size() == 0) {
 				this->_isJump++;
-				if (this->_lastAction == "forward" && this->_canMove)
+				if (this->_lastAction == "forward" && this->_canMove && this->_isAttacking == false)
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 										  this->_getAttr("jump", "fallingFrame_right").asInt(),
 										  this->_getAttr("jump", "endFrame_right").asInt() - 3, "jump");
-				else if (this->_lastAction == "backward" && this->_canMove)
+				else if (this->_lastAction == "backward" && this->_canMove && this->_isAttacking == false)
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 										  this->_getAttr("jump", "fallingFrame_left").asInt(),
 										  this->_getAttr("jump", "endFrame_left").asInt() - 3, "jump");
@@ -327,6 +353,13 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 	}
 }
 
+//! Intern callbacks for moving
+/**
+ * Intern callbacks for making a character move.
+ * This function handle the direction of the character.
+ * This callback is called in Game::makeItRun, so you probalby don't want to call it.
+ * @sa Game::makeItRun
+ */
 void	Characters::_run(void) {
 	if (this->_isRunning == 1)
 		this->_forward(2);
@@ -340,9 +373,14 @@ void	Characters::_run(void) {
 /*                          */
 /****************************/
 
+//! Forward action
 /**
- * Forward action
- * @param: status (int)
+ * Making a Characters run forward.
+ * This function handle the power size for moving, sprite animation, basicly everything.
+ * So, if you want to make some modification, use the intern callback (Characters::callback), or override 
+ * this function in the children.
+ * But, please, DO NOT modify this one.
+ * @param status The status of the key (0 | 1)
  */
 void	Characters::_forward(int status) {
 	this->_setCategory("forward");
@@ -370,7 +408,7 @@ void	Characters::_forward(int status) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
 		Game::stopRunning(this);
 		this->_isRunning = 0;
-		if (!this->_isJump)
+		if (!this->_isJump && !this->_isAttacking)
 			this->AnimCallback("base");
 	} else {
 		if (this->GetBody()->GetLinearVelocity().x < this->_maxSpeed) {
@@ -381,9 +419,12 @@ void	Characters::_forward(int status) {
 	return ;
 }
 
+//! Backward action
 /**
- * Backward action
- * @param: status (int)
+ * Make the character go backward
+ * Same as forward.
+ * @param status The status of the key (1 | 0)
+ * @sa Characters::_forward
  */
 void	Characters::_backward(int status) {
    this->_setCategory("backward");
@@ -410,7 +451,7 @@ void	Characters::_backward(int status) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
 		Game::stopRunning(this);
 		this->_isRunning = 0;
-		if (!this->_isJump)
+		if (!this->_isJump && !this->_isAttacking)
 			this->AnimCallback("base");
 	} else {
 		if (this->GetBody()->GetLinearVelocity().x > -(this->_maxSpeed)) {
@@ -421,9 +462,12 @@ void	Characters::_backward(int status) {
 	return ;
 }
 
+//! Jump action
 /**
- * Jump Action
- * @param: status (int)
+ * Make the character jump.
+ * Same as forward.
+ * @param: status The key status (1 | 0)
+ * @sa Characters::_forward
  */
 void	Characters::_jump(int status) {
 	this->_setCategory("jump");
@@ -437,16 +481,18 @@ void	Characters::_jump(int status) {
 			else {
 				this->ApplyLinearImpulse(Vector2(0, this->_getAttr("force").asFloat()), Vector2(0, 0));
 			}
-			if (this->_latOrientation == RIGHT) {
-				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-										  this->_getAttr("beginFrame_right").asInt(),
-										  this->_getAttr("endFrame_right").asInt() - 3, "jump");
+			if (this->_isAttacking == false) {
+				if (this->_latOrientation == RIGHT) {
+					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+											  this->_getAttr("beginFrame_right").asInt(),
+											  this->_getAttr("endFrame_right").asInt() - 3, "jump");
+				}
+				else if (this->_latOrientation == LEFT) {
+					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+											  this->_getAttr("beginFrame_left").asInt(),
+											  this->_getAttr("endFrame_left").asInt() - 3, "jump");
+				}
 			}
-			else if (this->_latOrientation == LEFT) {
-				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-										  this->_getAttr("beginFrame_left").asInt(),
-										  this->_getAttr("endFrame_left").asInt() - 3, "jump");
-}
 			if (this->_grounds.size() == 0)
 				this->_isJump++;
 		}
@@ -457,9 +503,11 @@ void	Characters::_jump(int status) {
 	return ;
 }
 
+//! Up button action
 /**
  * Called when pressing the UP button
- * @param: status (int)
+ * This function handle just the Orientation.
+ * @param status The key status (1 | 0)
  */
 
 void	Characters::_up(int status) {
@@ -467,9 +515,12 @@ void	Characters::_up(int status) {
 		this->_orientation = UP;
 }
 
+//! Down button action
 /**
  * Called when pressing the DOWN button
- * @param: status (int)
+ * Same as Characters::_up
+ * @param status The key status (1 | 0)
+ * @sa Characters::_up
  */
 
 void	Characters::_down(int status) {
@@ -477,22 +528,29 @@ void	Characters::_down(int status) {
 		this->_orientation = DOWN;
 }
 
+//! Attack action
 /**
  * Attack action
- * @param: status (int)
+ * Call the weapon attack() function.
+ * @param status The key status (1 | 0)
+ * @sa Weapon::attack
  */
 void	Characters::_attack(int status) {
 	this->_setCategory("attack");
 
 	if (status == 1 && this->_weapon->attackReady() == 1) {
+		this->_isAttacking = 1;
 		this->_weapon->attack(this);
-   /*     this->ChangeSizeTo(Vector2(2.0f, 2.0f), 4.0f);*/
-		//this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-			//this->_getAttr("beginFrame").asInt(),
-			/*this->_getAttr("endFrame").asInt(), "base");*/
 	}
 }
 
+//! Pick an item
+/**
+ * Pick an item on the floor
+ * Replace the current relatable item by the new one.
+ * @todo Making throw the old item.
+ * @param status The key status (1 | 0)
+ */
 void	Characters::_pickupItem(int status) {
 	if (this->_item == nullptr)
 		return;
@@ -501,10 +559,21 @@ void	Characters::_pickupItem(int status) {
 	theSwitchboard.Broadcast(new Message("DeleteEquipment"));
 }
 
+//! Equip a weapon
+/**
+ * Equip a new weapon to the Character, and update the HUD.
+ * @weapon The Weapon object
+ */
 void	Characters::equipWeapon(Weapon* weapon) {
 		this->_weapon = new Weapon(weapon);
+		Game::getHUD()->items(this->_weapon);
 }
 
+//! Set basics hp
+/**
+ * Set HP to the Character.
+ * @param hp The HP number
+ */
 void						Characters::setHP(int hp) {
 	if (hp > this->_maxHp)
 		this->_hp = this->_maxHp;
@@ -512,12 +581,37 @@ void						Characters::setHP(int hp) {
 		this->_hp = hp;
 };
 
+//! Destroy an Enemy.
+/**
+ * Made theSwitchboard Unsubscribe from the object, and destroy it.
+ */
 void						Characters::_destroyEnemy(void) {
 	theSwitchboard.UnsubscribeFrom(this, "destroyEnemy");
 	Game::addToDestroyList(this);
+}
+
+//! Animation for the Hero death
+/**
+ * A beautiful for the Hero death.
+ * Make things black, ang get a beer.
+ */
+void						Characters::_heroDeath(void) {
+	this->_setCategory("death");
+	this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+							  this->_getAttr("beginFrame_right").asInt(),
+							  this->_getAttr("endFrame_right").asInt(), "death");
+	Game::endGame = true;
+	Actor* ghost = new Actor();
+	ghost->SetPosition(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y - 1.7f);
+	ghost->SetSprite("Resources/Images/Ghost/ghost_000.png", 0);
+	ghost->LoadSpriteFrames("Resources/Images/Ghost/ghost_000.png");
+	ghost->MoveTo(Vector2(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y + 7), 4);
+	theWorld.Add(ghost);
+	ghost->PlaySpriteAnimation(0.2f, SAT_OneShot, 0, 10, "ghost");
 }
 
 Characters::Orientation		Characters::getOrientation(void) { return this->_orientation; }
 std::string					Characters::getLastAction(void) { return this->_lastAction; };
 int							Characters::getHP(void) { return this->_hp; };
 void						Characters::changeCanMove(void) { this->_canMove = (this->_canMove ? false : true); };
+Weapon						*Characters::getWeapon(void) { return this->_weapon; };

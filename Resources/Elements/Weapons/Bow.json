@@ -8,9 +8,9 @@
 		"lvlRequired": 1,
 	 	"damage": 2,
 	 	"pushback": 1,
-		"recovery": 0.1,
+		"recovery": 0.5,
 		"attack": "ranged",
-		"particule": "la soeur de ryadv2.0",
+		"sprites": "Resources/Images/bow.png",
 		"heroAnim": "sword_anim_1"
 	}
 }

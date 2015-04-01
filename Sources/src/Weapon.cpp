@@ -48,6 +48,7 @@ Weapon::Weapon(Weapon* weapon) {
 	this->_size = weapon->getSize();
 	this->_attack = weapon->getAttack();
 	this->_pushback = weapon->getPushback();
+	this->_sprite = weapon->getSprite();
 	this->_canAttack = 1;
 
 	theSwitchboard.SubscribeTo(this, "canAttack");
@@ -70,18 +71,16 @@ Weapon::Weapon(Weapon* w, Characters* c) {
 	this->_attack = w->getAttack();
 	this->_pushback = w->getPushback();
 	this->_canAttack = 1;
-	this->SetSize(w->getSize());
+	this->_hitbox = "swordHitbox";
+	this->_hitboxType = "special";
+	this->SetSize(1);
 	this->SetName("HeroWeaponHitbox");
 	if (c->getAttributes()["type"] == "Hero")
 		this->addAttribute("type", "HeroWeaponHitBox");
 	else
 		this->addAttribute("type", "WeaponHitBox");
-	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	this->SetDrawShape(ADS_Square);
-	this->SetColor(1,1,1);
-	this->SetDensity(0.0001);
-	this->SetFriction(0);
-	this->SetRestitution(0.0f);
+	this->SetColor(1 ,1 ,1 ,0);
 	this->SetFixedRotation(true);
 	this->Tag("weaponhitbox");
 	this->SetIsSensor(true);
@@ -100,33 +99,33 @@ void	Weapon::_initDirection(Weapon* w, Characters* c) {
 	float yjoint1 = 0;
 	float yjoint2 = 0;
 	if (c->getOrientation() == Characters::RIGHT) {
-		xDecal = 1;
+		xDecal = 0.7;
 		yDecal = 0;
-		xjoint1 = 0.5;
-		yjoint1 = 0.5;
-		xjoint2 = 0.5;
-		yjoint2 = -0.5;
+		xjoint1 = 0.4;
+		yjoint1 = 0.4;
+		xjoint2 = 0.4;
+		yjoint2 = -0.4;
 	} else if (c->getOrientation() == Characters::LEFT) {
-		xDecal = -1;
+		xDecal = -0.7;
 		yDecal = 0;
-		xjoint1 = -0.5;
-		yjoint1 = 0.5;
-		xjoint2 = -0.5;
-		yjoint2 = -0.5;
+		xjoint1 = -0.4;
+		yjoint1 = 0.4;
+		xjoint2 = -0.4;
+		yjoint2 = -0.4;
 	} else if (c->getOrientation() == Characters::UP) {
 		xDecal = 0;
-		yDecal = 1;
-		xjoint1 = 0.5;
-		yjoint1 = 0.5;
-		xjoint2 = -0.5;
-		yjoint2 = 0.5;
+		yDecal =0.7;
+		xjoint1 = 0.4;
+		yjoint1 = 0.4;
+		xjoint2 = -0.4;
+		yjoint2 = 0.4;
 	} else if (c->getOrientation() == Characters::DOWN) {
 		xDecal = 0;
-		yDecal = -1;
-		xjoint1 = -0.5;
-		yjoint1 = -0.5;
-		xjoint2 = 0.5;
-		yjoint2 = -0.5;
+		yDecal = -0.7;
+		xjoint1 = -0.4;
+		yjoint1 = -0.4;
+		xjoint2 = 0.4;
+		yjoint2 = -0.4;
 	}
 	this->SetPosition(c->GetBody()->GetWorldCenter().x + xDecal, c->GetBody()->GetWorldCenter().y + yDecal);
 	this->InitPhysics();
@@ -190,6 +189,7 @@ void    Weapon::_parseJson(std::string file) {
 	this->_damage = json["infos"].get("damage", "").asFloat();
 	this->_pushback = json["infos"].get("pushback", "").asFloat();
 	this->_attack = json["infos"].get("attack", "").asString();
+	this->_sprite = json["infos"].get("sprites", "").asString();
 }
 
 /**
@@ -219,7 +219,6 @@ Json::Value     Weapon::_getAttr(std::string category, std::string key) {
  * @param: linearVelocity (b2Vec2)
  */
 void	Weapon::attack(Characters *c) {
-	this->_canAttack = 0;
 	if (this->_attack == "melee")
 		new Weapon(this, c);
 	else if (this->_attack == "ranged")
@@ -238,6 +237,7 @@ void	Weapon::ReceiveMessage(Message *m) {
 /* GETTERS */
 std::string		Weapon::getName(void) { return this->_name; }
 std::string		Weapon::getFlavor(void) { return this->_flavor; }
+std::string		Weapon::getSprite(void) { return this->_sprite; }
 std::string		Weapon::getAttack(void) { return this->_attack; }
 float			Weapon::getActive(void) { return this->_active; }
 int				Weapon::getSize(void) { return this->_size; }
@@ -245,6 +245,10 @@ int				Weapon::getDamage(void) { return this->_damage; }
 int				Weapon::getPushback(void) { return this->_pushback; }
 float			Weapon::getRecovery(void) { return this->_recovery; }
 int				Weapon::attackReady(void) { return this->_canAttack; }
+
+/* SETTERS */
+
+void			Weapon::isAttacking(int i) {this->_canAttack = i;}
 
 void	Weapon::BeginContact(Elements *elem, b2Contact *contact) {
 }

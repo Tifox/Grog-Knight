@@ -36,7 +36,7 @@ Projectile::Projectile(Weapon* w, Characters* c){
 	this->_recovery = w->getRecovery();
 	this->SetSize(0.5f);
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
-	this->SetSprite("Resources/Images/kappa.png");
+	this->SetSprite("Resources/Images/arrow.png");
 	this->SetDensity(1);
 	this->SetFriction(0);
 	this->SetRestitution(0.0f);
@@ -57,36 +57,21 @@ Projectile::Projectile(Weapon* w, Characters* c){
  * @param: w (Weapon*)
  * @param: c (Characters*)
  */
-
 void	Projectile::_initDirection(Weapon* w, Characters* c) {
-	int xDecal;
-	int yDecal;
-	int xOrient;
-	int yOrient;
+	int xDecal = 0, yDecal = 0, xOrient = 0, yOrient = 0;
 
 	if (c->getOrientation() == Characters::RIGHT) {
-		xOrient = 1;
-		xDecal = 1;
-		yDecal = 0;
-		yOrient = 0;
-	}
-	if (c->getOrientation() == Characters::LEFT) {
-		xOrient = -1;
-		xDecal = -1;
-		yDecal = 0;
-		yOrient = 0;
-	}
-	if (c->getOrientation() == Characters::UP) {
-		xOrient = 0;
-		xDecal = 0;
-		yDecal = 1;
-		yOrient = 1;
-	}
-	if (c->getOrientation() == Characters::DOWN) {
-		xOrient = 0;
-		xDecal = 0;
-		yDecal = -1;
-		yOrient = -1;
+		xOrient = xDecal = 1;
+		this->SetRotation(135.0f);
+	} else if (c->getOrientation() == Characters::LEFT) {
+		xOrient = xDecal = -1;
+		this->SetRotation(-43.0f);
+	} else if (c->getOrientation() == Characters::UP) {
+		yDecal = yOrient = 1;
+		this->SetRotation(-130.0f);
+	} else if (c->getOrientation() == Characters::DOWN) {
+		yDecal = yOrient = -1;
+		this->SetRotation(43.0f);
 	}
 	this->SetPosition(c->GetBody()->GetWorldCenter().x + xDecal, c->GetBody()->GetWorldCenter().y + yDecal);
 	this->InitPhysics();

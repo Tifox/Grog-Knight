@@ -25,39 +25,38 @@
 
 # include "Log.hpp"
 
-/**
- * Base constructor
- */
+//! Base constructor
 Log::Log(void) {
 	return ;
 }
 
-/**
- * Base destructor
- */
+//! Base destructor
 Log::~Log(void) {
 	return ;
 }
 
+//! Print an info log
 /**
- * Log INFO level
- * @param: str (std::string)
+ * Log INFO level (Blue)
+ * @param str The string to display
  */
 void		Log::info(std::string str) {
 	std::cout << "\033[1;34m[INFO]\033[0m " << str << std::endl;
 }
 
+//! Print a warning log
 /**
- * Log WARNING level
- * @param: str (std::string)
+ * Log WARNING level (Orange)
+ * @param str The string to display
  */
 void		Log::warning(std::string str) {
 	std::cout << "\033[1;33m[WARNING]\033[0m " << str << std::endl;
 }
 
+//! Print an error log
 /**
- * Log ERROR log
- * @param: str (std::string)
+ * Log ERROR log (Red), then exit with 1 code.
+ * @param str The error to display
  */
 void		Log::error(std::string str) {
 	std::cout << "\033[1;31m[ERROR]\033[0m " << str << std::endl;

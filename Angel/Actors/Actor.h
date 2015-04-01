@@ -605,6 +605,7 @@ public:
 	 * @return The string "Actor"
 	 */
 	virtual const String GetClassName() const { return "Actor"; }
+	void	changeSizeTo(const Vector2 & newSize);
 	
 protected:
 	Vector2 _size;

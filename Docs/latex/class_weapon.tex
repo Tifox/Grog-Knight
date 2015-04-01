@@ -1,0 +1,280 @@
+\hypertarget{class_weapon}{\section{Weapon Class Reference}
+\label{class_weapon}\index{Weapon@{Weapon}}
+}
+
+
+{\ttfamily \#include $<$Weapon.\-hpp$>$}
+
+
+
+Inheritance diagram for Weapon\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=154pt]{class_weapon__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Weapon\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=154pt]{class_weapon__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_weapon_a7267e890fa563b4f2df8746f443b461a}{Weapon} (std\-::string name)
+\item 
+\hyperlink{class_weapon_a559c41dbcc415a6ee70112f5231ef83b}{Weapon} (\hyperlink{class_weapon}{Weapon} $\ast$weapon)
+\item 
+\hyperlink{class_weapon_aa3eb21f28f64908763402004fa802b36}{Weapon} (\hyperlink{class_weapon}{Weapon} $\ast$weapon, \hyperlink{class_characters}{Characters} $\ast$c)
+\item 
+\hyperlink{class_weapon_aa3364fb5092bbdb4c215e02dd1494f10}{$\sim$\-Weapon} (void)
+\item 
+void \hyperlink{class_weapon_a90b2b26acbbfc87a14786c8859e4a01d}{attack} (\hyperlink{class_characters}{Characters} $\ast$c)
+\item 
+void \hyperlink{class_weapon_a866884395ed4c0e7a972bb18e8d7d030}{Begin\-Contact} (\hyperlink{class_elements}{Elements} $\ast$elem, b2\-Contact $\ast$contact)
+\item 
+void \hyperlink{class_weapon_a1860f840f8c75555de52450300139d9b}{End\-Contact} (\hyperlink{class_elements}{Elements} $\ast$elem, b2\-Contact $\ast$contact)
+\item 
+void \hyperlink{class_weapon_ad93665811c3df9c05bb22b9a1a9c1a66}{Receive\-Message} (Message $\ast$m)
+\item 
+std\-::string \hyperlink{class_weapon_aa49263888dca8ee505a95294371adbf6}{get\-Name} (void)
+\item 
+std\-::string \hyperlink{class_weapon_abe73556e16426da65572d7981dcc800f}{get\-Flavor} (void)
+\item 
+std\-::string \hyperlink{class_weapon_a693e8f30f48b5df1983c22fdf796f25b}{get\-Attack} (void)
+\item 
+std\-::string \hyperlink{class_weapon_ace3e431278e9ac23f33d222c67c38497}{get\-Sprite} (void)
+\item 
+float \hyperlink{class_weapon_aea6024533cc9ca0ce72139ebf5da33f9}{get\-Active} (void)
+\item 
+int \hyperlink{class_weapon_a47baa57bfa8b9bfeda891d3180caa399}{get\-Size} (void)
+\item 
+int \hyperlink{class_weapon_a35f92fc79c009c1d1d7d41b4fa17bb11}{get\-Damage} (void)
+\item 
+int \hyperlink{class_weapon_a60a49fa0a0a76a58698d9b4000815a8b}{get\-Pushback} (void)
+\item 
+float \hyperlink{class_weapon_a18a362244c6a169db89536505eaa2f15}{get\-Recovery} (void)
+\item 
+int \hyperlink{class_weapon_aded3e214d38d181504d49719cfc08fa5}{attack\-Ready} (void)
+\item 
+void \hyperlink{class_weapon_a24f4509a23008f783c566ffa68548fb4}{is\-Attacking} (int i)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Json\-::\-Value \hyperlink{class_weapon_ade3d2d4e411807411131b43238e47731}{\-\_\-get\-Attr} (std\-::string category, std\-::string key)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_weapon_a7267e890fa563b4f2df8746f443b461a}{\index{Weapon@{Weapon}!Weapon@{Weapon}}
+\index{Weapon@{Weapon}!Weapon@{Weapon}}
+\subsubsection[{Weapon}]{\setlength{\rightskip}{0pt plus 5cm}Weapon\-::\-Weapon (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{name}
+\end{DoxyParamCaption}
+)}}\label{class_weapon_a7267e890fa563b4f2df8746f443b461a}
+Licensed to the Apache Software Foundation (A\-S\-F) under one or more contributor license agreements. See the N\-O\-T\-I\-C\-E file distributed with this work for additional information regarding copyright ownership. The A\-S\-F licenses this file to you under the Apache License, Version 2.\-0 (the \char`\"{}\-License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+\href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\-://www.\-apache.\-org/licenses/\-L\-I\-C\-E\-N\-S\-E-\/2.\-0}
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\-A\-S I\-S\char`\"{} B\-A\-S\-I\-S, W\-I\-T\-H\-O\-U\-T W\-A\-R\-R\-A\-N\-T\-I\-E\-S O\-R C\-O\-N\-D\-I\-T\-I\-O\-N\-S O\-F A\-N\-Y K\-I\-N\-D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\-: \hyperlink{_weapon_8cpp}{Weapon.\-cpp} Creation\-: 2015-\/02-\/18 14\-:00 Vincent Rey \href{mailto:vrey@student.42.fr}{\tt vrey@student.\-42.\-fr} Default constructor, using the element that called the attack 
+\begin{DoxyParams}{Parameters}
+{\em } & name (std\-::string) \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_weapon_a559c41dbcc415a6ee70112f5231ef83b}{\index{Weapon@{Weapon}!Weapon@{Weapon}}
+\index{Weapon@{Weapon}!Weapon@{Weapon}}
+\subsubsection[{Weapon}]{\setlength{\rightskip}{0pt plus 5cm}Weapon\-::\-Weapon (
+\begin{DoxyParamCaption}
+\item[{{\bf Weapon} $\ast$}]{weapon}
+\end{DoxyParamCaption}
+)}}\label{class_weapon_a559c41dbcc415a6ee70112f5231ef83b}
+Copy constructor 
+\begin{DoxyParams}{Parameters}
+{\em weapon} & (Weapon$\ast$) \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_weapon_aa3eb21f28f64908763402004fa802b36}{\index{Weapon@{Weapon}!Weapon@{Weapon}}
+\index{Weapon@{Weapon}!Weapon@{Weapon}}
+\subsubsection[{Weapon}]{\setlength{\rightskip}{0pt plus 5cm}Weapon\-::\-Weapon (
+\begin{DoxyParamCaption}
+\item[{{\bf Weapon} $\ast$}]{w, }
+\item[{{\bf Characters} $\ast$}]{c}
+\end{DoxyParamCaption}
+)}}\label{class_weapon_aa3eb21f28f64908763402004fa802b36}
+Constructor for creating the weapon area-\/of-\/effect 
+\begin{DoxyParams}{Parameters}
+{\em } & w (Weapon$\ast$) \\
+\hline
+{\em } & c (Characters$\ast$) \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_weapon_aa3364fb5092bbdb4c215e02dd1494f10}{\index{Weapon@{Weapon}!$\sim$\-Weapon@{$\sim$\-Weapon}}
+\index{$\sim$\-Weapon@{$\sim$\-Weapon}!Weapon@{Weapon}}
+\subsubsection[{$\sim$\-Weapon}]{\setlength{\rightskip}{0pt plus 5cm}Weapon\-::$\sim$\-Weapon (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_weapon_aa3364fb5092bbdb4c215e02dd1494f10}
+Basic destructor 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_weapon_ade3d2d4e411807411131b43238e47731}{\index{Weapon@{Weapon}!\-\_\-get\-Attr@{\-\_\-get\-Attr}}
+\index{\-\_\-get\-Attr@{\-\_\-get\-Attr}!Weapon@{Weapon}}
+\subsubsection[{\-\_\-get\-Attr}]{\setlength{\rightskip}{0pt plus 5cm}Json\-::\-Value Weapon\-::\-\_\-get\-Attr (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{category, }
+\item[{std\-::string}]{key}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_weapon_ade3d2d4e411807411131b43238e47731}
+Get a Json\-::\-Value of a key in the config file 
+\begin{DoxyParams}{Parameters}
+{\em } & category (std\-::string) \\
+\hline
+{\em } & key (std\-::string) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+\-: See the docs for the utilisation of Json\-::\-Value 
+\end{DoxyNote}
+\hypertarget{class_weapon_a90b2b26acbbfc87a14786c8859e4a01d}{\index{Weapon@{Weapon}!attack@{attack}}
+\index{attack@{attack}!Weapon@{Weapon}}
+\subsubsection[{attack}]{\setlength{\rightskip}{0pt plus 5cm}void Weapon\-::attack (
+\begin{DoxyParamCaption}
+\item[{{\bf Characters} $\ast$}]{c}
+\end{DoxyParamCaption}
+)}}\label{class_weapon_a90b2b26acbbfc87a14786c8859e4a01d}
+Called by the Character to attack with the currently equipped weapon 
+\begin{DoxyParams}{Parameters}
+{\em } & x (Int) \\
+\hline
+{\em } & y (Int) \\
+\hline
+{\em } & orientation\-X (int) \\
+\hline
+{\em } & orientation\-Y (int) \\
+\hline
+{\em } & linear\-Velocity (b2\-Vec2) \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_weapon_aded3e214d38d181504d49719cfc08fa5}{\index{Weapon@{Weapon}!attack\-Ready@{attack\-Ready}}
+\index{attack\-Ready@{attack\-Ready}!Weapon@{Weapon}}
+\subsubsection[{attack\-Ready}]{\setlength{\rightskip}{0pt plus 5cm}int Weapon\-::attack\-Ready (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_weapon_aded3e214d38d181504d49719cfc08fa5}
+\hypertarget{class_weapon_a866884395ed4c0e7a972bb18e8d7d030}{\index{Weapon@{Weapon}!Begin\-Contact@{Begin\-Contact}}
+\index{Begin\-Contact@{Begin\-Contact}!Weapon@{Weapon}}
+\subsubsection[{Begin\-Contact}]{\setlength{\rightskip}{0pt plus 5cm}void Weapon\-::\-Begin\-Contact (
+\begin{DoxyParamCaption}
+\item[{{\bf Elements} $\ast$}]{elem, }
+\item[{b2\-Contact $\ast$}]{contact}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_weapon_a866884395ed4c0e7a972bb18e8d7d030}
+
+
+Reimplemented from \hyperlink{class_elements_a108938e08197adc349e98fb91abe1b5a}{Elements}.
+
+\hypertarget{class_weapon_a1860f840f8c75555de52450300139d9b}{\index{Weapon@{Weapon}!End\-Contact@{End\-Contact}}
+\index{End\-Contact@{End\-Contact}!Weapon@{Weapon}}
+\subsubsection[{End\-Contact}]{\setlength{\rightskip}{0pt plus 5cm}void Weapon\-::\-End\-Contact (
+\begin{DoxyParamCaption}
+\item[{{\bf Elements} $\ast$}]{elem, }
+\item[{b2\-Contact $\ast$}]{contact}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_weapon_a1860f840f8c75555de52450300139d9b}
+
+
+Reimplemented from \hyperlink{class_elements_a42c3b694edefcc789109bd952a66d918}{Elements}.
+
+\hypertarget{class_weapon_aea6024533cc9ca0ce72139ebf5da33f9}{\index{Weapon@{Weapon}!get\-Active@{get\-Active}}
+\index{get\-Active@{get\-Active}!Weapon@{Weapon}}
+\subsubsection[{get\-Active}]{\setlength{\rightskip}{0pt plus 5cm}float Weapon\-::get\-Active (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_weapon_aea6024533cc9ca0ce72139ebf5da33f9}
+\hypertarget{class_weapon_a693e8f30f48b5df1983c22fdf796f25b}{\index{Weapon@{Weapon}!get\-Attack@{get\-Attack}}
+\index{get\-Attack@{get\-Attack}!Weapon@{Weapon}}
+\subsubsection[{get\-Attack}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Weapon\-::get\-Attack (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_weapon_a693e8f30f48b5df1983c22fdf796f25b}
+\hypertarget{class_weapon_a35f92fc79c009c1d1d7d41b4fa17bb11}{\index{Weapon@{Weapon}!get\-Damage@{get\-Damage}}
+\index{get\-Damage@{get\-Damage}!Weapon@{Weapon}}
+\subsubsection[{get\-Damage}]{\setlength{\rightskip}{0pt plus 5cm}int Weapon\-::get\-Damage (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_weapon_a35f92fc79c009c1d1d7d41b4fa17bb11}
+\hypertarget{class_weapon_abe73556e16426da65572d7981dcc800f}{\index{Weapon@{Weapon}!get\-Flavor@{get\-Flavor}}
+\index{get\-Flavor@{get\-Flavor}!Weapon@{Weapon}}
+\subsubsection[{get\-Flavor}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Weapon\-::get\-Flavor (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_weapon_abe73556e16426da65572d7981dcc800f}
+\hypertarget{class_weapon_aa49263888dca8ee505a95294371adbf6}{\index{Weapon@{Weapon}!get\-Name@{get\-Name}}
+\index{get\-Name@{get\-Name}!Weapon@{Weapon}}
+\subsubsection[{get\-Name}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Weapon\-::get\-Name (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_weapon_aa49263888dca8ee505a95294371adbf6}
+\hypertarget{class_weapon_a60a49fa0a0a76a58698d9b4000815a8b}{\index{Weapon@{Weapon}!get\-Pushback@{get\-Pushback}}
+\index{get\-Pushback@{get\-Pushback}!Weapon@{Weapon}}
+\subsubsection[{get\-Pushback}]{\setlength{\rightskip}{0pt plus 5cm}int Weapon\-::get\-Pushback (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_weapon_a60a49fa0a0a76a58698d9b4000815a8b}
+\hypertarget{class_weapon_a18a362244c6a169db89536505eaa2f15}{\index{Weapon@{Weapon}!get\-Recovery@{get\-Recovery}}
+\index{get\-Recovery@{get\-Recovery}!Weapon@{Weapon}}
+\subsubsection[{get\-Recovery}]{\setlength{\rightskip}{0pt plus 5cm}float Weapon\-::get\-Recovery (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_weapon_a18a362244c6a169db89536505eaa2f15}
+\hypertarget{class_weapon_a47baa57bfa8b9bfeda891d3180caa399}{\index{Weapon@{Weapon}!get\-Size@{get\-Size}}
+\index{get\-Size@{get\-Size}!Weapon@{Weapon}}
+\subsubsection[{get\-Size}]{\setlength{\rightskip}{0pt plus 5cm}int Weapon\-::get\-Size (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_weapon_a47baa57bfa8b9bfeda891d3180caa399}
+\hypertarget{class_weapon_ace3e431278e9ac23f33d222c67c38497}{\index{Weapon@{Weapon}!get\-Sprite@{get\-Sprite}}
+\index{get\-Sprite@{get\-Sprite}!Weapon@{Weapon}}
+\subsubsection[{get\-Sprite}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Weapon\-::get\-Sprite (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_weapon_ace3e431278e9ac23f33d222c67c38497}
+\hypertarget{class_weapon_a24f4509a23008f783c566ffa68548fb4}{\index{Weapon@{Weapon}!is\-Attacking@{is\-Attacking}}
+\index{is\-Attacking@{is\-Attacking}!Weapon@{Weapon}}
+\subsubsection[{is\-Attacking}]{\setlength{\rightskip}{0pt plus 5cm}void Weapon\-::is\-Attacking (
+\begin{DoxyParamCaption}
+\item[{int}]{i}
+\end{DoxyParamCaption}
+)}}\label{class_weapon_a24f4509a23008f783c566ffa68548fb4}
+\hypertarget{class_weapon_ad93665811c3df9c05bb22b9a1a9c1a66}{\index{Weapon@{Weapon}!Receive\-Message@{Receive\-Message}}
+\index{Receive\-Message@{Receive\-Message}!Weapon@{Weapon}}
+\subsubsection[{Receive\-Message}]{\setlength{\rightskip}{0pt plus 5cm}void Weapon\-::\-Receive\-Message (
+\begin{DoxyParamCaption}
+\item[{Message $\ast$}]{m}
+\end{DoxyParamCaption}
+)}}\label{class_weapon_ad93665811c3df9c05bb22b9a1a9c1a66}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/louis/\-Documents/rogue-\/like/\-Sources/inc/\hyperlink{_weapon_8hpp}{Weapon.\-hpp}\item 
+/home/louis/\-Documents/rogue-\/like/\-Sources/src/\hyperlink{_weapon_8cpp}{Weapon.\-cpp}\end{DoxyCompactItemize}

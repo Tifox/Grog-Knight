@@ -61,7 +61,8 @@ int		main(int ac, char **av) {
 	Equipment		*equip = new Equipment();
 	Consumable		*lol = new Consumable();
 	Hero			*hero = new Hero();
-	Enemy			*enemy = new Enemy();
+	Enemy			*enemy = new Enemy("Enemy");
+	Enemy			*enemy2 = new Enemy("Enemy2");
 
 
 
@@ -76,17 +77,12 @@ int		main(int ac, char **av) {
 //	theCamera.LockTo(hero);
 	theCamera.SetPosition(13, -7);
 	game->displayHero(*(hero));
-	game->displayEnemy(*(enemy));
 	hero->init();
 	enemy->init();
-	game->setHero(*hero);
-
+	enemy2->init();
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
-	//theWorld.SetSideBlockers(true, 0.7f);
-
+	game->setHero(*hero);
 	game->displayHUD();
-
 	game->start();
-
 	return 0;
 }

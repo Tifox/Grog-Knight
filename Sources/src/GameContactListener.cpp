@@ -25,6 +25,11 @@
 
 #include "../inc/GameContactListener.hpp"
 
+//! Function that allows the overload of the BeginContact in the classes used in our game
+/**
+ * This function is called when a contact BEGINS
+ * @param contact b2Contact* (See Box2D doc for more infos)
+ */
 void	GameContactListener::BeginContact(b2Contact * contact) {
 	PhysicsActor *p1;
 	PhysicsActor *p2;
@@ -35,6 +40,11 @@ void	GameContactListener::BeginContact(b2Contact * contact) {
 	Game::elementMap[p2->getId()]->BeginContact(Game::elementMap[p1->getId()], contact);
 }
 
+//! Function that allows the overload of the BeginContact in the classes used in our game
+/**
+ * This function is called when a contact ENDS (a.k.a. when 2 elements stop colliding each other)
+ * @param contact b2Contact* (See Box2D doc for more infos)
+ */
 void	GameContactListener::EndContact(b2Contact * contact) {
 	PhysicsActor *p1;
 	PhysicsActor *p2;

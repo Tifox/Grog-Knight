@@ -53,10 +53,6 @@ Consumable::Consumable(void) {
  * @todo: This function is actually doing nothing.
  */
 void	Consumable::BeginContact(Elements *elem, b2Contact *contact) {
-	// if (elem->getattributes()["type"] == "hero"){
-	// 	game::bodiestodestroy.push_back(this);
-	// 	contact->setenabled(false);
-	// }
 }
 
 //! Destructor

@@ -25,6 +25,12 @@
 
 # include "../inc/Projectile.hpp"
 
+//! Constructor called by the Weapon class, when an attack was ordered using a ranged weapon
+/**
+ * Default constructor
+ * @param w Weapon* (weapon object which called the attack)
+ * @param c Characters* (Characters object which currently carries the weapon)
+ */
 Projectile::Projectile(Weapon* w, Characters* c){
 
 	this->_name = w->getName();
@@ -52,6 +58,7 @@ Projectile::Projectile(Weapon* w, Characters* c){
 	theWorld.Add(this);
 }
 
+//! Clarity's cool man
 /**
  * Called during construction for clarity, used to determine projectile direction
  * @param: w (Weapon*)
@@ -97,13 +104,17 @@ int             Projectile::getDamage(void) { return this->_damage; }
 int             Projectile::getPushback(void) { return this->_pushback; }
 float           Projectile::getRecovery(void) { return this->_recovery; }
 
-/**
- * Receive broadcasts message
- * @param: (Message *)
- */
 void	Projectile::ReceiveMessage(Message *m) {
 }
 
+//! Overload from b2Body's BeginContact
+/**
+ * Collision begin callback
+ * See Angel docs for more information.
+ * /!\ This function is called BEFORE a collision happened.
+ * @param elem The Element who collide
+ * @param contact The b2Contact object of the collision. See Box2D docs for more info.
+ */
 void	Projectile::BeginContact(Elements *m, b2Contact *c) {
 	Game::addToDestroyList(this);
 }

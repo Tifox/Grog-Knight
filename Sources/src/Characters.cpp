@@ -186,12 +186,19 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->SetColor(1,1,1,1);
 	}
 	else if (m->GetMessageName() == "colorDamageBlink1") {
-		theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink2"), 0.1f);
-		this->SetColor(1,1,1,1);
+		if (this->_invincibility == true) {
+			theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink2"), 0.1f);
+			this->SetColor(1,1,1,1);
+		}
 	}
 	else if (m->GetMessageName() == "colorDamageBlink2") {
-		theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
-		this->SetColor(1,0,0,0.9f);
+		if (this->_invincibility == true) {
+			theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
+			this->SetColor(1,0,0,0.9f);
+		}
+	}
+	else if (m->GetMessageName() == "enableAttackHitbox") {
+		this->_weapon->attack(this);
 	}
 	else if (m->GetMessageName() == "startPathing") {
 		if (this->_grounds.size() > 0) {
@@ -537,10 +544,9 @@ void	Characters::_down(int status) {
  */
 void	Characters::_attack(int status) {
 	this->_setCategory("attack");
-
 	if (status == 1 && this->_weapon->attackReady() == 1) {
 		this->_isAttacking = 1;
-		this->_weapon->attack(this);
+		theSwitchboard.DeferredBroadcast(new Message("enableAttackHitbox"), 0.15f);
 	}
 }
 

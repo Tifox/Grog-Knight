@@ -23,18 +23,20 @@
  * Vincent Rey <vrey@student.42.fr>
  */
 
-
+//! NOT CURRENTLY USED - MIGHT GET REMOVED
 
 #include "../inc/ContactFilter.hpp"
 
 
 bool	ContactFilter::ShouldCollide(b2Fixture* fixA, b2Fixture* fixB) {
 
-	std::string attrA = static_cast<Elements*>(fixA->GetBody()->GetUserData())->getAttributes()["type"];
-	std::string attrB = static_cast<Elements*>(fixB->GetBody()->GetUserData())->getAttributes()["type"];
+// 	std::string attrA = static_cast<Elements*>(fixA->GetBody()->GetUserData())->getAttributes()["type"];
+// 	std::string attrB = static_cast<Elements*>(fixB->GetBody()->GetUserData())->getAttributes()["type"];
 
-	if ((attrA == "Hero" || attrB == "Hero") && ((attrA == "heroWeapon" || attrB == "heroWeapon") || (attrA == "heroProjectile" || attrB == "heroProjectile"))) {
-		return false;
-	}
-	else return true;
+// 	if ((attrA == "Hero" || attrB == "Hero") && ((attrA == "heroWeapon" || attrB == "heroWeapon") || (attrA == "heroProjectile" || attrB == "heroProjectile"))) {
+// 		return false;
+// 	}
+// 	else return true;
+// }
+	return true;
 }

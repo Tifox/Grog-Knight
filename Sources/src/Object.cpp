@@ -25,7 +25,7 @@
 
 #include "Object.hpp"
 
-
+//! Constructor
 /**
  * Basic Constructor
  */
@@ -40,6 +40,7 @@ Object::Object(void) {
 	this->SetIsSensor(true);
 }
 
+//! Overload from b2Body's BeginContact
 /**
  * Collision begin callback
  * @param: elem (Elements *)
@@ -53,7 +54,8 @@ void	Object::BeginContact(Elements *elem, b2Contact *contact) {
 	}
 }
 
-/*
+//! Destructor
+/**
  * Basic Destructor
  */
 Object::~Object(void) {

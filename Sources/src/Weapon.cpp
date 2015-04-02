@@ -25,6 +25,7 @@
 
 # include "Weapon.hpp"
 
+//!Constructor called by the weaponlist class to parse all weapons
 /**
  * Default constructor, using the element that called the attack
  * @param: name (std::string)
@@ -34,6 +35,7 @@ Weapon::Weapon(std::string name) : _name(name) {
 	this->_canAttack = 1;
 }
 
+//!Constructor called by hero/equipment class, to copy a parsed version from weaponlist
 /**
  * Copy constructor
  * @param weapon (Weapon*)
@@ -55,6 +57,8 @@ Weapon::Weapon(Weapon* weapon) {
 }
 
 
+
+//!Constructor called when attacking, creates the defined hitbox
 /**
  * Constructor for creating the weapon area-of-effect
  * @param: w (Weapon*)
@@ -91,6 +95,13 @@ Weapon::Weapon(Weapon* w, Characters* c) {
 	theWorld.Add(this);
 }
 
+//!Function containing the details related to the attack direction
+/**
+ * This function is called when an attack starts, to attach the hitbox body to the character
+ * @param w Weapon* (the current weapon)
+ * @param c Characters* (the character manipulating the weapon)
+ */
+
 void	Weapon::_initDirection(Weapon* w, Characters* c) {
 	float xDecal = 0;
 	float yDecal = 0;
@@ -100,27 +111,23 @@ void	Weapon::_initDirection(Weapon* w, Characters* c) {
 	float yjoint2 = 0;
 	if (c->getOrientation() == Characters::RIGHT) {
 		xDecal = 0.7;
-		yDecal = 0;
 		xjoint1 = 0.4;
 		yjoint1 = 0.4;
 		xjoint2 = 0.4;
 		yjoint2 = -0.4;
 	} else if (c->getOrientation() == Characters::LEFT) {
 		xDecal = -0.7;
-		yDecal = 0;
 		xjoint1 = -0.4;
 		yjoint1 = 0.4;
 		xjoint2 = -0.4;
 		yjoint2 = -0.4;
 	} else if (c->getOrientation() == Characters::UP) {
-		xDecal = 0;
 		yDecal =0.7;
 		xjoint1 = 0.4;
 		yjoint1 = 0.4;
 		xjoint2 = -0.4;
 		yjoint2 = 0.4;
 	} else if (c->getOrientation() == Characters::DOWN) {
-		xDecal = 0;
 		yDecal = -0.7;
 		xjoint1 = -0.4;
 		yjoint1 = -0.4;
@@ -142,12 +149,12 @@ void	Weapon::_initDirection(Weapon* w, Characters* c) {
 	b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
 }
 
-/**
- * Basic destructor
- */
+//! Basic destructor
+
 Weapon::~Weapon(void) {
 }
 
+//!Json parsing for the weapon files (differs a bit from the Characters, that's why we have both)
 /**
  * Read a config file, base on the name of the class
  * @param: name (std::string)
@@ -166,6 +173,7 @@ void	Weapon::_readFile(std::string name) {
 	this->_parseJson(buffer.str());
 }
 
+//!Follow from the json parser, stocks value
 /**
  * Parse, read and stock the info in the config file
  * @param: file (std::string)
@@ -192,6 +200,7 @@ void    Weapon::_parseJson(std::string file) {
 	this->_sprite = json["infos"].get("sprites", "").asString();
 }
 
+//! Function called to get an attr value from the parsed json
 /**
  * Get a Json::Value of a key in the config file
  * @param: category (std::string)
@@ -210,6 +219,7 @@ Json::Value     Weapon::_getAttr(std::string category, std::string key) {
 	return nullptr;
 }
 
+//! Function called when a character attacks, to create the hitbox depending if its ranged or melee
 /**
  * Called by the Character to attack with the currently equipped weapon
  * @param: x (Int)

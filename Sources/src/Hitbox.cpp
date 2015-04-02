@@ -25,10 +25,12 @@
 
 # include "Hitbox.hpp"
 
-
+//! Constructor called at the beginning, parses json and creates a list containing all the hitbox listed in the files
 /**
  * Default constructor, creating the list
- * @param: Elements *
+ * /!\ General warning:
+ * /!\ Box2D hitbox creator does not allow : concave polygons, less-than-four vertices polygons (aka triangles), more-than-eight vertices polygons
+ * /!\ The game will either not start or crash during startup if one of theses is attempted
  */
 Hitbox::Hitbox(void) {
 	DIR				*dir;
@@ -47,6 +49,11 @@ Hitbox::Hitbox(void) {
 	}
 }
 
+//! Readability function, follow-up from the default constructor
+/**
+ * Checks for the number of vertices in the hitbox json file
+ * @param res std::string (the location of the file)
+ */
 b2PolygonShape	Hitbox::_getPolygon(std::string res) {
 	std::string         file;
 	std::stringstream   buffer;
@@ -61,6 +68,7 @@ b2PolygonShape	Hitbox::_getPolygon(std::string res) {
 	return this->_parseJson(buffer.str());
 }
 
+//! Json parser, see Characters/Weapons
 b2PolygonShape	Hitbox::_parseJson(std::string file) {
 	Json::Reader    read;
 	Json::Value     json;
@@ -89,11 +97,9 @@ b2PolygonShape	Hitbox::_parseJson(std::string file) {
 
 	for (itr = map.begin(); itr != map.end(); itr++) {
 		for (itr2 = (*itr).begin(); itr2 != (*itr).end(); itr2++) {
-//			std::cout << (*itr2) << ", ";
 			if ((*itr2) == 1)
 				vertices++;
 		}
-//		std::cout << std::endl;
 	}
 
 	if (vertices < 4 || vertices > 8)
@@ -101,6 +107,7 @@ b2PolygonShape	Hitbox::_parseJson(std::string file) {
 	return this->_parseVertices(vertices, map);
 }
 
+//! Creates the polygon based on the vertices
 b2PolygonShape	Hitbox::_parseVertices(int v, std::vector<std::vector<int> > map) {
 	std::vector<std::vector<int> >::iterator	itr;
 	std::vector<int>::iterator	itr2;
@@ -136,10 +143,22 @@ b2PolygonShape	Hitbox::_parseVertices(int v, std::vector<std::vector<int> > map)
 	return box;
 }
 
+//! Always return 1, cause its funnier
+/**
+ * Function that checks if requested hitbox does exists, as the object cannot be null
+ * @param n std::string (name of the hitbox)
+ * Do not call getHitbox if this function returns false
+ * @todo: yeah...
+ */
 int			Hitbox::checkExists(std::string n) {
 	return 1;
 }
 
+//! Returns the ordered vertices in order to create the hitbox when necessary
+/**
+ * Called mostly by characters, weapons, or objects to load a pre-designed hitbox
+ * @param n std::string (name of the hitbox)
+ */
 b2PolygonShape	Hitbox::getHitbox(std::string n) {
 	return this->_hitboxes[n];
 }

@@ -25,10 +25,9 @@
 
 # include "WeaponList.hpp"
 
-
+//!  Constructor called at the beginning of the game to load every weapon available
 /**
- * Default constructor, using the element that called the attack
- * @param: Elements *
+ * Called once and stocked in a static for the whole game
  */
 WeaponList::WeaponList(void) {
 	DIR				*dir;
@@ -46,6 +45,7 @@ WeaponList::WeaponList(void) {
 	}
 }
 
+//! Destructor
 /**
  * Basic destructor
  */
@@ -53,9 +53,7 @@ WeaponList::~WeaponList(void) {
 	return;
 }
 
-void		WeaponList::statWeapon(std::string name) {
-}
-
+//! Returns a weapon in order to use it afterwards
 /**
  * Get a weapon obj by name
  * @param: name (std::string)

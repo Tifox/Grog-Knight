@@ -484,7 +484,7 @@ void	Characters::_jump(int status) {
 
 	if (status == 1 && this->_canJump == true) {
 		this->_canJump = false;
-		if (this->_isJump == 0 || (this->_isJump <= 1 && this->_getAttr("double").asInt() == 1)) {
+		if (this->_isJump == 0 || (this->_isJump < this->_getAttr("max").asInt())) {
 			if (this->_isJump >= 1) {
 				this->GetBody()->SetLinearVelocity(b2Vec2(this->GetBody()->GetLinearVelocity().x, this->_getAttr("rejump").asFloat()));
 			}
@@ -523,6 +523,8 @@ void	Characters::_jump(int status) {
 void	Characters::_up(int status) {
 	if (status == 1)
 		this->_orientation = UP;
+	else
+	  this->_orientation = this->_latOrientation;
 }
 
 //! Down button action
@@ -536,6 +538,8 @@ void	Characters::_up(int status) {
 void	Characters::_down(int status) {
 	if (status == 1)
 		this->_orientation = DOWN;
+	else
+	  this->_orientation = this->_latOrientation;
 }
 
 //! Attack action

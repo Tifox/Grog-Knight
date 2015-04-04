@@ -63,7 +63,7 @@ void	Hero::init(void) {
 void	Hero::actionCallback(std::string name, int status) {
 	if (name == "attack" && status == 1 && this->_weapon->attackReady() == 1) {
 		this->_weapon->isAttacking(0);
-		this->changeSizeTo(Vector2(1.75f, 1));
+		this->changeSizeTo(Vector2(2, 1));
 		if (this->_orientation == RIGHT)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 									  this->_getAttr("beginFrame_right").asInt(),

@@ -176,8 +176,11 @@ void	Characters::ReceiveMessage(Message *m) {
 	int				status;
 
 	if (m->GetMessageName() == "canMove") {
-		if (this->getHP() > 0)
+	  if (this->getHP() > 0) {
 			this->changeCanMove();
+			if (this->_grounds.size() > 0)
+			  this->AnimCallback("base");
+	  }
 	}
 	else if (m->GetMessageName() == "endInvincibility") {
 		theSwitchboard.UnsubscribeFrom(this, "colorDamageBlink1");

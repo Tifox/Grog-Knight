@@ -50,6 +50,7 @@ int		main(int ac, char **av) {
 	Game	*game = new Game();
 	Game::hList = new Hitbox();
 
+	srand(1);
 	game->readMaps();
 	MouseDebugger l;
 	theWorld.SetBackgroundColor(*(new Color(0, 0, 0)));

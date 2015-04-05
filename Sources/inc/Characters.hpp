@@ -120,6 +120,7 @@ class Characters : public Elements {
 
 # ifndef __Object__
 #  include "Equipment.hpp"
+#  include "Consumable.hpp"
 # endif
 
 # include "Game.hpp"

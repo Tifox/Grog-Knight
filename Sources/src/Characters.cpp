@@ -203,6 +203,9 @@ void	Characters::ReceiveMessage(Message *m) {
 	else if (m->GetMessageName() == "enableAttackHitbox") {
 		this->_weapon->attack(this);
 	}
+	else if (m->GetMessageName() == "disableAttackHitbox") {
+	  this->_isAttacking = false;
+	}
 	else if (m->GetMessageName() == "startPathing") {
 		if (this->_grounds.size() > 0) {
 			if (this->_wallsLeft.size() > 0)

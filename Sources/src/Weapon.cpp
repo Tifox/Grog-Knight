@@ -240,6 +240,7 @@ void	Weapon::ReceiveMessage(Message *m) {
 	if (m->GetMessageName() == "deleteWeapon") {
 		Game::addToDestroyList(this);
 		theSwitchboard.UnsubscribeFrom(this, "deleteWeapon");
+		theSwitchboard.Broadcast(new Message("disableAttackHitbox"));
 	}
 	if (m->GetMessageName() == "canAttack")
 		this->_canAttack = 1;

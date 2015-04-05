@@ -88,6 +88,7 @@ class Game {
 		static int	currentIds;
 		static std::map<int, Elements *>	elementMap;
 		static std::list<Elements *>	bodiesToDestroy;
+		static std::list<Elements *>	bodiesToCreate;
 		static std::list<Elements *>	runningCharac;
 		static std::list<HUDWindow *>	windows;
 		static WeaponList*				wList;

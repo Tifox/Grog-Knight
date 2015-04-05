@@ -36,7 +36,6 @@ Object::Object(void) {
 	this->SetFriction(1.0f);
 	this->SetRestitution(0.0f);
 	this->SetFixedRotation(true);
-	this->SetDrawShape(ADS_Circle);
 	this->SetIsSensor(true);
 }
 

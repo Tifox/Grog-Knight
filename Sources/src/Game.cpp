@@ -220,6 +220,11 @@ void	Game::destroyAllBodies(void) {
 			Game::delElement(*it);
 		}
 		Game::bodiesToDestroy.clear();
+		for (std::list<Elements*>::iterator it = Game::bodiesToCreate.begin(); it != Game::bodiesToCreate.end(); it++) {
+		  (*it)->InitPhysics();
+		  theWorld.Add((*it));
+		}
+		Game::bodiesToCreate.clear();
 	}
 }
 
@@ -341,6 +346,7 @@ int Game::currentIds = 0;
 std::map<int, Elements *>	Game::elementMap = {};
 std::list<Elements *>		Game::runningCharac;
 std::list<Elements *>		Game::bodiesToDestroy;
+std::list<Elements *>		Game::bodiesToCreate;
 std::list<HUDWindow *>		Game::windows;
 WeaponList*					Game::wList;
 Hitbox*						Game::hList;

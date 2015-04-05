@@ -135,6 +135,7 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 int		Enemy::takeDamage(int damage) {
 	if (this->_hp - damage <= 0) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+		new Equipment(this);
 		this->PlaySpriteAnimation(0.1, SAT_OneShot, 5, 5, "destroyEnemy");
 		theSwitchboard.SubscribeTo(this, "destroyEnemy");
 		theSwitchboard.DeferredBroadcast(new Message("destroyEnemy"), 0.1);

@@ -197,7 +197,7 @@ void	Characters::ReceiveMessage(Message *m) {
 	else if (m->GetMessageName() == "colorDamageBlink2") {
 		if (this->_invincibility == true) {
 			theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
-			this->SetColor(1,0,0,0.9f);
+			//	this->SetColor(1,0,0,0.9f);
 		}
 	}
 	else if (m->GetMessageName() == "enableAttackHitbox") {

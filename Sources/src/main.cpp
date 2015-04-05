@@ -58,7 +58,6 @@ int		main(int ac, char **av) {
 
 	game->showMap();
 
-	Equipment		*equip = new Equipment();
 	Consumable		*lol = new Consumable();
 	Hero			*hero = new Hero();
 	Enemy			*enemy = new Enemy("Enemy");

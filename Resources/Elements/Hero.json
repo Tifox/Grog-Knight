@@ -50,6 +50,10 @@
 			"endFrame_right": 39,
 			"beginFrame_left": 43,
 			"endFrame_left": 40,
+			"beginFrame_up": 61,
+			"endFrame_up": 63,
+			"beginFrame_down": 58,
+			"endFrame_down": 60,
 			"time": 0.1
 		},
 		"down": {

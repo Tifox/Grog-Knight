@@ -64,15 +64,30 @@ void	Hero::init(void) {
 void	Hero::actionCallback(std::string name, int status) {
 	if (name == "attack" && status == 1 && this->_weapon->attackReady() == 1) {
 		this->_weapon->isAttacking(0);
-		this->changeSizeTo(Vector2(2, 1));
-		if (this->_orientation == RIGHT)
+		if (this->_orientation == RIGHT) {
+			this->changeSizeTo(Vector2(2, 1));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 									  this->_getAttr("beginFrame_right").asInt(),
 									  this->_getAttr("endFrame_right").asInt(), "base");
-		else
+		}
+		else if (this->_orientation == LEFT) {
+			this->changeSizeTo(Vector2(2, 1));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 									  this->_getAttr("beginFrame_left").asInt(),
 									  this->_getAttr("endFrame_left").asInt(), "base");
+		}
+		else if (this->_orientation == UP) {
+			this->changeSizeTo(Vector2(1.5f, 2));
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+									  this->_getAttr("beginFrame_up").asInt(),
+									  this->_getAttr("endFrame_up").asInt(), "base");
+		}
+		else if (this->_orientation == DOWN) {
+			this->changeSizeTo(Vector2(1, 2.5f));
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+									  this->_getAttr("beginFrame_down").asInt(),
+									  this->_getAttr("endFrame_down").asInt(), "base");
+		}
 	}
 	return ;
 }

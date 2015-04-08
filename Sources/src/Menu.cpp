@@ -28,6 +28,8 @@
 //! Basic constructor
 Menu::Menu(void) {
 	theSwitchboard.SubscribeTo(this, "enterPressed");
+	theSwitchboard.SubscribeTo(this, "downPressed");
+	theSwitchboard.SubscribeTo(this, "upPressed");
 // Rebind key
 // Show text Menu
 // While make a choice
@@ -70,7 +72,11 @@ void	Menu::showMenu(Game *game) {
 void	Menu::ReceiveMessage(Message *m) {
 	if (m->GetMessageName() == "enterPressed") {
 		theSwitchboard.UnsubscribeFrom(this, "enterPressed");
+		theSwitchboard.UnsubscribeFrom(this, "upPressed");
+		theSwitchboard.UnsubscribeFrom(this, "downPressed");
 		Game::removeHUDWindow(this->_window);
 		this->_game->start();
+	} else {
+		Log::info("Magawd, you pressed " + m->GetMessageName());
 	}
 }

@@ -55,6 +55,11 @@ int		main(int ac, char **av) {
 	srand(1);
 	game->readMaps();
 	MouseDebugger l;
-	menu->showMenu(game);
+	if (ac > 1 && (std::string(av[1]) == "nomenu")) {
+		game->start();
+		theWorld.StartGame();
+	}
+	else
+		menu->showMenu(game);
 	return 0;
 }

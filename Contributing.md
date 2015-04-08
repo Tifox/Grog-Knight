@@ -125,20 +125,23 @@ Also, we are on the Apache License, so __EACH__ file would have the following he
 #### Function comment header
 A header to __EACH__ function is required too, except one-line function (Getters and setters).
 ```cpp
+//! Brief resumee
 /**
  * What the function do (In a few words)
- * @param: First Parameter name (type)
- * @param: Second Parameter name (type)
+ * @param First Parameter name Description
+ * @param Second Parameter name Description
  * ...
- * @return: The return variable name
+ * @return The return variable description
  */
 
 /* EXAMPLE */
 
+//! Count the length of a string
 /**
  * Count and return the length of a string.
- * @param: str (const char *)
- * @return: n
+ * This function already exists in the libc, this one's better
+ * @param str The string
+ * @return The len of the string
  */
 size_t		strlen(const char *str) {
 	/* Some code */

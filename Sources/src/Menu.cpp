@@ -51,8 +51,8 @@ void	Menu::showMenu(Game *game) {
 	HUDWindow		*w = new HUDWindow();
 
 	this->_game = game;
-	w->setText("Grog-Like", theCamera.GetWindowWidth() / 2, theCamera.GetWindowHeight() / 2, 
-		Vector3(255.0f, 255.0f, 255.0f), 1);
+	w->setText("grog \\grog\\: spirits (originally rum) mixed with water.", theCamera.GetWindowWidth() / 2 - 100, theCamera.GetWindowHeight() / 2 - 20, Vector3(255.0f, 255.0f, 255.0f), 1);
+	w->setText("drunk  \\drungk\\ v. Past participle of drink. adj. 1. a. Intoxicated with alcoholic liquor to the point of impairment of physical and mental faculties.", theCamera.GetWindowWidth() / 2 - 450, theCamera.GetWindowHeight() / 2, Vector3(255.0f, 255.0f, 255.0f), 1);
 	w->setText("Press <ENTER> to start", theCamera.GetWindowWidth() / 2 - 40, theCamera.GetWindowHeight() / 2 + 40, 
 		Vector3(255.0f, 255.0f, 255.0f), 1);
 	theWorld.SetBackgroundColor(*(new Color(0, 0, 0)));

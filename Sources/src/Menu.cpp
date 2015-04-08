@@ -69,7 +69,8 @@ void	Menu::showMenu(Game *game) {
  */
 void	Menu::ReceiveMessage(Message *m) {
 	if (m->GetMessageName() == "enterPressed") {
-		this->_game->start();
+		theSwitchboard.UnsubscribeFrom(this, "enterPressed");
 		Game::removeHUDWindow(this->_window);
+		this->_game->start();
 	}
 }

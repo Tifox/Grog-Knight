@@ -28,6 +28,8 @@
 
 class	Map;
 class	Maps;
+class Characters;
+
 # ifndef __Map__
 # include "Maps.hpp"
 # endif
@@ -41,13 +43,11 @@ class	Maps;
 # include "WeaponList.hpp"
 # include "Hitbox.hpp"
 # include "HUDWindow.hpp"
-# include "Enemy.hpp"
 
 
 class WeaponList;
 class Hitbox;
 class HUDWindow;
-class Characters;
 
 class Game {
 
@@ -101,6 +101,5 @@ class Game {
 		float		beginYHero;
 		Characters	&_hero;
 };
-
 
 #endif

@@ -124,5 +124,6 @@ class Characters : public Elements {
 # endif
 
 # include "Game.hpp"
+# include "Enemy.hpp"
 
 #endif

@@ -30,6 +30,7 @@
  * Basic constructor
  */
 HUDWindow::HUDWindow(void) : HUDActor() {
+	RegisterFont("Resources/font.ttf", 14, "Gamefont");
 	return;
 }
 
@@ -208,7 +209,6 @@ void	HUDWindow::mana(int mana) {
 void	HUDWindow::gold(int gold) {
 	this->addImage("Resources/Images/HUD/xp.png", 340, 50, 20.0f);
 	this->addImage("Resources/Images/HUD/gold.png", 360, 50, 20.0f);
-	RegisterFont("Resources/font.ttf", 14, "Gamefont");
 	this->setText(std::to_string(gold), 380, 55, Vector3(246.0f, 255.0f, 0.0f), 1);
 }
 

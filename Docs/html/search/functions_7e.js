@@ -13,11 +13,9 @@ var searchData=
   ['_7elog',['~Log',['../class_log.html#a0fbfda88fbee5027c89f6eb121059360',1,'Log']]],
   ['_7emap',['~Map',['../class_map.html#aa403fbe09394ccf39747588f5168e3b2',1,'Map']]],
   ['_7emaps',['~Maps',['../class_maps.html#aa3fbced631bfb5f4d1fe541a8a29384f',1,'Maps']]],
-  ['_7emousedebugger',['~MouseDebugger',['../class_mouse_debugger.html#a6b60c23ad59db3df59e3fefcacde9042',1,'MouseDebugger']]],
+  ['_7emenu',['~Menu',['../class_menu.html#a73932d2ddab91e989102211f81c98c76',1,'Menu']]],
   ['_7eobject',['~Object',['../class_object.html#ae8f5483f459e46687bd01e6f9977afd3',1,'Object']]],
-  ['_7eprojectile',['~Projectile',['../class_projectile.html#a94903e021fa2edab60ba3836ca0b937d',1,'Projectile']]],
   ['_7eroom',['~Room',['../class_room.html#a67d5da09983cc53097807fd43ba5481a',1,'Room']]],
-  ['_7eshooter',['~Shooter',['../class_shooter.html#a721a5786ef137f1b27f634988cc12f7e',1,'Shooter']]],
   ['_7eweapon',['~Weapon',['../class_weapon.html#aa3364fb5092bbdb4c215e02dd1494f10',1,'Weapon']]],
   ['_7eweaponlist',['~WeaponList',['../class_weapon_list.html#a44f72440d8a4586b19e4b60d308b2e51',1,'WeaponList']]]
 ];

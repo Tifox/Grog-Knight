@@ -28,9 +28,13 @@ Collaboration diagram for Equipment\-:\nopagebreak
 \item 
 \hyperlink{class_equipment_a2bd67c4254f2074f4f7469f29a20e760}{Equipment} ()
 \begin{DoxyCompactList}\small\item\em Basic constructor. \end{DoxyCompactList}\item 
-\hyperlink{class_equipment_a3e7f53e57fa3004b5a4490e2c7a1fbaf}{$\sim$\-Equipment} ()
+\hyperlink{class_equipment_aeb2356275b65e0d7874aeaee05dc30a4}{Equipment} (\hyperlink{class_characters}{Characters} $\ast$)
+\begin{DoxyCompactList}\small\item\em Constructor called when an enemy dies. \end{DoxyCompactList}\item 
+\hypertarget{class_equipment_a3e7f53e57fa3004b5a4490e2c7a1fbaf}{\hyperlink{class_equipment_a3e7f53e57fa3004b5a4490e2c7a1fbaf}{$\sim$\-Equipment} ()}\label{class_equipment_a3e7f53e57fa3004b5a4490e2c7a1fbaf}
+
 \begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
-\hyperlink{class_weapon}{Weapon} $\ast$ \hyperlink{class_equipment_a54fd1c2d6cca6b4d2584eb0cf8725bd2}{get\-Weapon} (void)
+\hypertarget{class_equipment_a54fd1c2d6cca6b4d2584eb0cf8725bd2}{\hyperlink{class_weapon}{Weapon} $\ast$ {\bfseries get\-Weapon} (void)}\label{class_equipment_a54fd1c2d6cca6b4d2584eb0cf8725bd2}
+
 \item 
 void \hyperlink{class_equipment_a0c706b45578e8d01fec7b8ee1b773987}{Begin\-Contact} (\hyperlink{class_elements}{Elements} $\ast$elem, b2\-Contact $\ast$contact)
 \begin{DoxyCompactList}\small\item\em Collision begin callback. \end{DoxyCompactList}\item 
@@ -46,7 +50,7 @@ Licensed to the Apache Software Foundation (A\-S\-F) under one or more contribut
 
 \href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\-://www.\-apache.\-org/licenses/\-L\-I\-C\-E\-N\-S\-E-\/2.\-0}
 
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\-A\-S I\-S\char`\"{} B\-A\-S\-I\-S, W\-I\-T\-H\-O\-U\-T W\-A\-R\-R\-A\-N\-T\-I\-E\-S O\-R C\-O\-N\-D\-I\-T\-I\-O\-N\-S O\-F A\-N\-Y K\-I\-N\-D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\-: \hyperlink{_equipment_8hpp}{Equipment.\-hpp} Creation\-: 2015-\/03-\/06 15\-:51 Manon Budin \href{mailto:mbudin@student.42.fr}{\tt mbudin@student.\-42.\-fr} 
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\-A\-S I\-S\char`\"{} B\-A\-S\-I\-S, W\-I\-T\-H\-O\-U\-T W\-A\-R\-R\-A\-N\-T\-I\-E\-S O\-R C\-O\-N\-D\-I\-T\-I\-O\-N\-S O\-F A\-N\-Y K\-I\-N\-D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\-: \hyperlink{_equipment_8hpp_source}{Equipment.\-hpp} Creation\-: 2015-\/03-\/06 15\-:51 Manon Budin \href{mailto:mbudin@student.42.fr}{\tt mbudin@student.\-42.\-fr} 
 
 \subsection{Constructor \& Destructor Documentation}
 \hypertarget{class_equipment_a2bd67c4254f2074f4f7469f29a20e760}{\index{Equipment@{Equipment}!Equipment@{Equipment}}
@@ -64,19 +68,24 @@ Licensed to the Apache Software Foundation (A\-S\-F) under one or more contribut
 
 \href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\-://www.\-apache.\-org/licenses/\-L\-I\-C\-E\-N\-S\-E-\/2.\-0}
 
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\-A\-S I\-S\char`\"{} B\-A\-S\-I\-S, W\-I\-T\-H\-O\-U\-T W\-A\-R\-R\-A\-N\-T\-I\-E\-S O\-R C\-O\-N\-D\-I\-T\-I\-O\-N\-S O\-F A\-N\-Y K\-I\-N\-D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\-: \hyperlink{_equipment_8cpp}{Equipment.\-cpp} Creation\-: 2015-\/03-\/06 15\-:51 Manon Budin \href{mailto:mbudin@student.42.fr}{\tt mbudin@student.\-42.\-fr} The basic constructor. In this constructor, we get the sprite and Init\-Physics. \begin{DoxyRefDesc}{Todo}
-\item[\hyperlink{todo__todo000004}{Todo}]\-: The position is actually in the hard-\/way. Config file needed. \end{DoxyRefDesc}
-\hypertarget{class_equipment_a3e7f53e57fa3004b5a4490e2c7a1fbaf}{\index{Equipment@{Equipment}!$\sim$\-Equipment@{$\sim$\-Equipment}}
-\index{$\sim$\-Equipment@{$\sim$\-Equipment}!Equipment@{Equipment}}
-\subsubsection[{$\sim$\-Equipment}]{\setlength{\rightskip}{0pt plus 5cm}Equipment\-::$\sim$\-Equipment (
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\-A\-S I\-S\char`\"{} B\-A\-S\-I\-S, W\-I\-T\-H\-O\-U\-T W\-A\-R\-R\-A\-N\-T\-I\-E\-S O\-R C\-O\-N\-D\-I\-T\-I\-O\-N\-S O\-F A\-N\-Y K\-I\-N\-D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\-: Equipment.\-cpp Creation\-: 2015-\/03-\/06 15\-:51 Manon Budin \href{mailto:mbudin@student.42.fr}{\tt mbudin@student.\-42.\-fr} The basic constructor. In this constructor, we get the sprite and Init\-Physics. \begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000005}{Todo}]\-: The position is actually in the hard-\/way. Config file needed. \end{DoxyRefDesc}
+\hypertarget{class_equipment_aeb2356275b65e0d7874aeaee05dc30a4}{\index{Equipment@{Equipment}!Equipment@{Equipment}}
+\index{Equipment@{Equipment}!Equipment@{Equipment}}
+\subsubsection[{Equipment}]{\setlength{\rightskip}{0pt plus 5cm}Equipment\-::\-Equipment (
 \begin{DoxyParamCaption}
-\item[{void}]{}
+\item[{{\bf Characters} $\ast$}]{c}
 \end{DoxyParamCaption}
-)}}\label{class_equipment_a3e7f53e57fa3004b5a4490e2c7a1fbaf}
+)}}\label{class_equipment_aeb2356275b65e0d7874aeaee05dc30a4}
 
 
-Destructor. 
+Constructor called when an enemy dies. 
 
+This constructor positions the object based on the enemy 
+\begin{DoxyParams}{Parameters}
+{\em c} & (A \hyperlink{class_characters}{Characters} object) \\
+\hline
+\end{DoxyParams}
 
 
 \subsection{Member Function Documentation}
@@ -101,7 +110,7 @@ The contact begin function /!\textbackslash{} This function is actually called j
 \end{DoxyParams}
 
 
-Reimplemented from \hyperlink{class_elements_a108938e08197adc349e98fb91abe1b5a}{Elements}.
+Reimplemented from \hyperlink{class_elements}{Elements}.
 
 \hypertarget{class_equipment_abda1acd976a1c33f3aa398b3a9a64555}{\index{Equipment@{Equipment}!End\-Contact@{End\-Contact}}
 \index{End\-Contact@{End\-Contact}!Equipment@{Equipment}}
@@ -124,15 +133,8 @@ End of contact function /!\textbackslash{} This function is called just after th
 \end{DoxyParams}
 
 
-Reimplemented from \hyperlink{class_elements_a42c3b694edefcc789109bd952a66d918}{Elements}.
+Reimplemented from \hyperlink{class_elements}{Elements}.
 
-\hypertarget{class_equipment_a54fd1c2d6cca6b4d2584eb0cf8725bd2}{\index{Equipment@{Equipment}!get\-Weapon@{get\-Weapon}}
-\index{get\-Weapon@{get\-Weapon}!Equipment@{Equipment}}
-\subsubsection[{get\-Weapon}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Weapon} $\ast$ Equipment\-::get\-Weapon (
-\begin{DoxyParamCaption}
-\item[{void}]{}
-\end{DoxyParamCaption}
-)}}\label{class_equipment_a54fd1c2d6cca6b4d2584eb0cf8725bd2}
 \hypertarget{class_equipment_ab195be955597ce6f64c117d675df3af4}{\index{Equipment@{Equipment}!Receive\-Message@{Receive\-Message}}
 \index{Receive\-Message@{Receive\-Message}!Equipment@{Equipment}}
 \subsubsection[{Receive\-Message}]{\setlength{\rightskip}{0pt plus 5cm}void Equipment\-::\-Receive\-Message (
@@ -153,5 +155,5 @@ The Receive Message function.
 
 The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
 \item 
-/home/louis/\-Documents/rogue-\/like/\-Sources/inc/\hyperlink{_equipment_8hpp}{Equipment.\-hpp}\item 
-/home/louis/\-Documents/rogue-\/like/\-Sources/src/\hyperlink{_equipment_8cpp}{Equipment.\-cpp}\end{DoxyCompactItemize}
+Sources/inc/Equipment.\-hpp\item 
+Sources/src/Equipment.\-cpp\end{DoxyCompactItemize}

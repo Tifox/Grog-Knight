@@ -41,6 +41,7 @@ class	Maps;
 # include "WeaponList.hpp"
 # include "Hitbox.hpp"
 # include "HUDWindow.hpp"
+# include "Enemy.hpp"
 
 
 class WeaponList;

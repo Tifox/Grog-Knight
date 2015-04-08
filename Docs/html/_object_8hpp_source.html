@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>Grogue-like: /home/louis/Documents/rogue-like/Sources/inc/Object.hpp Source File</title>
+<title>Grog-Like: Sources/inc/Object.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -22,8 +22,9 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Grogue-like
+   <div id="projectname">Grog-Like
    </div>
+   <div id="projectbrief">A project about getting drunk</div>
   </td>
  </tr>
  </tbody>
@@ -61,7 +62,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 <!-- window showing the filter options -->
@@ -69,7 +69,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -88,13 +88,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">Object.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_object_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#ifndef __Object__</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span><span class="preprocessor"># define __Object__</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor"># include &quot;<a class="code" href="_elements_8hpp.html">Elements.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"># include &quot;<a class="code" href="_hero_8hpp.html">Hero.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor"># include &quot;<a class="code" href="_weapon_list_8hpp.html">WeaponList.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor"># include &quot;Elements.hpp&quot;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"># include &quot;Hero.hpp&quot;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor"># include &quot;WeaponList.hpp&quot;</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
 <div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="class_object.html">   33</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_object.html">Object</a> : <span class="keyword">public</span> <a class="code" href="class_elements.html">Elements</a> {</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">public</span>:</div>
@@ -105,18 +105,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;};</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="class_object_html_a5681745b50d64994e00fe519bbb4cd31"><div class="ttname"><a href="class_object.html#a5681745b50d64994e00fe519bbb4cd31">Object::BeginContact</a></div><div class="ttdeci">void BeginContact(Elements *elem, b2Contact *contact)</div><div class="ttdef"><b>Definition:</b> Object.cpp:49</div></div>
-<div class="ttc" id="_weapon_list_8hpp_html"><div class="ttname"><a href="_weapon_list_8hpp.html">WeaponList.hpp</a></div></div>
-<div class="ttc" id="class_object_html_a40860402e64d8008fb42329df7097cdb"><div class="ttname"><a href="class_object.html#a40860402e64d8008fb42329df7097cdb">Object::Object</a></div><div class="ttdeci">Object()</div><div class="ttdef"><b>Definition:</b> Object.cpp:32</div></div>
+<div class="ttc" id="class_object_html_a5681745b50d64994e00fe519bbb4cd31"><div class="ttname"><a href="class_object.html#a5681745b50d64994e00fe519bbb4cd31">Object::BeginContact</a></div><div class="ttdeci">void BeginContact(Elements *elem, b2Contact *contact)</div><div class="ttdoc">Overload from b2Body&amp;#39;s BeginContact. </div><div class="ttdef"><b>Definition:</b> Object.cpp:49</div></div>
+<div class="ttc" id="class_object_html_a40860402e64d8008fb42329df7097cdb"><div class="ttname"><a href="class_object.html#a40860402e64d8008fb42329df7097cdb">Object::Object</a></div><div class="ttdeci">Object()</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> Object.cpp:32</div></div>
 <div class="ttc" id="class_elements_html"><div class="ttname"><a href="class_elements.html">Elements</a></div><div class="ttdef"><b>Definition:</b> Elements.hpp:36</div></div>
-<div class="ttc" id="class_object_html_ae8f5483f459e46687bd01e6f9977afd3"><div class="ttname"><a href="class_object.html#ae8f5483f459e46687bd01e6f9977afd3">Object::~Object</a></div><div class="ttdeci">~Object()</div><div class="ttdef"><b>Definition:</b> Object.cpp:59</div></div>
-<div class="ttc" id="_elements_8hpp_html"><div class="ttname"><a href="_elements_8hpp.html">Elements.hpp</a></div></div>
-<div class="ttc" id="_hero_8hpp_html"><div class="ttname"><a href="_hero_8hpp.html">Hero.hpp</a></div></div>
+<div class="ttc" id="class_object_html_ae8f5483f459e46687bd01e6f9977afd3"><div class="ttname"><a href="class_object.html#ae8f5483f459e46687bd01e6f9977afd3">Object::~Object</a></div><div class="ttdeci">~Object()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> Object.cpp:60</div></div>
 <div class="ttc" id="class_object_html"><div class="ttname"><a href="class_object.html">Object</a></div><div class="ttdef"><b>Definition:</b> Object.hpp:33</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Apr 1 2015 14:09:00 for Grogue-like by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 8 2015 15:12:54 for Grog-Like by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

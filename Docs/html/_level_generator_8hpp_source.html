@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>Grogue-like: /home/louis/Documents/rogue-like/Sources/inc/LevelGenerator.hpp Source File</title>
+<title>Grog-Like: Sources/inc/LevelGenerator.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -22,8 +22,9 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Grogue-like
+   <div id="projectname">Grog-Like
    </div>
+   <div id="projectbrief">A project about getting drunk</div>
   </td>
  </tr>
  </tbody>
@@ -61,7 +62,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 <!-- window showing the filter options -->
@@ -69,7 +69,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -88,7 +88,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">LevelGenerator.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_level_generator_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#ifndef __LevelGenerator__</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span><span class="preprocessor"># define __LevelGenerator__</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor"></span></div>
@@ -98,8 +98,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor"># include &lt;ctime&gt;</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor"># include &lt;iostream&gt;</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor"># include &quot;<a class="code" href="_room_8hpp.html">Room.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor"># include &quot;<a class="code" href="main_8hpp.html">main.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor"># include &quot;Room.hpp&quot;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor"># include &quot;main.hpp&quot;</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
 <div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="class_level_generator.html">   38</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_level_generator.html">LevelGenerator</a> {</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
@@ -107,18 +107,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <a class="code" href="class_level_generator.html">LevelGenerator</a>(<span class="keywordtype">int</span> height, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> minPathLenght, <span class="keywordtype">int</span> roomPopRate, <span class="keywordtype">int</span> doorsPopRate);</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <a class="code" href="class_level_generator.html#a9bd612e10a3d769537ba042a76c0cb5f">~LevelGenerator</a>();</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_level_generator.html#ad3a873efd53cec998e5b3cbec90b1e6d">print</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_level_generator.html#a0adda93371151dcbda015fd4a9a5b971">execute</a>();         <span class="comment">//execute generation process</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_level_generator.html#a67392d5702d8bb9b28d3b87cfa4f4435">firstPass</a>();       <span class="comment">//generate base rooms</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_level_generator.html#aaed4a6d35bf4ea14a1d472b247720f46">secondPass</a>();      <span class="comment">//generate links</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_level_generator.html#a8e8540de5d26ae5fd37f01863bb3a3ab">thirdPass</a>();       <span class="comment">//delete isolated rooms</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_level_generator.html#a9b9e75025c7dcacb88bcb717f2aa9f3b">fourthPass</a>();      <span class="comment">//generate entry</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keywordtype">void</span> print(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordtype">void</span> execute();         <span class="comment">//execute generation process</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordtype">void</span> firstPass();       <span class="comment">//generate base rooms</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordtype">void</span> secondPass();      <span class="comment">//generate links</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordtype">void</span> thirdPass();       <span class="comment">//delete isolated rooms</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordtype">void</span> fourthPass();      <span class="comment">//generate entry</span></div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_level_generator.html#aaaccd1f1c3b4331d30ba5a56b3d027f8">linkAdjacentRooms</a>(<a class="code" href="class_room.html">Room</a> *room);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_level_generator.html#afaa688bd1e11103c8afb45dbfa41c0c7">shockwave</a>();</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordtype">int</span> <a class="code" href="class_level_generator.html#ab9f4dd15ee1d8f0659d3df0956d087af">getEntryId</a>();</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordtype">int</span> <a class="code" href="class_level_generator.html#af8a3c3f49855932e09da03107205c72f">addDistanceToAdjacentRooms</a>(<a class="code" href="class_room.html">Room</a> *room, <span class="keywordtype">int</span> searchDistance);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <a class="code" href="class_room.html">Room</a> *<a class="code" href="class_level_generator.html#a6af493402fdf30516ea0c122d2c82a4b">findRoomByPos</a>(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordtype">void</span> linkAdjacentRooms(<a class="code" href="class_room.html">Room</a> *room);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordtype">void</span> shockwave();</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordtype">int</span> getEntryId();</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordtype">int</span> addDistanceToAdjacentRooms(<a class="code" href="class_room.html">Room</a> *room, <span class="keywordtype">int</span> searchDistance);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <a class="code" href="class_room.html">Room</a> *findRoomByPos(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y);</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordtype">int</span>                             _height;</div>
@@ -135,26 +135,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;};</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="class_level_generator_html_ad3a873efd53cec998e5b3cbec90b1e6d"><div class="ttname"><a href="class_level_generator.html#ad3a873efd53cec998e5b3cbec90b1e6d">LevelGenerator::print</a></div><div class="ttdeci">void print(void)</div><div class="ttdef"><b>Definition:</b> LevelGenerator.cpp:61</div></div>
-<div class="ttc" id="class_level_generator_html_a0adda93371151dcbda015fd4a9a5b971"><div class="ttname"><a href="class_level_generator.html#a0adda93371151dcbda015fd4a9a5b971">LevelGenerator::execute</a></div><div class="ttdeci">void execute()</div><div class="ttdef"><b>Definition:</b> LevelGenerator.cpp:52</div></div>
 <div class="ttc" id="class_level_generator_html"><div class="ttname"><a href="class_level_generator.html">LevelGenerator</a></div><div class="ttdef"><b>Definition:</b> LevelGenerator.hpp:38</div></div>
-<div class="ttc" id="class_level_generator_html_af8a3c3f49855932e09da03107205c72f"><div class="ttname"><a href="class_level_generator.html#af8a3c3f49855932e09da03107205c72f">LevelGenerator::addDistanceToAdjacentRooms</a></div><div class="ttdeci">int addDistanceToAdjacentRooms(Room *room, int searchDistance)</div><div class="ttdef"><b>Definition:</b> LevelGenerator.cpp:162</div></div>
 <div class="ttc" id="class_level_generator_html_a9bd612e10a3d769537ba042a76c0cb5f"><div class="ttname"><a href="class_level_generator.html#a9bd612e10a3d769537ba042a76c0cb5f">LevelGenerator::~LevelGenerator</a></div><div class="ttdeci">~LevelGenerator()</div><div class="ttdef"><b>Definition:</b> LevelGenerator.cpp:48</div></div>
-<div class="ttc" id="class_level_generator_html_aaaccd1f1c3b4331d30ba5a56b3d027f8"><div class="ttname"><a href="class_level_generator.html#aaaccd1f1c3b4331d30ba5a56b3d027f8">LevelGenerator::linkAdjacentRooms</a></div><div class="ttdeci">void linkAdjacentRooms(Room *room)</div><div class="ttdef"><b>Definition:</b> LevelGenerator.cpp:236</div></div>
-<div class="ttc" id="_room_8hpp_html"><div class="ttname"><a href="_room_8hpp.html">Room.hpp</a></div></div>
-<div class="ttc" id="class_level_generator_html_a9b9e75025c7dcacb88bcb717f2aa9f3b"><div class="ttname"><a href="class_level_generator.html#a9b9e75025c7dcacb88bcb717f2aa9f3b">LevelGenerator::fourthPass</a></div><div class="ttdeci">void fourthPass()</div><div class="ttdef"><b>Definition:</b> LevelGenerator.cpp:140</div></div>
 <div class="ttc" id="class_room_html"><div class="ttname"><a href="class_room.html">Room</a></div><div class="ttdef"><b>Definition:</b> Room.hpp:33</div></div>
-<div class="ttc" id="class_level_generator_html_a67392d5702d8bb9b28d3b87cfa4f4435"><div class="ttname"><a href="class_level_generator.html#a67392d5702d8bb9b28d3b87cfa4f4435">LevelGenerator::firstPass</a></div><div class="ttdeci">void firstPass()</div><div class="ttdef"><b>Definition:</b> LevelGenerator.cpp:85</div></div>
-<div class="ttc" id="class_level_generator_html_aaed4a6d35bf4ea14a1d472b247720f46"><div class="ttname"><a href="class_level_generator.html#aaed4a6d35bf4ea14a1d472b247720f46">LevelGenerator::secondPass</a></div><div class="ttdeci">void secondPass()</div><div class="ttdef"><b>Definition:</b> LevelGenerator.cpp:99</div></div>
-<div class="ttc" id="class_level_generator_html_ab9f4dd15ee1d8f0659d3df0956d087af"><div class="ttname"><a href="class_level_generator.html#ab9f4dd15ee1d8f0659d3df0956d087af">LevelGenerator::getEntryId</a></div><div class="ttdeci">int getEntryId()</div><div class="ttdef"><b>Definition:</b> LevelGenerator.cpp:225</div></div>
-<div class="ttc" id="main_8hpp_html"><div class="ttname"><a href="main_8hpp.html">main.hpp</a></div></div>
-<div class="ttc" id="class_level_generator_html_afaa688bd1e11103c8afb45dbfa41c0c7"><div class="ttname"><a href="class_level_generator.html#afaa688bd1e11103c8afb45dbfa41c0c7">LevelGenerator::shockwave</a></div><div class="ttdeci">void shockwave()</div><div class="ttdef"><b>Definition:</b> LevelGenerator.cpp:148</div></div>
-<div class="ttc" id="class_level_generator_html_a6af493402fdf30516ea0c122d2c82a4b"><div class="ttname"><a href="class_level_generator.html#a6af493402fdf30516ea0c122d2c82a4b">LevelGenerator::findRoomByPos</a></div><div class="ttdeci">Room * findRoomByPos(int x, int y)</div><div class="ttdef"><b>Definition:</b> LevelGenerator.cpp:214</div></div>
-<div class="ttc" id="class_level_generator_html_a8e8540de5d26ae5fd37f01863bb3a3ab"><div class="ttname"><a href="class_level_generator.html#a8e8540de5d26ae5fd37f01863bb3a3ab">LevelGenerator::thirdPass</a></div><div class="ttdeci">void thirdPass()</div><div class="ttdef"><b>Definition:</b> LevelGenerator.cpp:125</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Apr 1 2015 14:09:00 for Grogue-like by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 8 2015 15:12:54 for Grog-Like by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

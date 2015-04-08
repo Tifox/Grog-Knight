@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>Grogue-like: /home/louis/Documents/rogue-like/Sources/inc/Weapon.hpp Source File</title>
+<title>Grog-Like: Sources/inc/Weapon.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -22,8 +22,9 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Grogue-like
+   <div id="projectname">Grog-Like
    </div>
+   <div id="projectbrief">A project about getting drunk</div>
   </td>
  </tr>
  </tbody>
@@ -61,7 +62,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 <!-- window showing the filter options -->
@@ -69,7 +69,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -88,13 +88,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">Weapon.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_weapon_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#ifndef __Weapon__</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span><span class="preprocessor"># define __Weapon__</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor"># include &quot;<a class="code" href="_log_8hpp.html">Log.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"># include &quot;<a class="code" href="_elements_8hpp.html">Elements.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor"># include &quot;<a class="code" href="_projectile_8hpp.html">Projectile.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor"># include &quot;Log.hpp&quot;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"># include &quot;Elements.hpp&quot;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor"># include &quot;Projectile.hpp&quot;</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor"># ifdef __APPLE__</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#  include &quot;../../Tools/jsoncpp/include/json/json.h&quot;</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor"># else</span></div>
@@ -111,22 +111,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="class_weapon.html#aa3364fb5092bbdb4c215e02dd1494f10">~Weapon</a>(<span class="keywordtype">void</span>);</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">void</span>            <a class="code" href="class_weapon.html#a90b2b26acbbfc87a14786c8859e4a01d">attack</a>(<a class="code" href="class_characters.html">Characters</a> *c);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">void</span>            <a class="code" href="class_weapon.html#a866884395ed4c0e7a972bb18e8d7d030">BeginContact</a>(<a class="code" href="class_elements.html">Elements</a> *elem, b2Contact *contact);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">void</span>            <a class="code" href="class_weapon.html#a1860f840f8c75555de52450300139d9b">EndContact</a>(<a class="code" href="class_elements.html">Elements</a> *elem, b2Contact *contact);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">void</span>            <a class="code" href="class_weapon.html#ad93665811c3df9c05bb22b9a1a9c1a66">ReceiveMessage</a>(Message *m);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">void</span>            BeginContact(<a class="code" href="class_elements.html">Elements</a> *elem, b2Contact *contact);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">void</span>            EndContact(<a class="code" href="class_elements.html">Elements</a> *elem, b2Contact *contact);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">void</span>            ReceiveMessage(Message *m);</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    std::string     <a class="code" href="class_weapon.html#aa49263888dca8ee505a95294371adbf6">getName</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    std::string     <a class="code" href="class_weapon.html#abe73556e16426da65572d7981dcc800f">getFlavor</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    std::string     <a class="code" href="class_weapon.html#a693e8f30f48b5df1983c22fdf796f25b">getAttack</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    std::string     <a class="code" href="class_weapon.html#ace3e431278e9ac23f33d222c67c38497">getSprite</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">float</span>           <a class="code" href="class_weapon.html#aea6024533cc9ca0ce72139ebf5da33f9">getActive</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">int</span>             <a class="code" href="class_weapon.html#a47baa57bfa8b9bfeda891d3180caa399">getSize</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">int</span>             <a class="code" href="class_weapon.html#a35f92fc79c009c1d1d7d41b4fa17bb11">getDamage</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">int</span>             <a class="code" href="class_weapon.html#a60a49fa0a0a76a58698d9b4000815a8b">getPushback</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">float</span>           <a class="code" href="class_weapon.html#a18a362244c6a169db89536505eaa2f15">getRecovery</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">int</span>             <a class="code" href="class_weapon.html#aded3e214d38d181504d49719cfc08fa5">attackReady</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    std::string     getName(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    std::string     getFlavor(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    std::string     getAttack(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    std::string     getSprite(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">float</span>           getActive(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">int</span>             getSize(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">int</span>             getDamage(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">int</span>             getPushback(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">float</span>           getRecovery(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">int</span>             attackReady(<span class="keywordtype">void</span>);</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span>            <a class="code" href="class_weapon.html#a24f4509a23008f783c566ffa68548fb4">isAttacking</a>(<span class="keywordtype">int</span> i);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span>            isAttacking(<span class="keywordtype">int</span> i);</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    std::map&lt;std::string, std::map&lt;std::string, Json::Value&gt; &gt;  _attr;</div>
@@ -151,34 +151,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;};</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="class_weapon_html_aded3e214d38d181504d49719cfc08fa5"><div class="ttname"><a href="class_weapon.html#aded3e214d38d181504d49719cfc08fa5">Weapon::attackReady</a></div><div class="ttdeci">int attackReady(void)</div><div class="ttdef"><b>Definition:</b> Weapon.cpp:247</div></div>
-<div class="ttc" id="class_weapon_html_a24f4509a23008f783c566ffa68548fb4"><div class="ttname"><a href="class_weapon.html#a24f4509a23008f783c566ffa68548fb4">Weapon::isAttacking</a></div><div class="ttdeci">void isAttacking(int i)</div><div class="ttdef"><b>Definition:</b> Weapon.cpp:251</div></div>
-<div class="ttc" id="class_weapon_html_a60a49fa0a0a76a58698d9b4000815a8b"><div class="ttname"><a href="class_weapon.html#a60a49fa0a0a76a58698d9b4000815a8b">Weapon::getPushback</a></div><div class="ttdeci">int getPushback(void)</div><div class="ttdef"><b>Definition:</b> Weapon.cpp:245</div></div>
 <div class="ttc" id="class_weapon_html"><div class="ttname"><a href="class_weapon.html">Weapon</a></div><div class="ttdef"><b>Definition:</b> Weapon.hpp:40</div></div>
 <div class="ttc" id="class_characters_html"><div class="ttname"><a href="class_characters.html">Characters</a></div><div class="ttdef"><b>Definition:</b> Characters.hpp:46</div></div>
-<div class="ttc" id="class_weapon_html_a1860f840f8c75555de52450300139d9b"><div class="ttname"><a href="class_weapon.html#a1860f840f8c75555de52450300139d9b">Weapon::EndContact</a></div><div class="ttdeci">void EndContact(Elements *elem, b2Contact *contact)</div><div class="ttdef"><b>Definition:</b> Weapon.cpp:256</div></div>
-<div class="ttc" id="class_weapon_html_aa3364fb5092bbdb4c215e02dd1494f10"><div class="ttname"><a href="class_weapon.html#aa3364fb5092bbdb4c215e02dd1494f10">Weapon::~Weapon</a></div><div class="ttdeci">~Weapon(void)</div><div class="ttdef"><b>Definition:</b> Weapon.cpp:148</div></div>
-<div class="ttc" id="class_weapon_html_a90b2b26acbbfc87a14786c8859e4a01d"><div class="ttname"><a href="class_weapon.html#a90b2b26acbbfc87a14786c8859e4a01d">Weapon::attack</a></div><div class="ttdeci">void attack(Characters *c)</div><div class="ttdef"><b>Definition:</b> Weapon.cpp:221</div></div>
-<div class="ttc" id="class_weapon_html_a18a362244c6a169db89536505eaa2f15"><div class="ttname"><a href="class_weapon.html#a18a362244c6a169db89536505eaa2f15">Weapon::getRecovery</a></div><div class="ttdeci">float getRecovery(void)</div><div class="ttdef"><b>Definition:</b> Weapon.cpp:246</div></div>
-<div class="ttc" id="class_weapon_html_ad93665811c3df9c05bb22b9a1a9c1a66"><div class="ttname"><a href="class_weapon.html#ad93665811c3df9c05bb22b9a1a9c1a66">Weapon::ReceiveMessage</a></div><div class="ttdeci">void ReceiveMessage(Message *m)</div><div class="ttdef"><b>Definition:</b> Weapon.cpp:228</div></div>
+<div class="ttc" id="class_weapon_html_aa3364fb5092bbdb4c215e02dd1494f10"><div class="ttname"><a href="class_weapon.html#aa3364fb5092bbdb4c215e02dd1494f10">Weapon::~Weapon</a></div><div class="ttdeci">~Weapon(void)</div><div class="ttdoc">Basic destructor. </div><div class="ttdef"><b>Definition:</b> Weapon.cpp:155</div></div>
+<div class="ttc" id="class_weapon_html_a90b2b26acbbfc87a14786c8859e4a01d"><div class="ttname"><a href="class_weapon.html#a90b2b26acbbfc87a14786c8859e4a01d">Weapon::attack</a></div><div class="ttdeci">void attack(Characters *c)</div><div class="ttdoc">Function called when a character attacks, to create the hitbox depending if its ranged or melee...</div><div class="ttdef"><b>Definition:</b> Weapon.cpp:232</div></div>
 <div class="ttc" id="class_elements_html"><div class="ttname"><a href="class_elements.html">Elements</a></div><div class="ttdef"><b>Definition:</b> Elements.hpp:36</div></div>
-<div class="ttc" id="class_weapon_html_a866884395ed4c0e7a972bb18e8d7d030"><div class="ttname"><a href="class_weapon.html#a866884395ed4c0e7a972bb18e8d7d030">Weapon::BeginContact</a></div><div class="ttdeci">void BeginContact(Elements *elem, b2Contact *contact)</div><div class="ttdef"><b>Definition:</b> Weapon.cpp:253</div></div>
-<div class="ttc" id="class_weapon_html_a7267e890fa563b4f2df8746f443b461a"><div class="ttname"><a href="class_weapon.html#a7267e890fa563b4f2df8746f443b461a">Weapon::Weapon</a></div><div class="ttdeci">Weapon(std::string name)</div><div class="ttdef"><b>Definition:</b> Weapon.cpp:32</div></div>
-<div class="ttc" id="class_weapon_html_a693e8f30f48b5df1983c22fdf796f25b"><div class="ttname"><a href="class_weapon.html#a693e8f30f48b5df1983c22fdf796f25b">Weapon::getAttack</a></div><div class="ttdeci">std::string getAttack(void)</div><div class="ttdef"><b>Definition:</b> Weapon.cpp:241</div></div>
-<div class="ttc" id="class_weapon_html_aa49263888dca8ee505a95294371adbf6"><div class="ttname"><a href="class_weapon.html#aa49263888dca8ee505a95294371adbf6">Weapon::getName</a></div><div class="ttdeci">std::string getName(void)</div><div class="ttdef"><b>Definition:</b> Weapon.cpp:238</div></div>
-<div class="ttc" id="_projectile_8hpp_html"><div class="ttname"><a href="_projectile_8hpp.html">Projectile.hpp</a></div></div>
-<div class="ttc" id="_elements_8hpp_html"><div class="ttname"><a href="_elements_8hpp.html">Elements.hpp</a></div></div>
-<div class="ttc" id="class_weapon_html_ade3d2d4e411807411131b43238e47731"><div class="ttname"><a href="class_weapon.html#ade3d2d4e411807411131b43238e47731">Weapon::_getAttr</a></div><div class="ttdeci">Json::Value _getAttr(std::string category, std::string key)</div><div class="ttdef"><b>Definition:</b> Weapon.cpp:201</div></div>
-<div class="ttc" id="class_weapon_html_abe73556e16426da65572d7981dcc800f"><div class="ttname"><a href="class_weapon.html#abe73556e16426da65572d7981dcc800f">Weapon::getFlavor</a></div><div class="ttdeci">std::string getFlavor(void)</div><div class="ttdef"><b>Definition:</b> Weapon.cpp:239</div></div>
-<div class="ttc" id="_log_8hpp_html"><div class="ttname"><a href="_log_8hpp.html">Log.hpp</a></div></div>
-<div class="ttc" id="class_weapon_html_ace3e431278e9ac23f33d222c67c38497"><div class="ttname"><a href="class_weapon.html#ace3e431278e9ac23f33d222c67c38497">Weapon::getSprite</a></div><div class="ttdeci">std::string getSprite(void)</div><div class="ttdef"><b>Definition:</b> Weapon.cpp:240</div></div>
-<div class="ttc" id="class_weapon_html_aea6024533cc9ca0ce72139ebf5da33f9"><div class="ttname"><a href="class_weapon.html#aea6024533cc9ca0ce72139ebf5da33f9">Weapon::getActive</a></div><div class="ttdeci">float getActive(void)</div><div class="ttdef"><b>Definition:</b> Weapon.cpp:242</div></div>
-<div class="ttc" id="class_weapon_html_a35f92fc79c009c1d1d7d41b4fa17bb11"><div class="ttname"><a href="class_weapon.html#a35f92fc79c009c1d1d7d41b4fa17bb11">Weapon::getDamage</a></div><div class="ttdeci">int getDamage(void)</div><div class="ttdef"><b>Definition:</b> Weapon.cpp:244</div></div>
-<div class="ttc" id="class_weapon_html_a47baa57bfa8b9bfeda891d3180caa399"><div class="ttname"><a href="class_weapon.html#a47baa57bfa8b9bfeda891d3180caa399">Weapon::getSize</a></div><div class="ttdeci">int getSize(void)</div><div class="ttdef"><b>Definition:</b> Weapon.cpp:243</div></div>
+<div class="ttc" id="class_weapon_html_a7267e890fa563b4f2df8746f443b461a"><div class="ttname"><a href="class_weapon.html#a7267e890fa563b4f2df8746f443b461a">Weapon::Weapon</a></div><div class="ttdeci">Weapon(std::string name)</div><div class="ttdoc">Constructor called by the weaponlist class to parse all weapons. </div><div class="ttdef"><b>Definition:</b> Weapon.cpp:33</div></div>
+<div class="ttc" id="class_weapon_html_ade3d2d4e411807411131b43238e47731"><div class="ttname"><a href="class_weapon.html#ade3d2d4e411807411131b43238e47731">Weapon::_getAttr</a></div><div class="ttdeci">Json::Value _getAttr(std::string category, std::string key)</div><div class="ttdoc">Function called to get an attr value from the parsed json. </div><div class="ttdef"><b>Definition:</b> Weapon.cpp:211</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Apr 1 2015 14:09:00 for Grogue-like by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 8 2015 15:12:54 for Grog-Like by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

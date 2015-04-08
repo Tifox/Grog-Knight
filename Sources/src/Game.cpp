@@ -80,7 +80,29 @@ void	Game::grid(void) {
  * Let's start the game
  */
 void	Game::start(void) {
-	theWorld.StartGame();
+	theWorld.SetBackgroundColor(*(new Color(0, 0, 0)));
+	Game::wList = new WeaponList();
+	this->showMap();
+
+	Consumable		*lol = new Consumable();
+	Hero			*hero = new Hero();
+	Enemy			*enemy = new Enemy("Enemy");
+	Enemy			*enemy2 = new Enemy("Enemy2");
+
+	//===== I temp map generation test =====
+	//LevelGenerator *levelGenerator = new LevelGenerator(6, 6, 5, 60, 80);
+	//levelGenerator->execute();
+	//levelGenerator->print();
+	//===== O temp map generation test =====
+
+	theCamera.SetPosition(13, -7);
+	this->displayHero(*(hero));
+	hero->init();
+	enemy->init();
+	enemy2->init();
+	hero->equipWeapon(Game::wList->getWeapon("Sword"));
+	this->setHero(*hero);
+	this->displayHUD();
 }
 
 //! Read the maps

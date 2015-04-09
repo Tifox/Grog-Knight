@@ -50,9 +50,13 @@ Equipment::Equipment(void): Object() {
 Equipment::Equipment(Characters* c): Object() {
 	this->addAttribute("type2", "Equipment");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
-	this->_weapon = new Weapon(Game::wList->getWeapon("Bow"));
+	if (rand() % 2 == 1)
+		this->_weapon = new Weapon(Game::wList->getWeapon("Bow"));
+	else
+		this->_weapon = new Weapon(Game::wList->getWeapon("Sword"));
 	this->SetSprite(this->_weapon->getSprite());
-	theSwitchboard.SubscribeTo(this, "DeleteEquipment");
+	this->SetName("loot");
+	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	Game::bodiesToCreate.push_back(this);
 }
@@ -100,6 +104,6 @@ Weapon*		Equipment::getWeapon(void) { return this->_weapon; }
  * @param: m The Broadcasted message. (See Angel2D docs for more info.)
  */
 void		Equipment::ReceiveMessage(Message *m) {
-	if (m->GetMessageName() == "DeleteEquipment")
+	if (m->GetMessageName() == "DeleteEquipment" + this->GetName())
 		Game::addToDestroyList(this);
 }

@@ -196,7 +196,7 @@ void	Game::delElement(Elements* elem) {
 /**
  * Call the collision callbacks on two objects
  * @param a The ID of the first object
- * @param: b The ID of the second object
+ * @param b The ID of the second object
  */
 void	Game::callCallbacks(int a, int b) {
 	if (a != -1 && b != -1) {
@@ -211,13 +211,21 @@ void	Game::callCallbacks(int a, int b) {
  * This function DO NOT remove an element itself. We stock in a list, and after the World::tick,
  * we call a function to destroying each element of the list.
  * @param m The Element to destroy
+ * @todo how the fuck does StringSet works? Needed here for the UnsubscribeFromAll
  */
 
 void	Game::addToDestroyList(Elements *m) {
+	StringSet sub;
+	StringSet::iterator k;
+
 	for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
 		if ((*it) == m)
 			return;
 	}
+	// sub = theSwitchboard.GetSubscriptionsFor(m);
+	// for (k = sub.begin(), k != sub.end(), k++) {
+	// 	std::cout << (*k) << std::endl;
+	// }
 	Game::bodiesToDestroy.push_back(m);
 }
 

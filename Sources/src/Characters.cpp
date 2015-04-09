@@ -206,7 +206,7 @@ void	Characters::ReceiveMessage(Message *m) {
 	else if (m->GetMessageName() == "disableAttackHitbox") {
 	  this->_isAttacking = false;
 	}
-	else if (m->GetMessageName() == "startPathing") {
+	else if (m->GetMessageName() == "startPathing" + this->GetName()) {
 		if (this->_grounds.size() > 0) {
 			if (this->_wallsLeft.size() > 0)
 				this->_orientation = RIGHT;
@@ -217,7 +217,7 @@ void	Characters::ReceiveMessage(Message *m) {
 			if (this->_orientation == LEFT)
 				this->GetBody()->SetLinearVelocity(b2Vec2(-5,0));
 		}
-		theSwitchboard.DeferredBroadcast(new Message("startPathing"), 0.2f);
+		theSwitchboard.DeferredBroadcast(new Message("startPathing" + this->GetName()), 0.2f);
 		return;
 	}
 	else if (m->GetMessageName() == "destroyEnemy") {
@@ -571,8 +571,9 @@ void	Characters::_pickupItem(int status) {
 	if (this->_item == nullptr)
 		return;
 	this->equipWeapon(static_cast<Equipment*>(this->_item)->getWeapon());
+	theSwitchboard.Broadcast(new Message("DeleteEquipment" + this->_item->GetName()));
 	this->_item = nullptr;
-	theSwitchboard.Broadcast(new Message("DeleteEquipment"));
+
 }
 
 //! Equip a weapon

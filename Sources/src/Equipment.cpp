@@ -50,10 +50,7 @@ Equipment::Equipment(void): Object() {
 Equipment::Equipment(Characters* c): Object() {
 	this->addAttribute("type2", "Equipment");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
-	if (rand() % 2 == 1)
-		this->_weapon = new Weapon(Game::wList->getWeapon("Bow"));
-	else
-		this->_weapon = new Weapon(Game::wList->getWeapon("Sword"));
+	this->_weapon = new Weapon(Game::wList->getWeaponRandom());
 	this->SetSprite(this->_weapon->getSprite());
 	this->SetName("loot");
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());

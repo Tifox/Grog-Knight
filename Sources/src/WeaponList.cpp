@@ -68,3 +68,18 @@ Weapon		*WeaponList::getWeapon(std::string name) {
 		}
 	}
 }
+
+Weapon		*WeaponList::getWeaponRandom(void) {
+	std::list<Weapon*>::iterator it;
+	int	i = 0;
+	int value = (rand() % this->_allWeapons.size());
+
+	for (it = this->_allWeapons.begin(); it != this->_allWeapons.end(); it++) {
+		if (i == value) {
+			return ((*it));
+		}
+		i++;
+	}
+	return (*this->_allWeapons.begin());
+
+}

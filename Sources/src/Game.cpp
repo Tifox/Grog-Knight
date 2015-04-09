@@ -216,16 +216,15 @@ void	Game::callCallbacks(int a, int b) {
 
 void	Game::addToDestroyList(Elements *m) {
 	StringSet sub;
-	StringSet::iterator k;
 
 	for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
 		if ((*it) == m)
 			return;
 	}
-	// sub = theSwitchboard.GetSubscriptionsFor(m);
-	// for (k = sub.begin(), k != sub.end(), k++) {
-	// 	std::cout << (*k) << std::endl;
-	// }
+	sub = theSwitchboard.GetSubscriptionsFor(m);
+	for (StringSet::iterator k = sub.begin(); k != sub.end(); k++) {
+		theSwitchboard.UnsubscribeFrom(m, *k);
+	}
 	Game::bodiesToDestroy.push_back(m);
 }
 
@@ -237,11 +236,13 @@ void	Game::addToDestroyList(Elements *m) {
  */
 void	Game::destroyAllBodies(void) {
 	if (Game::endGame == true) {
+		Game::ended = true;
 		theWorld.PausePhysics();
 		int i;
 		for (i = 0; elementMap[i]; i++) {
-			if (elementMap[i]->getAttribute("type") != "Hero")
+			if (elementMap[i]->getAttribute("type") != "Hero") {
 				elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1);
+			}
 		}
 	} else {
 		for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
@@ -381,3 +382,4 @@ std::list<HUDWindow *>		Game::windows;
 WeaponList*					Game::wList;
 Hitbox*						Game::hList;
 bool						Game::endGame = false;
+bool						Game::ended = false;

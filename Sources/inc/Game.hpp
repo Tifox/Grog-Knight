@@ -68,6 +68,7 @@ class Game {
 		Characters	&getHero(void);
 
 		static bool	endGame;
+		static bool	ended;
 		static void	destroyAllBodies(void);
 		static void	addToDestroyList(Elements *m);
 

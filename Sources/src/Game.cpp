@@ -242,6 +242,7 @@ void	Game::destroyAllBodies(void) {
 		Game::ended = true;
 		theWorld.PausePhysics();
 		int i;
+		Game::getHUD()->setText("U DED", 500, 500, Vector3(1, 0, 0), 1);
 		for (i = 0; elementMap[i]; i++) {
 			if (elementMap[i]->getAttribute("type") != "Hero") {
 				elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1);

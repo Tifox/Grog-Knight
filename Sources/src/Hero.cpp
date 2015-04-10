@@ -140,7 +140,7 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 			if (elem->getAttributes()["type3"] == "HP") {
 				if (this->_hp != this->_maxHp) {
 					Game::addToDestroyList(elem);
-					this->setHP(this->getHP() + 50);
+					this->setHP(this->getHP() + 25);
 					Game::getHUD()->life(this->getHP());
 				}
 			}

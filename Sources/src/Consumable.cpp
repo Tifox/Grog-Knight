@@ -64,7 +64,7 @@ Consumable::Consumable(Characters* c) {
 	else {
 	  this->addAttribute("type3", "gold");
 	  this->addAttribute("value", "50");
-	  this->SetSprite("Resources/Images/HUD/coins.png");
+	  this->SetSprite("Resources/Images/HUD/gold.png");
 	}
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	Game::bodiesToCreate.push_back(this);

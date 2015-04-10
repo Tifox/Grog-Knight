@@ -81,6 +81,29 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 colo
 	return t;
 }
 
+/*//! Set text function*/
+/**
+ * Set a text in the window
+ * @param str The text message
+ * @param x X position
+ * @param y Y position
+ * @param color The color of the text (See Angel2d's Vector3 for more info)
+ * @param alpha The transparency.
+ * @param size The size of the text
+ */
+//HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 color, int alpha, float size) {
+	//HUDWindow::Text		*t = new HUDWindow::Text();
+	//t->str = str;
+	//t->x = x;
+	//t->y = y;
+	//t->colorR = color.X;
+	//t->colorG = color.Y;
+	//t->colorB = color.Z;
+	//t->colorA = alpha;
+	//this->_text.push_back(t);
+	//return t;
+/*}*/
+
 //! Remove Text
 /**
  * This function remove the asked text from the screen.

@@ -65,6 +65,7 @@ class Characters : public Elements {
 		virtual void	EndContact(Elements *elem, b2Contact *contact);
 		Characters::Orientation			getOrientation(void);
 		std::string						getLastAction(void);
+		int								getGold(void);
 		int								getHP(void);
 		void							setHP(int h);
 		Weapon							*getWeapon(void);
@@ -83,6 +84,7 @@ class Characters : public Elements {
 		int				_isRunning;
 		int				_isAttacking;
 		int				_hp;
+		int				_gold;
 		int				_maxHp;
 		bool			_canMove;
 		bool			_canJump;

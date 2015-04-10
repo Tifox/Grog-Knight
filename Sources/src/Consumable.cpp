@@ -62,7 +62,7 @@ Consumable::Consumable(Characters* c) {
 	  this->SetSprite("Resources/Images/HUD/heart.png");
 	}
 	else {
-	  this->addAttribute("type3", "money");
+	  this->addAttribute("type3", "gold");
 	  this->addAttribute("value", "50");
 	  this->SetSprite("Resources/Images/HUD/coins.png");
 	}

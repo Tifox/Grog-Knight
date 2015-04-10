@@ -31,6 +31,8 @@
  * @param contact b2Contact* (See Box2D doc for more infos)
  */
 void	GameContactListener::BeginContact(b2Contact * contact) {
+	if (Game::endGame == true)
+		return;
 	PhysicsActor *p1;
 	PhysicsActor *p2;
 
@@ -46,6 +48,8 @@ void	GameContactListener::BeginContact(b2Contact * contact) {
  * @param contact b2Contact* (See Box2D doc for more infos)
  */
 void	GameContactListener::EndContact(b2Contact * contact) {
+	if (Game::endGame == true)
+		return;
 	PhysicsActor *p1;
 	PhysicsActor *p2;
 

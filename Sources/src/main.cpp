@@ -23,6 +23,7 @@
  * Louis Solofrizzo <louis@ne02ptzero.me>
  */
 
+# include <ctime>
 # include "Game.hpp"
 # include "Hero.hpp"
 # include "Enemy.hpp"
@@ -52,7 +53,7 @@ int		main(int ac, char **av) {
 	Game::hList = new Hitbox();
 	Menu	*menu = new Menu();
 
-	srand(1);
+	srand(time(NULL));
 	game->readMaps();
 	MouseDebugger l;
 	if (ac > 1 && (std::string(av[1]) == "nomenu")) {

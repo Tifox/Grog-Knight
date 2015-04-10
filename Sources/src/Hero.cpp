@@ -57,9 +57,10 @@ void	Hero::init(void) {
 /**
  * Mother's callback for actions
  * See Characters::ReceiveMessage for more information.
- * @param: name The action name
- * @param: status The key status (1 | 0)
- * @sa: Characters::ReceiveMessage
+ * @param name The action name
+ * @param status The key status (1 | 0)
+ * @sa Characters::ReceiveMessage
+ * @todo Extract the values from the consumable
  */
 void	Hero::actionCallback(std::string name, int status) {
 	if (name == "attack" && status == 1 && this->_weapon->attackReady() == 1) {
@@ -142,6 +143,11 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 					this->setHP(this->getHP() + 50);
 					Game::getHUD()->life(this->getHP());
 				}
+			}
+			if (elem->getAttributes()["type3"] == "gold") {
+				Game::addToDestroyList(elem);
+				this->_gold += 40;
+				Game::getHUD()->gold(this->getGold());
 			}
 		}
 		else if (elem->getAttributes()["type2"] == "Equipment") {

@@ -235,6 +235,9 @@ void	Game::addToDestroyList(Elements *m) {
  * So, call this function outisde of this goal is useless.
  */
 void	Game::destroyAllBodies(void) {
+	if (Game::ended == true) {
+		return;
+	}
 	if (Game::endGame == true) {
 		Game::ended = true;
 		theWorld.PausePhysics();
@@ -242,6 +245,11 @@ void	Game::destroyAllBodies(void) {
 		for (i = 0; elementMap[i]; i++) {
 			if (elementMap[i]->getAttribute("type") != "Hero") {
 				elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1);
+				if (elementMap[i]->getAttribute("type") == "Enemy" || elementMap[i]->getAttribute("type") == "Object") {
+					theWorld.GetPhysicsWorld().DestroyBody((elementMap[i])->GetBody());
+					theWorld.Remove(elementMap[i]);
+					Game::delElement(elementMap[i]);
+				}
 			}
 		}
 	} else {
@@ -360,7 +368,7 @@ void		Game::displayHUD(void) {
 	w->setGame(g);
 	w->life(125);
 	w->mana(90);
-	w->gold(200);
+	w->gold(0);
 	w->armor();
 	w->boots();
 	w->consumable();

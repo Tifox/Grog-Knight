@@ -51,6 +51,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_walls.clear();
 	this->_item = nullptr;
 	this->_isAttacking = 0;
+	this->_gold = 0;
 }
 
 //! Basic destructor
@@ -630,5 +631,6 @@ void						Characters::_heroDeath(void) {
 Characters::Orientation		Characters::getOrientation(void) { return this->_orientation; }
 std::string					Characters::getLastAction(void) { return this->_lastAction; };
 int							Characters::getHP(void) { return this->_hp; };
+int							Characters::getGold(void) { return this->_gold; };
 void						Characters::changeCanMove(void) { this->_canMove = (this->_canMove ? false : true); };
 Weapon						*Characters::getWeapon(void) { return this->_weapon; };

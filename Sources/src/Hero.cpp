@@ -147,7 +147,7 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 			if (elem->getAttributes()["type3"] == "gold") {
 				Game::addToDestroyList(elem);
 				this->_gold += 40;
-				Game::getHUD()->gold(this->getGold());
+				Game::getHUD()->updateGold(this->getGold());
 			}
 		}
 		else if (elem->getAttributes()["type2"] == "Equipment") {

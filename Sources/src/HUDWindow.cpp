@@ -49,13 +49,14 @@ HUDWindow::~HUDWindow(void) {
  * @param: x X position
  * @param: y Y position
  */
-void	HUDWindow::setText(std::string str, int x, int y) {
+HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y) {
 	HUDWindow::Text		*t = new HUDWindow::Text();
 	t->str = str;
 	t->x = x;
 	t->y = y;
 	t->colorR = t->colorG = t->colorB = t->colorA = 1;
 	this->_text.push_back(t);
+	return t;
 }
 
 //! Set text function
@@ -67,7 +68,7 @@ void	HUDWindow::setText(std::string str, int x, int y) {
  * @param: color The color of the text (See Angel2d's Vector3 for more info)
  * @param: alpha The transparency.
  */
-void	HUDWindow::setText(std::string str, int x, int y, Vector3 color, int alpha) {
+HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 color, int alpha) {
 	HUDWindow::Text		*t = new HUDWindow::Text();
 	t->str = str;
 	t->x = x;
@@ -77,6 +78,7 @@ void	HUDWindow::setText(std::string str, int x, int y, Vector3 color, int alpha)
 	t->colorB = color.Z;
 	t->colorA = alpha;
 	this->_text.push_back(t);
+	return t;
 }
 
 //! Remove Text
@@ -89,6 +91,22 @@ void	HUDWindow::removeText(std::string str) {
 
 	for (i = this->_text.begin(); i != this->_text.end(); i++) {
 		if ((*i)->str == str)
+			break ;
+	}
+	if (i != this->_text.end())
+		this->_text.erase(i);
+}
+
+//! Remove a text with an object
+/**
+ * Remove a text from the screen with a HUDWindow::Text
+ * @param text The object of the text
+ */
+void	HUDWindow::removeText(HUDWindow::Text *text) {
+	std::list<HUDWindow::Text *>::iterator	i;
+
+	for (i = this->_text.begin(); i != this->_text.end(); i++) {
+		if ((*i) == text)
 			break ;
 	}
 	if (i != this->_text.end())
@@ -209,7 +227,19 @@ void	HUDWindow::mana(int mana) {
 void	HUDWindow::gold(int gold) {
 	this->addImage("Resources/Images/HUD/xp.png", 340, 50, 20.0f);
 	this->addImage("Resources/Images/HUD/gold.png", 360, 50, 20.0f);
-	this->setText(std::to_string(gold), 380, 55, Vector3(246.0f, 255.0f, 0.0f), 1);
+	this->_gold = this->setText(std::to_string(gold), 375, 55, Vector3(246.0f, 255.0f, 0.0f), 1);
+}
+
+//! MAJ gold function
+/**
+ * New gold update function
+ * Remove the old gold, and display the new one
+ * @param gold The new gold number
+ */
+void	HUDWindow::updateGold(int gold) {
+	this->removeText(this->_gold);
+	this->_gold = this->setText((std::to_string(gold)), 375, 55,
+		Vector3(246.0f, 255.0f, 0.0f), 1);
 }
 
 //! Display items (Weapon)

@@ -11,6 +11,7 @@
 		"recovery": 0.5,
 		"attack": "ranged",
 		"sprites": "Resources/Images/bow.png",
-		"heroAnim": "sword_anim_1"
+		"heroAnim": "sword_anim_1",
+		"lootLevel": 2
 	}
 }

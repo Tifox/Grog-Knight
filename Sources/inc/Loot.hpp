@@ -18,33 +18,23 @@
  */
 
 /**
- * File: Equipment.hpp
- * Creation: 2015-03-06 15:51
- * Manon Budin <mbudin@student.42.fr>
+ * File: Loot.hpp
+ * Creation: 2015-04-14 14:49
+ * Vincent Rey <vrey@student.42.fr>
  */
 
-#ifndef __Equipment__
-# define __Equipment__
+#ifndef __Loot__
+# define __Loot__
 
-# include "WeaponList.hpp"
+# include "Characters.hpp"
 # include "Object.hpp"
-# include "Game.hpp"
-# include "Elements.hpp"
 
-class Equipment : public Object {
+class Loot {
 public:
-	Equipment();
-	Equipment(Characters*);
-	Equipment(Weapon*, Characters*);
-	~Equipment();
-
-	Weapon* 	getWeapon(void);
-	void		BeginContact(Elements *elem, b2Contact *contact);
-	void		EndContact(Elements *elem, b2Contact *contact);
-	void		ReceiveMessage(Message* m);
-
+	Loot(Characters *c);
+	~Loot(void);
 private:
-	Weapon*			_weapon;
+	Loot(void);
 };
 
 #endif

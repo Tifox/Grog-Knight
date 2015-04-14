@@ -74,6 +74,10 @@ class Characters : public Elements {
 		virtual void	equipWeapon(Weapon* weapon);
 		void			changeCanMove(void);
 
+	//Moved in order to get loot infos outside of class
+		Json::Value		_getAttr(std::string category, std::string key);
+
+
 	protected:
 		std::string		_name;
 		std::string		_lastAction;
@@ -98,7 +102,6 @@ class Characters : public Elements {
 		std::list<Elements*> 				_walls;
 		std::list<Elements*> 				_wallsRight;
 
-		Json::Value		_getAttr(std::string category, std::string key);
 		Json::Value		_getAttr(std::string key);
 		void			_setCategory(std::string category);
 		virtual void	_forward(int status);

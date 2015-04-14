@@ -51,6 +51,7 @@ Weapon::Weapon(Weapon* weapon) {
 	this->_attack = weapon->getAttack();
 	this->_pushback = weapon->getPushback();
 	this->_sprite = weapon->getSprite();
+	this->_lootLevel = weapon->getLootLevel();
 	this->_canAttack = 1;
 
 	theSwitchboard.SubscribeTo(this, "canAttack");
@@ -194,6 +195,7 @@ void    Weapon::_parseJson(std::string file) {
 	this->_flavor = json["infos"].get("flavor", "").asString();
 	this->_active = json["infos"].get("active", "").asFloat();
 	this->_recovery = json["infos"].get("recovery", "").asFloat();
+	this->_lootLevel = json["infos"].get("lootLevel", "").asInt();
 	this->_size = json["infos"].get("size", "").asFloat();
 	this->_damage = json["infos"].get("damage", "").asFloat();
 	this->_pushback = json["infos"].get("pushback", "").asFloat();
@@ -251,6 +253,7 @@ std::string		Weapon::getName(void) { return this->_name; }
 std::string		Weapon::getFlavor(void) { return this->_flavor; }
 std::string		Weapon::getSprite(void) { return this->_sprite; }
 std::string		Weapon::getAttack(void) { return this->_attack; }
+int				Weapon::getLootLevel(void) { return this->_lootLevel; }
 float			Weapon::getActive(void) { return this->_active; }
 int				Weapon::getSize(void) { return this->_size; }
 int				Weapon::getDamage(void) { return this->_damage; }

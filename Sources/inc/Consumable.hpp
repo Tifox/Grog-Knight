@@ -34,6 +34,7 @@
 class Consumable : public Object {
 public:
 	Consumable();
+	Consumable(std::string type, std::string value, Characters* c);
 	Consumable(Characters* c);
 	~Consumable();
 

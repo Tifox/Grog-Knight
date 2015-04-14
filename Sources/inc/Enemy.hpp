@@ -28,6 +28,7 @@
 # define __Enemy__
 
 # include "Characters.hpp"
+# include "Loot.hpp"
 
 class Enemy : public Characters {
 public:

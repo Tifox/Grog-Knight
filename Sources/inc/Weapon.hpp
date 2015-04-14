@@ -55,6 +55,7 @@ public:
 	std::string		getSprite(void);
 	float			getActive(void);
 	int				getSize(void);
+	int				getLootLevel(void);
 	int				getDamage(void);
 	int				getPushback(void);
 	float			getRecovery(void);
@@ -70,6 +71,7 @@ private:
 	std::string		_sprite;
 	std::string		_attack;
 	int				_canAttack;
+	int				_lootLevel;
 	float			_recovery;
 	float			_active;
 	int				_size;

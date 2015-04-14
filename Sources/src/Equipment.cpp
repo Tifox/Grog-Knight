@@ -58,6 +58,17 @@ Equipment::Equipment(Characters* c): Object() {
 	Game::bodiesToCreate.push_back(this);
 }
 
+Equipment::Equipment(Weapon *w, Characters* c): Object() {
+	this->addAttribute("type2", "Equipment");
+	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
+	this->_weapon = new Weapon(w);
+	this->SetSprite(this->_weapon->getSprite());
+	this->SetName("loot");
+	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
+	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
+	Game::bodiesToCreate.push_back(this);
+}
+
 //! Destructor
 /*
  * Basic Destructor

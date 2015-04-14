@@ -70,6 +70,18 @@ Consumable::Consumable(Characters* c) {
 	Game::bodiesToCreate.push_back(this);
 }
 
+Consumable::Consumable(std::string type, std::string value, Characters* c) {
+	this->addAttribute("type2", "Consumable");
+	this->addAttribute("type3", type);
+	this->addAttribute("value", value);
+	if (type == "HP")
+		this->SetSprite("Resources/Images/HUD/heart.png");
+	else
+		this->SetSprite("Resources/Images/HUD/gold.png");
+	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
+	Game::bodiesToCreate.push_back(this);
+}
+
 //! Collision begin callback
 /**
  * Collision begin function

@@ -34,4 +34,4 @@ This project use [Angel2d](https://github.com/angel2d/angel2d), [Documentation](
 ### Contributing
 [Rules Here :)](Contributing.md)
 
-[Docs Here](http://ne02ptzero.github.io/rogue-like)
+[Docs Here](http://ne02ptzero.github.io/Grog-Like)

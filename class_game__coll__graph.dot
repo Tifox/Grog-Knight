@@ -1,0 +1,16 @@
+digraph "Game"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="Game",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" wList" ,fontname="Helvetica"];
+  Node2 [label="WeaponList",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_weapon_list.html"];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Elements",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_elements.html"];
+  Node4 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="PhysicsActor",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node5 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" maps" ,fontname="Helvetica"];
+  Node5 [label="Maps",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_maps.html"];
+  Node6 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" hList" ,fontname="Helvetica"];
+  Node6 [label="Hitbox",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_hitbox.html"];
+}

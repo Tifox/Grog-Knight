@@ -18,25 +18,31 @@
  */
 
 /**
- * File: ContactFilter.hpp
- * Creation: 2015-02-23 12:40
+ * File: Loot.cpp
+ * Creation: 2015-04-14 14:49
  * Vincent Rey <vrey@student.42.fr>
  */
 
-//! NOT CURRENTLY USED - MIGHT GET REMOVED
+# include "Loot.hpp"
 
-#include "../inc/ContactFilter.hpp"
+//! Constructor
+/**
+ * Constructor taking an enemy as argument to determine the kind of loot created
+ * Currently: checks first if drops a consumable - if no consumable checks for
+ * equipment drop
+ */
 
-
-bool	ContactFilter::ShouldCollide(b2Fixture* fixA, b2Fixture* fixB) {
-
-// 	std::string attrA = static_cast<Elements*>(fixA->GetBody()->GetUserData())->getAttributes()["type"];
-// 	std::string attrB = static_cast<Elements*>(fixB->GetBody()->GetUserData())->getAttributes()["type"];
-
-// 	if ((attrA == "Hero" || attrB == "Hero") && ((attrA == "heroWeapon" || attrB == "heroWeapon") || (attrA == "heroProjectile" || attrB == "heroProjectile"))) {
-// 		return false;
-// 	}
-// 	else return true;
-// }
-	return true;
+Loot::Loot(Characters* c) {
+	int i;
+	if (rand() % 100 <= c->_getAttr("loot", "consumableRate").asInt()) {
+		if (rand() % 2 == 0) {
+			std::cout << "Consumable" << std::endl;
+			new Consumable("HP", c->_getAttr("loot", "HPReward").asString(), c);
+		} else
+			new Consumable("gold", c->_getAttr("loot", "XPReward").asString(), c);
+	} else if (rand() % 100 <= c->_getAttr("loot", "equipmentRate").asInt()) {
+		std::cout << "Equipment" << std::endl;
+		new Equipment(Game::wList->getWeaponRandom(c->_getAttr("loot", "EqReward").asInt()), c);
+	} else
+		std::cout << "No loot" << std::endl;
 }

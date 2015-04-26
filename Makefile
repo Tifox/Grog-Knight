@@ -19,7 +19,9 @@ INCLUDE = 							\
 	-IAngel/Libraries/lua-5.2.1/src			\
 	-I/usr/include/freetype2				\
 	-I./Tools/jsoncpp/include				\
-	-ISources/inc/
+	-ISources/inc/							\
+	-ILibraries/DevIL-SDK-1.7.8/mac/include/
+
 ifneq ($(ANGEL_DISABLE_FMOD), 1)
 	INCLUDE += -IAngel/Libraries/FMOD/inc
 endif
@@ -29,10 +31,10 @@ LIBS = 									\
 	Angel/Libraries/glfw-3.0.3/src/libglfw3.a			\
 	Angel/Libraries/Box2D-2.2.1/Build/Box2D/libBox2D.a		\
 	Angel/Libraries/FTGL/unix/src/.libs/libftgl.a		\
-	Angel/Libraries/gwen/lib/linux/gmake/libgwen_static.a	\
+Angel/Libraries/gwen/lib/linux/gmake/libgwen_static.a	\
 	Angel/Libraries/angel-lua-build/liblua.a \
-	Tools/jsoncpp/src/lib_json/libjsoncpp.a
-
+	Tools/jsoncpp/src/lib_json/libjsoncpp.a \
+	#Angel/Libraries/DevIL-SDK-1.7.8/srcs/devil-1.7.8/lib/.libs/libIL.a
 
 ifneq ($(ANGEL_DISABLE_FMOD), 1)
 	ifeq ($(ARCH),x86_64)
@@ -64,6 +66,7 @@ SRCS =	./Sources/src/Elements.cpp \
 		./Sources/src/Projectile.cpp \
 		./Sources/src/Room.cpp \
 		./Sources/src/LevelGenerator.cpp \
+		./Sources/src/Loot.cpp \
 		./Sources/src/Enemy.cpp \
 		./Sources/src/GameContactListener.cpp \
 		./Sources/src/ContactFilter.cpp \
@@ -76,7 +79,8 @@ SRCS =	./Sources/src/Elements.cpp \
 		./Sources/src/Equipment.cpp \
 		./Sources/src/Consumable.cpp \
 		./Sources/src/Hitbox.cpp \
-		./Sources/src/HUDWindow.cpp
+		./Sources/src/HUDWindow.cpp \
+		./Sources/src/Menu.cpp
 
 SYSOBJS = $(patsubst %.cpp,%.o,$(SYSSRCS))
 OBJS = $(patsubst %.cpp,%.o,$(SRCS))

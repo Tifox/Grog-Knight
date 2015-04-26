@@ -40,8 +40,8 @@ Game::Game(void) : _hero(*(new Characters())) {
 	#endif
 	theWorld.SetupPhysics(Vector2(0, -20));
 	GameContactListener *gListen = new GameContactListener();
-	ContactFilter *filter = new ContactFilter();
-	theWorld.GetPhysicsWorld().SetContactFilter(filter);
+//	ContactFilter *filter = new ContactFilter();
+//	theWorld.GetPhysicsWorld().SetContactFilter(filter);
 	theWorld.GetPhysicsWorld().SetContactListener(gListen);
 	this->maps = new Maps("Maps/");
 	return ;
@@ -56,8 +56,8 @@ Game::Game(unsigned int width, unsigned int height) : _hero(*(new Characters()))
 	theWorld.Initialize(width, height, NAME);
 	theWorld.SetupPhysics();
 	GameContactListener *gListen = new GameContactListener();
-	ContactFilter *filter = new ContactFilter();
-	theWorld.GetPhysicsWorld().SetContactFilter(filter);
+//	ContactFilter *filter = new ContactFilter();
+//	theWorld.GetPhysicsWorld().SetContactFilter(filter);
 	theWorld.GetPhysicsWorld().SetContactListener(gListen);
 	this->maps = new Maps("Maps/");
 }
@@ -80,7 +80,29 @@ void	Game::grid(void) {
  * Let's start the game
  */
 void	Game::start(void) {
-	theWorld.StartGame();
+	theWorld.SetBackgroundColor(*(new Color(0, 0, 0)));
+	Game::wList = new WeaponList();
+	this->showMap();
+
+	Consumable		*lol = new Consumable();
+	Hero			*hero = new Hero();
+	Enemy			*enemy = new Enemy("Enemy");
+	Enemy			*enemy2 = new Enemy("Enemy2");
+
+	//===== I temp map generation test =====
+	//LevelGenerator *levelGenerator = new LevelGenerator(6, 6, 5, 60, 80);
+	//levelGenerator->execute();
+	//levelGenerator->print();
+	//===== O temp map generation test =====
+
+	theCamera.SetPosition(13, -7);
+	this->displayHero(*(hero));
+	hero->init();
+	enemy->init();
+	enemy2->init();
+	hero->equipWeapon(Game::wList->getWeapon("Sword"));
+	this->setHero(*hero);
+	this->displayHUD();
 }
 
 //! Read the maps
@@ -174,7 +196,7 @@ void	Game::delElement(Elements* elem) {
 /**
  * Call the collision callbacks on two objects
  * @param a The ID of the first object
- * @param: b The ID of the second object
+ * @param b The ID of the second object
  */
 void	Game::callCallbacks(int a, int b) {
 	if (a != -1 && b != -1) {
@@ -189,12 +211,19 @@ void	Game::callCallbacks(int a, int b) {
  * This function DO NOT remove an element itself. We stock in a list, and after the World::tick,
  * we call a function to destroying each element of the list.
  * @param m The Element to destroy
+ * @todo how the fuck does StringSet works? Needed here for the UnsubscribeFromAll
  */
 
 void	Game::addToDestroyList(Elements *m) {
+	StringSet sub;
+
 	for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
 		if ((*it) == m)
 			return;
+	}
+	sub = theSwitchboard.GetSubscriptionsFor(m);
+	for (StringSet::iterator k = sub.begin(); k != sub.end(); k++) {
+		theSwitchboard.UnsubscribeFrom(m, *k);
 	}
 	Game::bodiesToDestroy.push_back(m);
 }
@@ -206,12 +235,23 @@ void	Game::addToDestroyList(Elements *m) {
  * So, call this function outisde of this goal is useless.
  */
 void	Game::destroyAllBodies(void) {
+	if (Game::ended == true) {
+		return;
+	}
 	if (Game::endGame == true) {
+		Game::ended = true;
 		theWorld.PausePhysics();
 		int i;
+		Game::getHUD()->setText("U DED", 500, 500, Vector3(1, 0, 0), 1);
 		for (i = 0; elementMap[i]; i++) {
-			if (elementMap[i]->getAttribute("type") != "Hero")
+			if (elementMap[i]->getAttribute("type") != "Hero") {
 				elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1);
+				if (elementMap[i]->getAttribute("type") == "Enemy" || elementMap[i]->getAttribute("type") == "Object") {
+					theWorld.GetPhysicsWorld().DestroyBody((elementMap[i])->GetBody());
+					theWorld.Remove(elementMap[i]);
+					Game::delElement(elementMap[i]);
+				}
+			}
 		}
 	} else {
 		for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
@@ -220,6 +260,11 @@ void	Game::destroyAllBodies(void) {
 			Game::delElement(*it);
 		}
 		Game::bodiesToDestroy.clear();
+		for (std::list<Elements*>::iterator it = Game::bodiesToCreate.begin(); it != Game::bodiesToCreate.end(); it++) {
+		  (*it)->InitPhysics();
+		  theWorld.Add((*it));
+		}
+		Game::bodiesToCreate.clear();
 	}
 }
 
@@ -324,7 +369,7 @@ void		Game::displayHUD(void) {
 	w->setGame(g);
 	w->life(125);
 	w->mana(90);
-	w->gold(200);
+	w->gold(0);
 	w->armor();
 	w->boots();
 	w->consumable();
@@ -341,7 +386,9 @@ int Game::currentIds = 0;
 std::map<int, Elements *>	Game::elementMap = {};
 std::list<Elements *>		Game::runningCharac;
 std::list<Elements *>		Game::bodiesToDestroy;
+std::list<Elements *>		Game::bodiesToCreate;
 std::list<HUDWindow *>		Game::windows;
 WeaponList*					Game::wList;
 Hitbox*						Game::hList;
 bool						Game::endGame = false;
+bool						Game::ended = false;

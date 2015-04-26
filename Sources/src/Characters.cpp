@@ -51,6 +51,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_walls.clear();
 	this->_item = nullptr;
 	this->_isAttacking = 0;
+	this->_gold = 0;
 }
 
 //! Basic destructor
@@ -176,8 +177,11 @@ void	Characters::ReceiveMessage(Message *m) {
 	int				status;
 
 	if (m->GetMessageName() == "canMove") {
-		if (this->getHP() > 0)
+	  if (this->getHP() > 0) {
 			this->changeCanMove();
+			if (this->_grounds.size() > 0)
+			  this->AnimCallback("base");
+	  }
 	}
 	else if (m->GetMessageName() == "endInvincibility") {
 		theSwitchboard.UnsubscribeFrom(this, "colorDamageBlink1");
@@ -186,14 +190,24 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->SetColor(1,1,1,1);
 	}
 	else if (m->GetMessageName() == "colorDamageBlink1") {
-		theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink2"), 0.1f);
-		this->SetColor(1,1,1,1);
+		if (this->_invincibility == true) {
+			theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink2"), 0.1f);
+			this->SetColor(1,1,1,1);
+		}
 	}
 	else if (m->GetMessageName() == "colorDamageBlink2") {
-		theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
-		this->SetColor(1,0,0,0.9f);
+		if (this->_invincibility == true) {
+			theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
+			//	this->SetColor(1,0,0,0.9f);
+		}
 	}
-	else if (m->GetMessageName() == "startPathing") {
+	else if (m->GetMessageName() == "enableAttackHitbox") {
+		this->_weapon->attack(this);
+	}
+	else if (m->GetMessageName() == "disableAttackHitbox") {
+	  this->_isAttacking = false;
+	}
+	else if (m->GetMessageName() == "startPathing" + this->GetName()) {
 		if (this->_grounds.size() > 0) {
 			if (this->_wallsLeft.size() > 0)
 				this->_orientation = RIGHT;
@@ -204,7 +218,7 @@ void	Characters::ReceiveMessage(Message *m) {
 			if (this->_orientation == LEFT)
 				this->GetBody()->SetLinearVelocity(b2Vec2(-5,0));
 		}
-		theSwitchboard.DeferredBroadcast(new Message("startPathing"), 0.2f);
+		theSwitchboard.DeferredBroadcast(new Message("startPathing" + this->GetName()), 0.2f);
 		return;
 	}
 	else if (m->GetMessageName() == "destroyEnemy") {
@@ -474,7 +488,7 @@ void	Characters::_jump(int status) {
 
 	if (status == 1 && this->_canJump == true) {
 		this->_canJump = false;
-		if (this->_isJump == 0 || (this->_isJump <= 1 && this->_getAttr("double").asInt() == 1)) {
+		if (this->_isJump == 0 || (this->_isJump < this->_getAttr("max").asInt())) {
 			if (this->_isJump >= 1) {
 				this->GetBody()->SetLinearVelocity(b2Vec2(this->GetBody()->GetLinearVelocity().x, this->_getAttr("rejump").asFloat()));
 			}
@@ -513,6 +527,8 @@ void	Characters::_jump(int status) {
 void	Characters::_up(int status) {
 	if (status == 1)
 		this->_orientation = UP;
+	else
+	  this->_orientation = this->_latOrientation;
 }
 
 //! Down button action
@@ -526,6 +542,8 @@ void	Characters::_up(int status) {
 void	Characters::_down(int status) {
 	if (status == 1)
 		this->_orientation = DOWN;
+	else
+	  this->_orientation = this->_latOrientation;
 }
 
 //! Attack action
@@ -537,10 +555,9 @@ void	Characters::_down(int status) {
  */
 void	Characters::_attack(int status) {
 	this->_setCategory("attack");
-
 	if (status == 1 && this->_weapon->attackReady() == 1) {
 		this->_isAttacking = 1;
-		this->_weapon->attack(this);
+		theSwitchboard.DeferredBroadcast(new Message("enableAttackHitbox"), 0.15f);
 	}
 }
 
@@ -555,8 +572,9 @@ void	Characters::_pickupItem(int status) {
 	if (this->_item == nullptr)
 		return;
 	this->equipWeapon(static_cast<Equipment*>(this->_item)->getWeapon());
+	theSwitchboard.Broadcast(new Message("DeleteEquipment" + this->_item->GetName()));
 	this->_item = nullptr;
-	theSwitchboard.Broadcast(new Message("DeleteEquipment"));
+
 }
 
 //! Equip a weapon
@@ -613,5 +631,6 @@ void						Characters::_heroDeath(void) {
 Characters::Orientation		Characters::getOrientation(void) { return this->_orientation; }
 std::string					Characters::getLastAction(void) { return this->_lastAction; };
 int							Characters::getHP(void) { return this->_hp; };
+int							Characters::getGold(void) { return this->_gold; };
 void						Characters::changeCanMove(void) { this->_canMove = (this->_canMove ? false : true); };
 Weapon						*Characters::getWeapon(void) { return this->_weapon; };

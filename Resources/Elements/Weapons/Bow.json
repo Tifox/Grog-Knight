@@ -4,13 +4,14 @@
 		"flavor": "This bow is supposed to shoot arrows. Supposed.",
 		"hitbox": "PROJECTILE",
 		"size": 0.5,
-		"active": 0.2,
+		"active": 0.1,
 		"lvlRequired": 1,
 	 	"damage": 2,
 	 	"pushback": 1,
 		"recovery": 0.5,
 		"attack": "ranged",
 		"sprites": "Resources/Images/bow.png",
-		"heroAnim": "sword_anim_1"
+		"heroAnim": "sword_anim_1",
+		"lootLevel": 2
 	}
 }

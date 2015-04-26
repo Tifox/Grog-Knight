@@ -28,6 +28,8 @@
 
 class	Map;
 class	Maps;
+class Characters;
+
 # ifndef __Map__
 # include "Maps.hpp"
 # endif
@@ -42,10 +44,10 @@ class	Maps;
 # include "Hitbox.hpp"
 # include "HUDWindow.hpp"
 
+
 class WeaponList;
 class Hitbox;
 class HUDWindow;
-class Characters;
 
 class Game {
 
@@ -66,6 +68,7 @@ class Game {
 		Characters	&getHero(void);
 
 		static bool	endGame;
+		static bool	ended;
 		static void	destroyAllBodies(void);
 		static void	addToDestroyList(Elements *m);
 
@@ -88,6 +91,7 @@ class Game {
 		static int	currentIds;
 		static std::map<int, Elements *>	elementMap;
 		static std::list<Elements *>	bodiesToDestroy;
+		static std::list<Elements *>	bodiesToCreate;
 		static std::list<Elements *>	runningCharac;
 		static std::list<HUDWindow *>	windows;
 		static WeaponList*				wList;
@@ -98,6 +102,5 @@ class Game {
 		float		beginYHero;
 		Characters	&_hero;
 };
-
 
 #endif

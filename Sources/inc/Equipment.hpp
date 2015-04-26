@@ -34,6 +34,8 @@
 class Equipment : public Object {
 public:
 	Equipment();
+	Equipment(Characters*);
+	Equipment(Weapon*, Characters*);
 	~Equipment();
 
 	Weapon* 	getWeapon(void);

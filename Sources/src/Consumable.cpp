@@ -44,6 +44,44 @@ Consumable::Consumable(void) {
 	theWorld.Add(this);
 }
 
+
+//! Constructor overriding
+/**
+ * Basic Constructor
+ * This constructor sets a lots of attributes, like the sprite, the position. etc...
+ * That also init the physics.
+ * This constructor will use the infos contained in enemy in order to set the different infos in it
+ * @todo: This function setting attributes the hard-way. Maybe a name based config, like Characters,
+ * would be better ?
+ */
+Consumable::Consumable(Characters* c) {
+	this->addAttribute("type2", "Consumable");
+	if (rand() % 2 == 1) {
+	  this->addAttribute("type3", "HP");
+	  this->addAttribute("value", "50");
+	  this->SetSprite("Resources/Images/HUD/heart.png");
+	}
+	else {
+	  this->addAttribute("type3", "gold");
+	  this->addAttribute("value", "50");
+	  this->SetSprite("Resources/Images/HUD/gold.png");
+	}
+	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
+	Game::bodiesToCreate.push_back(this);
+}
+
+Consumable::Consumable(std::string type, std::string value, Characters* c) {
+	this->addAttribute("type2", "Consumable");
+	this->addAttribute("type3", type);
+	this->addAttribute("value", value);
+	if (type == "HP")
+		this->SetSprite("Resources/Images/HUD/heart.png");
+	else
+		this->SetSprite("Resources/Images/HUD/gold.png");
+	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
+	Game::bodiesToCreate.push_back(this);
+}
+
 //! Collision begin callback
 /**
  * Collision begin function
@@ -53,10 +91,6 @@ Consumable::Consumable(void) {
  * @todo: This function is actually doing nothing.
  */
 void	Consumable::BeginContact(Elements *elem, b2Contact *contact) {
-	// if (elem->getattributes()["type"] == "hero"){
-	// 	game::bodiestodestroy.push_back(this);
-	// 	contact->setenabled(false);
-	// }
 }
 
 //! Destructor

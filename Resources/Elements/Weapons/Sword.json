@@ -12,7 +12,8 @@
 		"attack": "melee",
 		"combo": true,
 		"sprites": "Resources/Images/Sword.png",
-		"heroAnim": "sword_anim_1"
+		"heroAnim": "sword_anim_1",
+		"lootLevel": 1
 	},
 	"combo": {
 		"1": {

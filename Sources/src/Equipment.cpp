@@ -32,14 +32,41 @@
  * In this constructor, we get the sprite and InitPhysics.
  * @todo: The position is actually in the hard-way. Config file needed.
  */
-Equipment::Equipment(void) {
+Equipment::Equipment(void): Object() {
 	this->addAttribute("type2", "Equipment");
 	this->SetPosition(5, -12);
-	this->InitPhysics();
-	theWorld.Add(this);
 	this->_weapon = new Weapon(Game::wList->getWeapon("Bow"));
 	this->SetSprite(this->_weapon->getSprite());
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment");
+	this->InitPhysics();
+	theWorld.Add(this);
+}
+
+//! Constructor called when an enemy dies
+/**
+ * This constructor positions the object based on the enemy
+ * @param c (A Characters object)
+ */
+Equipment::Equipment(Characters* c): Object() {
+	this->addAttribute("type2", "Equipment");
+	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
+	this->_weapon = new Weapon(Game::wList->getWeaponRandom());
+	this->SetSprite(this->_weapon->getSprite());
+	this->SetName("loot");
+	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
+	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
+	Game::bodiesToCreate.push_back(this);
+}
+
+Equipment::Equipment(Weapon *w, Characters* c): Object() {
+	this->addAttribute("type2", "Equipment");
+	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
+	this->_weapon = new Weapon(w);
+	this->SetSprite(this->_weapon->getSprite());
+	this->SetName("loot");
+	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
+	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
+	Game::bodiesToCreate.push_back(this);
 }
 
 //! Destructor
@@ -58,9 +85,9 @@ Equipment::~Equipment(void) {
  * @param: contact The Box2D contact object.
  */
 void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
-	if (elem->getAttributes()["type"] == "Hero"){
-		Game::getHUD()->setText(this->_weapon->getFlavor(), 450, 50);
-	}
+	// if (elem->getAttributes()["type"] == "Hero"){
+	// 	Game::getHUD()->setText(this->_weapon->getFlavor(), 450, 50);
+	// }
 }
 
 //! End of collision callback
@@ -71,9 +98,9 @@ void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
  * @param: contact The Box2D contact object
  */
 void	Equipment::EndContact(Elements *elem, b2Contact *contact) {
-	if (elem->getAttributes()["type"] == "Hero"){
-		Game::getHUD()->removeText(this->_weapon->getFlavor());
-	}
+	// if (elem->getAttributes()["type"] == "Hero"){
+	// 	Game::getHUD()->removeText(this->_weapon->getFlavor());
+	// }
 }
 
 /*GETTERS*/
@@ -85,6 +112,6 @@ Weapon*		Equipment::getWeapon(void) { return this->_weapon; }
  * @param: m The Broadcasted message. (See Angel2D docs for more info.)
  */
 void		Equipment::ReceiveMessage(Message *m) {
-	if (m->GetMessageName() == "DeleteEquipment")
+	if (m->GetMessageName() == "DeleteEquipment" + this->GetName())
 		Game::addToDestroyList(this);
 }

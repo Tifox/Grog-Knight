@@ -18,25 +18,21 @@
  */
 
 /**
- * File: ContactFilter.hpp
- * Creation: 2015-02-23 12:40
- * Vincent Rey <vrey@student.42.fr>
+ * File: Menu.hpp
+ * Creation: 2015-04-07 21:11
+ * Louis Solofrizzo <louis@ne02ptzero.me>
  */
 
-//! NOT CURRENTLY USED - MIGHT GET REMOVED
+# include "Game.hpp"
 
-#include "../inc/ContactFilter.hpp"
+class		Menu : public Actor {
+	public:
+		Menu(void);
+		~Menu(void);
+		void	showMenu(Game *game);
+		void	ReceiveMessage(Message *m);
 
-
-bool	ContactFilter::ShouldCollide(b2Fixture* fixA, b2Fixture* fixB) {
-
-// 	std::string attrA = static_cast<Elements*>(fixA->GetBody()->GetUserData())->getAttributes()["type"];
-// 	std::string attrB = static_cast<Elements*>(fixB->GetBody()->GetUserData())->getAttributes()["type"];
-
-// 	if ((attrA == "Hero" || attrB == "Hero") && ((attrA == "heroWeapon" || attrB == "heroWeapon") || (attrA == "heroProjectile" || attrB == "heroProjectile"))) {
-// 		return false;
-// 	}
-// 	else return true;
-// }
-	return true;
-}
+	private:
+		Game		*_game;
+		HUDWindow	*_window;
+};

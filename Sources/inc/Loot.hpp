@@ -18,25 +18,23 @@
  */
 
 /**
- * File: ContactFilter.hpp
- * Creation: 2015-02-23 12:40
+ * File: Loot.hpp
+ * Creation: 2015-04-14 14:49
  * Vincent Rey <vrey@student.42.fr>
  */
 
-//! NOT CURRENTLY USED - MIGHT GET REMOVED
+#ifndef __Loot__
+# define __Loot__
 
-#include "../inc/ContactFilter.hpp"
+# include "Characters.hpp"
+# include "Object.hpp"
 
+class Loot {
+public:
+	Loot(Characters *c);
+	~Loot(void);
+private:
+	Loot(void);
+};
 
-bool	ContactFilter::ShouldCollide(b2Fixture* fixA, b2Fixture* fixB) {
-
-// 	std::string attrA = static_cast<Elements*>(fixA->GetBody()->GetUserData())->getAttributes()["type"];
-// 	std::string attrB = static_cast<Elements*>(fixB->GetBody()->GetUserData())->getAttributes()["type"];
-
-// 	if ((attrA == "Hero" || attrB == "Hero") && ((attrA == "heroWeapon" || attrB == "heroWeapon") || (attrA == "heroProjectile" || attrB == "heroProjectile"))) {
-// 		return false;
-// 	}
-// 	else return true;
-// }
-	return true;
-}
+#endif

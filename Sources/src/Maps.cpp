@@ -90,16 +90,12 @@ void	Maps::_getMap(void) {
 	map->setHeight(this->_root["height"].asInt());
 	map->setWidth(this->_root["width"].asInt());
 	itr = this->_root["tilesets"];
-
 	for (index = 0; index < itr.size(); index++) {
-
 		map->setImage(itr[index].get("image", "").asString());
 		map->setImageHeight(itr[index].get("imageheight", 0).asInt());
 		map->setImageWidth(itr[index].get("imagewidth", 0).asInt());
 		map->setTileHeight(itr[index].get("tileheight", 0).asInt());
 		map->setTileWidth(itr[index].get("tilewidth", 0).asInt());
-
-
 		vtr = itr[index].get("tileproperties", "");
 		for (j = vtr.begin(); j != vtr.end(); j++) {
 			for (k = (*j).begin(); k != (*j).end(); k++)
@@ -108,9 +104,8 @@ void	Maps::_getMap(void) {
 	}
 	map->setProperties(tileproperties);
 	itr = this->_root["layers"][0]["data"];
-	for (index = 0; index < itr.size(); index++) {
+	for (index = 0; index < itr.size(); index++)
 		intMap.insert(intMap.begin() + index, itr[index].asInt());
-	}
 	map->setMap(intMap);
 	this->_maps.push_back(map);
 }

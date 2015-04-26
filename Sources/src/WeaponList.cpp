@@ -25,10 +25,9 @@
 
 # include "WeaponList.hpp"
 
-
+//!  Constructor called at the beginning of the game to load every weapon available
 /**
- * Default constructor, using the element that called the attack
- * @param: Elements *
+ * Called once and stocked in a static for the whole game
  */
 WeaponList::WeaponList(void) {
 	DIR				*dir;
@@ -46,6 +45,7 @@ WeaponList::WeaponList(void) {
 	}
 }
 
+//! Destructor
 /**
  * Basic destructor
  */
@@ -53,13 +53,11 @@ WeaponList::~WeaponList(void) {
 	return;
 }
 
-void		WeaponList::statWeapon(std::string name) {
-}
-
+//! Returns a weapon in order to use it afterwards
 /**
  * Get a weapon obj by name
- * @param: name (std::string)
- * @return: *it
+ * @param name (std::string)
+ * @return *it
  */
 Weapon		*WeaponList::getWeapon(std::string name) {
 	std::list<Weapon*>::iterator it;
@@ -69,4 +67,49 @@ Weapon		*WeaponList::getWeapon(std::string name) {
 			return ((*it));
 		}
 	}
+}
+
+
+//! Returns one of the existing weapons
+/**
+ * Returns a weapon, no matter its level
+ */
+Weapon		*WeaponList::getWeaponRandom(void) {
+	std::list<Weapon*>::iterator it;
+	int	i = 0;
+	int value = (rand() % this->_allWeapons.size());
+
+	for (it = this->_allWeapons.begin(); it != this->_allWeapons.end(); it++) {
+		if (i == value) {
+			return ((*it));
+		}
+		i++;
+	}
+	return (*this->_allWeapons.begin());
+
+}
+
+//! Returns one of the existing weapons of the required level
+/**
+ * Returns a random weapon, with the corresponding item level
+ */
+Weapon		*WeaponList::getWeaponRandom(int level) {
+	std::list<Weapon*>::iterator it;
+	std::list<Weapon*> weapons;
+
+	for (it = this->_allWeapons.begin(); it != this->_allWeapons.end(); it++) {
+		if ((*it)->getLootLevel() == level) {
+			weapons.push_back(*it);
+		}
+	}
+	int	i = 0;
+	int value = (rand() % weapons.size());
+	for (it = weapons.begin(); it != weapons.end(); it++) {
+		if (i == value) {
+			return ((*it));
+		}
+		i++;
+	}
+	return (*weapons.begin());
+
 }

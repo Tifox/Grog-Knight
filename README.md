@@ -32,4 +32,6 @@ This project use [Angel2d](https://github.com/angel2d/angel2d), [Documentation](
 *Louis Solofrizzo* (Ne02ptzero) <louis@ne02ptzero.me>
 
 ### Contributing
-[Here :)](Contributing.md)
+[Rules Here :)](Contributing.md)
+
+[Docs Here](http://ne02ptzero.github.io/rogue-like)

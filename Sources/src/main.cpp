@@ -23,6 +23,7 @@
  * Louis Solofrizzo <louis@ne02ptzero.me>
  */
 
+# include <ctime>
 # include "Game.hpp"
 # include "Hero.hpp"
 # include "Enemy.hpp"
@@ -33,6 +34,7 @@
 # include "Hitbox.hpp"
 # include "HUDWindow.hpp"
 # include "LevelGenerator.hpp"
+# include "Menu.hpp"
 
 class MouseDebugger: public MouseListener {
 	public:
@@ -49,40 +51,16 @@ class MouseDebugger: public MouseListener {
 int		main(int ac, char **av) {
 	Game	*game = new Game();
 	Game::hList = new Hitbox();
+	Menu	*menu = new Menu();
 
+	srand(time(NULL));
 	game->readMaps();
 	MouseDebugger l;
-	theWorld.SetBackgroundColor(*(new Color(0, 0, 0)));
-
-	Game::wList = new WeaponList();
-
-	game->showMap();
-
-	Equipment		*equip = new Equipment();
-	Consumable		*lol = new Consumable();
-	Hero			*hero = new Hero();
-	Enemy			*enemy = new Enemy("Enemy");
-	Enemy			*enemy2 = new Enemy("Enemy2");
-
-
-
-	//===== I temp map generation test =====
-
-	LevelGenerator *levelGenerator = new LevelGenerator(6, 6, 5, 60, 80);
-	levelGenerator->execute();
-	levelGenerator->print();
-
-	//===== O temp map generation test =====
-
-//	theCamera.LockTo(hero);
-	theCamera.SetPosition(13, -7);
-	game->displayHero(*(hero));
-	hero->init();
-	enemy->init();
-	enemy2->init();
-	hero->equipWeapon(Game::wList->getWeapon("Sword"));
-	game->setHero(*hero);
-	game->displayHUD();
-	game->start();
+	if (ac > 1 && (std::string(av[1]) == "nomenu")) {
+		game->start();
+		theWorld.StartGame();
+	}
+	else
+		menu->showMenu(game);
 	return 0;
 }

@@ -42,9 +42,10 @@ Enemy::Enemy(void) : Characters("Enemy") {
 Enemy::Enemy(std::string str) : Characters(str) {
 	this->setXStart(15);
 	this->setYStart(-3);
+	this->SetName("Enemy");
+		theSwitchboard.SubscribeTo(this, "startPathing" + this->GetName());
+		theSwitchboard.DeferredBroadcast(new Message("startPathing" + this->GetName()), 0.2f);
 	if (str == "Enemy") {
-		theSwitchboard.SubscribeTo(this, "startPathing");
-		theSwitchboard.Broadcast(new Message("startPathing"));
 		this->setXStart(5);
 		this->setYStart(-5);
 	} else {
@@ -78,8 +79,8 @@ void	Enemy::init(void) {
 /**
  * Mother's callback for actions
  * See Characters::ReceiveMessage for more information
- * @param: name The name of the action
- * @param: status The key status (1 | 0)
+ * @param name The name of the action
+ * @param status The key status (1 | 0)
  * @sa Characters::ReceiveMessage
  */
 void	Enemy::actionCallback(std::string name, int status) {
@@ -130,15 +131,16 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 /**
  * Function that applies damage
  * In this function, we reduce the HP (no way ?), reduce the speed, play a sprite animation.
- * @param: damage The damage amount
+ * @param damage The damage amount
  */
 int		Enemy::takeDamage(int damage) {
 	if (this->_hp - damage <= 0) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+		new Loot(this);
 		this->PlaySpriteAnimation(0.1, SAT_OneShot, 5, 5, "destroyEnemy");
 		theSwitchboard.SubscribeTo(this, "destroyEnemy");
 		theSwitchboard.DeferredBroadcast(new Message("destroyEnemy"), 0.1);
-		theSwitchboard.UnsubscribeFrom(this, "startPathing");
+		theSwitchboard.UnsubscribeFrom(this, "startPathing" + this->GetName());
 		return 0;
 	}
 	this->_hp -= damage;

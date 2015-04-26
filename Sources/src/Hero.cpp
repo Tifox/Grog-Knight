@@ -32,6 +32,8 @@
 Hero::Hero(void) : Characters("Hero") {
 	theSwitchboard.SubscribeTo(this, "canMove");
 	theSwitchboard.SubscribeTo(this, "endInvincibility");
+	theSwitchboard.SubscribeTo(this, "enableAttackHitbox");
+	theSwitchboard.SubscribeTo(this, "disableAttackHitbox");
 	return ;
 }
 
@@ -55,22 +57,38 @@ void	Hero::init(void) {
 /**
  * Mother's callback for actions
  * See Characters::ReceiveMessage for more information.
- * @param: name The action name
- * @param: status The key status (1 | 0)
- * @sa: Characters::ReceiveMessage
+ * @param name The action name
+ * @param status The key status (1 | 0)
+ * @sa Characters::ReceiveMessage
+ * @todo Extract the values from the consumable
  */
 void	Hero::actionCallback(std::string name, int status) {
 	if (name == "attack" && status == 1 && this->_weapon->attackReady() == 1) {
 		this->_weapon->isAttacking(0);
-		this->changeSizeTo(Vector2(1.75f, 1));
-		if (this->_orientation == RIGHT)
+		if (this->_orientation == RIGHT) {
+			this->changeSizeTo(Vector2(2, 1));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 									  this->_getAttr("beginFrame_right").asInt(),
 									  this->_getAttr("endFrame_right").asInt(), "base");
-		else
+		}
+		else if (this->_orientation == LEFT) {
+			this->changeSizeTo(Vector2(2, 1));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 									  this->_getAttr("beginFrame_left").asInt(),
 									  this->_getAttr("endFrame_left").asInt(), "base");
+		}
+		else if (this->_orientation == UP) {
+			this->changeSizeTo(Vector2(1.5f, 2));
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+									  this->_getAttr("beginFrame_up").asInt(),
+									  this->_getAttr("endFrame_up").asInt(), "base");
+		}
+		else if (this->_orientation == DOWN) {
+			this->changeSizeTo(Vector2(1, 2.5f));
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+									  this->_getAttr("beginFrame_down").asInt(),
+									  this->_getAttr("endFrame_down").asInt(), "base");
+		}
 	}
 	return ;
 }
@@ -122,9 +140,14 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 			if (elem->getAttributes()["type3"] == "HP") {
 				if (this->_hp != this->_maxHp) {
 					Game::addToDestroyList(elem);
-					this->setHP(this->getHP() + 50);
+					this->setHP(this->getHP() + 25);
 					Game::getHUD()->life(this->getHP());
 				}
+			}
+			if (elem->getAttributes()["type3"] == "gold") {
+				Game::addToDestroyList(elem);
+				this->_gold += 40;
+				Game::getHUD()->updateGold(this->getGold());
 			}
 		}
 		else if (elem->getAttributes()["type2"] == "Equipment") {

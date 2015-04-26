@@ -65,6 +65,7 @@ class Characters : public Elements {
 		virtual void	EndContact(Elements *elem, b2Contact *contact);
 		Characters::Orientation			getOrientation(void);
 		std::string						getLastAction(void);
+		int								getGold(void);
 		int								getHP(void);
 		void							setHP(int h);
 		Weapon							*getWeapon(void);
@@ -72,6 +73,10 @@ class Characters : public Elements {
 		virtual void	actionCallback(std::string name, int status) {};
 		virtual void	equipWeapon(Weapon* weapon);
 		void			changeCanMove(void);
+
+	//Moved in order to get loot infos outside of class
+		Json::Value		_getAttr(std::string category, std::string key);
+
 
 	protected:
 		std::string		_name;
@@ -83,6 +88,7 @@ class Characters : public Elements {
 		int				_isRunning;
 		int				_isAttacking;
 		int				_hp;
+		int				_gold;
 		int				_maxHp;
 		bool			_canMove;
 		bool			_canJump;
@@ -96,7 +102,6 @@ class Characters : public Elements {
 		std::list<Elements*> 				_walls;
 		std::list<Elements*> 				_wallsRight;
 
-		Json::Value		_getAttr(std::string category, std::string key);
 		Json::Value		_getAttr(std::string key);
 		void			_setCategory(std::string category);
 		virtual void	_forward(int status);
@@ -120,8 +125,10 @@ class Characters : public Elements {
 
 # ifndef __Object__
 #  include "Equipment.hpp"
+#  include "Consumable.hpp"
 # endif
 
 # include "Game.hpp"
+# include "Enemy.hpp"
 
 #endif

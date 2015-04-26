@@ -21,6 +21,13 @@
 				"beginFrame": 1,
 				"endFrame": 4,
 				"time": 0.1
+			},
+		"loot": {
+				"consumableRate": 50,
+				"equipmentRate": 25,
+				"HPReward": 50,
+				"XPReward": 20,
+				"EqReward": 2
 			}
 	}
 }

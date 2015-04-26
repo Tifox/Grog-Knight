@@ -35,6 +35,8 @@ class	Game;
 
 class	HUDWindow : public HUDActor {
 
+
+	public:
 	class	Text {
 		public:
 			Text() {};
@@ -48,19 +50,20 @@ class	HUDWindow : public HUDActor {
 			int				colorA;
 	};
 
-	public:
 		HUDWindow(void);
 		~HUDWindow(void);
 
-		void	setText(std::string str, int x, int y);
-		void	setText(std::string str, int x, int y, Vector3 color, int alpha);
+		HUDWindow::Text	*setText(std::string str, int x, int y);
+		HUDWindow::Text	*setText(std::string str, int x, int y, Vector3 color, int alpha);
 		void	removeText(std::string str);
+		void	removeText(HUDWindow::Text *t);
 		void	displayText(void);
 		void	addImage(std::string p, int x, int y);
 		void	addImage(std::string path, int x, int y, float size);
 		void	life(int l);
 		void	mana(int mana);
 		void	gold(int g);
+		void	updateGold(int gold);
 		void	items(Weapon *w);
 		void	armor(void);
 		void	boots(void);
@@ -73,6 +76,7 @@ class	HUDWindow : public HUDActor {
 		std::list<HUDActor *>	_hearts;
 		std::list<HUDActor *>	_mana;
 		std::list<HUDWindow::Text *>	_text;
+		HUDWindow::Text	*		_gold;
 };
 
 #endif

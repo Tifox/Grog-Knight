@@ -1,0 +1,92 @@
+\hypertarget{class_level_generator}{\section{Level\+Generator Class Reference}
+\label{class_level_generator}\index{Level\+Generator@{Level\+Generator}}
+}
+
+
+{\ttfamily \#include $<$Level\+Generator.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_level_generator_a2ed675e422aedcf5ecab936468627128}{Level\+Generator} (int height, int width, int min\+Path\+Lenght, int room\+Pop\+Rate, int doors\+Pop\+Rate)
+\item 
+\hyperlink{class_level_generator_a9bd612e10a3d769537ba042a76c0cb5f}{$\sim$\+Level\+Generator} ()
+\item 
+\hypertarget{class_level_generator_ad3a873efd53cec998e5b3cbec90b1e6d}{void {\bfseries print} (void)}\label{class_level_generator_ad3a873efd53cec998e5b3cbec90b1e6d}
+
+\item 
+\hypertarget{class_level_generator_a0adda93371151dcbda015fd4a9a5b971}{void {\bfseries execute} ()}\label{class_level_generator_a0adda93371151dcbda015fd4a9a5b971}
+
+\item 
+\hypertarget{class_level_generator_a67392d5702d8bb9b28d3b87cfa4f4435}{void {\bfseries first\+Pass} ()}\label{class_level_generator_a67392d5702d8bb9b28d3b87cfa4f4435}
+
+\item 
+\hypertarget{class_level_generator_aaed4a6d35bf4ea14a1d472b247720f46}{void {\bfseries second\+Pass} ()}\label{class_level_generator_aaed4a6d35bf4ea14a1d472b247720f46}
+
+\item 
+\hypertarget{class_level_generator_a8e8540de5d26ae5fd37f01863bb3a3ab}{void {\bfseries third\+Pass} ()}\label{class_level_generator_a8e8540de5d26ae5fd37f01863bb3a3ab}
+
+\item 
+\hypertarget{class_level_generator_a9b9e75025c7dcacb88bcb717f2aa9f3b}{void {\bfseries fourth\+Pass} ()}\label{class_level_generator_a9b9e75025c7dcacb88bcb717f2aa9f3b}
+
+\item 
+\hypertarget{class_level_generator_aaaccd1f1c3b4331d30ba5a56b3d027f8}{void {\bfseries link\+Adjacent\+Rooms} (\hyperlink{class_room}{Room} $\ast$room)}\label{class_level_generator_aaaccd1f1c3b4331d30ba5a56b3d027f8}
+
+\item 
+\hypertarget{class_level_generator_afaa688bd1e11103c8afb45dbfa41c0c7}{void {\bfseries shockwave} ()}\label{class_level_generator_afaa688bd1e11103c8afb45dbfa41c0c7}
+
+\item 
+\hypertarget{class_level_generator_ab9f4dd15ee1d8f0659d3df0956d087af}{int {\bfseries get\+Entry\+Id} ()}\label{class_level_generator_ab9f4dd15ee1d8f0659d3df0956d087af}
+
+\item 
+\hypertarget{class_level_generator_af8a3c3f49855932e09da03107205c72f}{int {\bfseries add\+Distance\+To\+Adjacent\+Rooms} (\hyperlink{class_room}{Room} $\ast$room, int search\+Distance)}\label{class_level_generator_af8a3c3f49855932e09da03107205c72f}
+
+\item 
+\hypertarget{class_level_generator_a6af493402fdf30516ea0c122d2c82a4b}{\hyperlink{class_room}{Room} $\ast$ {\bfseries find\+Room\+By\+Pos} (int x, int y)}\label{class_level_generator_a6af493402fdf30516ea0c122d2c82a4b}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Licensed to the Apache Software Foundation (A\+S\+F) under one or more contributor license agreements. See the N\+O\+T\+I\+C\+E file distributed with this work for additional information regarding copyright ownership. The A\+S\+F licenses this file to you under the Apache License, Version 2.\+0 (the \char`\"{}\+License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+\href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\+://www.\+apache.\+org/licenses/\+L\+I\+C\+E\+N\+S\+E-\/2.\+0}
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\+A\+S I\+S\char`\"{} B\+A\+S\+I\+S, W\+I\+T\+H\+O\+U\+T W\+A\+R\+R\+A\+N\+T\+I\+E\+S O\+R C\+O\+N\+D\+I\+T\+I\+O\+N\+S O\+F A\+N\+Y K\+I\+N\+D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\+: \hyperlink{_level_generator_8hpp_source}{Level\+Generator.\+hpp} Creation\+: 2015-\/03-\/02 16\+:05 Matthieu Maudet \href{mailto:mmaudet@student.42.fr}{\tt mmaudet@student.\+42.\+fr} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_level_generator_a2ed675e422aedcf5ecab936468627128}{\index{Level\+Generator@{Level\+Generator}!Level\+Generator@{Level\+Generator}}
+\index{Level\+Generator@{Level\+Generator}!Level\+Generator@{Level\+Generator}}
+\subsubsection[{Level\+Generator}]{\setlength{\rightskip}{0pt plus 5cm}Level\+Generator\+::\+Level\+Generator (
+\begin{DoxyParamCaption}
+\item[{int}]{height, }
+\item[{int}]{width, }
+\item[{int}]{min\+Path\+Lenght, }
+\item[{int}]{room\+Pop\+Rate, }
+\item[{int}]{doors\+Pop\+Rate}
+\end{DoxyParamCaption}
+)}}\label{class_level_generator_a2ed675e422aedcf5ecab936468627128}
+Licensed to the Apache Software Foundation (A\+S\+F) under one or more contributor license agreements. See the N\+O\+T\+I\+C\+E file distributed with this work for additional information regarding copyright ownership. The A\+S\+F licenses this file to you under the Apache License, Version 2.\+0 (the \char`\"{}\+License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+\href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\+://www.\+apache.\+org/licenses/\+L\+I\+C\+E\+N\+S\+E-\/2.\+0}
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\+A\+S I\+S\char`\"{} B\+A\+S\+I\+S, W\+I\+T\+H\+O\+U\+T W\+A\+R\+R\+A\+N\+T\+I\+E\+S O\+R C\+O\+N\+D\+I\+T\+I\+O\+N\+S O\+F A\+N\+Y K\+I\+N\+D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\+: Level\+Generator.\+cpp Creation\+: 2015-\/03-\/02 16\+:05 Matthieu Maudet \href{mailto:mmaudet@student.42.fr}{\tt mmaudet@student.\+42.\+fr} Standard constructor with \+:
+\begin{DoxyItemize}
+\item Height and Width
+\item min\+Path\+Lenght \+: Min path between entry and exit rooms
+\item room\+Pop\+Rate (of 100\%) \+: Chances for a room to pop on given slot
+\item doors\+Pop\+Rate (of 100\%) \+: Chances for a door to pop on given wall
+\item nb\+Maps \+: Number of different maps 
+\end{DoxyItemize}\hypertarget{class_level_generator_a9bd612e10a3d769537ba042a76c0cb5f}{\index{Level\+Generator@{Level\+Generator}!````~Level\+Generator@{$\sim$\+Level\+Generator}}
+\index{````~Level\+Generator@{$\sim$\+Level\+Generator}!Level\+Generator@{Level\+Generator}}
+\subsubsection[{$\sim$\+Level\+Generator}]{\setlength{\rightskip}{0pt plus 5cm}Level\+Generator\+::$\sim$\+Level\+Generator (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_level_generator_a9bd612e10a3d769537ba042a76c0cb5f}
+Basic Destructor 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+inc/Level\+Generator.\+hpp\item 
+src/Level\+Generator.\+cpp\end{DoxyCompactItemize}

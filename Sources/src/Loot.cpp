@@ -36,13 +36,10 @@ Loot::Loot(Characters* c) {
 	int i;
 	if (rand() % 100 <= c->_getAttr("loot", "consumableRate").asInt()) {
 		if (rand() % 2 == 0) {
-			std::cout << "Consumable" << std::endl;
 			new Consumable("HP", c->_getAttr("loot", "HPReward").asString(), c);
 		} else
 			new Consumable("gold", c->_getAttr("loot", "XPReward").asString(), c);
 	} else if (rand() % 100 <= c->_getAttr("loot", "equipmentRate").asInt()) {
-		std::cout << "Equipment" << std::endl;
 		new Equipment(Game::wList->getWeaponRandom(c->_getAttr("loot", "EqReward").asInt()), c);
-	} else
-		std::cout << "No loot" << std::endl;
+	}
 }

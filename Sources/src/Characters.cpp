@@ -222,6 +222,7 @@ void	Characters::ReceiveMessage(Message *m) {
 		return;
 	}
 	else if (m->GetMessageName() == "destroyEnemy") {
+		new Loot(this);
 		this->_destroyEnemy();
 		return;
 	}

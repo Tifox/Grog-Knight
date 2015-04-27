@@ -135,11 +135,16 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
  */
 int		Enemy::takeDamage(int damage) {
 	if (this->_hp - damage <= 0) {
+		this->_setCategory("death");
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-		new Loot(this);
-		this->PlaySpriteAnimation(0.1, SAT_OneShot, 5, 5, "destroyEnemy");
+		this->LoadSpriteFrames(this->_getAttr("newSprites").asString());
+		this->changeSizeTo(Vector2(this->_getAttr("size").asInt(),
+								   this->_getAttr("size").asInt()));
+		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+								  this->_getAttr("beginFrame").asInt(),
+								  this->_getAttr("endFrame").asInt());
 		theSwitchboard.SubscribeTo(this, "destroyEnemy");
-		theSwitchboard.DeferredBroadcast(new Message("destroyEnemy"), 0.1);
+		theSwitchboard.DeferredBroadcast(new Message("destroyEnemy"), 0.5);
 		theSwitchboard.UnsubscribeFrom(this, "startPathing" + this->GetName());
 		return 0;
 	}

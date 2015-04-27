@@ -28,7 +28,14 @@
 				"HPReward": 50,
 				"XPReward": 20,
 				"EqReward": 1
-			}
+			},
+		"death": {
+				"newSprites": "Resources/Images/Explosion/explode_000.png",
+				"beginFrame": 0,
+				"endFrame": 5,
+				"size": 2,
+				"time": 0.1
+		}
 	}
 }
 

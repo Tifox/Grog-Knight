@@ -30,7 +30,7 @@
 /**
  * The basic constructor.
  * In this constructor, we get the sprite and InitPhysics.
- * @todo: The position is actually in the hard-way. Config file needed.
+ * @todo The position is actually in the hard-way. Config file needed.
  */
 Equipment::Equipment(void): Object() {
 	this->addAttribute("type2", "Equipment");
@@ -81,8 +81,8 @@ Equipment::~Equipment(void) {
 /**
  * The contact begin function
  * /!\ This function is actually called just BEFORE a collision
- * @param: elem The Elements who collide with.
- * @param: contact The Box2D contact object.
+ * @param elem The Elements who collide with.
+ * @param contact The Box2D contact object.
  */
 void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
 	// if (elem->getAttributes()["type"] == "Hero"){
@@ -94,8 +94,8 @@ void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
 /**
  * End of contact function
  * /!\ This function is called just after the collision is over,
- * @param: elem The other element
- * @param: contact The Box2D contact object
+ * @param elem The other element
+ * @param contact The Box2D contact object
  */
 void	Equipment::EndContact(Elements *elem, b2Contact *contact) {
 	// if (elem->getAttributes()["type"] == "Hero"){
@@ -109,7 +109,7 @@ Weapon*		Equipment::getWeapon(void) { return this->_weapon; }
 //! Intern broadcasts function.
 /**
  * The Receive Message function.
- * @param: m The Broadcasted message. (See Angel2D docs for more info.)
+ * @param m The Broadcasted message. (See Angel2D docs for more info.)
  */
 void		Equipment::ReceiveMessage(Message *m) {
 	if (m->GetMessageName() == "DeleteEquipment" + this->GetName())

@@ -97,8 +97,8 @@ void	Hero::actionCallback(std::string name, int status) {
 /**
  * Collision begin callback
  * /!\ This function is called just before a collision
- * @param: elem The other Element
- * @param: contact The Box2D contact object
+ * @param elem The other Element
+ * @param contact The Box2D contact object
  */
 void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 	Characters::BeginContact(elem, contact);
@@ -160,7 +160,7 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 /**
  * End contact callback.
  * /!\ This function is actually called after a collision.
- * @param: elem The other Element.
+ * @param elem The other Element.
  * @param contact The Box2D contact object
  */
 void	Hero::EndContact(Elements *elem, b2Contact *contact) {

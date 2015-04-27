@@ -33,7 +33,7 @@ Maps::Maps(void) {
 //! Main constructor
 /**
  * Constructor with a map directory
- * @param: directory The path of the directory
+ * @param directory The path of the directory
  */
 Maps::Maps(std::string directory) : _directory(directory) {
 	return ;

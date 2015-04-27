@@ -91,8 +91,8 @@ void	Enemy::actionCallback(std::string name, int status) {
 /**
  * Collision begin callback
  * /!\ This function is called just before a collision
- * @param: elem The Elements who collide
- * @param: contact The Box2D contact object
+ * @param elem The Elements who collide
+ * @param contact The Box2D contact object
  */
 void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 	Characters::BeginContact(m, contact);

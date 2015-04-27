@@ -32,7 +32,7 @@ Map::Map(void) : _mapCount(0) {
 
 //! Main constructor
 /**
- * @param: name The name of the map
+ * @param name The name of the map
  */
 Map::Map(std::string name) : _name(name), _mapCount(0) {
 	return ;

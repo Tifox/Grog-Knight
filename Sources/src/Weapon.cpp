@@ -28,7 +28,7 @@
 //!Constructor called by the weaponlist class to parse all weapons
 /**
  * Default constructor, using the element that called the attack
- * @param: name (std::string)
+ * @param name (std::string)
  */
 Weapon::Weapon(std::string name) : _name(name) {
 	this->_readFile(name);
@@ -59,11 +59,11 @@ Weapon::Weapon(Weapon* weapon) {
 
 
 
-//!Constructor called when attacking, creates the defined hitbox
+//! Constructor called when attacking, creates the defined hitbox
 /**
  * Constructor for creating the weapon area-of-effect
- * @param: w (Weapon*)
- * @param: c (Characters*)
+ * @param w Weapon*
+ * @param c (Characters*)
  */
 
 Weapon::Weapon(Weapon* w, Characters* c) {

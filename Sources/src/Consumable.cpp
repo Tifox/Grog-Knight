@@ -31,7 +31,7 @@
  * Basic Constructor
  * This constructor sets a lots of attributes, like the sprite, the position. etc...
  * That also init the physics.
- * @todo: This function setting attributes the hard-way. Maybe a name based config, like Characters,
+ * @todo This function setting attributes the hard-way. Maybe a name based config, like Characters,
  * would be better ?
  */
 Consumable::Consumable(void) {
@@ -51,7 +51,7 @@ Consumable::Consumable(void) {
  * This constructor sets a lots of attributes, like the sprite, the position. etc...
  * That also init the physics.
  * This constructor will use the infos contained in enemy in order to set the different infos in it
- * @todo: This function setting attributes the hard-way. Maybe a name based config, like Characters,
+ * @todo This function setting attributes the hard-way. Maybe a name based config, like Characters,
  * would be better ?
  */
 Consumable::Consumable(Characters* c) {
@@ -88,7 +88,7 @@ Consumable::Consumable(std::string type, std::string value, Characters* c) {
  * /!\ This function is called just before a collision
  * @param: elem The Elements who collide.
  * @param: contact The Box2D contact object. See Box2D docs for more information.
- * @todo: This function is actually doing nothing.
+ * @todo This function is actually doing nothing.
  */
 void	Consumable::BeginContact(Elements *elem, b2Contact *contact) {
 }

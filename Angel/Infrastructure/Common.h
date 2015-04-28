@@ -89,7 +89,6 @@
 	#if ANGEL_MOBILE
 		// making up for OpenGL|ES missing pieces
 		#define glColor3f(r,g,b) glColor4f(r,g,b,1.0f)
-		#define GL_CLAMP GL_CLAMP_TO_EDGE
 	#endif
 #endif
 
@@ -106,4 +105,3 @@
 #include <map>
 #include "glext.h"
 #define GL_CLAMP GL_REPEAT
-

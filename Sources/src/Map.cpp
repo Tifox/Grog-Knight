@@ -78,8 +78,8 @@ void	Map::display(void) {
 			elem = new Elements();
 			elem->removeAttr("physic");
 			elem->addAttribute("image", this->_image);
+			// That's fucking nasty, duknow why this is working.
 			if (*(it) == 4) {
-				std::cout << "I GO HERE" << std::endl;
 				elem->setFrame(5);
 			}
 			else
@@ -93,7 +93,6 @@ void	Map::display(void) {
 			elem->addAttribute("type", "ground");
 			elem->addAttribute("spriteMap", "TRUE");
 			elem->SetLayer(this->_layer);
-			//std::cout << "Spawn (" << x << "," << y << "): " << *(it) << std::endl;
 			if (this->_properties.find(*it) == this->_properties.end()) {
 				elem->addAttribute("physic", "TRUE");
 			} else {

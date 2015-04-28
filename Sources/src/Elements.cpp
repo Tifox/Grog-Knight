@@ -177,3 +177,5 @@ void	Elements::setHitbox(std::string n) { this->_hitbox = n; this->_hitboxType =
 
 /* GETTERS */
 std::map<std::string, std::string>	Elements::getAttributes(void) { return this->_attributes; };
+
+bool								Elements::isDead(void) { return this->_isDead; }

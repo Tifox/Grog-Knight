@@ -15,7 +15,7 @@
 				"endFrame_right": 6,
 				"beginFrame_left": 0,
 				"endFrame_left": 6,
-				"time": 0.1
+				"time": 0.05
 			},
 		"jump": {
 				"beginFrame": 1,

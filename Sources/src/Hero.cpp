@@ -102,7 +102,7 @@ void	Hero::actionCallback(std::string name, int status) {
  */
 void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 	Characters::BeginContact(elem, contact);
-	if (elem->getAttributes()["type"] == "Enemy") {
+	if (elem->getAttributes()["type"] == "Enemy" && elem->isDead() == false) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		Game::stopRunning(this);
 		this->_isRunning = 0;

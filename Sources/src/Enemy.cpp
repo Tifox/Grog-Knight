@@ -54,6 +54,7 @@ Enemy::Enemy(std::string str) : Characters(str) {
 	this->addAttribute("type", "Enemy");
 	this->addAttribute("name", str);
 	this->addAttribute("enemy", "1");
+	this->_isDead = false;
 	this->display();
 	return ;
 }
@@ -106,6 +107,9 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 				this->ApplyLinearImpulse(Vector2(-w->getPushback(), w->getPushback()), Vector2(0,0));
 			}
 		}
+		else {
+			this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+		}
 	} else if (m->getAttributes()["type"] == "HeroProjectile") {
 		if (this->takeDamage(p->getDamage()) == 1) {
 			if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
@@ -113,6 +117,9 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 			} else {
 				this->ApplyLinearImpulse(Vector2(-p->getPushback(), p->getPushback()), Vector2(0,0));
 			}
+		}
+		else {
+			this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		}
 	} else if (m->getAttributes()["type"] == "Hero") {
 		if (this->_orientation == LEFT)
@@ -143,9 +150,14 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 int		Enemy::takeDamage(int damage) {
 	this->actionCallback("takeDamage", 0);
 	if (this->_hp - damage <= 0) {
+		this->_isDead = true;
 		this->actionCallback("death", 0);
 		this->_setCategory("death");
-		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+		theSwitchboard.SubscribeTo(this, "setToStatic" + this->GetName());
+		theSwitchboard.Broadcast(new Message("setToStatic" + this->GetName()));
+		this->GetBody()->ResetMassData();
+		this->GetBody()->GetFixtureList()->SetSensor(true);
+		this->GetBody()->SetGravityScale(0);
 		this->LoadSpriteFrames(this->_getAttr("newSprites").asString());
 		this->changeSizeTo(Vector2(this->_getAttr("size").asInt(),
 								   this->_getAttr("size").asInt()));
@@ -155,6 +167,7 @@ int		Enemy::takeDamage(int damage) {
 		theSwitchboard.SubscribeTo(this, "destroyEnemy");
 		theSwitchboard.DeferredBroadcast(new Message("destroyEnemy"), 0.5);
 		theSwitchboard.UnsubscribeFrom(this, "startPathing" + this->GetName());
+		theSwitchboard.UnsubscribeFrom(this, "setToStatic" + this->GetName());
 		return 0;
 	}
 	this->_hp -= damage;

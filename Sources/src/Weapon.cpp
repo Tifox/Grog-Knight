@@ -76,8 +76,6 @@ Weapon::Weapon(Weapon* w, Characters* c) {
 	this->_attack = w->getAttack();
 	this->_pushback = w->getPushback();
 	this->_canAttack = 1;
-	this->_hitbox = "swordHitbox";
-	this->_hitboxType = "special";
 	this->SetSize(1);
 	this->SetName("HeroWeaponHitbox");
 	if (c->getAttributes()["type"] == "Hero")
@@ -86,6 +84,8 @@ Weapon::Weapon(Weapon* w, Characters* c) {
 		this->addAttribute("type", "WeaponHitBox");
 	this->SetDrawShape(ADS_Square);
 	this->SetColor(1, 1, 1, 0);
+	this->_hitboxType = "special";
+	this->_hitbox = "octogonHitbox";
 	this->SetDensity(0.1f);
 	this->SetFixedRotation(true);
 	this->Tag("weaponhitbox");
@@ -105,36 +105,23 @@ Weapon::Weapon(Weapon* w, Characters* c) {
  */
 
 void	Weapon::_initDirection(Weapon* w, Characters* c) {
-	float xDecal = 0;
-	float yDecal = 0;
-	float xjoint1 = 0;
-	float xjoint2 = 0;
-	float yjoint1 = 0;
-	float yjoint2 = 0;
-	if (c->getOrientation() == Characters::RIGHT) {
-		xDecal = 0.7;
-		xjoint1 = 0.4;
-		yjoint1 = 0.4;
-		xjoint2 = 0.4;
-		yjoint2 = -0.4;
-	} else if (c->getOrientation() == Characters::LEFT) {
-		xDecal = -0.7;
-		xjoint1 = -0.4;
-		yjoint1 = 0.4;
-		xjoint2 = -0.4;
-		yjoint2 = -0.4;
-	} else if (c->getOrientation() == Characters::UP) {
-		yDecal =0.7;
-		xjoint1 = 0.4;
-		yjoint1 = 0.4;
-		xjoint2 = -0.4;
-		yjoint2 = 0.4;
-	} else if (c->getOrientation() == Characters::DOWN) {
-		yDecal = -0.7;
-		xjoint1 = -0.4;
-		yjoint1 = -0.4;
-		xjoint2 = 0.4;
-		yjoint2 = -0.4;
+	float xDecal, yDecal, xjoint1, xjoint2, yjoint1, yjoint2 = 0;
+	if (c->getOrientation() == Characters::RIGHT ||
+		c->getOrientation() == Characters::LEFT) {
+		yjoint1 = 0.4f;
+		yjoint2 = -0.4f;
+		xDecal = -0.4f;
+		if (c->getOrientation() == Characters::RIGHT) {
+			xDecal = 0.4f;
+		}
+	} else if (c->getOrientation() == Characters::UP ||
+			   c->getOrientation() == Characters::DOWN) {
+		xjoint1 = 0.4f;
+		xjoint2 = -0.4f;
+		yDecal = 0.4f;
+		if (c->getOrientation() == Characters::DOWN) {
+			yDecal = -0.4f;
+		}
 	}
 	this->SetPosition(c->GetBody()->GetWorldCenter().x + xDecal, c->GetBody()->GetWorldCenter().y + yDecal);
 	this->InitPhysics();

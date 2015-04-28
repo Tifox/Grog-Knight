@@ -558,7 +558,7 @@ void	Characters::_attack(int status) {
 	this->_setCategory("attack");
 	if (status == 1 && this->_weapon->attackReady() == 1) {
 		this->_isAttacking = 1;
-		theSwitchboard.DeferredBroadcast(new Message("enableAttackHitbox"), 0.15f);
+		theSwitchboard.DeferredBroadcast(new Message("enableAttackHitbox"), 0.05f);
 	}
 }
 

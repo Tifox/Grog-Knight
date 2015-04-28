@@ -40,7 +40,7 @@ Enemy::Enemy(void) : Characters("Enemy") {
  * @param str Name of the new Enemy
  */
 Enemy::Enemy(std::string str) : Characters(str) {
-	this->setXStart(15);
+	this->setXStart(13);
 	this->setYStart(-3);
 	this->SetName("Enemy");
 		theSwitchboard.SubscribeTo(this, "startPathing" + this->GetName());
@@ -124,6 +124,13 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 		} else {
 			this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
 		}
+		this->actionCallback("heroHit", 0);
+	}
+	else if (m->getAttributes()["type"] == "Enemy") {
+		if (this->_orientation == LEFT)
+			this->_orientation = RIGHT;
+		else
+			this->_orientation = LEFT;
 	}
 }
 
@@ -134,7 +141,9 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
  * @param damage The damage amount
  */
 int		Enemy::takeDamage(int damage) {
+	this->actionCallback("takeDamage", 0);
 	if (this->_hp - damage <= 0) {
+		this->actionCallback("death", 0);
 		this->_setCategory("death");
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		this->LoadSpriteFrames(this->_getAttr("newSprites").asString());

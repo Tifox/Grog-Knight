@@ -105,22 +105,27 @@ Weapon::Weapon(Weapon* w, Characters* c) {
  */
 
 void	Weapon::_initDirection(Weapon* w, Characters* c) {
-	float xDecal, yDecal, xjoint1, xjoint2, yjoint1, yjoint2 = 0;
+	float xDecal = 0;
+	float yDecal = 0;
+	float xjoint1 = 0;
+	float xjoint2 = 0;
+	float yjoint1 = 0;
+	float yjoint2 = 0;
 	if (c->getOrientation() == Characters::RIGHT ||
 		c->getOrientation() == Characters::LEFT) {
 		yjoint1 = 0.4f;
 		yjoint2 = -0.4f;
-		xDecal = -0.4f;
+		xDecal = -0.5f;
 		if (c->getOrientation() == Characters::RIGHT) {
-			xDecal = 0.4f;
+			xDecal = 0.5f;
 		}
 	} else if (c->getOrientation() == Characters::UP ||
 			   c->getOrientation() == Characters::DOWN) {
 		xjoint1 = 0.4f;
 		xjoint2 = -0.4f;
-		yDecal = 0.4f;
+		yDecal = 0.5f;
 		if (c->getOrientation() == Characters::DOWN) {
-			yDecal = -0.4f;
+			yDecal = -0.5f;
 		}
 	}
 	this->SetPosition(c->GetBody()->GetWorldCenter().x + xDecal, c->GetBody()->GetWorldCenter().y + yDecal);

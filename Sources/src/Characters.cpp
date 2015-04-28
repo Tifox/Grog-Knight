@@ -226,6 +226,10 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->_destroyEnemy();
 		return;
 	}
+	else if (m->GetMessageName() == "setToStatic" + this->GetName()) {
+		this->GetBody()->SetType(b2_staticBody);
+		return;
+	}
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
 		attrName = this->_getAttr(i->first, "subscribe").asString();
 		if (!strncmp(attrName.c_str(), m->GetMessageName().c_str(), strlen(attrName.c_str()))) {

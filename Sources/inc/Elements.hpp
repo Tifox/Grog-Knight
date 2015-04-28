@@ -64,11 +64,14 @@ public:
 	int				getOrientationX(void);
 	int				getOrientationY(void);
 	int				getLateralOrientation(void);
+	bool			isDead(void);
+
 
 protected:
-	virtual void	_run() {};
+	virtual void						_run() {};
 	std::string							_hitboxType;
 	std::string							_hitbox;
+	bool								_isDead;
 
 private:
 	float								_XStartPos;

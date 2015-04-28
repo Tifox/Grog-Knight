@@ -40,6 +40,11 @@ public:
 	void			actionCallback(std::string name, int status);
 	void			init(void);
 	void			BeginContact(Elements* m, b2Contact* contact);
+	bool			toBeDeleted(void);
+
+protected:
+	bool			isDead;
+
 };
 
 #endif

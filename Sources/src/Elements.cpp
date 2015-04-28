@@ -102,7 +102,7 @@ std::string	Elements::getAttribute(std::string name) {
 void	Elements::setFrameSprite(int frame) {
 	int imgHeight = this->_height;
 	int imgWidth = this->_width;
-	int	cutWidth = 16, cutHeight = 16;
+	int	cutWidth = 32, cutHeight = 32;
 	float nbPerRow = imgWidth / cutWidth;
 	float nbPerColumn = imgHeight / cutHeight;
 	float fY = (1.0f / float(imgHeight)) * float(cutHeight);

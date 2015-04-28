@@ -34,6 +34,7 @@ Hero::Hero(void) : Characters("Hero") {
 	theSwitchboard.SubscribeTo(this, "endInvincibility");
 	theSwitchboard.SubscribeTo(this, "enableAttackHitbox");
 	theSwitchboard.SubscribeTo(this, "disableAttackHitbox");
+	this->SetLayer(100);
 	return ;
 }
 

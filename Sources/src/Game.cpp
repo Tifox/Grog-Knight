@@ -130,7 +130,7 @@ void	Game::showMap(void) {
  */
 void	Game::displayHero(Elements & Hero) {
 	Hero.setXStart(4);
-	Hero.setYStart(-10);
+	Hero.setYStart(-8);
 	Hero.addAttribute("hero", "1");
 	Hero.display();
 }

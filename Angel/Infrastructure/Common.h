@@ -104,4 +104,6 @@
 #include <vector>
 #include <set>
 #include <map>
+#include "glext.h"
+#define GL_CLAMP GL_REPEAT
 

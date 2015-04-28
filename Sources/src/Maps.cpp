@@ -103,11 +103,16 @@ void	Maps::_getMap(void) {
 		}
 	}
 	map->setProperties(tileproperties);
-	itr = this->_root["layers"][0]["data"];
-	for (index = 0; index < itr.size(); index++)
-		intMap.insert(intMap.begin() + index, itr[index].asInt());
-	map->setMap(intMap);
-	this->_maps.push_back(map);
+	for (v = 0; v < this->_root["layers"].size(); v++) {
+		itr = this->_root["layers"][v]["data"];
+		for (index = 0; index < itr.size(); index++)
+			intMap.insert(intMap.begin() + index, itr[index].asInt());
+		map->setLayer(v);
+		map->setMap(intMap);
+		map->display();
+		this->_maps.push_back(map);
+		intMap.clear();
+	}
 }
 
 //! Display the first map at the top of list

@@ -55,6 +55,7 @@ class	Map {
 		void	addMapElement(int n);
 		void	setMap(std::vector<int> map);
 		void	setProperties(std::map<int, std::map<std::string, Json::Value> > p);
+		void	setLayer(int n);
 
 		void	display(void);
 
@@ -69,6 +70,7 @@ class	Map {
 		int					_tileWidth;
 		int					_imageHeight;
 		int					_imageWidth;
+		int					_layer;
 		std::list<Elements *>	_elems;
 		std::map<int, std::map<std::string, Json::Value> >	_properties;
 };

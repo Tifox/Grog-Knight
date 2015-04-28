@@ -56,6 +56,7 @@ void	Map::setMap(std::vector<int> map) { this->_map = map; };
 void	Map::setProperties(std::map<int, std::map<std::string, Json::Value> > p) { this->_properties = p; };
 void	Map::addElement(Elements *e) { this->_elems.push_back(e); };
 void	Map::addMapElement(int n) { this->_map[this->_mapCount++] = n; };
+void	Map::setLayer(int n) {this->_layer = n; };
 
 //! Display the map
 /**
@@ -73,35 +74,44 @@ void	Map::display(void) {
 			y--;
 		}
 
-		elem = new Elements();
-		elem->removeAttr("physic");
-		elem->addAttribute("image", this->_image);
-		elem->setFrame(*(it));
-		elem->setXStart(x);
-		elem->setYStart(y);
-		elem->setCutWidth(this->_tileWidth);
-		elem->setCutHeight(this->_tileHeight);
-		elem->setWidth(this->_imageWidth);
-		elem->setHeight(this->_imageHeight);
-		elem->addAttribute("type", "ground");
-		elem->addAttribute("spriteMap", "TRUE");
-		if (this->_properties.find(*it) == this->_properties.end()) {
-			elem->addAttribute("physic", "TRUE");
-		} else {
-			std::map<std::string, Json::Value>::iterator	it2;
-			int												isPhysic = 1;
-
-			for (it2 = this->_properties.find(*it)->second.begin();
-			it2 != this->_properties.find(*it)->second.end(); it2++) {
-				if (it2->first == "physic") {
-					isPhysic = 0;
-				} else if (it2->first == "hitbox") {
-					elem->setHitbox(it2->second.asString());
-				}
+		if (*(it) != 0) {
+			elem = new Elements();
+			elem->removeAttr("physic");
+			elem->addAttribute("image", this->_image);
+			if (*(it) == 4) {
+				std::cout << "I GO HERE" << std::endl;
+				elem->setFrame(5);
 			}
-			if (isPhysic)
+			else
+				elem->setFrame(*(it));
+			elem->setXStart(x);
+			elem->setYStart(y);
+			elem->setCutWidth(this->_tileWidth);
+			elem->setCutHeight(this->_tileHeight);
+			elem->setWidth(this->_imageWidth);
+			elem->setHeight(this->_imageHeight);
+			elem->addAttribute("type", "ground");
+			elem->addAttribute("spriteMap", "TRUE");
+			elem->SetLayer(this->_layer);
+			//std::cout << "Spawn (" << x << "," << y << "): " << *(it) << std::endl;
+			if (this->_properties.find(*it) == this->_properties.end()) {
 				elem->addAttribute("physic", "TRUE");
+			} else {
+				std::map<std::string, Json::Value>::iterator	it2;
+				int												isPhysic = 1;
+
+				for (it2 = this->_properties.find(*it)->second.begin();
+						it2 != this->_properties.find(*it)->second.end(); it2++) {
+					if (it2->first == "physic") {
+						isPhysic = 0;
+					} else if (it2->first == "hitbox") {
+						elem->setHitbox(it2->second.asString());
+					}
+				}
+				if (isPhysic)
+					elem->addAttribute("physic", "TRUE");
+			}
+			elem->display();
 		}
-		elem->display();
 	}
 }

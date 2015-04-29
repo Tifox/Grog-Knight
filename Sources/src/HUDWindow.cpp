@@ -31,6 +31,7 @@
  */
 HUDWindow::HUDWindow(void) : HUDActor() {
 	RegisterFont("Resources/font.ttf", 14, "Gamefont");
+	RegisterFont("Resources/Fonts/fail.otf", 80, "dead");
 	return;
 }
 
@@ -146,7 +147,7 @@ void	HUDWindow::displayText(void) {
 
 	for (i = this->_text.begin(); i != this->_text.end(); i++) {
 		glColor4f((*i)->colorR, (*i)->colorG, (*i)->colorB, (*i)->colorA);
-		DrawGameText((*i)->str, "Gamefont", (*i)->x, (*i)->y, theCamera.GetRotation());
+		DrawGameText((*i)->str, "dead", (*i)->x, (*i)->y, theCamera.GetRotation());
 	}
 }
 

@@ -30,6 +30,7 @@ Menu::Menu(void) {
 	theSwitchboard.SubscribeTo(this, "enterPressed");
 	theSwitchboard.SubscribeTo(this, "downPressed");
 	theSwitchboard.SubscribeTo(this, "upPressed");
+	theSwitchboard.SubscribeTo(this, "PauseGame");
 // Rebind key
 // Show text Menu
 // While make a choice
@@ -76,7 +77,7 @@ void	Menu::ReceiveMessage(Message *m) {
 		theSwitchboard.UnsubscribeFrom(this, "downPressed");
 		Game::removeHUDWindow(this->_window);
 		this->_game->start();
-	} else {
-		Log::info("Magawd, you pressed " + m->GetMessageName());
+	} else if (m->GetMessageName() == "PauseGame") {
+		//theWorld.PauseSimulation();
 	}
 }

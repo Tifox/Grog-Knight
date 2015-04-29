@@ -69,7 +69,7 @@ class Game {
 
 		static bool	endGame;
 		static bool	ended;
-		static void	destroyAllBodies(void);
+		static bool	destroyAllBodies(void);
 		static void	addToDestroyList(Elements *m);
 
 

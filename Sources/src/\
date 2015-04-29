@@ -190,7 +190,6 @@ void	Game::delElement(Elements* elem) {
 		if (Game::elementMap[i] == elem)
 			Game::elementMap.erase(i);
 	}
-	//delete elem;
 }
 
 //! Collision intern callbacks
@@ -237,23 +236,19 @@ void	Game::addToDestroyList(Elements *m) {
  */
 bool	Game::destroyAllBodies(void) {
 	if (Game::ended == true) {
-		return true ;
 	}
 	if (Game::endGame == true) {
 		Game::ended = true;
 		theWorld.PausePhysics();
 		int i;
 		Game::getHUD()->setText("U DED", 500, 500, Vector3(1, 0, 0), 1);
-		for (i = 0; i < Game::elementMap.size() - 2; i++) {
-			if (Game::elementMap[i]->getAttribute("type") != "Hero") {
-				Game::elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1, "PauseGame");
-				if (Game::elementMap[i]->getAttribute("physic") != "")
-					theWorld.GetPhysicsWorld().DestroyBody((Game::elementMap[i])->GetBody());
-				theWorld.Remove(Game::elementMap[i]);
-			}
+		for (i = 0; elementMap[i]; i++) {
+				elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1, "PauseGame");
+					if (elementMap[i]->getAttribute("physic") != "")
+						theWorld.GetPhysicsWorld().DestroyBody((elementMap[i])->GetBody());
+					theWorld.Remove(elementMap[i]);
+					Game::delElement(elementMap[i]);
 		}
-		Game::elementMap.clear();
-		return true;
 	} else {
 		for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
 			theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
@@ -267,7 +262,6 @@ bool	Game::destroyAllBodies(void) {
 		}
 		Game::bodiesToCreate.clear();
 	}
-	return false;
 }
 
 //! Intern callback for staring running

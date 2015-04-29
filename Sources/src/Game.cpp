@@ -96,6 +96,7 @@ void	Game::start(void) {
 	//===== O temp map generation test =====
 
 	theCamera.SetPosition(13, -7);
+	theCamera.LockTo(hero);
 	this->displayHero(*(hero));
 	hero->init();
 	enemy->init();

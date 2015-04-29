@@ -69,7 +69,7 @@ void	Map::display(void) {
 	Elements					*elem;
 
 	for (it = this->_map.begin(); it != this->_map.end(); it++, x++) {
-		if (x == this->_width) {
+		if (x >= this->_width) {
 			x = 0;
 			y--;
 		}

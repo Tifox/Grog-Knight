@@ -122,7 +122,12 @@ void	Elements::setFrameSprite(int frame) {
 			tY2 -= fY;
 		}
 	}
-	this->SetUVs(Vector2(tX, tY), Vector2(tX2, tY2));
+	if (frame <= nbPerColumn)
+		this->SetUVs(Vector2(tX2 + 0.01, tY - 0.01), Vector2(tX - 0.01, tY2 + 0.01));
+	else if (!((frame + 2) % (int)nbPerRow))
+		this->SetUVs(Vector2(tX, tY), Vector2(tX2, tY2));
+	else
+		this->SetUVs(Vector2(tX + 0.01, tY + 0.01), Vector2(tX2 - 0.01, tY2 - 0.01));
 }
 
 //! Display an element
@@ -142,7 +147,7 @@ void	Elements::display(void) {
 		this->setFrameSprite(this->_frame - 2);
 	} else
 		this->SetColor(0, 0, 0, 0);
-	this->SetSize(1.0f);
+	this->SetSize(1.00f);
 	this->SetDrawShape(ADS_Square);
 	if (this->getAttribute("type") == "wall" || this->getAttribute("type") == "ground") {
 		this->SetDensity(0);

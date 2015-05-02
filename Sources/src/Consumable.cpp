@@ -38,7 +38,7 @@ Consumable::Consumable(void) {
 	this->addAttribute("type2", "Consumable");
 	this->addAttribute("type3", "HP");
 	this->addAttribute("value", "50");
-	this->SetSprite("Resources/Images/HUD/heart.png");
+	this->SetSprite("Resources/Images/heart.png");
 	this->SetPosition(9, -4);
 	this->InitPhysics();
 	theWorld.Add(this);
@@ -59,7 +59,7 @@ Consumable::Consumable(Characters* c) {
 	if (rand() % 2 == 1) {
 	  this->addAttribute("type3", "HP");
 	  this->addAttribute("value", "50");
-	  this->SetSprite("Resources/Images/HUD/heart.png");
+	  this->SetSprite("Resources/Images/heart.png");
 	}
 	else {
 	  this->addAttribute("type3", "gold");
@@ -75,7 +75,7 @@ Consumable::Consumable(std::string type, std::string value, Characters* c) {
 	this->addAttribute("type3", type);
 	this->addAttribute("value", value);
 	if (type == "HP")
-		this->SetSprite("Resources/Images/HUD/heart.png");
+		this->SetSprite("Resources/Images/heart.png");
 	else
 		this->SetSprite("Resources/Images/HUD/gold.png");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);

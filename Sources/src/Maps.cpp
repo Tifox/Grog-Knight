@@ -44,6 +44,25 @@ Maps::~Maps(void) {
 	return ;
 }
 
+//! Reverse strncmp
+/**
+ * strncmp, but start from the end
+ * This function is used for determinating if a file is a json or not
+ * @param str The first string
+ * @param str2 The second string
+ * @param n The number of bits of comparison
+ * @return 1 or 0, 0 if match (FREE BSD style)
+ */
+int		Maps::rstrncmp(char *str, char *str2, int n) {
+	int		i, j;
+
+	for (i = (strlen(str) - 1), j = (strlen(str2) - 1); str[i] && (i - strlen(str)) > -(n) 
+		&& str[i] == str2[j]; i--, j--);
+	if ((i - strlen(str)) == -(n))
+		return 0;
+	return 1;
+}
+
 //! Read map function
 /**
  * Read the maps into a list.
@@ -59,15 +78,18 @@ void	Maps::readMaps(void) {
 	if (!dir)
 		std::cout << "Error at opening dir" << std::endl;
 	for (; ent = readdir(dir); ) {
-		if (ent->d_name[0] != '.') {
+		if (ent->d_name[0] != '.' && !this->rstrncmp(ent->d_name, ".json", 6)) {
 			file = "./Maps/" + std::string(ent->d_name);
 			fd.open(file.c_str());
 			buffer << fd.rdbuf();
 
+			this->_root.clear();
 			if (!this->_reader.parse(buffer.str(), this->_root))
 				std::cout << this->_reader.getFormattedErrorMessages() << std::endl;
 			else
 				this->_getMap();
+			buffer.str("");
+			fd.close();
 		}
 	}
 }
@@ -107,15 +129,28 @@ void	Maps::_getMap(void) {
 		itr = this->_root["layers"][v]["data"];
 		for (index = 0; index < itr.size(); index++)
 			intMap.insert(intMap.begin() + index, itr[index].asInt());
-		map->setLayer(v);
 		map->setMap(intMap);
-		map->display();
-		this->_maps.push_back(map);
 		intMap.clear();
 	}
+	this->_maps[atoi(this->_root["properties"].get("number", 0).asString().c_str())] = map;
+	this->_root.clear();
 }
 
-//! Display the first map at the top of list
-void	Maps::firstOne(void) {
-	this->_maps.front()->display();
+//! Display an entire level
+void	Maps::displayLevel(void) {
+	int		i, x, y;
+	int		columnSize = 2;
+
+	for (i = 1, x = y = 0; i <= this->_maps.size(); i++) {
+		std::cout << i << std::endl;
+		if (i == (columnSize + 1)) {
+			x = 0;
+			y += -(this->_maps[i]->getHeight());
+		}
+		this->_maps[i]->setXStart(x);
+		this->_maps[i]->setYStart(y);
+		std::cout << x << ", " << y << std::endl;
+		this->_maps[i]->display();
+		x += this->_maps[i]->getWidth();
+	}
 }

@@ -95,8 +95,8 @@ void	Game::start(void) {
 	//levelGenerator->print();
 	//===== O temp map generation test =====
 
-	theCamera.SetPosition(13, -7);
 	this->displayHero(*(hero));
+	theCamera.LockTo(hero);
 	hero->init();
 	enemy->init();
 	enemy2->init();
@@ -120,7 +120,7 @@ void	Game::readMaps(void) {
  * @sa Maps
  */
 void	Game::showMap(void) {
-	this->maps->firstOne();
+	this->maps->displayLevel();
 }
 
 //! Display the Hero
@@ -243,7 +243,7 @@ bool	Game::destroyAllBodies(void) {
 		Game::ended = true;
 		theWorld.PausePhysics();
 		int i;
-		Game::getHUD()->setText("U DED", 500, 500, Vector3(1, 0, 0), 1);
+		Game::getHUD()->setText("U DED", 400, 400, Vector3(1, 0, 0), 1, "dead");
 		for (i = 0; i < Game::elementMap.size() - 2; i++) {
 			if (Game::elementMap[i]->getAttribute("type") != "Hero") {
 				Game::elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1, "PauseGame");

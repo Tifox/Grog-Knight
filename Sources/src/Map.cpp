@@ -52,11 +52,18 @@ void	Map::setTileHeight(int h) { this->_tileHeight = h; };
 void	Map::setTileWidth(int w) { this->_tileWidth = w; };
 void	Map::setImageHeight(int h) { this->_imageHeight = h; };
 void	Map::setImageWidth(int w) { this->_imageWidth = w; };
-void	Map::setMap(std::vector<int> map) { this->_map = map; };
 void	Map::setProperties(std::map<int, std::map<std::string, Json::Value> > p) { this->_properties = p; };
 void	Map::addElement(Elements *e) { this->_elems.push_back(e); };
-void	Map::addMapElement(int n) { this->_map[this->_mapCount++] = n; };
+void	Map::addMapElement(int n) { ; };
 void	Map::setLayer(int n) {this->_layer = n; };
+void	Map::setMap(std::vector<int> map) { this->_map.push_back(map); };
+void	Map::setXStart(int x) { this->_xStart = x; };
+void	Map::setYStart(int y) { this->_yStart = y; };
+
+/* GETTERS */
+
+int		Map::getHeight(void) { return this->_height; };
+int		Map::getWidth(void) { return this->_width; };
 
 //! Display the map
 /**
@@ -64,53 +71,57 @@ void	Map::setLayer(int n) {this->_layer = n; };
  * Lot's of stuff in this function, but the code's pretty clear, see source for more information
  */
 void	Map::display(void) {
-	float						x = 0, y = 0;
+	float						x, y;
+	std::list<std::vector <int> >::iterator		layers;
 	std::vector<int>::iterator	it;
 	Elements					*elem;
+	int							v = 0;
 
-	for (it = this->_map.begin(); it != this->_map.end(); it++, x++) {
-		if (x >= this->_width) {
-			x = 0;
-			y--;
-		}
-
-		if (*(it) != 0) {
-			elem = new Elements();
-			elem->removeAttr("physic");
-			elem->addAttribute("image", this->_image);
-			// That's fucking nasty, duknow why this is working.
-			if (*(it) == 4) {
-				elem->setFrame(5);
+	for (layers = this->_map.begin(); layers != this->_map.end(); layers++, v++) {
+		x = this->_xStart;
+		y = this->_yStart;
+		for (it = (*layers).begin(); it != (*layers).end(); it++, x++) {
+			if ((x - this->_xStart) >= this->_width) {
+				x = this->_xStart;
+				y--;
 			}
-			else
-				elem->setFrame(*(it));
-			elem->setXStart(x);
-			elem->setYStart(y);
-			elem->setCutWidth(this->_tileWidth);
-			elem->setCutHeight(this->_tileHeight);
-			elem->setWidth(this->_imageWidth);
-			elem->setHeight(this->_imageHeight);
-			elem->addAttribute("type", "ground");
-			elem->addAttribute("spriteMap", "TRUE");
-			elem->SetLayer(this->_layer);
-			if (this->_properties.find(*it) == this->_properties.end()) {
-				elem->addAttribute("physic", "TRUE");
-			} else {
-				std::map<std::string, Json::Value>::iterator	it2;
-				int												isPhysic = 1;
-
-				for (it2 = this->_properties.find(*it)->second.begin();
-						it2 != this->_properties.find(*it)->second.end(); it2++) {
-					if (it2->first == "physic") {
-						isPhysic = 0;
-					} else if (it2->first == "hitbox") {
-						elem->setHitbox(it2->second.asString());
-					}
-				}
-				if (isPhysic)
+			if (*(it) != 0) {
+				elem = new Elements();
+				elem->removeAttr("physic");
+				elem->addAttribute("image", this->_image);
+				// That's fucking nasty, duknow why this is working.
+				if (*(it) == 4) {
+					elem->setFrame(5);
+				} else
+					elem->setFrame(*(it));
+				elem->setXStart(x);
+				elem->setYStart(y);
+				elem->setCutWidth(this->_tileWidth);
+				elem->setCutHeight(this->_tileHeight);
+				elem->setWidth(this->_imageWidth);
+				elem->setHeight(this->_imageHeight);
+				elem->addAttribute("type", "ground");
+				elem->addAttribute("spriteMap", "TRUE");
+				elem->SetLayer(v);
+				if (this->_properties.find(*it) == this->_properties.end()) {
 					elem->addAttribute("physic", "TRUE");
+				} else {
+					std::map<std::string, Json::Value>::iterator	it2;
+					int												isPhysic = 1;
+
+					for (it2 = this->_properties.find(*it)->second.begin();
+							it2 != this->_properties.find(*it)->second.end(); it2++) {
+						if (it2->first == "physic") {
+							isPhysic = 0;
+						} else if (it2->first == "hitbox") {
+							elem->setHitbox(it2->second.asString());
+						}
+					}
+					if (isPhysic)
+						elem->addAttribute("physic", "TRUE");
+				}
+				elem->display();
 			}
-			elem->display();
 		}
 	}
 }

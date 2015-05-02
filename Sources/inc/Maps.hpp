@@ -51,7 +51,8 @@ class Maps {
 		~Maps();
 
 		void	readMaps(void);
-		void	firstOne(void);
+		int		rstrncmp(char *str, char *str2, int n);
+		void	displayLevel(void);
 
 	private:
 		void	_getMap(void);
@@ -59,7 +60,7 @@ class Maps {
 		std::string			_directory;
 		Json::Value			_root;
 		Json::Reader		_reader;
-		std::list<Map *>	_maps;
+		std::map<int, Map *>	_maps;
 };
 
 # include "Elements.hpp"

@@ -56,6 +56,7 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y) {
 	t->x = x;
 	t->y = y;
 	t->colorR = t->colorG = t->colorB = t->colorA = 1;
+	t->font = "Gamefont";
 	this->_text.push_back(t);
 	return t;
 }
@@ -78,11 +79,12 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 colo
 	t->colorG = color.Y;
 	t->colorB = color.Z;
 	t->colorA = alpha;
+	t->font = "Gamefont";
 	this->_text.push_back(t);
 	return t;
 }
 
-/*//! Set text function*/
+//! Set text function
 /**
  * Set a text in the window
  * @param str The text message
@@ -90,20 +92,21 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 colo
  * @param y Y position
  * @param color The color of the text (See Angel2d's Vector3 for more info)
  * @param alpha The transparency.
- * @param size The size of the text
+ * @param font The font name
  */
-//HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 color, int alpha, float size) {
-	//HUDWindow::Text		*t = new HUDWindow::Text();
-	//t->str = str;
-	//t->x = x;
-	//t->y = y;
-	//t->colorR = color.X;
-	//t->colorG = color.Y;
-	//t->colorB = color.Z;
-	//t->colorA = alpha;
-	//this->_text.push_back(t);
-	//return t;
-/*}*/
+HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 color, int alpha, std::string font) {
+	HUDWindow::Text		*t = new HUDWindow::Text();
+	t->str = str;
+	t->x = x;
+	t->y = y;
+	t->colorR = color.X;
+	t->colorG = color.Y;
+	t->colorB = color.Z;
+	t->colorA = alpha;
+	t->font = font;
+	this->_text.push_back(t);
+	return t;
+}
 
 //! Remove Text
 /**
@@ -147,7 +150,7 @@ void	HUDWindow::displayText(void) {
 
 	for (i = this->_text.begin(); i != this->_text.end(); i++) {
 		glColor4f((*i)->colorR, (*i)->colorG, (*i)->colorB, (*i)->colorA);
-		DrawGameText((*i)->str, "dead", (*i)->x, (*i)->y, theCamera.GetRotation());
+		DrawGameText((*i)->str, (*i)->font, (*i)->x, (*i)->y, theCamera.GetRotation());
 	}
 }
 

@@ -83,6 +83,26 @@
                 {
                  "physic":"0"
                 },
+             "30":
+                {
+                 "hitbox":"spikes",
+                 "type":"spikes"
+                },
+             "31":
+                {
+                 "hitbox":"spikes",
+                 "type":"spikes"
+                },
+             "38":
+                {
+                 "hitbox":"spikes",
+                 "type":"spikes"
+                },
+             "39":
+                {
+                 "hitbox":"spikes",
+                 "type":"spikes"
+                },
              "4":
                 {
                  "physic":"0"

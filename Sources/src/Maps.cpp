@@ -142,15 +142,15 @@ void	Maps::displayLevel(void) {
 	int		columnSize = 2;
 
 	for (i = 1, x = y = 0; i <= this->_maps.size(); i++) {
-		std::cout << i << std::endl;
 		if (i == (columnSize + 1)) {
 			x = 0;
 			y += -(this->_maps[i]->getHeight());
 		}
 		this->_maps[i]->setXStart(x);
 		this->_maps[i]->setYStart(y);
-		std::cout << x << ", " << y << std::endl;
 		this->_maps[i]->display();
 		x += this->_maps[i]->getWidth();
 	}
+	Game::maxX = x;
+	Game::maxY = y;
 }

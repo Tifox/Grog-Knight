@@ -129,7 +129,7 @@ void	Game::showMap(void) {
  * @param Hero The Hero Object
  */
 void	Game::displayHero(Elements & Hero) {
-	Hero.setXStart(4);
+	Hero.setXStart(15);
 	Hero.setYStart(-8);
 	Hero.addAttribute("hero", "1");
 	Hero.display();
@@ -243,9 +243,9 @@ bool	Game::destroyAllBodies(void) {
 		Game::ended = true;
 		theWorld.PausePhysics();
 		int i;
-		Game::getHUD()->setText("U DED", 400, 400, Vector3(1, 0, 0), 1, "dead");
+		Game::getHUD()->setText("YOU ARE DEAD", 400, 400, Vector3(1, 0, 0), 1, "dead");
 		for (i = 0; i < Game::elementMap.size() - 2; i++) {
-			if (Game::elementMap[i]->getAttribute("type") != "Hero") {
+			if (Game::elementMap[i] && Game::elementMap[i]->getAttribute("type") != "Hero") {
 				Game::elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1, "PauseGame");
 				if (Game::elementMap[i]->getAttribute("physic") != "")
 					theWorld.GetPhysicsWorld().DestroyBody((Game::elementMap[i])->GetBody());
@@ -394,3 +394,5 @@ WeaponList*					Game::wList;
 Hitbox*						Game::hList;
 bool						Game::endGame = false;
 bool						Game::ended = false;
+int							Game::maxX = 0;
+int							Game::maxY = 0;

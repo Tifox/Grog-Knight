@@ -64,7 +64,7 @@ Consumable::Consumable(Characters* c) {
 	else {
 	  this->addAttribute("type3", "gold");
 	  this->addAttribute("value", "50");
-	  this->SetSprite("Resources/Images/HUD/gold.png");
+	  this->SetSprite("Resources/Images/gold.png");
 	}
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	Game::bodiesToCreate.push_back(this);
@@ -84,9 +84,8 @@ Consumable::Consumable(std::string type, std::string value, Characters* c) {
 	this->addAttribute("value", value);
 	if (type == "HP")
 		this->SetSprite("Resources/Images/heart.png");
-	else {
-		this->SetSprite("Resources/Images/HUD/gold.png");
-	}
+	else
+		this->SetSprite("Resources/Images/gold.png");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	Game::bodiesToCreate.push_back(this);
 }

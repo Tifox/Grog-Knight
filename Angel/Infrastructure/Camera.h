@@ -288,7 +288,6 @@ public:
 	 */
 	const Vector3& GetViewCenter() const;
 
-	const Vector3& GetPosition(void) const;
 	Actor	*getLockTo(void);
 	
 	/**

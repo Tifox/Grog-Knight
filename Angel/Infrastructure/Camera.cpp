@@ -287,8 +287,3 @@ const Vector3& Camera::GetViewCenter() const
 {
 	return _view;
 }
-
-const Vector3& Camera::GetPosition(void) const {
-	return _camera3DPosition;
-}
-

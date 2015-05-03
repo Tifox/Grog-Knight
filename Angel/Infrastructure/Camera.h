@@ -287,6 +287,9 @@ public:
 	 * @return The point where the Camera is currently looking. 
 	 */
 	const Vector3& GetViewCenter() const;
+
+	const Vector3& GetPosition(void) const;
+	Actor	*getLockTo(void);
 	
 	/**
 	 * Used by the SetName function to create a basename for this class. 

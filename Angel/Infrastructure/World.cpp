@@ -665,7 +665,6 @@ void World::Render()
 {
 	// Setup the camera matrix.
 	theCamera.Render();
-
 	DrawRenderables();
 
 	// Give the GameManager a chance to draw something.

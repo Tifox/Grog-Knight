@@ -96,6 +96,8 @@ class Game {
 		static std::list<HUDWindow *>	windows;
 		static WeaponList*				wList;
 		static Hitbox*					hList;
+		static int						maxX;
+		static int						maxY;
 
 	private:
 		float		beginXHero;

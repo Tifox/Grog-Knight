@@ -28,10 +28,12 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+
+#include "../Infrastructure/World.h"
 #include "../Infrastructure/Camera.h"
 
+#include "../../Sources/inc/Game.hpp"
 #include "../Infrastructure/Common.h"
-#include "../Infrastructure/World.h"
 #include "../Util/MathUtil.h"
 #include "../Messaging/Switchboard.h"
 
@@ -87,6 +89,8 @@ void Camera::LockTo(Actor *locked, bool lockX, bool lockY, bool lockRotation)
 	_lockRotation = lockRotation;
 }
 
+Actor	*Camera::getLockTo(void) { return this->_locked; };
+
 void Camera::Resize(int width, int height)
 {
 	if ( (_windowHeight != height) || (_windowWidth != width) ) 
@@ -140,13 +144,13 @@ void Camera::Update(float dt)
 	{
 		bool change = false;
 		Vector2 pos = _locked->GetPosition();
-		if (_lockX && !MathUtil::FuzzyEquals(_camera3DPosition.X, pos.X))
+		if ((pos.X - 13.5) > 0 && (pos.X + 14.5) < Game::maxX && _lockX && !MathUtil::FuzzyEquals(_camera3DPosition.X, pos.X))
 		{
 			_camera3DPosition.X = pos.X;
 			_position.X = pos.X;
 			change = true;
 		}
-		if (_lockY && !MathUtil::FuzzyEquals(_camera3DPosition.Y, pos.Y))
+		if ((pos.Y - 5) < -11.5 && (pos.Y + 5.5) > Game::maxY  && _lockY && !MathUtil::FuzzyEquals(_camera3DPosition.Y, pos.Y))
 		{
 			_camera3DPosition.Y = pos.Y;
 			_position.Y = pos.Y;
@@ -282,5 +286,9 @@ void Camera::SetViewCenter(float x, float y, float z)
 const Vector3& Camera::GetViewCenter() const
 {
 	return _view;
+}
+
+const Vector3& Camera::GetPosition(void) const {
+	return _camera3DPosition;
 }
 

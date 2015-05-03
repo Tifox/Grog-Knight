@@ -151,4 +151,6 @@ void	Maps::displayLevel(void) {
 		this->_maps[i]->display();
 		x += this->_maps[i]->getWidth();
 	}
+	Game::maxX = x;
+	Game::maxY = y;
 }

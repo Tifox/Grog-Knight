@@ -55,27 +55,7 @@
                 {
                  "physic":"0"
                 },
-             "1":
-                {
-                 "physic":"0"
-                },
-             "10":
-                {
-                 "physic":"0"
-                },
              "11":
-                {
-                 "physic":"0"
-                },
-             "12":
-                {
-                 "physic":"0"
-                },
-             "13":
-                {
-                 "physic":"0"
-                },
-             "2":
                 {
                  "physic":"0"
                 },
@@ -85,27 +65,23 @@
                 },
              "30":
                 {
-                 "hitbox":"spikes",
-                 "type":"spikes"
+                 "hitbox":"spikeDown",
+                 "speType":"spikes"
                 },
              "31":
                 {
-                 "hitbox":"spikes",
-                 "type":"spikes"
+                 "hitbox":"spikeDown",
+                 "speType":"spikes"
                 },
              "38":
                 {
-                 "hitbox":"spikes",
-                 "type":"spikes"
+                 "hitbox":"spikeDown",
+                 "speType":"spikes"
                 },
              "39":
                 {
-                 "hitbox":"spikes",
-                 "type":"spikes"
-                },
-             "4":
-                {
-                 "physic":"0"
+                 "hitbox":"spikeDown",
+                 "speType":"spikes"
                 },
              "42":
                 {

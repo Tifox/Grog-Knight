@@ -115,9 +115,11 @@ void	Map::display(void) {
 							isPhysic = 0;
 						} else if (it2->first == "hitbox") {
 							elem->setHitbox(it2->second.asString());
+						} else {
+							elem->addAttribute(it2->first, it2->second.asString());
 						}
 					}
-					if (isPhysic)
+					if (isPhysic == 1)
 						elem->addAttribute("physic", "TRUE");
 				}
 				elem->display();

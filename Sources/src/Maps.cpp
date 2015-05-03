@@ -121,7 +121,7 @@ void	Maps::_getMap(void) {
 		vtr = itr[index].get("tileproperties", "");
 		for (j = vtr.begin(); j != vtr.end(); j++) {
 			for (k = (*j).begin(); k != (*j).end(); k++)
-				tileproperties[atoi(j.key().asString().c_str())][k.key().asString()] = *k;
+				tileproperties[atoi(j.key().asString().c_str()) + 1][k.key().asString()] = *k;
 		}
 	}
 	map->setProperties(tileproperties);

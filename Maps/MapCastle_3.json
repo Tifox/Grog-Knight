@@ -81,23 +81,23 @@
                 },
              "30":
                 {
-                 "hitbox":"spikes",
-                 "type":"spikes"
+                 "hitbox":"spikeDown",
+                 "speType":"spikes"
                 },
              "31":
                 {
-                 "hitbox":"spikes",
-                 "type":"spikes"
+                 "hitbox":"spikeDown",
+                 "speType":"spikes"
                 },
              "38":
                 {
-                 "hitbox":"spikes",
-                 "type":"spikes"
+                 "hitbox":"spikeDown",
+                 "speType":"spikes"
                 },
              "39":
                 {
-                 "hitbox":"spikes",
-                 "type":"spikes"
+                 "hitbox":"spikeDown",
+                 "speType":"spikes"
                 },
              "4":
                 {

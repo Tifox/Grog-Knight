@@ -119,7 +119,7 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 			this->_item = elem;
 		}
 	}
-	else if (elem->getAttribute("type") == "ground" && elem->getAttribute("type2") == "spikes")
+	else if (elem->getAttribute("type") == "ground" && elem->getAttribute("speType") == "spikes")
 	  this->_takeDamage(elem);
 }
 

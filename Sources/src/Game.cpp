@@ -245,7 +245,7 @@ bool	Game::destroyAllBodies(void) {
 		int i;
 		Game::getHUD()->setText("U DED", 400, 400, Vector3(1, 0, 0), 1, "dead");
 		for (i = 0; i < Game::elementMap.size() - 2; i++) {
-			if (Game::elementMap[i]->getAttribute("type") != "Hero") {
+			if (Game::elementMap[i] && Game::elementMap[i]->getAttribute("type") != "Hero") {
 				Game::elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1, "PauseGame");
 				if (Game::elementMap[i]->getAttribute("physic") != "")
 					theWorld.GetPhysicsWorld().DestroyBody((Game::elementMap[i])->GetBody());

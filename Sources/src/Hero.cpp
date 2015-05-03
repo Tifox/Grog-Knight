@@ -104,50 +104,20 @@ void	Hero::actionCallback(std::string name, int status) {
 void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 	Characters::BeginContact(elem, contact);
 	if (elem->getAttributes()["type"] == "Enemy" && elem->isDead() == false) {
-		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-		Game::stopRunning(this);
-		this->_isRunning = 0;
-		this->_isJump = 1;
-		this->changeSizeTo(Vector2(1, 1));
-		if (this->_invincibility == false) {
-			this->changeCanMove();
-			this->setHP(this->getHP() - 25);
-			theSwitchboard.DeferredBroadcast(new Message("canMove"), 0.5f);
-			theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1);
-			Game::getHUD()->life(this->getHP());
-		}
-		if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
-			this->ApplyLinearImpulse(Vector2(4, 4), Vector2(0, 0));
-			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-									  this->_getAttr("takeDamage", "beginFrame_left").asInt(),
-									  this->_getAttr("takeDamage", "endFrame_left").asInt(),
-									  "takeDamage");
-		}
-		else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x) {
-			this->ApplyLinearImpulse(Vector2(-4, 4), Vector2(0, 0));
-			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-									  this->_getAttr("takeDamage", "beginFrame_right").asInt(),
-									  this->_getAttr("takeDamage", "endFrame_right").asInt(),
-									  "takeDamage");
-		}
-		this->SetColor(1,0,0,0.8f);
-		theSwitchboard.SubscribeTo(this, "colorDamageBlink1");
-		theSwitchboard.SubscribeTo(this, "colorDamageBlink2");
-		theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
-		this->_invincibility = true;
+	  this->_takeDamage(elem);
 	}
 	else if (elem->getAttributes()["type"] == "Object") {
 		if (elem->getAttributes()["type2"] == "Consumable") {
 			if (elem->getAttributes()["type3"] == "HP") {
 				if (this->_hp != this->_maxHp) {
 					Game::addToDestroyList(elem);
-					this->setHP(this->getHP() + 25);
+					this->setHP(this->getHP() + stoi(elem->getAttribute("value")));
 					Game::getHUD()->life(this->getHP());
 				}
 			}
 			if (elem->getAttributes()["type3"] == "gold") {
 				Game::addToDestroyList(elem);
-				this->_gold += 40;
+				this->_gold += stoi(elem->getAttribute("value"));
 				Game::getHUD()->updateGold(this->getGold());
 			}
 		}
@@ -155,6 +125,8 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 			this->_item = elem;
 		}
 	}
+	else if (elem->getAttribute("type") == "ground" && elem->getAttribute("type2") == "spikes")
+	  this->_takeDamage(elem);
 }
 
 //! End collision function
@@ -171,4 +143,43 @@ void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 			this->_item = nullptr;
 		}
 	}
+}
+
+//! Function called when the hero is taking damage
+/**
+ * Called by BeginContact mostly 
+ * @param the elem that has damaged hero
+ */
+void	Hero::_takeDamage(Elements* elem) {
+  this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+  Game::stopRunning(this);
+  this->_isRunning = 0;
+  this->_isJump = 1;
+  this->changeSizeTo(Vector2(1, 1));
+  if (this->_invincibility == false) {
+	this->changeCanMove();
+	this->setHP(this->getHP() - 25);
+	theSwitchboard.DeferredBroadcast(new Message("canMove"), 0.5f);
+	theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1);
+	Game::getHUD()->life(this->getHP());
+  }
+  if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
+	this->ApplyLinearImpulse(Vector2(4, 4), Vector2(0, 0));
+	this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
+							  this->_getAttr("takeDamage", "beginFrame_left").asInt(),
+							  this->_getAttr("takeDamage", "endFrame_left").asInt(),
+							  "takeDamage");
+  }
+  else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x) {
+	this->ApplyLinearImpulse(Vector2(-4, 4), Vector2(0, 0));
+	this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
+							  this->_getAttr("takeDamage", "beginFrame_right").asInt(),
+							  this->_getAttr("takeDamage", "endFrame_right").asInt(),
+							  "takeDamage");
+  }
+  this->SetColor(1,0,0,0.8f);
+  theSwitchboard.SubscribeTo(this, "colorDamageBlink1");
+  theSwitchboard.SubscribeTo(this, "colorDamageBlink2");
+  theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
+  this->_invincibility = true;
 }

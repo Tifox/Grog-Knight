@@ -70,14 +70,23 @@ Consumable::Consumable(Characters* c) {
 	Game::bodiesToCreate.push_back(this);
 }
 
+//! Third override, used to create consumable based on a Characters* position)
+/**
+ * Mostly called for looting, after the death of a mob
+ * @param type - gold/hp
+ * @param value - how much
+ * @param c - the Character, for the position and such
+ */
+
 Consumable::Consumable(std::string type, std::string value, Characters* c) {
 	this->addAttribute("type2", "Consumable");
 	this->addAttribute("type3", type);
 	this->addAttribute("value", value);
 	if (type == "HP")
 		this->SetSprite("Resources/Images/heart.png");
-	else
+	else {
 		this->SetSprite("Resources/Images/HUD/gold.png");
+	}
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	Game::bodiesToCreate.push_back(this);
 }

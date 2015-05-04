@@ -52,6 +52,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_item = nullptr;
 	this->_isAttacking = 0;
 	this->_gold = 0;
+	this->SetLayer(100);
 }
 
 //! Basic destructor
@@ -269,9 +270,9 @@ void	Characters::ReceiveMessage(Message *m) {
 void	Characters::AnimCallback(String s) {
 	this->_setCategory("breath");
 	if (s == "base") {
-		this->changeSizeTo(Vector2(1, 1));
 		this->_isAttacking = 0;
-		if (this->_isRunning == 0) {
+		this->changeSizeTo(Vector2(1, 1));
+		if (this->_isRunning == 0 && this->_isAttacking == 0) {
 			if (this->_latOrientation == LEFT) {
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 				this->_getAttr("beginFrame_left").asInt(),
@@ -308,6 +309,8 @@ void	Characters::AnimCallback(String s) {
  */
 void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "ground") {
+		if (this->_isAttacking == 0)
+			this->changeSizeTo(Vector2(1, 1));
 		if (this->GetBody()->GetWorldCenter().y - 0.905 >= elem->GetBody()->GetWorldCenter().y) {
 			if (this->_grounds.size() > 0)
 				contact->SetEnabled(false);

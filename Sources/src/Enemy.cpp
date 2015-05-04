@@ -43,8 +43,8 @@ Enemy::Enemy(std::string str) : Characters(str) {
 	this->setXStart(13);
 	this->setYStart(-3);
 	this->SetName("Enemy");
-		theSwitchboard.SubscribeTo(this, "startPathing" + this->GetName());
-		theSwitchboard.DeferredBroadcast(new Message("startPathing" + this->GetName()), 0.2f);
+	theSwitchboard.SubscribeTo(this, "startPathing" + this->GetName());
+	theSwitchboard.DeferredBroadcast(new Message("startPathing" + this->GetName()), 0.2f);
 	if (str == "Enemy") {
 		this->setXStart(5);
 		this->setYStart(-5);
@@ -133,11 +133,18 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 		}
 		this->actionCallback("heroHit", 0);
 	}
-	else if (m->getAttributes()["type"] == "Enemy") {
+	else if (m->getAttribute("type") == "Enemy") {
 		if (this->_orientation == LEFT)
 			this->_orientation = RIGHT;
 		else
 			this->_orientation = LEFT;
+	}
+	else if (m->getAttribute("speType") == "spikes") {
+		if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
+			this->ApplyLinearImpulse(Vector2(5, 5), Vector2(0,0));
+		} else {
+			this->ApplyLinearImpulse(Vector2(-5, 5), Vector2(0,0));
+		}
 	}
 }
 
@@ -160,10 +167,10 @@ int		Enemy::takeDamage(int damage) {
 		this->GetBody()->SetGravityScale(0);
 		this->LoadSpriteFrames(this->_getAttr("newSprites").asString());
 		this->changeSizeTo(Vector2(this->_getAttr("size").asInt(),
-								   this->_getAttr("size").asInt()));
+					this->_getAttr("size").asInt()));
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-								  this->_getAttr("beginFrame").asInt(),
-								  this->_getAttr("endFrame").asInt());
+				this->_getAttr("beginFrame").asInt(),
+				this->_getAttr("endFrame").asInt());
 		theSwitchboard.SubscribeTo(this, "destroyEnemy");
 		theSwitchboard.DeferredBroadcast(new Message("destroyEnemy"), 0.5);
 		theSwitchboard.UnsubscribeFrom(this, "startPathing" + this->GetName());

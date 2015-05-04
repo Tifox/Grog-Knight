@@ -97,30 +97,39 @@ void	Hero::actionCallback(std::string name, int status) {
  */
 void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 	Characters::BeginContact(elem, contact);
-	if (elem->getAttributes()["type"] == "Enemy" && elem->isDead() == false) {
-	  this->_takeDamage(elem);
+	if (elem->getAttribute("type") == "Enemy" && elem->isDead() == false) {
+		if (this->_invincibility == false)
+			this->_takeDamage(elem);
+		else {
+			this->_enemiesTouched.push_back(elem);
+		}
 	}
-	else if (elem->getAttributes()["type"] == "Object") {
-		if (elem->getAttributes()["type2"] == "Consumable") {
-			if (elem->getAttributes()["type3"] == "HP") {
+	else if (elem->getAttribute("type") == "Object") {
+		if (elem->getAttribute("type2") == "Consumable") {
+			if (elem->getAttribute("type3") == "HP") {
 				if (this->_hp != this->_maxHp) {
 					Game::addToDestroyList(elem);
 					this->setHP(this->getHP() + stoi(elem->getAttribute("value")));
 					Game::getHUD()->life(this->getHP());
 				}
 			}
-			if (elem->getAttributes()["type3"] == "gold") {
+			if (elem->getAttribute("type3") == "gold") {
 				Game::addToDestroyList(elem);
 				this->_gold += stoi(elem->getAttribute("value"));
 				Game::getHUD()->updateGold(this->getGold());
 			}
 		}
-		else if (elem->getAttributes()["type2"] == "Equipment") {
+		else if (elem->getAttribute("type2") == "Equipment") {
 			this->_item = elem;
 		}
 	}
-	else if (elem->getAttribute("type") == "ground" && elem->getAttribute("speType") == "spikes")
-	  this->_takeDamage(elem);
+	if (elem->getAttribute("type") == "ground" &&
+		elem->getAttribute("speType") == "spikes") {
+		if (this->_invincibility == false)
+			this->_takeDamage(elem);
+		else
+			this->_enemiesTouched.push_back(elem);
+	}
 }
 
 //! End collision function
@@ -132,10 +141,14 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
  */
 void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 	Characters::EndContact(elem, contact);
-	if (elem->getAttributes()["type"] == "Object") {
+	if (elem->getAttribute("type") == "Object") {
 		if (elem->getAttributes()["type2"] == "Equipment") {
 			this->_item = nullptr;
 		}
+	}
+	if (elem->getAttribute("type") == "Enemy" ||
+		elem->getAttribute("speType") == "spikes") {
+		this->_enemiesTouched.remove(elem);
 	}
 }
 
@@ -153,8 +166,8 @@ void	Hero::_takeDamage(Elements* elem) {
   if (this->_invincibility == false) {
 	this->changeCanMove();
 	this->setHP(this->getHP() - 25);
-	theSwitchboard.DeferredBroadcast(new Message("canMove"), 0.5f);
-	theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1);
+	theSwitchboard.DeferredBroadcast(new Message("canMove"), 0.4f);
+	theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1.5f);
 	Game::getHUD()->life(this->getHP());
   }
   if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {

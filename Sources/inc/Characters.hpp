@@ -98,6 +98,7 @@ class Characters : public Elements {
 		Characters::Orientation				_orientation;
 		Characters::Orientation				_latOrientation;
 		std::list<Elements*>				_grounds;
+		std::list<Elements*>				_enemiesTouched;
 		std::list<Elements*> 				_wallsLeft;
 		std::list<Elements*> 				_walls;
 		std::list<Elements*> 				_wallsRight;

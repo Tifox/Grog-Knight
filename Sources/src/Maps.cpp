@@ -47,7 +47,7 @@ Maps::~Maps(void) {
 //! Reverse strncmp
 /**
  * strncmp, but start from the end
- * This function is used for determinating if a file is a json or not
+ * This function is used to determine whether a file is a json or not
  * @param str The first string
  * @param str2 The second string
  * @param n The number of bits of comparison

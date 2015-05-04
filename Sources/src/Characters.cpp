@@ -187,6 +187,10 @@ void	Characters::ReceiveMessage(Message *m) {
 		theSwitchboard.UnsubscribeFrom(this, "colorDamageBlink1");
 		theSwitchboard.UnsubscribeFrom(this, "colorDamageBlink2");
 		this->_invincibility = false;
+		if (this->_enemiesTouched.size() > 0) {
+			static_cast<Hero*>(this)->_takeDamage(this->_enemiesTouched.front());
+			this->_enemiesTouched.clear();
+		}
 		this->SetColor(1,1,1,1);
 	}
 	else if (m->GetMessageName() == "colorDamageBlink1") {
@@ -198,7 +202,7 @@ void	Characters::ReceiveMessage(Message *m) {
 	else if (m->GetMessageName() == "colorDamageBlink2") {
 		if (this->_invincibility == true) {
 			theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
-			//	this->SetColor(1,0,0,0.9f);
+			this->SetColor(1,0,0,0.9f);
 		}
 	}
 	else if (m->GetMessageName() == "enableAttackHitbox") {

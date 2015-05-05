@@ -153,7 +153,7 @@ void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 
 //! Function called when the hero is taking damage
 /**
- * Called by BeginContact mostly 
+ * Called by BeginContact mostly
  * @param the elem that has damaged hero
  */
 void	Hero::_takeDamage(Elements* elem) {

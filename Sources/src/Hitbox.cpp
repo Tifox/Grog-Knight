@@ -43,7 +43,6 @@ Hitbox::Hitbox(void) {
 		if (dirEntry && strcmp(dirEntry->d_name, ".") && strcmp(dirEntry->d_name, "..")) {
 			iss.str(dirEntry->d_name);
 			std::getline(iss, res, '.');
-			Log::info("Parsing " + res + " hitbox");
 			this->_hitboxes[res] = this->_getPolygon(res);
 		}
 	}

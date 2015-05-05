@@ -75,6 +75,7 @@ void	Maps::readMaps(void) {
 	std::stringstream 	buffer;
 	std::ifstream		fd;
 
+	Log::info("Reading Maps...");
 	if (!dir)
 		std::cout << "Error at opening dir" << std::endl;
 	for (; ent = readdir(dir); ) {

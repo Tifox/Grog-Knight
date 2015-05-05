@@ -150,7 +150,6 @@ void Controller::Setup()
 		}
 		else
 		{
-			sysLog.Printf("Controller %d not present...", _controllerID+1);
 			ZeroMemory( &_currentControllerRawState, sizeof(XINPUT_STATE));
 			_currentControllerInput.LeftThumbstickX = 
 			_currentControllerInput.LeftThumbstickY =
@@ -210,7 +209,6 @@ void Controller::Setup()
 		}
 		if (_device == NULL)
 		{
-			sysLog.Printf("Controller %d not present...", _controllerID+1);
 			_connected = false;
 		}
 		else
@@ -239,7 +237,6 @@ void Controller::Setup()
 		_deviceFD = open(devicePath, O_RDONLY | O_NONBLOCK);
 		if (_deviceFD < 0)
 		{
-			sysLog.Printf("Controller %d not present...", _controllerID+1);
 			_connected = false;
 		}
 		else
@@ -290,7 +287,6 @@ void Controller::Setup()
 		}
 		if (_ffFD < 0)
 		{
-			sysLog.Printf("Error opening Force Feedback device for controller %d!", _controllerID+1);
 		}
 		else
 		{

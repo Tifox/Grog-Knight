@@ -49,8 +49,8 @@ class MouseDebugger: public MouseListener {
 };
 
 int		main(int ac, char **av) {
-	if (ac > 1 && (std::string(av[1]) == "--no-debug")) {
-		Log::setLog(0);
+	if (ac > 1 && (std::string(av[1]) == "--debug")) {
+		Log::setLog(1);
 	}
 
 	Game	*game = new Game();

@@ -40,8 +40,6 @@ Game::Game(void) : _hero(*(new Characters())) {
 	#endif
 	theWorld.SetupPhysics(Vector2(0, -20));
 	GameContactListener *gListen = new GameContactListener();
-//	ContactFilter *filter = new ContactFilter();
-//	theWorld.GetPhysicsWorld().SetContactFilter(filter);
 	theWorld.GetPhysicsWorld().SetContactListener(gListen);
 	this->maps = new Maps("Maps/");
 	return ;
@@ -56,8 +54,6 @@ Game::Game(unsigned int width, unsigned int height) : _hero(*(new Characters()))
 	theWorld.Initialize(width, height, NAME);
 	theWorld.SetupPhysics();
 	GameContactListener *gListen = new GameContactListener();
-//	ContactFilter *filter = new ContactFilter();
-//	theWorld.GetPhysicsWorld().SetContactFilter(filter);
 	theWorld.GetPhysicsWorld().SetContactListener(gListen);
 	this->maps = new Maps("Maps/");
 }
@@ -96,7 +92,7 @@ void	Game::start(void) {
 	//===== O temp map generation test =====
 
 	this->displayHero(*(hero));
-	//theCamera.SetPosition(0, 0, 6.75f);
+	theCamera.SetPosition(0, 0, 9.5);
 	theCamera.LockTo(hero);
 	hero->init();
 	enemy->init();

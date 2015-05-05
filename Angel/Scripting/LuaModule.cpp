@@ -87,7 +87,6 @@ void LuaScriptingModule::Initialize()
 	isInitialized = !result;
 	if (isInitialized)
 	{
-		sysLog.Log("Lua initialized!");
 	}
 	else 
 	{

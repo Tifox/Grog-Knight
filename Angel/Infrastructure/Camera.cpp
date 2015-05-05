@@ -144,13 +144,13 @@ void Camera::Update(float dt)
 	{
 		bool change = false;
 		Vector2 pos = _locked->GetPosition();
-		if ((pos.X - 13.5) > 0 && (pos.X + 14.5) < Game::maxX && _lockX && !MathUtil::FuzzyEquals(_camera3DPosition.X, pos.X))
+		if ((pos.X - 13) > 0 && (pos.X + 14.3) < Game::maxX && _lockX && !MathUtil::FuzzyEquals(_camera3DPosition.X, pos.X))
 		{
 			_camera3DPosition.X = pos.X;
 			_position.X = pos.X;
 			change = true;
 		}
-		if ((pos.Y - 5) < -11.5 && (pos.Y + 5.5) > Game::maxY  && _lockY && !MathUtil::FuzzyEquals(_camera3DPosition.Y, pos.Y))
+		if ((pos.Y - 5.2) < -11.5 && (pos.Y + 6.2) > Game::maxY  && _lockY && !MathUtil::FuzzyEquals(_camera3DPosition.Y, pos.Y))
 		{
 			_camera3DPosition.Y = pos.Y;
 			_position.Y = pos.Y;

@@ -81,4 +81,4 @@ void	Log::setLog(int n) {
 	std::cout << "Setting Log at " << n << std::endl;
 }
 
-int Log::isLog = 1;
+int Log::isLog = 0;

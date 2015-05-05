@@ -67,6 +67,7 @@ SRCS =	./Sources/src/Elements.cpp \
 		./Sources/src/Room.cpp \
 		./Sources/src/LevelGenerator.cpp \
 		./Sources/src/Loot.cpp \
+		./Sources/src/EnemyList.cpp \
 		./Sources/src/Enemy.cpp \
 		./Sources/src/GameContactListener.cpp \
 		./Sources/src/ContactFilter.cpp \

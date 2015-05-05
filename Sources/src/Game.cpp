@@ -82,12 +82,13 @@ void	Game::grid(void) {
 void	Game::start(void) {
 	theWorld.SetBackgroundColor(*(new Color(0, 0, 0)));
 	Game::wList = new WeaponList();
+	Game::eList = new EnemyList();
 	this->showMap();
 
 	Consumable		*lol = new Consumable();
 	Hero			*hero = new Hero();
-	Enemy			*enemy = new Enemy("Enemy");
-	Enemy			*enemy2 = new Enemy("Enemy2");
+	Enemy			*enemy = new Enemy("Enemies/Enemy");
+	Enemy			*enemy2 = new Enemy("Enemies/Enemy2");
 
 	//===== I temp map generation test =====
 	//LevelGenerator *levelGenerator = new LevelGenerator(6, 6, 5, 60, 80);
@@ -392,6 +393,7 @@ std::list<Elements *>		Game::bodiesToDestroy;
 std::list<Elements *>		Game::bodiesToCreate;
 std::list<HUDWindow *>		Game::windows;
 WeaponList*					Game::wList;
+EnemyList*					Game::eList;
 Hitbox*						Game::hList;
 bool						Game::endGame = false;
 bool						Game::ended = false;

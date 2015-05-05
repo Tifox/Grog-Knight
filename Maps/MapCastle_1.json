@@ -65,22 +65,22 @@
                 },
              "30":
                 {
-                 "hitbox":"spikeDownHitbox",
+                 "hitbox":"lowerHalfHitbox",
                  "speType":"spikes"
                 },
              "31":
                 {
-                 "hitbox":"spikeDownHitbox",
+                 "hitbox":"lowerHalfHitbox",
                  "speType":"spikes"
                 },
              "38":
                 {
-                 "hitbox":"spikeDownHitbox",
+                 "hitbox":"lowerHalfHitbox",
                  "speType":"spikes"
                 },
              "39":
                 {
-                 "hitbox":"spikeDownHitbox",
+                 "hitbox":"lowerHalfHitbox",
                  "speType":"spikes"
                 },
              "42":

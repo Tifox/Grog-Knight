@@ -90,10 +90,7 @@ void	Map::display(void) {
 				elem->removeAttr("physic");
 				elem->addAttribute("image", this->_image);
 				// That's fucking nasty, duknow why this is working.
-				if (*(it) == 4) {
-					elem->setFrame(5);
-				} else
-					elem->setFrame(*(it));
+				elem->setFrame(*(it));
 				elem->setXStart(x);
 				elem->setYStart(y);
 				elem->setCutWidth(this->_tileWidth);

@@ -109,8 +109,8 @@ void	Elements::setFrameSprite(int frame) {
 	float fX = (1.0f / float(imgWidth)) * float(cutWidth);
 	int	i;
 	float tY = 1.0f - fY;
-	float tX = fX;
-	float tX2 = 0.0f;
+	float tX = 0.0f;
+	float tX2 = fX;
 	float tY2 = 1.0f;
 	for (i = 0; i < frame; i++) {
 		tX += fX;
@@ -122,10 +122,8 @@ void	Elements::setFrameSprite(int frame) {
 			tY2 -= fY;
 		}
 	}
-	if (frame <= nbPerColumn)
-		this->SetUVs(Vector2(tX2 + 0.01, tY - 0.01), Vector2(tX - 0.01, tY2 + 0.01));
-	else if (!((frame + 2) % (int)nbPerRow))
-		this->SetUVs(Vector2(tX, tY), Vector2(tX2, tY2));
+   if (frame < nbPerColumn)
+		this->SetUVs(Vector2(tX + 0.01, tY + 0.01), Vector2(tX2 - 0.01, tY2 - 0.01));
 	else
 		this->SetUVs(Vector2(tX + 0.01, tY + 0.01), Vector2(tX2 - 0.01, tY2 - 0.01));
 }
@@ -133,7 +131,7 @@ void	Elements::setFrameSprite(int frame) {
 //! Display an element
 /**
  * Load physics on element, and add him to the World.
- * @fixme This function is quite nasty, maybe a rework on it should be better.
+ * @todo This function is quite nasty, maybe a rework on it should be better.
  */
 void	Elements::display(void) {
 	this->SetPosition(this->_XStartPos, this->_YStartPos);
@@ -144,7 +142,7 @@ void	Elements::display(void) {
 		this->LoadSpriteFrames(this->getAttribute("spritesFrame"));
 	} else if (this->getAttribute("spriteMap") != "") {
 		this->SetSprite(this->getAttribute("image"));
-		this->setFrameSprite(this->_frame - 2);
+		this->setFrameSprite(this->_frame - 1);
 	} else
 		this->SetColor(0, 0, 0, 0);
 	this->SetSize(1.00f);

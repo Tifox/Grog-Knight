@@ -45,9 +45,9 @@ class Characters;
 # include "HUDWindow.hpp"
 # include "EnemyList.hpp"
 
-
 class EnemyList;
 class WeaponList;
+
 class Hitbox;
 class HUDWindow;
 

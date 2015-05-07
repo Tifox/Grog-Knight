@@ -84,6 +84,7 @@ void	Game::start(void) {
 	Consumable		*lol = new Consumable();
 	Hero			*hero = new Hero();
 	Enemy			*bad = new Enemy(Game::eList->getEnemyRandom(false));
+
 	//===== I temp map generation test =====
 	//LevelGenerator *levelGenerator = new LevelGenerator(6, 6, 5, 60, 80);
 	//levelGenerator->execute();

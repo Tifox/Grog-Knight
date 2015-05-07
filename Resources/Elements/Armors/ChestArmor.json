@@ -1,0 +1,9 @@
+{
+    "infos": {
+   	    "name": "Sword",
+		"flavor": "Hey look, its a sword. A pretty shitty one actually...",
+		"lvlRequired": 1,
+		"sprites": "Resources/Images/Sword.png",
+		"lootLevel": 1
+	}
+}

@@ -42,20 +42,33 @@
 # include "Elements.hpp"
 #endif
 
-class Enemy;
 
 class EnemyList: public Elements {
 public:
 	EnemyList(void);
 	~EnemyList(void);
 
-	void	statEnemy(std::string);
-	Enemy*	getEnemy(std::string);
-	Enemy*	getEnemyRandom(bool flying);
-	Enemy*	getEnemyRandom(int level, bool flying);
+	std::string		getEnemyRandom(bool flying);
+	std::string		getEnemyRandom(int level, bool flying);
+
+	class EnemyData {
+	public:
+		EnemyData(std::string);
+		~EnemyData();
+		std::string	getName();
+		int			getLevel();
+		bool		isFlying();
+
+	private:
+		std::string _name;
+		int			_level;
+		bool		_flying;
+		void		_readFile(std::string name);
+		void		_parseJson(std::string file);
+	};
 
 private:
-	std::list<Enemy*> _allEnemies;
+	std::list<EnemyData*> _allEnemies;
 
 };
 

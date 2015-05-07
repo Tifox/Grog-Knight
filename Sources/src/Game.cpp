@@ -83,9 +83,7 @@ void	Game::start(void) {
 
 	Consumable		*lol = new Consumable();
 	Hero			*hero = new Hero();
-	Enemy			*enemy = new Enemy("Enemies/Enemy");
-	Enemy			*enemy2 = new Enemy("Enemies/Enemy2");
-
+	Enemy			*bad = new Enemy(Game::eList->getEnemyRandom(false));
 	//===== I temp map generation test =====
 	//LevelGenerator *levelGenerator = new LevelGenerator(6, 6, 5, 60, 80);
 	//levelGenerator->execute();
@@ -96,8 +94,7 @@ void	Game::start(void) {
 	theCamera.SetPosition(0, 0, 9.5);
 	theCamera.LockTo(hero);
 	hero->init();
-	enemy->init();
-	enemy2->init();
+	bad->init();
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
 	this->setHero(*hero);
 	this->displayHUD();

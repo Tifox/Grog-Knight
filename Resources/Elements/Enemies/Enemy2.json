@@ -7,7 +7,9 @@
 		"size": 1.3,
 		"maxSpeed": 8,
 		"hitboxType": "special",
-		"hitbox": "enemyHitbox"
+		"hitbox": "enemyHitbox",
+		"level": 2,
+		"flying": false
 	},
 	"Actions": {
 		"breath": {

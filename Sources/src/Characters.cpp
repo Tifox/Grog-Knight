@@ -79,7 +79,7 @@ void	Characters::_readFile(std::string name) {
 		name + " class. (Supposed path is Resources/Elements/" + name +".json)");
 	buffer << fd.rdbuf();
 	this->_parseJson(buffer.str());
-}
+/}
 
 //! Parse the json into workable value
 /**

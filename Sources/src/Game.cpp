@@ -99,7 +99,7 @@ void	Game::start(void) {
 	hero->init();
 	bad->init();
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
-	hero->equipRing(Game::rList->getRing("Ring"));
+	hero->equipRing(Game::rList->getRing("SmallRing"));
 	hero->equipArmor(Game::aList->getArmor("ChestArmor"));
 
 	this->setHero(*hero);
@@ -373,8 +373,6 @@ void		Game::displayHUD(void) {
 	w->life(125);
 	w->mana(90);
 	w->gold(0);
-	w->armor();
-	w->boots();
 	w->consumable();
 	w->minimap();
 	Game::addHUDWindow(w);

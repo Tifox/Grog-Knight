@@ -301,8 +301,8 @@ void	HUDWindow::items(Armor *a) {
  * @param r The Ring equipped.
  */
 void	HUDWindow::items(Ring *r) {
-	this->addImage("Resources/Images/HUD/weapon_background.png", 650, 50, 40.0f);
-	this->addImage(r->getSprite(), 650, 50, 30.0f);
+	this->addImage("Resources/Images/HUD/weapon_background.png", 660, 50, 40.0f);
+	this->addImage(r->getSprite(), 660, 50, 30.0f);
 }
 
 //! Display armor 

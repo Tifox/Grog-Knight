@@ -36,6 +36,8 @@ public:
 	Equipment();
 	Equipment(Characters*);
 	Equipment(Weapon*, Characters*);
+	Equipment(Armor*, Characters*);
+	Equipment(Ring*, Characters*);
 	~Equipment();
 
 	Weapon* 	getWeapon(void);
@@ -45,6 +47,8 @@ public:
 
 private:
 	Weapon*			_weapon;
+	Armor*			_armor;
+	Ring*			_ring;
 };
 
 #endif

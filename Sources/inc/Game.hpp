@@ -44,8 +44,12 @@ class Characters;
 # include "Hitbox.hpp"
 # include "HUDWindow.hpp"
 # include "EnemyList.hpp"
+# include "ArmorList.hpp"
+# include "RingList.hpp"
 
+class ArmorList;
 class EnemyList;
+class RingList;
 class WeaponList;
 
 class Hitbox;
@@ -97,6 +101,8 @@ class Game {
 		static std::list<Elements *>	runningCharac;
 		static std::list<HUDWindow *>	windows;
 		static WeaponList*				wList;
+		static RingList*				rList;
+		static ArmorList*				aList;
 		static EnemyList*				eList;
 		static Hitbox*					hList;
 		static int						maxX;

@@ -79,6 +79,8 @@ void	Game::start(void) {
 	theWorld.SetBackgroundColor(*(new Color(0, 0, 0)));
 	Game::wList = new WeaponList();
 	Game::eList = new EnemyList();
+	Game::aList = new ArmorList();
+	Game::rList = new RingList();
 	this->showMap();
 
 	Consumable		*lol = new Consumable();
@@ -386,7 +388,9 @@ std::list<Elements *>		Game::runningCharac;
 std::list<Elements *>		Game::bodiesToDestroy;
 std::list<Elements *>		Game::bodiesToCreate;
 std::list<HUDWindow *>		Game::windows;
+ArmorList*					Game::aList;
 WeaponList*					Game::wList;
+RingList*					Game::rList;
 EnemyList*					Game::eList;
 Hitbox*						Game::hList;
 bool						Game::endGame = false;

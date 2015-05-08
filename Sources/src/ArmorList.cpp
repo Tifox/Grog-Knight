@@ -96,21 +96,24 @@ Armor		*ArmorList::getArmorRandom(void) {
  */
 Armor		*ArmorList::getArmorRandom(int level) {
 	std::list<Armor*>::iterator it;
-	std::list<Armor*> Armors;
+	std::list<Armor*> armors;
 
 	for (it = this->_allArmors.begin(); it != this->_allArmors.end(); it++) {
 		if ((*it)->getLootLevel() == level) {
-			Armors.push_back(*it);
+			armors.push_back(*it);
 		}
 	}
 	int	i = 0;
-	int value = (rand() % Armors.size());
-	for (it = Armors.begin(); it != Armors.end(); it++) {
-		if (i == value) {
-			return ((*it));
+	if (armors.size() > 0) {
+		int value = (rand() % armors.size());
+		for (it = armors.begin(); it != armors.end(); it++) {
+			if (i == value) {
+				return ((*it));
+			}
+			i++;
 		}
-		i++;
 	}
-	return (*Armors.begin());
+	Log::info("No armor for requested level");
+	return (*this->_allArmors.begin());
 
 }

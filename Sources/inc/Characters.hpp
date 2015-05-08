@@ -27,9 +27,12 @@
 # define __Characters__
 
 # include "Weapon.hpp"
+# include "Armor.hpp"
+# include "Ring.hpp"
 # include "Log.hpp"
-
 class Weapon;
+class Armor;
+class Ring;
 
 # ifdef __APPLE__
 #  include "../../Tools/jsoncpp/include/json/json.h"
@@ -69,6 +72,8 @@ class Characters : public Elements {
 		int								getHP(void);
 		void							setHP(int h);
 		Weapon							*getWeapon(void);
+		Armor							*getArmor(void);
+		Ring							*getRing(void);
 		// Virtual function, overwritten in childs
 		virtual void	actionCallback(std::string name, int status) {};
 		virtual void	equipWeapon(Weapon* weapon);
@@ -94,6 +99,8 @@ class Characters : public Elements {
 		bool			_canJump;
 		bool			_invincibility;
 		Weapon*			_weapon;
+		Armor*			_armor;
+		Ring*			_ring;
 		Elements*		_item;
 		Characters::Orientation				_orientation;
 		Characters::Orientation				_latOrientation;

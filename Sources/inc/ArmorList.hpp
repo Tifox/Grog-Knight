@@ -44,6 +44,8 @@
 # include "Elements.hpp"
 #endif
 
+class Armor;
+
 class ArmorList: public Elements {
 public:
 	ArmorList(void);

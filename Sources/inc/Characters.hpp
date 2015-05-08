@@ -77,6 +77,8 @@ class Characters : public Elements {
 		// Virtual function, overwritten in childs
 		virtual void	actionCallback(std::string name, int status) {};
 		virtual void	equipWeapon(Weapon* weapon);
+		virtual void	equipArmor(Armor* armor);
+		virtual void	equipRing(Ring* ring);
 		void			changeCanMove(void);
 
 	//Moved in order to get loot infos outside of class

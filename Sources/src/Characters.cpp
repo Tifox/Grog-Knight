@@ -592,11 +592,31 @@ void	Characters::_pickupItem(int status) {
 //! Equip a weapon
 /**
  * Equip a new weapon to the Character, and update the HUD.
- * @weapon The Weapon object
+ * @param The Weapon object
  */
 void	Characters::equipWeapon(Weapon* weapon) {
 		this->_weapon = new Weapon(weapon);
 		Game::getHUD()->items(this->_weapon);
+}
+
+//! Equip a armor
+/**
+ * Equip a new armor to the Character, and update the HUD.
+ * @param The armor object
+ */
+void	Characters::equipArmor(Armor* armor) {
+		this->_armor = new Armor(armor);
+		Game::getHUD()->items(this->_armor);
+}
+
+//! Equip a ring
+/**
+ * Equip a new ring to the Character, and update the HUD.
+ * @param The ring object
+ */
+void	Characters::equipRing(Ring* ring) {
+		this->_ring = new Ring(ring);
+		Game::getHUD()->items(this->_ring);
 }
 
 //! Set basics hp

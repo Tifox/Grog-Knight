@@ -99,6 +99,9 @@ void	Game::start(void) {
 	hero->init();
 	bad->init();
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
+	hero->equipRing(Game::rList->getRing("Ring"));
+	hero->equipArmor(Game::aList->getArmor("ChestArmor"));
+
 	this->setHero(*hero);
 	this->displayHUD();
 }

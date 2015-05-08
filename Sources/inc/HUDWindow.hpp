@@ -30,6 +30,8 @@
 # include "../../Angel/Angel.h"
 # include "Game.hpp"
 class	Game;
+class   Ring;
+class   Armor;
 
 # include <iostream>
 
@@ -67,6 +69,8 @@ class	HUDWindow : public HUDActor {
 		void	gold(int g);
 		void	updateGold(int gold);
 		void	items(Weapon *w);
+		void	items(Armor *a);
+		void	items(Ring *r);
 		void	armor(void);
 		void	boots(void);
 		void	consumable(void);

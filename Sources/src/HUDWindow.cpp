@@ -272,13 +272,37 @@ void	HUDWindow::updateGold(int gold) {
 //! Display items (Weapon)
 /**
  * Display the weapon function.
- * This function is a callback call in Character::setWeapon.
+ * This function is a callback call in Character::equipWeapon.
  * So you won't problably call this function !
  * @param w The Weapon equipped.
  */
 void	HUDWindow::items(Weapon *w) {
 	this->addImage("Resources/Images/HUD/weapon_background.png", 770, 50, 60.0f);
 	this->addImage(w->getSprite(), 770, 50, 40.0f);
+}
+
+//! Display items (Armor)
+/**
+ * Display the armor function.
+ * This function is a callback call in Character::equipArmor.
+ * So you won't problably call this function !
+ * @param a The Armor equipped.
+ */
+void	HUDWindow::items(Armor *a) {
+	this->addImage("Resources/Images/HUD/weapon_background.png", 710, 50, 40.0f);
+	this->addImage(a->getSprite(), 710, 50, 30.0f);
+}
+
+//! Display items (Ring)
+/**
+ * Display the ring function.
+ * This function is a callback call in Character::equipRing.
+ * So you won't problably call this function !
+ * @param r The Ring equipped.
+ */
+void	HUDWindow::items(Ring *r) {
+	this->addImage("Resources/Images/HUD/weapon_background.png", 650, 50, 40.0f);
+	this->addImage(r->getSprite(), 650, 50, 30.0f);
 }
 
 //! Display armor 

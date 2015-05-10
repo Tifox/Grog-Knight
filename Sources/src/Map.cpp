@@ -104,7 +104,7 @@ void	Map::display(void) {
 					elem->addAttribute("physic", "TRUE");
 				} else {
 					std::map<std::string, Json::Value>::iterator	it2;
-					int												isPhysic = 1;
+					int												isPhysic = 1, isAnimated = 0;
 
 					for (it2 = this->_properties.find(*it)->second.begin();
 							it2 != this->_properties.find(*it)->second.end(); it2++) {
@@ -112,12 +112,42 @@ void	Map::display(void) {
 							isPhysic = 0;
 						} else if (it2->first == "hitbox") {
 							elem->setHitbox(it2->second.asString());
+						} else if (it2->first == "animate") {
+							isAnimated = 1;
+							elem->addAttribute(it2->first, it2->second.asString());
 						} else {
 							elem->addAttribute(it2->first, it2->second.asString());
 						}
 					}
 					if (isPhysic == 1)
 						elem->addAttribute("physic", "TRUE");
+					if (isAnimated == 1) {
+						int		v = atoi(elem->getAttribute("next").c_str()), next, count;
+						float	time;
+
+						elem->addAnimation(v, std::atof(elem->getAttribute("time").c_str()));
+						v++;
+						for (count = 0; v != *(it); count++) {
+							next = time = 0;
+							if (count >= 30) {
+								Log::error("Seems like the frame " + std::to_string(*it -  -  -  - 1111) + 
+									" does not have an animation loop end...");
+							}
+								for (it2 = this->_properties.find(v)->second.begin();
+										it2 != this->_properties.find(v)->second.end(); it2++) {
+									if (it2->first == "time")
+										time = std::atof(it2->second.asString().c_str());
+									if (it2->first == "next") {
+										next = atoi(it2->second.asString().c_str());
+									}
+								}
+								if (!time || !next)
+									Log::warning("An animated element ("+ std::to_string(v) +") is missing the params {next, time}");
+							   else
+									elem->addAnimation(next, time);
+								v = next + 1;
+						}
+					}
 				}
 				elem->display();
 			}

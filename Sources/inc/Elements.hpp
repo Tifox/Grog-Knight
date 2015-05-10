@@ -29,6 +29,7 @@
 
 # include <map>
 # include <string>
+# include <list>
 # include "../../Angel/Angel.h"
 
 class Weapon;
@@ -55,11 +56,13 @@ public:
 	std::map<std::string, std::string>		getAttributes(void);
 	void		setFrameSprite(int frame);
 	void		setHitbox(std::string);
+	void		addAnimation(int frame, float time);
 
 	/* Virtual function, overridden in Childs */
 	virtual void	callback(Elements * elem) { };
 	virtual void	BeginContact(Elements * elem, b2Contact *contact) { };
 	virtual void	EndContact(Elements * elem, b2Contact *contact) { };
+	virtual void	AnimCallback(String s);
 
 	int				getOrientationX(void);
 	int				getOrientationY(void);
@@ -74,6 +77,12 @@ protected:
 	bool								_isDead;
 
 private:
+	class		Animation {
+		public:
+			int		frame;
+			float	time;
+	};
+
 	float								_XStartPos;
 	float								_YStartPos;
 	std::map<std::string, std::string>				_attributes;
@@ -82,6 +91,9 @@ private:
 	int								_cutHeight;
 	int								_cutWidth;
 	int								_frame;
+	std::list<Animation *>			_animationList;
+	std::list<Animation *>::iterator _animIt;
+
 };
 
 # include "Characters.hpp"

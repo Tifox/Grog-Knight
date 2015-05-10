@@ -164,6 +164,11 @@ void	Elements::display(void) {
 	if (this->getAttribute("physic") != "") {
 		this->InitPhysics();
 	}
+
+	if (this->getAttribute("animate") != "") {
+		this->_animIt = this->_animationList.begin();
+		this->PlaySpriteAnimation((*this->_animIt)->time, SAT_OneShot, (*this->_animIt)->frame, (*this->_animIt)->frame, "baseAnimation");
+	}
 	theWorld.Add(this);
 }
 
@@ -180,5 +185,29 @@ void	Elements::setHitbox(std::string n) { this->_hitbox = n; this->_hitboxType =
 
 /* GETTERS */
 std::map<std::string, std::string>	Elements::getAttributes(void) { return this->_attributes; };
-
 bool								Elements::isDead(void) { return this->_isDead; }
+
+//! Animation callback
+/**
+ * The animation callback function
+ * This function is only used here for block / background purposes,
+ * And be overriden in Characters childs.
+ * @param: s The Animation name.
+ */
+void	Elements::AnimCallback(String s) {
+	if (s == "baseAnimation") {
+		this->_animIt++;
+		if (this->_animIt == this->_animationList.end())
+			this->_animIt = this->_animationList.begin();
+		this->PlaySpriteAnimation((*this->_animIt)->time, SAT_OneShot, (*this->_animIt)->frame, (*this->_animIt)->frame, "baseAnimation");
+		this->setFrameSprite((*this->_animIt)->frame);
+		
+	}
+}
+
+void	Elements::addAnimation(int frame, float time) {
+	Animation	*anim = new Animation();
+	anim->frame = frame;
+	anim->time = time;
+	this->_animationList.push_back(anim);
+}

@@ -51,8 +51,7 @@ void		Log::info(std::string str) {
  * @param str The string to display
  */
 void		Log::warning(std::string str) {
-	if (Log::isLog == 1)
-		std::cout << "\033[1;33m[WARNING]\033[0m " << str << std::endl;
+	std::cout << "\033[1;33m[WARNING]\033[0m " << str << std::endl;
 }
 
 //! Print an error log
@@ -61,10 +60,8 @@ void		Log::warning(std::string str) {
  * @param str The error to display
  */
 void		Log::error(std::string str) {
-	if (Log::isLog == 1) {
-		std::cout << "\033[1;31m[ERROR]\033[0m " << str << std::endl;
-		exit(1);
-	}
+	std::cout << "\033[1;31m[ERROR]\033[0m " << str << std::endl;
+	exit(1);
 }
 
 //! Set the debug prompt as false

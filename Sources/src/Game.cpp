@@ -83,7 +83,6 @@ void	Game::start(void) {
 	Game::rList = new RingList();
 	this->showMap();
 
-	Consumable		*lol = new Consumable();
 	Hero			*hero = new Hero();
 	Enemy			*bad = new Enemy(Game::eList->getEnemyRandom(false));
 
@@ -101,7 +100,12 @@ void	Game::start(void) {
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
 	hero->equipRing(Game::rList->getRing("SmallRing"));
 	hero->equipArmor(Game::aList->getArmor("ChestArmor"));
-
+	std::cout << Game::maxX << std::endl;
+	std::cout << Game::maxY << std::endl;
+	Game::maxX = 54;
+	Game::maxY = -16;
+	Game::minX = 0;
+	Game::minY = -11.5;
 	this->setHero(*hero);
 	this->displayHUD();
 }
@@ -130,8 +134,9 @@ void	Game::showMap(void) {
  * @param Hero The Hero Object
  */
 void	Game::displayHero(Elements & Hero) {
-	Hero.setXStart(15);
-	Hero.setYStart(-8);
+	//Here starts the game - parse the 1st map coordinates and hero start
+	Hero.setXStart(14);
+	Hero.setYStart(-21);
 	Hero.addAttribute("hero", "1");
 	Hero.display();
 }
@@ -398,3 +403,5 @@ bool						Game::endGame = false;
 bool						Game::ended = false;
 int							Game::maxX = 0;
 int							Game::maxY = 0;
+int							Game::minX = 0;
+int							Game::minY = 0;

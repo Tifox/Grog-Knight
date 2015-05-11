@@ -45,6 +45,8 @@ class MouseDebugger: public MouseListener {
 		void MouseDownEvent(Vec2i sc, MouseButtonInput button) {
 			Vector2 w;
 			w = MathUtil::ScreenToWorld(sc.X, sc.Y);
+			std::cout << w.X << ":" << w.Y << std::endl;
+
 		};
 };
 

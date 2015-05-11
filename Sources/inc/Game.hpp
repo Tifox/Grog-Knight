@@ -107,6 +107,8 @@ class Game {
 		static Hitbox*					hList;
 		static int						maxX;
 		static int						maxY;
+		static int						minX;
+		static int						minY;
 
 	private:
 		float		beginXHero;

@@ -42,6 +42,7 @@ Armor::Armor(std::string name) : _name(name) {
 
 Armor::Armor(Armor* Armor) {
 	this->_name = Armor->getName();
+	this->addAttribute("type3", "Armor");
 	this->_flavor = Armor->getFlavor();
 	this->_sprite = Armor->getSprite();
 	this->_lootLevel = Armor->getLootLevel();
@@ -92,6 +93,7 @@ void    Armor::_parseJson(std::string file) {
 	this->_flavor = json["infos"].get("flavor", "").asString();
 	this->_lootLevel = json["infos"].get("lootLevel", "").asInt();
 	this->_sprite = json["infos"].get("sprites", "").asString();
+	this->addAttribute("type3", "Armor");
 }
 
 //! Function called to get an attr value from the parsed json

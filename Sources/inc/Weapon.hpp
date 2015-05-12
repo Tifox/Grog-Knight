@@ -50,6 +50,7 @@ public:
 	void			ReceiveMessage(Message *m);
 
 	std::string		getName(void);
+	std::string		getType(void);
 	std::string		getFlavor(void);
 	std::string		getAttack(void);
 	std::string		getSprite(void);
@@ -70,6 +71,7 @@ private:
 	std::string		_flavor;
 	std::string		_sprite;
 	std::string		_attack;
+	std::string		_type;
 	int				_canAttack;
 	int				_lootLevel;
 	float			_recovery;

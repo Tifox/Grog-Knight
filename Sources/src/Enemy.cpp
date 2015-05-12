@@ -41,13 +41,13 @@ Enemy::Enemy(void) : Characters("Enemy") {
  */
 Enemy::Enemy(std::string str) : Characters(str) {
 	this->setXStart(13);
-	this->setYStart(-3);
+	this->setYStart(-19);
 	this->SetName("Enemy");
 	theSwitchboard.SubscribeTo(this, "startPathing" + this->GetName());
 	theSwitchboard.DeferredBroadcast(new Message("startPathing" + this->GetName()), 0.2f);
 	if (str == "Enemy") {
 		this->setXStart(5);
-		this->setYStart(-5);
+		this->setYStart(-19);
 	} else {
 		// ????
 	}

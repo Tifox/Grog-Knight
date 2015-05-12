@@ -60,6 +60,7 @@ Equipment::Equipment(Characters* c): Object() {
 
 Equipment::Equipment(Weapon *w, Characters* c): Object() {
 	this->addAttribute("type2", "Equipment");
+	this->addAttribute("type3", "Weapon");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_weapon = new Weapon(w);
 	this->SetSprite(this->_weapon->getSprite());
@@ -72,6 +73,7 @@ Equipment::Equipment(Weapon *w, Characters* c): Object() {
 
 Equipment::Equipment(Armor *w, Characters* c): Object() {
 	this->addAttribute("type2", "Equipment");
+	this->addAttribute("type3", "Armor");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_armor = new Armor(w);
 	this->SetSprite(this->_armor->getSprite());
@@ -83,6 +85,7 @@ Equipment::Equipment(Armor *w, Characters* c): Object() {
 
 Equipment::Equipment(Ring *w, Characters* c): Object() {
 	this->addAttribute("type2", "Equipment");
+	this->addAttribute("type3", "Ring");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_ring = new Ring(w);
 	this->SetSprite(this->_ring->getSprite());
@@ -129,6 +132,10 @@ void	Equipment::EndContact(Elements *elem, b2Contact *contact) {
 
 /*GETTERS*/
 Weapon*		Equipment::getWeapon(void) { return this->_weapon; }
+
+Armor*		Equipment::getArmor(void) { return this->_armor; }
+
+Ring*		Equipment::getRing(void) { return this->_ring; }
 
 //! Intern broadcasts function.
 /**

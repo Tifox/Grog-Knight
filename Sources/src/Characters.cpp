@@ -583,7 +583,12 @@ void	Characters::_attack(int status) {
 void	Characters::_pickupItem(int status) {
 	if (this->_item == nullptr)
 		return;
-	this->equipWeapon(static_cast<Equipment*>(this->_item)->getWeapon());
+	if (this->_item->getAttribute("type3") == "Weapon")
+		this->equipWeapon(static_cast<Equipment*>(this->_item)->getWeapon());
+	else if (this->_item->getAttribute("type3") == "Ring")
+		this->equipRing(static_cast<Equipment*>(this->_item)->getRing());
+	else if (this->_item->getAttribute("type3") == "Armor")
+		this->equipArmor(static_cast<Equipment*>(this->_item)->getArmor());
 	theSwitchboard.Broadcast(new Message("DeleteEquipment" + this->_item->GetName()));
 	this->_item = nullptr;
 

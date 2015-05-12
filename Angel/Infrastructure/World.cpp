@@ -527,7 +527,7 @@ void World::Simulate(bool simRunning)
 		
 		theSwitchboard.Update(frame_dt);
 
-		UpdateDebugItems(frame_dt);
+//   Updated: 2015/05/12 15:36:50 by noich            ###   ########.fr       //
 		//if there are any system updates that still need to be run, put them here
 	}
 	
@@ -652,6 +652,7 @@ void World::TickAndRender()
 {
 	Tick();
 	Game::destroyAllBodies();
+	Game::checkHeroPosition();
 	Render();
 	Game::showText();
 }

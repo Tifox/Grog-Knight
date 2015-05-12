@@ -46,6 +46,8 @@ class	Map {
 
 		void	setHeight(int h);
 		void	setWidth(int w);
+		void	setXMid(int h);
+		void	setYMid(int w);
 		void	setImage(std::string n);
 		void	setTileHeight(int h);
 		void	setTileWidth(int w);
@@ -61,12 +63,18 @@ class	Map {
 		void	display(void);
 		int		getHeight(void);
 		int		getWidth(void);
+		int		getXMid(void);
+		int		getYMid(void);
+		int		getXStart(void);
+		int		getYStart(void);
 
 	private:
 		int					_mapCount;
 		std::string			_name;
 		int					_height;
 		int					_width;
+		int					_midX;
+		int					_midY;
 		std::string			_image;
 		std::list<std::vector<int> >	_map;
 		int					_tileHeight;

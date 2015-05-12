@@ -138,6 +138,8 @@ void	Maps::_getMap(void) {
 	this->_root.clear();
 }
 
+
+
 //! Display an entire level
 void	Maps::displayLevel(void) {
 	int		i, x, y;
@@ -150,6 +152,8 @@ void	Maps::displayLevel(void) {
 		}
 		this->_maps[i]->setXStart(x);
 		this->_maps[i]->setYStart(y);
+		this->_maps[i]->setXMid(x + (this->_maps[i]->getWidth() / 2));
+		this->_maps[i]->setYMid(y - (this->_maps[i]->getHeight() / 2));
 		this->_maps[i]->display();
 		x += this->_maps[i]->getWidth();
 	}

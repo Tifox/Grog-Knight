@@ -71,11 +71,13 @@ class Game {
 		void	showMap(void);
 		void	displayHUD(void);
 		void	setHero(Characters &h);
+		void	moveCamera(void);
 		Characters	&getHero(void);
 
 		static bool	endGame;
 		static bool	ended;
 		static bool	destroyAllBodies(void);
+		static void checkHeroPosition(void);
 		static void	addToDestroyList(Elements *m);
 
 
@@ -92,9 +94,10 @@ class Game {
 		static void	removeHUDWindow(HUDWindow *);
 		static HUDWindow*	getHUD(void);
 		static int			lol;
+		static Game*		currentGame;
 
 		Maps		*maps;
-		static int	currentIds;
+		static int						currentIds;
 		static std::map<int, Elements *>	elementMap;
 		static std::list<Elements *>	bodiesToDestroy;
 		static std::list<Elements *>	bodiesToCreate;
@@ -108,11 +111,13 @@ class Game {
 		static int						maxX;
 		static int						maxY;
 		static int						minX;
+		static int						currentMap;
 		static int						minY;
+		static int						started;
 
 	private:
-		float		beginXHero;
-		float		beginYHero;
+		float				beginXHero;
+		float				beginYHero;
 		Characters	&_hero;
 };
 

@@ -81,8 +81,8 @@ void	Game::start(void) {
 	Game::eList = new EnemyList();
 	Game::aList = new ArmorList();
 	Game::rList = new RingList();
+	Game::currentGame = this;
 	this->showMap();
-
 	Hero			*hero = new Hero();
 	Enemy			*bad = new Enemy(Game::eList->getEnemyRandom(false));
 
@@ -93,21 +93,25 @@ void	Game::start(void) {
 	//===== O temp map generation test =====
 
 	this->displayHero(*(hero));
-	theCamera.SetPosition(0, 0, 9.5);
-	theCamera.LockTo(hero);
+	std::cout << this->maps->_maps[3]->getYStart() << std::endl;
+	std::cout << this->maps->_maps[3]->getHeight() << std::endl;
+	std::cout << this->maps->_maps[3]->getYMid() << std::endl;
+	theCamera.SetPosition(this->maps->_maps[3]->getXMid(), this->maps->_maps[3]->getYMid() + 1.8, 9.2);
+	Game::currentMap = 3;
+//	theCamera.SetPosition(0, 0, 9.5);
+//	theCamera.LockTo(hero);
 	hero->init();
 	bad->init();
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
 	hero->equipRing(Game::rList->getRing("SmallRing"));
 	hero->equipArmor(Game::aList->getArmor("ChestArmor"));
-	std::cout << Game::maxX << std::endl;
-	std::cout << Game::maxY << std::endl;
 	Game::maxX = 54;
 	Game::maxY = -16;
 	Game::minX = 0;
 	Game::minY = -11.5;
 	this->setHero(*hero);
 	this->displayHUD();
+	Game::started = 1;
 }
 
 //! Read the maps
@@ -135,8 +139,8 @@ void	Game::showMap(void) {
  */
 void	Game::displayHero(Elements & Hero) {
 	//Here starts the game - parse the 1st map coordinates and hero start
-	Hero.setXStart(14);
-	Hero.setYStart(-21);
+	Hero.setXStart(this->maps->_maps[3]->getXMid());
+	Hero.setYStart(this->maps->_maps[3]->getYMid());
 	Hero.addAttribute("hero", "1");
 	Hero.display();
 }
@@ -173,6 +177,22 @@ void	Game::displayObject(Elements & Object) {
  */
 int		Game::getNextId(void) {
 	return Game::currentIds;
+}
+
+void	Game::checkHeroPosition(void) {
+	if (Game::started == 1)
+		Game::currentGame->moveCamera();
+}
+
+void	Game::moveCamera(void) {
+	if (this->_hero.GetBody()->GetWorldCenter().x >= (this->maps->_maps[Game::currentMap]->getXStart() + this->maps->_maps[Game::currentMap]->getWidth() - 0.5)) {
+			Game::currentMap++;
+			theCamera.SetPosition(this->maps->_maps[Game::currentMap]->getXMid(), this->maps->_maps[Game::currentMap]->getYMid() + 1.8, 9.2);
+	}
+	else if (this->_hero.GetBody()->GetWorldCenter().x <= this->maps->_maps[Game::currentMap]->getXStart() - 1) {
+			Game::currentMap--;
+			theCamera.SetPosition(this->maps->_maps[Game::currentMap]->getXMid(), this->maps->_maps[Game::currentMap]->getYMid() + 1.8, 9.2);
+	}
 }
 
 //! Add an Element
@@ -405,3 +425,6 @@ int							Game::maxX = 0;
 int							Game::maxY = 0;
 int							Game::minX = 0;
 int							Game::minY = 0;
+int							Game::currentMap = 0;
+Game*						Game::currentGame = 0;
+int							Game::started = 0;

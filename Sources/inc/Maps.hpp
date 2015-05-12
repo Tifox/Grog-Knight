@@ -53,6 +53,7 @@ class Maps {
 		void	readMaps(void);
 		int		rstrncmp(char *str, char *str2, int n);
 		void	displayLevel(void);
+		std::map<int, Map *>	_maps;
 
 	private:
 		void	_getMap(void);
@@ -60,7 +61,6 @@ class Maps {
 		std::string			_directory;
 		Json::Value			_root;
 		Json::Reader		_reader;
-		std::map<int, Map *>	_maps;
 };
 
 # include "Elements.hpp"

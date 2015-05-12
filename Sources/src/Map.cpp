@@ -47,6 +47,8 @@ Map::~Map(void) {
 
 void	Map::setHeight(int h) { this->_height = h; };
 void	Map::setWidth(int w) { this->_width = w; };
+void	Map::setXMid(int h) { this->_midX = h; };
+void	Map::setYMid(int w) { this->_midY = w; };
 void	Map::setImage(std::string n) { this->_image = n; };
 void	Map::setTileHeight(int h) { this->_tileHeight = h; };
 void	Map::setTileWidth(int w) { this->_tileWidth = w; };
@@ -64,6 +66,10 @@ void	Map::setYStart(int y) { this->_yStart = y; };
 
 int		Map::getHeight(void) { return this->_height; };
 int		Map::getWidth(void) { return this->_width; };
+int		Map::getXMid(void) { return this->_midX; };
+int		Map::getYMid(void) { return this->_midY; };
+int		Map::getXStart(void) { return this->_xStart; };
+int		Map::getYStart(void) { return this->_yStart; };
 
 //! Display the map
 /**

@@ -128,7 +128,7 @@ void	Map::display(void) {
 						elem->addAnimation(v, std::atof(elem->getAttribute("time").c_str()));
 						v++;
 						for (count = 0; v != *(it); count++) {
-							next = time = 0;
+							next = time = -1;
 							if (count >= 30) {
 								Log::error("Seems like the frame " + std::to_string(*it -  -  -  - 1111) + 
 									" does not have an animation loop end...");
@@ -141,7 +141,7 @@ void	Map::display(void) {
 										next = atoi(it2->second.asString().c_str());
 									}
 								}
-								if (!time || !next)
+								if (time == -1 || next == -1)
 									Log::warning("An animated element ("+ std::to_string(v) +") is missing the params {next, time}");
 							   else
 									elem->addAnimation(next, time);

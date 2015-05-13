@@ -87,17 +87,15 @@ void	Game::start(void) {
 	Enemy			*bad = new Enemy(Game::eList->getEnemyRandom(false));
 
 	//===== I temp map generation test =====
-	//LevelGenerator *levelGenerator = new LevelGenerator(6, 6, 5, 60, 80);
-	//levelGenerator->execute();
-	//levelGenerator->print();
+	LevelGenerator *levelGenerator = new LevelGenerator(9, 5, 60);
+	levelGenerator->execute();
+	levelGenerator->print();
+	this->gameMap = levelGenerator->_rooms;
 	//===== O temp map generation test =====
 
 	this->displayHero(*(hero));
-	std::cout << this->maps->_maps[3]->getYStart() << std::endl;
-	std::cout << this->maps->_maps[3]->getHeight() << std::endl;
-	std::cout << this->maps->_maps[3]->getYMid() << std::endl;
-	theCamera.SetPosition(this->maps->_maps[3]->getXMid(), this->maps->_maps[3]->getYMid() + 1.8, 9.2);
-	Game::currentMap = 3;
+ 	theCamera.SetPosition(this->maps->_maps[1]->getXMid(), this->maps->_maps[1]->getYMid() + 1.8, 9.2);
+	Game::currentMap = 1;
 //	theCamera.SetPosition(0, 0, 9.5);
 //	theCamera.LockTo(hero);
 	hero->init();
@@ -105,10 +103,10 @@ void	Game::start(void) {
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
 	hero->equipRing(Game::rList->getRing("SmallRing"));
 	hero->equipArmor(Game::aList->getArmor("ChestArmor"));
-	Game::maxX = 54;
-	Game::maxY = -16;
-	Game::minX = 0;
-	Game::minY = -11.5;
+	// Game::maxX = 54;
+	// Game::maxY = -16;
+	// Game::minX = 0;
+	// Game::minY = -11.5;
 	this->setHero(*hero);
 	this->displayHUD();
 	Game::started = 1;
@@ -188,6 +186,7 @@ void	Game::moveCamera(void) {
 	if (this->_hero.GetBody()->GetWorldCenter().x >= (this->maps->_maps[Game::currentMap]->getXStart() + this->maps->_maps[Game::currentMap]->getWidth() - 0.5)) {
 			Game::currentMap++;
 			theCamera.SetPosition(this->maps->_maps[Game::currentMap]->getXMid(), this->maps->_maps[Game::currentMap]->getYMid() + 1.8, 9.2);
+//			this->_hero.MoveTo(Vector2(this->_hero.GetBody()->GetWorldCenter().x + 1, this->_hero.GetBody()->GetWorldCenter().y), 4);
 	}
 	else if (this->_hero.GetBody()->GetWorldCenter().x <= this->maps->_maps[Game::currentMap]->getXStart() - 1) {
 			Game::currentMap--;

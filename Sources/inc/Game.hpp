@@ -46,6 +46,7 @@ class Characters;
 # include "EnemyList.hpp"
 # include "ArmorList.hpp"
 # include "RingList.hpp"
+# include "LevelGenerator.hpp"
 
 class ArmorList;
 class EnemyList;
@@ -97,6 +98,7 @@ class Game {
 		static Game*		currentGame;
 
 		Maps		*maps;
+		std::vector<Room*>				*gameMap;
 		static int						currentIds;
 		static std::map<int, Elements *>	elementMap;
 		static std::list<Elements *>	bodiesToDestroy;

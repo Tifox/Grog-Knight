@@ -4,6 +4,7 @@
 		"flavor": "Hey look, its a FUCKING RING. A pretty shitty one actually...",
 		"lvlRequired": 1,
 		"sprites": "Resources/Images/Rings/SmallRing.png",
-		"lootLevel": 1
+		"lootLevel": 1,
+		"bonus": {}
 	}
 }

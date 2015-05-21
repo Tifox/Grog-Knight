@@ -34,6 +34,7 @@
 #  include "json/json.h"
 # endif
 
+
 class Characters;
 
 class Armor: public Elements {
@@ -46,11 +47,14 @@ public:
 	void			EndContact(Elements *elem, b2Contact *contact);
 	void			ReceiveMessage(Message *m);
 
+	Bonus			*getBonus(void);
 	std::string		getName(void);
 	std::string		getType(void);
 	std::string		getFlavor(void);
 	std::string		getSprite(void);
 	int				getLootLevel(void);
+	int				getHp(void);
+
 
 private:
 	std::map<std::string, std::map<std::string, Json::Value> >	_attr;
@@ -60,6 +64,8 @@ private:
 	std::string		_flavor;
 	std::string		_sprite;
 	int				_lootLevel;
+	int 			_hp;
+	Bonus			*_bonus;
 	void			_readFile(std::string name);
 	void			_parseJson(std::string file);
 

@@ -583,12 +583,19 @@ void	Characters::_attack(int status) {
 void	Characters::_pickupItem(int status) {
 	if (this->_item == nullptr)
 		return;
-	if (this->_item->getAttribute("type3") == "Weapon")
+	if (this->_item->getAttribute("type3") == "Weapon"){
+		unequipWeapon();
 		this->equipWeapon(static_cast<Equipment*>(this->_item)->getWeapon());
-	else if (this->_item->getAttribute("type3") == "Ring")
+	} 
+	else if (this->_item->getAttribute("type3") == "Ring") {
+		unequipRing();
 		this->equipRing(static_cast<Equipment*>(this->_item)->getRing());
+	}
 	else if (this->_item->getAttribute("type3") == "Armor")
+	{
+		unequipArmor();
 		this->equipArmor(static_cast<Equipment*>(this->_item)->getArmor());
+	}
 	theSwitchboard.Broadcast(new Message("DeleteEquipment" + this->_item->GetName()));
 	this->_item = nullptr;
 
@@ -604,14 +611,34 @@ void	Characters::equipWeapon(Weapon* weapon) {
 		Game::getHUD()->items(this->_weapon);
 }
 
+//! Unequip a weapon
+/**
+ * Unequip old weapon to the Character, and update the HUD.
+ * @param The Weapon object
+ */
+void	Characters::unequipWeapon(void) { }
+
+
 //! Equip a armor
 /**
  * Equip a new armor to the Character, and update the HUD.
  * @param The armor object
  */
 void	Characters::equipArmor(Armor* armor) {
-		this->_armor = new Armor(armor);
-		Game::getHUD()->items(this->_armor);
+	this->_armor = new Armor(armor);
+	if (this->_armor && this->_armor->getBonus() != nullptr && this->_armor->getBonus()->getType() == Bonus::BonusType::HP_BUFF)
+		this->_maxHp += this->_armor->getBonus()->getAmount();
+	Game::getHUD()->items(this->_armor);
+}
+
+//! Unequip a armor
+/**
+ * Unequip old armor to the Character, and update the HUD.
+ * @param void
+ */
+void	Characters::unequipArmor(void) {
+	if (this->_armor && this->_armor->getBonus() != nullptr && this->_armor->getBonus()->getType() == Bonus::BonusType::HP_BUFF)
+		this->_maxHp -= this->_armor->getBonus()->getAmount();
 }
 
 //! Equip a ring
@@ -620,8 +647,20 @@ void	Characters::equipArmor(Armor* armor) {
  * @param The ring object
  */
 void	Characters::equipRing(Ring* ring) {
-		this->_ring = new Ring(ring);
-		Game::getHUD()->items(this->_ring);
+	this->_ring = new Ring(ring);
+	if (this->_ring && this->_ring->getBonus() != nullptr && this->_ring->getBonus()->getType() == Bonus::BonusType::HP_BUFF)
+		this->_maxHp += this->_ring->getBonus()->getAmount();
+	Game::getHUD()->items(this->_ring);
+}
+
+//! Unequip a ring
+/**
+ * Unequip old ring to the Character, and update the HUD.
+ * @param The ring object
+ */
+void	Characters::unequipRing(void) {
+	if (this->_ring && this->_ring->getBonus() != nullptr && this->_ring->getBonus()->getType() == Bonus::BonusType::HP_BUFF)
+		this->_maxHp -= this->_ring->getBonus()->getAmount();
 }
 
 //! Set basics hp

@@ -31,6 +31,7 @@
  */
 HUDWindow::HUDWindow(void) : HUDActor() {
 	RegisterFont("Resources/font.ttf", 14, "Gamefont");
+	RegisterFont("Resources/Fonts/fail.otf", 80, "dead");
 	return;
 }
 
@@ -45,9 +46,9 @@ HUDWindow::~HUDWindow(void) {
 //! Set text function
 /**
  * Set a text in the window
- * @param: str The text message
- * @param: x X position
- * @param: y Y position
+ * @param str The text message
+ * @param x X position
+ * @param y Y position
  */
 HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y) {
 	HUDWindow::Text		*t = new HUDWindow::Text();
@@ -55,6 +56,7 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y) {
 	t->x = x;
 	t->y = y;
 	t->colorR = t->colorG = t->colorB = t->colorA = 1;
+	t->font = "Gamefont";
 	this->_text.push_back(t);
 	return t;
 }
@@ -62,11 +64,11 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y) {
 //! Set text function
 /**
  * Set a text in the window
- * @param: str The text message
- * @param: x X position
- * @param: y Y position
- * @param: color The color of the text (See Angel2d's Vector3 for more info)
- * @param: alpha The transparency.
+ * @param str The text message
+ * @param x X position
+ * @param y Y position
+ * @param color The color of the text (See Angel2d's Vector3 for more info)
+ * @param alpha The transparency.
  */
 HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 color, int alpha) {
 	HUDWindow::Text		*t = new HUDWindow::Text();
@@ -77,11 +79,12 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 colo
 	t->colorG = color.Y;
 	t->colorB = color.Z;
 	t->colorA = alpha;
+	t->font = "Gamefont";
 	this->_text.push_back(t);
 	return t;
 }
 
-/*//! Set text function*/
+//! Set text function
 /**
  * Set a text in the window
  * @param str The text message
@@ -89,25 +92,26 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 colo
  * @param y Y position
  * @param color The color of the text (See Angel2d's Vector3 for more info)
  * @param alpha The transparency.
- * @param size The size of the text
+ * @param font The font name
  */
-//HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 color, int alpha, float size) {
-	//HUDWindow::Text		*t = new HUDWindow::Text();
-	//t->str = str;
-	//t->x = x;
-	//t->y = y;
-	//t->colorR = color.X;
-	//t->colorG = color.Y;
-	//t->colorB = color.Z;
-	//t->colorA = alpha;
-	//this->_text.push_back(t);
-	//return t;
-/*}*/
+HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 color, int alpha, std::string font) {
+	HUDWindow::Text		*t = new HUDWindow::Text();
+	t->str = str;
+	t->x = x;
+	t->y = y;
+	t->colorR = color.X;
+	t->colorG = color.Y;
+	t->colorB = color.Z;
+	t->colorA = alpha;
+	t->font = font;
+	this->_text.push_back(t);
+	return t;
+}
 
 //! Remove Text
 /**
  * This function remove the asked text from the screen.
- * @param: str The text content message
+ * @param str The text content message
  */
 void	HUDWindow::removeText(std::string str) {
 	std::list<HUDWindow::Text *>::iterator	i;
@@ -146,16 +150,16 @@ void	HUDWindow::displayText(void) {
 
 	for (i = this->_text.begin(); i != this->_text.end(); i++) {
 		glColor4f((*i)->colorR, (*i)->colorG, (*i)->colorB, (*i)->colorA);
-		DrawGameText((*i)->str, "Gamefont", (*i)->x, (*i)->y, theCamera.GetRotation());
+		DrawGameText((*i)->str, (*i)->font, (*i)->x, (*i)->y, theCamera.GetRotation());
 	}
 }
 
 //! Add an Image
 /**
  * Add an image in the HUD
- * @param: path The path of the img
- * @param: x X position
- * @param: y Y position
+ * @param path The path of the img
+ * @param x X position
+ * @param y Y position
  */
 void	HUDWindow::addImage(std::string path, int x, int y) {
 	HUDActor *tmp = new HUDActor();
@@ -170,10 +174,10 @@ void	HUDWindow::addImage(std::string path, int x, int y) {
 //! Add an image
 /**
  * Add an image in the HUD
- * @param: path The path of the img
- * @param: x X position
- * @param: y Y position
- * @param: size Size, in float.
+ * @param path The path of the img
+ * @param x X position
+ * @param y Y position
+ * @param size Size, in float.
  */
 void	HUDWindow::addImage(std::string path, int x, int y, float size) {
 	HUDActor *tmp = new HUDActor();
@@ -189,8 +193,8 @@ void	HUDWindow::addImage(std::string path, int x, int y, float size) {
 /**
  * Life is life (lalala)
  * This function take care of the heart, in the HUD.
- * @param: int The life number
- * @todo: Empty heart, half-heart.
+ * @param int The life number
+ * @todo Empty heart, half-heart.
  */
 void	HUDWindow::life(int life) {
 	int		x;
@@ -220,7 +224,7 @@ void	HUDWindow::life(int life) {
 /**
  * Show the mana in the HUD
  * Same way as HUDWindow::life, this function handle the sprites, and the Empty mana
- * @param: mana The Mana point.
+ * @param mana The Mana point.
  */
 void	HUDWindow::mana(int mana) {
 	std::list<HUDActor *>::iterator	i;
@@ -245,7 +249,7 @@ void	HUDWindow::mana(int mana) {
 /**
  * Make it rain baby
  * Like this all API, evrything his handled. Don't worry.
- * @param: gold The gold number
+ * @param gold The gold number
  */
 void	HUDWindow::gold(int gold) {
 	this->addImage("Resources/Images/HUD/xp.png", 340, 50, 20.0f);
@@ -268,13 +272,37 @@ void	HUDWindow::updateGold(int gold) {
 //! Display items (Weapon)
 /**
  * Display the weapon function.
- * This function is a callback call in Character::setWeapon.
+ * This function is a callback call in Character::equipWeapon.
  * So you won't problably call this function !
- * @param: w The Weapon equipped.
+ * @param w The Weapon equipped.
  */
 void	HUDWindow::items(Weapon *w) {
 	this->addImage("Resources/Images/HUD/weapon_background.png", 770, 50, 60.0f);
 	this->addImage(w->getSprite(), 770, 50, 40.0f);
+}
+
+//! Display items (Armor)
+/**
+ * Display the armor function.
+ * This function is a callback call in Character::equipArmor.
+ * So you won't problably call this function !
+ * @param a The Armor equipped.
+ */
+void	HUDWindow::items(Armor *a) {
+	this->addImage("Resources/Images/HUD/weapon_background.png", 710, 50, 40.0f);
+	this->addImage(a->getSprite(), 710, 50, 30.0f);
+}
+
+//! Display items (Ring)
+/**
+ * Display the ring function.
+ * This function is a callback call in Character::equipRing.
+ * So you won't problably call this function !
+ * @param r The Ring equipped.
+ */
+void	HUDWindow::items(Ring *r) {
+	this->addImage("Resources/Images/HUD/weapon_background.png", 660, 50, 40.0f);
+	this->addImage(r->getSprite(), 660, 50, 30.0f);
 }
 
 //! Display armor 
@@ -282,7 +310,7 @@ void	HUDWindow::items(Weapon *w) {
  * Display the armor function.
  * This function is a callback call in Character::setArmor.
  * So you won't problably call this function !
- * @todo: The description here is a lie. But it's gonna append !
+ * @todo The description here is a lie. But it's gonna append !
  */
 void	HUDWindow::armor(void) {
 	this->addImage("Resources/Images/HUD/item_background.png", 710, 50, 40.0f);
@@ -292,7 +320,7 @@ void	HUDWindow::armor(void) {
 //! Display boots function
 /**
  * Show the actual boots in the HUDWindow
- * @todo: No callback & object for now, but have to do it !
+ * @todo No callback & object for now, but have to do it !
  */
 void	HUDWindow::boots(void) {
 	this->addImage("Resources/Images/HUD/item_background.png", 660, 50, 40.0f);
@@ -302,7 +330,7 @@ void	HUDWindow::boots(void) {
 //! Show the consumable function
 /**
  * Display the consumable (potions, etc) in the HUD
- * @todo: Same here, no callback or object.
+ * @todo Same here, no callback or object.
  */
 void	HUDWindow::consumable(void) {
 	this->addImage("Resources/Images/HUD/consumable_background.png", 500, 50, 40.0f);
@@ -318,7 +346,7 @@ void	HUDWindow::consumable(void) {
  * This function is not finished at all.
  * So don't use it.
  * Thank's.
- * @todo: Make this function work normally.
+ * @todo Make this function work normally.
  */
 void	HUDWindow::minimap(void) {
 	HUDActor *minimap = new HUDActor();

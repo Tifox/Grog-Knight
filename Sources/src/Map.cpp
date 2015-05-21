@@ -26,15 +26,15 @@
 # include "Map.hpp"
 
 //! Basic constructor
-Map::Map(void) : _mapCount(0) {
+Map::Map(void) : _mapCount(0), _isUsed(0) {
 	return ;
 }
 
 //! Main constructor
 /**
- * @param: name The name of the map
+ * @param name The name of the map
  */
-Map::Map(std::string name) : _name(name), _mapCount(0) {
+Map::Map(std::string name) : _name(name), _mapCount(0), _isUsed(0) {
 	return ;
 }
 
@@ -47,15 +47,30 @@ Map::~Map(void) {
 
 void	Map::setHeight(int h) { this->_height = h; };
 void	Map::setWidth(int w) { this->_width = w; };
+void	Map::setXMid(int h) { this->_midX = h; };
+void	Map::setYMid(int w) { this->_midY = w; };
 void	Map::setImage(std::string n) { this->_image = n; };
 void	Map::setTileHeight(int h) { this->_tileHeight = h; };
 void	Map::setTileWidth(int w) { this->_tileWidth = w; };
 void	Map::setImageHeight(int h) { this->_imageHeight = h; };
 void	Map::setImageWidth(int w) { this->_imageWidth = w; };
-void	Map::setMap(std::vector<int> map) { this->_map = map; };
 void	Map::setProperties(std::map<int, std::map<std::string, Json::Value> > p) { this->_properties = p; };
 void	Map::addElement(Elements *e) { this->_elems.push_back(e); };
-void	Map::addMapElement(int n) { this->_map[this->_mapCount++] = n; };
+void	Map::addMapElement(int n) { ; };
+void	Map::setLayer(int n) {this->_layer = n; };
+void	Map::setMap(std::vector<int> map) { this->_map.push_back(map); };
+void	Map::setXStart(int x) { this->_xStart = x; };
+void	Map::setYStart(int y) { this->_yStart = y; };
+void	Map::setUsed(int n) { this->_isUsed = n; };
+
+/* GETTERS */
+
+int		Map::getHeight(void) { return this->_height; };
+int		Map::getWidth(void) { return this->_width; };
+int		Map::getXMid(void) { return (this->_xStart + (this->_width / 2)); };
+int		Map::getYMid(void) { return this->_yStart - (this->_height / 2); };
+int		Map::getXStart(void) { return this->_xStart; };
+int		Map::getYStart(void) { return this->_yStart; };
 
 //! Display the map
 /**
@@ -63,45 +78,85 @@ void	Map::addMapElement(int n) { this->_map[this->_mapCount++] = n; };
  * Lot's of stuff in this function, but the code's pretty clear, see source for more information
  */
 void	Map::display(void) {
-	float						x = 0, y = 0;
+	float						x, y;
+	std::list<std::vector <int> >::iterator		layers;
 	std::vector<int>::iterator	it;
 	Elements					*elem;
+	int							v = 0;
 
-	for (it = this->_map.begin(); it != this->_map.end(); it++, x++) {
-		if (x == this->_width) {
-			x = 0;
-			y--;
-		}
-
-		elem = new Elements();
-		elem->removeAttr("physic");
-		elem->addAttribute("image", this->_image);
-		elem->setFrame(*(it));
-		elem->setXStart(x);
-		elem->setYStart(y);
-		elem->setCutWidth(this->_tileWidth);
-		elem->setCutHeight(this->_tileHeight);
-		elem->setWidth(this->_imageWidth);
-		elem->setHeight(this->_imageHeight);
-		elem->addAttribute("type", "ground");
-		elem->addAttribute("spriteMap", "TRUE");
-		if (this->_properties.find(*it) == this->_properties.end()) {
-			elem->addAttribute("physic", "TRUE");
-		} else {
-			std::map<std::string, Json::Value>::iterator	it2;
-			int												isPhysic = 1;
-
-			for (it2 = this->_properties.find(*it)->second.begin();
-			it2 != this->_properties.find(*it)->second.end(); it2++) {
-				if (it2->first == "physic") {
-					isPhysic = 0;
-				} else if (it2->first == "hitbox") {
-					elem->setHitbox(it2->second.asString());
-				}
+	for (layers = this->_map.begin(); layers != this->_map.end(); layers++, v++) {
+		x = this->_xStart;
+		y = this->_yStart;
+		for (it = (*layers).begin(); it != (*layers).end(); it++, x++) {
+			if ((x - this->_xStart) >= this->_width) {
+				x = this->_xStart;
+				y--;
 			}
-			if (isPhysic)
-				elem->addAttribute("physic", "TRUE");
+			if (*(it) != 0) {
+				elem = new Elements();
+				elem->removeAttr("physic");
+				elem->addAttribute("image", this->_image);
+				elem->setFrame(*(it));
+				elem->setXStart(x);
+				elem->setYStart(y);
+				elem->setCutWidth(this->_tileWidth);
+				elem->setCutHeight(this->_tileHeight);
+				elem->setWidth(this->_imageWidth);
+				elem->setHeight(this->_imageHeight);
+				elem->addAttribute("type", "ground");
+				elem->addAttribute("spriteMap", "TRUE");
+				elem->SetLayer(v);
+				if (this->_properties.find(*it) == this->_properties.end()) {
+					elem->addAttribute("physic", "TRUE");
+				} else {
+					std::map<std::string, Json::Value>::iterator	it2;
+					int												isPhysic = 1, isAnimated = 0;
+
+					for (it2 = this->_properties.find(*it)->second.begin();
+							it2 != this->_properties.find(*it)->second.end(); it2++) {
+						if (it2->first == "physic") {
+							isPhysic = 0;
+						} else if (it2->first == "hitbox") {
+							elem->setHitbox(it2->second.asString());
+						} else if (it2->first == "animate") {
+							isAnimated = 1;
+							elem->addAttribute(it2->first, it2->second.asString());
+						} else {
+							elem->addAttribute(it2->first, it2->second.asString());
+						}
+					}
+					if (isPhysic == 1)
+						elem->addAttribute("physic", "TRUE");
+					if (isAnimated == 1) {
+						int		v = atoi(elem->getAttribute("next").c_str()), next, count;
+						float	time;
+
+						elem->addAnimation(v, std::atof(elem->getAttribute("time").c_str()));
+						v++;
+						for (count = 0; v != *(it); count++) {
+							next = time = -1;
+							if (count >= 30) {
+								Log::error("Seems like the frame " + std::to_string(*it) + 
+									" does not have an animation loop end...");
+							}
+								for (it2 = this->_properties.find(v)->second.begin();
+										it2 != this->_properties.find(v)->second.end(); it2++) {
+									if (it2->first == "time")
+										time = std::atof(it2->second.asString().c_str());
+									if (it2->first == "next") {
+										next = atoi(it2->second.asString().c_str());
+									}
+								}
+								if (time == -1 || next == -1)
+									Log::warning("An animated element ("+ std::to_string(v) +") is missing the params {next, time}");
+							   else
+									elem->addAnimation(next, time);
+								v = next + 1;
+						}
+					}
+				}
+				elem->display();
+			}
 		}
-		elem->display();
 	}
 }

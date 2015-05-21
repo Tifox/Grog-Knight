@@ -31,14 +31,14 @@
  * Basic Constructor
  * This constructor sets a lots of attributes, like the sprite, the position. etc...
  * That also init the physics.
- * @todo: This function setting attributes the hard-way. Maybe a name based config, like Characters,
+ * @todo This function setting attributes the hard-way. Maybe a name based config, like Characters,
  * would be better ?
  */
 Consumable::Consumable(void) {
 	this->addAttribute("type2", "Consumable");
 	this->addAttribute("type3", "HP");
 	this->addAttribute("value", "50");
-	this->SetSprite("Resources/Images/HUD/heart.png");
+	this->SetSprite("Resources/Images/heart.png");
 	this->SetPosition(9, -4);
 	this->InitPhysics();
 	theWorld.Add(this);
@@ -51,7 +51,7 @@ Consumable::Consumable(void) {
  * This constructor sets a lots of attributes, like the sprite, the position. etc...
  * That also init the physics.
  * This constructor will use the infos contained in enemy in order to set the different infos in it
- * @todo: This function setting attributes the hard-way. Maybe a name based config, like Characters,
+ * @todo This function setting attributes the hard-way. Maybe a name based config, like Characters,
  * would be better ?
  */
 Consumable::Consumable(Characters* c) {
@@ -59,25 +59,33 @@ Consumable::Consumable(Characters* c) {
 	if (rand() % 2 == 1) {
 	  this->addAttribute("type3", "HP");
 	  this->addAttribute("value", "50");
-	  this->SetSprite("Resources/Images/HUD/heart.png");
+	  this->SetSprite("Resources/Images/heart.png");
 	}
 	else {
 	  this->addAttribute("type3", "gold");
 	  this->addAttribute("value", "50");
-	  this->SetSprite("Resources/Images/HUD/gold.png");
+	  this->SetSprite("Resources/Images/gold.png");
 	}
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	Game::bodiesToCreate.push_back(this);
 }
+
+//! Third override, used to create consumable based on a Characters* position)
+/**
+ * Mostly called for looting, after the death of a mob
+ * @param type - gold/hp
+ * @param value - how much
+ * @param c - the Character, for the position and such
+ */
 
 Consumable::Consumable(std::string type, std::string value, Characters* c) {
 	this->addAttribute("type2", "Consumable");
 	this->addAttribute("type3", type);
 	this->addAttribute("value", value);
 	if (type == "HP")
-		this->SetSprite("Resources/Images/HUD/heart.png");
+		this->SetSprite("Resources/Images/heart.png");
 	else
-		this->SetSprite("Resources/Images/HUD/gold.png");
+		this->SetSprite("Resources/Images/gold.png");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	Game::bodiesToCreate.push_back(this);
 }
@@ -88,7 +96,7 @@ Consumable::Consumable(std::string type, std::string value, Characters* c) {
  * /!\ This function is called just before a collision
  * @param: elem The Elements who collide.
  * @param: contact The Box2D contact object. See Box2D docs for more information.
- * @todo: This function is actually doing nothing.
+ * @todo This function is actually doing nothing.
  */
 void	Consumable::BeginContact(Elements *elem, b2Contact *contact) {
 }

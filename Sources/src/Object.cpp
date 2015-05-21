@@ -42,9 +42,9 @@ Object::Object(void) {
 //! Overload from b2Body's BeginContact
 /**
  * Collision begin callback
- * @param: elem (Elements *)
- * @param: contact (b2Contact *)
- * @note: This function is called just before a collision
+ * @param elem (Elements *)
+ * @param contact (b2Contact *)
+ * @note This function is called just before a collision
  */
 void	Object::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "Hero"){

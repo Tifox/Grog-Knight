@@ -23,20 +23,27 @@
  * Vincent Rey <vrey@student.42.fr>
  */
 
-//! NOT CURRENTLY USED - MIGHT GET REMOVED
-
 #include "../inc/ContactFilter.hpp"
 
 
 bool	ContactFilter::ShouldCollide(b2Fixture* fixA, b2Fixture* fixB) {
 
-// 	std::string attrA = static_cast<Elements*>(fixA->GetBody()->GetUserData())->getAttributes()["type"];
-// 	std::string attrB = static_cast<Elements*>(fixB->GetBody()->GetUserData())->getAttributes()["type"];
-
-// 	if ((attrA == "Hero" || attrB == "Hero") && ((attrA == "heroWeapon" || attrB == "heroWeapon") || (attrA == "heroProjectile" || attrB == "heroProjectile"))) {
-// 		return false;
-// 	}
-// 	else return true;
-// }
+	Elements* attrA = static_cast<Elements*>(fixB->GetBody()->GetUserData());
+	Elements* attrB = static_cast<Elements*>(fixA->GetBody()->GetUserData());
+	if (static_cast<Elements*>(fixA->GetBody()->GetUserData())->getAttribute("type") == "Hero") {
+		Elements* attrA = static_cast<Elements*>(fixA->GetBody()->GetUserData());
+		Elements* attrB = static_cast<Elements*>(fixB->GetBody()->GetUserData());
+	}
+	if (attrA->getAttribute("type") == "Hero" &&
+		attrB->getAttribute("type") == "ground" &&
+		attrB->getAttribute("speType") == "canCross") {
+		if (attrA->GetBody()->GetWorldCenter().y - 1 <
+			attrB->GetBody()->GetWorldCenter().y) {
+			return false;
+		}
+		else if (static_cast<Characters*>(attrA)->getOrientation() == Characters::DOWN) {
+			return false;
+		}
+	}
 	return true;
 }

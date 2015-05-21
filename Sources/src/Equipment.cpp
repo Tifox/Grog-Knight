@@ -30,7 +30,7 @@
 /**
  * The basic constructor.
  * In this constructor, we get the sprite and InitPhysics.
- * @todo: The position is actually in the hard-way. Config file needed.
+ * @todo The position is actually in the hard-way. Config file needed.
  */
 Equipment::Equipment(void): Object() {
 	this->addAttribute("type2", "Equipment");
@@ -60,6 +60,7 @@ Equipment::Equipment(Characters* c): Object() {
 
 Equipment::Equipment(Weapon *w, Characters* c): Object() {
 	this->addAttribute("type2", "Equipment");
+	this->addAttribute("type3", "Weapon");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_weapon = new Weapon(w);
 	this->SetSprite(this->_weapon->getSprite());
@@ -68,6 +69,32 @@ Equipment::Equipment(Weapon *w, Characters* c): Object() {
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	Game::bodiesToCreate.push_back(this);
 }
+
+
+Equipment::Equipment(Armor *w, Characters* c): Object() {
+	this->addAttribute("type2", "Equipment");
+	this->addAttribute("type3", "Armor");
+	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
+	this->_armor = new Armor(w);
+	this->SetSprite(this->_armor->getSprite());
+	this->SetName("loot");
+	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
+	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
+	Game::bodiesToCreate.push_back(this);
+}
+
+Equipment::Equipment(Ring *w, Characters* c): Object() {
+	this->addAttribute("type2", "Equipment");
+	this->addAttribute("type3", "Ring");
+	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
+	this->_ring = new Ring(w);
+	this->SetSprite(this->_ring->getSprite());
+	this->SetName("loot");
+	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
+	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
+	Game::bodiesToCreate.push_back(this);
+}
+
 
 //! Destructor
 /*
@@ -81,8 +108,8 @@ Equipment::~Equipment(void) {
 /**
  * The contact begin function
  * /!\ This function is actually called just BEFORE a collision
- * @param: elem The Elements who collide with.
- * @param: contact The Box2D contact object.
+ * @param elem The Elements who collide with.
+ * @param contact The Box2D contact object.
  */
 void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
 	// if (elem->getAttributes()["type"] == "Hero"){
@@ -94,8 +121,8 @@ void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
 /**
  * End of contact function
  * /!\ This function is called just after the collision is over,
- * @param: elem The other element
- * @param: contact The Box2D contact object
+ * @param elem The other element
+ * @param contact The Box2D contact object
  */
 void	Equipment::EndContact(Elements *elem, b2Contact *contact) {
 	// if (elem->getAttributes()["type"] == "Hero"){
@@ -106,10 +133,14 @@ void	Equipment::EndContact(Elements *elem, b2Contact *contact) {
 /*GETTERS*/
 Weapon*		Equipment::getWeapon(void) { return this->_weapon; }
 
+Armor*		Equipment::getArmor(void) { return this->_armor; }
+
+Ring*		Equipment::getRing(void) { return this->_ring; }
+
 //! Intern broadcasts function.
 /**
  * The Receive Message function.
- * @param: m The Broadcasted message. (See Angel2D docs for more info.)
+ * @param m The Broadcasted message. (See Angel2D docs for more info.)
  */
 void		Equipment::ReceiveMessage(Message *m) {
 	if (m->GetMessageName() == "DeleteEquipment" + this->GetName())

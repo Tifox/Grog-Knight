@@ -40,20 +40,21 @@ Enemy::Enemy(void) : Characters("Enemy") {
  * @param str Name of the new Enemy
  */
 Enemy::Enemy(std::string str) : Characters(str) {
-	this->setXStart(15);
-	this->setYStart(-3);
+	this->setXStart(13);
+	this->setYStart(-19);
 	this->SetName("Enemy");
-		theSwitchboard.SubscribeTo(this, "startPathing" + this->GetName());
-		theSwitchboard.DeferredBroadcast(new Message("startPathing" + this->GetName()), 0.2f);
+	theSwitchboard.SubscribeTo(this, "startPathing" + this->GetName());
+	theSwitchboard.DeferredBroadcast(new Message("startPathing" + this->GetName()), 0.2f);
 	if (str == "Enemy") {
 		this->setXStart(5);
-		this->setYStart(-5);
+		this->setYStart(-19);
 	} else {
 		// ????
 	}
 	this->addAttribute("type", "Enemy");
 	this->addAttribute("name", str);
 	this->addAttribute("enemy", "1");
+	this->_isDead = false;
 	this->display();
 	return ;
 }
@@ -91,8 +92,8 @@ void	Enemy::actionCallback(std::string name, int status) {
 /**
  * Collision begin callback
  * /!\ This function is called just before a collision
- * @param: elem The Elements who collide
- * @param: contact The Box2D contact object
+ * @param elem The Elements who collide
+ * @param contact The Box2D contact object
  */
 void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 	Characters::BeginContact(m, contact);
@@ -106,6 +107,9 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 				this->ApplyLinearImpulse(Vector2(-w->getPushback(), w->getPushback()), Vector2(0,0));
 			}
 		}
+		else {
+			this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+		}
 	} else if (m->getAttributes()["type"] == "HeroProjectile") {
 		if (this->takeDamage(p->getDamage()) == 1) {
 			if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
@@ -113,6 +117,9 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 			} else {
 				this->ApplyLinearImpulse(Vector2(-p->getPushback(), p->getPushback()), Vector2(0,0));
 			}
+		}
+		else {
+			this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		}
 	} else if (m->getAttributes()["type"] == "Hero") {
 		if (this->_orientation == LEFT)
@@ -124,6 +131,20 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 		} else {
 			this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
 		}
+		this->actionCallback("heroHit", 0);
+	}
+	else if (m->getAttribute("type") == "Enemy") {
+		if (this->_orientation == LEFT)
+			this->_orientation = RIGHT;
+		else
+			this->_orientation = LEFT;
+	}
+	else if (m->getAttribute("speType") == "spikes") {
+		if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
+			this->ApplyLinearImpulse(Vector2(5, 5), Vector2(0,0));
+		} else {
+			this->ApplyLinearImpulse(Vector2(-5, 5), Vector2(0,0));
+		}
 	}
 }
 
@@ -134,13 +155,26 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
  * @param damage The damage amount
  */
 int		Enemy::takeDamage(int damage) {
+	this->actionCallback("takeDamage", 0);
 	if (this->_hp - damage <= 0) {
-		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-		new Loot(this);
-		this->PlaySpriteAnimation(0.1, SAT_OneShot, 5, 5, "destroyEnemy");
+		this->_isDead = true;
+		this->actionCallback("death", 0);
+		this->_setCategory("death");
+		theSwitchboard.SubscribeTo(this, "setToStatic" + this->GetName());
+		theSwitchboard.Broadcast(new Message("setToStatic" + this->GetName()));
+		this->GetBody()->ResetMassData();
+		this->GetBody()->GetFixtureList()->SetSensor(true);
+		this->GetBody()->SetGravityScale(0);
+		this->LoadSpriteFrames(this->_getAttr("newSprites").asString());
+		this->changeSizeTo(Vector2(this->_getAttr("size").asInt(),
+					this->_getAttr("size").asInt()));
+		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+				this->_getAttr("beginFrame").asInt(),
+				this->_getAttr("endFrame").asInt());
 		theSwitchboard.SubscribeTo(this, "destroyEnemy");
-		theSwitchboard.DeferredBroadcast(new Message("destroyEnemy"), 0.1);
+		theSwitchboard.DeferredBroadcast(new Message("destroyEnemy"), 0.5);
 		theSwitchboard.UnsubscribeFrom(this, "startPathing" + this->GetName());
+		theSwitchboard.UnsubscribeFrom(this, "setToStatic" + this->GetName());
 		return 0;
 	}
 	this->_hp -= damage;

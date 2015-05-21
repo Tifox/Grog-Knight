@@ -43,7 +43,6 @@ Hitbox::Hitbox(void) {
 		if (dirEntry && strcmp(dirEntry->d_name, ".") && strcmp(dirEntry->d_name, "..")) {
 			iss.str(dirEntry->d_name);
 			std::getline(iss, res, '.');
-			Log::info("Parsing " + res + " hitbox");
 			this->_hitboxes[res] = this->_getPolygon(res);
 		}
 	}
@@ -52,7 +51,7 @@ Hitbox::Hitbox(void) {
 //! Readability function, follow-up from the default constructor
 /**
  * Checks for the number of vertices in the hitbox json file
- * @param res std::string (the location of the file)
+ * @param res the location of the file
  */
 b2PolygonShape	Hitbox::_getPolygon(std::string res) {
 	std::string         file;
@@ -146,9 +145,9 @@ b2PolygonShape	Hitbox::_parseVertices(int v, std::vector<std::vector<int> > map)
 //! Always return 1, cause its funnier
 /**
  * Function that checks if requested hitbox does exists, as the object cannot be null
- * @param n std::string (name of the hitbox)
+ * @param n name of the hitbox
  * Do not call getHitbox if this function returns false
- * @todo: yeah...
+ * @todo yeah...
  */
 int			Hitbox::checkExists(std::string n) {
 	return 1;
@@ -157,7 +156,7 @@ int			Hitbox::checkExists(std::string n) {
 //! Returns the ordered vertices in order to create the hitbox when necessary
 /**
  * Called mostly by characters, weapons, or objects to load a pre-designed hitbox
- * @param n std::string (name of the hitbox)
+ * @param n name of the hitbox
  */
 b2PolygonShape	Hitbox::getHitbox(std::string n) {
 	return this->_hitboxes[n];

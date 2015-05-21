@@ -36,8 +36,12 @@ public:
 	Equipment();
 	Equipment(Characters*);
 	Equipment(Weapon*, Characters*);
+	Equipment(Armor*, Characters*);
+	Equipment(Ring*, Characters*);
 	~Equipment();
 
+	Ring*	 	getRing(void);
+	Armor*	 	getArmor(void);
 	Weapon* 	getWeapon(void);
 	void		BeginContact(Elements *elem, b2Contact *contact);
 	void		EndContact(Elements *elem, b2Contact *contact);
@@ -45,6 +49,8 @@ public:
 
 private:
 	Weapon*			_weapon;
+	Armor*			_armor;
+	Ring*			_ring;
 };
 
 #endif

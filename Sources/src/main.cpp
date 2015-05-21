@@ -45,10 +45,16 @@ class MouseDebugger: public MouseListener {
 		void MouseDownEvent(Vec2i sc, MouseButtonInput button) {
 			Vector2 w;
 			w = MathUtil::ScreenToWorld(sc.X, sc.Y);
+			std::cout << w.X << ":" << w.Y << std::endl;
+
 		};
 };
 
 int		main(int ac, char **av) {
+	if (ac > 1 && (std::string(av[1]) == "--debug")) {
+		Log::setLog(1);
+	}
+
 	Game	*game = new Game();
 	Game::hList = new Hitbox();
 	Menu	*menu = new Menu();
@@ -56,7 +62,8 @@ int		main(int ac, char **av) {
 	srand(time(NULL));
 	game->readMaps();
 	MouseDebugger l;
-	if (ac > 1 && (std::string(av[1]) == "nomenu")) {
+	
+	if (ac > 1 && (std::string(av[1]) == "--no-menu")) {
 		game->start();
 		theWorld.StartGame();
 	}

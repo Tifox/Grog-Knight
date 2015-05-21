@@ -52,6 +52,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_item = nullptr;
 	this->_isAttacking = 0;
 	this->_gold = 0;
+	this->SetLayer(100);
 }
 
 //! Basic destructor
@@ -187,6 +188,10 @@ void	Characters::ReceiveMessage(Message *m) {
 		theSwitchboard.UnsubscribeFrom(this, "colorDamageBlink1");
 		theSwitchboard.UnsubscribeFrom(this, "colorDamageBlink2");
 		this->_invincibility = false;
+		if (this->_enemiesTouched.size() > 0) {
+			static_cast<Hero*>(this)->_takeDamage(this->_enemiesTouched.front());
+			this->_enemiesTouched.clear();
+		}
 		this->SetColor(1,1,1,1);
 	}
 	else if (m->GetMessageName() == "colorDamageBlink1") {
@@ -198,7 +203,7 @@ void	Characters::ReceiveMessage(Message *m) {
 	else if (m->GetMessageName() == "colorDamageBlink2") {
 		if (this->_invincibility == true) {
 			theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
-			//	this->SetColor(1,0,0,0.9f);
+			this->SetColor(1,0,0,0.9f);
 		}
 	}
 	else if (m->GetMessageName() == "enableAttackHitbox") {
@@ -206,6 +211,16 @@ void	Characters::ReceiveMessage(Message *m) {
 	}
 	else if (m->GetMessageName() == "disableAttackHitbox") {
 	  this->_isAttacking = false;
+	}
+	else if (m->GetMessageName() == "moveHeroDown") {
+		if (this->_latOrientation == RIGHT && this->_canMove && this->_isAttacking == false)
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+									  this->_getAttr("jump", "fallingFrame_right").asInt(),
+									  this->_getAttr("jump", "endFrame_right").asInt() - 3, "jump");
+		else if (this->_latOrientation == LEFT && this->_canMove && this->_isAttacking == false)
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+									  this->_getAttr("jump", "fallingFrame_left").asInt(),
+									  this->_getAttr("jump", "endFrame_left").asInt() - 3, "jump");
 	}
 	else if (m->GetMessageName() == "startPathing" + this->GetName()) {
 		if (this->_grounds.size() > 0) {
@@ -222,7 +237,12 @@ void	Characters::ReceiveMessage(Message *m) {
 		return;
 	}
 	else if (m->GetMessageName() == "destroyEnemy") {
+		new Loot(this);
 		this->_destroyEnemy();
+		return;
+	}
+	else if (m->GetMessageName() == "setToStatic" + this->GetName()) {
+		this->GetBody()->SetType(b2_staticBody);
 		return;
 	}
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
@@ -264,9 +284,9 @@ void	Characters::ReceiveMessage(Message *m) {
 void	Characters::AnimCallback(String s) {
 	this->_setCategory("breath");
 	if (s == "base") {
-		this->changeSizeTo(Vector2(1, 1));
 		this->_isAttacking = 0;
-		if (this->_isRunning == 0) {
+		this->changeSizeTo(Vector2(1, 1));
+		if (this->_isRunning == 0 && this->_isAttacking == 0) {
 			if (this->_latOrientation == LEFT) {
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 				this->_getAttr("beginFrame_left").asInt(),
@@ -303,6 +323,8 @@ void	Characters::AnimCallback(String s) {
  */
 void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "ground") {
+		if (this->_isAttacking == 0)
+			this->changeSizeTo(Vector2(1, 1));
 		if (this->GetBody()->GetWorldCenter().y - 0.905 >= elem->GetBody()->GetWorldCenter().y) {
 			if (this->_grounds.size() > 0)
 				contact->SetEnabled(false);
@@ -540,8 +562,22 @@ void	Characters::_up(int status) {
  */
 
 void	Characters::_down(int status) {
-	if (status == 1)
+	if (status == 1) {
 		this->_orientation = DOWN;
+		if (this->_grounds.size() > 0) {
+			std::list<Elements*>::iterator it;
+			for (it = this->_grounds.begin(); it != this->_grounds.end(); it++) {
+				if ((*it)->getAttribute("speType") != "canCross")
+					return;
+			}
+			theSwitchboard.SubscribeTo(this, "moveHeroDown");
+			theSwitchboard.DeferredBroadcast(new Message("moveHeroDown"), 0.1);
+			b2PolygonShape box = Game::hList->getHitbox(this->_hitbox);
+			b2Shape *shape = &box;
+			this->GetBody()->DestroyFixture(this->GetBody()->GetFixtureList());
+			this->GetBody()->CreateFixture(shape, 1);
+		}
+	}
 	else
 	  this->_orientation = this->_latOrientation;
 }
@@ -557,7 +593,7 @@ void	Characters::_attack(int status) {
 	this->_setCategory("attack");
 	if (status == 1 && this->_weapon->attackReady() == 1) {
 		this->_isAttacking = 1;
-		theSwitchboard.DeferredBroadcast(new Message("enableAttackHitbox"), 0.15f);
+		theSwitchboard.DeferredBroadcast(new Message("enableAttackHitbox"), 0.05f);
 	}
 }
 
@@ -571,7 +607,19 @@ void	Characters::_attack(int status) {
 void	Characters::_pickupItem(int status) {
 	if (this->_item == nullptr)
 		return;
-	this->equipWeapon(static_cast<Equipment*>(this->_item)->getWeapon());
+	if (this->_item->getAttribute("type3") == "Weapon"){
+		unequipWeapon();
+		this->equipWeapon(static_cast<Equipment*>(this->_item)->getWeapon());
+	} 
+	else if (this->_item->getAttribute("type3") == "Ring") {
+		unequipRing();
+		this->equipRing(static_cast<Equipment*>(this->_item)->getRing());
+	}
+	else if (this->_item->getAttribute("type3") == "Armor")
+	{
+		unequipArmor();
+		this->equipArmor(static_cast<Equipment*>(this->_item)->getArmor());
+	}
 	theSwitchboard.Broadcast(new Message("DeleteEquipment" + this->_item->GetName()));
 	this->_item = nullptr;
 
@@ -580,11 +628,63 @@ void	Characters::_pickupItem(int status) {
 //! Equip a weapon
 /**
  * Equip a new weapon to the Character, and update the HUD.
- * @weapon The Weapon object
+ * @param The Weapon object
  */
 void	Characters::equipWeapon(Weapon* weapon) {
 		this->_weapon = new Weapon(weapon);
 		Game::getHUD()->items(this->_weapon);
+}
+
+//! Unequip a weapon
+/**
+ * Unequip old weapon to the Character, and update the HUD.
+ * @param The Weapon object
+ */
+void	Characters::unequipWeapon(void) { }
+
+
+//! Equip a armor
+/**
+ * Equip a new armor to the Character, and update the HUD.
+ * @param The armor object
+ */
+void	Characters::equipArmor(Armor* armor) {
+	this->_armor = new Armor(armor);
+	if (this->_armor && this->_armor->getBonus() != nullptr && this->_armor->getBonus()->getType() == Bonus::BonusType::HP_BUFF)
+		this->_maxHp += this->_armor->getBonus()->getAmount();
+	Game::getHUD()->items(this->_armor);
+}
+
+//! Unequip a armor
+/**
+ * Unequip old armor to the Character, and update the HUD.
+ * @param void
+ */
+void	Characters::unequipArmor(void) {
+	if (this->_armor && this->_armor->getBonus() != nullptr && this->_armor->getBonus()->getType() == Bonus::BonusType::HP_BUFF)
+		this->_maxHp -= this->_armor->getBonus()->getAmount();
+}
+
+//! Equip a ring
+/**
+ * Equip a new ring to the Character, and update the HUD.
+ * @param The ring object
+ */
+void	Characters::equipRing(Ring* ring) {
+	this->_ring = new Ring(ring);
+	if (this->_ring && this->_ring->getBonus() != nullptr && this->_ring->getBonus()->getType() == Bonus::BonusType::HP_BUFF)
+		this->_maxHp += this->_ring->getBonus()->getAmount();
+	Game::getHUD()->items(this->_ring);
+}
+
+//! Unequip a ring
+/**
+ * Unequip old ring to the Character, and update the HUD.
+ * @param The ring object
+ */
+void	Characters::unequipRing(void) {
+	if (this->_ring && this->_ring->getBonus() != nullptr && this->_ring->getBonus()->getType() == Bonus::BonusType::HP_BUFF)
+		this->_maxHp -= this->_ring->getBonus()->getAmount();
 }
 
 //! Set basics hp

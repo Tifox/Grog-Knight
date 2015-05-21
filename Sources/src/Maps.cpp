@@ -33,7 +33,7 @@ Maps::Maps(void) {
 //! Main constructor
 /**
  * Constructor with a map directory
- * @param: directory The path of the directory
+ * @param directory The path of the directory
  */
 Maps::Maps(std::string directory) : _directory(directory) {
 	return ;
@@ -42,6 +42,25 @@ Maps::Maps(std::string directory) : _directory(directory) {
 //! Base Deconstructor
 Maps::~Maps(void) {
 	return ;
+}
+
+//! Reverse strncmp
+/**
+ * strncmp, but start from the end
+ * This function is used to determine whether a file is a json or not
+ * @param str The first string
+ * @param str2 The second string
+ * @param n The number of bits of comparison
+ * @return 1 or 0, 0 if match (FREE BSD style)
+ */
+int		Maps::rstrncmp(char *str, char *str2, int n) {
+	int		i, j;
+
+	for (i = (strlen(str) - 1), j = (strlen(str2) - 1); str[i] && (i - strlen(str)) > -(n) 
+		&& str[i] == str2[j]; i--, j--);
+	if ((i - strlen(str)) == -(n))
+		return 0;
+	return 1;
 }
 
 //! Read map function
@@ -56,18 +75,23 @@ void	Maps::readMaps(void) {
 	std::stringstream 	buffer;
 	std::ifstream		fd;
 
+	Log::info("Reading Maps...");
 	if (!dir)
 		std::cout << "Error at opening dir" << std::endl;
 	for (; ent = readdir(dir); ) {
-		if (ent->d_name[0] != '.') {
+		if (ent->d_name[0] != '.' && !this->rstrncmp(ent->d_name, ".json", 6)) {
 			file = "./Maps/" + std::string(ent->d_name);
 			fd.open(file.c_str());
 			buffer << fd.rdbuf();
+			//std::cout << file.c_str() << std::endl;
 
+			this->_root.clear();
 			if (!this->_reader.parse(buffer.str(), this->_root))
 				std::cout << this->_reader.getFormattedErrorMessages() << std::endl;
 			else
 				this->_getMap();
+			buffer.str("");
+			fd.close();
 		}
 	}
 }
@@ -99,18 +123,86 @@ void	Maps::_getMap(void) {
 		vtr = itr[index].get("tileproperties", "");
 		for (j = vtr.begin(); j != vtr.end(); j++) {
 			for (k = (*j).begin(); k != (*j).end(); k++)
-				tileproperties[atoi(j.key().asString().c_str())][k.key().asString()] = *k;
+				tileproperties[atoi(j.key().asString().c_str()) + 1][k.key().asString()] = *k;
 		}
 	}
 	map->setProperties(tileproperties);
-	itr = this->_root["layers"][0]["data"];
-	for (index = 0; index < itr.size(); index++)
-		intMap.insert(intMap.begin() + index, itr[index].asInt());
-	map->setMap(intMap);
-	this->_maps.push_back(map);
+	for (v = 0; v < this->_root["layers"].size(); v++) {
+		itr = this->_root["layers"][v]["data"];
+		for (index = 0; index < itr.size(); index++)
+			intMap.insert(intMap.begin() + index, itr[index].asInt());
+		map->setMap(intMap);
+		intMap.clear();
+	}
+	this->_maps[atoi(this->_root["properties"].get("number", 0).asString().c_str())] = map;
+	int			n = 0;
+	for (j = this->_root["properties"].begin(); j != this->_root["properties"].end(); j++) {
+		if (j.key().asString() == "doorUp")
+			n++;
+		if (j.key().asString() == "doorRight")
+			n += 2;
+		if (j.key().asString() == "doorDown")
+			n += 4;
+		if (j.key().asString() == "doorLeft")
+			n += 8;
+	}
+	if (n != 0)
+		this->_mapByDoor[n].push_back(map);
+
+	this->_root.clear();
 }
 
-//! Display the first map at the top of list
-void	Maps::firstOne(void) {
-	this->_maps.front()->display();
+
+
+//! Display an entire level
+void	Maps::displayLevel(std::vector<std::vector<int> > map) {
+	int		i, x, y, rX, rY, maxX, maxY;
+	Map		*tmp;
+
+	for (maxX = maxY = 0; maxY < (map.size() - 1); maxY++) {
+		if ((map[maxY].size() - 1) > maxX)
+			maxX = map[maxY].size() - 1;
+		this->_XYMap.push_back(std::map<int, Map *>());
+	}
+	// Last allocation (y <= maxY), so + 1
+	this->_XYMap.push_back(std::map<int, Map *>());
+
+	for (x = y = rX = rY = 0; y <= maxY; x++) {
+		if (x > maxX) {
+			y++;
+			rY -= 16;
+			x = rX = 0;
+			if (y > maxY)
+				break;
+		}
+		i = map[y][x];
+		if (i != 0) {
+			tmp = this->getMapByDoor(i);
+			tmp->setXStart(rX);
+			tmp->setYStart(rY);
+			tmp->display();
+			this->_XYMap[y][x] = tmp;
+		} else
+			this->_XYMap[y][x] = nullptr;
+		rX += 27;
+	}
 }
+
+Map		*Maps::getMapByDoor(int n) {
+	int		random, i;
+	std::list<Map *>::iterator it;
+
+	if (n > 15)
+		Log::error("The door size is too high ! (" + std::to_string(n) + " > 15)");
+	if (this->_mapByDoor[n].size() == 0)
+		Log::error("A map with a " + std::to_string(n) + " score is missing !");
+	if (this->_mapByDoor[n].size() == 1)
+		return this->_mapByDoor[n].front();
+	random = rand() % this->_mapByDoor[n].size();
+	for (i = 0, it = this->_mapByDoor[n].begin(); it != this->_mapByDoor[n].end() && i < random; 
+			i++, it++);
+	return *(it);
+}
+
+
+std::vector<std::map<int, Map *> >	Maps::getMapXY(void) { return this->_XYMap; };

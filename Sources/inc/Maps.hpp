@@ -51,7 +51,11 @@ class Maps {
 		~Maps();
 
 		void	readMaps(void);
-		void	firstOne(void);
+		int		rstrncmp(char *str, char *str2, int n);
+		std::map<int, Map *>	_maps;
+		Map		*getMapByDoor(int n);
+		void	displayLevel(std::vector<std::vector<int> > map);
+		std::vector<std::map<int, Map *> >	getMapXY(void);
 
 	private:
 		void	_getMap(void);
@@ -59,7 +63,8 @@ class Maps {
 		std::string			_directory;
 		Json::Value			_root;
 		Json::Reader		_reader;
-		std::list<Map *>	_maps;
+		std::map<int, std::list<Map *> >	_mapByDoor;
+		std::vector<std::map<int, Map *> > _XYMap;
 };
 
 # include "Elements.hpp"

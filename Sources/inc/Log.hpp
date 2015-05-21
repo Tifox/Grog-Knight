@@ -39,6 +39,10 @@ class	Log {
 		static void		info(std::string name);
 		static void		warning(std::string name);
 		static void		error(std::string name);
+		static void		setLog(int n);
+
+	private:
+		static int		isLog;
 
 };
 

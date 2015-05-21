@@ -35,7 +35,7 @@
 #include "../Infrastructure/Interval.h"
 #include "../Messaging/Message.h"
 
-#define MAX_SPRITE_FRAMES 64
+#define MAX_SPRITE_FRAMES 120
 #define CIRCLE_DRAW_SECTIONS 32
 
 /**

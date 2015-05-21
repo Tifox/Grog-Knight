@@ -41,7 +41,8 @@ Log::~Log(void) {
  * @param str The string to display
  */
 void		Log::info(std::string str) {
-	std::cout << "\033[1;34m[INFO]\033[0m " << str << std::endl;
+	if (Log::isLog == 1)
+		std::cout << "\033[1;34m[INFO]\033[0m " << str << std::endl;
 }
 
 //! Print a warning log
@@ -62,3 +63,19 @@ void		Log::error(std::string str) {
 	std::cout << "\033[1;31m[ERROR]\033[0m " << str << std::endl;
 	exit(1);
 }
+
+//! Set the debug prompt as false
+/**
+ * Disable the debug.
+ * 1 = Debug, 0 = None
+ * @param n 1 / 0
+ */
+void	Log::setLog(int n) {
+	if (n != 0 && n != 1)
+		Log::warning("The argument of setLog is invalid (0 / 1)");
+	else
+		Log::isLog = n;
+	std::cout << "Setting Log at " << n << std::endl;
+}
+
+int Log::isLog = 0;

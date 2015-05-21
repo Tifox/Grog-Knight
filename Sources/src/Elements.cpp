@@ -102,15 +102,15 @@ std::string	Elements::getAttribute(std::string name) {
 void	Elements::setFrameSprite(int frame) {
 	int imgHeight = this->_height;
 	int imgWidth = this->_width;
-	int	cutWidth = 16, cutHeight = 16;
+	int	cutWidth = 32, cutHeight = 32;
 	float nbPerRow = imgWidth / cutWidth;
 	float nbPerColumn = imgHeight / cutHeight;
 	float fY = (1.0f / float(imgHeight)) * float(cutHeight);
 	float fX = (1.0f / float(imgWidth)) * float(cutWidth);
 	int	i;
 	float tY = 1.0f - fY;
-	float tX = fX;
-	float tX2 = 0.0f;
+	float tX = 0.0f;
+	float tX2 = fX;
 	float tY2 = 1.0f;
 	for (i = 0; i < frame; i++) {
 		tX += fX;
@@ -122,13 +122,16 @@ void	Elements::setFrameSprite(int frame) {
 			tY2 -= fY;
 		}
 	}
-	this->SetUVs(Vector2(tX, tY), Vector2(tX2, tY2));
+   if (frame < nbPerColumn)
+		this->SetUVs(Vector2(tX + 0.01, tY + 0.01), Vector2(tX2 - 0.01, tY2 - 0.01));
+	else
+		this->SetUVs(Vector2(tX + 0.01, tY + 0.01), Vector2(tX2 - 0.01, tY2 - 0.01));
 }
 
 //! Display an element
 /**
  * Load physics on element, and add him to the World.
- * @fixme This function is quite nasty, maybe a rework on it should be better.
+ * @todo This function is quite nasty, maybe a rework on it should be better.
  */
 void	Elements::display(void) {
 	this->SetPosition(this->_XStartPos, this->_YStartPos);
@@ -139,10 +142,10 @@ void	Elements::display(void) {
 		this->LoadSpriteFrames(this->getAttribute("spritesFrame"));
 	} else if (this->getAttribute("spriteMap") != "") {
 		this->SetSprite(this->getAttribute("image"));
-		this->setFrameSprite(this->_frame - 2);
+		this->setFrameSprite(this->_frame - 1);
 	} else
 		this->SetColor(0, 0, 0, 0);
-	this->SetSize(1.0f);
+	this->SetSize(1.00f);
 	this->SetDrawShape(ADS_Square);
 	if (this->getAttribute("type") == "wall" || this->getAttribute("type") == "ground") {
 		this->SetDensity(0);
@@ -161,6 +164,11 @@ void	Elements::display(void) {
 	if (this->getAttribute("physic") != "") {
 		this->InitPhysics();
 	}
+
+	if (this->getAttribute("animate") != "") {
+		this->_animIt = this->_animationList.begin();
+		this->PlaySpriteAnimation((*this->_animIt)->time, SAT_OneShot, (*this->_animIt)->frame, (*this->_animIt)->frame, "baseAnimation");
+	}
 	theWorld.Add(this);
 }
 
@@ -177,3 +185,29 @@ void	Elements::setHitbox(std::string n) { this->_hitbox = n; this->_hitboxType =
 
 /* GETTERS */
 std::map<std::string, std::string>	Elements::getAttributes(void) { return this->_attributes; };
+bool								Elements::isDead(void) { return this->_isDead; }
+
+//! Animation callback
+/**
+ * The animation callback function
+ * This function is only used here for block / background purposes,
+ * And be overriden in Characters childs.
+ * @param: s The Animation name.
+ */
+void	Elements::AnimCallback(String s) {
+	if (s == "baseAnimation") {
+		this->_animIt++;
+		if (this->_animIt == this->_animationList.end())
+			this->_animIt = this->_animationList.begin();
+		this->PlaySpriteAnimation((*this->_animIt)->time, SAT_OneShot, (*this->_animIt)->frame, (*this->_animIt)->frame, "baseAnimation");
+		this->setFrameSprite((*this->_animIt)->frame);
+		
+	}
+}
+
+void	Elements::addAnimation(int frame, float time) {
+	Animation	*anim = new Animation();
+	anim->frame = frame;
+	anim->time = time;
+	this->_animationList.push_back(anim);
+}

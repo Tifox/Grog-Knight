@@ -40,9 +40,9 @@ Game::Game(void) : _hero(*(new Characters())) {
 	#endif
 	theWorld.SetupPhysics(Vector2(0, -20));
 	GameContactListener *gListen = new GameContactListener();
-//	ContactFilter *filter = new ContactFilter();
-//	theWorld.GetPhysicsWorld().SetContactFilter(filter);
 	theWorld.GetPhysicsWorld().SetContactListener(gListen);
+	ContactFilter *gFilter = new ContactFilter();
+	theWorld.GetPhysicsWorld().SetContactFilter(gFilter);
 	this->maps = new Maps("Maps/");
 	return ;
 }
@@ -56,8 +56,6 @@ Game::Game(unsigned int width, unsigned int height) : _hero(*(new Characters()))
 	theWorld.Initialize(width, height, NAME);
 	theWorld.SetupPhysics();
 	GameContactListener *gListen = new GameContactListener();
-//	ContactFilter *filter = new ContactFilter();
-//	theWorld.GetPhysicsWorld().SetContactFilter(filter);
 	theWorld.GetPhysicsWorld().SetContactListener(gListen);
 	this->maps = new Maps("Maps/");
 }
@@ -82,27 +80,48 @@ void	Game::grid(void) {
 void	Game::start(void) {
 	theWorld.SetBackgroundColor(*(new Color(0, 0, 0)));
 	Game::wList = new WeaponList();
-	this->showMap();
-
-	Consumable		*lol = new Consumable();
+	Game::eList = new EnemyList();
+	Game::aList = new ArmorList();
+	Game::rList = new RingList();
+	Game::currentGame = this;
 	Hero			*hero = new Hero();
-	Enemy			*enemy = new Enemy("Enemy");
-	Enemy			*enemy2 = new Enemy("Enemy2");
+	Enemy			*bad = new Enemy(Game::eList->getEnemyRandom(false));
 
-	//===== I temp map generation test =====
-	//LevelGenerator *levelGenerator = new LevelGenerator(6, 6, 5, 60, 80);
-	//levelGenerator->execute();
-	//levelGenerator->print();
-	//===== O temp map generation test =====
+	LevelGenerator *levelGenerator = new LevelGenerator(9, 5, 60);
+	levelGenerator->execute();
+	//this->gameMap = levelGenerator->_rooms;
 
-	theCamera.SetPosition(13, -7);
+	// THIS IS AN EXAMPLE
+	// That's a test map.
+	this->_tmpMap.push_back(std::vector<int>());
+	this->_tmpMap.push_back(std::vector<int>());
+	this->_tmpMap.push_back(std::vector<int>());
+	this->_tmpMap[0].push_back(0);
+	this->_tmpMap[0].push_back(4);
+	this->_tmpMap[0].push_back(0);
+	this->_tmpMap[1].push_back(2);
+	this->_tmpMap[1].push_back(15);
+	this->_tmpMap[1].push_back(8);
+	this->_tmpMap[2].push_back(0);
+	this->_tmpMap[2].push_back(1);
+	this->_tmpMap[2].push_back(0);
+
+	this->maps->displayLevel(this->_tmpMap);
+
 	this->displayHero(*(hero));
+	//theCamera.LockTo(hero);
+	Game::currentX = 1;
+	Game::currentY = 1;
+	theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX]->getXMid(),
+		this->maps->getMapXY()[Game::currentY][Game::currentX]->getYMid() + 1.8, 9.2);
 	hero->init();
-	enemy->init();
-	enemy2->init();
+	bad->init();
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
+	hero->equipRing(Game::rList->getRing("SmallRing"));
+	hero->equipArmor(Game::aList->getArmor("ChestArmor"));
 	this->setHero(*hero);
 	this->displayHUD();
+	Game::started = 1;
 }
 
 //! Read the maps
@@ -120,7 +139,7 @@ void	Game::readMaps(void) {
  * @sa Maps
  */
 void	Game::showMap(void) {
-	this->maps->firstOne();
+	//this->maps->displayLevel();
 }
 
 //! Display the Hero
@@ -129,8 +148,9 @@ void	Game::showMap(void) {
  * @param Hero The Hero Object
  */
 void	Game::displayHero(Elements & Hero) {
-	Hero.setXStart(4);
-	Hero.setYStart(-10);
+	//Here starts the game - parse the 1st map coordinates and hero start
+	Hero.setXStart(28);
+	Hero.setYStart(-28);
 	Hero.addAttribute("hero", "1");
 	Hero.display();
 }
@@ -169,6 +189,35 @@ int		Game::getNextId(void) {
 	return Game::currentIds;
 }
 
+void	Game::checkHeroPosition(void) {
+	if (Game::started == 1)
+		Game::currentGame->moveCamera();
+}
+
+void	Game::moveCamera(void) {
+	bool	asChanged = false;
+	Map		*tmp = this->maps->getMapXY()[Game::currentY][Game::currentX];
+
+   if (this->_hero.GetBody()->GetWorldCenter().x >= (tmp->getXStart() + tmp->getWidth() - 0.5)) {
+		Game::currentX++;
+		asChanged = true;
+	} else if (this->_hero.GetBody()->GetWorldCenter().x <= (tmp->getXStart() - 1)) {
+		Game::currentX--;
+		asChanged = true;
+	} if (this->_hero.GetBody()->GetWorldCenter().y >= tmp->getYStart()) {
+		Game::currentY--;
+		asChanged = true;
+	} else if (this->_hero.GetBody()->GetWorldCenter().y <= (tmp->getYStart() - tmp->getHeight())) {
+		Game::currentY++;
+		asChanged = true;
+	}
+
+	if (asChanged) {
+		theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX]->getXMid(), 
+		this->maps->getMapXY()[Game::currentY][Game::currentX]->getYMid() + 1.8, 9.2);
+	}
+}
+
 //! Add an Element
 /**
  * Add an element to the intern map, to the static elements map.
@@ -190,6 +239,7 @@ void	Game::delElement(Elements* elem) {
 		if (Game::elementMap[i] == elem)
 			Game::elementMap.erase(i);
 	}
+	//delete elem;
 }
 
 //! Collision intern callbacks
@@ -234,25 +284,25 @@ void	Game::addToDestroyList(Elements *m) {
  * This function destroy each element in Game::bodiesToDestroy.
  * So, call this function outisde of this goal is useless.
  */
-void	Game::destroyAllBodies(void) {
+bool	Game::destroyAllBodies(void) {
 	if (Game::ended == true) {
-		return;
+		return true ;
 	}
 	if (Game::endGame == true) {
 		Game::ended = true;
 		theWorld.PausePhysics();
 		int i;
-		Game::getHUD()->setText("U DED", 500, 500, Vector3(1, 0, 0), 1);
-		for (i = 0; elementMap[i]; i++) {
-			if (elementMap[i]->getAttribute("type") != "Hero") {
-				elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1);
-				if (elementMap[i]->getAttribute("type") == "Enemy" || elementMap[i]->getAttribute("type") == "Object") {
-					theWorld.GetPhysicsWorld().DestroyBody((elementMap[i])->GetBody());
-					theWorld.Remove(elementMap[i]);
-					Game::delElement(elementMap[i]);
-				}
+		Game::getHUD()->setText("YOU ARE DEAD", 400, 400, Vector3(1, 0, 0), 1, "dead");
+		for (i = 0; i < Game::elementMap.size() - 2; i++) {
+			if (Game::elementMap[i] && Game::elementMap[i]->getAttribute("type") != "Hero") {
+				Game::elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1, "PauseGame");
+				if (Game::elementMap[i]->getAttribute("physic") != "")
+					theWorld.GetPhysicsWorld().DestroyBody((Game::elementMap[i])->GetBody());
+				theWorld.Remove(Game::elementMap[i]);
 			}
 		}
+		Game::elementMap.clear();
+		return true;
 	} else {
 		for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
 			theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
@@ -266,6 +316,7 @@ void	Game::destroyAllBodies(void) {
 		}
 		Game::bodiesToCreate.clear();
 	}
+	return false;
 }
 
 //! Intern callback for staring running
@@ -370,8 +421,6 @@ void		Game::displayHUD(void) {
 	w->life(125);
 	w->mana(90);
 	w->gold(0);
-	w->armor();
-	w->boots();
 	w->consumable();
 	w->minimap();
 	Game::addHUDWindow(w);
@@ -388,7 +437,18 @@ std::list<Elements *>		Game::runningCharac;
 std::list<Elements *>		Game::bodiesToDestroy;
 std::list<Elements *>		Game::bodiesToCreate;
 std::list<HUDWindow *>		Game::windows;
+ArmorList*					Game::aList;
 WeaponList*					Game::wList;
+RingList*					Game::rList;
+EnemyList*					Game::eList;
 Hitbox*						Game::hList;
 bool						Game::endGame = false;
 bool						Game::ended = false;
+int							Game::maxX = 0;
+int							Game::maxY = 0;
+int							Game::minX = 0;
+int							Game::minY = 0;
+int							Game::currentX = 0;
+int							Game::currentY = 0;
+Game*						Game::currentGame = 0;
+int							Game::started = 0;

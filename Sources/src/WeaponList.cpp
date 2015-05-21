@@ -35,6 +35,7 @@ WeaponList::WeaponList(void) {
 	std::istringstream	iss;
 	std::string		res;
 
+	Log::info("Reading weapon list...");
 	dir = opendir("./Resources/Elements/Weapons/");
 	while (dirEntry = readdir(dir)) {
 		if (dirEntry && strcmp(dirEntry->d_name, ".") != 0 && strcmp(dirEntry->d_name, "..") != 0) {

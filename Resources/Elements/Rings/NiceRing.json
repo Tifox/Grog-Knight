@@ -1,0 +1,10 @@
+{
+    "infos": {
+   	    "name": "NiceRing",
+		"flavor": "Hey look, its a FUCKING RING. A pretty shitty one actually...",
+		"lvlRequired": 1,
+		"sprites": "Resources/Images/Rings/NiceRing.png",
+		"lootLevel": 2,
+		"bonus": {}
+	}
+}

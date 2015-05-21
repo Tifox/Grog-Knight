@@ -30,6 +30,8 @@
 # include "../../Angel/Angel.h"
 # include "Game.hpp"
 class	Game;
+class   Ring;
+class   Armor;
 
 # include <iostream>
 
@@ -42,6 +44,7 @@ class	HUDWindow : public HUDActor {
 			Text() {};
 			~Text() {};
 			std::string		str;
+			std::string		font;
 			int				x;
 			int				y;
 			int				colorR;
@@ -55,6 +58,7 @@ class	HUDWindow : public HUDActor {
 
 		HUDWindow::Text	*setText(std::string str, int x, int y);
 		HUDWindow::Text	*setText(std::string str, int x, int y, Vector3 color, int alpha);
+		HUDWindow::Text	*setText(std::string str, int x, int y, Vector3 color, int alpha, std::string font);
 		void	removeText(std::string str);
 		void	removeText(HUDWindow::Text *t);
 		void	displayText(void);
@@ -65,6 +69,8 @@ class	HUDWindow : public HUDActor {
 		void	gold(int g);
 		void	updateGold(int gold);
 		void	items(Weapon *w);
+		void	items(Armor *a);
+		void	items(Ring *r);
 		void	armor(void);
 		void	boots(void);
 		void	consumable(void);

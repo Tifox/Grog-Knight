@@ -43,9 +43,16 @@ class Characters;
 # include "WeaponList.hpp"
 # include "Hitbox.hpp"
 # include "HUDWindow.hpp"
+# include "EnemyList.hpp"
+# include "ArmorList.hpp"
+# include "RingList.hpp"
+# include "LevelGenerator.hpp"
 
-
+class ArmorList;
+class EnemyList;
+class RingList;
 class WeaponList;
+
 class Hitbox;
 class HUDWindow;
 
@@ -65,11 +72,13 @@ class Game {
 		void	showMap(void);
 		void	displayHUD(void);
 		void	setHero(Characters &h);
+		void	moveCamera(void);
 		Characters	&getHero(void);
 
 		static bool	endGame;
 		static bool	ended;
-		static void	destroyAllBodies(void);
+		static bool	destroyAllBodies(void);
+		static void checkHeroPosition(void);
 		static void	addToDestroyList(Elements *m);
 
 
@@ -86,20 +95,33 @@ class Game {
 		static void	removeHUDWindow(HUDWindow *);
 		static HUDWindow*	getHUD(void);
 		static int			lol;
+		static Game*		currentGame;
 
 		Maps		*maps;
-		static int	currentIds;
+		std::vector<Room*>				*gameMap;
+		static int						currentIds;
 		static std::map<int, Elements *>	elementMap;
 		static std::list<Elements *>	bodiesToDestroy;
 		static std::list<Elements *>	bodiesToCreate;
 		static std::list<Elements *>	runningCharac;
 		static std::list<HUDWindow *>	windows;
 		static WeaponList*				wList;
+		static RingList*				rList;
+		static ArmorList*				aList;
+		static EnemyList*				eList;
 		static Hitbox*					hList;
+		static int						maxX;
+		static int						maxY;
+		static int						minX;
+		static int						currentX;
+		static int						currentY;
+		static int						minY;
+		static int						started;
 
 	private:
-		float		beginXHero;
-		float		beginYHero;
+		float				beginXHero;
+		float				beginYHero;
+		std::vector<std::vector<int> >	_tmpMap;
 		Characters	&_hero;
 };
 

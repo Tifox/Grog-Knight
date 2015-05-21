@@ -67,11 +67,14 @@ SRCS =	./Sources/src/Elements.cpp \
 		./Sources/src/Room.cpp \
 		./Sources/src/LevelGenerator.cpp \
 		./Sources/src/Loot.cpp \
+		./Sources/src/EnemyList.cpp \
 		./Sources/src/Enemy.cpp \
 		./Sources/src/GameContactListener.cpp \
 		./Sources/src/ContactFilter.cpp \
 		./Sources/src/Weapon.cpp \
 		./Sources/src/Log.cpp \
+		./Sources/src/Armor.cpp \
+		./Sources/src/ArmorList.cpp \
 		./Sources/src/Characters.cpp \
 		./Sources/src/Object.cpp \
 		./Sources/src/WeaponList.cpp \
@@ -80,7 +83,10 @@ SRCS =	./Sources/src/Elements.cpp \
 		./Sources/src/Consumable.cpp \
 		./Sources/src/Hitbox.cpp \
 		./Sources/src/HUDWindow.cpp \
-		./Sources/src/Menu.cpp
+		./Sources/src/Menu.cpp \
+		./Sources/src/Ring.cpp \
+		./Sources/src/RingList.cpp \
+		./Sources/src/Bonus.cpp 
 
 SYSOBJS = $(patsubst %.cpp,%.o,$(SYSSRCS))
 OBJS = $(patsubst %.cpp,%.o,$(SRCS))

@@ -64,31 +64,25 @@ void	Hero::init(void) {
  */
 void	Hero::actionCallback(std::string name, int status) {
 	if (name == "attack" && status == 1 && this->_weapon->attackReady() == 1) {
+		std::string 	orientation;
+		float				x = 2, y = 1;
 		this->_weapon->isAttacking(0);
 		if (this->_orientation == RIGHT) {
-			this->changeSizeTo(Vector2(2, 1));
-			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-									  this->_getAttr("beginFrame_right").asInt(),
-									  this->_getAttr("endFrame_right").asInt(), "base");
+			orientation = "right";
+		} else if (this->_orientation == LEFT) {
+			orientation = "left";
+		} else if (this->_orientation == UP) {
+			x = 1.5f; y = 2;
+			orientation = "up";
+		} else if (this->_orientation == DOWN) {
+			x = 1; y = 2.5f;
+			orientation = "down";
 		}
-		else if (this->_orientation == LEFT) {
-			this->changeSizeTo(Vector2(2, 1));
-			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-									  this->_getAttr("beginFrame_left").asInt(),
-									  this->_getAttr("endFrame_left").asInt(), "base");
-		}
-		else if (this->_orientation == UP) {
-			this->changeSizeTo(Vector2(1.5f, 2));
-			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-									  this->_getAttr("beginFrame_up").asInt(),
-									  this->_getAttr("endFrame_up").asInt(), "base");
-		}
-		else if (this->_orientation == DOWN) {
-			this->changeSizeTo(Vector2(1, 2.5f));
-			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-									  this->_getAttr("beginFrame_down").asInt(),
-									  this->_getAttr("endFrame_down").asInt(), "base");
-		}
+		this->changeSizeTo(Vector2(x, y));
+		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+			this->_getAttr("beginFrame_" + orientation).asInt(),
+			this->_getAttr("endFrame_" + orientation).asInt(), "base");
+
 	}
 	return ;
 }
@@ -97,62 +91,43 @@ void	Hero::actionCallback(std::string name, int status) {
 /**
  * Collision begin callback
  * /!\ This function is called just before a collision
- * @param: elem The other Element
- * @param: contact The Box2D contact object
+ * @param elem The other Element
+ * @param contact The Box2D contact object
  */
 void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 	Characters::BeginContact(elem, contact);
-	if (elem->getAttributes()["type"] == "Enemy") {
-		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-		Game::stopRunning(this);
-		this->_isRunning = 0;
-		this->_isJump = 1;
-		this->changeSizeTo(Vector2(1, 1));
-		if (this->_invincibility == false) {
-			this->changeCanMove();
-			this->setHP(this->getHP() - 25);
-			theSwitchboard.DeferredBroadcast(new Message("canMove"), 0.5f);
-			theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1);
-			Game::getHUD()->life(this->getHP());
+	if (elem->getAttribute("type") == "Enemy" && elem->isDead() == false) {
+		if (this->_invincibility == false)
+			this->_takeDamage(elem);
+		else {
+			this->_enemiesTouched.push_back(elem);
 		}
-		if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
-			this->ApplyLinearImpulse(Vector2(4, 4), Vector2(0, 0));
-			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-									  this->_getAttr("takeDamage", "beginFrame_left").asInt(),
-									  this->_getAttr("takeDamage", "endFrame_left").asInt(),
-									  "takeDamage");
-		}
-		else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x) {
-			this->ApplyLinearImpulse(Vector2(-4, 4), Vector2(0, 0));
-			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-									  this->_getAttr("takeDamage", "beginFrame_right").asInt(),
-									  this->_getAttr("takeDamage", "endFrame_right").asInt(),
-									  "takeDamage");
-		}
-		this->SetColor(1,0,0,0.8f);
-		theSwitchboard.SubscribeTo(this, "colorDamageBlink1");
-		theSwitchboard.SubscribeTo(this, "colorDamageBlink2");
-		theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
-		this->_invincibility = true;
 	}
-	else if (elem->getAttributes()["type"] == "Object") {
-		if (elem->getAttributes()["type2"] == "Consumable") {
-			if (elem->getAttributes()["type3"] == "HP") {
+	else if (elem->getAttribute("type") == "Object") {
+		if (elem->getAttribute("type2") == "Consumable") {
+			if (elem->getAttribute("type3") == "HP") {
 				if (this->_hp != this->_maxHp) {
 					Game::addToDestroyList(elem);
-					this->setHP(this->getHP() + 25);
+					this->setHP(this->getHP() + stoi(elem->getAttribute("value")));
 					Game::getHUD()->life(this->getHP());
 				}
 			}
-			if (elem->getAttributes()["type3"] == "gold") {
+			if (elem->getAttribute("type3") == "gold") {
 				Game::addToDestroyList(elem);
-				this->_gold += 40;
+				this->_gold += stoi(elem->getAttribute("value"));
 				Game::getHUD()->updateGold(this->getGold());
 			}
 		}
-		else if (elem->getAttributes()["type2"] == "Equipment") {
+		else if (elem->getAttribute("type2") == "Equipment") {
 			this->_item = elem;
 		}
+	}
+	if (elem->getAttribute("type") == "ground" &&
+		elem->getAttribute("speType") == "spikes") {
+		if (this->_invincibility == false)
+			this->_takeDamage(elem);
+		else
+			this->_enemiesTouched.push_back(elem);
 	}
 }
 
@@ -160,14 +135,57 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 /**
  * End contact callback.
  * /!\ This function is actually called after a collision.
- * @param: elem The other Element.
+ * @param elem The other Element.
  * @param contact The Box2D contact object
  */
 void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 	Characters::EndContact(elem, contact);
-	if (elem->getAttributes()["type"] == "Object") {
+	if (elem->getAttribute("type") == "Object") {
 		if (elem->getAttributes()["type2"] == "Equipment") {
 			this->_item = nullptr;
 		}
 	}
+	if (elem->getAttribute("type") == "Enemy" ||
+		elem->getAttribute("speType") == "spikes") {
+		this->_enemiesTouched.remove(elem);
+	}
+}
+
+//! Function called when the hero is taking damage
+/**
+ * Called by BeginContact mostly
+ * @param the elem that has damaged hero
+ */
+void	Hero::_takeDamage(Elements* elem) {
+  this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+  Game::stopRunning(this);
+  this->_isRunning = 0;
+  this->_isJump = 1;
+  this->changeSizeTo(Vector2(1, 1));
+  if (this->_invincibility == false) {
+	this->changeCanMove();
+	this->setHP(this->getHP() - 25);
+	theSwitchboard.DeferredBroadcast(new Message("canMove"), 0.4f);
+	theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1.5f);
+	Game::getHUD()->life(this->getHP());
+  }
+  if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
+	this->ApplyLinearImpulse(Vector2(4, 4), Vector2(0, 0));
+	this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
+							  this->_getAttr("takeDamage", "beginFrame_left").asInt(),
+							  this->_getAttr("takeDamage", "endFrame_left").asInt(),
+							  "takeDamage");
+  }
+  else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x) {
+	this->ApplyLinearImpulse(Vector2(-4, 4), Vector2(0, 0));
+	this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
+							  this->_getAttr("takeDamage", "beginFrame_right").asInt(),
+							  this->_getAttr("takeDamage", "endFrame_right").asInt(),
+							  "takeDamage");
+  }
+  this->SetColor(1,0,0,0.8f);
+  theSwitchboard.SubscribeTo(this, "colorDamageBlink1");
+  theSwitchboard.SubscribeTo(this, "colorDamageBlink2");
+  theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
+  this->_invincibility = true;
 }

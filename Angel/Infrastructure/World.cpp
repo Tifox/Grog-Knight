@@ -286,6 +286,9 @@ bool World::Initialize(unsigned int windowWidth, unsigned int windowHeight, Stri
 	glFrontFace(GL_CCW);
 	glCullFace(GL_BACK);
 	glDepthFunc(GL_LEQUAL);
+	glEnable(GL_TEXTURE_2D);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -524,7 +527,7 @@ void World::Simulate(bool simRunning)
 		
 		theSwitchboard.Update(frame_dt);
 
-		UpdateDebugItems(frame_dt);
+//   Updated: 2015/05/12 15:36:50 by noich            ###   ########.fr       //
 		//if there are any system updates that still need to be run, put them here
 	}
 	
@@ -649,6 +652,7 @@ void World::TickAndRender()
 {
 	Tick();
 	Game::destroyAllBodies();
+	Game::checkHeroPosition();
 	Render();
 	Game::showText();
 }
@@ -662,7 +666,6 @@ void World::Render()
 {
 	// Setup the camera matrix.
 	theCamera.Render();
-
 	DrawRenderables();
 
 	// Give the GameManager a chance to draw something.

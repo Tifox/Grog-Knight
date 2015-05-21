@@ -28,7 +28,7 @@
 //!Constructor called by the weaponlist class to parse all weapons
 /**
  * Default constructor, using the element that called the attack
- * @param: name (std::string)
+ * @param name (std::string)
  */
 Weapon::Weapon(std::string name) : _name(name) {
 	this->_readFile(name);
@@ -52,6 +52,7 @@ Weapon::Weapon(Weapon* weapon) {
 	this->_pushback = weapon->getPushback();
 	this->_sprite = weapon->getSprite();
 	this->_lootLevel = weapon->getLootLevel();
+	this->addAttribute("type3", "Weapon");
 	this->_canAttack = 1;
 
 	theSwitchboard.SubscribeTo(this, "canAttack");
@@ -59,11 +60,11 @@ Weapon::Weapon(Weapon* weapon) {
 
 
 
-//!Constructor called when attacking, creates the defined hitbox
+//! Constructor called when attacking, creates the defined hitbox
 /**
  * Constructor for creating the weapon area-of-effect
- * @param: w (Weapon*)
- * @param: c (Characters*)
+ * @param w Weapon*
+ * @param c (Characters*)
  */
 
 Weapon::Weapon(Weapon* w, Characters* c) {
@@ -76,8 +77,6 @@ Weapon::Weapon(Weapon* w, Characters* c) {
 	this->_attack = w->getAttack();
 	this->_pushback = w->getPushback();
 	this->_canAttack = 1;
-	this->_hitbox = "swordHitbox";
-	this->_hitboxType = "special";
 	this->SetSize(1);
 	this->SetName("HeroWeaponHitbox");
 	if (c->getAttributes()["type"] == "Hero")
@@ -86,6 +85,8 @@ Weapon::Weapon(Weapon* w, Characters* c) {
 		this->addAttribute("type", "WeaponHitBox");
 	this->SetDrawShape(ADS_Square);
 	this->SetColor(1, 1, 1, 0);
+	this->_hitboxType = "special";
+	this->_hitbox = "octogonHitbox";
 	this->SetDensity(0.1f);
 	this->SetFixedRotation(true);
 	this->Tag("weaponhitbox");
@@ -111,30 +112,22 @@ void	Weapon::_initDirection(Weapon* w, Characters* c) {
 	float xjoint2 = 0;
 	float yjoint1 = 0;
 	float yjoint2 = 0;
-	if (c->getOrientation() == Characters::RIGHT) {
-		xDecal = 0.7;
-		xjoint1 = 0.4;
-		yjoint1 = 0.4;
-		xjoint2 = 0.4;
-		yjoint2 = -0.4;
-	} else if (c->getOrientation() == Characters::LEFT) {
-		xDecal = -0.7;
-		xjoint1 = -0.4;
-		yjoint1 = 0.4;
-		xjoint2 = -0.4;
-		yjoint2 = -0.4;
-	} else if (c->getOrientation() == Characters::UP) {
-		yDecal =0.7;
-		xjoint1 = 0.4;
-		yjoint1 = 0.4;
-		xjoint2 = -0.4;
-		yjoint2 = 0.4;
-	} else if (c->getOrientation() == Characters::DOWN) {
-		yDecal = -0.7;
-		xjoint1 = -0.4;
-		yjoint1 = -0.4;
-		xjoint2 = 0.4;
-		yjoint2 = -0.4;
+	if (c->getOrientation() == Characters::RIGHT ||
+		c->getOrientation() == Characters::LEFT) {
+		yjoint1 = 0.4f;
+		yjoint2 = -0.4f;
+		xDecal = -0.5f;
+		if (c->getOrientation() == Characters::RIGHT) {
+			xDecal = 0.5f;
+		}
+	} else if (c->getOrientation() == Characters::UP ||
+			   c->getOrientation() == Characters::DOWN) {
+		xjoint1 = 0.4f;
+		xjoint2 = -0.4f;
+		yDecal = 0.5f;
+		if (c->getOrientation() == Characters::DOWN) {
+			yDecal = -0.5f;
+		}
 	}
 	this->SetPosition(c->GetBody()->GetWorldCenter().x + xDecal, c->GetBody()->GetWorldCenter().y + yDecal);
 	this->InitPhysics();
@@ -201,6 +194,7 @@ void    Weapon::_parseJson(std::string file) {
 	this->_pushback = json["infos"].get("pushback", "").asFloat();
 	this->_attack = json["infos"].get("attack", "").asString();
 	this->_sprite = json["infos"].get("sprites", "").asString();
+	this->addAttribute("type3", "Weapon");
 }
 
 //! Function called to get an attr value from the parsed json

@@ -212,6 +212,16 @@ void	Characters::ReceiveMessage(Message *m) {
 	else if (m->GetMessageName() == "disableAttackHitbox") {
 	  this->_isAttacking = false;
 	}
+	else if (m->GetMessageName() == "moveHeroDown") {
+		if (this->_latOrientation == RIGHT && this->_canMove && this->_isAttacking == false)
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+									  this->_getAttr("jump", "fallingFrame_right").asInt(),
+									  this->_getAttr("jump", "endFrame_right").asInt() - 3, "jump");
+		else if (this->_latOrientation == LEFT && this->_canMove && this->_isAttacking == false)
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+									  this->_getAttr("jump", "fallingFrame_left").asInt(),
+									  this->_getAttr("jump", "endFrame_left").asInt() - 3, "jump");
+	}
 	else if (m->GetMessageName() == "startPathing" + this->GetName()) {
 		if (this->_grounds.size() > 0) {
 			if (this->_wallsLeft.size() > 0)
@@ -552,8 +562,22 @@ void	Characters::_up(int status) {
  */
 
 void	Characters::_down(int status) {
-	if (status == 1)
+	if (status == 1) {
 		this->_orientation = DOWN;
+		if (this->_grounds.size() > 0) {
+			std::list<Elements*>::iterator it;
+			for (it = this->_grounds.begin(); it != this->_grounds.end(); it++) {
+				if ((*it)->getAttribute("speType") != "canCross")
+					return;
+			}
+			theSwitchboard.SubscribeTo(this, "moveHeroDown");
+			theSwitchboard.DeferredBroadcast(new Message("moveHeroDown"), 0.1);
+			b2PolygonShape box = Game::hList->getHitbox(this->_hitbox);
+			b2Shape *shape = &box;
+			this->GetBody()->DestroyFixture(this->GetBody()->GetFixtureList());
+			this->GetBody()->CreateFixture(shape, 1);
+		}
+	}
 	else
 	  this->_orientation = this->_latOrientation;
 }

@@ -62,6 +62,7 @@ int		main(int ac, char **av) {
 	srand(time(NULL));
 	game->readMaps();
 	MouseDebugger l;
+	
 	if (ac > 1 && (std::string(av[1]) == "--no-menu")) {
 		game->start();
 		theWorld.StartGame();

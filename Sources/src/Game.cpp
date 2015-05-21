@@ -82,31 +82,41 @@ void	Game::start(void) {
 	Game::aList = new ArmorList();
 	Game::rList = new RingList();
 	Game::currentGame = this;
-	this->showMap();
 	Hero			*hero = new Hero();
 	Enemy			*bad = new Enemy(Game::eList->getEnemyRandom(false));
 
-	//===== I temp map generation test =====
 	LevelGenerator *levelGenerator = new LevelGenerator(9, 5, 60);
 	levelGenerator->execute();
-	levelGenerator->print();
-	this->gameMap = levelGenerator->_rooms;
-	//===== O temp map generation test =====
+	//this->gameMap = levelGenerator->_rooms;
+
+	// THIS IS AN EXAMPLE
+	// That's a test map.
+	this->_tmpMap.push_back(std::vector<int>());
+	this->_tmpMap.push_back(std::vector<int>());
+	this->_tmpMap.push_back(std::vector<int>());
+	this->_tmpMap[0].push_back(0);
+	this->_tmpMap[0].push_back(4);
+	this->_tmpMap[0].push_back(0);
+	this->_tmpMap[1].push_back(2);
+	this->_tmpMap[1].push_back(15);
+	this->_tmpMap[1].push_back(8);
+	this->_tmpMap[2].push_back(0);
+	this->_tmpMap[2].push_back(1);
+	this->_tmpMap[2].push_back(0);
+
+	this->maps->displayLevel(this->_tmpMap);
 
 	this->displayHero(*(hero));
- 	theCamera.SetPosition(this->maps->_maps[1]->getXMid(), this->maps->_maps[1]->getYMid() + 1.8, 9.2);
-	Game::currentMap = 1;
-//	theCamera.SetPosition(0, 0, 9.5);
-//	theCamera.LockTo(hero);
+	//theCamera.LockTo(hero);
+	Game::currentX = 1;
+	Game::currentY = 1;
+	theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX]->getXMid(),
+		this->maps->getMapXY()[Game::currentY][Game::currentX]->getYMid() + 1.8, 9.2);
 	hero->init();
 	bad->init();
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
 	hero->equipRing(Game::rList->getRing("SmallRing"));
 	hero->equipArmor(Game::aList->getArmor("ChestArmor"));
-	// Game::maxX = 54;
-	// Game::maxY = -16;
-	// Game::minX = 0;
-	// Game::minY = -11.5;
 	this->setHero(*hero);
 	this->displayHUD();
 	Game::started = 1;
@@ -127,7 +137,7 @@ void	Game::readMaps(void) {
  * @sa Maps
  */
 void	Game::showMap(void) {
-	this->maps->displayLevel();
+	//this->maps->displayLevel();
 }
 
 //! Display the Hero
@@ -137,8 +147,8 @@ void	Game::showMap(void) {
  */
 void	Game::displayHero(Elements & Hero) {
 	//Here starts the game - parse the 1st map coordinates and hero start
-	Hero.setXStart(this->maps->_maps[3]->getXMid());
-	Hero.setYStart(this->maps->_maps[3]->getYMid());
+	Hero.setXStart(28);
+	Hero.setYStart(-28);
 	Hero.addAttribute("hero", "1");
 	Hero.display();
 }
@@ -183,14 +193,26 @@ void	Game::checkHeroPosition(void) {
 }
 
 void	Game::moveCamera(void) {
-	if (this->_hero.GetBody()->GetWorldCenter().x >= (this->maps->_maps[Game::currentMap]->getXStart() + this->maps->_maps[Game::currentMap]->getWidth() - 0.5)) {
-			Game::currentMap++;
-			theCamera.SetPosition(this->maps->_maps[Game::currentMap]->getXMid(), this->maps->_maps[Game::currentMap]->getYMid() + 1.8, 9.2);
-//			this->_hero.MoveTo(Vector2(this->_hero.GetBody()->GetWorldCenter().x + 1, this->_hero.GetBody()->GetWorldCenter().y), 4);
+	bool	asChanged = false;
+	Map		*tmp = this->maps->getMapXY()[Game::currentY][Game::currentX];
+
+   if (this->_hero.GetBody()->GetWorldCenter().x >= (tmp->getXStart() + tmp->getWidth() - 0.5)) {
+		Game::currentX++;
+		asChanged = true;
+	} else if (this->_hero.GetBody()->GetWorldCenter().x <= (tmp->getXStart() - 1)) {
+		Game::currentX--;
+		asChanged = true;
+	} if (this->_hero.GetBody()->GetWorldCenter().y >= tmp->getYStart()) {
+		Game::currentY--;
+		asChanged = true;
+	} else if (this->_hero.GetBody()->GetWorldCenter().y <= (tmp->getYStart() - tmp->getHeight())) {
+		Game::currentY++;
+		asChanged = true;
 	}
-	else if (this->_hero.GetBody()->GetWorldCenter().x <= this->maps->_maps[Game::currentMap]->getXStart() - 1) {
-			Game::currentMap--;
-			theCamera.SetPosition(this->maps->_maps[Game::currentMap]->getXMid(), this->maps->_maps[Game::currentMap]->getYMid() + 1.8, 9.2);
+
+	if (asChanged) {
+		theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX]->getXMid(), 
+		this->maps->getMapXY()[Game::currentY][Game::currentX]->getYMid() + 1.8, 9.2);
 	}
 }
 
@@ -424,6 +446,7 @@ int							Game::maxX = 0;
 int							Game::maxY = 0;
 int							Game::minX = 0;
 int							Game::minY = 0;
-int							Game::currentMap = 0;
+int							Game::currentX = 0;
+int							Game::currentY = 0;
 Game*						Game::currentGame = 0;
 int							Game::started = 0;

@@ -26,7 +26,7 @@
 # include "Map.hpp"
 
 //! Basic constructor
-Map::Map(void) : _mapCount(0) {
+Map::Map(void) : _mapCount(0), _isUsed(0) {
 	return ;
 }
 
@@ -34,7 +34,7 @@ Map::Map(void) : _mapCount(0) {
 /**
  * @param name The name of the map
  */
-Map::Map(std::string name) : _name(name), _mapCount(0) {
+Map::Map(std::string name) : _name(name), _mapCount(0), _isUsed(0) {
 	return ;
 }
 
@@ -61,13 +61,14 @@ void	Map::setLayer(int n) {this->_layer = n; };
 void	Map::setMap(std::vector<int> map) { this->_map.push_back(map); };
 void	Map::setXStart(int x) { this->_xStart = x; };
 void	Map::setYStart(int y) { this->_yStart = y; };
+void	Map::setUsed(int n) { this->_isUsed = n; };
 
 /* GETTERS */
 
 int		Map::getHeight(void) { return this->_height; };
 int		Map::getWidth(void) { return this->_width; };
-int		Map::getXMid(void) { return this->_midX; };
-int		Map::getYMid(void) { return this->_midY; };
+int		Map::getXMid(void) { return (this->_xStart + (this->_width / 2)); };
+int		Map::getYMid(void) { return this->_yStart - (this->_height / 2); };
 int		Map::getXStart(void) { return this->_xStart; };
 int		Map::getYStart(void) { return this->_yStart; };
 
@@ -95,7 +96,6 @@ void	Map::display(void) {
 				elem = new Elements();
 				elem->removeAttr("physic");
 				elem->addAttribute("image", this->_image);
-				// That's fucking nasty, duknow why this is working.
 				elem->setFrame(*(it));
 				elem->setXStart(x);
 				elem->setYStart(y);
@@ -136,7 +136,7 @@ void	Map::display(void) {
 						for (count = 0; v != *(it); count++) {
 							next = time = -1;
 							if (count >= 30) {
-								Log::error("Seems like the frame " + std::to_string(*it -  -  -  - 1111) + 
+								Log::error("Seems like the frame " + std::to_string(*it) + 
 									" does not have an animation loop end...");
 							}
 								for (it2 = this->_properties.find(v)->second.begin();

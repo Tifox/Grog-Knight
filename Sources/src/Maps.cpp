@@ -135,28 +135,74 @@ void	Maps::_getMap(void) {
 		intMap.clear();
 	}
 	this->_maps[atoi(this->_root["properties"].get("number", 0).asString().c_str())] = map;
+	int			n = 0;
+	for (j = this->_root["properties"].begin(); j != this->_root["properties"].end(); j++) {
+		if (j.key().asString() == "doorUp")
+			n++;
+		if (j.key().asString() == "doorRight")
+			n += 2;
+		if (j.key().asString() == "doorDown")
+			n += 4;
+		if (j.key().asString() == "doorLeft")
+			n += 8;
+	}
+	if (n != 0)
+		this->_mapByDoor[n].push_back(map);
+
 	this->_root.clear();
 }
 
 
 
 //! Display an entire level
-void	Maps::displayLevel(void) {
-	int		i, x, y;
-	int		columnSize = 2;
+void	Maps::displayLevel(std::vector<std::vector<int> > map) {
+	int		i, x, y, rX, rY, maxX, maxY;
+	Map		*tmp;
 
-	for (i = 1, x = y = 0; i <= this->_maps.size(); i++) {
-		if (i == (columnSize + 1)) {
-			x = 0;
-			y += -(this->_maps[i]->getHeight());
-		}
-		this->_maps[i]->setXStart(x);
-		this->_maps[i]->setYStart(y);
-		this->_maps[i]->setXMid(x + (this->_maps[i]->getWidth() / 2));
-		this->_maps[i]->setYMid(y - (this->_maps[i]->getHeight() / 2));
-		this->_maps[i]->display();
-		x += this->_maps[i]->getWidth();
+	for (maxX = maxY = 0; maxY < (map.size() - 1); maxY++) {
+		if ((map[maxY].size() - 1) > maxX)
+			maxX = map[maxY].size() - 1;
+		this->_XYMap.push_back(std::map<int, Map *>());
 	}
-	Game::maxX = x;
-	Game::maxY = y;
+	// Last allocation (y <= maxY), so + 1
+	this->_XYMap.push_back(std::map<int, Map *>());
+
+	for (x = y = rX = rY = 0; y <= maxY; x++) {
+		if (x > maxX) {
+			y++;
+			rY -= 16;
+			x = rX = 0;
+			if (y > maxY)
+				break;
+		}
+		i = map[y][x];
+		if (i != 0) {
+			tmp = this->getMapByDoor(i);
+			tmp->setXStart(rX);
+			tmp->setYStart(rY);
+			tmp->display();
+			this->_XYMap[y][x] = tmp;
+		} else
+			this->_XYMap[y][x] = nullptr;
+		rX += 27;
+	}
 }
+
+Map		*Maps::getMapByDoor(int n) {
+	int		random, i;
+	std::list<Map *>::iterator it;
+
+	if (n > 15)
+		Log::error("The door size is too high ! (" + std::to_string(n) + " > 15)");
+	if (this->_mapByDoor[n].size() == 0)
+		Log::error("A map with a " + std::to_string(n) + " score is missing !");
+	if (this->_mapByDoor[n].size() == 1)
+		return this->_mapByDoor[n].front();
+	random = rand() % this->_mapByDoor[n].size();
+	for (i = 0, it = this->_mapByDoor[n].begin(); it != this->_mapByDoor[n].end() && i < random; 
+			i++, it++);
+	return *(it);
+}
+
+
+std::vector<std::map<int, Map *> >	Maps::getMapXY(void) { return this->_XYMap; };

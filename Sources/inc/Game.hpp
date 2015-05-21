@@ -113,13 +113,15 @@ class Game {
 		static int						maxX;
 		static int						maxY;
 		static int						minX;
-		static int						currentMap;
+		static int						currentX;
+		static int						currentY;
 		static int						minY;
 		static int						started;
 
 	private:
 		float				beginXHero;
 		float				beginYHero;
+		std::vector<std::vector<int> >	_tmpMap;
 		Characters	&_hero;
 };
 

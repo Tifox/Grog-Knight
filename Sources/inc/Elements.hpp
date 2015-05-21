@@ -31,7 +31,8 @@
 # include <string>
 # include <list>
 # include "../../Angel/Angel.h"
-
+# include "Bonus.hpp"
+ 
 class Weapon;
 
 class Elements : public PhysicsActor {

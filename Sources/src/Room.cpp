@@ -28,7 +28,12 @@
 /**
 * Basic constructor
 */
-Room::Room(int id, int y, int x, int distance, int mapId, bool topDoor, bool leftDoor, bool bottomDoor, bool rightDoor) : _id(id), _y(y), _x(x), _distance(distance), _mapId(mapId), _topDoor(topDoor), _leftDoor(leftDoor), _bottomDoor(bottomDoor), _rightDoor(rightDoor) {
+Room::Room(int id, int y, int x, int distance, int mapId, bool topDoor, 
+				bool leftDoor, bool bottomDoor, bool rightDoor) : 
+		_id(id), _y(y), _x(x), _distance(distance), _mapId(mapId),
+		_topDoor(topDoor), _leftDoor(leftDoor), _bottomDoor(bottomDoor), 
+		_rightDoor(rightDoor) {
+
 	_links = 0;
 	_specialType = NONE;
 	return;

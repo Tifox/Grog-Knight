@@ -60,6 +60,7 @@ class	Map {
 		void	setLayer(int n);
 		void	setXStart(int x);
 		void	setYStart(int y);
+		void	setUsed(int n);
 		void	display(void);
 		int		getHeight(void);
 		int		getWidth(void);
@@ -84,6 +85,7 @@ class	Map {
 		int					_layer;
 		int					_xStart;
 		int					_yStart;
+		int					_isUsed;
 		std::list<Elements *>	_elems;
 		std::map<int, std::map<std::string, Json::Value> >	_properties;
 };

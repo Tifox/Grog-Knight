@@ -71,13 +71,15 @@ void	Menu::showMenu(Game *game) {
  * @param m The Message Object
  */
 void	Menu::ReceiveMessage(Message *m) {
-	if (m->GetMessageName() == "enterPressed") {
-		theSwitchboard.UnsubscribeFrom(this, "enterPressed");
-		theSwitchboard.UnsubscribeFrom(this, "upPressed");
-		theSwitchboard.UnsubscribeFrom(this, "downPressed");
-		Game::removeHUDWindow(this->_window);
-		this->_game->start();
-	} else if (m->GetMessageName() == "PauseGame") {
-		//theWorld.PauseSimulation();
+	if (Game::started != 1) {
+		if (m->GetMessageName() == "enterPressed") {
+			theSwitchboard.UnsubscribeFrom(this, "enterPressed");
+			theSwitchboard.UnsubscribeFrom(this, "upPressed");
+			theSwitchboard.UnsubscribeFrom(this, "downPressed");
+			Game::removeHUDWindow(this->_window);
+			this->_game->start();
+		} else if (m->GetMessageName() == "PauseGame") {
+			//theWorld.PauseSimulation();
+		}
 	}
 }

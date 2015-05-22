@@ -92,7 +92,7 @@ void	EnemyList::EnemyData::_parseJson(std::string file) {
 	if (!read.parse(file, json))
 		Log::error("Error in json syntax :\n" + read.getFormattedErrorMessages());
 	if (json["infos"].get("name", "").asString() != this->_name)
-		Log::warning("The class name is different with the name in the config file.");
+		Log::warning("The class name is different with the name in the config file: " + this->_name + "/" + json["infos"].get("name", "").asString());
 	this->_level = json["infos"].get("level", "").asInt();
 	this->_flying = json["infos"].get("flying", "").asBool();
 }

@@ -95,7 +95,7 @@ void	Characters::_parseJson(std::string file) {
 	if (!read.parse(file, json))
 		Log::error("Error in json syntax :\n" + read.getFormattedErrorMessages());
 	if (json["infos"].get("name", "").asString() != this->_name)
-		Log::warning("The class name is different with the name in the config file.");
+		Log::warning("The class name is different with the name in the config file: " + this->_name + "/" + json["infos"].get("name", "").asString());
 	this->_name = json["infos"].get("name", "").asString();
 	this->_id = json["infos"].get("id", "").asInt();
 	this->_size = json["infos"].get("size", "").asFloat();
@@ -610,7 +610,7 @@ void	Characters::_pickupItem(int status) {
 	if (this->_item->getAttribute("type3") == "Weapon"){
 		unequipWeapon();
 		this->equipWeapon(static_cast<Equipment*>(this->_item)->getWeapon());
-	} 
+	}
 	else if (this->_item->getAttribute("type3") == "Ring") {
 		unequipRing();
 		this->equipRing(static_cast<Equipment*>(this->_item)->getRing());

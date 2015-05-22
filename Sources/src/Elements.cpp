@@ -161,6 +161,10 @@ void	Elements::display(void) {
 		this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	}
 
+	if (this->getAttribute("speType") == "water") {
+		this->SetIsSensor(true);
+		this->SetFixedRotation(true);
+	}
 	if (this->getAttribute("physic") != "") {
 		this->InitPhysics();
 	}

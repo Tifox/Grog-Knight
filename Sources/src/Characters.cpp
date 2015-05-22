@@ -94,8 +94,13 @@ void	Characters::_parseJson(std::string file) {
 
 	if (!read.parse(file, json))
 		Log::error("Error in json syntax :\n" + read.getFormattedErrorMessages());
-	if (json["infos"].get("name", "").asString() != this->_name)
-		Log::warning("The class name is different with the name in the config file.");
+	if (!strncmp("Enemies/", this->_name.c_str(), 8)) {
+		if (this->_name.substr(8, json["infos"].get("name", "").asString().length()) != json["infos"].get("name", "").asString())
+			Log::error("The class name is different with the name in the config file.");
+	} else {
+		if (json["infos"].get("name", "").asString() != this->_name)
+			Log::warning("The class name is different with the name in the config file.");
+	}
 	this->_name = json["infos"].get("name", "").asString();
 	this->_id = json["infos"].get("id", "").asInt();
 	this->_size = json["infos"].get("size", "").asFloat();

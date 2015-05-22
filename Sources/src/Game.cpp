@@ -85,7 +85,6 @@ void	Game::start(void) {
 	Game::rList = new RingList();
 	Game::currentGame = this;
 	Hero			*hero = new Hero();
-	Enemy			*bad = new Enemy(Game::eList->getEnemyRandom(false));
 
 	LevelGenerator *levelGenerator = new LevelGenerator(9, 5, 60);
 	levelGenerator->execute();
@@ -115,7 +114,6 @@ void	Game::start(void) {
 	theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX]->getXMid(),
 		this->maps->getMapXY()[Game::currentY][Game::currentX]->getYMid() + 1.8, 9.2);
 	hero->init();
-	bad->init();
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
 	hero->equipRing(Game::rList->getRing("SmallRing"));
 	hero->equipArmor(Game::aList->getArmor("ChestArmor"));

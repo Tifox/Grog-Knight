@@ -20,7 +20,8 @@ INCLUDE = 							\
 	-I/usr/include/freetype2				\
 	-I./Tools/jsoncpp/include				\
 	-ISources/inc/							\
-	-ILibraries/DevIL-SDK-1.7.8/mac/include/
+	-ILibraries/DevIL-SDK-1.7.8/mac/include/ \
+	-IAngel/Infrastructure/
 
 ifneq ($(ANGEL_DISABLE_FMOD), 1)
 	INCLUDE += -IAngel/Libraries/FMOD/inc

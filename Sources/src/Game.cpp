@@ -112,7 +112,8 @@ void	Game::start(void) {
 	Game::currentX = 1;
 	Game::currentY = 1;
 	theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX]->getXMid(),
-		this->maps->getMapXY()[Game::currentY][Game::currentX]->getYMid() + 1.8, 9.2);
+		this->maps->getMapXY()[Game::currentY][Game::currentX]->getYMid() + 1.8, 9.001);
+	// 9.2
 	hero->init();
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
 	hero->equipRing(Game::rList->getRing("SmallRing"));
@@ -188,7 +189,7 @@ int		Game::getNextId(void) {
 }
 
 void	Game::checkHeroPosition(void) {
-	if (Game::started == 1)
+   if (Game::started == 1)
 		Game::currentGame->moveCamera();
 }
 
@@ -212,7 +213,7 @@ void	Game::moveCamera(void) {
 
 	if (asChanged) {
 		theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX]->getXMid(), 
-		this->maps->getMapXY()[Game::currentY][Game::currentX]->getYMid() + 1.8, 9.2);
+		this->maps->getMapXY()[Game::currentY][Game::currentX]->getYMid() + 1.8, 9.001);
 	}
 }
 

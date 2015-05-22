@@ -122,10 +122,7 @@ void	Elements::setFrameSprite(int frame) {
 			tY2 -= fY;
 		}
 	}
-   if (frame < nbPerColumn)
-		this->SetUVs(Vector2(tX + 0.01, tY + 0.01), Vector2(tX2 - 0.01, tY2 - 0.01));
-	else
-		this->SetUVs(Vector2(tX + 0.01, tY + 0.01), Vector2(tX2 - 0.01, tY2 - 0.01));
+	this->SetUVs(Vector2(tX, tY), Vector2(tX2, tY2));
 }
 
 //! Display an element

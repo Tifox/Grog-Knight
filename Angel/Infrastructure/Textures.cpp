@@ -144,8 +144,8 @@ bool PurgeTexture(const String& filename)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, ClampMode);
 		
 		glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, FilterMode);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, FilterMode);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
 		glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
@@ -301,12 +301,12 @@ bool PurgeTexture(const String& filename)
 		glGenTextures(1, &texRef);
 		glBindTexture(GL_TEXTURE_2D, texRef);
 		
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, clampmode);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, clampmode);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 		
 		glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filtermode);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filtermode);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
 		
 		glTexImage2D(
 			GL_TEXTURE_2D,
@@ -331,6 +331,18 @@ const int GetTextureReference(const String& filename, GLint clampmode, GLint fil
 	bool cached = false;
 	TextureCacheEntry* currentCacheEntry = NULL;
 	
+	/*
+	 *
+	 *nameThe path to the file to load. Must be readable by DevIL. (	http://openil.sourceforge.net/)
+	 clampmodeEither GL_CLAMP or GL_REPEAT.	
+	 filtermodeOne of: GL_NEAREST, GL_LINEAR, GL_NEAREST_MIPMAP_NEAREST, G	L_LINEAR_MIPMAP_NEAREST, GL_NEAREST_MIPMAP_LINEAR, or GL_LINEAR_MIPMAP_LINEAR
+	 optionalIf true, the engine won't complain if it can't load it. 	
+	 */
+	// HARD WAY
+	clampmode = GL_CLAMP_TO_EDGE;
+	filtermode = GL_NEAREST;
+
+
 	//check cache to see if it's loaded already
 	std::map<String,TextureCacheEntry>::iterator it = theTextureCache.find(filename);
 	

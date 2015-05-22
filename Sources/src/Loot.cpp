@@ -42,9 +42,18 @@ Loot::Loot(Characters* c) {
 	} else if (rand() % 100 <= c->_getAttr("loot", "equipmentRate").asInt()) {
 		if (rand() % 2 == 1)
 			new Equipment(Game::wList->getWeaponRandom(c->_getAttr("loot", "EqReward").asInt()), c);
-      if (rand() % 2 == 1)
+		else if (rand() % 2 == 1)
 			new Equipment(Game::aList->getArmorRandom(c->_getAttr("loot", "EqReward").asInt()), c);
 		else
 			new Equipment(Game::rList->getRingRandom(c->_getAttr("loot", "EqReward").asInt()), c);
 	}
+}
+
+Loot::Loot(Characters* c, Equipment *toDrop) {
+	if (toDrop->getAttribute("type3") == "Weapon")
+		new Equipment(Game::wList->getWeapon(toDrop->getName()), c);
+	else if (toDrop->getAttribute("type3") == "Armor")
+		new Equipment(Game::aList->getArmor(toDrop->getName()), c);
+	else if (toDrop->getAttribute("type3") == "Ring")
+		new Equipment(Game::rList->getRing(toDrop->getName()), c);
 }

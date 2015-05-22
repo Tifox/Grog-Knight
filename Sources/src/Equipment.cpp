@@ -35,6 +35,7 @@
 Equipment::Equipment(void): Object() {
 	this->addAttribute("type2", "Equipment");
 	this->SetPosition(5, -12);
+	this->_name = "TBD";
 	this->_weapon = new Weapon(Game::wList->getWeapon("Bow"));
 	this->SetSprite(this->_weapon->getSprite());
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment");
@@ -63,6 +64,7 @@ Equipment::Equipment(Weapon *w, Characters* c): Object() {
 	this->addAttribute("type3", "Weapon");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_weapon = new Weapon(w);
+	this->_name = w->getName();
 	this->SetSprite(this->_weapon->getSprite());
 	this->SetName("loot");
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
@@ -76,6 +78,7 @@ Equipment::Equipment(Armor *w, Characters* c): Object() {
 	this->addAttribute("type3", "Armor");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_armor = new Armor(w);
+	this->_name = w->getName();
 	this->SetSprite(this->_armor->getSprite());
 	this->SetName("loot");
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
@@ -88,6 +91,7 @@ Equipment::Equipment(Ring *w, Characters* c): Object() {
 	this->addAttribute("type3", "Ring");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_ring = new Ring(w);
+	this->_name = w->getName();
 	this->SetSprite(this->_ring->getSprite());
 	this->SetName("loot");
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
@@ -136,6 +140,8 @@ Weapon*		Equipment::getWeapon(void) { return this->_weapon; }
 Armor*		Equipment::getArmor(void) { return this->_armor; }
 
 Ring*		Equipment::getRing(void) { return this->_ring; }
+
+std::string	Equipment::getName(void) { return this->_name; }
 
 //! Intern broadcasts function.
 /**

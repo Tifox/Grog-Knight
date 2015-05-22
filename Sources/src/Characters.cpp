@@ -615,7 +615,7 @@ void	Characters::_pickupItem(int status) {
 	if (this->_item->getAttribute("type3") == "Weapon"){
 		unequipWeapon();
 		this->equipWeapon(static_cast<Equipment*>(this->_item)->getWeapon());
-	} 
+	}
 	else if (this->_item->getAttribute("type3") == "Ring") {
 		unequipRing();
 		this->equipRing(static_cast<Equipment*>(this->_item)->getRing());

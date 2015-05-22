@@ -46,11 +46,12 @@ public:
 	void		BeginContact(Elements *elem, b2Contact *contact);
 	void		EndContact(Elements *elem, b2Contact *contact);
 	void		ReceiveMessage(Message* m);
-
+	virtual std::string		getName();
 private:
 	Weapon*			_weapon;
 	Armor*			_armor;
 	Ring*			_ring;
+	std::string		_name;
 };
 
 #endif

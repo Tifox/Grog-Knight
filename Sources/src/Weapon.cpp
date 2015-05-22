@@ -183,7 +183,7 @@ void    Weapon::_parseJson(std::string file) {
 	if (!read.parse(file, json))
 		Log::error("Error in json syntax :\n" + read.getFormattedErrorMessages());
 	if (this->_name != json["infos"].get("name", "").asString())
-		Log::warning("The weapon name is different with the name in the config file.");
+		Log::warning("The class name is different with the name in the config file: " + this->_name + "/" + json["infos"].get("name", "").asString());
 	this->_name = json["infos"].get("name", "").asString();
 	this->_flavor = json["infos"].get("flavor", "").asString();
 	this->_active = json["infos"].get("active", "").asFloat();

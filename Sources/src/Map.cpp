@@ -87,6 +87,8 @@ void	Map::display(void) {
 	for (layers = this->_map.begin(); layers != this->_map.end(); layers++, v++) {
 		x = this->_xStart;
 		y = this->_yStart;
+		Enemy	*tmp;
+
 		for (it = (*layers).begin(); it != (*layers).end(); it++, x++) {
 			if ((x - this->_xStart) >= this->_width) {
 				x = this->_xStart;
@@ -154,6 +156,15 @@ void	Map::display(void) {
 								v = next + 1;
 						}
 					}
+				}
+				if (elem->getAttribute("spawnEnemy") != "") {
+					if (elem->getAttribute("isFlying") != "")
+						tmp = new Enemy(Game::eList->getEnemyRandom(true));
+					else
+						tmp = new Enemy(Game::eList->getEnemyRandom(false));
+					tmp->setXStart(x);
+					tmp->setYStart(y);
+					tmp->init();
 				}
 				elem->display();
 			}

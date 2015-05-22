@@ -96,6 +96,7 @@ void	Hero::actionCallback(std::string name, int status) {
  */
 void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 	Characters::BeginContact(elem, contact);
+
 	if (elem->getAttribute("type") == "Enemy" && elem->isDead() == false) {
 		if (this->_invincibility == false)
 			this->_takeDamage(elem);
@@ -129,6 +130,8 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		else
 			this->_enemiesTouched.push_back(elem);
 	}
+   /* if (elem->getAttribute("speType") == "water")*/
+		/*this->GetBody()->SetGravityScale(0.3);*/
 }
 
 //! End collision function
@@ -149,6 +152,8 @@ void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 		elem->getAttribute("speType") == "spikes") {
 		this->_enemiesTouched.remove(elem);
 	}
+   /* if (elem->getAttribute("speType") == "water")*/
+		/*this->GetBody()->SetGravityScale(1);*/
 }
 
 //! Function called when the hero is taking damage

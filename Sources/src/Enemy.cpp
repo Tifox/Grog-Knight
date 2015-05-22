@@ -40,22 +40,13 @@ Enemy::Enemy(void) : Characters("Enemy") {
  * @param str Name of the new Enemy
  */
 Enemy::Enemy(std::string str) : Characters(str) {
-	this->setXStart(13);
-	this->setYStart(-19);
 	this->SetName("Enemy");
 	theSwitchboard.SubscribeTo(this, "startPathing" + this->GetName());
 	theSwitchboard.DeferredBroadcast(new Message("startPathing" + this->GetName()), 0.2f);
-	if (str == "Enemy") {
-		this->setXStart(5);
-		this->setYStart(-19);
-	} else {
-		// ????
-	}
 	this->addAttribute("type", "Enemy");
 	this->addAttribute("name", str);
 	this->addAttribute("enemy", "1");
 	this->_isDead = false;
-	this->display();
 	return ;
 }
 
@@ -72,6 +63,7 @@ Enemy::~Enemy(void) {
  * Do the first animation call.
  */
 void	Enemy::init(void) {
+	this->display();
 	this->AnimCallback("base");
 	this->_orientation = RIGHT;
 }

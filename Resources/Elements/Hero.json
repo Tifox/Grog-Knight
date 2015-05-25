@@ -3,6 +3,7 @@
 		"name": "Hero",
 		"id": 0,
 		"HP": 125,
+		"mana": 45,
 		"sprites": "Resources/Images/Hero/hero_000.png",
 		"size": 1.3,
 		"maxSpeed": 5,

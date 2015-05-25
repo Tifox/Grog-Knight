@@ -104,11 +104,11 @@ void	Characters::_parseJson(std::string file) {
 	this->_name = json["infos"].get("name", "").asString();
 	this->_id = json["infos"].get("id", "").asInt();
 	this->_size = json["infos"].get("size", "").asFloat();
-	this->_maxSpeed = json["infos"].get("maxSpeed", "").asFloat(); 
+	this->_maxSpeed = json["infos"].get("maxSpeed", "").asFloat();
 	this->_hp = json["infos"].get("HP", "").asInt();
 	this->_maxHp = json["infos"].get("HP", "").asInt();
 	this->_mana = /*json["infos"].get("mana", "").asInt();*/ 10;
-	this->_maxMana = json["infos"].get("mana", "").asInt();
+	this->_maxMana =/* json["infos"].get("mana", "").asInt(); */ 10;
 	this->_hitboxType = json["infos"].get("hitboxType", "").asString();
 	this->_hitbox = json["infos"].get("hitbox", "").asString();
 	this->addAttribute("spritesFrame", json["infos"].get("sprites", "").asString());
@@ -338,7 +338,7 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 			else {
 				this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
 				if (this->_hp <= 0) {
-					this->_heroDeath();
+		this->_heroDeath();
 					return;
 				}
 			}
@@ -747,12 +747,13 @@ void						Characters::_heroDeath(void) {
 	ghost->SetSprite("Resources/Images/Ghost/ghost_000.png", 0);
 	ghost->LoadSpriteFrames("Resources/Images/Ghost/ghost_000.png");
 	ghost->MoveTo(Vector2(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y + 7), 4);
-	theWorld.Add(ghost);
+	theWorld.Add(ghost); 
 	ghost->PlaySpriteAnimation(0.2f, SAT_OneShot, 0, 10, "ghost");
 }
 
 Characters::Orientation		Characters::getOrientation(void) { return this->_orientation; }
 std::string					Characters::getLastAction(void) { return this->_lastAction; };
+Elements*					Characters::getItem(void) { return this->_item; }
 int							Characters::getHP(void) { return this->_hp; };
 int							Characters::getMana(void) { return this->_mana; };
 int							Characters::getGold(void) { return this->_gold; };

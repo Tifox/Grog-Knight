@@ -32,7 +32,7 @@
  * Load the maps with Maps::Maps
  * @sa Maps
  */
-Game::Game(void) : _hero(*(new Characters())) {
+Game::Game(void) : _hero((new Characters())) {
 	#ifdef __APPLE__
 		theWorld.Initialize(1920, 1080, NAME, false, false);
 	#else
@@ -52,7 +52,7 @@ Game::Game(void) : _hero(*(new Characters())) {
  * @param width The width of the window
  * @param heigh The height of the window
  */
-Game::Game(unsigned int width, unsigned int height) : _hero(*(new Characters())) {
+Game::Game(unsigned int width, unsigned int height) : _hero((new Characters())) {
 	theWorld.Initialize(width, height, NAME);
 	theWorld.SetupPhysics();
 	GameContactListener *gListen = new GameContactListener();
@@ -120,7 +120,7 @@ void	Game::start(void) {
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
 	hero->equipRing(Game::rList->getRing("SmallRing"));
 	hero->equipArmor(Game::aList->getArmor("ChestArmor"));
-	this->setHero(*hero);
+	this->setHero(hero);
 	this->displayHUD();
 	Game::started = 1;
 }
@@ -191,30 +191,46 @@ int		Game::getNextId(void) {
 }
 
 void	Game::checkHeroPosition(void) {
-   if (Game::started == 1)
+	if (Game::started == 1) {
 		Game::currentGame->moveCamera();
+		Game::currentGame->simulateHeroItemContact();
+	}
+}
+
+void	Game::simulateHeroItemContact(void) {
+	if (this->_hero->getItem() != nullptr) {
+		if ((this->_hero->getItem()->GetBody()->GetWorldCenter().x >=
+			 this->_hero->GetBody()->GetWorldCenter().x + 1) ||
+			(this->_hero->getItem()->GetBody()->GetWorldCenter().x <=
+   			 this->_hero->GetBody()->GetWorldCenter().x - 1) ||
+			(this->_hero->getItem()->GetBody()->GetWorldCenter().y >=
+ 			 this->_hero->GetBody()->GetWorldCenter().y + 1) ||
+			(this->_hero->getItem()->GetBody()->GetWorldCenter().y <=
+			this->_hero->GetBody()->GetWorldCenter().y - 1))
+		this->_hero->EndContact(this->_hero->getItem(), nullptr);
+	}
 }
 
 void	Game::moveCamera(void) {
 	bool	asChanged = false;
 	Map		*tmp = this->maps->getMapXY()[Game::currentY][Game::currentX];
 
-   if (this->_hero.GetBody()->GetWorldCenter().x >= (tmp->getXStart() + tmp->getWidth() - 0.5)) {
+   if (this->_hero->GetBody()->GetWorldCenter().x >= (tmp->getXStart() + tmp->getWidth() - 0.5)) {
 		Game::currentX++;
 		asChanged = true;
-	} else if (this->_hero.GetBody()->GetWorldCenter().x <= (tmp->getXStart() - 1)) {
+	} else if (this->_hero->GetBody()->GetWorldCenter().x <= (tmp->getXStart() - 1)) {
 		Game::currentX--;
 		asChanged = true;
-	} if (this->_hero.GetBody()->GetWorldCenter().y >= tmp->getYStart()) {
+	} if (this->_hero->GetBody()->GetWorldCenter().y >= tmp->getYStart()) {
 		Game::currentY--;
 		asChanged = true;
-	} else if (this->_hero.GetBody()->GetWorldCenter().y <= (tmp->getYStart() - tmp->getHeight())) {
+	} else if (this->_hero->GetBody()->GetWorldCenter().y <= (tmp->getYStart() - tmp->getHeight())) {
 		Game::currentY++;
 		asChanged = true;
 	}
 
 	if (asChanged) {
-		theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX]->getXMid(), 
+		theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX]->getXMid(),
 		this->maps->getMapXY()[Game::currentY][Game::currentX]->getYMid() + 1.8, 9.001);
 	}
 }
@@ -409,7 +425,7 @@ HUDWindow	*Game::getHUD(void) {
  */
 void		Game::displayHUD(void) {
 	HUDWindow *w = new HUDWindow();
-	Characters	&hero = Game::getHero();
+	Characters*	hero = Game::getHero();
 	w->SetPosition(theCamera.GetWindowWidth() / 2 - 100, 50);
 	w->SetSize(theCamera.GetWindowWidth() - 200, 100.0f);
 	w->SetSprite("Resources/Images/HUD/background_hud.png");
@@ -419,8 +435,8 @@ void		Game::displayHUD(void) {
 	theWorld.Add(w);
 	Game	*g = this;
 	w->setGame(g);
-	w->life(hero.getHP());
-	w->mana(hero.getMana());
+	w->life(hero->getHP());
+	w->mana(hero->getMana());
 	w->gold(0);
 	w->consumable();
 	w->minimap();
@@ -428,8 +444,8 @@ void		Game::displayHUD(void) {
 }
 
 /* SETTERS */
-void		Game::setHero(Characters & h) { this->_hero = h; };
-Characters	&Game::getHero(void) { return this->_hero; };
+void		Game::setHero(Characters * h) { this->_hero = h; };
+Characters*	Game::getHero(void) { return this->_hero; };
 
 // Set for the statics
 int Game::currentIds = 0;

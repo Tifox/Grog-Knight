@@ -158,14 +158,15 @@ void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 		elem->getAttribute("speType") == "spikes") {
 		this->_enemiesTouched.remove(elem);
 	}
-   /* if (elem->getAttribute("speType") == "water")*/
-		/*this->GetBody()->SetGravityScale(1);*/
+   // if (elem->getAttribute("speType") == "water")
+   // 		this->GetBody()->SetGravityScale(0.25);
 }
 
 //! Function called when the hero is taking damage
 /**
  * Called by BeginContact mostly
  * @param the elem that has damaged hero
+ * @todo monster damage should not be hard-written to 25
  */
 void	Hero::_takeDamage(Elements* elem) {
   this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));

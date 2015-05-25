@@ -86,6 +86,8 @@ void	Game::start(void) {
 	Game::currentGame = this;
 	Hero			*hero = new Hero();
 
+
+
 	LevelGenerator *levelGenerator = new LevelGenerator(9, 5, 60);
 	levelGenerator->execute();
 	//this->gameMap = levelGenerator->_rooms;

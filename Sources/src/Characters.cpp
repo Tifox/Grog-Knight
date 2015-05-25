@@ -107,7 +107,7 @@ void	Characters::_parseJson(std::string file) {
 	this->_maxSpeed = json["infos"].get("maxSpeed", "").asFloat(); 
 	this->_hp = json["infos"].get("HP", "").asInt();
 	this->_maxHp = json["infos"].get("HP", "").asInt();
-	this->_mana = json["infos"].get("mana", "").asInt();
+	this->_mana = /*json["infos"].get("mana", "").asInt();*/ 10;
 	this->_maxMana = json["infos"].get("mana", "").asInt();
 	this->_hitboxType = json["infos"].get("hitboxType", "").asString();
 	this->_hitbox = json["infos"].get("hitbox", "").asString();

@@ -133,6 +133,7 @@ class Characters : public Elements {
 		virtual void	_pickupItem(int status);
 		virtual void	_run(void);
 		void			_destroyEnemy(void);
+		Elements*		getItem(void);
 
 	private:
 		std::map<std::string, std::map<std::string, Json::Value> >	_attr;

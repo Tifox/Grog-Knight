@@ -71,9 +71,10 @@ class Game {
 		void	displayObject(Elements & Object);
 		void	showMap(void);
 		void	displayHUD(void);
-		void	setHero(Characters &h);
+		void	setHero(Characters *h);
 		void	moveCamera(void);
-		Characters	&getHero(void);
+		void	simulateHeroItemContact(void);
+		Characters	*getHero(void);
 
 		static bool	endGame;
 		static bool	ended;
@@ -122,7 +123,7 @@ class Game {
 		float				beginXHero;
 		float				beginYHero;
 		std::vector<std::vector<int> >	_tmpMap;
-		Characters	&_hero;
+		Characters	*_hero;
 };
 
 #endif

@@ -32,11 +32,10 @@
 Object::Object(void) {
 	this->addAttribute("physic", "1");
 	this->addAttribute("type", "Object");
-	this->SetDensity(0);
+	this->SetDensity(1);
 	this->SetFriction(1.0f);
-	this->SetRestitution(0.0f);
+	this->SetRestitution(0.5f);
 	this->SetFixedRotation(true);
-	this->SetIsSensor(true);
 }
 
 //! Overload from b2Body's BeginContact
@@ -47,10 +46,6 @@ Object::Object(void) {
  * @note This function is called just before a collision
  */
 void	Object::BeginContact(Elements *elem, b2Contact *contact) {
-	if (elem->getAttributes()["type"] == "Hero"){
-		static_cast<Characters*>(elem)->equipWeapon(Game::wList->getWeapon("Bow"));
-		Game::bodiesToDestroy.push_back(this);
-	}
 }
 
 //! Destructor

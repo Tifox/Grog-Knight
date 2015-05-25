@@ -104,7 +104,7 @@ void	Characters::_parseJson(std::string file) {
 	this->_name = json["infos"].get("name", "").asString();
 	this->_id = json["infos"].get("id", "").asInt();
 	this->_size = json["infos"].get("size", "").asFloat();
-	this->_maxSpeed = json["infos"].get("maxSpeed", "").asFloat(); 
+	this->_maxSpeed = json["infos"].get("maxSpeed", "").asFloat();
 	this->_hp = json["infos"].get("HP", "").asInt();
 	if (json["infos"].get("maxHP", "").isConvertibleTo(Json::ValueType::intValue))
 		this->_maxHp = json["infos"].get("maxHP", "").asInt();
@@ -341,7 +341,7 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 			else {
 				this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
 				if (this->_hp <= 0) {
-					this->_heroDeath();
+		this->_heroDeath();
 					return;
 				}
 			}
@@ -650,7 +650,9 @@ void	Characters::equipWeapon(Weapon* weapon) {
  * Unequip old weapon to the Character, and update the HUD.
  * @param The Weapon object
  */
-void	Characters::unequipWeapon(void) { }
+void	Characters::unequipWeapon(void) {
+	new Loot(this, this->_weapon);
+}
 
 
 //! Equip a armor
@@ -671,6 +673,7 @@ void	Characters::equipArmor(Armor* armor) {
  * @param void
  */
 void	Characters::unequipArmor(void) {
+	new Loot(this, this->_armor);
 	if (this->_armor && this->_armor->getBonus() != nullptr && this->_armor->getBonus()->getType() == Bonus::BonusType::HP_BUFF)
 		this->_maxHp -= this->_armor->getBonus()->getAmount();
 }
@@ -693,6 +696,7 @@ void	Characters::equipRing(Ring* ring) {
  * @param The ring object
  */
 void	Characters::unequipRing(void) {
+	new Loot(this, this->_ring);
 	if (this->_ring && this->_ring->getBonus() != nullptr && this->_ring->getBonus()->getType() == Bonus::BonusType::HP_BUFF)
 		this->_maxHp -= this->_ring->getBonus()->getAmount();
 }
@@ -746,12 +750,13 @@ void						Characters::_heroDeath(void) {
 	ghost->SetSprite("Resources/Images/Ghost/ghost_000.png", 0);
 	ghost->LoadSpriteFrames("Resources/Images/Ghost/ghost_000.png");
 	ghost->MoveTo(Vector2(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y + 7), 4);
-	theWorld.Add(ghost);
+	theWorld.Add(ghost); 
 	ghost->PlaySpriteAnimation(0.2f, SAT_OneShot, 0, 10, "ghost");
 }
 
 Characters::Orientation		Characters::getOrientation(void) { return this->_orientation; }
 std::string					Characters::getLastAction(void) { return this->_lastAction; };
+Elements*					Characters::getItem(void) { return this->_item; }
 int							Characters::getHP(void) { return this->_hp; };
 int							Characters::getMana(void) { return this->_mana; };
 int							Characters::getMaxMana(void) { return this->_maxMana; };

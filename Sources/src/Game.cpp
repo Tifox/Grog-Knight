@@ -419,6 +419,8 @@ void		Game::displayHUD(void) {
 	theWorld.Add(w);
 	Game	*g = this;
 	w->setGame(g);
+	w->setMaxMana(hero.getMaxMana());
+	w->setMaxHP(hero.getMaxHP());
 	w->life(hero.getHP());
 	w->mana(hero.getMana());
 	w->gold(0);

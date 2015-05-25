@@ -197,7 +197,7 @@ void	HUDWindow::addImage(std::string path, int x, int y, float size) {
  * @todo Empty heart, half-heart.
  */
 void	HUDWindow::life(int life) {
-	int		x;
+	int		x, v, sLife = life;
 	std::list<HUDActor *>::iterator	i;
 	int		index;
 	HUDActor *tmp;
@@ -218,6 +218,16 @@ void	HUDWindow::life(int life) {
 			life -= 25;
 		}
 	}
+	if (sLife < this->_maxHP) {
+		for (v = 0; (this->_maxHP - sLife) > v; v += 25) {
+			tmp = new HUDActor();
+			tmp->SetSprite("Resources/Images/HUD/empty_heart.png");
+			tmp->SetPosition((x + v), 38);
+			tmp->SetSize(30);
+			theWorld.Add(tmp);
+			this->_hearts.push_back(tmp);
+		}
+	}
 }
 
 //! Display mana function
@@ -228,7 +238,7 @@ void	HUDWindow::life(int life) {
  */
 void	HUDWindow::mana(int mana) {
 	std::list<HUDActor *>::iterator	i;
-	int								x = 200, y, max = 90;
+	int								x = 200, y, max = this->_maxMana;
 
 	for (i = this->_mana.begin(); i != this->_mana.end(); i++)
 		theWorld.Remove(*(i));
@@ -241,8 +251,11 @@ void	HUDWindow::mana(int mana) {
 	}
 	if (y == max)
 		this->addImage("Resources/Images/HUD/mp_bar_full_end.png", x, 60, 12.0f);
-	else
-		this->addImage("Resources/Images/HUD/mp_bar_end.png", x, 60, 12.0f);
+	else {
+		for (; y < max; y += 10, x += 11)
+			this->addImage("Resources/Images/HUD/mp_bar_empty.png", x, 60, 12.0f);
+		this->addImage("Resources/Images/HUD/mp_bar_empty_end.png", x, 60, 12.0f);
+	}
 }
 
 //! Display gold function
@@ -359,3 +372,5 @@ void	HUDWindow::minimap(void) {
 }
 
 void	HUDWindow::setGame(Game *g) { this->_g = g; };
+void	HUDWindow::setMaxMana(int m) { this->_maxMana = m; };
+void	HUDWindow::setMaxHP(int h) { this->_maxHP = h; };

@@ -37,7 +37,7 @@ Loot::Loot(Characters* c) {
 	if (rand() % 100 <= c->_getAttr("loot", "consumableRate").asInt()) {
 		if (rand() % 2 == 0) {
 			new Consumable("HP", c->_getAttr("loot", "HPReward").asString(), c);
-		} else
+	   } else
 			new Consumable("gold", c->_getAttr("loot", "XPReward").asString(), c);
 	} else if (rand() % 100 <= c->_getAttr("loot", "equipmentRate").asInt()) {
 		if (rand() % 2 == 1)

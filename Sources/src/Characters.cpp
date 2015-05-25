@@ -76,7 +76,7 @@ void	Characters::_readFile(std::string name) {
 	fd.open(file.c_str());
 	if (!fd.is_open())
 		Log::error("Can't open the file for the " +
-		name + " class. (Supposed path is Resources/Elements/" + name +".json)");
+				name + " class. (Supposed path is Resources/Elements/" + name +".json)");
 	buffer << fd.rdbuf();
 	this->_parseJson(buffer.str());
 }
@@ -106,9 +106,12 @@ void	Characters::_parseJson(std::string file) {
 	this->_size = json["infos"].get("size", "").asFloat();
 	this->_maxSpeed = json["infos"].get("maxSpeed", "").asFloat(); 
 	this->_hp = json["infos"].get("HP", "").asInt();
-	this->_maxHp = json["infos"].get("HP", "").asInt();
-	this->_mana = /*json["infos"].get("mana", "").asInt();*/ 10;
-	this->_maxMana = json["infos"].get("mana", "").asInt();
+	if (json["infos"].get("maxHP", "").isConvertibleTo(Json::ValueType::intValue))
+		this->_maxHp = json["infos"].get("maxHP", "").asInt();
+	if (json["infos"].get("mana", "").isConvertibleTo(Json::ValueType::intValue))
+		this->_mana = json["infos"].get("mana", "").asInt();
+	if (json["infos"].get("maxMana", "").isConvertibleTo(Json::ValueType::intValue))
+		this->_maxMana = json["infos"].get("maxMana", "").asInt();
 	this->_hitboxType = json["infos"].get("hitboxType", "").asString();
 	this->_hitbox = json["infos"].get("hitbox", "").asString();
 	this->addAttribute("spritesFrame", json["infos"].get("sprites", "").asString());
@@ -185,11 +188,11 @@ void	Characters::ReceiveMessage(Message *m) {
 	int				status;
 
 	if (m->GetMessageName() == "canMove") {
-	  if (this->getHP() > 0) {
+		if (this->getHP() > 0) {
 			this->changeCanMove();
 			if (this->_grounds.size() > 0)
-			  this->AnimCallback("base");
-	  }
+				this->AnimCallback("base");
+		}
 	}
 	else if (m->GetMessageName() == "endInvincibility") {
 		theSwitchboard.UnsubscribeFrom(this, "colorDamageBlink1");
@@ -217,17 +220,17 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->_weapon->attack(this);
 	}
 	else if (m->GetMessageName() == "disableAttackHitbox") {
-	  this->_isAttacking = false;
+		this->_isAttacking = false;
 	}
 	else if (m->GetMessageName() == "moveHeroDown") {
 		if (this->_latOrientation == RIGHT && this->_canMove && this->_isAttacking == false)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-									  this->_getAttr("jump", "fallingFrame_right").asInt(),
-									  this->_getAttr("jump", "endFrame_right").asInt() - 3, "jump");
+					this->_getAttr("jump", "fallingFrame_right").asInt(),
+					this->_getAttr("jump", "endFrame_right").asInt() - 3, "jump");
 		else if (this->_latOrientation == LEFT && this->_canMove && this->_isAttacking == false)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-									  this->_getAttr("jump", "fallingFrame_left").asInt(),
-									  this->_getAttr("jump", "endFrame_left").asInt() - 3, "jump");
+					this->_getAttr("jump", "fallingFrame_left").asInt(),
+					this->_getAttr("jump", "endFrame_left").asInt() - 3, "jump");
 	}
 	else if (m->GetMessageName() == "startPathing" + this->GetName()) {
 		if (this->_grounds.size() > 0) {
@@ -296,16 +299,16 @@ void	Characters::AnimCallback(String s) {
 		if (this->_isRunning == 0 && this->_isAttacking == 0) {
 			if (this->_latOrientation == LEFT) {
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-				this->_getAttr("beginFrame_left").asInt(),
-				this->_getAttr("endFrame_left").asInt(), "base");
+						this->_getAttr("beginFrame_left").asInt(),
+						this->_getAttr("endFrame_left").asInt(), "base");
 			} else if (this->_latOrientation == RIGHT) {
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-				this->_getAttr("beginFrame_right").asInt(),
-				this->_getAttr("endFrame_right").asInt(), "base");
-			  } else {
+						this->_getAttr("beginFrame_right").asInt(),
+						this->_getAttr("endFrame_right").asInt(), "base");
+			} else {
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-				this->_getAttr("beginFrame_right").asInt(),
-				this->_getAttr("endFrame_right").asInt(), "base");
+						this->_getAttr("beginFrame_right").asInt(),
+						this->_getAttr("endFrame_right").asInt(), "base");
 			}
 		} else {
 			if (this->_isRunning == 1) {
@@ -314,8 +317,8 @@ void	Characters::AnimCallback(String s) {
 				this->_setCategory("backward");
 			}
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-									  this->_getAttr("beginFrame").asInt(),
-									  this->_getAttr("endFrame").asInt());
+					this->_getAttr("beginFrame").asInt(),
+					this->_getAttr("endFrame").asInt());
 		}
 	}
 }
@@ -345,13 +348,13 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 			if (this->_isJump > 0) {
 				this->_isJump = 0;
 				if (this->_latOrientation == RIGHT && this->_isAttacking == false)
-				this->PlaySpriteAnimation(0.1f, SAT_OneShot,
-										  this->_getAttr("jump", "endFrame_right").asInt() - 2,
-										  this->_getAttr("jump", "endFrame_right").asInt(), "base");
+					this->PlaySpriteAnimation(0.1f, SAT_OneShot,
+							this->_getAttr("jump", "endFrame_right").asInt() - 2,
+							this->_getAttr("jump", "endFrame_right").asInt(), "base");
 				if (this->_latOrientation == LEFT && this->_isAttacking == false)
-				this->PlaySpriteAnimation(0.1f, SAT_OneShot,
-										  this->_getAttr("jump", "endFrame_left").asInt() - 2,
-										  this->_getAttr("jump", "endFrame_left").asInt(), "base");
+					this->PlaySpriteAnimation(0.1f, SAT_OneShot,
+							this->_getAttr("jump", "endFrame_left").asInt() - 2,
+							this->_getAttr("jump", "endFrame_left").asInt(), "base");
 			}
 			this->_grounds.push_back(elem);
 		} else if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
@@ -383,12 +386,12 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 				this->_isJump++;
 				if (this->_lastAction == "forward" && this->_canMove && this->_isAttacking == false)
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-										  this->_getAttr("jump", "fallingFrame_right").asInt(),
-										  this->_getAttr("jump", "endFrame_right").asInt() - 3, "jump");
+							this->_getAttr("jump", "fallingFrame_right").asInt(),
+							this->_getAttr("jump", "endFrame_right").asInt() - 3, "jump");
 				else if (this->_lastAction == "backward" && this->_canMove && this->_isAttacking == false)
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-										  this->_getAttr("jump", "fallingFrame_left").asInt(),
-										  this->_getAttr("jump", "endFrame_left").asInt() - 3, "jump");
+							this->_getAttr("jump", "fallingFrame_left").asInt(),
+							this->_getAttr("jump", "endFrame_left").asInt() - 3, "jump");
 			}
 		}
 		else
@@ -431,16 +434,16 @@ void	Characters::_forward(int status) {
 		this->_orientation = RIGHT;
 		this->_latOrientation = RIGHT;
 		if ((this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() ||
-			 (this->GetSpriteFrame() >= this->_getAttr("backward", "beginFrame").asInt() &&
-			  this->GetSpriteFrame() <= this->_getAttr("backward", "endFrame").asInt()))  && !this->_isJump)
+					(this->GetSpriteFrame() >= this->_getAttr("backward", "beginFrame").asInt() &&
+					 this->GetSpriteFrame() <= this->_getAttr("backward", "endFrame").asInt()))  && !this->_isJump)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-				this->_getAttr("beginFrame").asInt(), this->_getAttr("endFrame").asInt());
+					this->_getAttr("beginFrame").asInt(), this->_getAttr("endFrame").asInt());
 		else if (this->_isJump) {
 			this->_setCategory("jump");
 			if (this->GetSpriteFrame() >= this->_getAttr("beginFrame_left").asInt() && this->GetSpriteFrame() <= this->_getAttr("endFrame_left").asInt())
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-										  this->GetSpriteFrame() - 8,
-										  this->_getAttr("endFrame_right").asInt() - 3, "jump");
+						this->GetSpriteFrame() - 8,
+						this->_getAttr("endFrame_right").asInt() - 3, "jump");
 			this->_setCategory("forward");
 		}
 		Game::startRunning(this);
@@ -470,20 +473,20 @@ void	Characters::_forward(int status) {
  * @sa Characters::_forward
  */
 void	Characters::_backward(int status) {
-   this->_setCategory("backward");
+	this->_setCategory("backward");
 	if (status == 1) {
 		this->_orientation = LEFT;
 		this->_latOrientation = LEFT;
 		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() && !this->_isJump)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-				this->_getAttr("beginFrame").asInt(),
-				this->_getAttr("endFrame").asInt());
+					this->_getAttr("beginFrame").asInt(),
+					this->_getAttr("endFrame").asInt());
 		else if (this->_isJump) {
 			this->_setCategory("jump");
 			if (this->GetSpriteFrame() >= this->_getAttr("beginFrame_right").asInt() && this->GetSpriteFrame() <= this->_getAttr("endFrame_right").asInt())
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-										  this->GetSpriteFrame() + 8,
-										  this->_getAttr("endFrame_left").asInt() - 3, "jump");
+						this->GetSpriteFrame() + 8,
+						this->_getAttr("endFrame_left").asInt() - 3, "jump");
 			this->_setCategory("backward");
 		}
 		Game::startRunning(this);
@@ -527,13 +530,13 @@ void	Characters::_jump(int status) {
 			if (this->_isAttacking == false) {
 				if (this->_latOrientation == RIGHT) {
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-											  this->_getAttr("beginFrame_right").asInt(),
-											  this->_getAttr("endFrame_right").asInt() - 3, "jump");
+							this->_getAttr("beginFrame_right").asInt(),
+							this->_getAttr("endFrame_right").asInt() - 3, "jump");
 				}
 				else if (this->_latOrientation == LEFT) {
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-											  this->_getAttr("beginFrame_left").asInt(),
-											  this->_getAttr("endFrame_left").asInt() - 3, "jump");
+							this->_getAttr("beginFrame_left").asInt(),
+							this->_getAttr("endFrame_left").asInt() - 3, "jump");
 				}
 			}
 			if (this->_grounds.size() == 0)
@@ -557,7 +560,7 @@ void	Characters::_up(int status) {
 	if (status == 1)
 		this->_orientation = UP;
 	else
-	  this->_orientation = this->_latOrientation;
+		this->_orientation = this->_latOrientation;
 }
 
 //! Down button action
@@ -586,7 +589,7 @@ void	Characters::_down(int status) {
 		}
 	}
 	else
-	  this->_orientation = this->_latOrientation;
+		this->_orientation = this->_latOrientation;
 }
 
 //! Attack action
@@ -638,8 +641,8 @@ void	Characters::_pickupItem(int status) {
  * @param The Weapon object
  */
 void	Characters::equipWeapon(Weapon* weapon) {
-		this->_weapon = new Weapon(weapon);
-		Game::getHUD()->items(this->_weapon);
+	this->_weapon = new Weapon(weapon);
+	Game::getHUD()->items(this->_weapon);
 }
 
 //! Unequip a weapon
@@ -735,8 +738,8 @@ void						Characters::_destroyEnemy(void) {
 void						Characters::_heroDeath(void) {
 	this->_setCategory("death");
 	this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-							  this->_getAttr("beginFrame_right").asInt(),
-							  this->_getAttr("endFrame_right").asInt(), "death");
+			this->_getAttr("beginFrame_right").asInt(),
+			this->_getAttr("endFrame_right").asInt(), "death");
 	Game::endGame = true;
 	Actor* ghost = new Actor();
 	ghost->SetPosition(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y - 1.7f);
@@ -751,6 +754,8 @@ Characters::Orientation		Characters::getOrientation(void) { return this->_orient
 std::string					Characters::getLastAction(void) { return this->_lastAction; };
 int							Characters::getHP(void) { return this->_hp; };
 int							Characters::getMana(void) { return this->_mana; };
+int							Characters::getMaxMana(void) { return this->_maxMana; };
+int							Characters::getMaxHP(void) { return this->_maxHp; };
 int							Characters::getGold(void) { return this->_gold; };
 void						Characters::changeCanMove(void) { this->_canMove = (this->_canMove ? false : true); };
 Weapon						*Characters::getWeapon(void) { return this->_weapon; };

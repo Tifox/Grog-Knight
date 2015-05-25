@@ -2,8 +2,10 @@
 	"infos": {
 		"name": "Hero",
 		"id": 0,
-		"HP": 125,
-		"mana": 45,
+		"HP": 25,
+		"maxHP": 75,
+		"mana": 80,
+		"maxMana": 100,
 		"sprites": "Resources/Images/Hero/hero_000.png",
 		"size": 1.3,
 		"maxSpeed": 5,

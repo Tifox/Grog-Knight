@@ -27,7 +27,7 @@
 		"loot": {
 				"consumableRate": 50,
 				"equipmentRate": 25,
-				"HPReward": 50,
+				"HPReward": 25,
 				"XPReward": 20,
 				"EqReward": 1
 			},

@@ -73,6 +73,8 @@ class Characters : public Elements {
 		void							setHP(int hp);
 		int								getMana(void);
 		void							setMana(int mana); 
+		int								getMaxMana(void);
+		int								getMaxHP(void);
 		Weapon							*getWeapon(void);
 		Armor							*getArmor(void);
 		Ring							*getRing(void);

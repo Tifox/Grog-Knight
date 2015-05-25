@@ -36,13 +36,12 @@
  */
 Consumable::Consumable(void) {
 	this->addAttribute("type2", "Consumable");
-	this->addAttribute("type3", "mana");
-	this->addAttribute("value", "50");
-	this->SetSprite("Resources/Images/mana.png");
+	this->addAttribute("type3", "HP");
+	this->addAttribute("value", "25");
+	this->SetSprite("Resources/Images/heart.png");
 	this->SetPosition(45, -27);
 	this->InitPhysics();
-	Game::bodiesToCreate.push_back(this);
-//	theWorld.Add(this);
+	theWorld.Add(this);
 }
 
 
@@ -59,7 +58,7 @@ Consumable::Consumable(Characters* c) {
 	this->addAttribute("type2", "Consumable");
 	if (rand() % 3 == 1) {
 		this->addAttribute("type3", "HP");
-		this->addAttribute("value", "50");
+		this->addAttribute("value", "25");
 		this->SetSprite("Resources/Images/heart.png");
 	}
 	else if (rand() %3 == 2 ){

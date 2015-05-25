@@ -76,6 +76,8 @@ class	HUDWindow : public HUDActor {
 		void	consumable(void);
 		void	minimap(void);
 		void	setGame(Game *);
+		void	setMaxMana(int m);
+		void	setMaxHP(int h);
 
 	private:
 		Game		*_g;
@@ -83,6 +85,8 @@ class	HUDWindow : public HUDActor {
 		std::list<HUDActor *>	_mana;
 		std::list<HUDWindow::Text *>	_text;
 		HUDWindow::Text	*		_gold;
+		int						_maxMana;
+		int						_maxHP;
 };
 
 #endif

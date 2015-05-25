@@ -86,6 +86,8 @@ void	Game::start(void) {
 	Game::currentGame = this;
 	Hero			*hero = new Hero();
 
+
+
 	LevelGenerator *levelGenerator = new LevelGenerator(9, 5, 60);
 	levelGenerator->execute();
 	//this->gameMap = levelGenerator->_rooms;
@@ -407,7 +409,7 @@ HUDWindow	*Game::getHUD(void) {
  */
 void		Game::displayHUD(void) {
 	HUDWindow *w = new HUDWindow();
-	Characters	&lol = Game::getHero();
+	Characters	&hero = Game::getHero();
 	w->SetPosition(theCamera.GetWindowWidth() / 2 - 100, 50);
 	w->SetSize(theCamera.GetWindowWidth() - 200, 100.0f);
 	w->SetSprite("Resources/Images/HUD/background_hud.png");
@@ -417,8 +419,8 @@ void		Game::displayHUD(void) {
 	theWorld.Add(w);
 	Game	*g = this;
 	w->setGame(g);
-	w->life(125);
-	w->mana(90);
+	w->life(hero.getHP());
+	w->mana(hero.getMana());
 	w->gold(0);
 	w->consumable();
 	w->minimap();

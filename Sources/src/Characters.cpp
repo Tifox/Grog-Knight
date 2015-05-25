@@ -104,9 +104,11 @@ void	Characters::_parseJson(std::string file) {
 	this->_name = json["infos"].get("name", "").asString();
 	this->_id = json["infos"].get("id", "").asInt();
 	this->_size = json["infos"].get("size", "").asFloat();
-	this->_maxSpeed = json["infos"].get("maxSpeed", "").asFloat();
+	this->_maxSpeed = json["infos"].get("maxSpeed", "").asFloat(); 
 	this->_hp = json["infos"].get("HP", "").asInt();
 	this->_maxHp = json["infos"].get("HP", "").asInt();
+	this->_mana = /*json["infos"].get("mana", "").asInt();*/ 10;
+	this->_maxMana = json["infos"].get("mana", "").asInt();
 	this->_hitboxType = json["infos"].get("hitboxType", "").asString();
 	this->_hitbox = json["infos"].get("hitbox", "").asString();
 	this->addAttribute("spritesFrame", json["infos"].get("sprites", "").asString());
@@ -708,6 +710,18 @@ void						Characters::setHP(int hp) {
 		this->_hp = hp;
 };
 
+//! Set basics mana
+/**
+ * Set Mana to the Character.
+ * @param mana The Mana number
+ */
+void						Characters::setMana(int mana) {
+	if (mana > this->_maxMana)
+		this->_mana = this->_maxMana;
+	else
+		this->_mana = mana;
+};
+
 //! Destroy an Enemy.
 /**
  * Made theSwitchboard Unsubscribe from the object, and destroy it.
@@ -740,6 +754,7 @@ void						Characters::_heroDeath(void) {
 Characters::Orientation		Characters::getOrientation(void) { return this->_orientation; }
 std::string					Characters::getLastAction(void) { return this->_lastAction; };
 int							Characters::getHP(void) { return this->_hp; };
+int							Characters::getMana(void) { return this->_mana; };
 int							Characters::getGold(void) { return this->_gold; };
 void						Characters::changeCanMove(void) { this->_canMove = (this->_canMove ? false : true); };
 Weapon						*Characters::getWeapon(void) { return this->_weapon; };

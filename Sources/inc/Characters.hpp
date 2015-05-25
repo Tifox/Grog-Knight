@@ -70,7 +70,9 @@ class Characters : public Elements {
 		std::string						getLastAction(void);
 		int								getGold(void);
 		int								getHP(void);
-		void							setHP(int h);
+		void							setHP(int hp);
+		int								getMana(void);
+		void							setMana(int mana); 
 		Weapon							*getWeapon(void);
 		Armor							*getArmor(void);
 		Ring							*getRing(void);
@@ -101,6 +103,8 @@ class Characters : public Elements {
 		int				_hp;
 		int				_gold;
 		int				_maxHp;
+		int 			_mana;
+		int 			_maxMana; 
 		bool			_canMove;
 		bool			_canJump;
 		bool			_invincibility;

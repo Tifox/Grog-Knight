@@ -112,6 +112,12 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 					this->setHP(this->getHP() + stoi(elem->getAttribute("value")));
 					Game::getHUD()->life(this->getHP());
 				}
+			} else if (elem->getAttribute("type3") == "mana") {
+				if (this->_mana != this->_maxMana) {
+					Game::addToDestroyList(elem);
+					this->setMana(this->getMana() + stoi(elem->getAttribute("value")));
+					Game::getHUD()->mana(this->getMana());
+				}
 			}
 			if (elem->getAttribute("type3") == "gold") {
 				Game::addToDestroyList(elem);

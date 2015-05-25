@@ -49,11 +49,14 @@ Loot::Loot(Characters* c) {
 	}
 }
 
-Loot::Loot(Characters* c, Equipment *toDrop) {
-	if (toDrop->getAttribute("type3") == "Weapon")
+Loot::Loot(Characters* c, Weapon *toDrop) {
 		new Equipment(Game::wList->getWeapon(toDrop->getName()), c);
-	else if (toDrop->getAttribute("type3") == "Armor")
+}
+
+Loot::Loot(Characters* c, Armor *toDrop) {
 		new Equipment(Game::aList->getArmor(toDrop->getName()), c);
-	else if (toDrop->getAttribute("type3") == "Ring")
+}
+
+Loot::Loot(Characters* c, Ring *toDrop) {
 		new Equipment(Game::rList->getRing(toDrop->getName()), c);
 }

@@ -645,7 +645,9 @@ void	Characters::equipWeapon(Weapon* weapon) {
  * Unequip old weapon to the Character, and update the HUD.
  * @param The Weapon object
  */
-void	Characters::unequipWeapon(void) { }
+void	Characters::unequipWeapon(void) {
+	new Loot(this, this->_weapon);
+}
 
 
 //! Equip a armor
@@ -666,6 +668,7 @@ void	Characters::equipArmor(Armor* armor) {
  * @param void
  */
 void	Characters::unequipArmor(void) {
+	new Loot(this, this->_armor);
 	if (this->_armor && this->_armor->getBonus() != nullptr && this->_armor->getBonus()->getType() == Bonus::BonusType::HP_BUFF)
 		this->_maxHp -= this->_armor->getBonus()->getAmount();
 }
@@ -688,6 +691,7 @@ void	Characters::equipRing(Ring* ring) {
  * @param The ring object
  */
 void	Characters::unequipRing(void) {
+	new Loot(this, this->_ring);
 	if (this->_ring && this->_ring->getBonus() != nullptr && this->_ring->getBonus()->getType() == Bonus::BonusType::HP_BUFF)
 		this->_maxHp -= this->_ring->getBonus()->getAmount();
 }

@@ -52,6 +52,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_item = nullptr;
 	this->_isAttacking = 0;
 	this->_gold = 0;
+	this->_isLoadingAttack = 0;
 	this->SetLayer(100);
 }
 
@@ -194,6 +195,14 @@ void	Characters::ReceiveMessage(Message *m) {
 				this->AnimCallback("base");
 		}
 	}
+	else if (m->GetMessageName() == "fullChargedAttack") {
+		this->_fullChargedAttack = true;
+		theSwitchboard.UnsubscribeFrom(this, "fullChargedAttack");
+	}
+	else if (m->GetMessageName() == "startChargeAttack") {
+		this->_isLoadingAttack = 1;
+		theSwitchboard.UnsubscribeFrom(this, "startChargeAttack");
+	}
 	else if (m->GetMessageName() == "endInvincibility") {
 		theSwitchboard.UnsubscribeFrom(this, "colorDamageBlink1");
 		theSwitchboard.UnsubscribeFrom(this, "colorDamageBlink2");
@@ -295,8 +304,8 @@ void	Characters::AnimCallback(String s) {
 	this->_setCategory("breath");
 	if (s == "base") {
 		this->_isAttacking = 0;
-		this->changeSizeTo(Vector2(1, 1));
-		if (this->_isRunning == 0 && this->_isAttacking == 0) {
+		if (this->_isRunning == 0 && this->_isAttacking == 0 && this->_isLoadingAttack == 0) {
+			this->changeSizeTo(Vector2(1, 1));
 			if (this->_latOrientation == LEFT) {
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 						this->_getAttr("beginFrame_left").asInt(),
@@ -310,15 +319,30 @@ void	Characters::AnimCallback(String s) {
 						this->_getAttr("beginFrame_right").asInt(),
 						this->_getAttr("endFrame_right").asInt(), "base");
 			}
-		} else {
-			if (this->_isRunning == 1) {
-				this->_setCategory("forward");
-			} else if (this->_isRunning == 2) {
-				this->_setCategory("backward");
+		} else if (this->_isAttacking == 0) {
+			if (this->_isLoadingAttack == 0) {
+				this->changeSizeTo(Vector2(1, 1));
+				if (this->_isRunning == 1) {
+					this->_setCategory("forward");
+				} else if (this->_isRunning == 2) {
+					this->_setCategory("backward");
+				}
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(),
+										  SAT_Loop,
+										  this->_getAttr("beginFrame").asInt(),
+										  this->_getAttr("endFrame").asInt());
+			} else {
+				std::string orientation;
+				if (this->_latOrientation == RIGHT) {
+					orientation = "right";
+				} else if (this->_latOrientation == LEFT)
+					orientation = "left";
+				this->_setCategory("loadAttack_charge");
+				this->changeSizeTo(Vector2(2, 2));
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+										  this->_getAttr("endFrame_" + orientation).asInt(),
+										  this->_getAttr("endFrame_" + orientation).asInt(), "loadAttack_charge");
 			}
-			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-					this->_getAttr("beginFrame").asInt(),
-					this->_getAttr("endFrame").asInt());
 		}
 	}
 }
@@ -333,7 +357,7 @@ void	Characters::AnimCallback(String s) {
  */
 void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "ground") {
-		if (this->_isAttacking == 0)
+		if (this->_isAttacking == 0 && this->_isLoadingAttack == 0)
 			this->changeSizeTo(Vector2(1, 1));
 		if (this->GetBody()->GetWorldCenter().y - 0.905 >= elem->GetBody()->GetWorldCenter().y) {
 			if (this->_grounds.size() > 0)
@@ -347,14 +371,19 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 			}
 			if (this->_isJump > 0) {
 				this->_isJump = 0;
-				if (this->_latOrientation == RIGHT && this->_isAttacking == false)
+				if (this->_latOrientation == RIGHT && this->_isAttacking == false && this->_isLoadingAttack == 0) {
+					this->changeSizeTo(Vector2(1, 1));
 					this->PlaySpriteAnimation(0.1f, SAT_OneShot,
 							this->_getAttr("jump", "endFrame_right").asInt() - 2,
 							this->_getAttr("jump", "endFrame_right").asInt(), "base");
-				if (this->_latOrientation == LEFT && this->_isAttacking == false)
+				} else if (this->_latOrientation == LEFT &&
+					this->_isAttacking == false &&
+					this->_isLoadingAttack == 0) {
+					this->changeSizeTo(Vector2(1, 1));
 					this->PlaySpriteAnimation(0.1f, SAT_OneShot,
 							this->_getAttr("jump", "endFrame_left").asInt() - 2,
 							this->_getAttr("jump", "endFrame_left").asInt(), "base");
+				}
 			}
 			this->_grounds.push_back(elem);
 		} else if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
@@ -384,14 +413,17 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 			this->_grounds.remove(elem);
 			if (this->_grounds.size() == 0) {
 				this->_isJump++;
-				if (this->_lastAction == "forward" && this->_canMove && this->_isAttacking == false)
+				if (this->_lastAction == "forward" && this->_canMove && this->_isAttacking == false && this->_isLoadingAttack == 0) {
+					this->changeSizeTo(Vector2(1, 1));
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 							this->_getAttr("jump", "fallingFrame_right").asInt(),
 							this->_getAttr("jump", "endFrame_right").asInt() - 3, "jump");
-				else if (this->_lastAction == "backward" && this->_canMove && this->_isAttacking == false)
+				} else if (this->_lastAction == "backward" && this->_canMove && this->_isAttacking == false && this->_isLoadingAttack == 0) {
+					this->changeSizeTo(Vector2(1, 1));
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 							this->_getAttr("jump", "fallingFrame_left").asInt(),
 							this->_getAttr("jump", "endFrame_left").asInt() - 3, "jump");
+				}
 			}
 		}
 		else
@@ -445,6 +477,12 @@ void	Characters::_forward(int status) {
 						this->GetSpriteFrame() - 8,
 						this->_getAttr("endFrame_right").asInt() - 3, "jump");
 			this->_setCategory("forward");
+		} else if (this->_isLoadingAttack) {
+			this->_setCategory("loadAttack_charge");
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+									  this->_getAttr("endFrame_right").asInt(),
+									  this->_getAttr("endFrame_right").asInt(), "loadAttack_charge");
+			this->_setCategory("forward");
 		}
 		Game::startRunning(this);
 		if (this->_isRunning == 2)
@@ -488,6 +526,12 @@ void	Characters::_backward(int status) {
 						this->GetSpriteFrame() + 8,
 						this->_getAttr("endFrame_left").asInt() - 3, "jump");
 			this->_setCategory("backward");
+		} else if (this->_isLoadingAttack) {
+			this->_setCategory("loadAttack_charge");
+			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+									  this->_getAttr("endFrame_left").asInt(),
+									  this->_getAttr("endFrame_left").asInt(), "loadAttack_charge");
+			this->_setCategory("backward");
 		}
 		Game::startRunning(this);
 		if (this->_isRunning == 1)
@@ -527,7 +571,8 @@ void	Characters::_jump(int status) {
 			else {
 				this->ApplyLinearImpulse(Vector2(0, this->_getAttr("force").asFloat()), Vector2(0, 0));
 			}
-			if (this->_isAttacking == false) {
+			if (this->_isAttacking == false && this->_isLoadingAttack == 0) {
+				this->changeSizeTo(Vector2(1, 1));
 				if (this->_latOrientation == RIGHT) {
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 							this->_getAttr("beginFrame_right").asInt(),
@@ -600,10 +645,36 @@ void	Characters::_down(int status) {
  * @sa Weapon::attack
  */
 void	Characters::_attack(int status) {
-	this->_setCategory("attack");
 	if (status == 1 && this->_weapon->attackReady() == 1) {
+		if (!this->_attackPressed && !this->_isLoadingAttack) {
+			this->_attackPressed = 1;
+			theSwitchboard.SubscribeTo(this, "startChargeAttack");
+			theSwitchboard.DeferredBroadcast(new Message("startChargeAttack"),
+											 0.3f);
+		}
+		if (this->_isLoadingAttack == 1 && this->_attackPressed == 1) {
+			this->_attackPressed = 0;
+			this->_fullChargedAttack = false;
+			theSwitchboard.SubscribeTo(this, "fullChargedAttack");
+			theSwitchboard.DeferredBroadcast(new Message("fullChargedAttack"),
+											 0.5f);
+			this->actionCallback("loadAttack_charge", 1);
+		}
+	}
+	else if (status == 0 && this->_weapon->attackReady() == 1 && (this->_fullChargedAttack == true || this->_isLoadingAttack == 0))  {
+		theSwitchboard.UnsubscribeFrom(this, "fullChargedAttack");
+		theSwitchboard.UnsubscribeFrom(this, "startChargeAttack");
 		this->_isAttacking = 1;
-		theSwitchboard.DeferredBroadcast(new Message("enableAttackHitbox"), 0.05f);
+		this->_isLoadingAttack = 0;
+		this->_attackPressed = 0;
+		theSwitchboard.DeferredBroadcast(new Message("enableAttackHitbox"),
+										 0.05f);
+	} else if (status == 0) {
+		theSwitchboard.UnsubscribeFrom(this, "fullChargedAttack");
+		theSwitchboard.UnsubscribeFrom(this, "startChargeAttack");
+		this->_isLoadingAttack = 0;
+		this->_attackPressed = 0;
+		this->AnimCallback("base");
 	}
 }
 

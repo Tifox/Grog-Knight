@@ -47,7 +47,6 @@ public:
 	void			EndContact(Elements *elem, b2Contact *contact);
 	void			ReceiveMessage(Message *m);
 
-	Bonus			*getBonus(void);
 	std::string		getName(void);
 	std::string		getType(void);
 	std::string		getFlavor(void);
@@ -62,7 +61,6 @@ private:
 	std::string		_flavor;
 	std::string		_sprite;
 	int				_lootLevel;
-	Bonus 			*_bonus;
 	void			_readFile(std::string name);
 	void			_parseJson(std::string file);
 

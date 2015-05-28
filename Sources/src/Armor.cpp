@@ -46,7 +46,10 @@ Armor::Armor(Armor* Armor) {
 	this->_flavor = Armor->getFlavor();
 	this->_sprite = Armor->getSprite();
 	this->_lootLevel = Armor->getLootLevel();
-	this->_bonus = Armor->getBonus();
+	if (Armor->getAttribute("hpBuff") != "")
+		this->addAttribute("hpBuff", Armor->getAttribute("hpBuff"));
+	if (Armor->getAttribute("manaBuff") != "")
+		this->addAttribute("manaBuff", Armor->getAttribute("manaBuff"));
 }
 
 
@@ -94,11 +97,8 @@ void    Armor::_parseJson(std::string file) {
 	this->_flavor = json["infos"].get("flavor", "").asString();
 	this->_lootLevel = json["infos"].get("lootLevel", "").asInt();
 	this->_sprite = json["infos"].get("sprites", "").asString();
-	if (!json["infos"].get("bonus", "").empty()){
-		this->_bonus = new Bonus(Bonus::parseType(json["infos"].get("bonus", "").get("type", "none").asString()), json["infos"].get("bonus", "").get("amount", 0).asInt());
-	} else {
-		this->_bonus = nullptr;
-	}
+	for (i = json["bonus"].begin(); i != json["bonus"].end(); i++)
+		this->addAttribute( i.key().asString(), (*i).asString());
 	this->addAttribute("type3", "Armor");
 }
 
@@ -126,7 +126,6 @@ void	Armor::ReceiveMessage(Message *m) {
 }
 
 /* GETTERS */
-Bonus*			Armor::getBonus(void) { return this->_bonus; }
 std::string		Armor::getName(void) { return this->_name; }
 std::string		Armor::getFlavor(void) { return this->_flavor; }
 std::string		Armor::getSprite(void) { return this->_sprite; }

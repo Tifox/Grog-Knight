@@ -117,11 +117,13 @@ void	Game::start(void) {
 						  this->maps->getMapXY()[Game::currentY][Game::currentX]->getYMid() + 1.8, 9.001);
 	// 9.2
 	hero->init();
+	
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
 	hero->equipRing(Game::rList->getRing("SmallRing"));
 	hero->equipArmor(Game::aList->getArmor("ChestArmor"));
 	this->setHero(hero);
 	this->displayHUD();
+
 	Game::started = 1;
 }
 

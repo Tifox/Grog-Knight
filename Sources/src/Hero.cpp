@@ -119,7 +119,7 @@ void	Hero::actionCallback(std::string name, int status) {
 		this->changeSizeTo(Vector2(2, 2));
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 								  this->_getAttr("beginFrame_" + orientation).asInt(),
-								  this->_getAttr("endFrame_" + orientation).asInt(), "loadAttack_charge");
+								  this->_getAttr("endFrame_" + orientation).asInt());
 	}
 	return ;
 }

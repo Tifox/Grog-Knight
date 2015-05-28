@@ -55,7 +55,7 @@ void	Map::setTileWidth(int w) { this->_tileWidth = w; };
 void	Map::setImageHeight(int h) { this->_imageHeight = h; };
 void	Map::setImageWidth(int w) { this->_imageWidth = w; };
 void	Map::setProperties(std::map<int, std::map<std::string, Json::Value> > p) { this->_properties = p; };
-void	Map::addElement(Elements *e) { this->_elems.push_back(e); };
+void	Map::addElement(Elements * e) { ; };
 void	Map::addMapElement(int n) { ; };
 void	Map::setLayer(int n) {this->_layer = n; };
 void	Map::setMap(std::vector<int> map) { this->_map.push_back(map); };
@@ -77,7 +77,7 @@ int		Map::getYStart(void) { return this->_yStart; };
  * Iterate and display the element of a map.
  * Lot's of stuff in this function, but the code's pretty clear, see source for more information
  */
-void	Map::display(void) {
+Map		Map::display(void) {
 	float						x, y;
 	std::list<std::vector <int> >::iterator		layers;
 	std::vector<int>::iterator	it;
@@ -167,7 +167,23 @@ void	Map::display(void) {
 					tmp->init();
 				}
 				elem->display();
+				this->_elemOfTheMap.push_back(elem);
 			}
 		}
+	}
+	return *this;
+}
+
+void	Map::destroyMap(void) {
+	std::list<Elements *>::iterator		it;
+
+	for (it = this->_elemOfTheMap.begin(); it != this->_elemOfTheMap.end(); it++) {
+		if ((*it)->getAttribute("physic") != "")
+			(*it)->GetBody()->SetActive(false);
+			//theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
+		theWorld.Remove(*it);
+	}
+	for (it = this->_elemOfTheMap.begin(); it != this->_elemOfTheMap.end(); it++) {
+		*it = nullptr;
 	}
 }

@@ -167,10 +167,6 @@ void	Maps::displayLevel(std::vector<std::vector<int> > map) {
 	// Last allocation (y <= maxY), so + 1
 	this->_XYMap.push_back(std::vector<Map>(16));
 
-	/* for (i = 0; i < this->_XYMap.size(); i++) {*/
-	//for (x = 0; x < this->_XYMap[i].size(); x++)
-	/*}*/
-
 	for (x = y = rX = rY = 0; y <= maxY; x++) {
 		if (x > maxX) {
 			y++;
@@ -184,7 +180,6 @@ void	Maps::displayLevel(std::vector<std::vector<int> > map) {
 			tmp = this->getMapByDoor(i);
 			tmp->setXStart(rX);
 			tmp->setYStart(rY);
-			tmp->display();
 			this->_XYMap[y][x] = *tmp;
 		}
 		rX += 27;

@@ -53,7 +53,7 @@ class	Map {
 		void	setTileWidth(int w);
 		void	setImageHeight(int h);
 		void	setImageWidth(int w);
-		void	addElement(Elements *e);
+		void	addElement(Elements * e);
 		void	addMapElement(int n);
 		void	setMap(std::vector<int> map);
 		void	setProperties(std::map<int, std::map<std::string, Json::Value> > p);
@@ -61,13 +61,14 @@ class	Map {
 		void	setXStart(int x);
 		void	setYStart(int y);
 		void	setUsed(int n);
-		void	display(void);
+		Map		display(void);
 		int		getHeight(void);
 		int		getWidth(void);
 		int		getXMid(void);
 		int		getYMid(void);
 		int		getXStart(void);
 		int		getYStart(void);
+		void	destroyMap(void);
 
 	private:
 		int					_mapCount;
@@ -86,7 +87,7 @@ class	Map {
 		int					_xStart;
 		int					_yStart;
 		int					_isUsed;
-		std::list<Elements *>	_elems;
+		std::list<Elements *>	_elemOfTheMap;
 		std::map<int, std::map<std::string, Json::Value> >	_properties;
 };
 

@@ -98,9 +98,7 @@ void	Game::start(void) {
 	Game::currentY = levelGenerator->getStartY();
 	theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
 						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 9.001);
-
-
-	// 9.001
+	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 	this->displayHero(*(hero));
 	hero->init();
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
@@ -202,23 +200,24 @@ void	Game::moveCamera(void) {
 	Map		&tmp = this->maps->_XYMap[Game::currentY][Game::currentX];
 
    if (this->_hero->GetBody()->GetWorldCenter().x >= (tmp.getXStart() + tmp.getWidth() - 0.5)) {
+		this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
 		Game::currentX++;
 		asChanged = true;
 	} else if (this->_hero->GetBody()->GetWorldCenter().x <= (tmp.getXStart() - 1)) {
+		this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
 		Game::currentX--;
 		asChanged = true;
 	} else if (this->_hero->GetBody()->GetWorldCenter().y >= tmp.getYStart()) {
+		this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
 		Game::currentY--;
 		asChanged = true;
 	} else if (this->_hero->GetBody()->GetWorldCenter().y <= (tmp.getYStart() - tmp.getHeight())) {
+		this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
 		Game::currentY++;
 		asChanged = true;
 	}
 	if (asChanged) {
-	   /*if (this->maps->getMapXY()[Game::currentY][Game::currentX])*/
-			//Log::warning("The map object at " + std::to_string(Game::currentY) + " / " + 
-				/*std::to_string(Game::currentX) + " is null !");*/
-	   //else
+		this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 		theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
 			this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
 		asChanged = false;
@@ -312,7 +311,8 @@ bool	Game::destroyAllBodies(void) {
 		return true;
 	} else {
 		for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
-			theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
+			if ((*it)->getAttribute("physic") != "")
+				theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
 			theWorld.Remove(*it);
 			Game::delElement(*it);
 		}

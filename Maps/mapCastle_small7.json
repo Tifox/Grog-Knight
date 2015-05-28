@@ -163,6 +163,7 @@
                 },
              "62":
                 {
+                 "hitbox":"upperTierHitbox",
                  "speType":"canCross"
                 },
              "69":

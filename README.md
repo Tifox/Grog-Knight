@@ -4,6 +4,7 @@
 [![License](https://img.shields.io/badge/license-BSD-blue.svg)](LICENSE)
 [![Join the chat at https://gitter.im/Ne02ptzero/Grog-Like](https://img.shields.io/badge/chat-gitter-red.svg)](https://gitter.im/Ne02ptzero/Grog-Like?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+![Pic](http://ne02ptzero.me/grog-like.gif)
 ### First draft on open project thoughts and timeline
 
 Our goal is to create a video game based on the quite popular genre hybrid Rogue-Like. It is a very broad type of game, but the main idea behind it is always the same. A playthrough that isn’t too long (can be finished in an hour or so) but a huge replayability. Each time you run through the game, you’ll encounter different enemies, bosses, objects, map layout, and finishing a playthrough is rewarding in itself for the player as it unlocks new objects/enemies/levels in order to alter the gameplay for the next run. The death is permanent, and once your character dies, you have to restart from the beginning.

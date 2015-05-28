@@ -1,39 +1,39 @@
 /**
-* Licensed to the Apache Software Foundation (ASF) under one
-* or more contributor license agreements.  See the NOTICE file
-* distributed with this work for additional information
-* regarding copyright ownership.  The ASF licenses this file
-* to you under the Apache License, Version 2.0 (the
-* "License"); you may not use this file except in compliance
-* with the License.  You may obtain a copy of the License at
-*
-*  http://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing,
-*  software distributed under the License is distributed on an
-*  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-*  KIND, either express or implied.  See the License for the
-*  specific language governing permissions and limitations
-* under the License.
-*/
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ * under the License.
+ */
 
 /**
-* File: LevelGenerator.cpp
-* Creation: 2015-03-02 16:05
-* Matthieu Maudet <mmaudet@student.42.fr>
-*/
+ * File: LevelGenerator.cpp
+ * Creation: 2015-03-02 16:05
+ * Matthieu Maudet <mmaudet@student.42.fr>
+ */
 
 # include "LevelGenerator.hpp"
 # include "Room.hpp"
 
 /**
-* Standard constructor with :
-* - Height and Width
-* - minPathLenght : Min path between entry and exit rooms
-* - roomPopRate (of 100%) : Chances for a room to pop on given slot
-* - doorsPopRate (of 100%) : Chances for a door to pop on given wall
-* - nbMaps : Number of different maps
-*/
+ * Standard constructor with :
+ * - Height and Width
+ * - minPathLenght : Min path between entry and exit rooms
+ * - roomPopRate (of 100%) : Chances for a room to pop on given slot
+ * - doorsPopRate (of 100%) : Chances for a door to pop on given wall
+ * - nbMaps : Number of different maps
+ */
 LevelGenerator::LevelGenerator(int maxMapSize, int minPathLenght, int doorsPopRate) : _maxMapSize(maxMapSize), _minPathLenght(minPathLenght), _doorsPopRate(doorsPopRate) {
 	srand(time(NULL));
 	_rooms = new std::vector<Room*>;
@@ -44,15 +44,16 @@ LevelGenerator::LevelGenerator(int maxMapSize, int minPathLenght, int doorsPopRa
 }
 
 /**
-* Basic Destructor
-*/
+ * Basic Destructor
+ */
 LevelGenerator::~LevelGenerator(void) {
 	return;
 }
 
 void LevelGenerator::execute(void) {
+	int		i;
 	createFirstRoom();
-	for (int distance = 0; distance < _maxMapSize; distance++)
+	for (int distance = 0; distance <= _maxMapSize; distance++)
 		firstPass(distance);
 }
 
@@ -140,3 +141,70 @@ bool LevelGenerator::testDoor(int x, int y) {
 		return true;
 	return false;
 }
+
+std::vector<std::vector<int> >		LevelGenerator::getLevel(void) {
+	std::vector<std::vector<int> >			map;
+	std::vector<std::vector<Room *> >		roomMap;
+	int									i, j, score, mid, maxDistance;
+	Room								*tmp, *first;
+
+	mid = this->_maxMapSize;
+	for (i = maxDistance = 0; i < this->_rooms->size(); i++)
+		maxDistance = (this->_rooms->at(i)->getDistance() > maxDistance ? 
+				this->_rooms->at(i)->getDistance() : maxDistance);
+	if ((this->_maxMapSize / 2) < maxDistance)
+		this->_maxMapSize += maxDistance * 2;
+	for (i = 0; i < this->_maxMapSize; i++) {
+		map.push_back(std::vector<int>(this->_maxMapSize));
+		roomMap.push_back(std::vector<Room *>(this->_maxMapSize));
+	}
+	mid += 4;
+	for (i = score = 0; i < this->_rooms->size(); i++, score = 0) {
+		tmp = this->_rooms->at(i);
+		if (tmp->getTopDoor())
+			score++;
+		if (tmp->getRightDoor())
+			score += 2;
+		if (tmp->getBottomDoor())
+			score += 4;
+		if (tmp->getLeftDoor())
+			score += 8;
+		map[mid - tmp->getY()][tmp->getX() + mid] = score;
+		roomMap[mid - tmp->getY()][tmp->getX() + mid] = tmp;
+		if (tmp->getY() == 0 && tmp->getX() == 0) {
+			this->_startX = tmp->getX() + mid;
+			this->_startY = tmp->getY() + mid;
+		}
+	}
+	for (i = 0; i < map.size(); i++) {
+		for (j = 0; j < map[i].size(); j++) {
+			if (map[i][j]) {
+				if (roomMap[i][j]->getTopDoor()) {
+					if ((i - 1) < 0)
+						map[i][j]--;
+					else if (!map[i - 1][j])
+						map[i][j]--;
+				} if (roomMap[i][j]->getRightDoor()) {
+					if ((j + 1) > map[i].size())
+						map[i][j] -= 2;
+					else if (!map[i][j + 1])
+						map[i][j] -= 2;
+				} if (roomMap[i][j]->getBottomDoor()) {
+					if ((i + 1) > map.size())
+						map[i][j] -= 4;
+					else if (!map[i + 1][j])
+						map[i][j] -= 4;
+				} if (roomMap[i][j]->getLeftDoor()) {
+					if ((j - 1) < 0)
+						map[i][j] -= 8;
+					else if (!map[i][j - 1])
+						map[i][j] -= 8;
+				}
+			}
+		}
+	}
+	return map;
+}
+
+int			LevelGenerator::getStartX(void) { return this->_startX; };
+int			LevelGenerator::getStartY(void) { return this->_startY; };

@@ -88,34 +88,20 @@ void	Game::start(void) {
 
 
 
-	LevelGenerator *levelGenerator = new LevelGenerator(9, 5, 60);
+	LevelGenerator *levelGenerator = new LevelGenerator(4, 3, 60);
 	levelGenerator->execute();
-	//this->gameMap = levelGenerator->_rooms;
-
-	// THIS IS AN EXAMPLE
-	// That's a test map.
-	this->_tmpMap.push_back(std::vector<int>());
-	this->_tmpMap.push_back(std::vector<int>());
-	this->_tmpMap.push_back(std::vector<int>());
-	this->_tmpMap[0].push_back(0);
-	this->_tmpMap[0].push_back(4);
-	this->_tmpMap[0].push_back(0);
-	this->_tmpMap[1].push_back(2);
-	this->_tmpMap[1].push_back(15);
-	this->_tmpMap[1].push_back(8);
-	this->_tmpMap[2].push_back(0);
-	this->_tmpMap[2].push_back(1);
-	this->_tmpMap[2].push_back(0);
-
+	this->_tmpMap = levelGenerator->getLevel();
 	this->maps->displayLevel(this->_tmpMap);
 
-	this->displayHero(*(hero));
 	//theCamera.LockTo(hero);
-	Game::currentX = 1;
-	Game::currentY = 1;
-	theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX]->getXMid(),
-						  this->maps->getMapXY()[Game::currentY][Game::currentX]->getYMid() + 1.8, 9.001);
-	// 9.2
+	Game::currentX = levelGenerator->getStartX();
+	Game::currentY = levelGenerator->getStartY();
+	theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
+						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 9.001);
+
+
+	// 9.001
+	this->displayHero(*(hero));
 	hero->init();
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
 	hero->equipRing(Game::rList->getRing("SmallRing"));
@@ -150,8 +136,8 @@ void	Game::showMap(void) {
  */
 void	Game::displayHero(Elements & Hero) {
 	//Here starts the game - parse the 1st map coordinates and hero start
-	Hero.setXStart(28);
-	Hero.setYStart(-28);
+	Hero.setXStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid());
+	Hero.setYStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid());
 	Hero.addAttribute("hero", "1");
 	Hero.display();
 }
@@ -213,25 +199,29 @@ void	Game::simulateHeroItemContact(void) {
 
 void	Game::moveCamera(void) {
 	bool	asChanged = false;
-	Map		*tmp = this->maps->getMapXY()[Game::currentY][Game::currentX];
+	Map		&tmp = this->maps->_XYMap[Game::currentY][Game::currentX];
 
-   if (this->_hero->GetBody()->GetWorldCenter().x >= (tmp->getXStart() + tmp->getWidth() - 0.5)) {
+   if (this->_hero->GetBody()->GetWorldCenter().x >= (tmp.getXStart() + tmp.getWidth() - 0.5)) {
 		Game::currentX++;
 		asChanged = true;
-	} else if (this->_hero->GetBody()->GetWorldCenter().x <= (tmp->getXStart() - 1)) {
+	} else if (this->_hero->GetBody()->GetWorldCenter().x <= (tmp.getXStart() - 1)) {
 		Game::currentX--;
 		asChanged = true;
-	} if (this->_hero->GetBody()->GetWorldCenter().y >= tmp->getYStart()) {
+	} else if (this->_hero->GetBody()->GetWorldCenter().y >= tmp.getYStart()) {
 		Game::currentY--;
 		asChanged = true;
-	} else if (this->_hero->GetBody()->GetWorldCenter().y <= (tmp->getYStart() - tmp->getHeight())) {
+	} else if (this->_hero->GetBody()->GetWorldCenter().y <= (tmp.getYStart() - tmp.getHeight())) {
 		Game::currentY++;
 		asChanged = true;
 	}
-
 	if (asChanged) {
-		theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX]->getXMid(),
-		this->maps->getMapXY()[Game::currentY][Game::currentX]->getYMid() + 1.8, 9.001);
+	   /*if (this->maps->getMapXY()[Game::currentY][Game::currentX])*/
+			//Log::warning("The map object at " + std::to_string(Game::currentY) + " / " + 
+				/*std::to_string(Game::currentX) + " is null !");*/
+	   //else
+		theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
+			this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
+		asChanged = false;
 	}
 }
 
@@ -471,3 +461,4 @@ int							Game::currentX = 0;
 int							Game::currentY = 0;
 Game*						Game::currentGame = 0;
 int							Game::started = 0;
+int							Game::cameraTick = 0;

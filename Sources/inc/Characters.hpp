@@ -30,6 +30,7 @@
 # include "Armor.hpp"
 # include "Ring.hpp"
 # include "Log.hpp"
+
 class Weapon;
 class Armor;
 class Ring;
@@ -81,11 +82,11 @@ class Characters : public Elements {
 		// Virtual function, overwritten in childs
 		virtual void	actionCallback(std::string name, int status) {};
 		virtual void	equipWeapon(Weapon* weapon);
-		virtual void	unequipWeapon(void);
+		virtual void	unEquipWeapon(void);
 		virtual void	equipArmor(Armor* armor);
-		virtual void	unequipArmor(void);
+		virtual void	unEquipArmor(void);
 		virtual void	equipRing(Ring* ring);
-		virtual void	unequipRing(void);
+		virtual void	unEquipRing(void);
 
 		void			changeCanMove(void);
 

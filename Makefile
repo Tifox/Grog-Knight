@@ -86,8 +86,7 @@ SRCS =	./Sources/src/Elements.cpp \
 		./Sources/src/HUDWindow.cpp \
 		./Sources/src/Menu.cpp \
 		./Sources/src/Ring.cpp \
-		./Sources/src/RingList.cpp \
-		./Sources/src/Bonus.cpp 
+		./Sources/src/RingList.cpp 
 
 SYSOBJS = $(patsubst %.cpp,%.o,$(SYSSRCS))
 OBJS = $(patsubst %.cpp,%.o,$(SRCS))

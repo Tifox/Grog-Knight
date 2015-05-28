@@ -46,7 +46,10 @@ Ring::Ring(Ring* Ring) {
 	this->_sprite = Ring->getSprite();
 	this->addAttribute("type3", "Ring");
 	this->_lootLevel = Ring->getLootLevel();
-	this->_bonus = Ring->getBonus();
+	if (Ring->getAttribute("hpBuff") != "")
+		this->addAttribute("hpBuff", Ring->getAttribute("hpBuff"));
+	if (Ring->getAttribute("manaBuff") != "")
+		this->addAttribute("manaBuff", Ring->getAttribute("manaBuff"));	
 }
 
 
@@ -94,11 +97,9 @@ void    Ring::_parseJson(std::string file) {
 	this->_flavor = json["infos"].get("flavor", "").asString();
 	this->_lootLevel = json["infos"].get("lootLevel", "").asInt();
 	this->_sprite = json["infos"].get("sprites", "").asString();
-	if (!json["infos"].get("bonus", "").empty()){
-		this->_bonus = new Bonus(Bonus::parseType(json["infos"].get("bonus", "").get("type", "none").asString()), json["infos"].get("bonus", "").get("amount", 0).asInt());
-	} else {
-		this->_bonus = nullptr;
-	}
+	for (i = json["bonus"].begin(); i != json["bonus"].end(); i++)
+		this->addAttribute( i.key().asString(), (*i).asString());
+	this->addAttribute("type3", "Armor");
 	this->addAttribute("type3", "Ring");
 }
 
@@ -126,7 +127,6 @@ void	Ring::ReceiveMessage(Message *m) {
 }
 
 /* GETTERS */
-Bonus*			Ring::getBonus(void) { return this->_bonus; }
 std::string		Ring::getName(void) { return this->_name; }
 std::string		Ring::getFlavor(void) { return this->_flavor; }
 std::string		Ring::getSprite(void) { return this->_sprite; }

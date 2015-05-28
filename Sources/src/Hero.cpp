@@ -63,9 +63,11 @@ void	Hero::init(void) {
  * @todo Extract the values from the consumable
  */
 void	Hero::actionCallback(std::string name, int status) {
-	if (name == "attack" && status == 1 && this->_weapon->attackReady() == 1) {
-		std::string 	orientation;
-		float				x = 2, y = 1;
+	std::string 	orientation;
+	float				x = 2, y = 1;
+	if (name == "attack" && status == 0 && this->_weapon->attackReady() == 1 &&
+		this->_fullChargedAttack == false && this->_isLoadingAttack == 0 &&
+		this->_isAttacking == 1) {
 		this->_weapon->isAttacking(0);
 		if (this->_orientation == RIGHT) {
 			orientation = "right";
@@ -79,10 +81,45 @@ void	Hero::actionCallback(std::string name, int status) {
 			orientation = "down";
 		}
 		this->changeSizeTo(Vector2(x, y));
+		this->_setCategory("attack");
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-			this->_getAttr("beginFrame_" + orientation).asInt(),
-			this->_getAttr("endFrame_" + orientation).asInt(), "base");
+								  this->_getAttr("beginFrame_" +
+												 orientation).asInt(),
+								  this->_getAttr("endFrame_" +
+												 orientation).asInt(), "base");
 
+	} else if (name == "attack" && status == 0 &&
+			   this->_weapon->attackReady() == 1 &&
+			   this->_fullChargedAttack == true) {
+		if (this->_orientation == RIGHT) {
+			orientation = "right";
+		} else if (this->_orientation == LEFT) {
+			orientation = "left";
+		} else if (this->_orientation == UP) {
+			x = 1.5f; y = 2;
+			orientation = "up";
+		} else if (this->_orientation == DOWN) {
+			x = 1; y = 2.5f;
+			orientation = "down";
+		}
+		this->_setCategory("loadAttack_done");
+		this->_weapon->isAttacking(0);
+		this->_isLoadingAttack = 0;
+		this->_fullChargedAttack = false;
+		this->changeSizeTo(Vector2(2, 2));
+		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+								  this->_getAttr("beginFrame_" + orientation).asInt(),
+								  this->_getAttr("endFrame_" + orientation).asInt(), "base");
+	} else if (name == "loadAttack_charge") {
+		if (this->_latOrientation == RIGHT) {
+			orientation = "right";
+		} else if (this->_latOrientation == LEFT)
+			orientation = "left";
+		this->_setCategory("loadAttack_charge");
+		this->changeSizeTo(Vector2(2, 2));
+		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+								  this->_getAttr("beginFrame_" + orientation).asInt(),
+								  this->_getAttr("endFrame_" + orientation).asInt(), "loadAttack_charge");
 	}
 	return ;
 }

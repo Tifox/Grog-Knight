@@ -106,10 +106,13 @@ class Characters : public Elements {
 		int				_gold;
 		int				_maxHp;
 		int 			_mana;
-		int 			_maxMana; 
+		int 			_maxMana;
 		bool			_canMove;
 		bool			_canJump;
 		bool			_invincibility;
+		bool			_attackPressed;
+		int				_isLoadingAttack;
+		bool			_fullChargedAttack;
 		Weapon*			_weapon;
 		Armor*			_armor;
 		Ring*			_ring;

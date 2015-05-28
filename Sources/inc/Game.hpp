@@ -118,6 +118,7 @@ class Game {
 		static int						currentY;
 		static int						minY;
 		static int						started;
+		static int						cameraTick;
 
 	private:
 		float				beginXHero;

@@ -233,8 +233,12 @@ void	Game::moveCamera(void) {
  * @param elem The Elements to add at the list
  */
 void	Game::addElement(Elements & elem) {
-	Game::elementMap[Game::currentIds] = &elem;
-	Game::currentIds += 1;
+	if (Game::elementMap[elem.getId()])
+		Game::elementMap[elem.getId()] = &elem;
+	else {
+		Game::elementMap[Game::currentIds] = &elem;
+		Game::currentIds += 1;
+	}
 }
 
 //! Delete an element
@@ -313,8 +317,10 @@ bool	Game::destroyAllBodies(void) {
 		return true;
 	} else {
 		for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
-			if ((*it)->getAttribute("physic") != "")
+			if ((*it)->getAttribute("physic") != "") {
+				(*it)->GetBody()->SetActive(false);
 				theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
+			}
 			theWorld.Remove(*it);
 			Game::delElement(*it);
 		}

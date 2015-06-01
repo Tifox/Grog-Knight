@@ -69,6 +69,7 @@ public:
 	int				getOrientationY(void);
 	int				getLateralOrientation(void);
 	bool			isDead(void);
+	int				isAdded(void);
 
 
 protected:
@@ -91,6 +92,7 @@ private:
 	int								_width;
 	int								_cutHeight;
 	int								_cutWidth;
+	int								_isAdded;
 	int								_frame;
 	std::list<Animation *>			_animationList;
 	std::list<Animation *>::iterator _animIt;

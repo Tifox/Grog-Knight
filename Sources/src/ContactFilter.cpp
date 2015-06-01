@@ -46,7 +46,6 @@ bool	ContactFilter::ShouldCollide(b2Fixture* fixA, b2Fixture* fixB) {
 	if (attrA->getAttribute("type") == "Hero" &&
 		attrB->getAttribute("type") == "ground" &&
 		attrB->getAttribute("speType") == "canCross") {
-		std::cout << "fewfew" << std::endl;
 		if (attrA->GetBody()->GetWorldCenter().y - 1 <
 			attrB->GetBody()->GetWorldCenter().y) {
 			return false;

@@ -69,6 +69,7 @@ class	Map {
 		int		getXStart(void);
 		int		getYStart(void);
 		void	destroyMap(void);
+		Map		resumeMap(void);
 
 	private:
 		int					_mapCount;

@@ -31,14 +31,14 @@
  * @param id The future id of the element
  * @fixme This function is outdated due to recent changes in the API.
  */
-Elements::Elements(int id) : PhysicsActor() {
+Elements::Elements(int id) : PhysicsActor(), _isAdded(0) {
 	this->setId(Game::getNextId());
 	Game::addElement(*this);
 	return ;
 }
 
 //! Base constructor
-Elements::Elements(void) : PhysicsActor() {
+Elements::Elements(void) : PhysicsActor(), _isAdded(0) {
 	this->setId(Game::getNextId());
 	Game::addElement(*this);
 	return ;
@@ -51,7 +51,8 @@ Elements::Elements(void) : PhysicsActor() {
  */
 Elements::Elements(Elements & obj) : PhysicsActor(obj) {
 	this->_attributes = obj.getAttributes();
-	this->setId(Game::getNextId());
+	this->setId(obj.getId());
+	this->_isAdded = obj.isAdded();
 	Game::addElement(*this);
 }
 
@@ -170,6 +171,7 @@ void	Elements::display(void) {
 		this->_animIt = this->_animationList.begin();
 		this->PlaySpriteAnimation((*this->_animIt)->time, SAT_OneShot, (*this->_animIt)->frame, (*this->_animIt)->frame, "baseAnimation");
 	}
+	this->_isAdded = 1;
 	theWorld.Add(this);
 }
 
@@ -183,6 +185,7 @@ void	Elements::setCutWidth(int w) { this->_cutWidth = w; };
 void	Elements::setCutHeight(int h) { this->_cutHeight = h; };
 void	Elements::setFrame(int n) { this->_frame = n; };
 void	Elements::setHitbox(std::string n) { this->_hitbox = n; this->_hitboxType = "special"; };
+int		Elements::isAdded(void) { return this->_isAdded; };
 
 /* GETTERS */
 std::map<std::string, std::string>	Elements::getAttributes(void) { return this->_attributes; };

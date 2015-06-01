@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset name="castle_1" tilewidth="32" tileheight="32">
+<tileset name="castle" tilewidth="32" tileheight="32">
  <image source="Resources/Images/castle_1.png" width="288" height="288"/>
  <tile id="0">
   <properties>
@@ -297,12 +297,12 @@
    <property name="physic" value="0"/>
   </properties>
  </tile>
- <tile id="60">
+ <tile id="53">
   <properties>
-   <property name="physic" value="0"/>
+   <property name="speType" value="canCross"/>
   </properties>
  </tile>
- <tile id="61">
+ <tile id="60">
   <properties>
    <property name="physic" value="0"/>
   </properties>
@@ -312,15 +312,31 @@
    <property name="physic" value="0"/>
   </properties>
  </tile>
- <tile id="70">
-  <properties>
-   <property name="physic" value="0"/>
-  </properties>
- </tile>
  <tile id="76">
   <properties>
-   <property name="hitbox" value="lowerHalf"/>
+   <property name="hitbox" value="lowerHalfHitbox"/>
    <property name="speType" value="spikes"/>
+  </properties>
+ </tile>
+ <tile id="77">
+  <properties>
+   <property name="animate" value="1"/>
+   <property name="next" value="78"/>
+   <property name="speType" value="water"/>
+   <property name="time" value="0.1"/>
+  </properties>
+ </tile>
+ <tile id="78">
+  <properties>
+   <property name="animate" value="1"/>
+   <property name="next" value="77"/>
+   <property name="speType" value="water"/>
+   <property name="time" value="0.1"/>
+  </properties>
+ </tile>
+ <tile id="79">
+  <properties>
+   <property name="speType" value="water"/>
   </properties>
  </tile>
 </tileset>

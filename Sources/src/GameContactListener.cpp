@@ -38,8 +38,10 @@ void	GameContactListener::BeginContact(b2Contact * contact) {
 
 	p1 = static_cast<PhysicsActor*>(contact->GetFixtureA()->GetBody()->GetUserData());
 	p2 = static_cast<PhysicsActor*>(contact->GetFixtureB()->GetBody()->GetUserData());
-	Game::elementMap[p1->getId()]->BeginContact(Game::elementMap[p2->getId()], contact);
-	Game::elementMap[p2->getId()]->BeginContact(Game::elementMap[p1->getId()], contact);
+	if (Game::elementMap[p1->getId()] && Game::elementMap[p2->getId()]) {
+		Game::elementMap[p1->getId()]->BeginContact(Game::elementMap[p2->getId()], contact);
+		Game::elementMap[p2->getId()]->BeginContact(Game::elementMap[p1->getId()], contact);
+	}
 }
 
 //! Function that allows the overload of the BeginContact in the classes used in our game
@@ -55,6 +57,8 @@ void	GameContactListener::EndContact(b2Contact * contact) {
 
 	p1 = static_cast<PhysicsActor*>(contact->GetFixtureA()->GetBody()->GetUserData());
 	p2 = static_cast<PhysicsActor*>(contact->GetFixtureB()->GetBody()->GetUserData());
-	Game::elementMap[p1->getId()]->EndContact(Game::elementMap[p2->getId()], contact);
-	Game::elementMap[p2->getId()]->EndContact(Game::elementMap[p1->getId()], contact);
+	if (Game::elementMap[p1->getId()] && Game::elementMap[p2->getId()]) {
+		Game::elementMap[p1->getId()]->EndContact(Game::elementMap[p2->getId()], contact);
+		Game::elementMap[p2->getId()]->EndContact(Game::elementMap[p1->getId()], contact);
+	}
 }

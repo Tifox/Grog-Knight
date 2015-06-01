@@ -84,6 +84,14 @@ Map		Map::display(void) {
 	Elements					*elem;
 	int							v = 0;
 
+	//if (this->_elemOfTheMap.size() > 0) {
+		//std::list<Elements *>::iterator		it;
+
+		//for (it = this->_elemOfTheMap.begin(); it != this->_elemOfTheMap.end(); it++) {
+			//(*it)->display();
+		//}
+		//return *this;
+	/*}*/
 	for (layers = this->_map.begin(); layers != this->_map.end(); layers++, v++) {
 		x = this->_xStart;
 		y = this->_yStart;
@@ -178,12 +186,22 @@ void	Map::destroyMap(void) {
 	std::list<Elements *>::iterator		it;
 
 	for (it = this->_elemOfTheMap.begin(); it != this->_elemOfTheMap.end(); it++) {
-		if ((*it)->getAttribute("physic") != "")
+		if ((*it)->getAttribute("physic") != "") {
 			(*it)->GetBody()->SetActive(false);
 			//theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
+		}
 		theWorld.Remove(*it);
 	}
+}
+
+Map		Map::resumeMap(void) {
+	std::list<Elements *>::iterator		it;
+
 	for (it = this->_elemOfTheMap.begin(); it != this->_elemOfTheMap.end(); it++) {
-		*it = nullptr;
+		if ((*it)->getAttribute("physic") != "")
+			(*it)->GetBody()->SetActive(true);
+			//theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
+		//theWorld.Remove(*it);
 	}
+	return *this;
 }

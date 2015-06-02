@@ -166,31 +166,47 @@ Map		Map::display(void) {
 					}
 				}
 				if (elem->getAttribute("spawnEnemy") != "") {
-					if (elem->getAttribute("isFlying") != "")
-						tmp = new Enemy(Game::eList->getEnemyRandom(true));
-					else
-						tmp = new Enemy(Game::eList->getEnemyRandom(false));
-					tmp->setXStart(x);
-					tmp->setYStart(y);
-					tmp->init();
+					if (!this->_isUsed) {
+						if (elem->getAttribute("isFlying") != "")
+							tmp = new Enemy(Game::eList->getEnemyRandom(true));
+						else
+							tmp = new Enemy(Game::eList->getEnemyRandom(false));
+						tmp->setXStart(x);
+						tmp->setYStart(y);
+						tmp->init();
+						this->_enemies.push_back(tmp);
+					} else {
+						std::list<Enemy *>::iterator		en;
+						for (en = this->_enemies.begin(); en != this->_enemies.end(); en++) {
+							(*en)->GetBody()->SetActive(true);
+						}
+					}
 				}
 				elem->display();
 				this->_elemOfTheMap.push_back(elem);
 			}
 		}
 	}
+	this->_isUsed = 1;
 	return *this;
 }
 
 void	Map::destroyMap(void) {
 	std::list<Elements *>::iterator		it;
+	std::list<Enemy *>::iterator		en;
 
+	// Remove physics and remove the element
 	for (it = this->_elemOfTheMap.begin(); it != this->_elemOfTheMap.end(); it++) {
 		if ((*it)->getAttribute("physic") != "") {
 			(*it)->GetBody()->SetActive(false);
 			//theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
 		}
 		theWorld.Remove(*it);
+	}
+
+	// Pause enemies
+	for (en = this->_enemies.begin(); en != this->_enemies.end(); en++) {
+		(*en)->GetBody()->SetActive(false);
 	}
 }
 

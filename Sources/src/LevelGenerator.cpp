@@ -183,6 +183,7 @@ std::vector<std::vector<int> >		LevelGenerator::getLevel(void) {
 	for (i = 0; i < map.size(); i++) {
 		for (j = 0; j < map[i].size(); j++) {
 			if (map[i][j]) {
+				// If a door is open and there is no room behind it
 				if (roomMap[i][j]->getTopDoor()) {
 					if ((i - 1) < 0)
 						map[i][j]--;
@@ -204,6 +205,16 @@ std::vector<std::vector<int> >		LevelGenerator::getLevel(void) {
 					else if (!map[i][j - 1])
 						map[i][j] -= 8;
 				}
+
+				// If a door is closed and there is a room behind it
+				if (!roomMap[i][j]->getTopDoor() && roomMap[i - 1][j])
+					map[i][j]++;
+				if (!roomMap[i][j]->getRightDoor() && roomMap[i][j + 1])
+					map[i][j] += 2;
+				if (!roomMap[i][j]->getBottomDoor() && roomMap[i + 1][j])
+					map[i][j] += 4;
+				if (!roomMap[i][j]->getLeftDoor() && roomMap[i][j - 1])
+					map[i][j] += 8;
 			}
 		}
 	}

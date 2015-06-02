@@ -29,6 +29,7 @@
 # include <vector>
 # include <list>
 # include <iostream>
+class	Enemy;
 # include "Game.hpp"
 
 # ifdef __APPLE__
@@ -89,6 +90,7 @@ class	Map {
 		int					_yStart;
 		int					_isUsed;
 		std::list<Elements *>	_elemOfTheMap;
+		std::list<Enemy *>		_enemies;
 		std::map<int, std::map<std::string, Json::Value> >	_properties;
 };
 

@@ -85,9 +85,10 @@ Weapon::Weapon(Weapon* w, Characters* c) {
 		this->addAttribute("type", "WeaponHitBox");
 	this->SetDrawShape(ADS_Square);
 	this->SetColor(1, 1, 1, 0);
+	this->addAttribute("physic", "1");
 	this->_hitboxType = "special";
 	this->_hitbox = "octogonHitbox";
-	this->SetDensity(0.1f);
+	this->SetDensity(0.001f);
 	this->SetFixedRotation(true);
 	this->Tag("weaponhitbox");
 	this->SetIsSensor(true);

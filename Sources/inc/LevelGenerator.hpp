@@ -55,6 +55,9 @@ public:
 	std::vector<Room*>				*_rooms;
 	int								getStartX();
 	int								getStartY();
+	int								getNbMaps();
+
+
 
 private:
 	int								_id;

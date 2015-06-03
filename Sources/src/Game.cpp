@@ -93,6 +93,10 @@ void	Game::start(void) {
 	this->_tmpMap = levelGenerator->getLevel();
 	this->maps->displayLevel(this->_tmpMap);
 
+//	Log::info("NbMaps: " + std::to_string(levelGenerator->getNbMaps()));
+//	Log::info("NbEnemy:" + trouver le nombre d ennemy);
+//	Log::info("NbMaps: " + info sur la sauvegarde (nivau du hero, gold etc...));
+
 	//theCamera.LockTo(hero);
 	Game::currentX = levelGenerator->getStartX();
 	Game::currentY = levelGenerator->getStartY();

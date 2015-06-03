@@ -142,6 +142,10 @@ bool LevelGenerator::testDoor(int x, int y) {
 	return false;
 }
 
+int	LevelGenerator::getNbMaps(void) {
+	return this->_nbMaps;
+}
+
 std::vector<std::vector<int> >		LevelGenerator::getLevel(void) {
 	std::vector<std::vector<int> >			map;
 	std::vector<std::vector<Room *> >		roomMap;

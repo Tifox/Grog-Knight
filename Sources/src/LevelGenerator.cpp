@@ -163,6 +163,10 @@ std::vector<std::vector<int> >		LevelGenerator::getLevel(void) {
 		roomMap.push_back(std::vector<Room *>(this->_maxMapSize));
 	}
 	map.push_back(std::vector<int>(this->_maxMapSize * 2));
+	map.push_back(std::vector<int>(this->_maxMapSize * 2));
+	map.push_back(std::vector<int>(this->_maxMapSize * 2));
+	map.push_back(std::vector<int>(this->_maxMapSize * 2));
+	map.push_back(std::vector<int>(this->_maxMapSize * 2));
 	mid += 4;
 	for (i = score = 0; i < this->_rooms->size(); i++, score = 0) {
 		tmp = this->_rooms->at(i);

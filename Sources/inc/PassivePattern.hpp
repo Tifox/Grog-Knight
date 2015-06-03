@@ -18,44 +18,24 @@
  */
 
 /**
- * File: Enemy.hpp
- * Creation: 2015-02-23 14:25
- * Manon Budin <mbudin@student.42.fr>
+ * File: PassivePattern.cpp
+ * Creation: 2015-05-03 10:25
+ * Louis Solofrizzo <louis@ne02ptzero.me>
  */
 
-
-#ifndef __Enemy__
-# define __Enemy__
-
-# include "Characters.hpp"
-# include "Loot.hpp"
-# include "Map.hpp"
+#ifndef	__PassivePattern__
+# define __PassivePattern__
 # include "Pattern.hpp"
-# include "PassivePattern.hpp"
+# include "Map.hpp"
 
-class Enemy : public Characters {
-public:
-	Enemy();
-	Enemy(std::string);
-	~Enemy();
+class	PassivePattern : public Pattern {
+	public:
+		PassivePattern(void);
+		~PassivePattern(void);
 
-	int				takeDamage(int damage);
-	void			actionCallback(std::string name, int status);
-	void			init(void);
-	void			BeginContact(Elements* m, b2Contact* contact);
-	void			EndContact(Elements *m, b2Contact *contact);
-	bool			toBeDeleted(void);
-	void			setMap(Map *m);
-	Map				*getMap(void);
-	void			setPattern(Pattern *p);
-	Pattern			*getPattern(void);
-	bool			dead(void);
+		virtual void	tick(Map m);
 
-protected:
-	bool			isDead;
-	Map				*_map;
-	Pattern			*_pattern;
-	int				_lastElement;
+	private:
+		int		_tickNumber;
 };
-
 #endif

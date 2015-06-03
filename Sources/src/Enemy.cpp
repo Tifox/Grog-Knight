@@ -41,8 +41,6 @@ Enemy::Enemy(void) : Characters("Enemy") {
  */
 Enemy::Enemy(std::string str) : Characters(str) {
 	this->SetName("Enemy");
-	theSwitchboard.SubscribeTo(this, "startPathing" + this->GetName());
-	theSwitchboard.DeferredBroadcast(new Message("startPathing" + this->GetName()), 0.2f);
 	this->addAttribute("type", "Enemy");
 	this->addAttribute("name", str);
 	this->addAttribute("enemy", "1");
@@ -140,6 +138,17 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 	}
 }
 
+void	Enemy::EndContact(Elements *m, b2Contact *contact) {
+	Characters::EndContact(m, contact);
+	if (m->getAttribute("type") == "ground" && !this->_isDead) {
+		if (this->_lastElement != m->getId()) {
+			this->_pattern->tick(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX]);
+			this->_lastElement = m->getId();
+		}
+	}
+
+}
+
 //! Take Damage
 /**
  * Function that applies damage
@@ -165,10 +174,19 @@ int		Enemy::takeDamage(int damage) {
 				this->_getAttr("endFrame").asInt());
 		theSwitchboard.SubscribeTo(this, "destroyEnemy");
 		theSwitchboard.DeferredBroadcast(new Message("destroyEnemy"), 0.5);
-		theSwitchboard.UnsubscribeFrom(this, "startPathing" + this->GetName());
-		theSwitchboard.UnsubscribeFrom(this, "setToStatic" + this->GetName());
 		return 0;
 	}
 	this->_hp -= damage;
 	return 1;
 }
+
+/* SETTERS */
+
+void	Enemy::setMap(Map *m) { this->_map = m; };
+void	Enemy::setPattern(Pattern *p) { this->_pattern = p; };
+
+/* GETTERS */
+
+Map		*Enemy::getMap(void) { return this->_map; };
+Pattern	*Enemy::getPattern(void) { return this->_pattern; };
+bool	Enemy::dead(void) { return this->_isDead; };

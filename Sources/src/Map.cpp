@@ -62,6 +62,8 @@ void	Map::setMap(std::vector<int> map) { this->_map.push_back(map); };
 void	Map::setXStart(int x) { this->_xStart = x; };
 void	Map::setYStart(int y) { this->_yStart = y; };
 void	Map::setUsed(int n) { this->_isUsed = n; };
+std::list<Enemy *>	Map::getEnemies(void) { return this->_enemies; };
+std::vector<std::vector<int> >	Map::getPhysicMap(void) { return this->_physicMap; };
 
 /* GETTERS */
 
@@ -84,15 +86,12 @@ Map		Map::display(void) {
 	Elements					*elem;
 	int							v = 0;
 
-	//if (this->_elemOfTheMap.size() > 0) {
-		//std::list<Elements *>::iterator		it;
-
-		//for (it = this->_elemOfTheMap.begin(); it != this->_elemOfTheMap.end(); it++) {
-			//(*it)->display();
-		//}
-		//return *this;
-	/*}*/
-	for (layers = this->_map.begin(); layers != this->_map.end(); layers++, v++) {
+	// Allocation for the _physicMap
+	if (!this->_isUsed) {
+		for (v = 0; v < this->_height; v++)
+			this->_physicMap.push_back(std::vector<int>(this->getWidth()));
+	}
+	for (layers = this->_map.begin(), v = 0; layers != this->_map.end(); layers++, v++) {
 		x = this->_xStart;
 		y = this->_yStart;
 		Enemy	*tmp;
@@ -118,6 +117,7 @@ Map		Map::display(void) {
 				elem->SetLayer(v);
 				if (this->_properties.find(*it) == this->_properties.end()) {
 					elem->addAttribute("physic", "TRUE");
+					this->_physicMap[-(y - this->_yStart)][x - this->_xStart] = 1;
 				} else {
 					std::map<std::string, Json::Value>::iterator	it2;
 					int												isPhysic = 1, isAnimated = 0;
@@ -135,8 +135,12 @@ Map		Map::display(void) {
 							elem->addAttribute(it2->first, it2->second.asString());
 						}
 					}
-					if (isPhysic == 1)
+					if (isPhysic == 1) {
 						elem->addAttribute("physic", "TRUE");
+						this->_physicMap[-(y - this->_yStart)][x - this->_xStart] = 1;
+					} else {
+						this->_physicMap[-(y - this->_yStart)][x - this->_xStart] = 0;
+					}
 					if (isAnimated == 1) {
 						int		v = atoi(elem->getAttribute("next").c_str()), next, count;
 						float	time;
@@ -171,17 +175,23 @@ Map		Map::display(void) {
 							tmp = new Enemy(Game::eList->getEnemyRandom(true));
 						else
 							tmp = new Enemy(Game::eList->getEnemyRandom(false));
+						PassivePattern	*p = new PassivePattern();
 						tmp->setXStart(x);
 						tmp->setYStart(y);
+						tmp->setMap(this);
+						p->setEnemy(tmp);
+						tmp->setPattern(p);
 						tmp->init();
+						tmp->GetBody()->ApplyLinearImpulse(b2Vec2(0, 3), b2Vec2(0, 0));
 						this->_enemies.push_back(tmp);
 					} else {
 						std::list<Enemy *>::iterator		en;
 						for (en = this->_enemies.begin(); en != this->_enemies.end(); en++) {
-							(*en)->GetBody()->SetActive(true);
-							(*en)->GetBody()->SetTransform(b2Vec2((*en)->getXStart(), (*en)->getYStart()),
-								(*en)->GetBody()->GetAngle());
-							//(*en)->MoveTo(Vector2((*en)->getXStart(), (*en)->getYStart()), 4);
+							if (!(*en)->dead()) {
+								(*en)->GetBody()->SetActive(true);
+								(*en)->GetBody()->SetTransform(b2Vec2((*en)->getXStart(), (*en)->getYStart()),
+									(*en)->GetBody()->GetAngle());
+							}
 						}
 					}
 				}
@@ -202,25 +212,22 @@ void	Map::destroyMap(void) {
 	for (it = this->_elemOfTheMap.begin(); it != this->_elemOfTheMap.end(); it++) {
 		if ((*it)->getAttribute("physic") != "") {
 			(*it)->GetBody()->SetActive(false);
-			//theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
 		}
 		theWorld.Remove(*it);
 	}
 
 	// Pause enemies
 	for (en = this->_enemies.begin(); en != this->_enemies.end(); en++) {
-		(*en)->GetBody()->SetActive(false);
+		if (!(*en)->dead())
+			(*en)->GetBody()->SetActive(false);
 	}
 }
 
-Map		Map::resumeMap(void) {
-	std::list<Elements *>::iterator		it;
+void	Map::callAllPatterns(void) {
+	std::list<Enemy *>::iterator		en;
 
-	for (it = this->_elemOfTheMap.begin(); it != this->_elemOfTheMap.end(); it++) {
-		if ((*it)->getAttribute("physic") != "")
-			(*it)->GetBody()->SetActive(true);
-			//theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
-		//theWorld.Remove(*it);
-	}
-	return *this;
+	//for (en = this->_enemies.begin(); en != this->_enemies.end(); en++) {
+		//if (!(*en)->dead())
+			//(*en)->getPattern()->tick(*this);
+	/*}*/
 }

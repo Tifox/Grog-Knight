@@ -24,7 +24,8 @@
  */
 
 # include "Characters.hpp"
-#include <cstdlib>
+# include <cstdlib>
+
 //! Base constructor
 Characters::Characters(void) {
 	return ;
@@ -241,21 +242,7 @@ void	Characters::ReceiveMessage(Message *m) {
 					this->_getAttr("jump", "fallingFrame_left").asInt(),
 					this->_getAttr("jump", "endFrame_left").asInt() - 3, "jump");
 	}
-	else if (m->GetMessageName() == "startPathing" + this->GetName()) {
-		if (this->_grounds.size() > 0) {
-			if (this->_wallsLeft.size() > 0)
-				this->_orientation = RIGHT;
-			else if (this->_wallsRight.size() > 0)
-				this->_orientation = LEFT;
-			if (this->_orientation == RIGHT)
-				this->GetBody()->SetLinearVelocity(b2Vec2(5,0));
-			if (this->_orientation == LEFT)
-				this->GetBody()->SetLinearVelocity(b2Vec2(-5,0));
-		}
-		theSwitchboard.DeferredBroadcast(new Message("startPathing" + this->GetName()), 0.2f);
-		return;
-	}
-	else if (m->GetMessageName() == "destroyEnemy") {
+ 	else if (m->GetMessageName() == "destroyEnemy") {
 		new Loot(this);
 		this->_destroyEnemy();
 		return;

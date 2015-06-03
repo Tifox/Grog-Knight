@@ -179,6 +179,8 @@ void	Elements::display(void) {
 
 void	Elements::setXStart(float X) { this->_XStartPos = X; };
 void	Elements::setYStart(float Y) { this->_YStartPos = Y; };
+int		Elements::getXStart(void) { return this->_XStartPos; };
+int		Elements::getYStart(void) { return this->_YStartPos; };
 void	Elements::setWidth(int w) { this->_width = w; };
 void	Elements::setHeight(int h) { this->_height = h; };
 void	Elements::setCutWidth(int w) { this->_cutWidth = w; };

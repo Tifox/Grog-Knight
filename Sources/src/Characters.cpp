@@ -25,6 +25,7 @@
 
 # include "Characters.hpp"
 #include <cstdlib>
+
 //! Base constructor
 Characters::Characters(void) {
 	return ;
@@ -34,6 +35,7 @@ Characters::Characters(void) {
 /**
  * Setting base physic, some attributes and some intern variables
  * @param name The name of the character (Enemy, Hero, etc ...)
+ * @todo gotta parse the right number of slots from json for inventory
  */
 Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0) {
 	this->addAttribute("physic", "1");
@@ -46,6 +48,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_readFile(name);
 	this->_canMove = true;
 	this->_canJump = true;
+	this->_inventory = new Inventory(3);
 	this->_invincibility = false;
 	this->_grounds.clear();
 	this->_walls.clear();
@@ -263,6 +266,29 @@ void	Characters::ReceiveMessage(Message *m) {
 	else if (m->GetMessageName() == "setToStatic" + this->GetName()) {
 		this->GetBody()->SetType(b2_staticBody);
 		return;
+	}
+	else if (m->GetMessageName() == "equipSelectedItem") {
+		std::string item;
+
+		item = this->_inventory->equipSelectedItem();
+		if (item != "") {
+			if (Game::wList->checkExists(item) == 1) {
+				Weapon* w = new Weapon(Game::wList->getWeapon(item));
+				this->unequipWeapon();
+				this->equipWeapon(w);
+			} else if (Game::aList->checkExists(item) == 1) {
+				Armor* w = new Armor(Game::aList->getArmor(item));
+				this->unequipArmor();
+				this->equipArmor(w);
+			} else if (Game::rList->checkExists(item) == 1) {
+				Ring* w = new Ring(Game::rList->getRing(item));
+				this->unequipRing();
+				this->equipRing(w);
+			}
+		}
+	}
+	else if (m->GetMessageName() == "cycleInventory") {
+		this->_inventory->changeItemFocus();
 	}
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
 		attrName = this->_getAttr(i->first, "subscribe").asString();
@@ -688,20 +714,19 @@ void	Characters::_attack(int status) {
 void	Characters::_pickupItem(int status) {
 	if (this->_item == nullptr)
 		return;
-	if (this->_item->getAttribute("type3") == "Weapon"){
-		unEquipWeapon();
-		this->equipWeapon(static_cast<Equipment*>(this->_item)->getWeapon());
+	if (this->_inventory->addItemToInventory(this->_item->getAttribute("name")) == 1) {
+		if (Game::wList->checkExists(this->_inventory->getCurrentFocus()))
+			new Loot(this, Game::wList->getWeapon(this->_inventory->dropSelectedItem()));
+		else if (Game::aList->checkExists(this->_inventory->getCurrentFocus()))
+			new Loot(this, Game::aList->getArmor(this->_inventory->dropSelectedItem()));
+		else if (Game::rList->checkExists(this->_inventory->getCurrentFocus()))
+			new Loot(this, Game::rList->getRing(this->_inventory->dropSelectedItem()));
+		else
+			Log::error("An error occured trying to drop " + this->_inventory->getCurrentFocus());
+		this->_inventory->addItemToInventory(this->_item->getAttribute("name"));
 	}
-	else if (this->_item->getAttribute("type3") == "Ring") {
-		unEquipRing();
-		this->equipRing(static_cast<Equipment*>(this->_item)->getRing());
-	}
-	else if (this->_item->getAttribute("type3") == "Armor")
-	{
-		unEquipArmor();
-		this->equipArmor(static_cast<Equipment*>(this->_item)->getArmor());
-	}
-	theSwitchboard.Broadcast(new Message("DeleteEquipment" + this->_item->GetName()));
+	theSwitchboard.Broadcast(new Message("DeleteEquipment" +
+										 this->_item->GetName()));
 	this->_item = nullptr;
 
 }
@@ -721,10 +746,9 @@ void	Characters::equipWeapon(Weapon* weapon) {
  * Unequip old weapon to the Character, and update the HUD.
  * @param The Weapon object
  */
-void	Characters::unEquipWeapon(void) {
-	new Loot(this, this->_weapon);
+void	Characters::unequipWeapon(void) {
+	this->_inventory->swapEquipmentAndInventory(this->_weapon->getAttribute("name"));
 }
-
 
 //! Equip a armor
 /**
@@ -745,13 +769,12 @@ void	Characters::equipArmor(Armor* armor) {
  * Unequip old armor to the Character, and update the HUD.
  * @param void
  */
-void	Characters::unEquipArmor(void) {
-	new Loot(this, this->_armor);
+void	Characters::unequipArmor(void) {
+	this->_inventory->swapEquipmentAndInventory(this->_armor->getAttribute("name"));
 	if (this->_armor->getAttribute("hpBuff") != "")
 	  	this->_maxHp -= std::stoi(this->_armor->getAttribute("hpBuff"));
 	if (this->_armor->getAttribute("manaBuff") != "")
 	  	this->_maxMana -= std::stoi(this->_armor->getAttribute("manaBuff"));
-
 }
 
 //! Equip a ring
@@ -773,8 +796,8 @@ void	Characters::equipRing(Ring* ring) {
  * Unequip old ring to the Character, and update the HUD.
  * @param The ring object
  */
-void	Characters::unEquipRing(void) {
-	new Loot(this, this->_ring);
+void	Characters::unequipRing(void) {
+	this->_inventory->swapEquipmentAndInventory(this->_ring->getAttribute("name"));
 	if (this->_ring->getAttribute("hpBuff") != "")
 	  	this->_maxHp -= std::stoi(this->_ring->getAttribute("hpBuff"));
 	if (this->_ring->getAttribute("manaBuff") != "")

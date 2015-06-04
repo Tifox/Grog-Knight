@@ -43,6 +43,7 @@ Armor::Armor(std::string name) : _name(name) {
 Armor::Armor(Armor* Armor) {
 	this->_name = Armor->getName();
 	this->addAttribute("type3", "Armor");
+	this->addAttribute("name", this->_name);
 	this->_flavor = Armor->getFlavor();
 	this->_sprite = Armor->getSprite();
 	this->_lootLevel = Armor->getLootLevel();

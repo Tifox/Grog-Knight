@@ -18,46 +18,39 @@
  */
 
 /**
- * File: RingList.hpp
- * Creation: 2015-05-07 17:49
- * Manon Budin <mbudin@student.42.fr>
+ * File: Inventory.hpp
+ * Creation: 2015-05-27 04:44
+ * Vincent Rey <vrey@student.42.fr>
  */
 
+#ifndef __Inventory__
+# define __Inventory__
 
-#ifndef __RingList__
-# define __RingList__
-
-# include "Ring.hpp"
 # include "Log.hpp"
 # include "Elements.hpp"
-# include <sstream>
-
 # ifdef __APPLE__
 #  include "../../Tools/jsoncpp/include/json/json.h"
 # else
 #  include "json/json.h"
 # endif
 
-# include <list>
-# include "../../Angel/Angel.h"
-# ifndef __Elements__
-# include "Elements.hpp"
-#endif
+class Inventory {
 
-class RingList: public Elements {
 public:
-	RingList(void);
-	~RingList(void);
+	Inventory(int slots);
 
-	void	statRing(std::string);
-	int		checkExists(std::string);
-	Ring*	getRing(std::string);
-	Ring*	getRingRandom(void);
-	Ring*	getRingRandom(int level);
+	void			changeItemFocus(void);
+	std::string		getCurrentFocus(void);
+	int				addItemToInventory(std::string item);
+	std::string		dropSelectedItem(void);
+	std::string		equipSelectedItem(void);
+	void			swapEquipmentAndInventory(std::string item);
 
 private:
-	std::list<Ring*> _allRings;
-
+	int							_slots;
+	int							_focused;
+	int							_inInventory;
+	std::map<int, std::string>	_items;
 };
 
 #endif

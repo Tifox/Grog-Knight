@@ -54,6 +54,17 @@ RingList::~RingList(void) {
 	return;
 }
 
+int			RingList::checkExists(std::string name) {
+	std::list<Ring*>::iterator it;
+
+	for (it = this->_allRings.begin(); it != this->_allRings.end(); it++) {
+		if (name == (*it)->getName()) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
 //! Returns a Ring in order to use it afterwards
 /**
  * Get a Ring obj by name

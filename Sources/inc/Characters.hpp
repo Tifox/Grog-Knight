@@ -26,11 +26,13 @@
 #ifndef __Characters__
 # define __Characters__
 
+# include "Inventory.hpp"
 # include "Weapon.hpp"
 # include "Armor.hpp"
 # include "Ring.hpp"
 # include "Log.hpp"
 
+class Inventory;
 class Weapon;
 class Armor;
 class Ring;
@@ -73,20 +75,21 @@ class Characters : public Elements {
 		int								getHP(void);
 		void							setHP(int hp);
 		int								getMana(void);
-		void							setMana(int mana); 
+		void							setMana(int mana);
 		int								getMaxMana(void);
 		int								getMaxHP(void);
 		Weapon							*getWeapon(void);
 		Armor							*getArmor(void);
 		Ring							*getRing(void);
+
 		// Virtual function, overwritten in childs
 		virtual void	actionCallback(std::string name, int status) {};
 		virtual void	equipWeapon(Weapon* weapon);
-		virtual void	unEquipWeapon(void);
+		virtual void	unequipWeapon(void);
 		virtual void	equipArmor(Armor* armor);
-		virtual void	unEquipArmor(void);
+		virtual void	unequipArmor(void);
 		virtual void	equipRing(Ring* ring);
-		virtual void	unEquipRing(void);
+		virtual void	unequipRing(void);
 
 		void			changeCanMove(void);
 
@@ -118,6 +121,7 @@ class Characters : public Elements {
 		Armor*			_armor;
 		Ring*			_ring;
 		Elements*		_item;
+		Inventory*		_inventory;
 		Characters::Orientation				_orientation;
 		Characters::Orientation				_latOrientation;
 		std::list<Elements*>				_grounds;

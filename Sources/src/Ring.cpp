@@ -45,6 +45,7 @@ Ring::Ring(Ring* Ring) {
 	this->_flavor = Ring->getFlavor();
 	this->_sprite = Ring->getSprite();
 	this->addAttribute("type3", "Ring");
+	this->addAttribute("name", this->_name);
 	this->_lootLevel = Ring->getLootLevel();
 	if (Ring->getAttribute("hpBuff") != "")
 		this->addAttribute("hpBuff", Ring->getAttribute("hpBuff"));

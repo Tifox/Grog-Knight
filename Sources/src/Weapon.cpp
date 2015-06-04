@@ -43,6 +43,7 @@ Weapon::Weapon(std::string name) : _name(name) {
 
 Weapon::Weapon(Weapon* weapon) {
 	this->_name = weapon->getName();
+	this->addAttribute("name", this->_name);
 	this->_flavor = weapon->getFlavor();
 	this->_damage = weapon->getDamage();
 	this->_recovery = weapon->getRecovery();
@@ -186,6 +187,7 @@ void    Weapon::_parseJson(std::string file) {
 	if (this->_name != json["infos"].get("name", "").asString())
 		Log::warning("The class name is different with the name in the config file: " + this->_name + "/" + json["infos"].get("name", "").asString());
 	this->_name = json["infos"].get("name", "").asString();
+
 	this->_flavor = json["infos"].get("flavor", "").asString();
 	this->_active = json["infos"].get("active", "").asFloat();
 	this->_recovery = json["infos"].get("recovery", "").asFloat();

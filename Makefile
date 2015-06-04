@@ -86,7 +86,8 @@ SRCS =	./Sources/src/Elements.cpp \
 		./Sources/src/HUDWindow.cpp \
 		./Sources/src/Menu.cpp \
 		./Sources/src/Ring.cpp \
-		./Sources/src/RingList.cpp 
+		./Sources/src/RingList.cpp \
+		./Sources/src/Inventory.cpp
 
 SYSOBJS = $(patsubst %.cpp,%.o,$(SYSSRCS))
 OBJS = $(patsubst %.cpp,%.o,$(SRCS))
@@ -109,7 +110,7 @@ $(WRAPPER): SWIG-Wrapper
 jsoncpp:
 	cd Tools/jsoncpp && cmake . && make
 
-$(TARGET): $(LIBANGEL) jsoncpp $(OBJS) $(SYSOBJS) $(WRAPPER)
+$(TARGET): $(LIBANGEL) $(OBJS) $(SYSOBJS) $(WRAPPER)
 	$(CXX) -o $@ $(OBJS) $(SYSOBJS) $(LIBS) $(SHLIBS) $(ANGEL_FLAGS)
 	cp -p Angel/Scripting/EngineScripts/*.lua Resources/Scripts
 

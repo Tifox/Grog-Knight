@@ -112,7 +112,7 @@ $(WRAPPER): SWIG-Wrapper
 jsoncpp:
 	cd Tools/jsoncpp && cmake . && make
 
-$(TARGET): $(LIBANGEL) $(OBJS) $(SYSOBJS) $(WRAPPER)
+$(TARGET): $(LIBANGEL) jsoncpp $(OBJS) $(SYSOBJS) $(WRAPPER)
 	$(CXX) -o $@ $(OBJS) $(SYSOBJS) $(LIBS) $(SHLIBS) $(ANGEL_FLAGS)
 	cp -p Angel/Scripting/EngineScripts/*.lua Resources/Scripts
 

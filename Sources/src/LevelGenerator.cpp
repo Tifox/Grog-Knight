@@ -159,9 +159,14 @@ std::vector<std::vector<int> >		LevelGenerator::getLevel(void) {
 	if ((this->_maxMapSize / 2) < maxDistance)
 		this->_maxMapSize += maxDistance * 2;
 	for (i = 0; i < this->_maxMapSize; i++) {
-		map.push_back(std::vector<int>(this->_maxMapSize));
+		map.push_back(std::vector<int>(this->_maxMapSize * 2));
 		roomMap.push_back(std::vector<Room *>(this->_maxMapSize));
 	}
+	map.push_back(std::vector<int>(this->_maxMapSize * 2));
+	map.push_back(std::vector<int>(this->_maxMapSize * 2));
+	map.push_back(std::vector<int>(this->_maxMapSize * 2));
+	map.push_back(std::vector<int>(this->_maxMapSize * 2));
+	map.push_back(std::vector<int>(this->_maxMapSize * 2));
 	mid += 4;
 	for (i = score = 0; i < this->_rooms->size(); i++, score = 0) {
 		tmp = this->_rooms->at(i);
@@ -207,13 +212,13 @@ std::vector<std::vector<int> >		LevelGenerator::getLevel(void) {
 				}
 
 				// If a door is closed and there is a room behind it
-				if (!roomMap[i][j]->getTopDoor() && roomMap[i - 1][j])
+				if (!roomMap[i][j]->getTopDoor() && i > 0 && roomMap[i - 1][j])
 					map[i][j]++;
-				if (!roomMap[i][j]->getRightDoor() && roomMap[i][j + 1])
+				if (!roomMap[i][j]->getRightDoor() && (j + 1) < roomMap[i].size() && roomMap[i][j + 1])
 					map[i][j] += 2;
-				if (!roomMap[i][j]->getBottomDoor() && roomMap[i + 1][j])
+				if (!roomMap[i][j]->getBottomDoor() && (i + 1) < roomMap.size() && roomMap[i + 1][j])
 					map[i][j] += 4;
-				if (!roomMap[i][j]->getLeftDoor() && roomMap[i][j - 1])
+				if (!roomMap[i][j]->getLeftDoor() && j > 0 && roomMap[i][j - 1])
 					map[i][j] += 8;
 			}
 		}

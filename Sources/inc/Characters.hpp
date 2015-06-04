@@ -53,6 +53,8 @@ class Characters : public Elements {
 
 	public:
 		friend	class	Game;
+		friend	class	Pattern;
+		friend	class	PassivePattern;
 
 		enum Orientation {
 			UP,

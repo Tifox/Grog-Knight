@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset name="castle" tilewidth="32" tileheight="32">
- <image source="Resources/Images/castle_1.png" width="288" height="288"/>
+ <image source="Resources/Images/castle_1.png" width="288" height="640"/>
  <tile id="0">
   <properties>
    <property name="animate" value="1"/>
@@ -299,12 +299,18 @@
  </tile>
  <tile id="53">
   <properties>
+   <property name="hitbox" value="upperTierHitbox"/>
    <property name="speType" value="canCross"/>
   </properties>
  </tile>
  <tile id="60">
   <properties>
    <property name="physic" value="0"/>
+  </properties>
+ </tile>
+ <tile id="62">
+  <properties>
+   <property name="speType" value="canCross"/>
   </properties>
  </tile>
  <tile id="69">
@@ -337,6 +343,86 @@
  <tile id="79">
   <properties>
    <property name="speType" value="water"/>
+  </properties>
+ </tile>
+ <tile id="80">
+  <properties>
+   <property name="hitbox" value="rightHalfHitbox"/>
+  </properties>
+ </tile>
+ <tile id="81">
+  <properties>
+   <property name="speType" value="canCross"/>
+  </properties>
+ </tile>
+ <tile id="82">
+  <properties>
+   <property name="speType" value="canCross"/>
+  </properties>
+ </tile>
+ <tile id="83">
+  <properties>
+   <property name="speType" value="canCross"/>
+  </properties>
+ </tile>
+ <tile id="84">
+  <properties>
+   <property name="speType" value="canCross"/>
+  </properties>
+ </tile>
+ <tile id="85">
+  <properties>
+   <property name="speType" value="canCross"/>
+  </properties>
+ </tile>
+ <tile id="86">
+  <properties>
+   <property name="speType" value="canCross"/>
+  </properties>
+ </tile>
+ <tile id="87">
+  <properties>
+   <property name="alpha" value="0"/>
+   <property name="physic" value="0"/>
+  </properties>
+ </tile>
+ <tile id="88">
+  <properties>
+   <property name="alpha" value="0"/>
+   <property name="physic" value="0"/>
+  </properties>
+ </tile>
+ <tile id="89">
+  <properties>
+   <property name="hitbox" value="leftHalfHitbox"/>
+  </properties>
+ </tile>
+ <tile id="91">
+  <properties>
+   <property name="hitbox" value="rightHalfHitbox"/>
+   <property name="speType" value="spikes"/>
+  </properties>
+ </tile>
+ <tile id="100">
+  <properties>
+   <property name="hitbox" value="leftHalfHitbox"/>
+   <property name="speType" value="spikes"/>
+  </properties>
+ </tile>
+ <tile id="109">
+  <properties>
+   <property name="hitbox" value="upperHalfHitbox"/>
+   <property name="speType" value="spikes"/>
+  </properties>
+ </tile>
+ <tile id="135">
+  <properties>
+   <property name="hitbox" value="upperHalfHitbox"/>
+  </properties>
+ </tile>
+ <tile id="144">
+  <properties>
+   <property name="hitbox" value="lowerHalfHitbox"/>
   </properties>
  </tile>
 </tileset>

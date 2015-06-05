@@ -51,6 +51,7 @@ class	HUDWindow : public HUDActor {
 			int				colorG;
 			int				colorB;
 			int				colorA;
+			Characters		*toFollow;
 	};
 
 		HUDWindow(void);
@@ -59,6 +60,7 @@ class	HUDWindow : public HUDActor {
 		HUDWindow::Text	*setText(std::string str, int x, int y);
 		HUDWindow::Text	*setText(std::string str, int x, int y, Vector3 color, int alpha);
 		HUDWindow::Text	*setText(std::string str, int x, int y, Vector3 color, int alpha, std::string font);
+		HUDWindow::Text	*setText(std::string str, Characters *toFollow, Vector3 color);
 		void	removeText(std::string str);
 		void	removeText(HUDWindow::Text *t);
 		void	displayText(void);
@@ -78,6 +80,7 @@ class	HUDWindow : public HUDActor {
 		void	setGame(Game *);
 		void	setMaxMana(int m);
 		void	setMaxHP(int h);
+		void	bag(void);
 
 	private:
 		Game		*_g;

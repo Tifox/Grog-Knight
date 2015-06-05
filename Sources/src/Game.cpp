@@ -444,6 +444,7 @@ void		Game::displayHUD(void) {
 	w->gold(0);
 	w->consumable();
 	w->minimap();
+	w->bag();
 	Game::addHUDWindow(w);
 }
 

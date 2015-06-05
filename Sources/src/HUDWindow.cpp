@@ -57,6 +57,7 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y) {
 	t->y = y;
 	t->colorR = t->colorG = t->colorB = t->colorA = 1;
 	t->font = "Gamefont";
+	t->toFollow = nullptr;
 	this->_text.push_back(t);
 	return t;
 }
@@ -80,6 +81,7 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 colo
 	t->colorB = color.Z;
 	t->colorA = alpha;
 	t->font = "Gamefont";
+	t->toFollow = nullptr;
 	this->_text.push_back(t);
 	return t;
 }
@@ -104,8 +106,31 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 colo
 	t->colorB = color.Z;
 	t->colorA = alpha;
 	t->font = font;
+	t->toFollow = nullptr;
 	this->_text.push_back(t);
 	return t;
+}
+
+//! Characters-follow Text
+/**
+ * Set a Text on a Character
+ * @param str The Text
+ * @param toFollow The Character
+ * @param color The RGB Color
+ */
+HUDWindow::Text		*HUDWindow::setText(std::string str, Characters *toFollow, Vector3 color) {
+	HUDWindow::Text		*t = new HUDWindow::Text();
+
+	t->str = str;
+	t->toFollow = toFollow;
+	t->colorR = color.X;
+	t->colorG = color.Y;
+	t->colorB = color.Z;
+	t->colorA = 1;
+	t->font = "Gamefont";
+	this->_text.push_back(t);
+	return t;
+
 }
 
 //! Remove Text
@@ -150,7 +175,16 @@ void	HUDWindow::displayText(void) {
 
 	for (i = this->_text.begin(); i != this->_text.end(); i++) {
 		glColor4f((*i)->colorR, (*i)->colorG, (*i)->colorB, (*i)->colorA);
-		DrawGameText((*i)->str, (*i)->font, (*i)->x, (*i)->y, theCamera.GetRotation());
+		if ((*i)->toFollow == nullptr)
+			DrawGameText((*i)->str, (*i)->font, (*i)->x, (*i)->y, theCamera.GetRotation());
+		else {
+			int		x, y, mult = 6;
+			Map		m = Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX];
+
+			x = ((((*i)->toFollow->GetBody()->GetWorldCenter().x + 0.5) - m.getXStart()) * 40) - 40;
+			y = -((((*i)->toFollow->GetBody()->GetWorldCenter().y - 0.5) - m.getYStart()) * 40) + 50;
+			DrawGameText((*i)->str, (*i)->font, x, y, theCamera.GetRotation());
+		}
 	}
 }
 
@@ -369,6 +403,20 @@ void	HUDWindow::minimap(void) {
 	minimap->SetColor(1, 0, 0);
 	minimap->SetDrawShape(ADS_Square);
 	theWorld.Add(minimap);
+}
+
+//! Bag display function
+/**
+ * This function display an empty bag at the beggining of the game
+ */
+void	HUDWindow::bag(void) {
+	HUDActor	*bag = new HUDActor();
+
+	bag->SetSize(200, 50);
+	bag->SetPosition(theCamera.GetWindowWidth() - 300, 125);
+	bag->SetSprite("Resources/Images/bag.png");
+	bag->SetDrawShape(ADS_Square);
+	theWorld.Add(bag);
 }
 
 void	HUDWindow::setGame(Game *g) { this->_g = g; };

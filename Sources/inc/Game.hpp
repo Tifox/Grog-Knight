@@ -47,6 +47,7 @@ class Characters;
 # include "ArmorList.hpp"
 # include "RingList.hpp"
 # include "LevelGenerator.hpp"
+# include "Tooltip.hpp"
 
 class ArmorList;
 class EnemyList;
@@ -100,6 +101,7 @@ class Game {
 
 		Maps		*maps;
 		std::vector<Room*>				*gameMap;
+		Tooltip 						*tooltip;
 		static int						currentIds;
 		static std::map<int, Elements *>	elementMap;
 		static std::list<Elements *>	bodiesToDestroy;

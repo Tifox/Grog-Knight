@@ -68,6 +68,16 @@
                  "physic":"0",
                  "time":"0.1"
                 },
+             "100":
+                {
+                 "hitbox":"leftHalfHitbox",
+                 "speType":"spikes"
+                },
+             "109":
+                {
+                 "hitbox":"upperHalfHitbox",
+                 "speType":"spikes"
+                },
              "11":
                 {
                  "animate":"1",
@@ -89,12 +99,20 @@
                  "physic":"0",
                  "time":"0.1"
                 },
+             "135":
+                {
+                 "hitbox":"upperHalfHitbox"
+                },
              "14":
                 {
                  "animate":"1",
                  "next":"17",
                  "physic":"0",
                  "time":"0.1"
+                },
+             "144":
+                {
+                 "hitbox":"lowerHalfHitbox"
                 },
              "15":
                 {
@@ -274,6 +292,7 @@
                 },
              "53":
                 {
+                 "hitbox":"upperTierHitbox",
                  "speType":"canCross"
                 },
              "6":
@@ -332,12 +351,59 @@
                  "physic":"0",
                  "time":"0.08"
                 },
+             "80":
+                {
+                 "hitbox":"rightHalfHitbox"
+                },
+             "81":
+                {
+                 "speType":"canCross"
+                },
+             "82":
+                {
+                 "speType":"canCross"
+                },
+             "83":
+                {
+                 "speType":"canCross"
+                },
+             "84":
+                {
+                 "speType":"canCross"
+                },
+             "85":
+                {
+                 "speType":"canCross"
+                },
+             "86":
+                {
+                 "speType":"canCross"
+                },
+             "87":
+                {
+                 "alpha":"0",
+                 "physic":"0"
+                },
+             "88":
+                {
+                 "alpha":"0",
+                 "physic":"0"
+                },
+             "89":
+                {
+                 "hitbox":"leftHalfHitbox"
+                },
              "9":
                 {
                  "animate":"1",
                  "next":"12",
                  "physic":"0",
                  "time":"0.1"
+                },
+             "91":
+                {
+                 "hitbox":"rightHalfHitbox",
+                 "speType":"spikes"
                 }
             },
          "tilewidth":32

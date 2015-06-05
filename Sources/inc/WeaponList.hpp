@@ -50,6 +50,7 @@ public:
 	~WeaponList(void);
 
 	void	statWeapon(std::string);
+	int		checkExists(std::string);
 	Weapon*	getWeapon(std::string);
 	Weapon*	getWeaponRandom(void);
 	Weapon*	getWeaponRandom(int level);

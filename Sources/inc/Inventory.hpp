@@ -18,44 +18,39 @@
  */
 
 /**
- * File: Enemy.hpp
- * Creation: 2015-02-23 14:25
- * Manon Budin <mbudin@student.42.fr>
+ * File: Inventory.hpp
+ * Creation: 2015-05-27 04:44
+ * Vincent Rey <vrey@student.42.fr>
  */
 
+#ifndef __Inventory__
+# define __Inventory__
 
-#ifndef __Enemy__
-# define __Enemy__
+# include "Log.hpp"
+# include "Elements.hpp"
+# ifdef __APPLE__
+#  include "../../Tools/jsoncpp/include/json/json.h"
+# else
+#  include "json/json.h"
+# endif
 
-# include "Characters.hpp"
-# include "Loot.hpp"
-# include "Map.hpp"
-# include "Pattern.hpp"
-# include "PassivePattern.hpp"
+class Inventory {
 
-class Enemy : public Characters {
 public:
-	Enemy();
-	Enemy(std::string);
-	~Enemy();
+	Inventory(int slots);
 
-	int				takeDamage(int damage);
-	void			actionCallback(std::string name, int status);
-	void			init(void);
-	void			BeginContact(Elements* m, b2Contact* contact);
-	void			EndContact(Elements *m, b2Contact *contact);
-	bool			toBeDeleted(void);
-	void			setMap(Map *m);
-	Map				*getMap(void);
-	void			setPattern(Pattern *p);
-	Pattern			*getPattern(void);
-	bool			dead(void);
+	void			changeItemFocus(void);
+	std::string		getCurrentFocus(void);
+	int				addItemToInventory(std::string item);
+	std::string		dropSelectedItem(void);
+	std::string		equipSelectedItem(void);
+	void			swapEquipmentAndInventory(std::string item);
 
-protected:
-	bool			isDead;
-	Map				*_map;
-	Pattern			*_pattern;
-	int				_lastElement;
+private:
+	int							_slots;
+	int							_focused;
+	int							_inInventory;
+	std::map<int, std::string>	_items;
 };
 
 #endif

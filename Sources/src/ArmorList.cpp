@@ -54,6 +54,17 @@ ArmorList::~ArmorList(void) {
 	return;
 }
 
+int			ArmorList::checkExists(std::string name) {
+	std::list<Armor*>::iterator it;
+
+	for (it = this->_allArmors.begin(); it != this->_allArmors.end(); it++) {
+		if (name == (*it)->getName()) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
 //! Returns a Armor in order to use it afterwards
 /**
  * Get a Armor obj by name

@@ -65,6 +65,7 @@ Equipment::Equipment(Weapon *w, Characters* c): Object() {
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_weapon = new Weapon(w);
 	this->_name = w->getName();
+	this->addAttribute("name", w->getName());
 	this->SetSprite(this->_weapon->getSprite());
 	this->SetName("loot");
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
@@ -79,6 +80,7 @@ Equipment::Equipment(Armor *w, Characters* c): Object() {
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_armor = new Armor(w);
 	this->_name = w->getName();
+	this->addAttribute("name", w->getName());
 	this->SetSprite(this->_armor->getSprite());
 	this->SetName("loot");
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
@@ -92,6 +94,7 @@ Equipment::Equipment(Ring *w, Characters* c): Object() {
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_ring = new Ring(w);
 	this->_name = w->getName();
+	this->addAttribute("name", w->getName());
 	this->SetSprite(this->_ring->getSprite());
 	this->SetName("loot");
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
@@ -99,13 +102,11 @@ Equipment::Equipment(Ring *w, Characters* c): Object() {
 	Game::bodiesToCreate.push_back(this);
 }
 
-
 //! Destructor
 /*
  * Basic Destructor
  */
 Equipment::~Equipment(void) {
-	return;
 }
 
 //! Collision begin callback

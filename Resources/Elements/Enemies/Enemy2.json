@@ -37,6 +37,19 @@
 				"endFrame": 5,
 				"size": 2,
 				"time": 0.1
-		}
+		},
+		"forward": {
+				"beginFrame": 0,
+				"endFrame": 6,
+				"time": 0.05,
+				"force": 3
+			},
+	"backward": {
+				"beginFrame": 0,
+				"endFrame": 6,
+				"time": 0.05,
+				"force": 3
+			}
+
 	}
 }

@@ -45,6 +45,8 @@ public:
 
 	void		setXStart(float X);
 	void		setYStart(float Y);
+	int			getXStart(void);
+	int			getYStart(void);
 	void		setWidth(int w);
 	void		setHeight(int h);
 	void		setCutWidth(int w);

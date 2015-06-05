@@ -50,6 +50,7 @@ public:
 	~RingList(void);
 
 	void	statRing(std::string);
+	int		checkExists(std::string);
 	Ring*	getRing(std::string);
 	Ring*	getRingRandom(void);
 	Ring*	getRingRandom(int level);

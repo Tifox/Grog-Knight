@@ -70,7 +70,9 @@ class	Map {
 		int		getXStart(void);
 		int		getYStart(void);
 		void	destroyMap(void);
-		Map		resumeMap(void);
+		std::list<Enemy *>		getEnemies(void);
+		std::vector<std::vector<int> >	getPhysicMap(void);
+		void	callAllPatterns(void);
 
 	private:
 		int					_mapCount;
@@ -92,6 +94,7 @@ class	Map {
 		std::list<Elements *>	_elemOfTheMap;
 		std::list<Enemy *>		_enemies;
 		std::map<int, std::map<std::string, Json::Value> >	_properties;
+		std::vector<std::vector<int> >		_physicMap;
 };
 
 #endif

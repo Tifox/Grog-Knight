@@ -52,6 +52,7 @@ public:
 	~ArmorList(void);
 
 	void	statArmor(std::string);
+	int		checkExists(std::string);
 	Armor*	getArmor(std::string);
 	Armor*	getArmorRandom(void);
 	Armor*	getArmorRandom(int level);

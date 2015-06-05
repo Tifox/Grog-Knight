@@ -40,7 +40,7 @@ class	HUDWindow : public HUDActor {
 
 	public:
 	class	Text {
-		public:
+		public: 
 			Text() {};
 			~Text() {};
 			std::string		str;

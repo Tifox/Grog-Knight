@@ -25,13 +25,32 @@
 
 #include "Tooltip.hpp"
 
-Tooltip::Tooltip() {
+//! Constructor
+/**
+ * Basic constructor
+ */
+
+Tooltip::Tooltip() : _name("") {
 	return ;
 }
+
+
+
+//! Destructor
+/**
+ * Basic Destructor
+ */
 
 Tooltip::~Tooltip() {
 	return ;
 }
+
+//! Parse the type of the loot
+/**
+ * Parse the type and set color and value
+ * @param elem The Loot
+ * @param c The Character
+ */
 
 void	Tooltip::tip(Elements *elem, Characters *c) {
 	std::string type = elem->getAttribute("type3");
@@ -40,17 +59,34 @@ void	Tooltip::tip(Elements *elem, Characters *c) {
 	
 	if (type == "gold") {
 		val = elem->getAttribute("value");
-		/*hud->setText(val,
-			(c->GetBody()->GetWorldCenter().x - Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX].getXStart()),
-			-(c->GetBody()->GetWorldCenter().y + Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX].getYStart())+ 20,
-			Vector3(246.0f, 255.0f, 0.0f), 1);*/
-		TextActor	*t = new TextActor("Gamefont", "MDRLOL " + val);
-		t->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y + 20);
-		t->SetSize(200);
-		t->Render();
-		theWorld.Add(t);
-
-		std::cout << c->GetBody()->GetWorldCenter().x - Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX].getXStart() << std::endl;
-		std::cout << -(c->GetBody()->GetWorldCenter().y + Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX].getYStart()+ 20) << std::endl;
+		hud->setText("+" + val , c, Vector3(255, 204, 0));
+	} else 	if (type == "HP") {
+		val = elem->getAttribute("value");
+		hud->setText("+" + val , c, Vector3(255, 0, 0));
+	} else 	if (type == "mana") {
+		val = elem->getAttribute("value");
+		hud->setText("+" + val , c, Vector3(255, 51, 255));
 	}
+}
+
+void 	Tooltip::info(Elements *elem) {
+	if (this->_name == "") {
+		HUDActor *equip = new HUDActor();
+		HUDWindow *hud = Game::getHUD();
+		this->_equip = equip;
+		this->_name = elem->getAttribute("name");
+
+		equip->SetSize(200, 100);
+		equip->SetPosition(theCamera.GetWindowWidth() - 100, 50);
+		equip->SetColor(0, 0, 0);
+		equip->SetDrawShape(ADS_Square);
+		theWorld.Add(equip);	
+		hud->setText(this->_name,theCamera.GetWindowWidth() - 100, 50 );
+	}
+	return ;
+}
+
+void	Tooltip::clearInfo(void) {
+	theWorld.Remove(this->_equip);
+	Game::getHUD()->removeText(this->_name);
 }

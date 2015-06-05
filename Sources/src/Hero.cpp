@@ -154,12 +154,14 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 				if (this->_hp != this->_maxHp) {
 					Game::addToDestroyList(elem);
 					this->setHP(this->getHP() + stoi(elem->getAttribute("value")));
+					Game::currentGame->tooltip->tip(elem, this);
 					Game::getHUD()->life(this->getHP());
 				}
 			} else if (elem->getAttribute("type3") == "mana") {
 				if (this->_mana < this->_maxMana) {
 					Game::addToDestroyList(elem);
 					this->setMana(this->getMana() + stoi(elem->getAttribute("value")));
+					Game::currentGame->tooltip->tip(elem, this);
 					Game::getHUD()->mana(this->getMana());
 				}
 			}
@@ -171,6 +173,7 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 			}
 		}
 		else if (elem->getAttribute("type2") == "Equipment") {
+			Game::currentGame->tooltip->info(elem);
 			this->_item = elem;
 		}
 	}
@@ -202,6 +205,10 @@ void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 		if (elem->getAttribute("type") == "Enemy" ||
 			elem->getAttribute("speType") == "spikes") {
 			this->_enemiesTouched.remove(elem);
+		}
+		if (elem->getAttribute("type2") == "Equipment") {
+			std::cout << "ofuhwrogihw" << std::endl;
+			Game::currentGame->tooltip->clearInfo();
 		}
    /* if (elem->getAttribute("speType") == "water")*/
 		/*this->GetBody()->SetGravityScale(1);*/

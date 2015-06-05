@@ -27,6 +27,7 @@
 # define __Tooltip__
 
 # include "Log.hpp"
+# include "../../Angel/Angel.h"
 
 class Characters;	
 class Elements;	
@@ -39,13 +40,18 @@ class Elements;
 # endif
 
 
-class Tooltip{
+class Tooltip {
 	public:
 		Tooltip();
 		~Tooltip();
 
 		void	tip(Elements *elem, Characters *c);
+		void	info(Elements *elem);
+		void	clearInfo(void);
 
+	private:
+		HUDActor	*_equip;
+		std::string _name;
 };
 
 

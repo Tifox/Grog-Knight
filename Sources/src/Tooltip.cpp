@@ -31,6 +31,7 @@
  */
 
 Tooltip::Tooltip() : _name("") {
+	theSwitchboard.SubscribeTo(this, "deleteTip");
 	return ;
 }
 
@@ -67,6 +68,9 @@ void	Tooltip::tip(Elements *elem, Characters *c) {
 		val = elem->getAttribute("value");
 		hud->setText("+" + val , c, Vector3(255, 51, 255));
 	}
+	this->_val = "+" + val;
+	theSwitchboard.DeferredBroadcast(new Message("deleteTip"), 2);
+
 }
 
 void 	Tooltip::info(Elements *elem) {
@@ -89,4 +93,10 @@ void 	Tooltip::info(Elements *elem) {
 void	Tooltip::clearInfo(void) {
 	theWorld.Remove(this->_equip);
 	Game::getHUD()->removeText(this->_name);
+}
+
+void 	Tooltip::ReceiveMessage(Message *m) {
+	if (m->GetMessageName() == "deleteTip") {
+		Game::getHUD()->removeText(this->_val);
+	}
 }

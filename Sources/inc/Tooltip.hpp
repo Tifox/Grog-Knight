@@ -40,7 +40,7 @@ class Elements;
 # endif
 
 
-class Tooltip {
+class Tooltip : public MessageListener {
 	public:
 		Tooltip();
 		~Tooltip();
@@ -48,10 +48,13 @@ class Tooltip {
 		void	tip(Elements *elem, Characters *c);
 		void	info(Elements *elem);
 		void	clearInfo(void);
+		void 	ReceiveMessage(Message *m);
+
 
 	private:
 		HUDActor	*_equip;
 		std::string _name;
+		std::string _val;
 };
 
 

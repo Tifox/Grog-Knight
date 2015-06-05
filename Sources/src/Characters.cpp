@@ -271,6 +271,7 @@ void	Characters::ReceiveMessage(Message *m) {
 				this->unequipRing();
 				this->equipRing(w);
 			}
+			Game::getHUD()->consumable(this->_inventory->getItems());
 		}
 	}
 	else if (m->GetMessageName() == "cycleInventory") {

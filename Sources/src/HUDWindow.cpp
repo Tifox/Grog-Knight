@@ -31,6 +31,7 @@
  */
 HUDWindow::HUDWindow(void) : HUDActor() {
 	RegisterFont("Resources/font.ttf", 14, "Gamefont");
+	RegisterFont("Resources/font.ttf", 8, "SmallGamefont");
 	RegisterFont("Resources/Fonts/fail.otf", 80, "dead");
 	return;
 }
@@ -195,7 +196,7 @@ void	HUDWindow::displayText(void) {
  * @param x X position
  * @param y Y position
  */
-void	HUDWindow::addImage(std::string path, int x, int y) {
+HUDActor	*HUDWindow::addImage(std::string path, int x, int y) {
 	HUDActor *tmp = new HUDActor();
 	tmp->SetSprite(path);
 	tmp->SetPosition(x, y);
@@ -203,6 +204,7 @@ void	HUDWindow::addImage(std::string path, int x, int y) {
 	tmp->SetDrawShape(ADS_Square);
 	tmp->SetLayer(100);
 	theWorld.Add(tmp);
+	return tmp;
 }
 
 //! Add an image
@@ -213,7 +215,7 @@ void	HUDWindow::addImage(std::string path, int x, int y) {
  * @param y Y position
  * @param size Size, in float.
  */
-void	HUDWindow::addImage(std::string path, int x, int y, float size) {
+HUDActor	*HUDWindow::addImage(std::string path, int x, int y, float size) {
 	HUDActor *tmp = new HUDActor();
 	tmp->SetSprite(path);
 	tmp->SetPosition(x, y);
@@ -221,7 +223,29 @@ void	HUDWindow::addImage(std::string path, int x, int y, float size) {
 	tmp->SetDrawShape(ADS_Square);
 	tmp->SetLayer(100);
 	theWorld.Add(tmp);
+	return tmp;
 }
+
+//! Add an image
+/**
+ * Add an image in the HUD
+ * @param path The path of the img
+ * @param x X position
+ * @param y Y position
+ * @param size Size, in float.
+ * @param layer The desired layer
+ */
+HUDActor	*HUDWindow::addImage(std::string path, int x, int y, float size, int layer) {
+	HUDActor *tmp = new HUDActor();
+	tmp->SetSprite(path);
+	tmp->SetPosition(x, y);
+	tmp->SetSize(size);
+	tmp->SetDrawShape(ADS_Square);
+	tmp->SetLayer(layer);
+	theWorld.Add(tmp);
+	return tmp;
+}
+
 
 //! Display HP function
 /**
@@ -379,13 +403,29 @@ void	HUDWindow::boots(void) {
  * Display the consumable (potions, etc) in the HUD
  * @todo Same here, no callback or object.
  */
-void	HUDWindow::consumable(void) {
-	this->addImage("Resources/Images/HUD/consumable_background.png", 500, 50, 40.0f);
-	this->addImage("Resources/Images/HUD/potion_life.png", 500, 50, 25.0f);
-	this->addImage("Resources/Images/HUD/consumable_background.png", 550, 50, 40.0f);
-	this->addImage("Resources/Images/HUD/potion_life.png", 550, 50, 25.0f);
-	this->addImage("Resources/Images/HUD/consumable_background.png", 600, 50, 40.0f);
-	this->addImage("Resources/Images/HUD/potion_mana.png", 600, 50, 25.0f);
+void	HUDWindow::consumable(std::map<int, std::string> items) {
+	int		i, x;
+	std::list<HUDActor *>::iterator		it;
+
+	for (it = this->_bag.begin(); it != this->_bag.end(); it++)
+		theWorld.Remove((*it));
+
+	for (i = 0, x = 445; i < 4; i++, x += 47) {
+		if (items[i] != "") {
+			HUDActor	*tmp;
+			if (Game::wList->checkExists(items[i])) {
+				Weapon *w = new Weapon(Game::wList->getWeapon(items[i]));
+				tmp = this->addImage(w->getSprite(), x, 50, 30);
+			} else if (Game::aList->checkExists(items[i])) {
+				Armor* w = new Armor(Game::aList->getArmor(items[i]));
+				tmp = this->addImage(w->getSprite(), x, 50, 30);
+			} else if (Game::rList->checkExists(items[i])) {
+				Ring* w = new Ring(Game::rList->getRing(items[i]));
+				tmp = this->addImage(w->getSprite(), x, 50, 30);
+			}
+			this->_bag.push_back(tmp);
+		}
+	}
 }
 
 //! Display the minimap in the HUd
@@ -411,12 +451,19 @@ void	HUDWindow::minimap(void) {
  */
 void	HUDWindow::bag(void) {
 	HUDActor	*bag = new HUDActor();
+	int		i, x;
 
-	bag->SetSize(200, 50);
-	bag->SetPosition(theCamera.GetWindowWidth() - 300, 125);
+	bag->SetSize(200, 60);
+	bag->SetPosition(theCamera.GetWindowWidth() - 510, 50);
 	bag->SetSprite("Resources/Images/bag.png");
 	bag->SetDrawShape(ADS_Square);
 	theWorld.Add(bag);
+
+	for (i = 0, x = 445; i < 4; i++, x += 47) {
+		this->addImage("Resources/Images/bag_slot.png", x, 51, 40);
+		this->addImage("Resources/Images/round.png", x + 15, 65, 20, 200);
+		this->setText("S-" + std::to_string(i), x + 10, 67, Vector3(255, 255, 255), 1, "SmallGamefont");
+	}
 }
 
 void	HUDWindow::setGame(Game *g) { this->_g = g; };

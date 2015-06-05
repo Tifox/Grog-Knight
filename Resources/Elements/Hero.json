@@ -2,7 +2,7 @@
 	"infos": {
 		"name": "Hero",
 		"id": 0,
-		"HP": 25,
+		"HP": 75,
 		"maxHP": 75,
 		"mana": 80,
 		"maxMana": 100,

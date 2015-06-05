@@ -443,7 +443,6 @@ void		Game::displayHUD(void) {
 	w->life(hero->getHP());
 	w->mana(hero->getMana());
 	w->gold(0);
-	w->consumable();
 	w->minimap();
 	w->bag();
 	Game::addHUDWindow(w);

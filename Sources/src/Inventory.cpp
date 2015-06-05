@@ -68,6 +68,7 @@ int		Inventory::addItemToInventory(std::string item) {
 		this->_items[this->_focused] = item;
 		this->_inInventory++;
 	}
+	Game::getHUD()->consumable(this->_items);
 }
 
 
@@ -95,3 +96,6 @@ std::string 	Inventory::equipSelectedItem(void) {
 	}
 	return this->_items[this->_focused];
 }
+
+/* GETTERS */
+std::map<int, std::string>		Inventory::getItems(void) { return this->_items; };

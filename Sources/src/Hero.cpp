@@ -169,6 +169,7 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 				Game::addToDestroyList(elem);
 				this->_gold += stoi(elem->getAttribute("value"));
 				Game::currentGame->tooltip->tip(elem, this);
+				
 				Game::getHUD()->updateGold(this->getGold());
 			}
 		}
@@ -207,7 +208,6 @@ void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 			this->_enemiesTouched.remove(elem);
 		}
 		if (elem->getAttribute("type2") == "Equipment") {
-			std::cout << "ofuhwrogihw" << std::endl;
 			Game::currentGame->tooltip->clearInfo();
 		}
    /* if (elem->getAttribute("speType") == "water")*/

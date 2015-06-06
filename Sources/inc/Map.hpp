@@ -69,6 +69,7 @@ class	Map {
 		int		getYMid(void);
 		int		getXStart(void);
 		int		getYStart(void);
+		int		getIsUsed(void);
 		void	destroyMap(void);
 		std::list<Enemy *>		getEnemies(void);
 		std::vector<std::vector<int> >	getPhysicMap(void);

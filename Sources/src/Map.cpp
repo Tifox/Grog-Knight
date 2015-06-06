@@ -73,6 +73,7 @@ int		Map::getXMid(void) { return (this->_xStart + (this->_width / 2)); };
 int		Map::getYMid(void) { return this->_yStart - (this->_height / 2); };
 int		Map::getXStart(void) { return this->_xStart; };
 int		Map::getYStart(void) { return this->_yStart; };
+int		Map::getIsUsed(void) { return this->_isUsed; };
 
 //! Display the map
 /**

@@ -181,6 +181,8 @@ void	Maps::displayLevel(std::vector<std::vector<int> > map) {
 			tmp->setXStart(rX);
 			tmp->setYStart(rY);
 			this->_XYMap[y][x] = *tmp;
+		} else {
+			//this->_XYMap[y][x] = *(new Map());
 		}
 		rX += 27;
 	}

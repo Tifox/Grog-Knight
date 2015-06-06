@@ -29,6 +29,7 @@
 
 # include "../../Angel/Angel.h"
 # include "Game.hpp"
+# include "Map.hpp"
 class	Game;
 class   Ring;
 class   Armor;
@@ -52,6 +53,8 @@ class	HUDWindow : public HUDActor {
 			int				colorB;
 			int				colorA;
 			Characters		*toFollow;
+			int				isFading;
+			int				isTalk;
 	};
 
 		HUDWindow(void);
@@ -60,7 +63,7 @@ class	HUDWindow : public HUDActor {
 		HUDWindow::Text	*setText(std::string str, int x, int y);
 		HUDWindow::Text	*setText(std::string str, int x, int y, Vector3 color, int alpha);
 		HUDWindow::Text	*setText(std::string str, int x, int y, Vector3 color, int alpha, std::string font);
-		HUDWindow::Text	*setText(std::string str, Characters *toFollow, Vector3 color);
+		HUDWindow::Text	*setText(std::string str, Characters *toFollow, Vector3 color, int isFading, int isTalk);
 		void	removeText(std::string str);
 		void	removeText(HUDWindow::Text *t);
 		void	displayText(void);
@@ -82,12 +85,15 @@ class	HUDWindow : public HUDActor {
 		void	setMaxMana(int m);
 		void	setMaxHP(int h);
 		void	bag(void);
+		void	initMinimapBackground(void);
 
 	private:
 		Game		*_g;
 		std::list<HUDActor *>	_hearts;
 		std::list<HUDActor *>	_mana;
 		std::list<HUDActor *>	_bag;
+		std::list<HUDActor *>	_minimap;
+		std::map<std::string, Elements*>		_dialog;
 		std::list<HUDWindow::Text *>	_text;
 		HUDWindow::Text	*		_gold;
 		int						_maxMana;

@@ -227,6 +227,7 @@ void	Game::moveCamera(void) {
 		this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 		theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
 			this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
+		Game::getHUD()->minimap();
 		asChanged = false;
 	}
 }
@@ -443,8 +444,13 @@ void		Game::displayHUD(void) {
 	w->life(hero->getHP());
 	w->mana(hero->getMana());
 	w->gold(0);
-	w->minimap();
 	w->bag();
+	w->initMinimapBackground();
+	w->minimap();
+
+	// Work 
+   /* w->setText("Burp.", this->_hero, Vector3(0, 0, 0), 0, 1);*/
+	/*w->removeText("Burp.");*/
 	Game::addHUDWindow(w);
 }
 

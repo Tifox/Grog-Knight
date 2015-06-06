@@ -60,13 +60,13 @@ void	Tooltip::tip(Elements *elem, Characters *c) {
 	
 	if (type == "gold") {
 		val = elem->getAttribute("value");
-		hud->setText("+" + val , c, Vector3(255, 204, 0));
+		hud->setText("+" + val , c, Vector3(255, 204, 0), 1, 0);
 	} else 	if (type == "HP") {
 		val = elem->getAttribute("value");
-		hud->setText("+" + val , c, Vector3(255, 0, 0));
+		hud->setText("+" + val , c, Vector3(255, 0, 0), 1, 0);
 	} else 	if (type == "mana") {
 		val = elem->getAttribute("value");
-		hud->setText("+" + val , c, Vector3(255, 51, 255));
+		hud->setText("+" + val , c, Vector3(255, 51, 255), 1, 0);
 	}
 	this->_val = "+" + val;
 	theSwitchboard.DeferredBroadcast(new Message("deleteTip"), 2);
@@ -85,7 +85,7 @@ void 	Tooltip::info(Elements *elem) {
 		equip->SetColor(0, 0, 0);
 		equip->SetDrawShape(ADS_Square);
 		theWorld.Add(equip);	
-		hud->setText(this->_name,theCamera.GetWindowWidth() - 100, 50 );
+		hud->setText(this->_name,theCamera.GetWindowWidth() - 100, 50);
 	}
 	return ;
 }

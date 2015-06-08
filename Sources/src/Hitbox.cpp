@@ -112,7 +112,7 @@ b2PolygonShape	Hitbox::_parseVertices(int v, std::vector<std::vector<int> > map)
 	std::vector<int>::iterator	itr2;
 	std::vector<std::vector<int> >::reverse_iterator	ritr;
 	std::vector<int>::reverse_iterator	ritr2;
-	b2Vec2 vertices[i]/* =  new b2Vec2[8]*/;
+	b2Vec2 vertices[8]/* =  new b2Vec2[8]*/;
 	//std::vector<b2Vec2> vertices(v * 8);
 
 	//vertices = (b2Vec2 *)malloc(sizeof(b2Vec2) * v + 1);

@@ -28,7 +28,7 @@
 # include "Pattern.hpp"
 # include "Map.hpp"
 
-class	PassivePattern : public Pattern {
+class	PassivePattern : public CPattern {
 	public:
 		PassivePattern(void);
 		~PassivePattern(void);

@@ -29,12 +29,12 @@
 class		Enemy;
 class		Map;
 
-class		Pattern {
+class		CPattern {
 	public:
-		Pattern(void);
-		Pattern(std::string name);
-		Pattern(Pattern & p);
-		~Pattern(void);
+		CPattern(void);
+		CPattern(std::string name);
+		CPattern(CPattern & p);
+		~CPattern(void);
 
 		virtual void	tick(Map m);
 		void			setEnemy(Enemy *);

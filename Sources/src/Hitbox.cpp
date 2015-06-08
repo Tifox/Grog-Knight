@@ -62,7 +62,7 @@ b2PolygonShape	Hitbox::_getPolygon(std::string res) {
 	fd.open(file.c_str());
 	if (!fd.is_open())
 		Log::error("Can't open the file for the " +
-				   res + " hitbox. (Expected path is Resources/Elements/Hitbox/" + res +".json)");
+				res + " hitbox. (Expected path is Resources/Elements/Hitbox/" + res +".json)");
 	buffer << fd.rdbuf();
 	return this->_parseJson(buffer.str());
 }
@@ -76,7 +76,7 @@ b2PolygonShape	Hitbox::_parseJson(std::string file) {
 	std::vector<std::vector<int> >		map;
 	std::vector<int>					tmp;
 
-    if (!read.parse(file, json))
+	if (!read.parse(file, json))
 		Log::error("Error in json syntax :\n" + read.getFormattedErrorMessages());
 
 	hitbox = json["data"]["hitbox"];
@@ -112,15 +112,19 @@ b2PolygonShape	Hitbox::_parseVertices(int v, std::vector<std::vector<int> > map)
 	std::vector<int>::iterator	itr2;
 	std::vector<std::vector<int> >::reverse_iterator	ritr;
 	std::vector<int>::reverse_iterator	ritr2;
-	b2Vec2 vertices[v]/* =  new b2Vec2[v]*/;
+	b2Vec2 vertices[i]/* =  new b2Vec2[8]*/;
+	//std::vector<b2Vec2> vertices(v * 8);
+
+	//vertices = (b2Vec2 *)malloc(sizeof(b2Vec2) * v + 1);
+	int 		i = 0;
+
 	b2PolygonShape box;
-	int i = 0;
 	float x2, y2, x, y = 0;
 
 	for (itr = map.begin(); itr != map.end(); itr++, y++) {
 		for (itr2 = (*itr).begin(), x = 0; itr2 != (*itr).end(); itr2++, x++) {
 			if ((*itr2) == 1) {
-//				std::cout << x - 5 << ":" << -(y - 5) << std::endl;
+				//				std::cout << x - 5 << ":" << -(y - 5) << std::endl;
 				vertices[i].Set((x - 5) / 10, -(y - 5)/ 10 );
 				i++;
 				x = 0;
@@ -132,7 +136,7 @@ b2PolygonShape	Hitbox::_parseVertices(int v, std::vector<std::vector<int> > map)
 		for (ritr2 = (*ritr).rbegin(), x = 10; ritr2 != (*ritr).rend(); ritr2++, x--) {
 			if ((*ritr2) == 1) {
 				vertices[i].Set((x - 5) / 10, -(y - 5)/ 10 );
-//				std::cout << x - 5 << ":" << -(y - 5) << std::endl;
+				//				std::cout << x - 5 << ":" << -(y - 5) << std::endl;
 				i++;
 				break ;
 			}

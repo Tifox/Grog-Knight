@@ -47,14 +47,14 @@ public:
 	bool			toBeDeleted(void);
 	void			setMap(Map *m);
 	Map				*getMap(void);
-	void			setPattern(Pattern *p);
-	Pattern			*getPattern(void);
+	void			setPattern(CPattern *p);
+	CPattern			*getPattern(void);
 	bool			dead(void);
 
 protected:
 	bool			isDead;
 	Map				*_map;
-	Pattern			*_pattern;
+	CPattern			*_pattern;
 	int				_lastElement;
 };
 

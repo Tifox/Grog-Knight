@@ -25,7 +25,7 @@
 
 # include "PassivePattern.hpp"
 
-PassivePattern::PassivePattern(void) : Pattern("passive"), _tickNumber(0) {
+PassivePattern::PassivePattern(void) : CPattern("passive"), _tickNumber(0) {
 
 }
 
@@ -33,7 +33,7 @@ PassivePattern::~PassivePattern(void) {
 }
 
 void	PassivePattern::tick(Map m) {
-	Pattern::tick(m);
+	CPattern::tick(m);
 
 	if (this->_orientation == 1) {
 		if (!m.getPhysicMap()[this->_y + 1][this->_x + 1]) {

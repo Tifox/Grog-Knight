@@ -183,10 +183,10 @@ int		Enemy::takeDamage(int damage) {
 /* SETTERS */
 
 void	Enemy::setMap(Map *m) { this->_map = m; };
-void	Enemy::setPattern(Pattern *p) { this->_pattern = p; };
+void	Enemy::setPattern(CPattern *p) { this->_pattern = p; };
 
 /* GETTERS */
 
 Map		*Enemy::getMap(void) { return this->_map; };
-Pattern	*Enemy::getPattern(void) { return this->_pattern; };
+CPattern	*Enemy::getPattern(void) { return this->_pattern; };
 bool	Enemy::dead(void) { return this->_isDead; };

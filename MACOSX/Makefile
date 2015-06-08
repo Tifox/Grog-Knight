@@ -2,28 +2,38 @@ NAME 	= rogue-like
 CC 		= g++
 CFLAGS 	= -std=c++0x -arch i386 -Wno-deprecated -g
 ANGEL_FLAG = -D ANGEL
-SRCS 	= ../Sources/src/main.cpp \
-		  ../Sources/src/Elements.cpp \
-		  ../Sources/src/Game.cpp \
-		  ../Sources/src/Characters.cpp \
-		  ../Sources/src/WeaponList.cpp \
-		  ../Sources/src/Weapon.cpp \
-		  ../Sources/src/Projectile.cpp \
-		  ../Sources/src/Room.cpp \
-		  ../Sources/src/LevelGenerator.cpp \
-		  ../Sources/src/Hero.cpp \
-		  ../Sources/src/Enemy.cpp \
-		  ../Sources/src/Map.cpp \
-		  ../Sources/src/Maps.cpp \
-		  ../Sources/src/GameContactListener.cpp \
-		  ../Sources/src/ContactFilter.cpp \
-		  ../Sources/src/Log.cpp \
-		  ../Sources/src/Object.cpp \
-		  ../Sources/src/Equipment.cpp \
-		  ../Sources/src/Consumable.cpp \
-		  ../Sources/src/Hitbox.cpp \
-		  ../Angel/Scripting/Interfaces/AngelLuaWrapping.cpp \
-		  ../Sources/src/HUDWindow.cpp \
+SRCS 	= ../Sources/src/Elements.cpp \
+		../Sources/src/Game.cpp \
+		../Sources/src/main.cpp \
+		../Sources/src/Maps.cpp \
+		../Sources/src/Hero.cpp \
+		../Sources/src/Projectile.cpp \
+		../Sources/src/Room.cpp \
+		../Sources/src/LevelGenerator.cpp \
+		../Sources/src/Loot.cpp \
+		../Sources/src/EnemyList.cpp \
+		../Sources/src/Enemy.cpp \
+		../Sources/src/GameContactListener.cpp \
+		../Sources/src/ContactFilter.cpp \
+		../Sources/src/Weapon.cpp \
+		../Sources/src/Log.cpp \
+		../Sources/src/Armor.cpp \
+		../Sources/src/ArmorList.cpp \
+		../Sources/src/Characters.cpp \
+		../Sources/src/Object.cpp \
+		../Sources/src/WeaponList.cpp \
+		../Sources/src/Map.cpp \
+		../Sources/src/Equipment.cpp \
+		../Sources/src/Consumable.cpp \
+		../Sources/src/Hitbox.cpp \
+		../Sources/src/HUDWindow.cpp \
+		../Sources/src/Menu.cpp \
+		../Sources/src/Ring.cpp \
+		../Sources/src/RingList.cpp \
+		../Sources/src/Tooltip.cpp \
+		../Sources/src/Inventory.cpp \
+		../Sources/src/Pattern.cpp \
+		../Sources/src/PassivePattern.cpp
 
 OBJS 	 = $(SRCS:.cpp=.o)
 
@@ -49,7 +59,8 @@ LIBS	= ../Angel/build/libAngel.a \
 		  ../Angel/build/libGWEN.a \
 		  ../Angel/build/libHIDUtilities.a \
 		  ../Angel/build/libLua.a \
-		  ../Angel/build/libOgg.a
+		  ../Angel/build/libOgg.a \
+		  ../Angel/Scripting/Interfaces/AngelLuaWrapping.cpp
 
 FRAMEWORKS = -framework Cocoa \
 			 -framework IOKit \

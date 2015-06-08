@@ -29,7 +29,7 @@
 /**
  * This a void constructor, useless ftm.
  */
-Pattern::Pattern(void) {
+CPattern::CPattern(void) {
 
 }
 
@@ -38,7 +38,7 @@ Pattern::Pattern(void) {
  * That's the main constructor for a pattern, using the pattern name in argue.
  * @param name The name of the Pattern.
  */
-Pattern::Pattern(std::string name) : _name(name), _orientation(1) {
+CPattern::CPattern(std::string name) : _name(name), _orientation(1) {
 	;
 }
 
@@ -46,13 +46,13 @@ Pattern::Pattern(std::string name) : _name(name), _orientation(1) {
 /**
  * Copy constructor of Pattern (Coplien o/)
  */
-Pattern::Pattern(Pattern & p) {
+CPattern::CPattern(CPattern & p) {
 	this->_name = p.getName();
 	this->_enemy = p.getEnemy();
 }
 
 //! Destructor
-Pattern::~Pattern(void) {
+CPattern::~CPattern(void) {
 
 }
 
@@ -61,16 +61,16 @@ Pattern::~Pattern(void) {
  * This function is virtual, just here for structure purposes.
  * If you looking for the actual code of a pattern, go if the Pattern child itself.
  */
-void	Pattern::tick(Map m) {
+void	CPattern::tick(Map m) {
 	this->_x = (this->_enemy->GetBody()->GetWorldCenter().x + 0.5) - m.getXStart();
 	this->_y = -((this->_enemy->GetBody()->GetWorldCenter().y - 0.5) - m.getYStart());
 }
 
 /* SETTERS */
 
-void	Pattern::setEnemy(Enemy *e) { this->_enemy = e; };
+void	CPattern::setEnemy(Enemy *e) { this->_enemy = e; };
 
 /* GETTERS */
 
-std::string		Pattern::getName(void) { return this->_name; };
-Enemy			*Pattern::getEnemy(void) { return this->_enemy; };
+std::string		CPattern::getName(void) { return this->_name; };
+Enemy			*CPattern::getEnemy(void) { return this->_enemy; };

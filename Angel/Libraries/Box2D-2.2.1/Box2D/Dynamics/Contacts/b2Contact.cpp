@@ -121,6 +121,7 @@ void b2Contact::Destroy(b2Contact* contact, b2BlockAllocator* allocator)
 b2Contact::b2Contact(b2Fixture* fA, int32 indexA, b2Fixture* fB, int32 indexB)
 {
 	m_flags = e_enabledFlag;
+	enableContact = true;
 
 	m_fixtureA = fA;
 	m_fixtureB = fB;
@@ -156,7 +157,10 @@ void b2Contact::Update(b2ContactListener* listener)
 	b2Manifold oldManifold = m_manifold;
 
 	// Re-enable this contact.
-	m_flags |= e_enabledFlag;
+	/* CODE MODIFIED BY NOICH - ALLOWS CONTINUED CONTACT DISABLE */
+	if (enableContact == true)
+		m_flags |= e_enabledFlag;
+	/* END OF CODE */
 
 	bool touching = false;
 	bool wasTouching = (m_flags & e_touchingFlag) == e_touchingFlag;

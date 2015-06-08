@@ -138,6 +138,12 @@ public:
 	/// Evaluate this contact with your own manifold and transforms.
 	virtual void Evaluate(b2Manifold* manifold, const b2Transform& xfA, const b2Transform& xfB) = 0;
 
+	/* CODE MODIFIED BY NOICH - ALLOWS CONTINUED IGNORED CONTACT */
+
+	bool  enableContact;
+
+	/* END OF CODE */
+
 protected:
 	friend class b2ContactManager;
 	friend class b2World;

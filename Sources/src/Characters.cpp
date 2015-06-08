@@ -373,8 +373,9 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 		if (this->_isAttacking == 0 && this->_isLoadingAttack == 0)
 			this->changeSizeTo(Vector2(1, 1));
 		if (this->GetBody()->GetWorldCenter().y - 0.905 >= elem->GetBody()->GetWorldCenter().y) {
-			if (this->_grounds.size() > 0)
+			if (this->_grounds.size() > 0) {
 				contact->SetEnabled(false);
+			}
 			else {
 				this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
 				if (this->_hp <= 0) {
@@ -407,6 +408,17 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 			if (this->_wallsRight.size() > 0)
 				contact->SetEnabled(false);
 			this->_wallsRight.push_back(elem);
+		}
+		if (elem->getAttribute("speType") == "canCross") {
+			if (this->GetBody()->GetWorldCenter().y - 1 <
+				elem->GetBody()->GetWorldCenter().y) {
+				contact->SetEnabled(false);
+				contact->enableContact = false;
+			}
+			else if (this->getOrientation() == Characters::DOWN) {
+				contact->SetEnabled(false);
+				contact->enableContact = false;
+			}
 		}
 	}
 }
@@ -508,10 +520,8 @@ void	Characters::_forward(int status) {
 		if (!this->_isJump && !this->_isAttacking)
 			this->AnimCallback("base");
 	} else {
-		if (this->GetBody()->GetLinearVelocity().x < this->_maxSpeed) {
 			if (this->_wallsRight.size() == 0 && this->_canMove == true)
 				this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
-		}
 	}
 	return ;
 }
@@ -557,10 +567,8 @@ void	Characters::_backward(int status) {
 		if (!this->_isJump && !this->_isAttacking)
 			this->AnimCallback("base");
 	} else {
-		if (this->GetBody()->GetLinearVelocity().x > -(this->_maxSpeed)) {
 			if (this->_wallsLeft.size() == 0 && this->_canMove == true)
 				this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
-		}
 	}
 	return ;
 }

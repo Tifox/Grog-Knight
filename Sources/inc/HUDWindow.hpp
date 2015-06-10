@@ -98,6 +98,8 @@ class	HUDWindow : public HUDActor {
 		HUDWindow::Text	*		_gold;
 		int						_maxMana;
 		int						_maxHP;
+
+		void					_drawDoor(Vector2 size, Vector2 position);
 };
 
 #endif

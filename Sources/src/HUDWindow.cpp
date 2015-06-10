@@ -490,6 +490,18 @@ void	HUDWindow::initMinimapBackground(void) {
 	theWorld.Add(tmp);
 }
 
+void	HUDWindow::_drawDoor(Vector2 size, Vector2 position) {
+	HUDActor	*t;
+
+	t = new HUDActor();
+	t->SetColor(1, 1, 1);
+	t->SetDrawShape(ADS_Square);
+	t->SetPosition(position.X, position.Y);
+	t->SetSize(size.X, size.Y);
+	theWorld.Add(t);
+	this->_minimap.push_back(t);
+}
+
 //! Display the minimap in the HUD
 /**
  * This function is not finished at all.
@@ -528,42 +540,14 @@ void	HUDWindow::minimap(void) {
 			theWorld.Add(tmp);
 			this->_minimap.push_back(tmp);
 
-			// Some nasty code down here
-			// @todo Need some refactoring
-
-			if (Game::currentGame->maps->getMapXY()[y2][x2 + 1].getXStart()) {
-				tmp = new HUDActor();
-				tmp->SetSize(1, 5);
-				tmp->SetPosition(x + (40 / 2), y);
-				tmp->SetColor(1, 1, 1);
-				tmp->SetDrawShape(ADS_Square);
-				theWorld.Add(tmp);
-				this->_minimap.push_back(tmp);
-			} if (Game::currentGame->maps->getMapXY()[y2][x2 - 1].getXStart()) {
-				tmp = new HUDActor();
-				tmp->SetSize(1, 5);
-				tmp->SetPosition(x - (40 / 2), y);
-				tmp->SetColor(1, 1, 1);
-				tmp->SetDrawShape(ADS_Square);
-				theWorld.Add(tmp);
-				this->_minimap.push_back(tmp);
-			} if (Game::currentGame->maps->getMapXY()[y2 - 1][x2].getXStart()) {
-				tmp = new HUDActor();
-				tmp->SetSize(5, 1);
-				tmp->SetPosition(x, y - (27 / 2) - 1);
-				tmp->SetColor(1, 1, 1);
-				tmp->SetDrawShape(ADS_Square);
-				theWorld.Add(tmp);
-				this->_minimap.push_back(tmp);
-			} if (Game::currentGame->maps->getMapXY()[y2 + 1][x2].getXStart()) {
-				tmp = new HUDActor();
-				tmp->SetSize(5, 1);
-				tmp->SetPosition(x, y + (27 / 2) + 1);
-				tmp->SetColor(1, 1, 1);
-				tmp->SetDrawShape(ADS_Square);
-				theWorld.Add(tmp);
-				this->_minimap.push_back(tmp);
-			}
+			if (Game::currentGame->maps->getMapXY()[y2][x2 + 1].getXStart())
+				this->_drawDoor(Vector2(1, 5), Vector2(x + (40 / 2), y));
+			if (Game::currentGame->maps->getMapXY()[y2][x2 - 1].getXStart())
+				this->_drawDoor(Vector2(1, 5), Vector2(x - (40 / 2), y));
+			if (Game::currentGame->maps->getMapXY()[y2 - 1][x2].getXStart())
+				this->_drawDoor(Vector2(5, 1), Vector2(x, y - (27 / 2) - 1));
+			if (Game::currentGame->maps->getMapXY()[y2 + 1][x2].getXStart())
+				this->_drawDoor(Vector2(5, 1), Vector2(x, y + (27 / 2) - 1));
 		}
 	}
 }

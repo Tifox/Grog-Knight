@@ -28,22 +28,37 @@
 
 bool	ContactFilter::ShouldCollide(b2Fixture* fixA, b2Fixture* fixB) {
 
-	Elements* attrA = static_cast<Elements*>(fixB->GetBody()->GetUserData());
-	Elements* attrB = static_cast<Elements*>(fixA->GetBody()->GetUserData());
+	Elements* attrA;
+	Elements* attrB;
+
+	attrA = static_cast<Elements*>(fixB->GetBody()->GetUserData());
+	attrB = static_cast<Elements*>(fixA->GetBody()->GetUserData());
 	if (static_cast<Elements*>(fixA->GetBody()->GetUserData())->getAttribute("type") == "Hero") {
 		Elements* attrA = static_cast<Elements*>(fixA->GetBody()->GetUserData());
 		Elements* attrB = static_cast<Elements*>(fixB->GetBody()->GetUserData());
 	}
-	if (attrA->getAttribute("type") == "Hero" &&
-		attrB->getAttribute("type") == "ground" &&
-		attrB->getAttribute("speType") == "canCross") {
-		if (attrA->GetBody()->GetWorldCenter().y - 1 <
-			attrB->GetBody()->GetWorldCenter().y) {
-			return false;
-		}
-		else if (static_cast<Characters*>(attrA)->getOrientation() == Characters::DOWN) {
-			return false;
-		}
+	if (attrA->getAttribute("type") == "Hero")
+		if (attrA->getAttribute("type") == "Object" && attrB->getAttribute("type") != "ground"
+		|| attrB->getAttribute("type") == "Object" && attrA->getAttribute("type") != "ground") {
+		if (attrA->getAttribute("type") == "Hero")
+			attrA->BeginContact(attrB, nullptr);
+		return false;
 	}
+	// if (attrA->getAttribute("type") == "Hero" &&
+	// 	attrB->getAttribute("type") == "ground" &&
+	// 	attrB->getAttribute("speType") == "canCross") {
+	// 	std::cout << "found one" << std::endl;
+	// 	if (attrA->GetBody()->GetWorldCenter().y - 1 <
+	// 		attrB->GetBody()->GetWorldCenter().y) {
+	// 		std::cout << "crossing from bottom" << std::endl;
+	// 		return false;
+	// 	}
+	// 	else if (static_cast<Characters*>(attrA)->getOrientation() == Characters::DOWN) {
+	// 		std::cout << "crossing from top" << std::endl;
+	// 		return false;
+	// 	}
+	// 	std::cout << "not crossing" << std::endl;
+
+	// }
 	return true;
 }

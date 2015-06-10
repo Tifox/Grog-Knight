@@ -32,7 +32,7 @@
  * Load the maps with Maps::Maps
  * @sa Maps
  */
-Game::Game(void) : _hero(*(new Characters())) {
+Game::Game(void) : _hero((new Characters())) {
 	#ifdef __APPLE__
 		theWorld.Initialize(1920, 1080, NAME, false, false);
 	#else
@@ -52,7 +52,7 @@ Game::Game(void) : _hero(*(new Characters())) {
  * @param width The width of the window
  * @param heigh The height of the window
  */
-Game::Game(unsigned int width, unsigned int height) : _hero(*(new Characters())) {
+Game::Game(unsigned int width, unsigned int height) : _hero((new Characters())) {
 	theWorld.Initialize(width, height, NAME);
 	theWorld.SetupPhysics();
 	GameContactListener *gListen = new GameContactListener();
@@ -83,43 +83,36 @@ void	Game::start(void) {
 	Game::eList = new EnemyList();
 	Game::aList = new ArmorList();
 	Game::rList = new RingList();
+	this->tooltip = new Tooltip();
 	Game::currentGame = this;
 	Hero			*hero = new Hero();
 
-	LevelGenerator *levelGenerator = new LevelGenerator(9, 5, 60);
+
+
+	LevelGenerator *levelGenerator = new LevelGenerator(4, 3, 60);
 	levelGenerator->execute();
-	//this->gameMap = levelGenerator->_rooms;
-
-	// THIS IS AN EXAMPLE
-	// That's a test map.
-	this->_tmpMap.push_back(std::vector<int>());
-	this->_tmpMap.push_back(std::vector<int>());
-	this->_tmpMap.push_back(std::vector<int>());
-	this->_tmpMap[0].push_back(0);
-	this->_tmpMap[0].push_back(4);
-	this->_tmpMap[0].push_back(0);
-	this->_tmpMap[1].push_back(2);
-	this->_tmpMap[1].push_back(15);
-	this->_tmpMap[1].push_back(8);
-	this->_tmpMap[2].push_back(0);
-	this->_tmpMap[2].push_back(1);
-	this->_tmpMap[2].push_back(0);
-
+	this->_tmpMap = levelGenerator->getLevel();
 	this->maps->displayLevel(this->_tmpMap);
 
-	this->displayHero(*(hero));
+//	Log::info("NbMaps: " + std::to_string(levelGenerator->getNbMaps()));
+//	Log::info("NbEnemy:" + trouver le nombre d ennemy);
+//	Log::info("NbMaps: " + info sur la sauvegarde (nivau du hero, gold etc...));
+
 	//theCamera.LockTo(hero);
-	Game::currentX = 1;
-	Game::currentY = 1;
-	theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX]->getXMid(),
-		this->maps->getMapXY()[Game::currentY][Game::currentX]->getYMid() + 1.8, 9.001);
-	// 9.2
+	Game::currentX = levelGenerator->getStartX();
+	Game::currentY = levelGenerator->getStartY();
+	theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
+						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 9.001);
+	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
+	this->displayHero(*(hero));
 	hero->init();
+	
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
 	hero->equipRing(Game::rList->getRing("SmallRing"));
 	hero->equipArmor(Game::aList->getArmor("ChestArmor"));
-	this->setHero(*hero);
+	this->setHero(hero);
 	this->displayHUD();
+
 	Game::started = 1;
 }
 
@@ -148,8 +141,8 @@ void	Game::showMap(void) {
  */
 void	Game::displayHero(Elements & Hero) {
 	//Here starts the game - parse the 1st map coordinates and hero start
-	Hero.setXStart(28);
-	Hero.setYStart(-28);
+	Hero.setXStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid());
+	Hero.setYStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid());
 	Hero.addAttribute("hero", "1");
 	Hero.display();
 }
@@ -189,31 +182,53 @@ int		Game::getNextId(void) {
 }
 
 void	Game::checkHeroPosition(void) {
-   if (Game::started == 1)
+	if (Game::started == 1) {
 		Game::currentGame->moveCamera();
+		Game::currentGame->simulateHeroItemContact();
+	}
+}
+
+void	Game::simulateHeroItemContact(void) {
+	if (this->_hero->getItem() != nullptr) {
+		if ((this->_hero->getItem()->GetBody()->GetWorldCenter().x >=
+			 this->_hero->GetBody()->GetWorldCenter().x + 1) ||
+			(this->_hero->getItem()->GetBody()->GetWorldCenter().x <=
+   			 this->_hero->GetBody()->GetWorldCenter().x - 1) ||
+			(this->_hero->getItem()->GetBody()->GetWorldCenter().y >=
+ 			 this->_hero->GetBody()->GetWorldCenter().y + 1) ||
+			(this->_hero->getItem()->GetBody()->GetWorldCenter().y <=
+			this->_hero->GetBody()->GetWorldCenter().y - 1))
+		this->_hero->EndContact(this->_hero->getItem(), nullptr);
+	}
 }
 
 void	Game::moveCamera(void) {
 	bool	asChanged = false;
-	Map		*tmp = this->maps->getMapXY()[Game::currentY][Game::currentX];
+	Map		&tmp = this->maps->_XYMap[Game::currentY][Game::currentX];
 
-   if (this->_hero.GetBody()->GetWorldCenter().x >= (tmp->getXStart() + tmp->getWidth() - 0.5)) {
+   if (this->_hero->GetBody()->GetWorldCenter().x >= (tmp.getXStart() + tmp.getWidth() - 0.5)) {
+		this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
 		Game::currentX++;
 		asChanged = true;
-	} else if (this->_hero.GetBody()->GetWorldCenter().x <= (tmp->getXStart() - 1)) {
+	} else if (this->_hero->GetBody()->GetWorldCenter().x <= (tmp.getXStart() - 1)) {
+		this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
 		Game::currentX--;
 		asChanged = true;
-	} if (this->_hero.GetBody()->GetWorldCenter().y >= tmp->getYStart()) {
+	} else if (this->_hero->GetBody()->GetWorldCenter().y >= tmp.getYStart()) {
+		this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
 		Game::currentY--;
 		asChanged = true;
-	} else if (this->_hero.GetBody()->GetWorldCenter().y <= (tmp->getYStart() - tmp->getHeight())) {
+	} else if (this->_hero->GetBody()->GetWorldCenter().y <= (tmp.getYStart() - tmp.getHeight())) {
+		this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
 		Game::currentY++;
 		asChanged = true;
 	}
-
 	if (asChanged) {
-		theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX]->getXMid(), 
-		this->maps->getMapXY()[Game::currentY][Game::currentX]->getYMid() + 1.8, 9.001);
+		this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
+		theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
+			this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
+		Game::getHUD()->minimap();
+		asChanged = false;
 	}
 }
 
@@ -224,8 +239,12 @@ void	Game::moveCamera(void) {
  * @param elem The Elements to add at the list
  */
 void	Game::addElement(Elements & elem) {
-	Game::elementMap[Game::currentIds] = &elem;
-	Game::currentIds += 1;
+	if (Game::elementMap[elem.getId()])
+		Game::elementMap[elem.getId()] = &elem;
+	else {
+		Game::elementMap[Game::currentIds] = &elem;
+		Game::currentIds += 1;
+	}
 }
 
 //! Delete an element
@@ -304,7 +323,10 @@ bool	Game::destroyAllBodies(void) {
 		return true;
 	} else {
 		for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
-			theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
+			if ((*it)->getAttribute("physic") != "") {
+				(*it)->GetBody()->SetActive(false);
+				theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
+			}
 			theWorld.Remove(*it);
 			Game::delElement(*it);
 		}
@@ -407,7 +429,7 @@ HUDWindow	*Game::getHUD(void) {
  */
 void		Game::displayHUD(void) {
 	HUDWindow *w = new HUDWindow();
-	Characters	&lol = Game::getHero();
+	Characters*	hero = Game::getHero();
 	w->SetPosition(theCamera.GetWindowWidth() / 2 - 100, 50);
 	w->SetSize(theCamera.GetWindowWidth() - 200, 100.0f);
 	w->SetSprite("Resources/Images/HUD/background_hud.png");
@@ -417,17 +439,24 @@ void		Game::displayHUD(void) {
 	theWorld.Add(w);
 	Game	*g = this;
 	w->setGame(g);
-	w->life(125);
-	w->mana(90);
+	w->setMaxMana(hero->getMaxMana());
+	w->setMaxHP(hero->getMaxHP());
+	w->life(hero->getHP());
+	w->mana(hero->getMana());
 	w->gold(0);
-	w->consumable();
+	w->bag();
+	w->initMinimapBackground();
 	w->minimap();
+
+	// Work 
+   /* w->setText("Burp.", this->_hero, Vector3(0, 0, 0), 0, 1);*/
+	/*w->removeText("Burp.");*/
 	Game::addHUDWindow(w);
 }
 
 /* SETTERS */
-void		Game::setHero(Characters & h) { this->_hero = h; };
-Characters	&Game::getHero(void) { return this->_hero; };
+void		Game::setHero(Characters * h) { this->_hero = h; };
+Characters*	Game::getHero(void) { return this->_hero; };
 
 // Set for the statics
 int Game::currentIds = 0;
@@ -451,3 +480,4 @@ int							Game::currentX = 0;
 int							Game::currentY = 0;
 Game*						Game::currentGame = 0;
 int							Game::started = 0;
+int							Game::cameraTick = 0;

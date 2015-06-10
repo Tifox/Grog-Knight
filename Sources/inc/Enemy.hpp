@@ -29,6 +29,9 @@
 
 # include "Characters.hpp"
 # include "Loot.hpp"
+# include "Map.hpp"
+# include "Pattern.hpp"
+# include "PassivePattern.hpp"
 
 class Enemy : public Characters {
 public:
@@ -40,11 +43,20 @@ public:
 	void			actionCallback(std::string name, int status);
 	void			init(void);
 	void			BeginContact(Elements* m, b2Contact* contact);
+	void			EndContact(Elements *m, b2Contact *contact);
 	bool			toBeDeleted(void);
+	void			setMap(Map *m);
+	Map				*getMap(void);
+	void			setPattern(CPattern *p);
+	CPattern			*getPattern(void);
+	bool			dead(void);
 
 protected:
+	int				_isTakingDamage;
 	bool			isDead;
-
+	Map				*_map;
+	CPattern			*_pattern;
+	int				_lastElement;
 };
 
 #endif

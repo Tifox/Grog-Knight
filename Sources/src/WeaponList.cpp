@@ -54,6 +54,17 @@ WeaponList::~WeaponList(void) {
 	return;
 }
 
+int			WeaponList::checkExists(std::string name) {
+	std::list<Weapon*>::iterator it;
+
+	for (it = this->_allWeapons.begin(); it != this->_allWeapons.end(); it++) {
+		if (name == (*it)->getName()) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
 //! Returns a weapon in order to use it afterwards
 /**
  * Get a weapon obj by name

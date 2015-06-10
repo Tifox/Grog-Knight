@@ -18,35 +18,38 @@
  */
 
 /**
- * File: Bonus.hpp
- * Creation: 2015-05-20 12:48
- * Manon Budin <mbudin@student.42.fr>
+ * File: Pattern.cpp
+ * Creation: 2015-05-03 10:22
+ * Louis Solofrizzo <louis@ne02ptzero.me>
  */
 
- #include <iostream>
+#ifndef __Pattern__
+# define __Pattern__
+# include <iostream>
+class		Enemy;
+class		Map;
 
- class Bonus
- {
- public:
+class		CPattern {
+	public:
+		CPattern(void);
+		CPattern(std::string name);
+		CPattern(CPattern & p);
+		~CPattern(void);
 
- 	enum BonusType
- 	{
- 		NONE,
- 		HP_BUFF,
- 		MANA_BUFF,
- 		SPEED_BUFF
- 	};
+		virtual void	tick(Map m);
+		void			setEnemy(Enemy *);
+		std::string		getName(void);
+		Enemy			*getEnemy(void);
 
- 	Bonus(BonusType type, float amount);
- 	~Bonus(void);
+	protected:
+		std::string		_name;
+		Enemy			*_enemy;
+		int				_x;
+		int				_y;
+		int				_orientation;
+};
 
- 	float getAmount();
- 	BonusType getType();
- 	static BonusType	parseType(std::string);
+# include "Enemy.hpp"
+# include "Map.hpp"
 
-private:	
- 	BonusType	_type;
- 	float		_buffAmount;
-
-
- };
+#endif

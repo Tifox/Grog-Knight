@@ -31,7 +31,7 @@
 # include <string>
 # include <list>
 # include "../../Angel/Angel.h"
-# include "Bonus.hpp"
+
  
 class Weapon;
 
@@ -45,6 +45,8 @@ public:
 
 	void		setXStart(float X);
 	void		setYStart(float Y);
+	int			getXStart(void);
+	int			getYStart(void);
 	void		setWidth(int w);
 	void		setHeight(int h);
 	void		setCutWidth(int w);
@@ -69,6 +71,7 @@ public:
 	int				getOrientationY(void);
 	int				getLateralOrientation(void);
 	bool			isDead(void);
+	int				isAdded(void);
 
 
 protected:
@@ -91,6 +94,7 @@ private:
 	int								_width;
 	int								_cutHeight;
 	int								_cutWidth;
+	int								_isAdded;
 	int								_frame;
 	std::list<Animation *>			_animationList;
 	std::list<Animation *>::iterator _animIt;

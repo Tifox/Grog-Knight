@@ -32,7 +32,8 @@ Room::Room(int id, int y, int x, int distance, int mapId, bool topDoor,
 				bool leftDoor, bool bottomDoor, bool rightDoor) : 
 		_id(id), _y(y), _x(x), _distance(distance), _mapId(mapId),
 		_topDoor(topDoor), _leftDoor(leftDoor), _bottomDoor(bottomDoor), 
-		_rightDoor(rightDoor) {
+		_rightDoor(rightDoor), _bottomRoom(nullptr), _rightRoom(nullptr), 
+		_topRoom(nullptr), _leftRoom(nullptr) {
 
 	_links = 0;
 	_specialType = NONE;
@@ -152,4 +153,24 @@ void Room::setDistance(int distance) {
 
 void Room::setSpecialType(SpecialType type) {
 	this->_specialType = type;
+}
+
+void	Room::closeDoor(void) {
+ 	if (!this->_topRoom && this->_topDoor) {
+		this->_topDoor = false;
+		std::cout << "Closing top door" << std::endl;
+	}
+ 	if (!this->_leftRoom && this->_leftDoor) {
+		this->_leftDoor = false;
+		std::cout << "Closing left door" << std::endl;
+	}
+ 	if (!this->_bottomRoom && this->_bottomDoor) {
+		this->_bottomDoor = false;
+		std::cout << "Closing bottom door" << std::endl;
+	}
+ 	if (!this->_rightRoom && this->_rightDoor) {
+		this->_rightDoor = false;
+		std::cout << "Closing right door" << std::endl;
+	}
+
 }

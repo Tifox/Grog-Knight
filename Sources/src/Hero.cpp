@@ -34,6 +34,9 @@ Hero::Hero(void) : Characters("Hero") {
 	theSwitchboard.SubscribeTo(this, "endInvincibility");
 	theSwitchboard.SubscribeTo(this, "enableAttackHitbox");
 	theSwitchboard.SubscribeTo(this, "disableAttackHitbox");
+	theSwitchboard.SubscribeTo(this, "equipSelectedItem");
+	theSwitchboard.SubscribeTo(this, "cycleInventory");
+
 	return ;
 }
 
@@ -63,9 +66,11 @@ void	Hero::init(void) {
  * @todo Extract the values from the consumable
  */
 void	Hero::actionCallback(std::string name, int status) {
-	if (name == "attack" && status == 1 && this->_weapon->attackReady() == 1) {
-		std::string 	orientation;
-		float				x = 2, y = 1;
+	std::string 	orientation;
+	float				x = 2, y = 1;
+	if (name == "attack" && status == 0 && this->_weapon->attackReady() == 1 &&
+		this->_fullChargedAttack == false && this->_isLoadingAttack == 0 &&
+		this->_isAttacking == 1) {
 		this->_weapon->isAttacking(0);
 		if (this->_orientation == RIGHT) {
 			orientation = "right";
@@ -79,10 +84,49 @@ void	Hero::actionCallback(std::string name, int status) {
 			orientation = "down";
 		}
 		this->changeSizeTo(Vector2(x, y));
+		this->_setCategory("attack");
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-			this->_getAttr("beginFrame_" + orientation).asInt(),
-			this->_getAttr("endFrame_" + orientation).asInt(), "base");
+								  this->_getAttr("beginFrame_" +
+												 orientation).asInt(),
+								  this->_getAttr("endFrame_" +
+												 orientation).asInt(), "base");
 
+	} else if (name == "attack" && status == 0 &&
+			   this->_weapon->attackReady() == 1 &&
+			   this->_fullChargedAttack == true) {
+		if (this->_orientation == RIGHT) {
+			orientation = "right";
+		} else if (this->_orientation == LEFT) {
+			orientation = "left";
+		} else if (this->_orientation == UP) {
+			x = 1.5f; y = 2;
+			orientation = "up";
+		} else if (this->_orientation == DOWN) {
+			x = 1; y = 2.5f;
+			orientation = "down";
+		}
+		this->_setCategory("loadAttack_done");
+		this->_weapon->isAttacking(0);
+		this->_isLoadingAttack = 0;
+		this->_fullChargedAttack = false;
+		this->changeSizeTo(Vector2(2, 2));
+		if (this->_latOrientation == LEFT)
+			this->GetBody()->SetLinearVelocity(b2Vec2(-5, 3));
+		else
+			this->GetBody()->SetLinearVelocity(b2Vec2(5, 3));
+		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+								  this->_getAttr("beginFrame_" + orientation).asInt(),
+								  this->_getAttr("endFrame_" + orientation).asInt(), "base");
+	} else if (name == "loadAttack_charge") {
+		if (this->_latOrientation == RIGHT) {
+			orientation = "right";
+		} else if (this->_latOrientation == LEFT)
+			orientation = "left";
+		this->_setCategory("loadAttack_charge");
+		this->changeSizeTo(Vector2(2, 2));
+		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+								  this->_getAttr("beginFrame_" + orientation).asInt(),
+								  this->_getAttr("endFrame_" + orientation).asInt());
 	}
 	return ;
 }
@@ -110,16 +154,26 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 				if (this->_hp != this->_maxHp) {
 					Game::addToDestroyList(elem);
 					this->setHP(this->getHP() + stoi(elem->getAttribute("value")));
+					Game::currentGame->tooltip->tip(elem, this);
 					Game::getHUD()->life(this->getHP());
+				}
+			} else if (elem->getAttribute("type3") == "mana") {
+				if (this->_mana < this->_maxMana) {
+					Game::addToDestroyList(elem);
+					this->setMana(this->getMana() + stoi(elem->getAttribute("value")));
+					Game::currentGame->tooltip->tip(elem, this);
+					Game::getHUD()->mana(this->getMana());
 				}
 			}
 			if (elem->getAttribute("type3") == "gold") {
 				Game::addToDestroyList(elem);
 				this->_gold += stoi(elem->getAttribute("value"));
+				Game::currentGame->tooltip->tip(elem, this);
 				Game::getHUD()->updateGold(this->getGold());
 			}
 		}
 		else if (elem->getAttribute("type2") == "Equipment") {
+			Game::currentGame->tooltip->info(elem);
 			this->_item = elem;
 		}
 	}
@@ -143,15 +197,18 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
  */
 void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 	Characters::EndContact(elem, contact);
-	if (elem->getAttribute("type") == "Object") {
-		if (elem->getAttributes()["type2"] == "Equipment") {
-			this->_item = nullptr;
+		if (elem->getAttribute("type") == "Object") {
+			if (elem->getAttributes()["type2"] == "Equipment") {
+				this->_item = nullptr;
+			}
 		}
-	}
-	if (elem->getAttribute("type") == "Enemy" ||
-		elem->getAttribute("speType") == "spikes") {
-		this->_enemiesTouched.remove(elem);
-	}
+		if (elem->getAttribute("type") == "Enemy" ||
+			elem->getAttribute("speType") == "spikes") {
+			this->_enemiesTouched.remove(elem);
+		}
+		if (elem->getAttribute("type2") == "Equipment") {
+			Game::currentGame->tooltip->clearInfo();
+		}
    /* if (elem->getAttribute("speType") == "water")*/
 		/*this->GetBody()->SetGravityScale(1);*/
 }
@@ -160,6 +217,7 @@ void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 /**
  * Called by BeginContact mostly
  * @param the elem that has damaged hero
+ * @todo monster damage should not be hard-written to 25
  */
 void	Hero::_takeDamage(Elements* elem) {
   this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));

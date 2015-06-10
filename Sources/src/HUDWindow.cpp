@@ -31,6 +31,7 @@
  */
 HUDWindow::HUDWindow(void) : HUDActor() {
 	RegisterFont("Resources/font.ttf", 14, "Gamefont");
+	RegisterFont("Resources/font.ttf", 8, "SmallGamefont");
 	RegisterFont("Resources/Fonts/fail.otf", 80, "dead");
 	return;
 }
@@ -57,6 +58,7 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y) {
 	t->y = y;
 	t->colorR = t->colorG = t->colorB = t->colorA = 1;
 	t->font = "Gamefont";
+	t->toFollow = nullptr;
 	this->_text.push_back(t);
 	return t;
 }
@@ -80,6 +82,7 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 colo
 	t->colorB = color.Z;
 	t->colorA = alpha;
 	t->font = "Gamefont";
+	t->toFollow = nullptr;
 	this->_text.push_back(t);
 	return t;
 }
@@ -104,6 +107,66 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 colo
 	t->colorB = color.Z;
 	t->colorA = alpha;
 	t->font = font;
+	t->toFollow = nullptr;
+	this->_text.push_back(t);
+	return t;
+}
+
+//! Characters-follow Text
+/**
+ * Set a Text on a Character
+ * @param str The Text
+ * @param toFollow The Character
+ * @param color The RGB Color
+ * @param isFading 0 / 1 If the text has to fade
+ * @param isTalk 0 / 1 If the text is a dialog
+ * @note isFading and isTalk can't be true at the same time
+ */
+HUDWindow::Text		*HUDWindow::setText(std::string str, Characters *toFollow, 
+		Vector3 color, int isFading, int isTalk) {
+	HUDWindow::Text		*t = new HUDWindow::Text();
+
+	t->str = str;
+	t->toFollow = toFollow;
+	t->colorR = color.X;
+	t->colorG = color.Y;
+	t->colorB = color.Z;
+	t->colorA = 1;
+	t->isFading = isFading;
+	t->isTalk = isTalk;
+	t->font = "Gamefont";
+	t->y = 0;
+	if (isTalk) {
+		Elements	*test;
+
+		test = new Elements();
+		test->SetPosition(Game::currentGame->getHero()->GetBody()->GetWorldCenter().x, 
+			(Game::currentGame->getHero()->GetBody()->GetWorldCenter().y + 1));
+		test->SetSize(2.5, 0.7);
+		test->SetSprite("Resources/Images/HUD/talk.png");
+		test->SetDrawShape(ADS_Square);
+		test->SetFixedRotation(true);
+		test->SetLayer(1500);
+		test->SetDensity(0.001f);
+		test->SetRestitution(0);
+		test->SetFriction(0);
+		test->SetIsSensor(true);
+		test->SetLayer(1500);
+		test->InitPhysics();
+		b2DistanceJointDef jointDef1;
+		b2DistanceJointDef jointDef2;
+		jointDef1.Initialize(Game::currentGame->getHero()->GetBody(), test->GetBody(), 
+				b2Vec2(Game::currentGame->getHero()->GetBody()->GetWorldCenter().x + 0.4f, 
+				Game::currentGame->getHero()->GetBody()->GetWorldCenter().y + 0.4f), test->GetBody()->GetWorldCenter());
+		jointDef1.collideConnected = false;
+		jointDef2.Initialize(Game::currentGame->getHero()->GetBody(), test->GetBody(), 
+			b2Vec2(Game::currentGame->getHero()->GetBody()->GetWorldCenter().x - 0.4f, test->GetBody()->GetWorldCenter().y - 0.4f), test->GetBody()->GetWorldCenter());
+		jointDef2.collideConnected = false;
+		b2DistanceJoint *joint1 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef1);
+		b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
+		theWorld.Add(test);
+		this->_dialog[t->str] = test;
+	}
 	this->_text.push_back(t);
 	return t;
 }
@@ -120,8 +183,13 @@ void	HUDWindow::removeText(std::string str) {
 		if ((*i)->str == str)
 			break ;
 	}
-	if (i != this->_text.end())
+	if (i != this->_text.end()) {
+		if (this->_dialog[str]) {
+			Game::addToDestroyList(this->_dialog[str]);
+			this->_dialog.erase(this->_dialog.find(str));
+		}
 		this->_text.erase(i);
+	}
 }
 
 //! Remove a text with an object
@@ -136,8 +204,9 @@ void	HUDWindow::removeText(HUDWindow::Text *text) {
 		if ((*i) == text)
 			break ;
 	}
-	if (i != this->_text.end())
+	if (i != this->_text.end()) {
 		this->_text.erase(i);
+	}
 }
 
 //! Callback for Display text
@@ -150,7 +219,23 @@ void	HUDWindow::displayText(void) {
 
 	for (i = this->_text.begin(); i != this->_text.end(); i++) {
 		glColor4f((*i)->colorR, (*i)->colorG, (*i)->colorB, (*i)->colorA);
-		DrawGameText((*i)->str, (*i)->font, (*i)->x, (*i)->y, theCamera.GetRotation());
+		if ((*i)->toFollow == nullptr)
+			DrawGameText((*i)->str, (*i)->font, (*i)->x, (*i)->y, theCamera.GetRotation());
+		else {
+			int		x, y, mult = 6;
+			Map		m = Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX];
+
+			x = ((((*i)->toFollow->GetBody()->GetWorldCenter().x + 0.5) - m.getXStart()) * 40) - 40;
+			y = -((((*i)->toFollow->GetBody()->GetWorldCenter().y - 0.5) - m.getYStart()) * 40) + 50;
+			if ((*i)->isFading) {
+				DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
+				(*i)->y += 1;
+			} else if ((*i)->isTalk) {
+				DrawGameText((*i)->str, (*i)->font, x - 5, y - (*i)->y + 5, theCamera.GetRotation());
+			} else {
+				DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
+			}
+		}
 	}
 }
 
@@ -161,7 +246,7 @@ void	HUDWindow::displayText(void) {
  * @param x X position
  * @param y Y position
  */
-void	HUDWindow::addImage(std::string path, int x, int y) {
+HUDActor	*HUDWindow::addImage(std::string path, int x, int y) {
 	HUDActor *tmp = new HUDActor();
 	tmp->SetSprite(path);
 	tmp->SetPosition(x, y);
@@ -169,6 +254,7 @@ void	HUDWindow::addImage(std::string path, int x, int y) {
 	tmp->SetDrawShape(ADS_Square);
 	tmp->SetLayer(100);
 	theWorld.Add(tmp);
+	return tmp;
 }
 
 //! Add an image
@@ -179,7 +265,7 @@ void	HUDWindow::addImage(std::string path, int x, int y) {
  * @param y Y position
  * @param size Size, in float.
  */
-void	HUDWindow::addImage(std::string path, int x, int y, float size) {
+HUDActor	*HUDWindow::addImage(std::string path, int x, int y, float size) {
 	HUDActor *tmp = new HUDActor();
 	tmp->SetSprite(path);
 	tmp->SetPosition(x, y);
@@ -187,7 +273,29 @@ void	HUDWindow::addImage(std::string path, int x, int y, float size) {
 	tmp->SetDrawShape(ADS_Square);
 	tmp->SetLayer(100);
 	theWorld.Add(tmp);
+	return tmp;
 }
+
+//! Add an image
+/**
+ * Add an image in the HUD
+ * @param path The path of the img
+ * @param x X position
+ * @param y Y position
+ * @param size Size, in float.
+ * @param layer The desired layer
+ */
+HUDActor	*HUDWindow::addImage(std::string path, int x, int y, float size, int layer) {
+	HUDActor *tmp = new HUDActor();
+	tmp->SetSprite(path);
+	tmp->SetPosition(x, y);
+	tmp->SetSize(size);
+	tmp->SetDrawShape(ADS_Square);
+	tmp->SetLayer(layer);
+	theWorld.Add(tmp);
+	return tmp;
+}
+
 
 //! Display HP function
 /**
@@ -197,7 +305,7 @@ void	HUDWindow::addImage(std::string path, int x, int y, float size) {
  * @todo Empty heart, half-heart.
  */
 void	HUDWindow::life(int life) {
-	int		x;
+	int		x, v, sLife = life;
 	std::list<HUDActor *>::iterator	i;
 	int		index;
 	HUDActor *tmp;
@@ -218,6 +326,16 @@ void	HUDWindow::life(int life) {
 			life -= 25;
 		}
 	}
+	if (sLife < this->_maxHP) {
+		for (v = 0; (this->_maxHP - sLife) > v; v += 25) {
+			tmp = new HUDActor();
+			tmp->SetSprite("Resources/Images/HUD/empty_heart.png");
+			tmp->SetPosition((x + v), 38);
+			tmp->SetSize(30);
+			theWorld.Add(tmp);
+			this->_hearts.push_back(tmp);
+		}
+	}
 }
 
 //! Display mana function
@@ -228,7 +346,7 @@ void	HUDWindow::life(int life) {
  */
 void	HUDWindow::mana(int mana) {
 	std::list<HUDActor *>::iterator	i;
-	int								x = 200, y, max = 90;
+	int								x = 200, y, max = this->_maxMana;
 
 	for (i = this->_mana.begin(); i != this->_mana.end(); i++)
 		theWorld.Remove(*(i));
@@ -241,8 +359,11 @@ void	HUDWindow::mana(int mana) {
 	}
 	if (y == max)
 		this->addImage("Resources/Images/HUD/mp_bar_full_end.png", x, 60, 12.0f);
-	else
-		this->addImage("Resources/Images/HUD/mp_bar_end.png", x, 60, 12.0f);
+	else {
+		for (; y < max; y += 10, x += 11)
+			this->addImage("Resources/Images/HUD/mp_bar_empty.png", x, 60, 12.0f);
+		this->addImage("Resources/Images/HUD/mp_bar_empty_end.png", x, 60, 12.0f);
+	}
 }
 
 //! Display gold function
@@ -266,7 +387,7 @@ void	HUDWindow::gold(int gold) {
 void	HUDWindow::updateGold(int gold) {
 	this->removeText(this->_gold);
 	this->_gold = this->setText((std::to_string(gold)), 375, 55,
-		Vector3(246.0f, 255.0f, 0.0f), 1);
+			Vector3(246.0f, 255.0f, 0.0f), 1);
 }
 
 //! Display items (Weapon)
@@ -332,16 +453,56 @@ void	HUDWindow::boots(void) {
  * Display the consumable (potions, etc) in the HUD
  * @todo Same here, no callback or object.
  */
-void	HUDWindow::consumable(void) {
-	this->addImage("Resources/Images/HUD/consumable_background.png", 500, 50, 40.0f);
-	this->addImage("Resources/Images/HUD/potion_life.png", 500, 50, 25.0f);
-	this->addImage("Resources/Images/HUD/consumable_background.png", 550, 50, 40.0f);
-	this->addImage("Resources/Images/HUD/potion_life.png", 550, 50, 25.0f);
-	this->addImage("Resources/Images/HUD/consumable_background.png", 600, 50, 40.0f);
-	this->addImage("Resources/Images/HUD/potion_mana.png", 600, 50, 25.0f);
+void	HUDWindow::consumable(std::map<int, std::string> items) {
+	int		i, x;
+	std::list<HUDActor *>::iterator		it;
+
+	for (it = this->_bag.begin(); it != this->_bag.end(); it++)
+		theWorld.Remove((*it));
+
+	for (i = 0, x = 445; i < 4; i++, x += 47) {
+		if (items[i] != "") {
+			HUDActor	*tmp;
+			if (Game::wList->checkExists(items[i])) {
+				Weapon *w = new Weapon(Game::wList->getWeapon(items[i]));
+				tmp = this->addImage(w->getSprite(), x, 50, 30);
+			} else if (Game::aList->checkExists(items[i])) {
+				Armor* w = new Armor(Game::aList->getArmor(items[i]));
+				tmp = this->addImage(w->getSprite(), x, 50, 30);
+			} else if (Game::rList->checkExists(items[i])) {
+				Ring* w = new Ring(Game::rList->getRing(items[i]));
+				tmp = this->addImage(w->getSprite(), x, 50, 30);
+			}
+			this->_bag.push_back(tmp);
+		}
+	}
 }
 
-//! Display the minimap in the HUd
+//! Init the background of the minimap
+void	HUDWindow::initMinimapBackground(void) {
+	HUDActor *tmp;
+
+	tmp = new HUDActor();
+	tmp->SetSize(201, 100);
+	tmp->SetPosition(theCamera.GetWindowWidth() - 101, 50);
+	tmp->SetSprite("Resources/Images/HUD/minimap_background.png");
+	tmp->SetDrawShape(ADS_Square);
+	theWorld.Add(tmp);
+}
+
+void	HUDWindow::_drawDoor(Vector2 size, Vector2 position) {
+	HUDActor	*t;
+
+	t = new HUDActor();
+	t->SetColor(1, 1, 1);
+	t->SetDrawShape(ADS_Square);
+	t->SetPosition(position.X, position.Y);
+	t->SetSize(size.X, size.Y);
+	theWorld.Add(t);
+	this->_minimap.push_back(t);
+}
+
+//! Display the minimap in the HUD
 /**
  * This function is not finished at all.
  * So don't use it.
@@ -349,13 +510,69 @@ void	HUDWindow::consumable(void) {
  * @todo Make this function work normally.
  */
 void	HUDWindow::minimap(void) {
-	HUDActor *minimap = new HUDActor();
+	int		x, y, x2, y2;
+	HUDActor *tmp;
+	std::list<HUDActor *>::iterator		it;
 
-	minimap->SetSize(200, 100);
-	minimap->SetPosition(theCamera.GetWindowWidth() - 100, 50);
-	minimap->SetColor(1, 0, 0);
-	minimap->SetDrawShape(ADS_Square);
-	theWorld.Add(minimap);
+	for (it = this->_minimap.begin(); it != this->_minimap.end(); it++)
+		theWorld.Remove(*it);
+
+	x = theCamera.GetWindowWidth() - 180;
+	y = 18;
+	for (x2 = Game::currentX - 2, y2 = Game::currentY - 1; ; x2++, x += 41) {
+		if (x2 == Game::currentX + 4) {
+			y2++;
+			x2 = Game::currentX - 2;
+			y += 28;
+			x = theCamera.GetWindowWidth() - 180;
+			if (y2 == Game::currentY + 2)
+				break;
+		}
+		if (Game::currentGame->maps->getMapXY()[y2][x2].getIsUsed()) {
+			tmp = new HUDActor();
+			tmp->SetSize(40, 27);
+			tmp->SetPosition(x, y);
+			if (x2 == Game::currentX && y2 == Game::currentY)
+				tmp->SetColor(0, 1, 0);
+			else
+				tmp->SetColor(1, 1, 1);
+			tmp->SetDrawShape(ADS_Square);
+			theWorld.Add(tmp);
+			this->_minimap.push_back(tmp);
+
+			if (Game::currentGame->maps->getMapXY()[y2][x2 + 1].getXStart())
+				this->_drawDoor(Vector2(1, 5), Vector2(x + (40 / 2), y));
+			if (Game::currentGame->maps->getMapXY()[y2][x2 - 1].getXStart())
+				this->_drawDoor(Vector2(1, 5), Vector2(x - (40 / 2), y));
+			if (Game::currentGame->maps->getMapXY()[y2 - 1][x2].getXStart())
+				this->_drawDoor(Vector2(5, 1), Vector2(x, y - (27 / 2) - 1));
+			if (Game::currentGame->maps->getMapXY()[y2 + 1][x2].getXStart())
+				this->_drawDoor(Vector2(5, 1), Vector2(x, y + (27 / 2) - 1));
+		}
+	}
+}
+
+//! Bag display function
+/**
+ * This function display an empty bag at the beggining of the game
+ */
+void	HUDWindow::bag(void) {
+	HUDActor	*bag = new HUDActor();
+	int		i, x;
+
+	bag->SetSize(200, 60);
+	bag->SetPosition(theCamera.GetWindowWidth() - 510, 50);
+	bag->SetSprite("Resources/Images/bag.png");
+	bag->SetDrawShape(ADS_Square);
+	theWorld.Add(bag);
+
+	for (i = 0, x = 445; i < 4; i++, x += 47) {
+		this->addImage("Resources/Images/bag_slot.png", x, 51, 40);
+		this->addImage("Resources/Images/round.png", x + 15, 65, 20, 200);
+		this->setText("S-" + std::to_string(i + 1), x + 10, 67, Vector3(255, 255, 255), 1, "SmallGamefont");
+	}
 }
 
 void	HUDWindow::setGame(Game *g) { this->_g = g; };
+void	HUDWindow::setMaxMana(int m) { this->_maxMana = m; };
+void	HUDWindow::setMaxHP(int h) { this->_maxHP = h; };

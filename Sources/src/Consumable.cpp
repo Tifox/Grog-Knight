@@ -37,9 +37,9 @@
 Consumable::Consumable(void) {
 	this->addAttribute("type2", "Consumable");
 	this->addAttribute("type3", "HP");
-	this->addAttribute("value", "50");
+	this->addAttribute("value", "25");
 	this->SetSprite("Resources/Images/heart.png");
-	this->SetPosition(9, -4);
+	this->SetPosition(45, -27);
 	this->InitPhysics();
 	theWorld.Add(this);
 }
@@ -56,15 +56,19 @@ Consumable::Consumable(void) {
  */
 Consumable::Consumable(Characters* c) {
 	this->addAttribute("type2", "Consumable");
-	if (rand() % 2 == 1) {
-	  this->addAttribute("type3", "HP");
-	  this->addAttribute("value", "50");
-	  this->SetSprite("Resources/Images/heart.png");
+	if (rand() % 3 == 1) {
+		this->addAttribute("type3", "HP");
+		this->addAttribute("value", "25");
+		this->SetSprite("Resources/Images/heart.png");
 	}
-	else {
-	  this->addAttribute("type3", "gold");
-	  this->addAttribute("value", "50");
-	  this->SetSprite("Resources/Images/gold.png");
+	else if (rand() %3 == 2 ){
+		this->addAttribute("type3", "gold");
+		this->addAttribute("value", "50");
+		this->SetSprite("Resources/Images/gold.png");
+	} else {
+		this->addAttribute("type3", "mana");
+		this->addAttribute("value", "50");
+		this->SetSprite("Resources/Images/mana.png");
 	}
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	Game::bodiesToCreate.push_back(this);
@@ -84,8 +88,10 @@ Consumable::Consumable(std::string type, std::string value, Characters* c) {
 	this->addAttribute("value", value);
 	if (type == "HP")
 		this->SetSprite("Resources/Images/heart.png");
-	else
+	else if (type == "gold")
 		this->SetSprite("Resources/Images/gold.png");
+	else
+		this->SetSprite("Resources/Images/mana.png");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	Game::bodiesToCreate.push_back(this);
 }

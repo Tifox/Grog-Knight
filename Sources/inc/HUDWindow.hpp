@@ -29,6 +29,7 @@
 
 # include "../../Angel/Angel.h"
 # include "Game.hpp"
+# include "Map.hpp"
 class	Game;
 class   Ring;
 class   Armor;
@@ -40,7 +41,7 @@ class	HUDWindow : public HUDActor {
 
 	public:
 	class	Text {
-		public:
+		public: 
 			Text() {};
 			~Text() {};
 			std::string		str;
@@ -51,6 +52,9 @@ class	HUDWindow : public HUDActor {
 			int				colorG;
 			int				colorB;
 			int				colorA;
+			Characters		*toFollow;
+			int				isFading;
+			int				isTalk;
 	};
 
 		HUDWindow(void);
@@ -59,11 +63,13 @@ class	HUDWindow : public HUDActor {
 		HUDWindow::Text	*setText(std::string str, int x, int y);
 		HUDWindow::Text	*setText(std::string str, int x, int y, Vector3 color, int alpha);
 		HUDWindow::Text	*setText(std::string str, int x, int y, Vector3 color, int alpha, std::string font);
+		HUDWindow::Text	*setText(std::string str, Characters *toFollow, Vector3 color, int isFading, int isTalk);
 		void	removeText(std::string str);
 		void	removeText(HUDWindow::Text *t);
 		void	displayText(void);
-		void	addImage(std::string p, int x, int y);
-		void	addImage(std::string path, int x, int y, float size);
+		HUDActor	*addImage(std::string p, int x, int y);
+		HUDActor	*addImage(std::string path, int x, int y, float size);
+		HUDActor	*addImage(std::string path, int x, int y, float size, int layer);
 		void	life(int l);
 		void	mana(int mana);
 		void	gold(int g);
@@ -73,16 +79,27 @@ class	HUDWindow : public HUDActor {
 		void	items(Ring *r);
 		void	armor(void);
 		void	boots(void);
-		void	consumable(void);
+		void	consumable(std::map<int, std::string> m);
 		void	minimap(void);
 		void	setGame(Game *);
+		void	setMaxMana(int m);
+		void	setMaxHP(int h);
+		void	bag(void);
+		void	initMinimapBackground(void);
 
 	private:
 		Game		*_g;
 		std::list<HUDActor *>	_hearts;
 		std::list<HUDActor *>	_mana;
+		std::list<HUDActor *>	_bag;
+		std::list<HUDActor *>	_minimap;
+		std::map<std::string, Elements*>		_dialog;
 		std::list<HUDWindow::Text *>	_text;
 		HUDWindow::Text	*		_gold;
+		int						_maxMana;
+		int						_maxHP;
+
+		void					_drawDoor(Vector2 size, Vector2 position);
 };
 
 #endif

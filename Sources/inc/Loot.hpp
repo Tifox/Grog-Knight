@@ -29,12 +29,16 @@
 # include "Characters.hpp"
 # include "Object.hpp"
 
-class Equipment;
+class Ring;
+class Weapon;
+class Armor;
 
 class Loot {
 public:
 	Loot(Characters *c);
-	Loot(Characters *c, Equipment* toDrop);
+	Loot(Characters *c, Weapon* toDrop);
+	Loot(Characters *c, Armor* toDrop);
+	Loot(Characters *c, Ring* toDrop);
 	~Loot(void);
 private:
 	Loot(void);

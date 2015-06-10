@@ -57,7 +57,7 @@ int		Maps::rstrncmp(char *str, char *str2, int n) {
 	int		i, j;
 
 	for (i = (strlen(str) - 1), j = (strlen(str2) - 1); str[i] && (i - strlen(str)) > -(n) 
-		&& str[i] == str2[j]; i--, j--);
+			&& str[i] == str2[j]; i--, j--);
 	if ((i - strlen(str)) == -(n))
 		return 0;
 	return 1;
@@ -137,13 +137,13 @@ void	Maps::_getMap(void) {
 	this->_maps[atoi(this->_root["properties"].get("number", 0).asString().c_str())] = map;
 	int			n = 0;
 	for (j = this->_root["properties"].begin(); j != this->_root["properties"].end(); j++) {
-		if (j.key().asString() == "doorUp")
+		if (j.key().asString() == "doorUp" || j.key().asString() == "door_up")
 			n++;
-		if (j.key().asString() == "doorRight")
+		if (j.key().asString() == "doorRight" || j.key().asString() == "door_right")
 			n += 2;
-		if (j.key().asString() == "doorDown")
+		if (j.key().asString() == "doorDown" || j.key().asString() == "door_down")
 			n += 4;
-		if (j.key().asString() == "doorLeft")
+		if (j.key().asString() == "doorLeft" || j.key().asString() == "door_left")
 			n += 8;
 	}
 	if (n != 0)
@@ -162,10 +162,10 @@ void	Maps::displayLevel(std::vector<std::vector<int> > map) {
 	for (maxX = maxY = 0; maxY < (map.size() - 1); maxY++) {
 		if ((map[maxY].size() - 1) > maxX)
 			maxX = map[maxY].size() - 1;
-		this->_XYMap.push_back(std::map<int, Map *>());
+		this->_XYMap.push_back(std::vector<Map>(16));
 	}
 	// Last allocation (y <= maxY), so + 1
-	this->_XYMap.push_back(std::map<int, Map *>());
+	this->_XYMap.push_back(std::vector<Map>(16));
 
 	for (x = y = rX = rY = 0; y <= maxY; x++) {
 		if (x > maxX) {
@@ -180,10 +180,10 @@ void	Maps::displayLevel(std::vector<std::vector<int> > map) {
 			tmp = this->getMapByDoor(i);
 			tmp->setXStart(rX);
 			tmp->setYStart(rY);
-			tmp->display();
-			this->_XYMap[y][x] = tmp;
-		} else
-			this->_XYMap[y][x] = nullptr;
+			this->_XYMap[y][x] = *tmp;
+		} else {
+			//this->_XYMap[y][x] = *(new Map());
+		}
 		rX += 27;
 	}
 }
@@ -205,4 +205,4 @@ Map		*Maps::getMapByDoor(int n) {
 }
 
 
-std::vector<std::map<int, Map *> >	Maps::getMapXY(void) { return this->_XYMap; };
+std::vector<std::vector<Map> >	Maps::getMapXY(void) { return this->_XYMap; };

@@ -25,6 +25,7 @@
 
 #ifndef __Room__
 # define __Room__
+# include <iostream>
 
 enum DepthType { CEIL, STD, FLOOR };
 
@@ -51,6 +52,7 @@ public:
 	Room*	getLeftRoom() const;
 	Room*	getBottomRoom() const;
 	Room*	getRightRoom() const;
+	void	closeDoor(void);
 
 
 	void addLink();

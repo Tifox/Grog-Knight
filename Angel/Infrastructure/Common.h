@@ -97,7 +97,7 @@
 	#include <GLFW/glfw3.h>
 #endif
 
-#include <glext.h>
+#include "glext.h"
 //#define GL_CLAMP GL_CLAMP_TO_EDGE
 
 #include <math.h>

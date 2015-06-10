@@ -29,6 +29,7 @@
 # include <vector>
 # include <list>
 # include <iostream>
+class	Enemy;
 # include "Game.hpp"
 
 # ifdef __APPLE__
@@ -53,7 +54,7 @@ class	Map {
 		void	setTileWidth(int w);
 		void	setImageHeight(int h);
 		void	setImageWidth(int w);
-		void	addElement(Elements *e);
+		void	addElement(Elements * e);
 		void	addMapElement(int n);
 		void	setMap(std::vector<int> map);
 		void	setProperties(std::map<int, std::map<std::string, Json::Value> > p);
@@ -61,13 +62,18 @@ class	Map {
 		void	setXStart(int x);
 		void	setYStart(int y);
 		void	setUsed(int n);
-		void	display(void);
+		Map		display(void);
 		int		getHeight(void);
 		int		getWidth(void);
 		int		getXMid(void);
 		int		getYMid(void);
 		int		getXStart(void);
 		int		getYStart(void);
+		int		getIsUsed(void);
+		void	destroyMap(void);
+		std::list<Enemy *>		getEnemies(void);
+		std::vector<std::vector<int> >	getPhysicMap(void);
+		void	callAllPatterns(void);
 
 	private:
 		int					_mapCount;
@@ -86,8 +92,10 @@ class	Map {
 		int					_xStart;
 		int					_yStart;
 		int					_isUsed;
-		std::list<Elements *>	_elems;
+		std::list<Elements *>	_elemOfTheMap;
+		std::list<Enemy *>		_enemies;
 		std::map<int, std::map<std::string, Json::Value> >	_properties;
+		std::vector<std::vector<int> >		_physicMap;
 };
 
 #endif

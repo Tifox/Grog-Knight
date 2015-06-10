@@ -18,35 +18,46 @@
  */
 
 /**
- * File: Bonus.cpp
- * Creation: 2015-05-20 12:49
+ * File: Tooltip.hpp
+ * Creation: 2015-06-03 14:59
  * Manon Budin <mbudin@student.42.fr>
  */
 
- #include "Bonus.hpp"
+#ifndef __Tooltip__
+# define __Tooltip__
 
- Bonus::Bonus(BonusType type, float buffAmount) : _type(type), _buffAmount(buffAmount) {
- 	return;
- }
+# include "Log.hpp"
+# include "../../Angel/Angel.h"
 
- Bonus::~Bonus(void) {
- 	return;
- }
+class Characters;	
+class Elements;	
 
-Bonus::BonusType		Bonus::parseType(std::string type)
-{
-	if (type == "hp_buff") { 
-		return BonusType::HP_BUFF;
-	} else if (type == "mana_buff") {
-		return BonusType::MANA_BUFF;
-	} else if (type == "speed_buff") {
-		return BonusType::SPEED_BUFF;
-	}
-	return BonusType::NONE;
-}
 
-/* GETTERS */
+# ifdef __APPLE__
+#  include "../../Tools/jsoncpp/include/json/json.h"
+# else
+#  include "json/json.h"
+# endif
 
-float 					Bonus::getAmount(void) { return this->_buffAmount; }
-Bonus::BonusType 		Bonus::getType(void) { return this->_type; }
 
+class Tooltip : public MessageListener {
+	public:
+		Tooltip();
+		~Tooltip();
+
+		void	tip(Elements *elem, Characters *c);
+		void	info(Elements *elem);
+		void	clearInfo(void);
+		void 	ReceiveMessage(Message *m);
+
+
+	private:
+		HUDActor	*_equip;
+		std::string _name;
+		std::string _val;
+};
+
+
+# include "Characters.hpp"
+
+#endif

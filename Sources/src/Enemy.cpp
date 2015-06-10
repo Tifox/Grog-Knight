@@ -41,12 +41,11 @@ Enemy::Enemy(void) : Characters("Enemy") {
  */
 Enemy::Enemy(std::string str) : Characters(str) {
 	this->SetName("Enemy");
-	theSwitchboard.SubscribeTo(this, "startPathing" + this->GetName());
-	theSwitchboard.DeferredBroadcast(new Message("startPathing" + this->GetName()), 0.2f);
 	this->addAttribute("type", "Enemy");
 	this->addAttribute("name", str);
 	this->addAttribute("enemy", "1");
 	this->_isDead = false;
+	this->_isTakingDamage = 0;
 	return ;
 }
 
@@ -91,8 +90,15 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 	Characters::BeginContact(m, contact);
 	Weapon* w = static_cast<Weapon*>(m);
 	Projectile* p = static_cast<Projectile*>(m);
-	if (m->getAttributes()["type"] == "HeroWeaponHitBox") {
+	if (m->getAttribute("type") == "ground") {
+		Game::startRunning(this);
+		this->_isTakingDamage = 0;
+	}
+	if (m->getAttribute("type") == "HeroWeaponHitBox") {
+		this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
+		Game::stopRunning(this);
 		if (this->takeDamage(w->getDamage()) == 1) {
+			this->_isTakingDamage = 1;
 			if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
 				this->ApplyLinearImpulse(Vector2(w->getPushback(), w->getPushback()), Vector2(0,0));
 			} else {
@@ -102,7 +108,10 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 		else {
 			this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		}
-	} else if (m->getAttributes()["type"] == "HeroProjectile") {
+	} else if (m->getAttribute("type") == "HeroProjectile") {
+		this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
+		Game::stopRunning(this);
+		this->_isTakingDamage = 1;
 		if (this->takeDamage(p->getDamage()) == 1) {
 			if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
 				this->ApplyLinearImpulse(Vector2(p->getPushback(), p->getPushback()), Vector2(0,0));
@@ -113,7 +122,8 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 		else {
 			this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		}
-	} else if (m->getAttributes()["type"] == "Hero") {
+	} else if (m->getAttribute("type") == "Hero") {
+		this->_isTakingDamage = 1;
 		if (this->_orientation == LEFT)
 			this->_orientation = RIGHT;
 		else
@@ -132,12 +142,24 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 			this->_orientation = LEFT;
 	}
 	else if (m->getAttribute("speType") == "spikes") {
+		this->_isTakingDamage = 1;
 		if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
 			this->ApplyLinearImpulse(Vector2(5, 5), Vector2(0,0));
 		} else {
 			this->ApplyLinearImpulse(Vector2(-5, 5), Vector2(0,0));
 		}
 	}
+}
+
+void	Enemy::EndContact(Elements *m, b2Contact *contact) {
+	Characters::EndContact(m, contact);
+	if (m->getAttribute("type") == "ground" && !this->_isDead && !this->_isTakingDamage) {
+		if (this->_lastElement != m->getId()) {
+			this->_pattern->tick(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX]);
+			this->_lastElement = m->getId();
+		}
+	}
+
 }
 
 //! Take Damage
@@ -165,10 +187,19 @@ int		Enemy::takeDamage(int damage) {
 				this->_getAttr("endFrame").asInt());
 		theSwitchboard.SubscribeTo(this, "destroyEnemy");
 		theSwitchboard.DeferredBroadcast(new Message("destroyEnemy"), 0.5);
-		theSwitchboard.UnsubscribeFrom(this, "startPathing" + this->GetName());
-		theSwitchboard.UnsubscribeFrom(this, "setToStatic" + this->GetName());
 		return 0;
 	}
 	this->_hp -= damage;
 	return 1;
 }
+
+/* SETTERS */
+
+void	Enemy::setMap(Map *m) { this->_map = m; };
+void	Enemy::setPattern(CPattern *p) { this->_pattern = p; };
+
+/* GETTERS */
+
+Map		*Enemy::getMap(void) { return this->_map; };
+CPattern	*Enemy::getPattern(void) { return this->_pattern; };
+bool	Enemy::dead(void) { return this->_isDead; };

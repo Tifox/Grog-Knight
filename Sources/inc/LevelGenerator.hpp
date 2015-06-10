@@ -39,21 +39,25 @@ public:
 	LevelGenerator(int maxMapSize, int minPathLenght, int doorsPopRate);
 	~LevelGenerator();
 
-	void	print();
-	void	execute();			//execute generation process
-	void	createFirstRoom();
-	void	firstPass(int distance);		//generate base rooms
-	void	generateRoomsBehindDoors(Room* room);
-	Room*	generateRoom(int x, int y, int distance, Room* prevRoom, int origin);
-
-	bool testDoor(int x, int y);
-	bool testRoom(int x, int y);
-
-	void linkAdjacentRooms(Room *room);
-	void shockwave();
-	int getEntryId();
-	int id();
+	void							print(void);
+	void							execute(void);			//execute generation process
+	void							createFirstRoom(void);
+	void							firstPass(int distance);		//generate base rooms
+	void							generateRoomsBehindDoors(Room* room);
+	Room*							generateRoom(int x, int y, int distance, Room* prevRoom, int origin);
+	bool							testDoor(int x, int y);
+	bool 							testRoom(int x, int y);
+	void							linkAdjacentRooms(Room *room);
+	void							shockwave(void);
+	int								getEntryId(void);
+	int								id(void);
+	std::vector<std::vector<int> >	getLevel(void);
 	std::vector<Room*>				*_rooms;
+	int								getStartX();
+	int								getStartY();
+	int								getNbMaps();
+
+
 
 private:
 	int								_id;
@@ -63,9 +67,9 @@ private:
 	int								_minPathLenght;
 	int								_maxMapSize;
 	int								_doorsPopRate;
+	int								_startX;
+	int								_startY;
 
-
-	LevelGenerator();
 };
 
 #endif

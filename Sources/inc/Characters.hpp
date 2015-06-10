@@ -26,10 +26,13 @@
 #ifndef __Characters__
 # define __Characters__
 
+# include "Inventory.hpp"
 # include "Weapon.hpp"
 # include "Armor.hpp"
 # include "Ring.hpp"
 # include "Log.hpp"
+
+class Inventory;
 class Weapon;
 class Armor;
 class Ring;
@@ -50,6 +53,8 @@ class Characters : public Elements {
 
 	public:
 		friend	class	Game;
+		friend	class	Pattern;
+		friend	class	PassivePattern;
 
 		enum Orientation {
 			UP,
@@ -70,10 +75,15 @@ class Characters : public Elements {
 		std::string						getLastAction(void);
 		int								getGold(void);
 		int								getHP(void);
-		void							setHP(int h);
+		void							setHP(int hp);
+		int								getMana(void);
+		void							setMana(int mana);
+		int								getMaxMana(void);
+		int								getMaxHP(void);
 		Weapon							*getWeapon(void);
 		Armor							*getArmor(void);
 		Ring							*getRing(void);
+
 		// Virtual function, overwritten in childs
 		virtual void	actionCallback(std::string name, int status) {};
 		virtual void	equipWeapon(Weapon* weapon);
@@ -101,13 +111,19 @@ class Characters : public Elements {
 		int				_hp;
 		int				_gold;
 		int				_maxHp;
+		int 			_mana;
+		int 			_maxMana;
 		bool			_canMove;
 		bool			_canJump;
 		bool			_invincibility;
+		bool			_attackPressed;
+		int				_isLoadingAttack;
+		bool			_fullChargedAttack;
 		Weapon*			_weapon;
 		Armor*			_armor;
 		Ring*			_ring;
 		Elements*		_item;
+		Inventory*		_inventory;
 		Characters::Orientation				_orientation;
 		Characters::Orientation				_latOrientation;
 		std::list<Elements*>				_grounds;
@@ -127,6 +143,7 @@ class Characters : public Elements {
 		virtual void	_pickupItem(int status);
 		virtual void	_run(void);
 		void			_destroyEnemy(void);
+		Elements*		getItem(void);
 
 	private:
 		std::map<std::string, std::map<std::string, Json::Value> >	_attr;

@@ -55,13 +55,15 @@ void	Map::setTileWidth(int w) { this->_tileWidth = w; };
 void	Map::setImageHeight(int h) { this->_imageHeight = h; };
 void	Map::setImageWidth(int w) { this->_imageWidth = w; };
 void	Map::setProperties(std::map<int, std::map<std::string, Json::Value> > p) { this->_properties = p; };
-void	Map::addElement(Elements *e) { this->_elems.push_back(e); };
+void	Map::addElement(Elements * e) { ; };
 void	Map::addMapElement(int n) { ; };
 void	Map::setLayer(int n) {this->_layer = n; };
 void	Map::setMap(std::vector<int> map) { this->_map.push_back(map); };
 void	Map::setXStart(int x) { this->_xStart = x; };
 void	Map::setYStart(int y) { this->_yStart = y; };
 void	Map::setUsed(int n) { this->_isUsed = n; };
+std::list<Enemy *>	Map::getEnemies(void) { return this->_enemies; };
+std::vector<std::vector<int> >	Map::getPhysicMap(void) { return this->_physicMap; };
 
 /* GETTERS */
 
@@ -71,20 +73,26 @@ int		Map::getXMid(void) { return (this->_xStart + (this->_width / 2)); };
 int		Map::getYMid(void) { return this->_yStart - (this->_height / 2); };
 int		Map::getXStart(void) { return this->_xStart; };
 int		Map::getYStart(void) { return this->_yStart; };
+int		Map::getIsUsed(void) { return this->_isUsed; };
 
 //! Display the map
 /**
  * Iterate and display the element of a map.
  * Lot's of stuff in this function, but the code's pretty clear, see source for more information
  */
-void	Map::display(void) {
+Map		Map::display(void) {
 	float						x, y;
 	std::list<std::vector <int> >::iterator		layers;
 	std::vector<int>::iterator	it;
 	Elements					*elem;
 	int							v = 0;
 
-	for (layers = this->_map.begin(); layers != this->_map.end(); layers++, v++) {
+	// Allocation for the _physicMap
+	if (!this->_isUsed) {
+		for (v = 0; v < this->_height; v++)
+			this->_physicMap.push_back(std::vector<int>(this->getWidth()));
+	}
+	for (layers = this->_map.begin(), v = 0; layers != this->_map.end(); layers++, v++) {
 		x = this->_xStart;
 		y = this->_yStart;
 		Enemy	*tmp;
@@ -110,6 +118,7 @@ void	Map::display(void) {
 				elem->SetLayer(v);
 				if (this->_properties.find(*it) == this->_properties.end()) {
 					elem->addAttribute("physic", "TRUE");
+					this->_physicMap[-(y - this->_yStart)][x - this->_xStart] = 1;
 				} else {
 					std::map<std::string, Json::Value>::iterator	it2;
 					int												isPhysic = 1, isAnimated = 0;
@@ -127,8 +136,12 @@ void	Map::display(void) {
 							elem->addAttribute(it2->first, it2->second.asString());
 						}
 					}
-					if (isPhysic == 1)
+					if (isPhysic == 1) {
 						elem->addAttribute("physic", "TRUE");
+						this->_physicMap[-(y - this->_yStart)][x - this->_xStart] = 1;
+					} else {
+						this->_physicMap[-(y - this->_yStart)][x - this->_xStart] = 0;
+					}
 					if (isAnimated == 1) {
 						int		v = atoi(elem->getAttribute("next").c_str()), next, count;
 						float	time;
@@ -158,16 +171,64 @@ void	Map::display(void) {
 					}
 				}
 				if (elem->getAttribute("spawnEnemy") != "") {
-					if (elem->getAttribute("isFlying") != "")
-						tmp = new Enemy(Game::eList->getEnemyRandom(true));
-					else
-						tmp = new Enemy(Game::eList->getEnemyRandom(false));
-					tmp->setXStart(x);
-					tmp->setYStart(y);
-					tmp->init();
+					if (!this->_isUsed) {
+						if (elem->getAttribute("isFlying") != "")
+							tmp = new Enemy(Game::eList->getEnemyRandom(true));
+						else
+							tmp = new Enemy(Game::eList->getEnemyRandom(false));
+						PassivePattern	*p = new PassivePattern();
+						tmp->setXStart(x);
+						tmp->setYStart(y);
+						tmp->setMap(this);
+						p->setEnemy(tmp);
+						tmp->setPattern(p);
+						tmp->init();
+						tmp->GetBody()->ApplyLinearImpulse(b2Vec2(0, 3), b2Vec2(0, 0));
+						this->_enemies.push_back(tmp);
+					} else {
+						std::list<Enemy *>::iterator		en;
+						for (en = this->_enemies.begin(); en != this->_enemies.end(); en++) {
+							if (!(*en)->dead()) {
+								(*en)->GetBody()->SetActive(true);
+								(*en)->GetBody()->SetTransform(b2Vec2((*en)->getXStart(), (*en)->getYStart()),
+									(*en)->GetBody()->GetAngle());
+							}
+						}
+					}
 				}
 				elem->display();
+				this->_elemOfTheMap.push_back(elem);
 			}
 		}
 	}
+	this->_isUsed = 1;
+	return *this;
+}
+
+void	Map::destroyMap(void) {
+	std::list<Elements *>::iterator		it;
+	std::list<Enemy *>::iterator		en;
+
+	// Remove physics and remove the element
+	for (it = this->_elemOfTheMap.begin(); it != this->_elemOfTheMap.end(); it++) {
+		if ((*it)->getAttribute("physic") != "") {
+			(*it)->GetBody()->SetActive(false);
+		}
+		theWorld.Remove(*it);
+	}
+
+	// Pause enemies
+	for (en = this->_enemies.begin(); en != this->_enemies.end(); en++) {
+		if (!(*en)->dead())
+			(*en)->GetBody()->SetActive(false);
+	}
+}
+
+void	Map::callAllPatterns(void) {
+	std::list<Enemy *>::iterator		en;
+
+	//for (en = this->_enemies.begin(); en != this->_enemies.end(); en++) {
+		//if (!(*en)->dead())
+			//(*en)->getPattern()->tick(*this);
+	/*}*/
 }

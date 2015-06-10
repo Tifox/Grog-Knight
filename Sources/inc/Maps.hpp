@@ -55,7 +55,8 @@ class Maps {
 		std::map<int, Map *>	_maps;
 		Map		*getMapByDoor(int n);
 		void	displayLevel(std::vector<std::vector<int> > map);
-		std::vector<std::map<int, Map *> >	getMapXY(void);
+		std::vector<std::vector<Map> >	getMapXY(void);
+		std::vector<std::vector<Map> > _XYMap;
 
 	private:
 		void	_getMap(void);
@@ -64,7 +65,6 @@ class Maps {
 		Json::Value			_root;
 		Json::Reader		_reader;
 		std::map<int, std::list<Map *> >	_mapByDoor;
-		std::vector<std::map<int, Map *> > _XYMap;
 };
 
 # include "Elements.hpp"

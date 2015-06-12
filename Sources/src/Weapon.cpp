@@ -59,7 +59,43 @@ Weapon::Weapon(Weapon* weapon) {
 	theSwitchboard.SubscribeTo(this, "canAttack");
 }
 
+//! Constructor called when stomping, create a hitbox on each side of the char
+/**
+ * Hitbox for the stomp
+ * @param w the weapon currently used to deal the damage
+ * @param c the character for the localisation
+ * @param i left or right spawn
+ */
 
+Weapon::Weapon(Weapon* w, Characters* c, int i) {
+	this->_name = w->getName();
+	this->_flavor = w->getFlavor();
+	this->_damage = w->getDamage();
+	this->_recovery = w->getRecovery();
+	this->_active = w->getActive();
+	this->_size = w->getSize();
+	this->_attack = w->getAttack();
+	this->_pushback = w->getPushback();
+	this->SetSize(1);
+	this->SetName("HeroWeaponHitbox");
+	if (c->getAttributes()["type"] == "Hero")
+		this->addAttribute("type", "HeroWeaponHitBox");
+	else
+		this->addAttribute("type", "WeaponHitBox");
+	this->SetDrawShape(ADS_Square);
+	this->SetColor(1, 1, 1, 0);
+	this->addAttribute("physic", "1");
+	this->_hitboxType = "special";
+	this->_hitbox = "octogonHitbox";
+	this->SetDensity(0);
+	this->SetFixedRotation(true);
+	this->Tag("weaponhitbox");
+	this->SetIsSensor(true);
+	theSwitchboard.SubscribeTo(this, "deleteWeapon" + this->GetName());
+	theSwitchboard.DeferredBroadcast(new Message("deleteWeapon" + this->GetName()), w->getActive());
+	this->SetPosition(c->GetBody()->GetWorldCenter().x + i, c->GetBody()->GetWorldCenter().y);
+	Game::bodiesToCreate.push_back(this);
+}
 
 //! Constructor called when attacking, creates the defined hitbox
 /**
@@ -93,8 +129,8 @@ Weapon::Weapon(Weapon* w, Characters* c) {
 	this->SetFixedRotation(true);
 	this->Tag("weaponhitbox");
 	this->SetIsSensor(true);
-	theSwitchboard.SubscribeTo(this, "deleteWeapon");
-	theSwitchboard.DeferredBroadcast(new Message("deleteWeapon"), w->getActive());
+	theSwitchboard.SubscribeTo(this, "deleteWeapon" + this->GetName());
+	theSwitchboard.DeferredBroadcast(new Message("deleteWeapon" + this->GetName()), w->getActive());
 	theSwitchboard.DeferredBroadcast(new Message("canAttack"), w->getRecovery());
 	this->_initDirection(w, c);
 	theWorld.Add(this);
@@ -236,7 +272,7 @@ void	Weapon::attack(Characters *c) {
 }
 
 void	Weapon::ReceiveMessage(Message *m) {
-	if (m->GetMessageName() == "deleteWeapon") {
+	if (m->GetMessageName() == "deleteWeapon" + this->GetName()) {
 		Game::addToDestroyList(this);
 		theSwitchboard.UnsubscribeFrom(this, "deleteWeapon");
 		theSwitchboard.Broadcast(new Message("disableAttackHitbox"));
@@ -263,6 +299,10 @@ int				Weapon::attackReady(void) { return this->_canAttack; }
 void			Weapon::isAttacking(int i) {this->_canAttack = i;}
 
 void	Weapon::BeginContact(Elements *elem, b2Contact *contact) {
+	if (elem->getAttribute("type") != "ground") {
+		contact->SetEnabled(false);
+		contact->enableContact = false;
+	}
 }
 
 void	Weapon::EndContact(Elements *elem, b2Contact *contact) {

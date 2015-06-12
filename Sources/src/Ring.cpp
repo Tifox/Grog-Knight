@@ -136,6 +136,10 @@ int				Ring::getLootLevel(void) { return this->_lootLevel; }
 /* SETTERS */
 
 void	Ring::BeginContact(Elements *elem, b2Contact *contact) {
+	if (elem->getAttribute("type") != "ground") {
+		contact->SetEnabled(false);
+		contact->enableContact = false;
+	}
 }
 
 void	Ring::EndContact(Elements *elem, b2Contact *contact) {

@@ -37,6 +37,7 @@ Hero::Hero(void) : Characters("Hero") {
 	theSwitchboard.SubscribeTo(this, "equipSelectedItem");
 	theSwitchboard.SubscribeTo(this, "cycleInventory");
 	theSwitchboard.SubscribeTo(this, "dropItem");
+	theSwitchboard.SubscribeTo(this, "specialMove");
 
 	return ;
 }
@@ -141,8 +142,11 @@ void	Hero::actionCallback(std::string name, int status) {
  */
 void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 	Characters::BeginContact(elem, contact);
-
 	if (elem->getAttribute("type") == "Enemy" && elem->isDead() == false) {
+		if (this->_isStomping == true) {
+			this->GetBody()->SetLinearVelocity(b2Vec2(0, 3));
+			theSwitchboard.Broadcast(new Message("stompEnd"));
+		}
 		if (this->_invincibility == false)
 			this->_takeDamage(elem);
 		else {
@@ -227,11 +231,11 @@ void	Hero::_takeDamage(Elements* elem) {
   this->_isJump = 1;
   this->changeSizeTo(Vector2(1, 1));
   if (this->_invincibility == false) {
-	this->changeCanMove();
-	this->setHP(this->getHP() - 25);
-	theSwitchboard.DeferredBroadcast(new Message("canMove"), 0.4f);
-	theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1.5f);
-	Game::getHUD()->life(this->getHP());
+	  this->_canMove = 0;
+	  this->setHP(this->getHP() - 25);
+	  theSwitchboard.DeferredBroadcast(new Message("canMove"), 0.4f);
+	  theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1.5f);
+	  Game::getHUD()->life(this->getHP());
   }
   if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
 	this->ApplyLinearImpulse(Vector2(4, 4), Vector2(0, 0));

@@ -28,22 +28,22 @@
 
 bool	ContactFilter::ShouldCollide(b2Fixture* fixA, b2Fixture* fixB) {
 
-	Elements* attrA;
-	Elements* attrB;
+	// Elements* attrA;
+	// Elements* attrB;
 
-	attrA = static_cast<Elements*>(fixB->GetBody()->GetUserData());
-	attrB = static_cast<Elements*>(fixA->GetBody()->GetUserData());
-	if (static_cast<Elements*>(fixA->GetBody()->GetUserData())->getAttribute("type") == "Hero") {
-		Elements* attrA = static_cast<Elements*>(fixA->GetBody()->GetUserData());
-		Elements* attrB = static_cast<Elements*>(fixB->GetBody()->GetUserData());
-	}
-	if (attrA->getAttribute("type") == "Hero")
-		if (attrA->getAttribute("type") == "Object" && attrB->getAttribute("type") != "ground"
-		|| attrB->getAttribute("type") == "Object" && attrA->getAttribute("type") != "ground") {
-		if (attrA->getAttribute("type") == "Hero")
-			attrA->BeginContact(attrB, nullptr);
-		return false;
-	}
+	// attrA = static_cast<Elements*>(fixB->GetBody()->GetUserData());
+	// attrB = static_cast<Elements*>(fixA->GetBody()->GetUserData());
+	// if (static_cast<Elements*>(fixA->GetBody()->GetUserData())->getAttribute("type") == "Hero") {
+	// 	Elements* attrA = static_cast<Elements*>(fixA->GetBody()->GetUserData());
+	// 	Elements* attrB = static_cast<Elements*>(fixB->GetBody()->GetUserData());
+	// }
+	// if (attrA->getAttribute("type") == "Hero")
+	// 	if (attrA->getAttribute("type") == "Object" && attrB->getAttribute("type") != "ground"
+	// 	|| attrB->getAttribute("type") == "Object" && attrA->getAttribute("type") != "ground") {
+	// 	if (attrA->getAttribute("type") == "Hero")
+	// 		attrA->BeginContact(attrB, nullptr);
+	// 	return false;
+	// }
 	// if (attrA->getAttribute("type") == "Hero" &&
 	// 	attrB->getAttribute("type") == "ground" &&
 	// 	attrB->getAttribute("speType") == "canCross") {

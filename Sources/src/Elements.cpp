@@ -207,7 +207,6 @@ void	Elements::AnimCallback(String s) {
 			this->_animIt = this->_animationList.begin();
 		this->PlaySpriteAnimation((*this->_animIt)->time, SAT_OneShot, (*this->_animIt)->frame, (*this->_animIt)->frame, "baseAnimation");
 		this->setFrameSprite((*this->_animIt)->frame);
-		
 	}
 }
 
@@ -217,3 +216,4 @@ void	Elements::addAnimation(int frame, float time) {
 	anim->time = time;
 	this->_animationList.push_back(anim);
 }
+

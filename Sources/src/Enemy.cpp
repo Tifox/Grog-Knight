@@ -124,22 +124,25 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 		}
 	} else if (m->getAttribute("type") == "Hero") {
 		this->_isTakingDamage = 1;
+		Game::stopRunning(this);
 		if (this->_orientation == LEFT)
 			this->_orientation = RIGHT;
 		else
 			this->_orientation = LEFT;
-		if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
-			this->GetBody()->SetLinearVelocity(b2Vec2(2, 2));
+		if (static_cast<Hero*>(m)->getCharging() == true) {
+			if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
+				this->GetBody()->SetLinearVelocity(b2Vec2(10, 10));
+			} else {
+				this->GetBody()->SetLinearVelocity(b2Vec2(-10, 10));
+			}
 		} else {
-			this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
+			if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
+				this->GetBody()->SetLinearVelocity(b2Vec2(2, 2));
+			} else {
+				this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
+			}
 		}
 		this->actionCallback("heroHit", 0);
-	}
-	else if (m->getAttribute("type") == "Enemy") {
-		if (this->_orientation == LEFT)
-			this->_orientation = RIGHT;
-		else
-			this->_orientation = LEFT;
 	}
 	else if (m->getAttribute("speType") == "spikes") {
 		this->_isTakingDamage = 1;
@@ -165,10 +168,12 @@ void	Enemy::EndContact(Elements *m, b2Contact *contact) {
 //! Take Damage
 /**
  * Function that applies damage
- * In this function, we reduce the HP (no way ?), reduce the speed, play a sprite animation.
+ * In this function, we reduce the HP, reduce the speed, play a sprite animation.
  * @param damage The damage amount
  */
 int		Enemy::takeDamage(int damage) {
+	if (this->_hp <= 0)
+		return 0;
 	this->actionCallback("takeDamage", 0);
 	if (this->_hp - damage <= 0) {
 		this->_isDead = true;

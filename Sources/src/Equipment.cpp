@@ -117,9 +117,10 @@ Equipment::~Equipment(void) {
  * @param contact The Box2D contact object.
  */
 void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
-	// if (elem->getAttributes()["type"] == "Hero"){
-	// 	Game::getHUD()->setText(this->_weapon->getFlavor(), 450, 50);
-	// }
+	if (elem->getAttribute("type") != "ground") {
+		contact->SetEnabled(false);
+		contact->enableContact = false;
+	}
 }
 
 //! End of collision callback

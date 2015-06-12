@@ -42,6 +42,7 @@ public:
 	Weapon(std::string name);
 	Weapon(Weapon* weapon);
 	Weapon(Weapon* weapon, Characters* c);
+	Weapon(Weapon* weapon, Characters* c, int i);
 	~Weapon(void);
 
 	void			attack(Characters *c);

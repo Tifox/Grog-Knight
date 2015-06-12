@@ -46,9 +46,6 @@ void			Inventory::changeItemFocus(void) {
 		this->_focused++;
 	} else
 		  this->_focused = 0;
-	std::cout << this->_focused << ": " << this->_items[this->_focused] << std::endl;
-
-
 }
 
 

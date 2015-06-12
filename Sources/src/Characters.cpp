@@ -45,7 +45,6 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->SetRestitution(0.0f);
 	this->SetFixedRotation(true);
 	this->_orientation = RIGHT;
-	this->_readFile(name);
 	this->_canMove = true;
 	this->_canJump = true;
 	this->_inventory = new Inventory(3);
@@ -56,7 +55,9 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_isAttacking = 0;
 	this->_gold = 0;
 	this->_isLoadingAttack = 0;
+	this->_speMoveReady = 1;
 	this->SetLayer(100);
+	this->_readFile(name);
 }
 
 //! Basic destructor
@@ -76,7 +77,6 @@ void	Characters::_readFile(std::string name) {
 	std::ifstream		fd;
 
 	file = "./Resources/Elements/" + name + ".json";
-
 	fd.open(file.c_str());
 	if (!fd.is_open())
 		Log::error("Can't open the file for the " +
@@ -193,7 +193,7 @@ void	Characters::ReceiveMessage(Message *m) {
 
 	if (m->GetMessageName() == "canMove") {
 		if (this->getHP() > 0) {
-			this->changeCanMove();
+			this->_canMove = 1;
 			if (this->_grounds.size() > 0)
 				this->AnimCallback("base");
 		}
@@ -279,6 +279,24 @@ void	Characters::ReceiveMessage(Message *m) {
 	}
 	else if (m->GetMessageName() == "dropItem") {
 		new Loot(this, this->_inventory->dropSelectedItem());
+	}
+	else if (m->GetMessageName() == "specialMove") {
+		this->_specialMove();
+	}
+	else if (m->GetMessageName() == "speMoveReady") {
+		this->_speMoveReady = 1;
+	}
+	else if (m->GetMessageName() == "dashEnd") {
+		this->GetBody()->SetGravityScale(1);
+		this->_canMove = 1;
+		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+	}
+	else if (m->GetMessageName() == "chargeEnd") {
+	}
+	else if (m->GetMessageName() == "stompEnd") {
+		this->_invincibility = false;
+		this->_isStomping = false;
+		this->_isCharging = false;
 	}
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
 		attrName = this->_getAttr(i->first, "subscribe").asString();
@@ -387,6 +405,11 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				}
 			}
 			if (this->_isJump > 0) {
+				if (this->_isStomping == true) {
+					theSwitchboard.Broadcast(new Message("stompEnd"));
+					new Weapon(this->_weapon, this, 1);
+					new Weapon(this->_weapon, this, -1);
+				}
 				this->_isJump = 0;
 				if (this->_latOrientation == RIGHT && this->_isAttacking == false && this->_isLoadingAttack == 0) {
 					this->changeSizeTo(Vector2(1, 1));
@@ -422,6 +445,10 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				contact->SetEnabled(false);
 				contact->enableContact = false;
 			}
+		}
+		if (elem->getAttribute("type") == "Object") {
+			contact->SetEnabled(false);
+			contact->enableContact = false;
 		}
 	}
 }
@@ -729,6 +756,97 @@ void	Characters::_pickupItem(int status) {
 
 }
 
+//! Executes special move
+/**
+ * Executes the characters special move, based on which one he picked up at the beginning
+ * @todo should not be based off the json config
+ */
+
+void	Characters::_specialMove(void) {
+	this->_setCategory("specialMove");
+	if (this->_getAttr("type").asString() == "dash")
+		this->_dash();
+	else if (this->_getAttr("type").asString() == "charge")
+		this->_charge();
+	else if (this->_getAttr("type").asString() == "stomp")
+		this->_stomp();
+}
+
+//! Special move: dash
+/**
+ * Character executes a dash if the cooldown is up and the conditions allows it
+ * Properties of dash - no gravity, take damage, cant move
+ * @sa Characters::_specialMove()
+ */
+
+void	Characters::_dash(void) {
+	this->_setCategory("dash");
+	if (this->_isAttacking == 0 && this->_canMove == 1 && this->_speMoveReady == 1) {
+		this->GetBody()->SetGravityScale(0);
+		this->_speMoveReady = 0;
+		this->_canMove = 0;
+		theSwitchboard.SubscribeTo(this, "speMoveReady");
+		theSwitchboard.SubscribeTo(this, "dashEnd");
+		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
+										 this->_getAttr("cooldown").asFloat());
+		theSwitchboard.DeferredBroadcast(new Message("dashEnd"),
+										 this->_getAttr("uptime").asFloat());
+		if (this->_latOrientation == LEFT)
+			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("dashSpeed").asInt(), 0));
+		else if (this->_latOrientation == RIGHT)
+			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("dashSpeed").asInt(), 0));
+	}
+}
+
+//! Special move: charge
+/**
+ * Character executes a charge if the cooldown is up and the conditions allows it
+ * Properties of charge - invincibility, can move
+ * @sa Characters::_specialMove()
+ */
+
+void	Characters::_charge(void) {
+	this->_setCategory("charge");
+	if (this->_isAttacking == 0 && this->_canMove == 1 && this->_speMoveReady == 1) {
+		this->_speMoveReady = 0;
+		this->_invincibility = true;
+		this->_isCharging = true;
+		theSwitchboard.SubscribeTo(this, "speMoveReady");
+		theSwitchboard.SubscribeTo(this, "chargeEnd");
+		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
+										 this->_getAttr("cooldown").asFloat());
+		theSwitchboard.DeferredBroadcast(new Message("chargeEnd"),
+										 this->_getAttr("uptime").asFloat());
+		if (this->_latOrientation == LEFT)
+			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("chargeSpeed").asInt(), 0));
+		else if (this->_latOrientation == RIGHT)
+			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("chargeSpeed").asInt(), 0));
+	}
+}
+
+//! Special move: stomp
+/**
+ * If airborne, will allow you to slam the ground and deal damage to enemies
+ * Properties of stomp - invincibility, can move
+ * @sa Characters::_specialMove()
+ */
+
+void	Characters::_stomp(void) {
+	this->_setCategory("stomp");
+	if (this->_isAttacking == 0 && this->_canMove == 1 && this->_speMoveReady == 1
+		&& this->_grounds.size() == 0) {
+		this->_speMoveReady = 0;
+		this->_invincibility = true;
+		this->_isStomping = true;
+		this->_isCharging = true;
+		theSwitchboard.SubscribeTo(this, "speMoveReady");
+		theSwitchboard.SubscribeTo(this, "stompEnd");
+		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
+										 this->_getAttr("cooldown").asFloat());
+		this->GetBody()->SetLinearVelocity(b2Vec2(0, -this->_getAttr("stompSpeed").asInt()));
+	}
+}
+
 //! Equip a weapon
 /**
  * Equip a new weapon to the Character, and update the HUD.
@@ -865,3 +983,4 @@ int							Characters::getMaxHP(void) { return this->_maxHp; };
 int							Characters::getGold(void) { return this->_gold; };
 void						Characters::changeCanMove(void) { this->_canMove = (this->_canMove ? false : true); };
 Weapon						*Characters::getWeapon(void) { return this->_weapon; };
+bool						Characters::getCharging(void) { return this->_isCharging; }

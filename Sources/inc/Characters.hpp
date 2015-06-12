@@ -83,6 +83,7 @@ class Characters : public Elements {
 		Weapon							*getWeapon(void);
 		Armor							*getArmor(void);
 		Ring							*getRing(void);
+		bool							getCharging(void);
 
 		// Virtual function, overwritten in childs
 		virtual void	actionCallback(std::string name, int status) {};
@@ -119,6 +120,9 @@ class Characters : public Elements {
 		bool			_attackPressed;
 		int				_isLoadingAttack;
 		bool			_fullChargedAttack;
+		int				_speMoveReady;
+		bool			_isCharging;
+		bool			_isStomping;
 		Weapon*			_weapon;
 		Armor*			_armor;
 		Ring*			_ring;
@@ -142,6 +146,10 @@ class Characters : public Elements {
 		virtual void	_attack(int status);
 		virtual void	_pickupItem(int status);
 		virtual void	_run(void);
+		virtual void	_specialMove(void);
+		virtual void	_dash(void);
+		virtual void	_charge(void);
+		virtual void	_stomp(void);
 		void			_destroyEnemy(void);
 		Elements*		getItem(void);
 

@@ -133,9 +133,11 @@ std::string		Armor::getSprite(void) { return this->_sprite; }
 int				Armor::getLootLevel(void) { return this->_lootLevel; }
 int				Armor::getHp(void) { return this->_hp; }
 
-/* SETTERS */
-
 void	Armor::BeginContact(Elements *elem, b2Contact *contact) {
+	if (elem->getAttribute("type") != "ground") {
+		contact->SetEnabled(false);
+		contact->enableContact = false;
+	}
 }
 
 void	Armor::EndContact(Elements *elem, b2Contact *contact) {

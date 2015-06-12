@@ -541,13 +541,13 @@ void	HUDWindow::minimap(void) {
 			this->_minimap.push_back(tmp);
 
 			if (Game::currentGame->maps->getMapXY()[y2][x2 + 1].getXStart())
-				this->_drawDoor(Vector2(1, 5), Vector2(x + (40 / 2), y));
+				this->_drawDoor(Vector2(1, 5), Vector2(x + 1 + (40 / 2), y));
 			if (Game::currentGame->maps->getMapXY()[y2][x2 - 1].getXStart())
 				this->_drawDoor(Vector2(1, 5), Vector2(x - (40 / 2), y));
 			if (Game::currentGame->maps->getMapXY()[y2 - 1][x2].getXStart())
 				this->_drawDoor(Vector2(5, 1), Vector2(x, y - (27 / 2) - 1));
 			if (Game::currentGame->maps->getMapXY()[y2 + 1][x2].getXStart())
-				this->_drawDoor(Vector2(5, 1), Vector2(x, y + (27 / 2) - 1));
+				this->_drawDoor(Vector2(5, 1), Vector2(x, y + (27 / 2) + 1));
 		}
 	}
 }

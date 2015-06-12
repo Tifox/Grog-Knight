@@ -277,6 +277,9 @@ void	Characters::ReceiveMessage(Message *m) {
 	else if (m->GetMessageName() == "cycleInventory") {
 		this->_inventory->changeItemFocus();
 	}
+	else if (m->GetMessageName() == "dropItem") {
+		new Loot(this, this->_inventory->dropSelectedItem());
+	}
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
 		attrName = this->_getAttr(i->first, "subscribe").asString();
 		if (!strncmp(attrName.c_str(), m->GetMessageName().c_str(), strlen(attrName.c_str()))) {
@@ -848,7 +851,7 @@ void						Characters::_heroDeath(void) {
 	ghost->SetSprite("Resources/Images/Ghost/ghost_000.png", 0);
 	ghost->LoadSpriteFrames("Resources/Images/Ghost/ghost_000.png");
 	ghost->MoveTo(Vector2(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y + 7), 4);
-	theWorld.Add(ghost); 
+	theWorld.Add(ghost);
 	ghost->PlaySpriteAnimation(0.2f, SAT_OneShot, 0, 10, "ghost");
 }
 

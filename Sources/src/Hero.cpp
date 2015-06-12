@@ -36,6 +36,7 @@ Hero::Hero(void) : Characters("Hero") {
 	theSwitchboard.SubscribeTo(this, "disableAttackHitbox");
 	theSwitchboard.SubscribeTo(this, "equipSelectedItem");
 	theSwitchboard.SubscribeTo(this, "cycleInventory");
+	theSwitchboard.SubscribeTo(this, "dropItem");
 
 	return ;
 }

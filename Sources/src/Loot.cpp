@@ -51,6 +51,16 @@ Loot::Loot(Characters* c) {
 	}
 }
 
+
+Loot::Loot(Characters* c, std::string toDrop) {
+	if (Game::wList->checkExists(toDrop))
+		new Equipment(Game::wList->getWeapon(toDrop), c);
+	else if (Game::aList->checkExists(toDrop))
+		new Equipment(Game::aList->getArmor(toDrop), c);
+	else if (Game::rList->checkExists(toDrop))
+		new Equipment(Game::rList->getRing(toDrop), c);
+}
+
 Loot::Loot(Characters* c, Weapon *toDrop) {
 		new Equipment(Game::wList->getWeapon(toDrop->getName()), c);
 }

@@ -36,6 +36,7 @@ class Armor;
 class Loot {
 public:
 	Loot(Characters *c);
+	Loot(Characters *c, std::string toDrop);
 	Loot(Characters *c, Weapon* toDrop);
 	Loot(Characters *c, Armor* toDrop);
 	Loot(Characters *c, Ring* toDrop);

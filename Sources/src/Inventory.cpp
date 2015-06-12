@@ -61,13 +61,16 @@ void			Inventory::changeItemFocus(void) {
  */
 
 int		Inventory::addItemToInventory(std::string item) {
-	if (!this->_items.empty() && this->_inInventory > 0 &&
-		this->_items[this->_focused] != "")
-		return 1;
-	else {
-		this->_items[this->_focused] = item;
-		this->_inInventory++;
+	int i;
+	bool done = false;
+	for (i = 0; i < this->_slots; i++) {
+		if (this->_items[i] == "" && done == false) {
+			this->_items[i] = item;
+			done = true;
+		}
 	}
+	if (done == false)
+		return 1;
 	Game::getHUD()->consumable(this->_items);
 }
 

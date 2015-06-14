@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>Grog-like: HUDWindow Class Reference</title>
+<title>Grog-Like: HUDWindow Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -14,6 +14,7 @@
   $(document).ready(function() { searchBox.OnSelectItem(0); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -21,9 +22,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="hero_000.png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="hero_023.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Grog-like
+   <div id="projectname">Grog-Like
    </div>
   </td>
  </tr>
@@ -63,7 +64,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -94,17 +95,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="dynheader">
 Inheritance diagram for HUDWindow:</div>
 <div class="dyncontent">
-<div class="center"><img src="class_h_u_d_window__inherit__graph.png" border="0" usemap="#_h_u_d_window_inherit__map" alt="Inheritance graph"/></div>
-<map name="_h_u_d_window_inherit__map" id="_h_u_d_window_inherit__map">
+ <div class="center">
+  <img src="class_h_u_d_window.png" usemap="#HUDWindow_map" alt=""/>
+  <map id="HUDWindow_map" name="HUDWindow_map">
 </map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
-<div class="dynheader">
-Collaboration diagram for HUDWindow:</div>
-<div class="dyncontent">
-<div class="center"><img src="class_h_u_d_window__coll__graph.png" border="0" usemap="#_h_u_d_window_coll__map" alt="Collaboration graph"/></div>
-<map name="_h_u_d_window_coll__map" id="_h_u_d_window_coll__map">
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+ </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -125,6 +120,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9ca581ceb96dd26684978140621ea468"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_h_u_d_window_1_1_text.html">HUDWindow::Text</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_u_d_window.html#a9ca581ceb96dd26684978140621ea468">setText</a> (std::string str, int x, int y, Vector3 color, int alpha)</td></tr>
 <tr class="memdesc:a9ca581ceb96dd26684978140621ea468"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set text function.  <a href="#a9ca581ceb96dd26684978140621ea468">More...</a><br /></td></tr>
 <tr class="separator:a9ca581ceb96dd26684978140621ea468"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a546c6c138ac863f464ec7bf606ea68"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_h_u_d_window_1_1_text.html">HUDWindow::Text</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_u_d_window.html#a9a546c6c138ac863f464ec7bf606ea68">setText</a> (std::string str, int x, int y, Vector3 color, int alpha, std::string font)</td></tr>
+<tr class="memdesc:a9a546c6c138ac863f464ec7bf606ea68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set text function.  <a href="#a9a546c6c138ac863f464ec7bf606ea68">More...</a><br /></td></tr>
+<tr class="separator:a9a546c6c138ac863f464ec7bf606ea68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63b8e6cefedc40263fce659513e5b420"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_h_u_d_window_1_1_text.html">HUDWindow::Text</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_u_d_window.html#a63b8e6cefedc40263fce659513e5b420">setText</a> (std::string str, <a class="el" href="class_characters.html">Characters</a> *toFollow, Vector3 color, int isFading, int isTalk)</td></tr>
+<tr class="memdesc:a63b8e6cefedc40263fce659513e5b420"><td class="mdescLeft">&#160;</td><td class="mdescRight">Characters-follow <a class="el" href="class_h_u_d_window_1_1_text.html">Text</a>.  <a href="#a63b8e6cefedc40263fce659513e5b420">More...</a><br /></td></tr>
+<tr class="separator:a63b8e6cefedc40263fce659513e5b420"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0aedfd1f3c8354da1b69f1b592d4ad3e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_u_d_window.html#a0aedfd1f3c8354da1b69f1b592d4ad3e">removeText</a> (std::string str)</td></tr>
 <tr class="memdesc:a0aedfd1f3c8354da1b69f1b592d4ad3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove <a class="el" href="class_h_u_d_window_1_1_text.html">Text</a>.  <a href="#a0aedfd1f3c8354da1b69f1b592d4ad3e">More...</a><br /></td></tr>
 <tr class="separator:a0aedfd1f3c8354da1b69f1b592d4ad3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -134,12 +135,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a12148d8845eaa5a663d816a4befba0dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_u_d_window.html#a12148d8845eaa5a663d816a4befba0dd">displayText</a> (void)</td></tr>
 <tr class="memdesc:a12148d8845eaa5a663d816a4befba0dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for Display text.  <a href="#a12148d8845eaa5a663d816a4befba0dd">More...</a><br /></td></tr>
 <tr class="separator:a12148d8845eaa5a663d816a4befba0dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94366d6f68535133a56d0b38228460e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_u_d_window.html#a94366d6f68535133a56d0b38228460e0">addImage</a> (std::string p, int x, int y)</td></tr>
-<tr class="memdesc:a94366d6f68535133a56d0b38228460e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add an Image.  <a href="#a94366d6f68535133a56d0b38228460e0">More...</a><br /></td></tr>
-<tr class="separator:a94366d6f68535133a56d0b38228460e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee140416af161a6d8acc2b0c83370088"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_u_d_window.html#aee140416af161a6d8acc2b0c83370088">addImage</a> (std::string path, int x, int y, float size)</td></tr>
-<tr class="memdesc:aee140416af161a6d8acc2b0c83370088"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add an image.  <a href="#aee140416af161a6d8acc2b0c83370088">More...</a><br /></td></tr>
-<tr class="separator:aee140416af161a6d8acc2b0c83370088"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9f25e99acf17e9bef2160725dc0d5f9"><td class="memItemLeft" align="right" valign="top">HUDActor *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_u_d_window.html#ac9f25e99acf17e9bef2160725dc0d5f9">addImage</a> (std::string p, int x, int y)</td></tr>
+<tr class="memdesc:ac9f25e99acf17e9bef2160725dc0d5f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add an Image.  <a href="#ac9f25e99acf17e9bef2160725dc0d5f9">More...</a><br /></td></tr>
+<tr class="separator:ac9f25e99acf17e9bef2160725dc0d5f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65a770438d90ccde706a429893929680"><td class="memItemLeft" align="right" valign="top">HUDActor *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_u_d_window.html#a65a770438d90ccde706a429893929680">addImage</a> (std::string path, int x, int y, float size)</td></tr>
+<tr class="memdesc:a65a770438d90ccde706a429893929680"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add an image.  <a href="#a65a770438d90ccde706a429893929680">More...</a><br /></td></tr>
+<tr class="separator:a65a770438d90ccde706a429893929680"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9eb6b2fbd2364591d56d75a0dfe0c8f9"><td class="memItemLeft" align="right" valign="top">HUDActor *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_u_d_window.html#a9eb6b2fbd2364591d56d75a0dfe0c8f9">addImage</a> (std::string path, int x, int y, float size, int layer)</td></tr>
+<tr class="memdesc:a9eb6b2fbd2364591d56d75a0dfe0c8f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add an image.  <a href="#a9eb6b2fbd2364591d56d75a0dfe0c8f9">More...</a><br /></td></tr>
+<tr class="separator:a9eb6b2fbd2364591d56d75a0dfe0c8f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8fc917fbfae792d046e90448c963100a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_u_d_window.html#a8fc917fbfae792d046e90448c963100a">life</a> (int l)</td></tr>
 <tr class="memdesc:a8fc917fbfae792d046e90448c963100a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display HP function.  <a href="#a8fc917fbfae792d046e90448c963100a">More...</a><br /></td></tr>
 <tr class="separator:a8fc917fbfae792d046e90448c963100a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,21 +159,40 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9edf25a0b1cf568aa3f338281d81d99a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_u_d_window.html#a9edf25a0b1cf568aa3f338281d81d99a">items</a> (<a class="el" href="class_weapon.html">Weapon</a> *w)</td></tr>
 <tr class="memdesc:a9edf25a0b1cf568aa3f338281d81d99a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display items (<a class="el" href="class_weapon.html">Weapon</a>)  <a href="#a9edf25a0b1cf568aa3f338281d81d99a">More...</a><br /></td></tr>
 <tr class="separator:a9edf25a0b1cf568aa3f338281d81d99a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5d1623cd329eb921eec7ad625df442b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_u_d_window.html#aa5d1623cd329eb921eec7ad625df442b">items</a> (<a class="el" href="class_armor.html">Armor</a> *a)</td></tr>
+<tr class="memdesc:aa5d1623cd329eb921eec7ad625df442b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display items (<a class="el" href="class_armor.html">Armor</a>)  <a href="#aa5d1623cd329eb921eec7ad625df442b">More...</a><br /></td></tr>
+<tr class="separator:aa5d1623cd329eb921eec7ad625df442b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34e0d171390db9eec346c242000b3a20"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_u_d_window.html#a34e0d171390db9eec346c242000b3a20">items</a> (<a class="el" href="class_ring.html">Ring</a> *r)</td></tr>
+<tr class="memdesc:a34e0d171390db9eec346c242000b3a20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display items (<a class="el" href="class_ring.html">Ring</a>)  <a href="#a34e0d171390db9eec346c242000b3a20">More...</a><br /></td></tr>
+<tr class="separator:a34e0d171390db9eec346c242000b3a20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c6965adb9fdd22b230d20b26fef5ac0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_u_d_window.html#a1c6965adb9fdd22b230d20b26fef5ac0">armor</a> (void)</td></tr>
 <tr class="memdesc:a1c6965adb9fdd22b230d20b26fef5ac0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display armor.  <a href="#a1c6965adb9fdd22b230d20b26fef5ac0">More...</a><br /></td></tr>
 <tr class="separator:a1c6965adb9fdd22b230d20b26fef5ac0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd4fdbfd1c2562384b84d3bcda80fea1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_u_d_window.html#acd4fdbfd1c2562384b84d3bcda80fea1">boots</a> (void)</td></tr>
 <tr class="memdesc:acd4fdbfd1c2562384b84d3bcda80fea1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display boots function.  <a href="#acd4fdbfd1c2562384b84d3bcda80fea1">More...</a><br /></td></tr>
 <tr class="separator:acd4fdbfd1c2562384b84d3bcda80fea1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a378bc8269cacb151f68cfb37114e0c38"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_u_d_window.html#a378bc8269cacb151f68cfb37114e0c38">consumable</a> (void)</td></tr>
-<tr class="memdesc:a378bc8269cacb151f68cfb37114e0c38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show the consumable function.  <a href="#a378bc8269cacb151f68cfb37114e0c38">More...</a><br /></td></tr>
-<tr class="separator:a378bc8269cacb151f68cfb37114e0c38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeeafdcca95bdcdb3b31a6bc4d2e1e379"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_u_d_window.html#aeeafdcca95bdcdb3b31a6bc4d2e1e379">consumable</a> (std::map&lt; int, std::string &gt; m)</td></tr>
+<tr class="memdesc:aeeafdcca95bdcdb3b31a6bc4d2e1e379"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show the consumable function.  <a href="#aeeafdcca95bdcdb3b31a6bc4d2e1e379">More...</a><br /></td></tr>
+<tr class="separator:aeeafdcca95bdcdb3b31a6bc4d2e1e379"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8264836f3c55d8211f4e5166e9049628"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_u_d_window.html#a8264836f3c55d8211f4e5166e9049628">minimap</a> (void)</td></tr>
-<tr class="memdesc:a8264836f3c55d8211f4e5166e9049628"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display the minimap in the HUd.  <a href="#a8264836f3c55d8211f4e5166e9049628">More...</a><br /></td></tr>
+<tr class="memdesc:a8264836f3c55d8211f4e5166e9049628"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display the minimap in the HUD.  <a href="#a8264836f3c55d8211f4e5166e9049628">More...</a><br /></td></tr>
 <tr class="separator:a8264836f3c55d8211f4e5166e9049628"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5baefc7b585437df2639fda359c3cf46"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5baefc7b585437df2639fda359c3cf46"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setGame</b> (<a class="el" href="class_game.html">Game</a> *)</td></tr>
 <tr class="separator:a5baefc7b585437df2639fda359c3cf46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58ab83987f850c631909aa77af050423"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a58ab83987f850c631909aa77af050423"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setMaxMana</b> (int m)</td></tr>
+<tr class="separator:a58ab83987f850c631909aa77af050423"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bc77dc304a6cac0a06ffb35040ba61d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1bc77dc304a6cac0a06ffb35040ba61d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setMaxHP</b> (int h)</td></tr>
+<tr class="separator:a1bc77dc304a6cac0a06ffb35040ba61d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a072650c8490c0222c95b7ff99efb4924"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_u_d_window.html#a072650c8490c0222c95b7ff99efb4924">bag</a> (void)</td></tr>
+<tr class="memdesc:a072650c8490c0222c95b7ff99efb4924"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bag display function.  <a href="#a072650c8490c0222c95b7ff99efb4924">More...</a><br /></td></tr>
+<tr class="separator:a072650c8490c0222c95b7ff99efb4924"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30c4372e58de0f8615e772d9809a2664"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a30c4372e58de0f8615e772d9809a2664"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_u_d_window.html#a30c4372e58de0f8615e772d9809a2664">initMinimapBackground</a> (void)</td></tr>
+<tr class="memdesc:a30c4372e58de0f8615e772d9809a2664"><td class="mdescLeft">&#160;</td><td class="mdescRight">Init the background of the minimap. <br /></td></tr>
+<tr class="separator:a30c4372e58de0f8615e772d9809a2664"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a8d97402012deb77be8008cfed176fdd6"></a>
@@ -213,12 +236,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setGame</b> (<a class
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a94366d6f68535133a56d0b38228460e0"></a>
+<a class="anchor" id="ac9f25e99acf17e9bef2160725dc0d5f9"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void HUDWindow::addImage </td>
+          <td class="memname">HUDActor * HUDWindow::addImage </td>
           <td>(</td>
           <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>path</em>, </td>
@@ -246,21 +269,21 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setGame</b> (<a class
 <p>Add an Image. </p>
 <p>Add an image in the HUD </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname"></td><td>path The path of the img </td></tr>
-    <tr><td class="paramname"></td><td>x X position </td></tr>
-    <tr><td class="paramname"></td><td>y Y position </td></tr>
+    <tr><td class="paramname">path</td><td>The path of the img </td></tr>
+    <tr><td class="paramname">x</td><td>X position </td></tr>
+    <tr><td class="paramname">y</td><td>Y position </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a class="anchor" id="aee140416af161a6d8acc2b0c83370088"></a>
+<a class="anchor" id="a65a770438d90ccde706a429893929680"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void HUDWindow::addImage </td>
+          <td class="memname">HUDActor * HUDWindow::addImage </td>
           <td>(</td>
           <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>path</em>, </td>
@@ -294,10 +317,66 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setGame</b> (<a class
 <p>Add an image. </p>
 <p>Add an image in the HUD </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname"></td><td>path The path of the img </td></tr>
-    <tr><td class="paramname"></td><td>x X position </td></tr>
-    <tr><td class="paramname"></td><td>y Y position </td></tr>
-    <tr><td class="paramname"></td><td>size Size, in float. </td></tr>
+    <tr><td class="paramname">path</td><td>The path of the img </td></tr>
+    <tr><td class="paramname">x</td><td>X position </td></tr>
+    <tr><td class="paramname">y</td><td>Y position </td></tr>
+    <tr><td class="paramname">size</td><td>Size, in float. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a9eb6b2fbd2364591d56d75a0dfe0c8f9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">HUDActor * HUDWindow::addImage </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>layer</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Add an image. </p>
+<p>Add an image in the HUD </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>The path of the img </td></tr>
+    <tr><td class="paramname">x</td><td>X position </td></tr>
+    <tr><td class="paramname">y</td><td>Y position </td></tr>
+    <tr><td class="paramname">size</td><td>Size, in float. </td></tr>
+    <tr><td class="paramname">layer</td><td>The desired layer </td></tr>
   </table>
   </dd>
 </dl>
@@ -319,7 +398,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setGame</b> (<a class
 </div><div class="memdoc">
 
 <p>Display armor. </p>
-<p>Display the armor function. This function is a callback call in Character::setArmor. So you won't problably call this function ! </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000011">Todo:</a></b></dt><dd>: The description here is a lie. But it's gonna append ! </dd></dl>
+<p>Display the armor function. This function is a callback call in Character::setArmor. So you won't problably call this function ! </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>The description here is a lie. But it's gonna append ! </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a072650c8490c0222c95b7ff99efb4924"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HUDWindow::bag </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Bag display function. </p>
+<p>This function display an empty bag at the beggining of the game </p>
 
 </div>
 </div>
@@ -338,26 +436,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setGame</b> (<a class
 </div><div class="memdoc">
 
 <p>Display boots function. </p>
-<p>Show the actual boots in the <a class="el" href="class_h_u_d_window.html">HUDWindow</a> </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000012">Todo:</a></b></dt><dd>: No callback &amp; object for now, but have to do it ! </dd></dl>
+<p>Show the actual boots in the <a class="el" href="class_h_u_d_window.html">HUDWindow</a> </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>No callback &amp; object for now, but have to do it ! </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="a378bc8269cacb151f68cfb37114e0c38"></a>
+<a class="anchor" id="aeeafdcca95bdcdb3b31a6bc4d2e1e379"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void HUDWindow::consumable </td>
           <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">std::map&lt; int, std::string &gt;&#160;</td>
+          <td class="paramname"><em>items</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Show the consumable function. </p>
-<p>Display the consumable (potions, etc) in the HUD </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000013">Todo:</a></b></dt><dd>: Same here, no callback or object. </dd></dl>
+<p>Display the consumable (potions, etc) in the HUD </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>Same here, no callback or object. </dd></dl>
 
 </div>
 </div>
@@ -397,7 +495,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setGame</b> (<a class
 <p>Display gold function. </p>
 <p>Make it rain baby Like this all API, evrything his handled. Don't worry. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname"></td><td>gold The gold number </td></tr>
+    <tr><td class="paramname">gold</td><td>The gold number </td></tr>
   </table>
   </dd>
 </dl>
@@ -419,9 +517,57 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setGame</b> (<a class
 </div><div class="memdoc">
 
 <p>Display items (<a class="el" href="class_weapon.html">Weapon</a>) </p>
-<p>Display the weapon function. This function is a callback call in Character::setWeapon. So you won't problably call this function ! </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Display the weapon function. This function is a callback call in Character::equipWeapon. So you won't problably call this function ! </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname"></td><td>w The <a class="el" href="class_weapon.html">Weapon</a> equipped. </td></tr>
+    <tr><td class="paramname">w</td><td>The <a class="el" href="class_weapon.html">Weapon</a> equipped. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aa5d1623cd329eb921eec7ad625df442b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HUDWindow::items </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_armor.html">Armor</a> *&#160;</td>
+          <td class="paramname"><em>a</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Display items (<a class="el" href="class_armor.html">Armor</a>) </p>
+<p>Display the armor function. This function is a callback call in Character::equipArmor. So you won't problably call this function ! </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>The <a class="el" href="class_armor.html">Armor</a> equipped. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a34e0d171390db9eec346c242000b3a20"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HUDWindow::items </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_ring.html">Ring</a> *&#160;</td>
+          <td class="paramname"><em>r</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Display items (<a class="el" href="class_ring.html">Ring</a>) </p>
+<p>Display the ring function. This function is a callback call in Character::equipRing. So you won't problably call this function ! </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">r</td><td>The <a class="el" href="class_ring.html">Ring</a> equipped. </td></tr>
   </table>
   </dd>
 </dl>
@@ -445,11 +591,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setGame</b> (<a class
 <p>Display HP function. </p>
 <p>Life is life (lalala) This function take care of the heart, in the HUD. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname"></td><td>int The life number </td></tr>
+    <tr><td class="paramname">int</td><td>The life number </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>: Empty heart, half-heart. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>Empty heart, half-heart. </dd></dl>
 
 </div>
 </div>
@@ -470,7 +616,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setGame</b> (<a class
 <p>Display mana function. </p>
 <p>Show the mana in the HUD Same way as <a class="el" href="class_h_u_d_window.html#a8fc917fbfae792d046e90448c963100a" title="Display HP function. ">HUDWindow::life</a>, this function handle the sprites, and the Empty mana </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname"></td><td>mana The Mana point. </td></tr>
+    <tr><td class="paramname">mana</td><td>The Mana point. </td></tr>
   </table>
   </dd>
 </dl>
@@ -491,8 +637,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setGame</b> (<a class
       </table>
 </div><div class="memdoc">
 
-<p>Display the minimap in the HUd. </p>
-<p>This function is not finished at all. So don't use it. Thank's. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>: Make this function work normally. </dd></dl>
+<p>Display the minimap in the HUD. </p>
+<p>This function is not finished at all. So don't use it. Thank's. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd>Make this function work normally. </dd></dl>
 
 </div>
 </div>
@@ -511,15 +657,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setGame</b> (<a class
 </div><div class="memdoc">
 
 <p>Remove <a class="el" href="class_h_u_d_window_1_1_text.html">Text</a>. </p>
-<p>Set a text in the window </p><dl class="params"><dt>Parameters</dt><dd>
+<p>This function remove the asked text from the screen. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">str</td><td>The text message </td></tr>
-    <tr><td class="paramname">x</td><td>X position </td></tr>
-    <tr><td class="paramname">y</td><td>Y position </td></tr>
-    <tr><td class="paramname">color</td><td>The color of the text (See Angel2d's Vector3 for more info) </td></tr>
-    <tr><td class="paramname">alpha</td><td>The transparency. </td></tr>
-    <tr><td class="paramname">size</td><td>The size of the text This function remove the asked text from the screen. </td></tr>
-    <tr><td class="paramname"></td><td>str The text content message </td></tr>
+    <tr><td class="paramname">str</td><td>The text content message </td></tr>
   </table>
   </dd>
 </dl>
@@ -583,9 +723,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setGame</b> (<a class
 <p>Set text function. </p>
 <p>Set a text in the window </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname"></td><td>str The text message </td></tr>
-    <tr><td class="paramname"></td><td>x X position </td></tr>
-    <tr><td class="paramname"></td><td>y Y position </td></tr>
+    <tr><td class="paramname">str</td><td>The text message </td></tr>
+    <tr><td class="paramname">x</td><td>X position </td></tr>
+    <tr><td class="paramname">y</td><td>Y position </td></tr>
   </table>
   </dd>
 </dl>
@@ -637,14 +777,134 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setGame</b> (<a class
 <p>Set text function. </p>
 <p>Set a text in the window </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname"></td><td>str The text message </td></tr>
-    <tr><td class="paramname"></td><td>x X position </td></tr>
-    <tr><td class="paramname"></td><td>y Y position </td></tr>
-    <tr><td class="paramname"></td><td>color The color of the text (See Angel2d's Vector3 for more info) </td></tr>
-    <tr><td class="paramname"></td><td>alpha The transparency. </td></tr>
+    <tr><td class="paramname">str</td><td>The text message </td></tr>
+    <tr><td class="paramname">x</td><td>X position </td></tr>
+    <tr><td class="paramname">y</td><td>Y position </td></tr>
+    <tr><td class="paramname">color</td><td>The color of the text (See Angel2d's Vector3 for more info) </td></tr>
+    <tr><td class="paramname">alpha</td><td>The transparency. </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="a9a546c6c138ac863f464ec7bf606ea68"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_h_u_d_window_1_1_text.html">HUDWindow::Text</a> * HUDWindow::setText </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector3&#160;</td>
+          <td class="paramname"><em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>alpha</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>font</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set text function. </p>
+<p>Set a text in the window </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>The text message </td></tr>
+    <tr><td class="paramname">x</td><td>X position </td></tr>
+    <tr><td class="paramname">y</td><td>Y position </td></tr>
+    <tr><td class="paramname">color</td><td>The color of the text (See Angel2d's Vector3 for more info) </td></tr>
+    <tr><td class="paramname">alpha</td><td>The transparency. </td></tr>
+    <tr><td class="paramname">font</td><td>The font name </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a63b8e6cefedc40263fce659513e5b420"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_h_u_d_window_1_1_text.html">HUDWindow::Text</a> * HUDWindow::setText </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_characters.html">Characters</a> *&#160;</td>
+          <td class="paramname"><em>toFollow</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector3&#160;</td>
+          <td class="paramname"><em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>isFading</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>isTalk</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Characters-follow <a class="el" href="class_h_u_d_window_1_1_text.html">Text</a>. </p>
+<p>Set a <a class="el" href="class_h_u_d_window_1_1_text.html">Text</a> on a Character </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>The <a class="el" href="class_h_u_d_window_1_1_text.html">Text</a> </td></tr>
+    <tr><td class="paramname">toFollow</td><td>The Character </td></tr>
+    <tr><td class="paramname">color</td><td>The RGB Color </td></tr>
+    <tr><td class="paramname">isFading</td><td>0 / 1 If the text has to fade </td></tr>
+    <tr><td class="paramname">isTalk</td><td>0 / 1 If the text is a dialog </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>isFading and isTalk can't be true at the same time </dd></dl>
 
 </div>
 </div>
@@ -679,7 +939,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setGame</b> (<a class
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Apr 26 2015 08:13:25 for Grog-like by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jun 14 2015 22:02:37 for Grog-Like by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

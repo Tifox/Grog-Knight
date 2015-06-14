@@ -21,7 +21,9 @@ static void \hyperlink{class_log_a63764a6e2521a2dda6a7bd2562aa96d3}{info} (std\+
 static void \hyperlink{class_log_a2060ccdfdc1600ea41ab34c646aa4b54}{warning} (std\+::string name)
 \begin{DoxyCompactList}\small\item\em Print a warning log. \end{DoxyCompactList}\item 
 static void \hyperlink{class_log_a5e872491a64db4fd358d456aab0b410e}{error} (std\+::string name)
-\begin{DoxyCompactList}\small\item\em Print an error log. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Print an error log. \end{DoxyCompactList}\item 
+static void \hyperlink{class_log_a86910e8305e08485f3e37763d6950e1f}{set\+Log} (int n)
+\begin{DoxyCompactList}\small\item\em Set the debug prompt as false. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -82,6 +84,22 @@ Print an info log.
 {\em str} & The string to display \\
 \hline
 \end{DoxyParams}
+\hypertarget{class_log_a86910e8305e08485f3e37763d6950e1f}{\index{Log@{Log}!set\+Log@{set\+Log}}
+\index{set\+Log@{set\+Log}!Log@{Log}}
+\subsubsection[{set\+Log}]{\setlength{\rightskip}{0pt plus 5cm}void Log\+::set\+Log (
+\begin{DoxyParamCaption}
+\item[{int}]{n}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_log_a86910e8305e08485f3e37763d6950e1f}
+
+
+Set the debug prompt as false. 
+
+Disable the debug. 1 = Debug, 0 = None 
+\begin{DoxyParams}{Parameters}
+{\em n} & 1 / 0 \\
+\hline
+\end{DoxyParams}
 \hypertarget{class_log_a2060ccdfdc1600ea41ab34c646aa4b54}{\index{Log@{Log}!warning@{warning}}
 \index{warning@{warning}!Log@{Log}}
 \subsubsection[{warning}]{\setlength{\rightskip}{0pt plus 5cm}void Log\+::warning (
@@ -102,5 +120,5 @@ Print a warning log.
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-inc/Log.\+hpp\item 
-src/Log.\+cpp\end{DoxyCompactItemize}
+Sources/inc/Log.\+hpp\item 
+Sources/src/Log.\+cpp\end{DoxyCompactItemize}

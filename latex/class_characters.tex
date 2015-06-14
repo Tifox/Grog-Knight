@@ -47,9 +47,29 @@ virtual void \hyperlink{class_characters_a87c76bb34f5c11e2da4537be07d2f846}{End\
 \hypertarget{class_characters_a136d6ba8b4bd401fda19b14b089a107f}{int {\bfseries get\+H\+P} (void)}\label{class_characters_a136d6ba8b4bd401fda19b14b089a107f}
 
 \item 
-void \hyperlink{class_characters_a63874c1b86156aa6c4c6a7c26afef6e7}{set\+H\+P} (int h)
+void \hyperlink{class_characters_a472ee80119879c2238996b163ade6bd8}{set\+H\+P} (int hp)
 \begin{DoxyCompactList}\small\item\em Set basics hp. \end{DoxyCompactList}\item 
+\hypertarget{class_characters_a09d7d1435edcdd64b9672521ee2020eb}{int {\bfseries get\+Mana} (void)}\label{class_characters_a09d7d1435edcdd64b9672521ee2020eb}
+
+\item 
+void \hyperlink{class_characters_a86b87a489aa323c649e0da740d278034}{set\+Mana} (int mana)
+\begin{DoxyCompactList}\small\item\em Set basics mana. \end{DoxyCompactList}\item 
+\hypertarget{class_characters_a9a65b8e37eff687ebb74c442923e9f25}{int {\bfseries get\+Max\+Mana} (void)}\label{class_characters_a9a65b8e37eff687ebb74c442923e9f25}
+
+\item 
+\hypertarget{class_characters_a00a48dd783fee5cb7b57ac41219632ff}{int {\bfseries get\+Max\+H\+P} (void)}\label{class_characters_a00a48dd783fee5cb7b57ac41219632ff}
+
+\item 
 \hypertarget{class_characters_aae885a7d773657cdf18f8dfced51d1a8}{\hyperlink{class_weapon}{Weapon} $\ast$ {\bfseries get\+Weapon} (void)}\label{class_characters_aae885a7d773657cdf18f8dfced51d1a8}
+
+\item 
+\hypertarget{class_characters_a820210f40b0c3c73cffe0f89caebbb6f}{\hyperlink{class_armor}{Armor} $\ast$ {\bfseries get\+Armor} (void)}\label{class_characters_a820210f40b0c3c73cffe0f89caebbb6f}
+
+\item 
+\hypertarget{class_characters_a8157386c316d3892261bf7418b1a52fe}{\hyperlink{class_ring}{Ring} $\ast$ {\bfseries get\+Ring} (void)}\label{class_characters_a8157386c316d3892261bf7418b1a52fe}
+
+\item 
+\hypertarget{class_characters_a6af7bcfba27cba1b2fc4483b28b1b208}{bool {\bfseries get\+Charging} (void)}\label{class_characters_a6af7bcfba27cba1b2fc4483b28b1b208}
 
 \item 
 \hypertarget{class_characters_a76e565eca6d40dc04119697e1218d24d}{virtual void {\bfseries action\+Callback} (std\+::string name, int status)}\label{class_characters_a76e565eca6d40dc04119697e1218d24d}
@@ -57,6 +77,16 @@ void \hyperlink{class_characters_a63874c1b86156aa6c4c6a7c26afef6e7}{set\+H\+P} (
 \item 
 virtual void \hyperlink{class_characters_a99ea3219f0784f29306bfe539301b83a}{equip\+Weapon} (\hyperlink{class_weapon}{Weapon} $\ast$weapon)
 \begin{DoxyCompactList}\small\item\em Equip a weapon. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_characters_a9882ae38fa50bb350ca43c583900cc1e}{unequip\+Weapon} (void)
+\begin{DoxyCompactList}\small\item\em Unequip a weapon. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_characters_ad2eb0b50918dd57675936744a89c47f9}{equip\+Armor} (\hyperlink{class_armor}{Armor} $\ast$armor)
+\begin{DoxyCompactList}\small\item\em Equip a armor. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_characters_a5bf694c35558aa806948ac60c1bcd21b}{unequip\+Armor} (void)
+\begin{DoxyCompactList}\small\item\em Unequip a armor. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_characters_a026f9ddf8d01ca42295395b9142de6bc}{equip\+Ring} (\hyperlink{class_ring}{Ring} $\ast$ring)
+\begin{DoxyCompactList}\small\item\em Equip a ring. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_characters_a0e81074b82dab6924b1ac257147373d6}{unequip\+Ring} (void)
+\begin{DoxyCompactList}\small\item\em Unequip a ring. \end{DoxyCompactList}\item 
 \hypertarget{class_characters_a542fa5bfc689011ccc0c4cc4edc9d32a}{void {\bfseries change\+Can\+Move} (void)}\label{class_characters_a542fa5bfc689011ccc0c4cc4edc9d32a}
 
 \item 
@@ -85,8 +115,19 @@ virtual void \hyperlink{class_characters_aee824830a67177342ae606f959fb0c7a}{\+\_
 \begin{DoxyCompactList}\small\item\em Pick an item. \end{DoxyCompactList}\item 
 virtual void \hyperlink{class_characters_aa59e298bef3e58fc7c82deb86e762200}{\+\_\+run} (void)
 \begin{DoxyCompactList}\small\item\em Intern callbacks for moving. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_characters_a4720d3fc5500d8961a7c31bd5ff8bd46}{\+\_\+special\+Move} (void)
+\begin{DoxyCompactList}\small\item\em Executes special move. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_characters_ae257e3ffe539012f0269dfac0dec7235}{\+\_\+dash} (void)
+\begin{DoxyCompactList}\small\item\em Special move\+: dash. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_characters_a83da19abcd4c191ad6d23c11ad644bf3}{\+\_\+charge} (void)
+\begin{DoxyCompactList}\small\item\em Special move\+: charge. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_characters_afa31b96a1c45d6f6c950e3f7e107f32f}{\+\_\+stomp} (void)
+\begin{DoxyCompactList}\small\item\em Special move\+: stomp. \end{DoxyCompactList}\item 
 void \hyperlink{class_characters_a98666bfdc74679e0ab605a4f6a89ecb2}{\+\_\+destroy\+Enemy} (void)
-\begin{DoxyCompactList}\small\item\em Destroy an \hyperlink{class_enemy}{Enemy}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Destroy an \hyperlink{class_enemy}{Enemy}. \end{DoxyCompactList}\item 
+\hypertarget{class_characters_afa156915fdb0e77146574d883738a287}{\hyperlink{class_elements}{Elements} $\ast$ {\bfseries get\+Item} (void)}\label{class_characters_afa156915fdb0e77146574d883738a287}
+
+\end{DoxyCompactItemize}
 \subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -123,6 +164,12 @@ void \hyperlink{class_characters_a98666bfdc74679e0ab605a4f6a89ecb2}{\+\_\+destro
 \hypertarget{class_characters_abc14e96e35df47aba94dbf23b3dbdba6}{int {\bfseries \+\_\+max\+Hp}}\label{class_characters_abc14e96e35df47aba94dbf23b3dbdba6}
 
 \item 
+\hypertarget{class_characters_aab1cbfe978094564e58fbcbfda3b24d2}{int {\bfseries \+\_\+mana}}\label{class_characters_aab1cbfe978094564e58fbcbfda3b24d2}
+
+\item 
+\hypertarget{class_characters_a079703b5dc7bdf79d6ce1ffa5e049477}{int {\bfseries \+\_\+max\+Mana}}\label{class_characters_a079703b5dc7bdf79d6ce1ffa5e049477}
+
+\item 
 \hypertarget{class_characters_a817a390b358c806dd3e5c353a815871c}{bool {\bfseries \+\_\+can\+Move}}\label{class_characters_a817a390b358c806dd3e5c353a815871c}
 
 \item 
@@ -132,10 +179,37 @@ void \hyperlink{class_characters_a98666bfdc74679e0ab605a4f6a89ecb2}{\+\_\+destro
 \hypertarget{class_characters_a6a43d519e518708eddef2438dae04a1f}{bool {\bfseries \+\_\+invincibility}}\label{class_characters_a6a43d519e518708eddef2438dae04a1f}
 
 \item 
+\hypertarget{class_characters_a8b556f2458dd672f492a5780a3b0b25e}{bool {\bfseries \+\_\+attack\+Pressed}}\label{class_characters_a8b556f2458dd672f492a5780a3b0b25e}
+
+\item 
+\hypertarget{class_characters_abc229f92acc4e4cee79ff02844f05fbe}{int {\bfseries \+\_\+is\+Loading\+Attack}}\label{class_characters_abc229f92acc4e4cee79ff02844f05fbe}
+
+\item 
+\hypertarget{class_characters_ac4fcd826f49d8bd3f9f81216113140f6}{bool {\bfseries \+\_\+full\+Charged\+Attack}}\label{class_characters_ac4fcd826f49d8bd3f9f81216113140f6}
+
+\item 
+\hypertarget{class_characters_a187a5302461034dae0ea2e87a5103c0c}{int {\bfseries \+\_\+spe\+Move\+Ready}}\label{class_characters_a187a5302461034dae0ea2e87a5103c0c}
+
+\item 
+\hypertarget{class_characters_af29f99ef5c5b9858ef6d1c2a0dbf0b1c}{bool {\bfseries \+\_\+is\+Charging}}\label{class_characters_af29f99ef5c5b9858ef6d1c2a0dbf0b1c}
+
+\item 
+\hypertarget{class_characters_a96f1a899be7360999fea95c6d2e81db1}{bool {\bfseries \+\_\+is\+Stomping}}\label{class_characters_a96f1a899be7360999fea95c6d2e81db1}
+
+\item 
 \hypertarget{class_characters_aee5f545db9a5e0ee19af66dc0754b602}{\hyperlink{class_weapon}{Weapon} $\ast$ {\bfseries \+\_\+weapon}}\label{class_characters_aee5f545db9a5e0ee19af66dc0754b602}
 
 \item 
+\hypertarget{class_characters_a7a40cec6ae954c9b10bc30dcef299008}{\hyperlink{class_armor}{Armor} $\ast$ {\bfseries \+\_\+armor}}\label{class_characters_a7a40cec6ae954c9b10bc30dcef299008}
+
+\item 
+\hypertarget{class_characters_a711d1e46cc5e8405d425d62d55b17fee}{\hyperlink{class_ring}{Ring} $\ast$ {\bfseries \+\_\+ring}}\label{class_characters_a711d1e46cc5e8405d425d62d55b17fee}
+
+\item 
 \hypertarget{class_characters_a0befc3d5cf681d5cd555929ffde0d25a}{\hyperlink{class_elements}{Elements} $\ast$ {\bfseries \+\_\+item}}\label{class_characters_a0befc3d5cf681d5cd555929ffde0d25a}
+
+\item 
+\hypertarget{class_characters_acf5e32b47c1943fb72eb9de462e07437}{\hyperlink{class_inventory}{Inventory} $\ast$ {\bfseries \+\_\+inventory}}\label{class_characters_acf5e32b47c1943fb72eb9de462e07437}
 
 \item 
 \hypertarget{class_characters_ad1f8866efe25f7c8997a134f536fe121}{Characters\+::\+Orientation {\bfseries \+\_\+orientation}}\label{class_characters_ad1f8866efe25f7c8997a134f536fe121}
@@ -145,6 +219,9 @@ void \hyperlink{class_characters_a98666bfdc74679e0ab605a4f6a89ecb2}{\+\_\+destro
 
 \item 
 \hypertarget{class_characters_a35ee6e0ded905f63112a08cd3ad76435}{std\+::list$<$ \hyperlink{class_elements}{Elements} $\ast$ $>$ {\bfseries \+\_\+grounds}}\label{class_characters_a35ee6e0ded905f63112a08cd3ad76435}
+
+\item 
+\hypertarget{class_characters_a2ea33ac55f307d7ac1432f224fb1b4ed}{std\+::list$<$ \hyperlink{class_elements}{Elements} $\ast$ $>$ {\bfseries \+\_\+enemies\+Touched}}\label{class_characters_a2ea33ac55f307d7ac1432f224fb1b4ed}
 
 \item 
 \hypertarget{class_characters_a7a12ea35974e9b9d5fce08b194c37df0}{std\+::list$<$ \hyperlink{class_elements}{Elements} $\ast$ $>$ {\bfseries \+\_\+walls\+Left}}\label{class_characters_a7a12ea35974e9b9d5fce08b194c37df0}
@@ -160,6 +237,12 @@ void \hyperlink{class_characters_a98666bfdc74679e0ab605a4f6a89ecb2}{\+\_\+destro
 \begin{DoxyCompactItemize}
 \item 
 \hypertarget{class_characters_aa2fab026580d6f14280c2ffb8063a314}{class {\bfseries Game}}\label{class_characters_aa2fab026580d6f14280c2ffb8063a314}
+
+\item 
+\hypertarget{class_characters_ac80446dbfe53d7e6af7d8f8a997d5a6c}{class {\bfseries Pattern}}\label{class_characters_ac80446dbfe53d7e6af7d8f8a997d5a6c}
+
+\item 
+\hypertarget{class_characters_a13ecda8fd036b586b8cfb431d3f544e8}{class {\bfseries Passive\+Pattern}}\label{class_characters_a13ecda8fd036b586b8cfb431d3f544e8}
 
 \end{DoxyCompactItemize}
 
@@ -196,6 +279,8 @@ Setting base physic, some attributes and some intern variables
 {\em name} & The name of the character (\hyperlink{class_enemy}{Enemy}, \hyperlink{class_hero}{Hero}, etc ...) \\
 \hline
 \end{DoxyParams}
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000001}{Todo}]gotta parse the right number of slots from json for inventory \end{DoxyRefDesc}
 
 
 \subsection{Member Function Documentation}
@@ -236,6 +321,34 @@ Make the character go backward Same as forward.
 \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
 \hyperlink{class_characters_af8dca1980a447965ffeb2ea17a507c5c}{Characters\+::\+\_\+forward} 
+\end{DoxySeeAlso}
+\hypertarget{class_characters_a83da19abcd4c191ad6d23c11ad644bf3}{\index{Characters@{Characters}!\+\_\+charge@{\+\_\+charge}}
+\index{\+\_\+charge@{\+\_\+charge}!Characters@{Characters}}
+\subsubsection[{\+\_\+charge}]{\setlength{\rightskip}{0pt plus 5cm}void Characters\+::\+\_\+charge (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}}\label{class_characters_a83da19abcd4c191ad6d23c11ad644bf3}
+
+
+Special move\+: charge. 
+
+Character executes a charge if the cooldown is up and the conditions allows it Properties of charge -\/ invincibility, can move \begin{DoxySeeAlso}{See also}
+\hyperlink{class_characters_a4720d3fc5500d8961a7c31bd5ff8bd46}{Characters\+::\+\_\+special\+Move()} 
+\end{DoxySeeAlso}
+\hypertarget{class_characters_ae257e3ffe539012f0269dfac0dec7235}{\index{Characters@{Characters}!\+\_\+dash@{\+\_\+dash}}
+\index{\+\_\+dash@{\+\_\+dash}!Characters@{Characters}}
+\subsubsection[{\+\_\+dash}]{\setlength{\rightskip}{0pt plus 5cm}void Characters\+::\+\_\+dash (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}}\label{class_characters_ae257e3ffe539012f0269dfac0dec7235}
+
+
+Special move\+: dash. 
+
+Character executes a dash if the cooldown is up and the conditions allows it Properties of dash -\/ no gravity, take damage, cant move \begin{DoxySeeAlso}{See also}
+\hyperlink{class_characters_a4720d3fc5500d8961a7c31bd5ff8bd46}{Characters\+::\+\_\+special\+Move()} 
 \end{DoxySeeAlso}
 \hypertarget{class_characters_a98666bfdc74679e0ab605a4f6a89ecb2}{\index{Characters@{Characters}!\+\_\+destroy\+Enemy@{\+\_\+destroy\+Enemy}}
 \index{\+\_\+destroy\+Enemy@{\+\_\+destroy\+Enemy}!Characters@{Characters}}
@@ -355,7 +468,7 @@ Make the character jump. Same as forward.
 Pick an item. 
 
 Pick an item on the floor Replace the current relatable item by the new one. \begin{DoxyRefDesc}{Todo}
-\item[\hyperlink{todo__todo000001}{Todo}]Making throw the old item. 
+\item[\hyperlink{todo__todo000002}{Todo}]Making throw the old item. 
 \begin{DoxyParams}{Parameters}
 {\em status} & The key status (1 $\vert$ 0) \\
 \hline
@@ -398,6 +511,33 @@ This function is made for gain time and money, set first the category in this fu
 \begin{DoxySeeAlso}{See also}
 \hyperlink{class_characters_ace37d9664457f555a0009eb5f3b8b6b2}{Characters\+::\+\_\+get\+Attr} 
 \end{DoxySeeAlso}
+\hypertarget{class_characters_a4720d3fc5500d8961a7c31bd5ff8bd46}{\index{Characters@{Characters}!\+\_\+special\+Move@{\+\_\+special\+Move}}
+\index{\+\_\+special\+Move@{\+\_\+special\+Move}!Characters@{Characters}}
+\subsubsection[{\+\_\+special\+Move}]{\setlength{\rightskip}{0pt plus 5cm}void Characters\+::\+\_\+special\+Move (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}}\label{class_characters_a4720d3fc5500d8961a7c31bd5ff8bd46}
+
+
+Executes special move. 
+
+Executes the characters special move, based on which one he picked up at the beginning \begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000003}{Todo}]should not be based off the json config \end{DoxyRefDesc}
+\hypertarget{class_characters_afa31b96a1c45d6f6c950e3f7e107f32f}{\index{Characters@{Characters}!\+\_\+stomp@{\+\_\+stomp}}
+\index{\+\_\+stomp@{\+\_\+stomp}!Characters@{Characters}}
+\subsubsection[{\+\_\+stomp}]{\setlength{\rightskip}{0pt plus 5cm}void Characters\+::\+\_\+stomp (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}}\label{class_characters_afa31b96a1c45d6f6c950e3f7e107f32f}
+
+
+Special move\+: stomp. 
+
+If airborne, will allow you to slam the ground and deal damage to enemies Properties of stomp -\/ invincibility, can move \begin{DoxySeeAlso}{See also}
+\hyperlink{class_characters_a4720d3fc5500d8961a7c31bd5ff8bd46}{Characters\+::\+\_\+special\+Move()} 
+\end{DoxySeeAlso}
 \hypertarget{class_characters_a2bb63a2db8990e516cc2424f1dbf713a}{\index{Characters@{Characters}!\+\_\+up@{\+\_\+up}}
 \index{\+\_\+up@{\+\_\+up}!Characters@{Characters}}
 \subsubsection[{\+\_\+up}]{\setlength{\rightskip}{0pt plus 5cm}void Characters\+::\+\_\+up (
@@ -430,6 +570,10 @@ The animation callback See Angel doc for more information String is the std\+::s
 {\em s} & The name of the callback \\
 \hline
 \end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_elements_a6682ad84a7d56dd6d58ba0517965b584}{Elements}.
+
 \hypertarget{class_characters_ae1b52f35e60cd23ec118595a9a8e8760}{\index{Characters@{Characters}!Begin\+Contact@{Begin\+Contact}}
 \index{Begin\+Contact@{Begin\+Contact}!Characters@{Characters}}
 \subsubsection[{Begin\+Contact}]{\setlength{\rightskip}{0pt plus 5cm}void Characters\+::\+Begin\+Contact (
@@ -482,8 +626,40 @@ Reimplemented from \hyperlink{class_elements}{Elements}.
 
 
 
-Reimplemented in \hyperlink{class_hero_a9fee92d1b0df478f95bc10ba84015d2a}{Hero}.
+Reimplemented in \hyperlink{class_enemy_ad67767dc83c2d22abbdc5f5e2455e4fc}{Enemy}, and \hyperlink{class_hero_a9fee92d1b0df478f95bc10ba84015d2a}{Hero}.
 
+\hypertarget{class_characters_ad2eb0b50918dd57675936744a89c47f9}{\index{Characters@{Characters}!equip\+Armor@{equip\+Armor}}
+\index{equip\+Armor@{equip\+Armor}!Characters@{Characters}}
+\subsubsection[{equip\+Armor}]{\setlength{\rightskip}{0pt plus 5cm}void Characters\+::equip\+Armor (
+\begin{DoxyParamCaption}
+\item[{{\bf Armor} $\ast$}]{armor}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_characters_ad2eb0b50918dd57675936744a89c47f9}
+
+
+Equip a armor. 
+
+Equip a new armor to the Character, and update the H\+U\+D. 
+\begin{DoxyParams}{Parameters}
+{\em The} & armor object \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_characters_a026f9ddf8d01ca42295395b9142de6bc}{\index{Characters@{Characters}!equip\+Ring@{equip\+Ring}}
+\index{equip\+Ring@{equip\+Ring}!Characters@{Characters}}
+\subsubsection[{equip\+Ring}]{\setlength{\rightskip}{0pt plus 5cm}void Characters\+::equip\+Ring (
+\begin{DoxyParamCaption}
+\item[{{\bf Ring} $\ast$}]{ring}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_characters_a026f9ddf8d01ca42295395b9142de6bc}
+
+
+Equip a ring. 
+
+Equip a new ring to the Character, and update the H\+U\+D. 
+\begin{DoxyParams}{Parameters}
+{\em The} & ring object \\
+\hline
+\end{DoxyParams}
 \hypertarget{class_characters_a99ea3219f0784f29306bfe539301b83a}{\index{Characters@{Characters}!equip\+Weapon@{equip\+Weapon}}
 \index{equip\+Weapon@{equip\+Weapon}!Characters@{Characters}}
 \subsubsection[{equip\+Weapon}]{\setlength{\rightskip}{0pt plus 5cm}void Characters\+::equip\+Weapon (
@@ -495,7 +671,12 @@ Reimplemented in \hyperlink{class_hero_a9fee92d1b0df478f95bc10ba84015d2a}{Hero}.
 
 Equip a weapon. 
 
-Equip a new weapon to the Character, and update the H\+U\+D.  The \hyperlink{class_weapon}{Weapon} object \hypertarget{class_characters_ae6b55c4269efc485d7926f62544eef4e}{\index{Characters@{Characters}!Receive\+Message@{Receive\+Message}}
+Equip a new weapon to the Character, and update the H\+U\+D. 
+\begin{DoxyParams}{Parameters}
+{\em The} & \hyperlink{class_weapon}{Weapon} object \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_characters_ae6b55c4269efc485d7926f62544eef4e}{\index{Characters@{Characters}!Receive\+Message@{Receive\+Message}}
 \index{Receive\+Message@{Receive\+Message}!Characters@{Characters}}
 \subsubsection[{Receive\+Message}]{\setlength{\rightskip}{0pt plus 5cm}void Characters\+::\+Receive\+Message (
 \begin{DoxyParamCaption}
@@ -514,13 +695,13 @@ Receive and redistribute broadcasts messages In this function, we call also the 
 \begin{DoxySeeAlso}{See also}
 Characters\+::callback 
 \end{DoxySeeAlso}
-\hypertarget{class_characters_a63874c1b86156aa6c4c6a7c26afef6e7}{\index{Characters@{Characters}!set\+H\+P@{set\+H\+P}}
+\hypertarget{class_characters_a472ee80119879c2238996b163ade6bd8}{\index{Characters@{Characters}!set\+H\+P@{set\+H\+P}}
 \index{set\+H\+P@{set\+H\+P}!Characters@{Characters}}
 \subsubsection[{set\+H\+P}]{\setlength{\rightskip}{0pt plus 5cm}void Characters\+::set\+H\+P (
 \begin{DoxyParamCaption}
 \item[{int}]{hp}
 \end{DoxyParamCaption}
-)}}\label{class_characters_a63874c1b86156aa6c4c6a7c26afef6e7}
+)}}\label{class_characters_a472ee80119879c2238996b163ade6bd8}
 
 
 Set basics hp. 
@@ -530,9 +711,73 @@ Set H\+P to the Character.
 {\em hp} & The H\+P number \\
 \hline
 \end{DoxyParams}
+\hypertarget{class_characters_a86b87a489aa323c649e0da740d278034}{\index{Characters@{Characters}!set\+Mana@{set\+Mana}}
+\index{set\+Mana@{set\+Mana}!Characters@{Characters}}
+\subsubsection[{set\+Mana}]{\setlength{\rightskip}{0pt plus 5cm}void Characters\+::set\+Mana (
+\begin{DoxyParamCaption}
+\item[{int}]{mana}
+\end{DoxyParamCaption}
+)}}\label{class_characters_a86b87a489aa323c649e0da740d278034}
+
+
+Set basics mana. 
+
+Set Mana to the Character. 
+\begin{DoxyParams}{Parameters}
+{\em mana} & The Mana number \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_characters_a5bf694c35558aa806948ac60c1bcd21b}{\index{Characters@{Characters}!unequip\+Armor@{unequip\+Armor}}
+\index{unequip\+Armor@{unequip\+Armor}!Characters@{Characters}}
+\subsubsection[{unequip\+Armor}]{\setlength{\rightskip}{0pt plus 5cm}void Characters\+::unequip\+Armor (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_characters_a5bf694c35558aa806948ac60c1bcd21b}
+
+
+Unequip a armor. 
+
+Unequip old armor to the Character, and update the H\+U\+D. 
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_characters_a0e81074b82dab6924b1ac257147373d6}{\index{Characters@{Characters}!unequip\+Ring@{unequip\+Ring}}
+\index{unequip\+Ring@{unequip\+Ring}!Characters@{Characters}}
+\subsubsection[{unequip\+Ring}]{\setlength{\rightskip}{0pt plus 5cm}void Characters\+::unequip\+Ring (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_characters_a0e81074b82dab6924b1ac257147373d6}
+
+
+Unequip a ring. 
+
+Unequip old ring to the Character, and update the H\+U\+D. 
+\begin{DoxyParams}{Parameters}
+{\em The} & ring object \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_characters_a9882ae38fa50bb350ca43c583900cc1e}{\index{Characters@{Characters}!unequip\+Weapon@{unequip\+Weapon}}
+\index{unequip\+Weapon@{unequip\+Weapon}!Characters@{Characters}}
+\subsubsection[{unequip\+Weapon}]{\setlength{\rightskip}{0pt plus 5cm}void Characters\+::unequip\+Weapon (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_characters_a9882ae38fa50bb350ca43c583900cc1e}
+
+
+Unequip a weapon. 
+
+Unequip old weapon to the Character, and update the H\+U\+D. 
+\begin{DoxyParams}{Parameters}
+{\em The} & \hyperlink{class_weapon}{Weapon} object \\
+\hline
+\end{DoxyParams}
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-inc/Characters.\+hpp\item 
-src/Characters.\+cpp\end{DoxyCompactItemize}
+Sources/inc/Characters.\+hpp\item 
+Sources/src/Characters.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,119 @@
+\hypertarget{class_ring_list}{\section{Ring\+List Class Reference}
+\label{class_ring_list}\index{Ring\+List@{Ring\+List}}
+}
+
+
+{\ttfamily \#include $<$Ring\+List.\+hpp$>$}
+
+Inheritance diagram for Ring\+List\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_ring_list}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_ring_list_a6c429f849cd83b3939210ef81061f87a}{Ring\+List} (void)
+\begin{DoxyCompactList}\small\item\em Constructor called at the beginning of the game to load every \hyperlink{class_ring}{Ring} available. \end{DoxyCompactList}\item 
+\hyperlink{class_ring_list_ac9125c89e57306e50f3f8a669b3601c8}{$\sim$\+Ring\+List} (void)
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\hypertarget{class_ring_list_a7157922eb2786a3d915fbc6316ba9224}{void {\bfseries stat\+Ring} (std\+::string)}\label{class_ring_list_a7157922eb2786a3d915fbc6316ba9224}
+
+\item 
+\hypertarget{class_ring_list_a1c1c0f7d1e044121a684c89479d85464}{int {\bfseries check\+Exists} (std\+::string)}\label{class_ring_list_a1c1c0f7d1e044121a684c89479d85464}
+
+\item 
+\hyperlink{class_ring}{Ring} $\ast$ \hyperlink{class_ring_list_a4f47c77eb2eb96f7586da407186dc0ee}{get\+Ring} (std\+::string)
+\begin{DoxyCompactList}\small\item\em Returns a \hyperlink{class_ring}{Ring} in order to use it afterwards. \end{DoxyCompactList}\item 
+\hyperlink{class_ring}{Ring} $\ast$ \hyperlink{class_ring_list_ae754467b19079c0355a2628d6a7480cf}{get\+Ring\+Random} (void)
+\begin{DoxyCompactList}\small\item\em Returns one of the existing Rings. \end{DoxyCompactList}\item 
+\hyperlink{class_ring}{Ring} $\ast$ \hyperlink{class_ring_list_ae9ed241a2a5132144d058ed98cd5eb6a}{get\+Ring\+Random} (int level)
+\begin{DoxyCompactList}\small\item\em Returns one of the existing Rings of the required level. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Licensed to the Apache Software Foundation (A\+S\+F) under one or more contributor license agreements. See the N\+O\+T\+I\+C\+E file distributed with this work for additional information regarding copyright ownership. The A\+S\+F licenses this file to you under the Apache License, Version 2.\+0 (the \char`\"{}\+License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+\href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\+://www.\+apache.\+org/licenses/\+L\+I\+C\+E\+N\+S\+E-\/2.\+0}
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\+A\+S I\+S\char`\"{} B\+A\+S\+I\+S, W\+I\+T\+H\+O\+U\+T W\+A\+R\+R\+A\+N\+T\+I\+E\+S O\+R C\+O\+N\+D\+I\+T\+I\+O\+N\+S O\+F A\+N\+Y K\+I\+N\+D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\+: \hyperlink{_ring_list_8hpp_source}{Ring\+List.\+hpp} Creation\+: 2015-\/05-\/07 17\+:49 Manon Budin \href{mailto:mbudin@student.42.fr}{\tt mbudin@student.\+42.\+fr} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_ring_list_a6c429f849cd83b3939210ef81061f87a}{\index{Ring\+List@{Ring\+List}!Ring\+List@{Ring\+List}}
+\index{Ring\+List@{Ring\+List}!Ring\+List@{Ring\+List}}
+\subsubsection[{Ring\+List}]{\setlength{\rightskip}{0pt plus 5cm}Ring\+List\+::\+Ring\+List (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_ring_list_a6c429f849cd83b3939210ef81061f87a}
+
+
+Constructor called at the beginning of the game to load every \hyperlink{class_ring}{Ring} available. 
+
+Licensed to the Apache Software Foundation (A\+S\+F) under one or more contributor license agreements. See the N\+O\+T\+I\+C\+E file distributed with this work for additional information regarding copyright ownership. The A\+S\+F licenses this file to you under the Apache License, Version 2.\+0 (the \char`\"{}\+License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+\href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\+://www.\+apache.\+org/licenses/\+L\+I\+C\+E\+N\+S\+E-\/2.\+0}
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\+A\+S I\+S\char`\"{} B\+A\+S\+I\+S, W\+I\+T\+H\+O\+U\+T W\+A\+R\+R\+A\+N\+T\+I\+E\+S O\+R C\+O\+N\+D\+I\+T\+I\+O\+N\+S O\+F A\+N\+Y K\+I\+N\+D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\+: Ring\+List.\+cpp Creation\+: 2015-\/05-\/07 17\+:47 Manon Budin \href{mailto:mbudin@student.42.fr}{\tt mbudin@student.\+42.\+fr} Called once and stocked in a static for the whole game \hypertarget{class_ring_list_ac9125c89e57306e50f3f8a669b3601c8}{\index{Ring\+List@{Ring\+List}!````~Ring\+List@{$\sim$\+Ring\+List}}
+\index{````~Ring\+List@{$\sim$\+Ring\+List}!Ring\+List@{Ring\+List}}
+\subsubsection[{$\sim$\+Ring\+List}]{\setlength{\rightskip}{0pt plus 5cm}Ring\+List\+::$\sim$\+Ring\+List (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_ring_list_ac9125c89e57306e50f3f8a669b3601c8}
+
+
+Destructor. 
+
+Basic destructor 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_ring_list_a4f47c77eb2eb96f7586da407186dc0ee}{\index{Ring\+List@{Ring\+List}!get\+Ring@{get\+Ring}}
+\index{get\+Ring@{get\+Ring}!Ring\+List@{Ring\+List}}
+\subsubsection[{get\+Ring}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Ring} $\ast$ Ring\+List\+::get\+Ring (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{name}
+\end{DoxyParamCaption}
+)}}\label{class_ring_list_a4f47c77eb2eb96f7586da407186dc0ee}
+
+
+Returns a \hyperlink{class_ring}{Ring} in order to use it afterwards. 
+
+Get a \hyperlink{class_ring}{Ring} obj by name 
+\begin{DoxyParams}{Parameters}
+{\em name} & (std\+::string) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+$\ast$it 
+\end{DoxyReturn}
+\hypertarget{class_ring_list_ae754467b19079c0355a2628d6a7480cf}{\index{Ring\+List@{Ring\+List}!get\+Ring\+Random@{get\+Ring\+Random}}
+\index{get\+Ring\+Random@{get\+Ring\+Random}!Ring\+List@{Ring\+List}}
+\subsubsection[{get\+Ring\+Random}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Ring} $\ast$ Ring\+List\+::get\+Ring\+Random (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_ring_list_ae754467b19079c0355a2628d6a7480cf}
+
+
+Returns one of the existing Rings. 
+
+Returns a \hyperlink{class_ring}{Ring}, no matter its level \hypertarget{class_ring_list_ae9ed241a2a5132144d058ed98cd5eb6a}{\index{Ring\+List@{Ring\+List}!get\+Ring\+Random@{get\+Ring\+Random}}
+\index{get\+Ring\+Random@{get\+Ring\+Random}!Ring\+List@{Ring\+List}}
+\subsubsection[{get\+Ring\+Random}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Ring} $\ast$ Ring\+List\+::get\+Ring\+Random (
+\begin{DoxyParamCaption}
+\item[{int}]{level}
+\end{DoxyParamCaption}
+)}}\label{class_ring_list_ae9ed241a2a5132144d058ed98cd5eb6a}
+
+
+Returns one of the existing Rings of the required level. 
+
+Returns a random \hyperlink{class_ring}{Ring}, with the corresponding item level 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Sources/inc/Ring\+List.\+hpp\item 
+Sources/src/Ring\+List.\+cpp\end{DoxyCompactItemize}

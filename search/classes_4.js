@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['levelgenerator',['LevelGenerator',['../class_level_generator.html',1,'']]],
-  ['log',['Log',['../class_log.html',1,'']]],
-  ['loot',['Loot',['../class_loot.html',1,'']]]
+  ['hero',['Hero',['../class_hero.html',1,'']]],
+  ['hitbox',['Hitbox',['../class_hitbox.html',1,'']]],
+  ['hudwindow',['HUDWindow',['../class_h_u_d_window.html',1,'']]]
 ];

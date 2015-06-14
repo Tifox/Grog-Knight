@@ -26,17 +26,26 @@ void \hyperlink{class_game_ab1ab415f40c6a952da0f93a7bf3ffee1}{show\+Map} (void)
 \begin{DoxyCompactList}\small\item\em Display the first map. \end{DoxyCompactList}\item 
 void \hyperlink{class_game_a194dbc017575c98bda4e2317d266a67e}{display\+H\+U\+D} (void)
 \begin{DoxyCompactList}\small\item\em Display the base H\+U\+D. \end{DoxyCompactList}\item 
-\hypertarget{class_game_a730c7eeaa90f5ceab71abce303bfd367}{void {\bfseries set\+Hero} (\hyperlink{class_characters}{Characters} \&h)}\label{class_game_a730c7eeaa90f5ceab71abce303bfd367}
+\hypertarget{class_game_a381da7934d49206575ee04dbbd2cc8b4}{void {\bfseries set\+Hero} (\hyperlink{class_characters}{Characters} $\ast$h)}\label{class_game_a381da7934d49206575ee04dbbd2cc8b4}
 
 \item 
-\hypertarget{class_game_a7f62e55c834c5ee4b626acb58f5bbd28}{\hyperlink{class_characters}{Characters} \& {\bfseries get\+Hero} (void)}\label{class_game_a7f62e55c834c5ee4b626acb58f5bbd28}
+\hypertarget{class_game_af294281f80678ee4d301ac8da495dd59}{void {\bfseries move\+Camera} (void)}\label{class_game_af294281f80678ee4d301ac8da495dd59}
+
+\item 
+\hypertarget{class_game_a4c343d4b5639da664429c9fcdea97086}{void {\bfseries simulate\+Hero\+Item\+Contact} (void)}\label{class_game_a4c343d4b5639da664429c9fcdea97086}
+
+\item 
+\hypertarget{class_game_a752983a71cb0c28fecc94eb4e1f03391}{\hyperlink{class_characters}{Characters} $\ast$ {\bfseries get\+Hero} (void)}\label{class_game_a752983a71cb0c28fecc94eb4e1f03391}
 
 \end{DoxyCompactItemize}
 \subsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-static void \hyperlink{class_game_ae391a35eb1f970669b0d6b236de4b885}{destroy\+All\+Bodies} (void)
+static bool \hyperlink{class_game_aea5feef3f31df1099cbabf1ffc1d1a49}{destroy\+All\+Bodies} (void)
 \begin{DoxyCompactList}\small\item\em Intern callback for destroying an element. \end{DoxyCompactList}\item 
+\hypertarget{class_game_a7fa4339baaa09b77d64c42de5d419abf}{static void {\bfseries check\+Hero\+Position} (void)}\label{class_game_a7fa4339baaa09b77d64c42de5d419abf}
+
+\item 
 static void \hyperlink{class_game_ae3c5dc329506d37d244ef3587ac813af}{add\+To\+Destroy\+List} (\hyperlink{class_elements}{Elements} $\ast$m)
 \begin{DoxyCompactList}\small\item\em Destroy an element at the right time. \end{DoxyCompactList}\item 
 static int \hyperlink{class_game_aec4cafc10218eb665d67bf027ddbd3f1}{get\+Next\+Id} (void)
@@ -69,6 +78,12 @@ static \hyperlink{class_h_u_d_window}{H\+U\+D\+Window} $\ast$ \hyperlink{class_g
 \item 
 \hypertarget{class_game_adef62d41374c1440a78855c7f9994697}{\hyperlink{class_maps}{Maps} $\ast$ {\bfseries maps}}\label{class_game_adef62d41374c1440a78855c7f9994697}
 
+\item 
+\hypertarget{class_game_a1f7fc712fe4fa4c2be6b3afbeafe835b}{std\+::vector$<$ \hyperlink{class_room}{Room} $\ast$ $>$ $\ast$ {\bfseries game\+Map}}\label{class_game_a1f7fc712fe4fa4c2be6b3afbeafe835b}
+
+\item 
+\hypertarget{class_game_ad12d51a96df4a0d9633ca66cd6103b8a}{\hyperlink{class_tooltip}{Tooltip} $\ast$ {\bfseries tooltip}}\label{class_game_ad12d51a96df4a0d9633ca66cd6103b8a}
+
 \end{DoxyCompactItemize}
 \subsection*{Static Public Attributes}
 \begin{DoxyCompactItemize}
@@ -80,6 +95,9 @@ static \hyperlink{class_h_u_d_window}{H\+U\+D\+Window} $\ast$ \hyperlink{class_g
 
 \item 
 \hypertarget{class_game_ac52883575849c7580b0b9dba48aef174}{static int {\bfseries lol}}\label{class_game_ac52883575849c7580b0b9dba48aef174}
+
+\item 
+\hypertarget{class_game_a39d21390b44ce5827d08ca4ccd9c108a}{static \hyperlink{class_game}{Game} $\ast$ {\bfseries current\+Game} = 0}\label{class_game_a39d21390b44ce5827d08ca4ccd9c108a}
 
 \item 
 \hypertarget{class_game_ae5bfa29230411c2605787261070909e6}{static int {\bfseries current\+Ids} = 0}\label{class_game_ae5bfa29230411c2605787261070909e6}
@@ -103,7 +121,40 @@ static \hyperlink{class_h_u_d_window}{H\+U\+D\+Window} $\ast$ \hyperlink{class_g
 \hypertarget{class_game_afa1de8c59db49bc9239f6bb87465351b}{static \hyperlink{class_weapon_list}{Weapon\+List} $\ast$ {\bfseries w\+List}}\label{class_game_afa1de8c59db49bc9239f6bb87465351b}
 
 \item 
+\hypertarget{class_game_ac0f51cf0b2dcf5447cd2e7b3fe2d4c71}{static \hyperlink{class_ring_list}{Ring\+List} $\ast$ {\bfseries r\+List}}\label{class_game_ac0f51cf0b2dcf5447cd2e7b3fe2d4c71}
+
+\item 
+\hypertarget{class_game_a8d148d1b848a1386ca7dc51552789d07}{static \hyperlink{class_armor_list}{Armor\+List} $\ast$ {\bfseries a\+List}}\label{class_game_a8d148d1b848a1386ca7dc51552789d07}
+
+\item 
+\hypertarget{class_game_aeda7eafecf64b67137b97698ffd2dc51}{static \hyperlink{class_enemy_list}{Enemy\+List} $\ast$ {\bfseries e\+List}}\label{class_game_aeda7eafecf64b67137b97698ffd2dc51}
+
+\item 
 \hypertarget{class_game_a5625cb138092a97f084bd65c0e0af173}{static \hyperlink{class_hitbox}{Hitbox} $\ast$ {\bfseries h\+List}}\label{class_game_a5625cb138092a97f084bd65c0e0af173}
+
+\item 
+\hypertarget{class_game_a554200621d77a78495bc21f4d2154e2d}{static int {\bfseries max\+X} = 0}\label{class_game_a554200621d77a78495bc21f4d2154e2d}
+
+\item 
+\hypertarget{class_game_a416a5bd8a9fd3fa3ffab9090e26cde4f}{static int {\bfseries max\+Y} = 0}\label{class_game_a416a5bd8a9fd3fa3ffab9090e26cde4f}
+
+\item 
+\hypertarget{class_game_aae762376e5783712891ce3fd0ce10bb5}{static int {\bfseries min\+X} = 0}\label{class_game_aae762376e5783712891ce3fd0ce10bb5}
+
+\item 
+\hypertarget{class_game_a259c7500e0604b452a1771b0335fe32c}{static int {\bfseries current\+X} = 0}\label{class_game_a259c7500e0604b452a1771b0335fe32c}
+
+\item 
+\hypertarget{class_game_a67aa881494c11206c4d2454691838679}{static int {\bfseries current\+Y} = 0}\label{class_game_a67aa881494c11206c4d2454691838679}
+
+\item 
+\hypertarget{class_game_a9583440261a15d1386070ee785a375fc}{static int {\bfseries min\+Y} = 0}\label{class_game_a9583440261a15d1386070ee785a375fc}
+
+\item 
+\hypertarget{class_game_aa41f2a849d464067fea4491bfb957c2e}{static int {\bfseries started} = 0}\label{class_game_aa41f2a849d464067fea4491bfb957c2e}
+
+\item 
+\hypertarget{class_game_a47123b86b7691ae7bce4685c3478fcd1}{static int {\bfseries camera\+Tick} = 0}\label{class_game_a47123b86b7691ae7bce4685c3478fcd1}
 
 \end{DoxyCompactItemize}
 
@@ -207,7 +258,7 @@ Call to add an element to the destroy list after the tick() This function D\+O N
 \hline
 \end{DoxyParams}
 \begin{DoxyRefDesc}{Todo}
-\item[\hyperlink{todo__todo000006}{Todo}]how the fuck does String\+Set works? Needed here for the Unsubscribe\+From\+All \end{DoxyRefDesc}
+\item[\hyperlink{todo__todo000009}{Todo}]how the fuck does String\+Set works? Needed here for the Unsubscribe\+From\+All \end{DoxyRefDesc}
 \hypertarget{class_game_a34c8791251f785d270f757b6eff4ea56}{\index{Game@{Game}!call\+Callbacks@{call\+Callbacks}}
 \index{call\+Callbacks@{call\+Callbacks}!Game@{Game}}
 \subsubsection[{call\+Callbacks}]{\setlength{\rightskip}{0pt plus 5cm}void Game\+::call\+Callbacks (
@@ -243,13 +294,13 @@ Delete an element from the intern map
 {\em elem} & The element to delete (The reference is important !) \\
 \hline
 \end{DoxyParams}
-\hypertarget{class_game_ae391a35eb1f970669b0d6b236de4b885}{\index{Game@{Game}!destroy\+All\+Bodies@{destroy\+All\+Bodies}}
+\hypertarget{class_game_aea5feef3f31df1099cbabf1ffc1d1a49}{\index{Game@{Game}!destroy\+All\+Bodies@{destroy\+All\+Bodies}}
 \index{destroy\+All\+Bodies@{destroy\+All\+Bodies}!Game@{Game}}
-\subsubsection[{destroy\+All\+Bodies}]{\setlength{\rightskip}{0pt plus 5cm}void Game\+::destroy\+All\+Bodies (
+\subsubsection[{destroy\+All\+Bodies}]{\setlength{\rightskip}{0pt plus 5cm}bool Game\+::destroy\+All\+Bodies (
 \begin{DoxyParamCaption}
 \item[{void}]{}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_game_ae391a35eb1f970669b0d6b236de4b885}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_game_aea5feef3f31df1099cbabf1ffc1d1a49}
 
 
 Intern callback for destroying an element. 
@@ -298,7 +349,7 @@ We add the hero to the world, with an init position (x, y)
 Display the base H\+U\+D. 
 
 The init function for display the base H\+U\+D. \begin{DoxyRefDesc}{Todo}
-\item[\hyperlink{todo__todo000007}{Todo}]This function is nasty, we need a recap here. \end{DoxyRefDesc}
+\item[\hyperlink{todo__todo000010}{Todo}]This function is nasty, we need a recap here. \end{DoxyRefDesc}
 \hypertarget{class_game_a6ce6fb87e236965d8b1d3ca7143337f6}{\index{Game@{Game}!display\+Object@{display\+Object}}
 \index{display\+Object@{display\+Object}!Game@{Game}}
 \subsubsection[{display\+Object}]{\setlength{\rightskip}{0pt plus 5cm}void Game\+::display\+Object (
@@ -402,7 +453,7 @@ Remove a \hyperlink{class_h_u_d_window}{H\+U\+D\+Window} from the callback list.
 
 Display the first map. 
 
-Call the function \hyperlink{class_maps_acc65a2a83bdad1c467531b3e25188b91}{Maps\+::first\+One} \begin{DoxySeeAlso}{See also}
+Call the function Maps\+::first\+One \begin{DoxySeeAlso}{See also}
 \hyperlink{class_maps}{Maps} 
 \end{DoxySeeAlso}
 \hypertarget{class_game_a5cf54b4cf9d8bf024f8936fedf11ccea}{\index{Game@{Game}!show\+Text@{show\+Text}}
@@ -459,5 +510,5 @@ Make an element stop running. Same as \hyperlink{class_game_a27ad8f2a6f8f098cc28
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-inc/Game.\+hpp\item 
-src/Game.\+cpp\end{DoxyCompactItemize}
+Sources/inc/Game.\+hpp\item 
+Sources/src/Game.\+cpp\end{DoxyCompactItemize}

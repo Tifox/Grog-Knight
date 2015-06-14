@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['map',['Map',['../class_map.html',1,'']]],
-  ['maps',['Maps',['../class_maps.html',1,'']]],
-  ['menu',['Menu',['../class_menu.html',1,'']]],
-  ['mousedebugger',['MouseDebugger',['../class_mouse_debugger.html',1,'']]]
+  ['inventory',['Inventory',['../class_inventory.html',1,'']]]
 ];

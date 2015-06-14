@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>Grog-like: Sources/inc/Enemy.hpp Source File</title>
+<title>Grog-Like: Sources/inc/Enemy.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -14,6 +14,7 @@
   $(document).ready(function() { searchBox.OnSelectItem(0); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -21,9 +22,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="hero_000.png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="hero_023.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Grog-like
+   <div id="projectname">Grog-Like
    </div>
   </td>
  </tr>
@@ -94,33 +95,53 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"># include &quot;Characters.hpp&quot;</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor"># include &quot;Loot.hpp&quot;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="class_enemy.html">   33</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_enemy.html">Enemy</a> : <span class="keyword">public</span> <a class="code" href="class_characters.html">Characters</a> {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="class_enemy.html#a94f30d348b6d2840fd71675472ba38dd">Enemy</a>();</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <a class="code" href="class_enemy.html#a94f30d348b6d2840fd71675472ba38dd">Enemy</a>(std::string);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="class_enemy.html#ac0eec4755e28c02688065f9657150ac3">~Enemy</a>();</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordtype">int</span>             <a class="code" href="class_enemy.html#ae4335909ac929e5e5db7eb01b15fbce8">takeDamage</a>(<span class="keywordtype">int</span> damage);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordtype">void</span>            <a class="code" href="class_enemy.html#a2f1157b7c8d74371c2b06493563423ee">actionCallback</a>(std::string name, <span class="keywordtype">int</span> status);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">void</span>            <a class="code" href="class_enemy.html#a4ed496f92f8c791133494d24b4eeaff6">init</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordtype">void</span>            <a class="code" href="class_enemy.html#a3938e3e2cf5f07d809e1f1927b09539a">BeginContact</a>(<a class="code" href="class_elements.html">Elements</a>* m, b2Contact* contact);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;};</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="class_enemy_html_ae4335909ac929e5e5db7eb01b15fbce8"><div class="ttname"><a href="class_enemy.html#ae4335909ac929e5e5db7eb01b15fbce8">Enemy::takeDamage</a></div><div class="ttdeci">int takeDamage(int damage)</div><div class="ttdoc">Take Damage. </div><div class="ttdef"><b>Definition:</b> Enemy.cpp:136</div></div>
-<div class="ttc" id="class_characters_html"><div class="ttname"><a href="class_characters.html">Characters</a></div><div class="ttdef"><b>Definition:</b> Characters.hpp:46</div></div>
-<div class="ttc" id="class_enemy_html_a3938e3e2cf5f07d809e1f1927b09539a"><div class="ttname"><a href="class_enemy.html#a3938e3e2cf5f07d809e1f1927b09539a">Enemy::BeginContact</a></div><div class="ttdeci">void BeginContact(Elements *m, b2Contact *contact)</div><div class="ttdoc">Begin collision function. </div><div class="ttdef"><b>Definition:</b> Enemy.cpp:97</div></div>
-<div class="ttc" id="class_enemy_html_a2f1157b7c8d74371c2b06493563423ee"><div class="ttname"><a href="class_enemy.html#a2f1157b7c8d74371c2b06493563423ee">Enemy::actionCallback</a></div><div class="ttdeci">void actionCallback(std::string name, int status)</div><div class="ttdoc">Action callback. </div><div class="ttdef"><b>Definition:</b> Enemy.cpp:86</div></div>
-<div class="ttc" id="class_elements_html"><div class="ttname"><a href="class_elements.html">Elements</a></div><div class="ttdef"><b>Definition:</b> Elements.hpp:36</div></div>
-<div class="ttc" id="class_enemy_html_a4ed496f92f8c791133494d24b4eeaff6"><div class="ttname"><a href="class_enemy.html#a4ed496f92f8c791133494d24b4eeaff6">Enemy::init</a></div><div class="ttdeci">void init(void)</div><div class="ttdoc">Init Animation. </div><div class="ttdef"><b>Definition:</b> Enemy.cpp:73</div></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor"># include &quot;Map.hpp&quot;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor"># include &quot;Pattern.hpp&quot;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor"># include &quot;PassivePattern.hpp&quot;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="class_enemy.html">   36</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_enemy.html">Enemy</a> : <span class="keyword">public</span> <a class="code" href="class_characters.html">Characters</a> {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <a class="code" href="class_enemy.html#a94f30d348b6d2840fd71675472ba38dd">Enemy</a>();</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="class_enemy.html#a94f30d348b6d2840fd71675472ba38dd">Enemy</a>(std::string);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <a class="code" href="class_enemy.html#ac0eec4755e28c02688065f9657150ac3">~Enemy</a>();</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordtype">int</span>             <a class="code" href="class_enemy.html#ae4335909ac929e5e5db7eb01b15fbce8">takeDamage</a>(<span class="keywordtype">int</span> damage);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordtype">void</span>            <a class="code" href="class_enemy.html#a2f1157b7c8d74371c2b06493563423ee">actionCallback</a>(std::string name, <span class="keywordtype">int</span> status);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordtype">void</span>            <a class="code" href="class_enemy.html#a4ed496f92f8c791133494d24b4eeaff6">init</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">void</span>            <a class="code" href="class_enemy.html#a3938e3e2cf5f07d809e1f1927b09539a">BeginContact</a>(<a class="code" href="class_elements.html">Elements</a>* m, b2Contact* contact);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordtype">void</span>            <a class="code" href="class_enemy.html#ad67767dc83c2d22abbdc5f5e2455e4fc">EndContact</a>(<a class="code" href="class_elements.html">Elements</a> *m, b2Contact *contact);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">bool</span>            toBeDeleted(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">void</span>            setMap(<a class="code" href="class_map.html">Map</a> *m);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="class_map.html">Map</a>             *getMap(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">void</span>            setPattern(<a class="code" href="class_c_pattern.html">CPattern</a> *p);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="class_c_pattern.html">CPattern</a>            *getPattern(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">bool</span>            dead(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">int</span>             _isTakingDamage;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">bool</span>            isDead;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <a class="code" href="class_map.html">Map</a>             *_map;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <a class="code" href="class_c_pattern.html">CPattern</a>            *_pattern;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">int</span>             _lastElement;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;};</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="class_enemy_html_ae4335909ac929e5e5db7eb01b15fbce8"><div class="ttname"><a href="class_enemy.html#ae4335909ac929e5e5db7eb01b15fbce8">Enemy::takeDamage</a></div><div class="ttdeci">int takeDamage(int damage)</div><div class="ttdoc">Take Damage. </div><div class="ttdef"><b>Definition:</b> Enemy.cpp:174</div></div>
+<div class="ttc" id="class_characters_html"><div class="ttname"><a href="class_characters.html">Characters</a></div><div class="ttdef"><b>Definition:</b> Characters.hpp:52</div></div>
+<div class="ttc" id="class_enemy_html_a3938e3e2cf5f07d809e1f1927b09539a"><div class="ttname"><a href="class_enemy.html#a3938e3e2cf5f07d809e1f1927b09539a">Enemy::BeginContact</a></div><div class="ttdeci">void BeginContact(Elements *m, b2Contact *contact)</div><div class="ttdoc">Begin collision function. </div><div class="ttdef"><b>Definition:</b> Enemy.cpp:89</div></div>
+<div class="ttc" id="class_enemy_html_a2f1157b7c8d74371c2b06493563423ee"><div class="ttname"><a href="class_enemy.html#a2f1157b7c8d74371c2b06493563423ee">Enemy::actionCallback</a></div><div class="ttdeci">void actionCallback(std::string name, int status)</div><div class="ttdoc">Action callback. </div><div class="ttdef"><b>Definition:</b> Enemy.cpp:78</div></div>
+<div class="ttc" id="class_elements_html"><div class="ttname"><a href="class_elements.html">Elements</a></div><div class="ttdef"><b>Definition:</b> Elements.hpp:38</div></div>
+<div class="ttc" id="class_enemy_html_a4ed496f92f8c791133494d24b4eeaff6"><div class="ttname"><a href="class_enemy.html#a4ed496f92f8c791133494d24b4eeaff6">Enemy::init</a></div><div class="ttdeci">void init(void)</div><div class="ttdoc">Init Animation. </div><div class="ttdef"><b>Definition:</b> Enemy.cpp:64</div></div>
+<div class="ttc" id="class_c_pattern_html"><div class="ttname"><a href="class_c_pattern.html">CPattern</a></div><div class="ttdef"><b>Definition:</b> Pattern.hpp:32</div></div>
 <div class="ttc" id="class_enemy_html_a94f30d348b6d2840fd71675472ba38dd"><div class="ttname"><a href="class_enemy.html#a94f30d348b6d2840fd71675472ba38dd">Enemy::Enemy</a></div><div class="ttdeci">Enemy()</div><div class="ttdoc">Basic constructor. </div><div class="ttdef"><b>Definition:</b> Enemy.cpp:32</div></div>
-<div class="ttc" id="class_enemy_html_ac0eec4755e28c02688065f9657150ac3"><div class="ttname"><a href="class_enemy.html#ac0eec4755e28c02688065f9657150ac3">Enemy::~Enemy</a></div><div class="ttdeci">~Enemy()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> Enemy.cpp:65</div></div>
-<div class="ttc" id="class_enemy_html"><div class="ttname"><a href="class_enemy.html">Enemy</a></div><div class="ttdef"><b>Definition:</b> Enemy.hpp:33</div></div>
+<div class="ttc" id="class_enemy_html_ac0eec4755e28c02688065f9657150ac3"><div class="ttname"><a href="class_enemy.html#ac0eec4755e28c02688065f9657150ac3">Enemy::~Enemy</a></div><div class="ttdeci">~Enemy()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> Enemy.cpp:56</div></div>
+<div class="ttc" id="class_map_html"><div class="ttname"><a href="class_map.html">Map</a></div><div class="ttdef"><b>Definition:</b> Map.hpp:41</div></div>
+<div class="ttc" id="class_enemy_html"><div class="ttname"><a href="class_enemy.html">Enemy</a></div><div class="ttdef"><b>Definition:</b> Enemy.hpp:36</div></div>
+<div class="ttc" id="class_enemy_html_ad67767dc83c2d22abbdc5f5e2455e4fc"><div class="ttname"><a href="class_enemy.html#ad67767dc83c2d22abbdc5f5e2455e4fc">Enemy::EndContact</a></div><div class="ttdeci">void EndContact(Elements *m, b2Contact *contact)</div><div class="ttdoc">End collision function. </div><div class="ttdef"><b>Definition:</b> Enemy.cpp:157</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Apr 26 2015 08:13:24 for Grog-like by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jun 14 2015 22:02:37 for Grog-Like by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

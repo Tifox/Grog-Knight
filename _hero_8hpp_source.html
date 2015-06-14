@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>Grog-like: Sources/inc/Hero.hpp Source File</title>
+<title>Grog-Like: Sources/inc/Hero.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -14,6 +14,7 @@
   $(document).ready(function() { searchBox.OnSelectItem(0); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -21,9 +22,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="hero_000.png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="hero_023.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Grog-like
+   <div id="projectname">Grog-Like
    </div>
   </td>
  </tr>
@@ -105,22 +106,23 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span>    <a class="code" href="class_hero.html#ac23c090d8f5e2768b4175580a0d53d1b">BeginContact</a>(<a class="code" href="class_elements.html">Elements</a>* m, b2Contact* contact);</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span>    <a class="code" href="class_hero.html#a9fee92d1b0df478f95bc10ba84015d2a">EndContact</a>(<a class="code" href="class_elements.html">Elements</a>* m, b2Contact* contact);</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span>    <a class="code" href="class_hero.html#aa41ef53abd25057ceb431811ccf80ad5">actionCallback</a>(std::string name, <span class="keywordtype">int</span> status);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keywordtype">void</span>            <a class="code" href="class_hero.html#a6eee44b6b391f0bff589f6869c21a090">_takeDamage</a>(<a class="code" href="class_elements.html">Elements</a>* m);</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;};</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="class_hero_html_ae67cc4b7770083755895b78664d0ea34"><div class="ttname"><a href="class_hero.html#ae67cc4b7770083755895b78664d0ea34">Hero::init</a></div><div class="ttdeci">void init()</div><div class="ttdoc">Init Animation function. </div><div class="ttdef"><b>Definition:</b> Hero.cpp:52</div></div>
-<div class="ttc" id="class_hero_html_ac23c090d8f5e2768b4175580a0d53d1b"><div class="ttname"><a href="class_hero.html#ac23c090d8f5e2768b4175580a0d53d1b">Hero::BeginContact</a></div><div class="ttdeci">virtual void BeginContact(Elements *m, b2Contact *contact)</div><div class="ttdoc">Begin collision function. </div><div class="ttdef"><b>Definition:</b> Hero.cpp:103</div></div>
-<div class="ttc" id="class_characters_html"><div class="ttname"><a href="class_characters.html">Characters</a></div><div class="ttdef"><b>Definition:</b> Characters.hpp:46</div></div>
+<div class="ttc" id="class_hero_html_ae67cc4b7770083755895b78664d0ea34"><div class="ttname"><a href="class_hero.html#ae67cc4b7770083755895b78664d0ea34">Hero::init</a></div><div class="ttdeci">void init()</div><div class="ttdoc">Init Animation function. </div><div class="ttdef"><b>Definition:</b> Hero.cpp:57</div></div>
+<div class="ttc" id="class_hero_html_ac23c090d8f5e2768b4175580a0d53d1b"><div class="ttname"><a href="class_hero.html#ac23c090d8f5e2768b4175580a0d53d1b">Hero::BeginContact</a></div><div class="ttdeci">virtual void BeginContact(Elements *m, b2Contact *contact)</div><div class="ttdoc">Begin collision function. </div><div class="ttdef"><b>Definition:</b> Hero.cpp:143</div></div>
+<div class="ttc" id="class_hero_html_a6eee44b6b391f0bff589f6869c21a090"><div class="ttname"><a href="class_hero.html#a6eee44b6b391f0bff589f6869c21a090">Hero::_takeDamage</a></div><div class="ttdeci">void _takeDamage(Elements *m)</div><div class="ttdoc">Function called when the hero is taking damage. </div><div class="ttdef"><b>Definition:</b> Hero.cpp:227</div></div>
+<div class="ttc" id="class_characters_html"><div class="ttname"><a href="class_characters.html">Characters</a></div><div class="ttdef"><b>Definition:</b> Characters.hpp:52</div></div>
 <div class="ttc" id="class_hero_html"><div class="ttname"><a href="class_hero.html">Hero</a></div><div class="ttdef"><b>Definition:</b> Hero.hpp:32</div></div>
-<div class="ttc" id="class_elements_html"><div class="ttname"><a href="class_elements.html">Elements</a></div><div class="ttdef"><b>Definition:</b> Elements.hpp:36</div></div>
-<div class="ttc" id="class_hero_html_a5aeef41ede5a80dc29c5acd7b553c4da"><div class="ttname"><a href="class_hero.html#a5aeef41ede5a80dc29c5acd7b553c4da">Hero::~Hero</a></div><div class="ttdeci">~Hero()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> Hero.cpp:44</div></div>
-<div class="ttc" id="class_hero_html_a9fee92d1b0df478f95bc10ba84015d2a"><div class="ttname"><a href="class_hero.html#a9fee92d1b0df478f95bc10ba84015d2a">Hero::EndContact</a></div><div class="ttdeci">virtual void EndContact(Elements *m, b2Contact *contact)</div><div class="ttdoc">End collision function. </div><div class="ttdef"><b>Definition:</b> Hero.cpp:166</div></div>
-<div class="ttc" id="class_hero_html_aa41ef53abd25057ceb431811ccf80ad5"><div class="ttname"><a href="class_hero.html#aa41ef53abd25057ceb431811ccf80ad5">Hero::actionCallback</a></div><div class="ttdeci">virtual void actionCallback(std::string name, int status)</div><div class="ttdoc">Action callback function. </div><div class="ttdef"><b>Definition:</b> Hero.cpp:65</div></div>
+<div class="ttc" id="class_elements_html"><div class="ttname"><a href="class_elements.html">Elements</a></div><div class="ttdef"><b>Definition:</b> Elements.hpp:38</div></div>
+<div class="ttc" id="class_hero_html_a5aeef41ede5a80dc29c5acd7b553c4da"><div class="ttname"><a href="class_hero.html#a5aeef41ede5a80dc29c5acd7b553c4da">Hero::~Hero</a></div><div class="ttdeci">~Hero()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> Hero.cpp:49</div></div>
+<div class="ttc" id="class_hero_html_a9fee92d1b0df478f95bc10ba84015d2a"><div class="ttname"><a href="class_hero.html#a9fee92d1b0df478f95bc10ba84015d2a">Hero::EndContact</a></div><div class="ttdeci">virtual void EndContact(Elements *m, b2Contact *contact)</div><div class="ttdoc">End collision function. </div><div class="ttdef"><b>Definition:</b> Hero.cpp:203</div></div>
+<div class="ttc" id="class_hero_html_aa41ef53abd25057ceb431811ccf80ad5"><div class="ttname"><a href="class_hero.html#aa41ef53abd25057ceb431811ccf80ad5">Hero::actionCallback</a></div><div class="ttdeci">virtual void actionCallback(std::string name, int status)</div><div class="ttdoc">Action callback function. </div><div class="ttdef"><b>Definition:</b> Hero.cpp:70</div></div>
 <div class="ttc" id="class_hero_html_ab5920677a4b5cb59d6f513922d037dca"><div class="ttname"><a href="class_hero.html#ab5920677a4b5cb59d6f513922d037dca">Hero::Hero</a></div><div class="ttdeci">Hero()</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> Hero.cpp:32</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Apr 26 2015 08:13:24 for Grog-like by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jun 14 2015 22:02:37 for Grog-Like by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

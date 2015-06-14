@@ -1,0 +1,122 @@
+\hypertarget{class_armor}{\section{Armor Class Reference}
+\label{class_armor}\index{Armor@{Armor}}
+}
+Inheritance diagram for Armor\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_armor}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_armor_a13fb830c936f1a17cd5624b785c267b8}{Armor} (std\+::string name)
+\begin{DoxyCompactList}\small\item\em Constructor called by the Armorlist class to parse all Armors. \end{DoxyCompactList}\item 
+\hyperlink{class_armor_a755084be34b097bed1c590ebd48027a9}{Armor} (\hyperlink{class_armor}{Armor} $\ast$\hyperlink{class_armor}{Armor})
+\begin{DoxyCompactList}\small\item\em Constructor called by hero/equipment class, to copy a parsed version from Armorlist. \end{DoxyCompactList}\item 
+\hypertarget{class_armor_a2e523e9024a294a89710bf536648943f}{\hyperlink{class_armor_a2e523e9024a294a89710bf536648943f}{$\sim$\+Armor} (void)}\label{class_armor_a2e523e9024a294a89710bf536648943f}
+
+\begin{DoxyCompactList}\small\item\em Basic destructor. \end{DoxyCompactList}\item 
+\hypertarget{class_armor_a87f127694f13555e58b4f806c3dcd810}{void {\bfseries Begin\+Contact} (\hyperlink{class_elements}{Elements} $\ast$elem, b2\+Contact $\ast$contact)}\label{class_armor_a87f127694f13555e58b4f806c3dcd810}
+
+\item 
+\hypertarget{class_armor_a696d65777909d8f0bf600fdff6cfa58e}{void {\bfseries End\+Contact} (\hyperlink{class_elements}{Elements} $\ast$elem, b2\+Contact $\ast$contact)}\label{class_armor_a696d65777909d8f0bf600fdff6cfa58e}
+
+\item 
+\hypertarget{class_armor_ae11f8039635c404f2014170de9de070b}{void {\bfseries Receive\+Message} (Message $\ast$m)}\label{class_armor_ae11f8039635c404f2014170de9de070b}
+
+\item 
+\hypertarget{class_armor_a66dcb8d65a246ffaa43d5248a3701b7a}{std\+::string {\bfseries get\+Name} (void)}\label{class_armor_a66dcb8d65a246ffaa43d5248a3701b7a}
+
+\item 
+\hypertarget{class_armor_a6b1aa88ac02923eb61b6f8cb32202788}{std\+::string {\bfseries get\+Type} (void)}\label{class_armor_a6b1aa88ac02923eb61b6f8cb32202788}
+
+\item 
+\hypertarget{class_armor_a2f7ad7024f25976981ddfaeceaacbca1}{std\+::string {\bfseries get\+Flavor} (void)}\label{class_armor_a2f7ad7024f25976981ddfaeceaacbca1}
+
+\item 
+\hypertarget{class_armor_a1de1a748679712bd32ced7a17c70db08}{std\+::string {\bfseries get\+Sprite} (void)}\label{class_armor_a1de1a748679712bd32ced7a17c70db08}
+
+\item 
+\hypertarget{class_armor_adff542124e9389db612294c7f8d9d94d}{int {\bfseries get\+Loot\+Level} (void)}\label{class_armor_adff542124e9389db612294c7f8d9d94d}
+
+\item 
+\hypertarget{class_armor_a272324a40343673f526a602c9a699af4}{int {\bfseries get\+Hp} (void)}\label{class_armor_a272324a40343673f526a602c9a699af4}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Json\+::\+Value \hyperlink{class_armor_a4c533b4d8f876baca57f5ac344cc7cde}{\+\_\+get\+Attr} (std\+::string category, std\+::string key)
+\begin{DoxyCompactList}\small\item\em Function called to get an attr value from the parsed json. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_armor_a13fb830c936f1a17cd5624b785c267b8}{\index{Armor@{Armor}!Armor@{Armor}}
+\index{Armor@{Armor}!Armor@{Armor}}
+\subsubsection[{Armor}]{\setlength{\rightskip}{0pt plus 5cm}Armor\+::\+Armor (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{name}
+\end{DoxyParamCaption}
+)}}\label{class_armor_a13fb830c936f1a17cd5624b785c267b8}
+
+
+Constructor called by the Armorlist class to parse all Armors. 
+
+Licensed to the Apache Software Foundation (A\+S\+F) under one or more contributor license agreements. See the N\+O\+T\+I\+C\+E file distributed with this work for additional information regarding copyright ownership. The A\+S\+F licenses this file to you under the Apache License, Version 2.\+0 (the \char`\"{}\+License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+\href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\+://www.\+apache.\+org/licenses/\+L\+I\+C\+E\+N\+S\+E-\/2.\+0}
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\+A\+S I\+S\char`\"{} B\+A\+S\+I\+S, W\+I\+T\+H\+O\+U\+T W\+A\+R\+R\+A\+N\+T\+I\+E\+S O\+R C\+O\+N\+D\+I\+T\+I\+O\+N\+S O\+F A\+N\+Y K\+I\+N\+D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\+: Armor.\+cpp Creation\+: 2015-\/05-\/07 15\+:23 Manon Budin \href{mailto:mbudin@student.42.fr}{\tt mbudin@student.\+42.\+fr} Default constructor, using the element that called the attack 
+\begin{DoxyParams}{Parameters}
+{\em name} & (std\+::string) \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_armor_a755084be34b097bed1c590ebd48027a9}{\index{Armor@{Armor}!Armor@{Armor}}
+\index{Armor@{Armor}!Armor@{Armor}}
+\subsubsection[{Armor}]{\setlength{\rightskip}{0pt plus 5cm}Armor\+::\+Armor (
+\begin{DoxyParamCaption}
+\item[{{\bf Armor} $\ast$}]{Armor}
+\end{DoxyParamCaption}
+)}}\label{class_armor_a755084be34b097bed1c590ebd48027a9}
+
+
+Constructor called by hero/equipment class, to copy a parsed version from Armorlist. 
+
+Copy constructor 
+\begin{DoxyParams}{Parameters}
+{\em \hyperlink{class_armor}{Armor}} & (Armor$\ast$) \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_armor_a4c533b4d8f876baca57f5ac344cc7cde}{\index{Armor@{Armor}!\+\_\+get\+Attr@{\+\_\+get\+Attr}}
+\index{\+\_\+get\+Attr@{\+\_\+get\+Attr}!Armor@{Armor}}
+\subsubsection[{\+\_\+get\+Attr}]{\setlength{\rightskip}{0pt plus 5cm}Json\+::\+Value Armor\+::\+\_\+get\+Attr (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{category, }
+\item[{std\+::string}]{key}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_armor_a4c533b4d8f876baca57f5ac344cc7cde}
+
+
+Function called to get an attr value from the parsed json. 
+
+Get a Json\+::\+Value of a key in the config file 
+\begin{DoxyParams}{Parameters}
+{\em } & category (std\+::string) \\
+\hline
+{\em } & key (std\+::string) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+\+: See the docs for the utilisation of Json\+::\+Value 
+\end{DoxyNote}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Sources/inc/Armor.\+hpp\item 
+Sources/src/Armor.\+cpp\end{DoxyCompactItemize}

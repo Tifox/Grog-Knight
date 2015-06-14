@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>Grog-like: Sources/inc/Maps.hpp Source File</title>
+<title>Grog-Like: Sources/inc/Maps.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -14,6 +14,7 @@
   $(document).ready(function() { searchBox.OnSelectItem(0); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -21,9 +22,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="hero_000.png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="hero_023.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Grog-like
+   <div id="projectname">Grog-Like
    </div>
   </td>
  </tr>
@@ -117,29 +118,36 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <a class="code" href="class_maps.html#aa3fbced631bfb5f4d1fe541a8a29384f">~Maps</a>();</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_maps.html#a65ebe26294d69e741ee94d5530597886">readMaps</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_maps.html#acc65a2a83bdad1c467531b3e25188b91">firstOne</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keywordtype">void</span>    _getMap(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        std::string         _directory;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        Json::Value         _root;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        Json::Reader        _reader;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        std::list&lt;Map *&gt;    _maps;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;};</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor"># include &quot;Elements.hpp&quot;</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordtype">int</span>     <a class="code" href="class_maps.html#a1cb48ee4f0dff65981855143875b223b">rstrncmp</a>(<span class="keywordtype">char</span> *str, <span class="keywordtype">char</span> *str2, <span class="keywordtype">int</span> n);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        std::map&lt;int, Map *&gt;    _maps;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <a class="code" href="class_map.html">Map</a>     *getMapByDoor(<span class="keywordtype">int</span> n);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_maps.html#aeeafe517ee9170981f19f1fa1dac25a8">displayLevel</a>(std::vector&lt;std::vector&lt;int&gt; &gt; map);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        std::vector&lt;std::vector&lt;Map&gt; &gt;  getMapXY(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        std::vector&lt;std::vector&lt;Map&gt; &gt; _XYMap;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordtype">void</span>    _getMap(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        std::string         _directory;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        Json::Value         _root;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        Json::Reader        _reader;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        std::map&lt;int, std::list&lt;Map *&gt; &gt;    _mapByDoor;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;};</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor"># include &quot;Elements.hpp&quot;</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="class_maps_html_a87e73431397d1c36dcc2a95ef2b00732"><div class="ttname"><a href="class_maps.html#a87e73431397d1c36dcc2a95ef2b00732">Maps::Maps</a></div><div class="ttdeci">Maps()</div><div class="ttdoc">Base constructor. </div><div class="ttdef"><b>Definition:</b> Maps.cpp:29</div></div>
-<div class="ttc" id="class_maps_html_acc65a2a83bdad1c467531b3e25188b91"><div class="ttname"><a href="class_maps.html#acc65a2a83bdad1c467531b3e25188b91">Maps::firstOne</a></div><div class="ttdeci">void firstOne(void)</div><div class="ttdoc">Display the first map at the top of list. </div><div class="ttdef"><b>Definition:</b> Maps.cpp:114</div></div>
-<div class="ttc" id="class_elements_html"><div class="ttname"><a href="class_elements.html">Elements</a></div><div class="ttdef"><b>Definition:</b> Elements.hpp:36</div></div>
+<div class="ttc" id="class_maps_html_a1cb48ee4f0dff65981855143875b223b"><div class="ttname"><a href="class_maps.html#a1cb48ee4f0dff65981855143875b223b">Maps::rstrncmp</a></div><div class="ttdeci">int rstrncmp(char *str, char *str2, int n)</div><div class="ttdoc">Reverse strncmp. </div><div class="ttdef"><b>Definition:</b> Maps.cpp:56</div></div>
+<div class="ttc" id="class_elements_html"><div class="ttname"><a href="class_elements.html">Elements</a></div><div class="ttdef"><b>Definition:</b> Elements.hpp:38</div></div>
+<div class="ttc" id="class_map_html"><div class="ttname"><a href="class_map.html">Map</a></div><div class="ttdef"><b>Definition:</b> Map.hpp:41</div></div>
 <div class="ttc" id="class_maps_html"><div class="ttname"><a href="class_maps.html">Maps</a></div><div class="ttdef"><b>Definition:</b> Maps.hpp:47</div></div>
-<div class="ttc" id="class_maps_html_a65ebe26294d69e741ee94d5530597886"><div class="ttname"><a href="class_maps.html#a65ebe26294d69e741ee94d5530597886">Maps::readMaps</a></div><div class="ttdeci">void readMaps(void)</div><div class="ttdoc">Read map function. </div><div class="ttdef"><b>Definition:</b> Maps.cpp:52</div></div>
+<div class="ttc" id="class_maps_html_a65ebe26294d69e741ee94d5530597886"><div class="ttname"><a href="class_maps.html#a65ebe26294d69e741ee94d5530597886">Maps::readMaps</a></div><div class="ttdeci">void readMaps(void)</div><div class="ttdoc">Read map function. </div><div class="ttdef"><b>Definition:</b> Maps.cpp:71</div></div>
+<div class="ttc" id="class_maps_html_aeeafe517ee9170981f19f1fa1dac25a8"><div class="ttname"><a href="class_maps.html#aeeafe517ee9170981f19f1fa1dac25a8">Maps::displayLevel</a></div><div class="ttdeci">void displayLevel(std::vector&lt; std::vector&lt; int &gt; &gt; map)</div><div class="ttdoc">Display an entire level. </div><div class="ttdef"><b>Definition:</b> Maps.cpp:158</div></div>
 <div class="ttc" id="class_maps_html_aa3fbced631bfb5f4d1fe541a8a29384f"><div class="ttname"><a href="class_maps.html#aa3fbced631bfb5f4d1fe541a8a29384f">Maps::~Maps</a></div><div class="ttdeci">~Maps()</div><div class="ttdoc">Base Deconstructor. </div><div class="ttdef"><b>Definition:</b> Maps.cpp:43</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Apr 26 2015 08:13:24 for Grog-like by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jun 14 2015 22:02:37 for Grog-Like by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

@@ -25,7 +25,9 @@ virtual void \hyperlink{class_hero_ac23c090d8f5e2768b4175580a0d53d1b}{Begin\+Con
 virtual void \hyperlink{class_hero_a9fee92d1b0df478f95bc10ba84015d2a}{End\+Contact} (\hyperlink{class_elements}{Elements} $\ast$m, b2\+Contact $\ast$contact)
 \begin{DoxyCompactList}\small\item\em End collision function. \end{DoxyCompactList}\item 
 virtual void \hyperlink{class_hero_aa41ef53abd25057ceb431811ccf80ad5}{action\+Callback} (std\+::string name, int status)
-\begin{DoxyCompactList}\small\item\em Action callback function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Action callback function. \end{DoxyCompactList}\item 
+void \hyperlink{class_hero_a6eee44b6b391f0bff589f6869c21a090}{\+\_\+take\+Damage} (\hyperlink{class_elements}{Elements} $\ast$m)
+\begin{DoxyCompactList}\small\item\em Function called when the hero is taking damage. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Additional Inherited Members}
 
 
@@ -66,6 +68,24 @@ Destructor.
 Basic Destructor 
 
 \subsection{Member Function Documentation}
+\hypertarget{class_hero_a6eee44b6b391f0bff589f6869c21a090}{\index{Hero@{Hero}!\+\_\+take\+Damage@{\+\_\+take\+Damage}}
+\index{\+\_\+take\+Damage@{\+\_\+take\+Damage}!Hero@{Hero}}
+\subsubsection[{\+\_\+take\+Damage}]{\setlength{\rightskip}{0pt plus 5cm}void Hero\+::\+\_\+take\+Damage (
+\begin{DoxyParamCaption}
+\item[{{\bf Elements} $\ast$}]{elem}
+\end{DoxyParamCaption}
+)}}\label{class_hero_a6eee44b6b391f0bff589f6869c21a090}
+
+
+Function called when the hero is taking damage. 
+
+Called by Begin\+Contact mostly 
+\begin{DoxyParams}{Parameters}
+{\em the} & elem that has damaged hero \\
+\hline
+\end{DoxyParams}
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000012}{Todo}]monster damage should not be hard-\/written to 25 \end{DoxyRefDesc}
 \hypertarget{class_hero_aa41ef53abd25057ceb431811ccf80ad5}{\index{Hero@{Hero}!action\+Callback@{action\+Callback}}
 \index{action\+Callback@{action\+Callback}!Hero@{Hero}}
 \subsubsection[{action\+Callback}]{\setlength{\rightskip}{0pt plus 5cm}void Hero\+::action\+Callback (
@@ -89,7 +109,7 @@ Mother's callback for actions See \hyperlink{class_characters_ae6b55c4269efc485d
 \hyperlink{class_characters_ae6b55c4269efc485d7926f62544eef4e}{Characters\+::\+Receive\+Message} 
 \end{DoxySeeAlso}
 \begin{DoxyRefDesc}{Todo}
-\item[\hyperlink{todo__todo000008}{Todo}]Extract the values from the consumable \end{DoxyRefDesc}
+\item[\hyperlink{todo__todo000011}{Todo}]Extract the values from the consumable \end{DoxyRefDesc}
 
 
 Reimplemented from \hyperlink{class_characters}{Characters}.
@@ -155,5 +175,5 @@ This function making the first animation call.
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-inc/Hero.\+hpp\item 
-src/Hero.\+cpp\end{DoxyCompactItemize}
+Sources/inc/Hero.\+hpp\item 
+Sources/src/Hero.\+cpp\end{DoxyCompactItemize}

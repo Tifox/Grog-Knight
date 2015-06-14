@@ -1,14 +1,9 @@
 var searchData=
 [
-  ['setframesprite',['setFrameSprite',['../class_elements.html#a3bb4cc2e2009d0e447fbdd0212a57b73',1,'Elements']]],
-  ['sethp',['setHP',['../class_characters.html#a63874c1b86156aa6c4c6a7c26afef6e7',1,'Characters']]],
-  ['settext',['setText',['../class_h_u_d_window.html#aedb23e2b82cc2b13ee024364deb52d64',1,'HUDWindow::setText(std::string str, int x, int y)'],['../class_h_u_d_window.html#a9ca581ceb96dd26684978140621ea468',1,'HUDWindow::setText(std::string str, int x, int y, Vector3 color, int alpha)']]],
-  ['shooter',['Shooter',['../class_shooter.html',1,'Shooter'],['../class_shooter.html#acc429ebafcc36bb592c752097c22657f',1,'Shooter::Shooter()']]],
-  ['shouldcollide',['ShouldCollide',['../class_contact_filter.html#aa1f43a83fda36c0d4e0479e370350585',1,'ContactFilter']]],
-  ['showmap',['showMap',['../class_game.html#ab1ab415f40c6a952da0f93a7bf3ffee1',1,'Game']]],
-  ['showmenu',['showMenu',['../class_menu.html#a49984eb86ba63299629f3a84876499be',1,'Menu']]],
-  ['showtext',['showText',['../class_game.html#a5cf54b4cf9d8bf024f8936fedf11ccea',1,'Game']]],
-  ['start',['start',['../class_game.html#a662a1969275a12a8ffebf2e53e8c843a',1,'Game']]],
-  ['startrunning',['startRunning',['../class_game.html#a27ad8f2a6f8f098cc28377df13c4ec2e',1,'Game']]],
-  ['stoprunning',['stopRunning',['../class_game.html#a9394f6f0c90bde35fb0bd4ca3316c3f0',1,'Game']]]
+  ['takedamage',['takeDamage',['../class_enemy.html#ae4335909ac929e5e5db7eb01b15fbce8',1,'Enemy']]],
+  ['text',['Text',['../class_h_u_d_window_1_1_text.html',1,'HUDWindow']]],
+  ['tick',['tick',['../class_passive_pattern.html#ac108c099eeb758e4944c4e7c4187682d',1,'PassivePattern::tick()'],['../class_c_pattern.html#a8f64aad3b6ebcd606b3c36fc77edf3fd',1,'CPattern::tick()']]],
+  ['tip',['tip',['../class_tooltip.html#aa3120899b860a1a45ed3125d9dc4bfff',1,'Tooltip']]],
+  ['todo_20list',['Todo List',['../todo.html',1,'']]],
+  ['tooltip',['Tooltip',['../class_tooltip.html',1,'Tooltip'],['../class_tooltip.html#a46a4bafd52456186b1fc7f48a554f8ef',1,'Tooltip::Tooltip()']]]
 ];

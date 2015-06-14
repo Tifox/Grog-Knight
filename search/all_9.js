@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['info',['info',['../class_log.html#a63764a6e2521a2dda6a7bd2562aa96d3',1,'Log']]],
-  ['init',['init',['../class_enemy.html#a4ed496f92f8c791133494d24b4eeaff6',1,'Enemy::init()'],['../class_hero.html#ae67cc4b7770083755895b78664d0ea34',1,'Hero::init()']]],
-  ['items',['items',['../class_h_u_d_window.html#a9edf25a0b1cf568aa3f338281d81d99a',1,'HUDWindow']]]
+  ['levelgenerator',['LevelGenerator',['../class_level_generator.html',1,'LevelGenerator'],['../class_level_generator.html#ad509b6dd7dbfd144466315ce2c493513',1,'LevelGenerator::LevelGenerator()']]],
+  ['life',['life',['../class_h_u_d_window.html#a8fc917fbfae792d046e90448c963100a',1,'HUDWindow']]],
+  ['log',['Log',['../class_log.html',1,'Log'],['../class_log.html#af6071a60aa52b6c1b511f99b4bc1b8fe',1,'Log::Log()']]],
+  ['loot',['Loot',['../class_loot.html',1,'Loot'],['../class_loot.html#af626b2c872cc8d82c8652d5124c87354',1,'Loot::Loot()']]]
 ];

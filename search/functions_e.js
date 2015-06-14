@@ -1,9 +1,16 @@
 var searchData=
 [
-  ['readmaps',['readMaps',['../class_game.html#af06f40bacd46f8facba328648cb221b5',1,'Game::readMaps()'],['../class_maps.html#a65ebe26294d69e741ee94d5530597886',1,'Maps::readMaps()']]],
-  ['receivemessage',['ReceiveMessage',['../class_characters.html#ae6b55c4269efc485d7926f62544eef4e',1,'Characters::ReceiveMessage()'],['../class_equipment.html#ab195be955597ce6f64c117d675df3af4',1,'Equipment::ReceiveMessage()'],['../class_menu.html#ab8cc125a548bd9d0c75ecc222df093e8',1,'Menu::ReceiveMessage()']]],
-  ['removeattr',['removeAttr',['../class_elements.html#ae549e0c8599f06b42126c67c5dd68fd2',1,'Elements']]],
-  ['removehudwindow',['removeHUDWindow',['../class_game.html#a80e17eab80071411eff5eb38d6b7fc76',1,'Game']]],
-  ['removetext',['removeText',['../class_h_u_d_window.html#a0aedfd1f3c8354da1b69f1b592d4ad3e',1,'HUDWindow::removeText(std::string str)'],['../class_h_u_d_window.html#a1fee364ef03930d6302cc62a2ce8ff56',1,'HUDWindow::removeText(HUDWindow::Text *t)']]],
-  ['room',['Room',['../class_room.html#aaef0b08fe3796290d4609470ddd9a0c4',1,'Room']]]
+  ['setframesprite',['setFrameSprite',['../class_elements.html#a3bb4cc2e2009d0e447fbdd0212a57b73',1,'Elements']]],
+  ['sethp',['setHP',['../class_characters.html#a472ee80119879c2238996b163ade6bd8',1,'Characters']]],
+  ['setlog',['setLog',['../class_log.html#a86910e8305e08485f3e37763d6950e1f',1,'Log']]],
+  ['setmana',['setMana',['../class_characters.html#a86b87a489aa323c649e0da740d278034',1,'Characters']]],
+  ['settext',['setText',['../class_h_u_d_window.html#aedb23e2b82cc2b13ee024364deb52d64',1,'HUDWindow::setText(std::string str, int x, int y)'],['../class_h_u_d_window.html#a9ca581ceb96dd26684978140621ea468',1,'HUDWindow::setText(std::string str, int x, int y, Vector3 color, int alpha)'],['../class_h_u_d_window.html#a9a546c6c138ac863f464ec7bf606ea68',1,'HUDWindow::setText(std::string str, int x, int y, Vector3 color, int alpha, std::string font)'],['../class_h_u_d_window.html#a63b8e6cefedc40263fce659513e5b420',1,'HUDWindow::setText(std::string str, Characters *toFollow, Vector3 color, int isFading, int isTalk)']]],
+  ['shooter',['Shooter',['../class_shooter.html#acc429ebafcc36bb592c752097c22657f',1,'Shooter']]],
+  ['shouldcollide',['ShouldCollide',['../class_contact_filter.html#aa1f43a83fda36c0d4e0479e370350585',1,'ContactFilter']]],
+  ['showmap',['showMap',['../class_game.html#ab1ab415f40c6a952da0f93a7bf3ffee1',1,'Game']]],
+  ['showmenu',['showMenu',['../class_menu.html#a49984eb86ba63299629f3a84876499be',1,'Menu']]],
+  ['showtext',['showText',['../class_game.html#a5cf54b4cf9d8bf024f8936fedf11ccea',1,'Game']]],
+  ['start',['start',['../class_game.html#a662a1969275a12a8ffebf2e53e8c843a',1,'Game']]],
+  ['startrunning',['startRunning',['../class_game.html#a27ad8f2a6f8f098cc28377df13c4ec2e',1,'Game']]],
+  ['stoprunning',['stopRunning',['../class_game.html#a9394f6f0c90bde35fb0bd4ca3316c3f0',1,'Game']]]
 ];

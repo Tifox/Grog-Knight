@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>Grog-like: Maps Class Reference</title>
+<title>Grog-Like: Maps Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -14,6 +14,7 @@
   $(document).ready(function() { searchBox.OnSelectItem(0); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -21,9 +22,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="hero_000.png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="hero_023.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Grog-like
+   <div id="projectname">Grog-Like
    </div>
   </td>
  </tr>
@@ -63,7 +64,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -85,6 +86,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="class_maps-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Maps Class Reference</div>  </div>
@@ -106,10 +108,28 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a65ebe26294d69e741ee94d5530597886"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_maps.html#a65ebe26294d69e741ee94d5530597886">readMaps</a> (void)</td></tr>
 <tr class="memdesc:a65ebe26294d69e741ee94d5530597886"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read map function.  <a href="#a65ebe26294d69e741ee94d5530597886">More...</a><br /></td></tr>
 <tr class="separator:a65ebe26294d69e741ee94d5530597886"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc65a2a83bdad1c467531b3e25188b91"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc65a2a83bdad1c467531b3e25188b91"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_maps.html#acc65a2a83bdad1c467531b3e25188b91">firstOne</a> (void)</td></tr>
-<tr class="memdesc:acc65a2a83bdad1c467531b3e25188b91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display the first map at the top of list. <br /></td></tr>
-<tr class="separator:acc65a2a83bdad1c467531b3e25188b91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cb48ee4f0dff65981855143875b223b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_maps.html#a1cb48ee4f0dff65981855143875b223b">rstrncmp</a> (char *str, char *str2, int n)</td></tr>
+<tr class="memdesc:a1cb48ee4f0dff65981855143875b223b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reverse strncmp.  <a href="#a1cb48ee4f0dff65981855143875b223b">More...</a><br /></td></tr>
+<tr class="separator:a1cb48ee4f0dff65981855143875b223b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31edfac65329feb0a3ba37a7f93c8a8b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a31edfac65329feb0a3ba37a7f93c8a8b"></a>
+<a class="el" href="class_map.html">Map</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getMapByDoor</b> (int n)</td></tr>
+<tr class="separator:a31edfac65329feb0a3ba37a7f93c8a8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeeafe517ee9170981f19f1fa1dac25a8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeeafe517ee9170981f19f1fa1dac25a8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_maps.html#aeeafe517ee9170981f19f1fa1dac25a8">displayLevel</a> (std::vector&lt; std::vector&lt; int &gt; &gt; map)</td></tr>
+<tr class="memdesc:aeeafe517ee9170981f19f1fa1dac25a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display an entire level. <br /></td></tr>
+<tr class="separator:aeeafe517ee9170981f19f1fa1dac25a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a003a35ba48752cd7d161b13353a68538"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a003a35ba48752cd7d161b13353a68538"></a>
+std::vector&lt; std::vector&lt; <a class="el" href="class_map.html">Map</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getMapXY</b> (void)</td></tr>
+<tr class="separator:a003a35ba48752cd7d161b13353a68538"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a156f426af4b366c191fac8812c8020aa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a156f426af4b366c191fac8812c8020aa"></a>
+std::map&lt; int, <a class="el" href="class_map.html">Map</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>_maps</b></td></tr>
+<tr class="separator:a156f426af4b366c191fac8812c8020aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86ff9d538dfceb17eb5d05441092e273"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a86ff9d538dfceb17eb5d05441092e273"></a>
+std::vector&lt; std::vector&lt; <a class="el" href="class_map.html">Map</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>_XYMap</b></td></tr>
+<tr class="separator:a86ff9d538dfceb17eb5d05441092e273"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a87e73431397d1c36dcc2a95ef2b00732"></a>
@@ -150,7 +170,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Main constructor. </p>
 <p>Constructor with a map directory </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname"></td><td>directory The path of the directory </td></tr>
+    <tr><td class="paramname">directory</td><td>The path of the directory </td></tr>
   </table>
   </dd>
 </dl>
@@ -177,6 +197,49 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a class="anchor" id="a1cb48ee4f0dff65981855143875b223b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Maps::rstrncmp </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>str2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reverse strncmp. </p>
+<p>strncmp, but start from the end This function is used to determine whether a file is a json or not </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>The first string </td></tr>
+    <tr><td class="paramname">str2</td><td>The second string </td></tr>
+    <tr><td class="paramname">n</td><td>The number of bits of comparison </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>1 or 0, 0 if match (FREE BSD style) </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>Sources/inc/<a class="el" href="_maps_8hpp_source.html">Maps.hpp</a></li>
 <li>Sources/src/Maps.cpp</li>
@@ -184,7 +247,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Apr 26 2015 08:13:25 for Grog-like by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jun 14 2015 22:02:37 for Grog-Like by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

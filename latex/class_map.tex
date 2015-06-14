@@ -1,10 +1,6 @@
 \hypertarget{class_map}{\section{Map Class Reference}
 \label{class_map}\index{Map@{Map}}
 }
-
-
-{\ttfamily \#include $<$Map.\+hpp$>$}
-
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -19,6 +15,12 @@
 
 \item 
 \hypertarget{class_map_a2915ccde4d8a2ba8142677baea803467}{void {\bfseries set\+Width} (int w)}\label{class_map_a2915ccde4d8a2ba8142677baea803467}
+
+\item 
+\hypertarget{class_map_ad42043d8111605dcb97c487e01c01b61}{void {\bfseries set\+X\+Mid} (int h)}\label{class_map_ad42043d8111605dcb97c487e01c01b61}
+
+\item 
+\hypertarget{class_map_aaca0d20310990acf6309e022b3f0a97d}{void {\bfseries set\+Y\+Mid} (int w)}\label{class_map_aaca0d20310990acf6309e022b3f0a97d}
 
 \item 
 \hypertarget{class_map_a7ac17b33fc7266fcc30b19c33c70c3ca}{void {\bfseries set\+Image} (std\+::string n)}\label{class_map_a7ac17b33fc7266fcc30b19c33c70c3ca}
@@ -48,16 +50,54 @@
 \hypertarget{class_map_a391c92153c0a6134bec05ae442d4fff0}{void {\bfseries set\+Properties} (std\+::map$<$ int, std\+::map$<$ std\+::string, Json\+::\+Value $>$ $>$ p)}\label{class_map_a391c92153c0a6134bec05ae442d4fff0}
 
 \item 
-void \hyperlink{class_map_aba8bab272a45054368279643d75fa3ba}{display} (void)
-\begin{DoxyCompactList}\small\item\em Display the map. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\hypertarget{class_map_aa120a297bb17cc623e59f65c6d3c4d85}{void {\bfseries set\+Layer} (int n)}\label{class_map_aa120a297bb17cc623e59f65c6d3c4d85}
 
+\item 
+\hypertarget{class_map_ad94fb4c20db0ee965bf2f3509a4a3d3a}{void {\bfseries set\+X\+Start} (int x)}\label{class_map_ad94fb4c20db0ee965bf2f3509a4a3d3a}
 
-\subsection{Detailed Description}
-Licensed to the Apache Software Foundation (A\+S\+F) under one or more contributor license agreements. See the N\+O\+T\+I\+C\+E file distributed with this work for additional information regarding copyright ownership. The A\+S\+F licenses this file to you under the Apache License, Version 2.\+0 (the \char`\"{}\+License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+\item 
+\hypertarget{class_map_a395377ee2e6e76099d4b2b90c0726a26}{void {\bfseries set\+Y\+Start} (int y)}\label{class_map_a395377ee2e6e76099d4b2b90c0726a26}
 
-\href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\+://www.\+apache.\+org/licenses/\+L\+I\+C\+E\+N\+S\+E-\/2.\+0}
+\item 
+\hypertarget{class_map_a65e629556c23b331cb085e4fdb079e29}{void {\bfseries set\+Used} (int n)}\label{class_map_a65e629556c23b331cb085e4fdb079e29}
 
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\+A\+S I\+S\char`\"{} B\+A\+S\+I\+S, W\+I\+T\+H\+O\+U\+T W\+A\+R\+R\+A\+N\+T\+I\+E\+S O\+R C\+O\+N\+D\+I\+T\+I\+O\+N\+S O\+F A\+N\+Y K\+I\+N\+D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\+: \hyperlink{_map_8hpp_source}{Map.\+hpp} Creation\+: 2015-\/02-\/02 19\+:06 Louis Solofrizzo \href{mailto:louis@ne02ptzero.me}{\tt louis@ne02ptzero.\+me} 
+\item 
+\hyperlink{class_map}{Map} \hyperlink{class_map_a1a6c8bd5dc92c36e7054158d0fcb749b}{display} (void)
+\begin{DoxyCompactList}\small\item\em Display the map. \end{DoxyCompactList}\item 
+\hypertarget{class_map_af97e5f771e25f1252f252b711609372f}{int {\bfseries get\+Height} (void)}\label{class_map_af97e5f771e25f1252f252b711609372f}
+
+\item 
+\hypertarget{class_map_a3afe893c2512081114794b7a90168f9b}{int {\bfseries get\+Width} (void)}\label{class_map_a3afe893c2512081114794b7a90168f9b}
+
+\item 
+\hypertarget{class_map_ae46defbf68796588003bc7bd684f57dd}{int {\bfseries get\+X\+Mid} (void)}\label{class_map_ae46defbf68796588003bc7bd684f57dd}
+
+\item 
+\hypertarget{class_map_a17cd0dd85f39136eaa6abc65884aed57}{int {\bfseries get\+Y\+Mid} (void)}\label{class_map_a17cd0dd85f39136eaa6abc65884aed57}
+
+\item 
+\hypertarget{class_map_a298eab55f9b38b862b20935d9be66a9e}{int {\bfseries get\+X\+Start} (void)}\label{class_map_a298eab55f9b38b862b20935d9be66a9e}
+
+\item 
+\hypertarget{class_map_a45102f1eb08ea52920c36c085d77e036}{int {\bfseries get\+Y\+Start} (void)}\label{class_map_a45102f1eb08ea52920c36c085d77e036}
+
+\item 
+\hypertarget{class_map_a2f86339d3100c1ecc0fa7574875cfd6d}{int {\bfseries get\+Is\+Used} (void)}\label{class_map_a2f86339d3100c1ecc0fa7574875cfd6d}
+
+\item 
+\hypertarget{class_map_a9a2ad750b228f2dc398c13e960663b94}{void {\bfseries destroy\+Map} (void)}\label{class_map_a9a2ad750b228f2dc398c13e960663b94}
+
+\item 
+\hypertarget{class_map_a4e17ccc5b0e5f262f31117e139e1e3d5}{std\+::list$<$ \hyperlink{class_enemy}{Enemy} $\ast$ $>$ {\bfseries get\+Enemies} (void)}\label{class_map_a4e17ccc5b0e5f262f31117e139e1e3d5}
+
+\item 
+\hypertarget{class_map_a307ec0b3c5b00d708af423173a020763}{std\+::vector$<$ std\+::vector$<$ int $>$ $>$ {\bfseries get\+Physic\+Map} (void)}\label{class_map_a307ec0b3c5b00d708af423173a020763}
+
+\item 
+\hypertarget{class_map_a79361391c25d6a515984f56d160dd8fd}{void {\bfseries call\+All\+Patterns} (void)}\label{class_map_a79361391c25d6a515984f56d160dd8fd}
+
+\end{DoxyCompactItemize}
+
 
 \subsection{Constructor \& Destructor Documentation}
 \hypertarget{class_map_a0f5ad0fd4563497b4214038cbca8b582}{\index{Map@{Map}!Map@{Map}}
@@ -94,13 +134,13 @@ Main constructor.
 
 
 \subsection{Member Function Documentation}
-\hypertarget{class_map_aba8bab272a45054368279643d75fa3ba}{\index{Map@{Map}!display@{display}}
+\hypertarget{class_map_a1a6c8bd5dc92c36e7054158d0fcb749b}{\index{Map@{Map}!display@{display}}
 \index{display@{display}!Map@{Map}}
-\subsubsection[{display}]{\setlength{\rightskip}{0pt plus 5cm}void Map\+::display (
+\subsubsection[{display}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Map} Map\+::display (
 \begin{DoxyParamCaption}
 \item[{void}]{}
 \end{DoxyParamCaption}
-)}}\label{class_map_aba8bab272a45054368279643d75fa3ba}
+)}}\label{class_map_a1a6c8bd5dc92c36e7054158d0fcb749b}
 
 
 Display the map. 
@@ -109,5 +149,5 @@ Iterate and display the element of a map. Lot's of stuff in this function, but t
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-inc/Map.\+hpp\item 
-src/Map.\+cpp\end{DoxyCompactItemize}
+Sources/inc/Map.\+hpp\item 
+Sources/src/Map.\+cpp\end{DoxyCompactItemize}

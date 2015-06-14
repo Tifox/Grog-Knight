@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>Grog-like: Map Class Reference</title>
+<title>Grog-Like: Map Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -14,6 +14,7 @@
   $(document).ready(function() { searchBox.OnSelectItem(0); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -21,9 +22,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="hero_000.png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="hero_023.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Grog-like
+   <div id="projectname">Grog-Like
    </div>
   </td>
  </tr>
@@ -63,7 +64,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -90,8 +91,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">Map Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p><code>#include &lt;<a class="el" href="_map_8hpp_source.html">Map.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -111,6 +110,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setHeight</b> (int h)
 <tr class="memitem:a2915ccde4d8a2ba8142677baea803467"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2915ccde4d8a2ba8142677baea803467"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setWidth</b> (int w)</td></tr>
 <tr class="separator:a2915ccde4d8a2ba8142677baea803467"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad42043d8111605dcb97c487e01c01b61"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad42043d8111605dcb97c487e01c01b61"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setXMid</b> (int h)</td></tr>
+<tr class="separator:ad42043d8111605dcb97c487e01c01b61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaca0d20310990acf6309e022b3f0a97d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaca0d20310990acf6309e022b3f0a97d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setYMid</b> (int w)</td></tr>
+<tr class="separator:aaca0d20310990acf6309e022b3f0a97d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ac17b33fc7266fcc30b19c33c70c3ca"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7ac17b33fc7266fcc30b19c33c70c3ca"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setImage</b> (std::string n)</td></tr>
 <tr class="separator:a7ac17b33fc7266fcc30b19c33c70c3ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -138,15 +143,56 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setMap</b> (std::vect
 <tr class="memitem:a391c92153c0a6134bec05ae442d4fff0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a391c92153c0a6134bec05ae442d4fff0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setProperties</b> (std::map&lt; int, std::map&lt; std::string, Json::Value &gt; &gt; p)</td></tr>
 <tr class="separator:a391c92153c0a6134bec05ae442d4fff0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba8bab272a45054368279643d75fa3ba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_map.html#aba8bab272a45054368279643d75fa3ba">display</a> (void)</td></tr>
-<tr class="memdesc:aba8bab272a45054368279643d75fa3ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display the map.  <a href="#aba8bab272a45054368279643d75fa3ba">More...</a><br /></td></tr>
-<tr class="separator:aba8bab272a45054368279643d75fa3ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa120a297bb17cc623e59f65c6d3c4d85"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa120a297bb17cc623e59f65c6d3c4d85"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setLayer</b> (int n)</td></tr>
+<tr class="separator:aa120a297bb17cc623e59f65c6d3c4d85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad94fb4c20db0ee965bf2f3509a4a3d3a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad94fb4c20db0ee965bf2f3509a4a3d3a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setXStart</b> (int x)</td></tr>
+<tr class="separator:ad94fb4c20db0ee965bf2f3509a4a3d3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a395377ee2e6e76099d4b2b90c0726a26"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a395377ee2e6e76099d4b2b90c0726a26"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setYStart</b> (int y)</td></tr>
+<tr class="separator:a395377ee2e6e76099d4b2b90c0726a26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65e629556c23b331cb085e4fdb079e29"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a65e629556c23b331cb085e4fdb079e29"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setUsed</b> (int n)</td></tr>
+<tr class="separator:a65e629556c23b331cb085e4fdb079e29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a6c8bd5dc92c36e7054158d0fcb749b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_map.html">Map</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_map.html#a1a6c8bd5dc92c36e7054158d0fcb749b">display</a> (void)</td></tr>
+<tr class="memdesc:a1a6c8bd5dc92c36e7054158d0fcb749b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display the map.  <a href="#a1a6c8bd5dc92c36e7054158d0fcb749b">More...</a><br /></td></tr>
+<tr class="separator:a1a6c8bd5dc92c36e7054158d0fcb749b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af97e5f771e25f1252f252b711609372f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af97e5f771e25f1252f252b711609372f"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getHeight</b> (void)</td></tr>
+<tr class="separator:af97e5f771e25f1252f252b711609372f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3afe893c2512081114794b7a90168f9b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3afe893c2512081114794b7a90168f9b"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getWidth</b> (void)</td></tr>
+<tr class="separator:a3afe893c2512081114794b7a90168f9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae46defbf68796588003bc7bd684f57dd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae46defbf68796588003bc7bd684f57dd"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getXMid</b> (void)</td></tr>
+<tr class="separator:ae46defbf68796588003bc7bd684f57dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17cd0dd85f39136eaa6abc65884aed57"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a17cd0dd85f39136eaa6abc65884aed57"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getYMid</b> (void)</td></tr>
+<tr class="separator:a17cd0dd85f39136eaa6abc65884aed57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a298eab55f9b38b862b20935d9be66a9e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a298eab55f9b38b862b20935d9be66a9e"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getXStart</b> (void)</td></tr>
+<tr class="separator:a298eab55f9b38b862b20935d9be66a9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45102f1eb08ea52920c36c085d77e036"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a45102f1eb08ea52920c36c085d77e036"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getYStart</b> (void)</td></tr>
+<tr class="separator:a45102f1eb08ea52920c36c085d77e036"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f86339d3100c1ecc0fa7574875cfd6d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2f86339d3100c1ecc0fa7574875cfd6d"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getIsUsed</b> (void)</td></tr>
+<tr class="separator:a2f86339d3100c1ecc0fa7574875cfd6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a2ad750b228f2dc398c13e960663b94"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9a2ad750b228f2dc398c13e960663b94"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>destroyMap</b> (void)</td></tr>
+<tr class="separator:a9a2ad750b228f2dc398c13e960663b94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e17ccc5b0e5f262f31117e139e1e3d5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4e17ccc5b0e5f262f31117e139e1e3d5"></a>
+std::list&lt; <a class="el" href="class_enemy.html">Enemy</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getEnemies</b> (void)</td></tr>
+<tr class="separator:a4e17ccc5b0e5f262f31117e139e1e3d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a307ec0b3c5b00d708af423173a020763"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a307ec0b3c5b00d708af423173a020763"></a>
+std::vector&lt; std::vector&lt; int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getPhysicMap</b> (void)</td></tr>
+<tr class="separator:a307ec0b3c5b00d708af423173a020763"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79361391c25d6a515984f56d160dd8fd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a79361391c25d6a515984f56d160dd8fd"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>callAllPatterns</b> (void)</td></tr>
+<tr class="separator:a79361391c25d6a515984f56d160dd8fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at</p>
-<p><a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
-<p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. File: <a class="el" href="_map_8hpp_source.html">Map.hpp</a> Creation: 2015-02-02 19:06 Louis Solofrizzo <a href="#" onclick="location.href='mai'+'lto:'+'lou'+'is'+'@ne'+'02'+'ptz'+'er'+'o.m'+'e'; return false;">louis<span style="display: none;">.nosp@m.</span>@ne0<span style="display: none;">.nosp@m.</span>2ptze<span style="display: none;">.nosp@m.</span>ro.m<span style="display: none;">.nosp@m.</span>e</a> </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a0f5ad0fd4563497b4214038cbca8b582"></a>
 <div class="memitem">
 <div class="memproto">
@@ -185,7 +231,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setProperties</b> (st
 <p>Main constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname"></td><td>name The name of the map </td></tr>
+    <tr><td class="paramname">name</td><td>The name of the map </td></tr>
   </table>
   </dd>
 </dl>
@@ -193,12 +239,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setProperties</b> (st
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="aba8bab272a45054368279643d75fa3ba"></a>
+<a class="anchor" id="a1a6c8bd5dc92c36e7054158d0fcb749b"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Map::display </td>
+          <td class="memname"><a class="el" href="class_map.html">Map</a> Map::display </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -219,7 +265,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setProperties</b> (st
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Apr 26 2015 08:13:25 for Grog-like by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jun 14 2015 22:02:37 for Grog-Like by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

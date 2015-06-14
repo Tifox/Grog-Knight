@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>Grog-like: Game Class Reference</title>
+<title>Grog-Like: Game Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -14,6 +14,7 @@
   $(document).ready(function() { searchBox.OnSelectItem(0); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -21,9 +22,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="hero_000.png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="hero_023.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Grog-like
+   <div id="projectname">Grog-Like
    </div>
   </td>
  </tr>
@@ -63,7 +64,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -93,13 +94,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">Game Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="dynheader">
-Collaboration diagram for Game:</div>
-<div class="dyncontent">
-<div class="center"><img src="class_game__coll__graph.png" border="0" usemap="#_game_coll__map" alt="Collaboration graph"/></div>
-<map name="_game_coll__map" id="_game_coll__map">
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -132,18 +126,27 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a194dbc017575c98bda4e2317d266a67e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_game.html#a194dbc017575c98bda4e2317d266a67e">displayHUD</a> (void)</td></tr>
 <tr class="memdesc:a194dbc017575c98bda4e2317d266a67e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display the base HUD.  <a href="#a194dbc017575c98bda4e2317d266a67e">More...</a><br /></td></tr>
 <tr class="separator:a194dbc017575c98bda4e2317d266a67e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a730c7eeaa90f5ceab71abce303bfd367"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a730c7eeaa90f5ceab71abce303bfd367"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setHero</b> (<a class="el" href="class_characters.html">Characters</a> &amp;h)</td></tr>
-<tr class="separator:a730c7eeaa90f5ceab71abce303bfd367"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f62e55c834c5ee4b626acb58f5bbd28"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f62e55c834c5ee4b626acb58f5bbd28"></a>
-<a class="el" href="class_characters.html">Characters</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getHero</b> (void)</td></tr>
-<tr class="separator:a7f62e55c834c5ee4b626acb58f5bbd28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a381da7934d49206575ee04dbbd2cc8b4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a381da7934d49206575ee04dbbd2cc8b4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setHero</b> (<a class="el" href="class_characters.html">Characters</a> *h)</td></tr>
+<tr class="separator:a381da7934d49206575ee04dbbd2cc8b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af294281f80678ee4d301ac8da495dd59"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af294281f80678ee4d301ac8da495dd59"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>moveCamera</b> (void)</td></tr>
+<tr class="separator:af294281f80678ee4d301ac8da495dd59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c343d4b5639da664429c9fcdea97086"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4c343d4b5639da664429c9fcdea97086"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>simulateHeroItemContact</b> (void)</td></tr>
+<tr class="separator:a4c343d4b5639da664429c9fcdea97086"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a752983a71cb0c28fecc94eb4e1f03391"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a752983a71cb0c28fecc94eb4e1f03391"></a>
+<a class="el" href="class_characters.html">Characters</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getHero</b> (void)</td></tr>
+<tr class="separator:a752983a71cb0c28fecc94eb4e1f03391"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ae391a35eb1f970669b0d6b236de4b885"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_game.html#ae391a35eb1f970669b0d6b236de4b885">destroyAllBodies</a> (void)</td></tr>
-<tr class="memdesc:ae391a35eb1f970669b0d6b236de4b885"><td class="mdescLeft">&#160;</td><td class="mdescRight">Intern callback for destroying an element.  <a href="#ae391a35eb1f970669b0d6b236de4b885">More...</a><br /></td></tr>
-<tr class="separator:ae391a35eb1f970669b0d6b236de4b885"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea5feef3f31df1099cbabf1ffc1d1a49"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_game.html#aea5feef3f31df1099cbabf1ffc1d1a49">destroyAllBodies</a> (void)</td></tr>
+<tr class="memdesc:aea5feef3f31df1099cbabf1ffc1d1a49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Intern callback for destroying an element.  <a href="#aea5feef3f31df1099cbabf1ffc1d1a49">More...</a><br /></td></tr>
+<tr class="separator:aea5feef3f31df1099cbabf1ffc1d1a49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fa4339baaa09b77d64c42de5d419abf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7fa4339baaa09b77d64c42de5d419abf"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>checkHeroPosition</b> (void)</td></tr>
+<tr class="separator:a7fa4339baaa09b77d64c42de5d419abf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3c5dc329506d37d244ef3587ac813af"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_game.html#ae3c5dc329506d37d244ef3587ac813af">addToDestroyList</a> (<a class="el" href="class_elements.html">Elements</a> *m)</td></tr>
 <tr class="memdesc:ae3c5dc329506d37d244ef3587ac813af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy an element at the right time.  <a href="#ae3c5dc329506d37d244ef3587ac813af">More...</a><br /></td></tr>
 <tr class="separator:ae3c5dc329506d37d244ef3587ac813af"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -189,6 +192,12 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:adef62d41374c1440a78855c7f9994697"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adef62d41374c1440a78855c7f9994697"></a>
 <a class="el" href="class_maps.html">Maps</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>maps</b></td></tr>
 <tr class="separator:adef62d41374c1440a78855c7f9994697"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f7fc712fe4fa4c2be6b3afbeafe835b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1f7fc712fe4fa4c2be6b3afbeafe835b"></a>
+std::vector&lt; <a class="el" href="class_room.html">Room</a> * &gt; *&#160;</td><td class="memItemRight" valign="bottom"><b>gameMap</b></td></tr>
+<tr class="separator:a1f7fc712fe4fa4c2be6b3afbeafe835b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad12d51a96df4a0d9633ca66cd6103b8a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad12d51a96df4a0d9633ca66cd6103b8a"></a>
+<a class="el" href="class_tooltip.html">Tooltip</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>tooltip</b></td></tr>
+<tr class="separator:ad12d51a96df4a0d9633ca66cd6103b8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -201,6 +210,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>ended</b> = fa
 <tr class="memitem:ac52883575849c7580b0b9dba48aef174"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac52883575849c7580b0b9dba48aef174"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>lol</b></td></tr>
 <tr class="separator:ac52883575849c7580b0b9dba48aef174"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39d21390b44ce5827d08ca4ccd9c108a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a39d21390b44ce5827d08ca4ccd9c108a"></a>
+static <a class="el" href="class_game.html">Game</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>currentGame</b> = 0</td></tr>
+<tr class="separator:a39d21390b44ce5827d08ca4ccd9c108a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5bfa29230411c2605787261070909e6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae5bfa29230411c2605787261070909e6"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>currentIds</b> = 0</td></tr>
 <tr class="separator:ae5bfa29230411c2605787261070909e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -222,9 +234,42 @@ static std::list&lt; <a class="el" href="class_h_u_d_window.html">HUDWindow</a> 
 <tr class="memitem:afa1de8c59db49bc9239f6bb87465351b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afa1de8c59db49bc9239f6bb87465351b"></a>
 static <a class="el" href="class_weapon_list.html">WeaponList</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>wList</b></td></tr>
 <tr class="separator:afa1de8c59db49bc9239f6bb87465351b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0f51cf0b2dcf5447cd2e7b3fe2d4c71"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac0f51cf0b2dcf5447cd2e7b3fe2d4c71"></a>
+static <a class="el" href="class_ring_list.html">RingList</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>rList</b></td></tr>
+<tr class="separator:ac0f51cf0b2dcf5447cd2e7b3fe2d4c71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d148d1b848a1386ca7dc51552789d07"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8d148d1b848a1386ca7dc51552789d07"></a>
+static <a class="el" href="class_armor_list.html">ArmorList</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>aList</b></td></tr>
+<tr class="separator:a8d148d1b848a1386ca7dc51552789d07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeda7eafecf64b67137b97698ffd2dc51"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeda7eafecf64b67137b97698ffd2dc51"></a>
+static <a class="el" href="class_enemy_list.html">EnemyList</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>eList</b></td></tr>
+<tr class="separator:aeda7eafecf64b67137b97698ffd2dc51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5625cb138092a97f084bd65c0e0af173"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5625cb138092a97f084bd65c0e0af173"></a>
 static <a class="el" href="class_hitbox.html">Hitbox</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>hList</b></td></tr>
 <tr class="separator:a5625cb138092a97f084bd65c0e0af173"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a554200621d77a78495bc21f4d2154e2d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a554200621d77a78495bc21f4d2154e2d"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>maxX</b> = 0</td></tr>
+<tr class="separator:a554200621d77a78495bc21f4d2154e2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a416a5bd8a9fd3fa3ffab9090e26cde4f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a416a5bd8a9fd3fa3ffab9090e26cde4f"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>maxY</b> = 0</td></tr>
+<tr class="separator:a416a5bd8a9fd3fa3ffab9090e26cde4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae762376e5783712891ce3fd0ce10bb5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aae762376e5783712891ce3fd0ce10bb5"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>minX</b> = 0</td></tr>
+<tr class="separator:aae762376e5783712891ce3fd0ce10bb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a259c7500e0604b452a1771b0335fe32c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a259c7500e0604b452a1771b0335fe32c"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>currentX</b> = 0</td></tr>
+<tr class="separator:a259c7500e0604b452a1771b0335fe32c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67aa881494c11206c4d2454691838679"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a67aa881494c11206c4d2454691838679"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>currentY</b> = 0</td></tr>
+<tr class="separator:a67aa881494c11206c4d2454691838679"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9583440261a15d1386070ee785a375fc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9583440261a15d1386070ee785a375fc"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>minY</b> = 0</td></tr>
+<tr class="separator:a9583440261a15d1386070ee785a375fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa41f2a849d464067fea4491bfb957c2e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa41f2a849d464067fea4491bfb957c2e"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>started</b> = 0</td></tr>
+<tr class="separator:aa41f2a849d464067fea4491bfb957c2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47123b86b7691ae7bce4685c3478fcd1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a47123b86b7691ae7bce4685c3478fcd1"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>cameraTick</b> = 0</td></tr>
+<tr class="separator:a47123b86b7691ae7bce4685c3478fcd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ad59df6562a58a614fda24622d3715b65"></a>
@@ -394,7 +439,7 @@ static <a class="el" href="class_hitbox.html">Hitbox</a> *&#160;</td><td class="
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>how the fuck does StringSet works? Needed here for the UnsubscribeFromAll </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>how the fuck does StringSet works? Needed here for the UnsubscribeFromAll </dd></dl>
 
 </div>
 </div>
@@ -473,7 +518,7 @@ static <a class="el" href="class_hitbox.html">Hitbox</a> *&#160;</td><td class="
 
 </div>
 </div>
-<a class="anchor" id="ae391a35eb1f970669b0d6b236de4b885"></a>
+<a class="anchor" id="aea5feef3f31df1099cbabf1ffc1d1a49"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -481,7 +526,7 @@ static <a class="el" href="class_hitbox.html">Hitbox</a> *&#160;</td><td class="
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Game::destroyAllBodies </td>
+          <td class="memname">bool Game::destroyAllBodies </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -563,7 +608,7 @@ static <a class="el" href="class_hitbox.html">Hitbox</a> *&#160;</td><td class="
 </div><div class="memdoc">
 
 <p>Display the base HUD. </p>
-<p>The init function for display the base HUD. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>This function is nasty, we need a recap here. </dd></dl>
+<p>The init function for display the base HUD. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>This function is nasty, we need a recap here. </dd></dl>
 
 </div>
 </div>
@@ -755,7 +800,7 @@ static <a class="el" href="class_hitbox.html">Hitbox</a> *&#160;</td><td class="
 </div><div class="memdoc">
 
 <p>Display the first map. </p>
-<p>Call the function <a class="el" href="class_maps.html#acc65a2a83bdad1c467531b3e25188b91" title="Display the first map at the top of list. ">Maps::firstOne</a> </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="class_maps.html">Maps</a> </dd></dl>
+<p>Call the function Maps::firstOne </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="class_maps.html">Maps</a> </dd></dl>
 
 </div>
 </div>
@@ -874,7 +919,7 @@ static <a class="el" href="class_hitbox.html">Hitbox</a> *&#160;</td><td class="
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Apr 26 2015 08:13:25 for Grog-like by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jun 14 2015 22:02:37 for Grog-Like by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

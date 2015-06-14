@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>Grog-like: Weapon Class Reference</title>
+<title>Grog-Like: Weapon Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -14,6 +14,7 @@
   $(document).ready(function() { searchBox.OnSelectItem(0); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -21,9 +22,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="hero_000.png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="hero_023.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Grog-like
+   <div id="projectname">Grog-Like
    </div>
   </td>
  </tr>
@@ -63,7 +64,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -94,17 +95,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="dynheader">
 Inheritance diagram for Weapon:</div>
 <div class="dyncontent">
-<div class="center"><img src="class_weapon__inherit__graph.png" border="0" usemap="#_weapon_inherit__map" alt="Inheritance graph"/></div>
-<map name="_weapon_inherit__map" id="_weapon_inherit__map">
+ <div class="center">
+  <img src="class_weapon.png" usemap="#Weapon_map" alt=""/>
+  <map id="Weapon_map" name="Weapon_map">
+<area href="class_elements.html" alt="Elements" shape="rect" coords="0,56,87,80"/>
 </map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
-<div class="dynheader">
-Collaboration diagram for Weapon:</div>
-<div class="dyncontent">
-<div class="center"><img src="class_weapon__coll__graph.png" border="0" usemap="#_weapon_coll__map" alt="Collaboration graph"/></div>
-<map name="_weapon_coll__map" id="_weapon_coll__map">
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+ </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -117,6 +113,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa3eb21f28f64908763402004fa802b36"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_weapon.html#aa3eb21f28f64908763402004fa802b36">Weapon</a> (<a class="el" href="class_weapon.html">Weapon</a> *weapon, <a class="el" href="class_characters.html">Characters</a> *c)</td></tr>
 <tr class="memdesc:aa3eb21f28f64908763402004fa802b36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor called when attacking, creates the defined hitbox.  <a href="#aa3eb21f28f64908763402004fa802b36">More...</a><br /></td></tr>
 <tr class="separator:aa3eb21f28f64908763402004fa802b36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e89e432ab1ac28b9dba49adeb8d6eb8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_weapon.html#a8e89e432ab1ac28b9dba49adeb8d6eb8">Weapon</a> (<a class="el" href="class_weapon.html">Weapon</a> *weapon, <a class="el" href="class_characters.html">Characters</a> *c, int i)</td></tr>
+<tr class="memdesc:a8e89e432ab1ac28b9dba49adeb8d6eb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor called when stomping, create a hitbox on each side of the char.  <a href="#a8e89e432ab1ac28b9dba49adeb8d6eb8">More...</a><br /></td></tr>
+<tr class="separator:a8e89e432ab1ac28b9dba49adeb8d6eb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3364fb5092bbdb4c215e02dd1494f10"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa3364fb5092bbdb4c215e02dd1494f10"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_weapon.html#aa3364fb5092bbdb4c215e02dd1494f10">~Weapon</a> (void)</td></tr>
 <tr class="memdesc:aa3364fb5092bbdb4c215e02dd1494f10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Basic destructor. <br /></td></tr>
@@ -136,6 +135,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ReceiveMessage</b> (M
 <tr class="memitem:aa49263888dca8ee505a95294371adbf6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa49263888dca8ee505a95294371adbf6"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getName</b> (void)</td></tr>
 <tr class="separator:aa49263888dca8ee505a95294371adbf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af382c41490597a51143fec8aea2d136b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af382c41490597a51143fec8aea2d136b"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getType</b> (void)</td></tr>
+<tr class="separator:af382c41490597a51143fec8aea2d136b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe73556e16426da65572d7981dcc800f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abe73556e16426da65572d7981dcc800f"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getFlavor</b> (void)</td></tr>
 <tr class="separator:abe73556e16426da65572d7981dcc800f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -190,6 +192,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setXStart</b> (float 
 <tr class="memitem:a2214c37dc1288a3763db6780bf7d6ee5 inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2214c37dc1288a3763db6780bf7d6ee5"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setYStart</b> (float Y)</td></tr>
 <tr class="separator:a2214c37dc1288a3763db6780bf7d6ee5 inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8215e9cba9658fc711cfec7cd0b70cd1 inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8215e9cba9658fc711cfec7cd0b70cd1"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getXStart</b> (void)</td></tr>
+<tr class="separator:a8215e9cba9658fc711cfec7cd0b70cd1 inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c394148eb369b262ab60b5f4a59efec inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8c394148eb369b262ab60b5f4a59efec"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getYStart</b> (void)</td></tr>
+<tr class="separator:a8c394148eb369b262ab60b5f4a59efec inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16f6accfe5a20c996dae8154132e4bf7 inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a16f6accfe5a20c996dae8154132e4bf7"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setWidth</b> (int w)</td></tr>
 <tr class="separator:a16f6accfe5a20c996dae8154132e4bf7 inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -227,9 +235,15 @@ std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getAttrib
 <tr class="memitem:ad7e4ecb2ecc2402cf892e60d8d803070 inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad7e4ecb2ecc2402cf892e60d8d803070"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setHitbox</b> (std::string)</td></tr>
 <tr class="separator:ad7e4ecb2ecc2402cf892e60d8d803070 inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8564c0414afe21aaf6af86688a23033 inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac8564c0414afe21aaf6af86688a23033"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>addAnimation</b> (int frame, float time)</td></tr>
+<tr class="separator:ac8564c0414afe21aaf6af86688a23033 inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85bc66fe037551fcfa0b606cf32c4478 inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a85bc66fe037551fcfa0b606cf32c4478"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>callback</b> (<a class="el" href="class_elements.html">Elements</a> *elem)</td></tr>
 <tr class="separator:a85bc66fe037551fcfa0b606cf32c4478 inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6682ad84a7d56dd6d58ba0517965b584 inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_elements.html#a6682ad84a7d56dd6d58ba0517965b584">AnimCallback</a> (String s)</td></tr>
+<tr class="memdesc:a6682ad84a7d56dd6d58ba0517965b584 inherit pub_methods_class_elements"><td class="mdescLeft">&#160;</td><td class="mdescRight">Animation callback.  <a href="#a6682ad84a7d56dd6d58ba0517965b584">More...</a><br /></td></tr>
+<tr class="separator:a6682ad84a7d56dd6d58ba0517965b584 inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dd2e1e757c9077755bbe309c504740b inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2dd2e1e757c9077755bbe309c504740b"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>getOrientationX</b> (void)</td></tr>
 <tr class="separator:a2dd2e1e757c9077755bbe309c504740b inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -239,6 +253,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>getOrientationY</b> (v
 <tr class="memitem:add4340c523571631da317d8a64fc1368 inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="add4340c523571631da317d8a64fc1368"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>getLateralOrientation</b> (void)</td></tr>
 <tr class="separator:add4340c523571631da317d8a64fc1368 inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21476dd839923a41aa28c7c75273d562 inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a21476dd839923a41aa28c7c75273d562"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isDead</b> (void)</td></tr>
+<tr class="separator:a21476dd839923a41aa28c7c75273d562 inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad285c1b54452609bcf2343ba1f8dea41 inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad285c1b54452609bcf2343ba1f8dea41"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>isAdded</b> (void)</td></tr>
+<tr class="separator:ad285c1b54452609bcf2343ba1f8dea41 inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -259,6 +279,9 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>_hitboxType</b
 <tr class="memitem:a7e38d955602d5ea837411a6ffcb0d2cd inherit pro_attribs_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7e38d955602d5ea837411a6ffcb0d2cd"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>_hitbox</b></td></tr>
 <tr class="separator:a7e38d955602d5ea837411a6ffcb0d2cd inherit pro_attribs_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5eb994bf668a142382beaa6791920d9f inherit pro_attribs_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5eb994bf668a142382beaa6791920d9f"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>_isDead</b></td></tr>
+<tr class="separator:a5eb994bf668a142382beaa6791920d9f inherit pro_attribs_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a7267e890fa563b4f2df8746f443b461a"></a>
@@ -280,7 +303,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>_hitbox</b></t
 <p><a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
 <p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. File: Weapon.cpp Creation: 2015-02-18 14:00 Vincent Rey <a href="#" onclick="location.href='mai'+'lto:'+'vre'+'y@'+'stu'+'de'+'nt.'+'42'+'.fr'; return false;">vrey@<span style="display: none;">.nosp@m.</span>stud<span style="display: none;">.nosp@m.</span>ent.4<span style="display: none;">.nosp@m.</span>2.fr</a> Default constructor, using the element that called the attack </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname"></td><td>name (std::string) </td></tr>
+    <tr><td class="paramname">name</td><td>(std::string) </td></tr>
   </table>
   </dd>
 </dl>
@@ -338,8 +361,50 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>_hitbox</b></t
 <p>Constructor called when attacking, creates the defined hitbox. </p>
 <p>Constructor for creating the weapon area-of-effect </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname"></td><td>w (Weapon*) </td></tr>
-    <tr><td class="paramname"></td><td>c (Characters*) </td></tr>
+    <tr><td class="paramname">w</td><td>Weapon* </td></tr>
+    <tr><td class="paramname">c</td><td>(Characters*) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a8e89e432ab1ac28b9dba49adeb8d6eb8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Weapon::Weapon </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_weapon.html">Weapon</a> *&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_characters.html">Characters</a> *&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor called when stomping, create a hitbox on each side of the char. </p>
+<p><a class="el" href="class_hitbox.html">Hitbox</a> for the stomp </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">w</td><td>the weapon currently used to deal the damage </td></tr>
+    <tr><td class="paramname">c</td><td>the character for the localisation </td></tr>
+    <tr><td class="paramname">i</td><td>left or right spawn </td></tr>
   </table>
   </dd>
 </dl>
@@ -426,7 +491,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>_hitbox</b></t
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Apr 26 2015 08:13:25 for Grog-like by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jun 14 2015 22:02:38 for Grog-Like by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

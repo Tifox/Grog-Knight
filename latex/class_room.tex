@@ -4,7 +4,7 @@
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{class_room_aaef0b08fe3796290d4609470ddd9a0c4}{Room} (int id, int x, int y, int map\+Id)
+\hyperlink{class_room_af5c220386a83d7426d9da237290d53eb}{Room} (int id, int y, int x, int distance, int map\+Id, bool top\+Door, bool left\+Door, bool bottom\+Door, bool right\+Door)
 \item 
 \hyperlink{class_room_a67d5da09983cc53097807fd43ba5481a}{$\sim$\+Room} ()
 \item 
@@ -41,6 +41,21 @@
 \hypertarget{class_room_a257c82e3ac31634b8612c33900fc28bc}{bool {\bfseries get\+Right\+Door} () const }\label{class_room_a257c82e3ac31634b8612c33900fc28bc}
 
 \item 
+\hypertarget{class_room_a3bdd728ac9dbf611b9dc7eb42612b863}{\hyperlink{class_room}{Room} $\ast$ {\bfseries get\+Top\+Room} () const }\label{class_room_a3bdd728ac9dbf611b9dc7eb42612b863}
+
+\item 
+\hypertarget{class_room_a31b27a0c63af76a6c67de4010d37227d}{\hyperlink{class_room}{Room} $\ast$ {\bfseries get\+Left\+Room} () const }\label{class_room_a31b27a0c63af76a6c67de4010d37227d}
+
+\item 
+\hypertarget{class_room_a77e9db1315a41191da1fdfce26c4403a}{\hyperlink{class_room}{Room} $\ast$ {\bfseries get\+Bottom\+Room} () const }\label{class_room_a77e9db1315a41191da1fdfce26c4403a}
+
+\item 
+\hypertarget{class_room_ab863700e2c354d81777bc860d07a2332}{\hyperlink{class_room}{Room} $\ast$ {\bfseries get\+Right\+Room} () const }\label{class_room_ab863700e2c354d81777bc860d07a2332}
+
+\item 
+\hypertarget{class_room_ad53b1a8ac4f66088a851b1dc4b4e2c59}{void {\bfseries close\+Door} (void)}\label{class_room_ad53b1a8ac4f66088a851b1dc4b4e2c59}
+
+\item 
 \hypertarget{class_room_ab9ce2180afaa86a1881a245d1b539e03}{void {\bfseries add\+Link} ()}\label{class_room_ab9ce2180afaa86a1881a245d1b539e03}
 
 \item 
@@ -56,25 +71,93 @@
 \hypertarget{class_room_a5ba5a9b9807f26d2ea17c8b9377214af}{void {\bfseries set\+Right\+Door} (bool state)}\label{class_room_a5ba5a9b9807f26d2ea17c8b9377214af}
 
 \item 
+\hypertarget{class_room_afebd779422904d4df29218a775daefb7}{void {\bfseries set\+Top\+Room} (\hyperlink{class_room}{Room} $\ast$r)}\label{class_room_afebd779422904d4df29218a775daefb7}
+
+\item 
+\hypertarget{class_room_a2100c62dc850c1d78c5ef67529e785a8}{void {\bfseries set\+Left\+Room} (\hyperlink{class_room}{Room} $\ast$r)}\label{class_room_a2100c62dc850c1d78c5ef67529e785a8}
+
+\item 
+\hypertarget{class_room_a0b30444583aafef29a6d4a87d4be92c4}{void {\bfseries set\+Bottom\+Room} (\hyperlink{class_room}{Room} $\ast$r)}\label{class_room_a0b30444583aafef29a6d4a87d4be92c4}
+
+\item 
+\hypertarget{class_room_a732ac8a1e1f0913a984e16fe699e790e}{void {\bfseries set\+Right\+Room} (\hyperlink{class_room}{Room} $\ast$r)}\label{class_room_a732ac8a1e1f0913a984e16fe699e790e}
+
+\item 
 \hypertarget{class_room_a8515625370a9aec953f76efded718e4b}{void {\bfseries set\+Distance} (int distance)}\label{class_room_a8515625370a9aec953f76efded718e4b}
 
 \item 
 \hypertarget{class_room_a5c58b28fceef732f7cf3f865209ab847}{void {\bfseries set\+Special\+Type} (Special\+Type type)}\label{class_room_a5c58b28fceef732f7cf3f865209ab847}
 
 \end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_room_aa97bb98fc26b53ea69dc2ead93c1f387}{int {\bfseries \+\_\+id}}\label{class_room_aa97bb98fc26b53ea69dc2ead93c1f387}
+
+\item 
+\hypertarget{class_room_a5bc1a09de14c29a10d5fea5a8f2e98de}{int {\bfseries \+\_\+y}}\label{class_room_a5bc1a09de14c29a10d5fea5a8f2e98de}
+
+\item 
+\hypertarget{class_room_adc7126011673a7372edc89316d7ba92f}{int {\bfseries \+\_\+x}}\label{class_room_adc7126011673a7372edc89316d7ba92f}
+
+\item 
+\hypertarget{class_room_a66b1c60370ab2db3210f1d5ade08ee78}{int {\bfseries \+\_\+map\+Id}}\label{class_room_a66b1c60370ab2db3210f1d5ade08ee78}
+
+\item 
+\hypertarget{class_room_a55bce8c6ce0d3d262b1067df6e8c0d51}{Depth\+Type {\bfseries \+\_\+depth\+Type}}\label{class_room_a55bce8c6ce0d3d262b1067df6e8c0d51}
+
+\item 
+\hypertarget{class_room_a80c70edbe9ec51b121504cd943218eac}{Special\+Type {\bfseries \+\_\+special\+Type}}\label{class_room_a80c70edbe9ec51b121504cd943218eac}
+
+\item 
+\hypertarget{class_room_a2aea023acbf7a7d3c1c7eb2c60383b61}{int {\bfseries \+\_\+distance}}\label{class_room_a2aea023acbf7a7d3c1c7eb2c60383b61}
+
+\item 
+\hypertarget{class_room_aa1afece5a895b2154352321935144897}{int {\bfseries \+\_\+links}}\label{class_room_aa1afece5a895b2154352321935144897}
+
+\item 
+\hypertarget{class_room_ac5e9fd2433a13bcd80f128034b6a2a11}{bool {\bfseries \+\_\+top\+Door}}\label{class_room_ac5e9fd2433a13bcd80f128034b6a2a11}
+
+\item 
+\hypertarget{class_room_a69527ff853d558a8ada29a9ffa773e9f}{bool {\bfseries \+\_\+left\+Door}}\label{class_room_a69527ff853d558a8ada29a9ffa773e9f}
+
+\item 
+\hypertarget{class_room_a33d03dec3d68b42ff5a46edd48a87846}{bool {\bfseries \+\_\+bottom\+Door}}\label{class_room_a33d03dec3d68b42ff5a46edd48a87846}
+
+\item 
+\hypertarget{class_room_a2ca058c94f3641ec35f29088edc218f5}{bool {\bfseries \+\_\+right\+Door}}\label{class_room_a2ca058c94f3641ec35f29088edc218f5}
+
+\item 
+\hypertarget{class_room_a144360bff28be14308054d0f5892f32f}{\hyperlink{class_room}{Room} $\ast$ {\bfseries \+\_\+left\+Room}}\label{class_room_a144360bff28be14308054d0f5892f32f}
+
+\item 
+\hypertarget{class_room_a7a61fe7ff8ad7aaa30c2a3468d5515e4}{\hyperlink{class_room}{Room} $\ast$ {\bfseries \+\_\+bottom\+Room}}\label{class_room_a7a61fe7ff8ad7aaa30c2a3468d5515e4}
+
+\item 
+\hypertarget{class_room_a2c9023d5e0457d9bad0128ee35c26b17}{\hyperlink{class_room}{Room} $\ast$ {\bfseries \+\_\+top\+Room}}\label{class_room_a2c9023d5e0457d9bad0128ee35c26b17}
+
+\item 
+\hypertarget{class_room_aa9f608594a27625d336d821c3a98a41d}{\hyperlink{class_room}{Room} $\ast$ {\bfseries \+\_\+right\+Room}}\label{class_room_aa9f608594a27625d336d821c3a98a41d}
+
+\end{DoxyCompactItemize}
 
 
 \subsection{Constructor \& Destructor Documentation}
-\hypertarget{class_room_aaef0b08fe3796290d4609470ddd9a0c4}{\index{Room@{Room}!Room@{Room}}
+\hypertarget{class_room_af5c220386a83d7426d9da237290d53eb}{\index{Room@{Room}!Room@{Room}}
 \index{Room@{Room}!Room@{Room}}
 \subsubsection[{Room}]{\setlength{\rightskip}{0pt plus 5cm}Room\+::\+Room (
 \begin{DoxyParamCaption}
 \item[{int}]{id, }
 \item[{int}]{y, }
 \item[{int}]{x, }
-\item[{int}]{map\+Id}
+\item[{int}]{distance, }
+\item[{int}]{map\+Id, }
+\item[{bool}]{top\+Door, }
+\item[{bool}]{left\+Door, }
+\item[{bool}]{bottom\+Door, }
+\item[{bool}]{right\+Door}
 \end{DoxyParamCaption}
-)}}\label{class_room_aaef0b08fe3796290d4609470ddd9a0c4}
+)}}\label{class_room_af5c220386a83d7426d9da237290d53eb}
 Licensed to the Apache Software Foundation (A\+S\+F) under one or more contributor license agreements. See the N\+O\+T\+I\+C\+E file distributed with this work for additional information regarding copyright ownership. The A\+S\+F licenses this file to you under the Apache License, Version 2.\+0 (the \char`\"{}\+License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
 \href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\+://www.\+apache.\+org/licenses/\+L\+I\+C\+E\+N\+S\+E-\/2.\+0}
@@ -90,5 +173,5 @@ Basic Destructor
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-inc/Room.\+hpp\item 
-src/Room.\+cpp\end{DoxyCompactItemize}
+Sources/inc/Room.\+hpp\item 
+Sources/src/Room.\+cpp\end{DoxyCompactItemize}

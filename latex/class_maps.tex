@@ -13,9 +13,26 @@
 \begin{DoxyCompactList}\small\item\em Base Deconstructor. \end{DoxyCompactList}\item 
 void \hyperlink{class_maps_a65ebe26294d69e741ee94d5530597886}{read\+Maps} (void)
 \begin{DoxyCompactList}\small\item\em Read map function. \end{DoxyCompactList}\item 
-\hypertarget{class_maps_acc65a2a83bdad1c467531b3e25188b91}{void \hyperlink{class_maps_acc65a2a83bdad1c467531b3e25188b91}{first\+One} (void)}\label{class_maps_acc65a2a83bdad1c467531b3e25188b91}
+int \hyperlink{class_maps_a1cb48ee4f0dff65981855143875b223b}{rstrncmp} (char $\ast$str, char $\ast$str2, int n)
+\begin{DoxyCompactList}\small\item\em Reverse strncmp. \end{DoxyCompactList}\item 
+\hypertarget{class_maps_a31edfac65329feb0a3ba37a7f93c8a8b}{\hyperlink{class_map}{Map} $\ast$ {\bfseries get\+Map\+By\+Door} (int n)}\label{class_maps_a31edfac65329feb0a3ba37a7f93c8a8b}
 
-\begin{DoxyCompactList}\small\item\em Display the first map at the top of list. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\item 
+\hypertarget{class_maps_aeeafe517ee9170981f19f1fa1dac25a8}{void \hyperlink{class_maps_aeeafe517ee9170981f19f1fa1dac25a8}{display\+Level} (std\+::vector$<$ std\+::vector$<$ int $>$ $>$ map)}\label{class_maps_aeeafe517ee9170981f19f1fa1dac25a8}
+
+\begin{DoxyCompactList}\small\item\em Display an entire level. \end{DoxyCompactList}\item 
+\hypertarget{class_maps_a003a35ba48752cd7d161b13353a68538}{std\+::vector$<$ std\+::vector$<$ \hyperlink{class_map}{Map} $>$ $>$ {\bfseries get\+Map\+X\+Y} (void)}\label{class_maps_a003a35ba48752cd7d161b13353a68538}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_maps_a156f426af4b366c191fac8812c8020aa}{std\+::map$<$ int, \hyperlink{class_map}{Map} $\ast$ $>$ {\bfseries \+\_\+maps}}\label{class_maps_a156f426af4b366c191fac8812c8020aa}
+
+\item 
+\hypertarget{class_maps_a86ff9d538dfceb17eb5d05441092e273}{std\+::vector$<$ std\+::vector$<$ \hyperlink{class_map}{Map} $>$ $>$ {\bfseries \+\_\+\+X\+Y\+Map}}\label{class_maps_a86ff9d538dfceb17eb5d05441092e273}
+
+\end{DoxyCompactItemize}
 
 
 \subsection{Constructor \& Destructor Documentation}
@@ -64,9 +81,34 @@ Constructor with a map directory
 
 Read map function. 
 
-Read the maps into a list. This function list all the .json in the directory specificied, and parse each one. 
+Read the maps into a list. This function list all the .json in the directory specificied, and parse each one. \hypertarget{class_maps_a1cb48ee4f0dff65981855143875b223b}{\index{Maps@{Maps}!rstrncmp@{rstrncmp}}
+\index{rstrncmp@{rstrncmp}!Maps@{Maps}}
+\subsubsection[{rstrncmp}]{\setlength{\rightskip}{0pt plus 5cm}int Maps\+::rstrncmp (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{str, }
+\item[{char $\ast$}]{str2, }
+\item[{int}]{n}
+\end{DoxyParamCaption}
+)}}\label{class_maps_a1cb48ee4f0dff65981855143875b223b}
+
+
+Reverse strncmp. 
+
+strncmp, but start from the end This function is used to determine whether a file is a json or not 
+\begin{DoxyParams}{Parameters}
+{\em str} & The first string \\
+\hline
+{\em str2} & The second string \\
+\hline
+{\em n} & The number of bits of comparison \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 or 0, 0 if match (F\+R\+E\+E B\+S\+D style) 
+\end{DoxyReturn}
+
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-inc/Maps.\+hpp\item 
-src/Maps.\+cpp\end{DoxyCompactItemize}
+Sources/inc/Maps.\+hpp\item 
+Sources/src/Maps.\+cpp\end{DoxyCompactItemize}

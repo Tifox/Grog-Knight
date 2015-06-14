@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['hero',['Hero',['../class_hero.html',1,'']]],
-  ['hitbox',['Hitbox',['../class_hitbox.html',1,'']]],
-  ['hudwindow',['HUDWindow',['../class_h_u_d_window.html',1,'']]]
+  ['game',['Game',['../class_game.html',1,'']]],
+  ['gamecontactlistener',['GameContactListener',['../class_game_contact_listener.html',1,'']]]
 ];

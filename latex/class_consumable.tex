@@ -16,9 +16,8 @@ Inheritance diagram for Consumable\+:\begin{figure}[H]
 \item 
 \hyperlink{class_consumable_ae374944f6333618dd08318b98b6950c7}{Consumable} ()
 \begin{DoxyCompactList}\small\item\em Basic Constructor. \end{DoxyCompactList}\item 
-\hypertarget{class_consumable_adf76e58745007421a38fb07af1c35d1a}{{\bfseries Consumable} (std\+::string type, std\+::string value, \hyperlink{class_characters}{Characters} $\ast$c)}\label{class_consumable_adf76e58745007421a38fb07af1c35d1a}
-
-\item 
+\hyperlink{class_consumable_adf76e58745007421a38fb07af1c35d1a}{Consumable} (std\+::string type, std\+::string value, \hyperlink{class_characters}{Characters} $\ast$c)
+\begin{DoxyCompactList}\small\item\em Third override, used to create consumable based on a Characters$\ast$ position) \end{DoxyCompactList}\item 
 \hyperlink{class_consumable_adeca9f0d06a24fb2b76ddaa1396d1ddc}{Consumable} (\hyperlink{class_characters}{Characters} $\ast$c)
 \begin{DoxyCompactList}\small\item\em Constructor overriding. \end{DoxyCompactList}\item 
 \hypertarget{class_consumable_aed7671d58f80f5244e5851f591e4b8a2}{\hyperlink{class_consumable_aed7671d58f80f5244e5851f591e4b8a2}{$\sim$\+Consumable} ()}\label{class_consumable_aed7671d58f80f5244e5851f591e4b8a2}
@@ -53,7 +52,29 @@ Licensed to the Apache Software Foundation (A\+S\+F) under one or more contribut
 \href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\+://www.\+apache.\+org/licenses/\+L\+I\+C\+E\+N\+S\+E-\/2.\+0}
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\+A\+S I\+S\char`\"{} B\+A\+S\+I\+S, W\+I\+T\+H\+O\+U\+T W\+A\+R\+R\+A\+N\+T\+I\+E\+S O\+R C\+O\+N\+D\+I\+T\+I\+O\+N\+S O\+F A\+N\+Y K\+I\+N\+D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\+: Consumable.\+cpp Creation\+: 2015-\/03-\/06 15\+:37 Manon Budin \href{mailto:mbudin@student.42.fr}{\tt mbudin@student.\+42.\+fr} Basic Constructor This constructor sets a lots of attributes, like the sprite, the position. etc... That also init the physics. \begin{DoxyRefDesc}{Todo}
-\item[\hyperlink{todo__todo000002}{Todo}]This function setting attributes the hard-\/way. Maybe a name based config, like \hyperlink{class_characters}{Characters}, would be better ? \end{DoxyRefDesc}
+\item[\hyperlink{todo__todo000004}{Todo}]This function setting attributes the hard-\/way. Maybe a name based config, like \hyperlink{class_characters}{Characters}, would be better ? \end{DoxyRefDesc}
+\hypertarget{class_consumable_adf76e58745007421a38fb07af1c35d1a}{\index{Consumable@{Consumable}!Consumable@{Consumable}}
+\index{Consumable@{Consumable}!Consumable@{Consumable}}
+\subsubsection[{Consumable}]{\setlength{\rightskip}{0pt plus 5cm}Consumable\+::\+Consumable (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{type, }
+\item[{std\+::string}]{value, }
+\item[{{\bf Characters} $\ast$}]{c}
+\end{DoxyParamCaption}
+)}}\label{class_consumable_adf76e58745007421a38fb07af1c35d1a}
+
+
+Third override, used to create consumable based on a Characters$\ast$ position) 
+
+Mostly called for looting, after the death of a mob 
+\begin{DoxyParams}{Parameters}
+{\em type} & -\/ gold/hp \\
+\hline
+{\em value} & -\/ how much \\
+\hline
+{\em c} & -\/ the Character, for the position and such \\
+\hline
+\end{DoxyParams}
 \hypertarget{class_consumable_adeca9f0d06a24fb2b76ddaa1396d1ddc}{\index{Consumable@{Consumable}!Consumable@{Consumable}}
 \index{Consumable@{Consumable}!Consumable@{Consumable}}
 \subsubsection[{Consumable}]{\setlength{\rightskip}{0pt plus 5cm}Consumable\+::\+Consumable (
@@ -66,7 +87,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
 Constructor overriding. 
 
 Basic Constructor This constructor sets a lots of attributes, like the sprite, the position. etc... That also init the physics. This constructor will use the infos contained in enemy in order to set the different infos in it \begin{DoxyRefDesc}{Todo}
-\item[\hyperlink{todo__todo000003}{Todo}]This function setting attributes the hard-\/way. Maybe a name based config, like \hyperlink{class_characters}{Characters}, would be better ? \end{DoxyRefDesc}
+\item[\hyperlink{todo__todo000005}{Todo}]This function setting attributes the hard-\/way. Maybe a name based config, like \hyperlink{class_characters}{Characters}, would be better ? \end{DoxyRefDesc}
 
 
 \subsection{Member Function Documentation}
@@ -90,7 +111,7 @@ Collision begin function /!\textbackslash{} This function is called just before 
 \hline
 \end{DoxyParams}
 \begin{DoxyRefDesc}{Todo}
-\item[\hyperlink{todo__todo000004}{Todo}]This function is actually doing nothing. \end{DoxyRefDesc}
+\item[\hyperlink{todo__todo000006}{Todo}]This function is actually doing nothing. \end{DoxyRefDesc}
 
 
 Reimplemented from \hyperlink{class_elements}{Elements}.
@@ -99,5 +120,5 @@ Reimplemented from \hyperlink{class_elements}{Elements}.
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-inc/Consumable.\+hpp\item 
-src/Consumable.\+cpp\end{DoxyCompactItemize}
+Sources/inc/Consumable.\+hpp\item 
+Sources/src/Consumable.\+cpp\end{DoxyCompactItemize}

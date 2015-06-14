@@ -16,6 +16,8 @@ Inheritance diagram for Weapon\+:\begin{figure}[H]
 \begin{DoxyCompactList}\small\item\em Constructor called by hero/equipment class, to copy a parsed version from weaponlist. \end{DoxyCompactList}\item 
 \hyperlink{class_weapon_aa3eb21f28f64908763402004fa802b36}{Weapon} (\hyperlink{class_weapon}{Weapon} $\ast$weapon, \hyperlink{class_characters}{Characters} $\ast$c)
 \begin{DoxyCompactList}\small\item\em Constructor called when attacking, creates the defined hitbox. \end{DoxyCompactList}\item 
+\hyperlink{class_weapon_a8e89e432ab1ac28b9dba49adeb8d6eb8}{Weapon} (\hyperlink{class_weapon}{Weapon} $\ast$weapon, \hyperlink{class_characters}{Characters} $\ast$c, int i)
+\begin{DoxyCompactList}\small\item\em Constructor called when stomping, create a hitbox on each side of the char. \end{DoxyCompactList}\item 
 \hypertarget{class_weapon_aa3364fb5092bbdb4c215e02dd1494f10}{\hyperlink{class_weapon_aa3364fb5092bbdb4c215e02dd1494f10}{$\sim$\+Weapon} (void)}\label{class_weapon_aa3364fb5092bbdb4c215e02dd1494f10}
 
 \begin{DoxyCompactList}\small\item\em Basic destructor. \end{DoxyCompactList}\item 
@@ -31,6 +33,9 @@ void \hyperlink{class_weapon_a90b2b26acbbfc87a14786c8859e4a01d}{attack} (\hyperl
 
 \item 
 \hypertarget{class_weapon_aa49263888dca8ee505a95294371adbf6}{std\+::string {\bfseries get\+Name} (void)}\label{class_weapon_aa49263888dca8ee505a95294371adbf6}
+
+\item 
+\hypertarget{class_weapon_af382c41490597a51143fec8aea2d136b}{std\+::string {\bfseries get\+Type} (void)}\label{class_weapon_af382c41490597a51143fec8aea2d136b}
 
 \item 
 \hypertarget{class_weapon_abe73556e16426da65572d7981dcc800f}{std\+::string {\bfseries get\+Flavor} (void)}\label{class_weapon_abe73556e16426da65572d7981dcc800f}
@@ -130,6 +135,28 @@ Constructor for creating the weapon area-\/of-\/effect
 {\em c} & (Characters$\ast$) \\
 \hline
 \end{DoxyParams}
+\hypertarget{class_weapon_a8e89e432ab1ac28b9dba49adeb8d6eb8}{\index{Weapon@{Weapon}!Weapon@{Weapon}}
+\index{Weapon@{Weapon}!Weapon@{Weapon}}
+\subsubsection[{Weapon}]{\setlength{\rightskip}{0pt plus 5cm}Weapon\+::\+Weapon (
+\begin{DoxyParamCaption}
+\item[{{\bf Weapon} $\ast$}]{w, }
+\item[{{\bf Characters} $\ast$}]{c, }
+\item[{int}]{i}
+\end{DoxyParamCaption}
+)}}\label{class_weapon_a8e89e432ab1ac28b9dba49adeb8d6eb8}
+
+
+Constructor called when stomping, create a hitbox on each side of the char. 
+
+\hyperlink{class_hitbox}{Hitbox} for the stomp 
+\begin{DoxyParams}{Parameters}
+{\em w} & the weapon currently used to deal the damage \\
+\hline
+{\em c} & the character for the localisation \\
+\hline
+{\em i} & left or right spawn \\
+\hline
+\end{DoxyParams}
 
 
 \subsection{Member Function Documentation}
@@ -183,5 +210,5 @@ Called by the Character to attack with the currently equipped weapon
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-inc/Weapon.\+hpp\item 
-src/Weapon.\+cpp\end{DoxyCompactItemize}
+Sources/inc/Weapon.\+hpp\item 
+Sources/src/Weapon.\+cpp\end{DoxyCompactItemize}

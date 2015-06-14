@@ -1,6 +1,28 @@
 var searchData=
 [
-  ['warning',['warning',['../class_log.html#a2060ccdfdc1600ea41ab34c646aa4b54',1,'Log']]],
-  ['weapon',['Weapon',['../class_weapon.html#a7267e890fa563b4f2df8746f443b461a',1,'Weapon::Weapon(std::string name)'],['../class_weapon.html#a559c41dbcc415a6ee70112f5231ef83b',1,'Weapon::Weapon(Weapon *weapon)'],['../class_weapon.html#aa3eb21f28f64908763402004fa802b36',1,'Weapon::Weapon(Weapon *weapon, Characters *c)']]],
-  ['weaponlist',['WeaponList',['../class_weapon_list.html#ac3a994cd2844ac00fcf09011f4209f48',1,'WeaponList']]]
+  ['_7earmor',['~Armor',['../class_armor.html#a2e523e9024a294a89710bf536648943f',1,'Armor']]],
+  ['_7earmorlist',['~ArmorList',['../class_armor_list.html#ace93dfe766072cab2b1d6dd244f50bc2',1,'ArmorList']]],
+  ['_7echaracters',['~Characters',['../class_characters.html#a4aea85daea3f08b8b933e82cd42b3109',1,'Characters']]],
+  ['_7econsumable',['~Consumable',['../class_consumable.html#aed7671d58f80f5244e5851f591e4b8a2',1,'Consumable']]],
+  ['_7ecpattern',['~CPattern',['../class_c_pattern.html#abba4a2b9392bacd627cf1ca879f98a26',1,'CPattern']]],
+  ['_7eelements',['~Elements',['../class_elements.html#a28037b21a12317e69d6160da9f4844de',1,'Elements']]],
+  ['_7eenemy',['~Enemy',['../class_enemy.html#ac0eec4755e28c02688065f9657150ac3',1,'Enemy']]],
+  ['_7eenemylist',['~EnemyList',['../class_enemy_list.html#afa9f05e569193959e446743d718df2ef',1,'EnemyList']]],
+  ['_7eequipment',['~Equipment',['../class_equipment.html#a3e7f53e57fa3004b5a4490e2c7a1fbaf',1,'Equipment']]],
+  ['_7egame',['~Game',['../class_game.html#ae3d112ca6e0e55150d2fdbc704474530',1,'Game']]],
+  ['_7ehero',['~Hero',['../class_hero.html#a5aeef41ede5a80dc29c5acd7b553c4da',1,'Hero']]],
+  ['_7ehitbox',['~Hitbox',['../class_hitbox.html#aafd01dbe871f6f7f464217345bd4ca01',1,'Hitbox']]],
+  ['_7ehudwindow',['~HUDWindow',['../class_h_u_d_window.html#ac1c288c91430729735038fcefc4bcdb8',1,'HUDWindow']]],
+  ['_7elevelgenerator',['~LevelGenerator',['../class_level_generator.html#a9bd612e10a3d769537ba042a76c0cb5f',1,'LevelGenerator']]],
+  ['_7elog',['~Log',['../class_log.html#a0fbfda88fbee5027c89f6eb121059360',1,'Log']]],
+  ['_7emap',['~Map',['../class_map.html#aa403fbe09394ccf39747588f5168e3b2',1,'Map']]],
+  ['_7emaps',['~Maps',['../class_maps.html#aa3fbced631bfb5f4d1fe541a8a29384f',1,'Maps']]],
+  ['_7emenu',['~Menu',['../class_menu.html#a73932d2ddab91e989102211f81c98c76',1,'Menu']]],
+  ['_7eobject',['~Object',['../class_object.html#ae8f5483f459e46687bd01e6f9977afd3',1,'Object']]],
+  ['_7ering',['~Ring',['../class_ring.html#a5772ea59f29433752c65bd5e74320819',1,'Ring']]],
+  ['_7eringlist',['~RingList',['../class_ring_list.html#ac9125c89e57306e50f3f8a669b3601c8',1,'RingList']]],
+  ['_7eroom',['~Room',['../class_room.html#a67d5da09983cc53097807fd43ba5481a',1,'Room']]],
+  ['_7etooltip',['~Tooltip',['../class_tooltip.html#aa06506a2c50e1edb1bd381e9613e481a',1,'Tooltip']]],
+  ['_7eweapon',['~Weapon',['../class_weapon.html#aa3364fb5092bbdb4c215e02dd1494f10',1,'Weapon']]],
+  ['_7eweaponlist',['~WeaponList',['../class_weapon_list.html#a44f72440d8a4586b19e4b60d308b2e51',1,'WeaponList']]]
 ];

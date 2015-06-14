@@ -1,0 +1,100 @@
+\hypertarget{class_inventory}{\section{Inventory Class Reference}
+\label{class_inventory}\index{Inventory@{Inventory}}
+}
+
+
+{\ttfamily \#include $<$Inventory.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_inventory_a4d40dda87c7d37ebc185368b5493ab6e}{Inventory} (int slots)
+\begin{DoxyCompactList}\small\item\em Main constructor. \end{DoxyCompactList}\item 
+void \hyperlink{class_inventory_ac81fb1502f38a7d6b61019e0de7926e9}{change\+Item\+Focus} (void)
+\begin{DoxyCompactList}\small\item\em change the currently selected item \end{DoxyCompactList}\item 
+\hypertarget{class_inventory_a7d70b2f66af411fb252acffe3247614f}{std\+::string {\bfseries get\+Current\+Focus} (void)}\label{class_inventory_a7d70b2f66af411fb252acffe3247614f}
+
+\item 
+int \hyperlink{class_inventory_a1b0ece283e2501901893f7c8d8ab9276}{add\+Item\+To\+Inventory} (std\+::string item)
+\begin{DoxyCompactList}\small\item\em Called by char when picking up an item. \end{DoxyCompactList}\item 
+\hypertarget{class_inventory_a0fdfe38dc4a8278e9d4be64302084e41}{std\+::string {\bfseries drop\+Selected\+Item} (void)}\label{class_inventory_a0fdfe38dc4a8278e9d4be64302084e41}
+
+\item 
+\hypertarget{class_inventory_a82fd79276d1a6ac0c6ab8d2fa5774c6a}{std\+::string {\bfseries equip\+Selected\+Item} (void)}\label{class_inventory_a82fd79276d1a6ac0c6ab8d2fa5774c6a}
+
+\item 
+\hypertarget{class_inventory_ad3dd21be94724ceba8ff8a091ff19428}{void {\bfseries swap\+Equipment\+And\+Inventory} (std\+::string item)}\label{class_inventory_ad3dd21be94724ceba8ff8a091ff19428}
+
+\item 
+\hypertarget{class_inventory_a75780f1693233cef94fd700fff0660ba}{std\+::map$<$ int, std\+::string $>$ {\bfseries get\+Items} (void)}\label{class_inventory_a75780f1693233cef94fd700fff0660ba}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Licensed to the Apache Software Foundation (A\+S\+F) under one or more contributor license agreements. See the N\+O\+T\+I\+C\+E file distributed with this work for additional information regarding copyright ownership. The A\+S\+F licenses this file to you under the Apache License, Version 2.\+0 (the \char`\"{}\+License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+\href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\+://www.\+apache.\+org/licenses/\+L\+I\+C\+E\+N\+S\+E-\/2.\+0}
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\+A\+S I\+S\char`\"{} B\+A\+S\+I\+S, W\+I\+T\+H\+O\+U\+T W\+A\+R\+R\+A\+N\+T\+I\+E\+S O\+R C\+O\+N\+D\+I\+T\+I\+O\+N\+S O\+F A\+N\+Y K\+I\+N\+D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\+: \hyperlink{_inventory_8hpp_source}{Inventory.\+hpp} Creation\+: 2015-\/05-\/27 04\+:44 Vincent Rey \href{mailto:vrey@student.42.fr}{\tt vrey@student.\+42.\+fr} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_inventory_a4d40dda87c7d37ebc185368b5493ab6e}{\index{Inventory@{Inventory}!Inventory@{Inventory}}
+\index{Inventory@{Inventory}!Inventory@{Inventory}}
+\subsubsection[{Inventory}]{\setlength{\rightskip}{0pt plus 5cm}Inventory\+::\+Inventory (
+\begin{DoxyParamCaption}
+\item[{int}]{slots}
+\end{DoxyParamCaption}
+)}}\label{class_inventory_a4d40dda87c7d37ebc185368b5493ab6e}
+
+
+Main constructor. 
+
+Licensed to the Apache Software Foundation (A\+S\+F) under one or more contributor license agreements. See the N\+O\+T\+I\+C\+E file distributed with this work for additional information regarding copyright ownership. The A\+S\+F licenses this file to you under the Apache License, Version 2.\+0 (the \char`\"{}\+License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+\href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\+://www.\+apache.\+org/licenses/\+L\+I\+C\+E\+N\+S\+E-\/2.\+0}
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\+A\+S I\+S\char`\"{} B\+A\+S\+I\+S, W\+I\+T\+H\+O\+U\+T W\+A\+R\+R\+A\+N\+T\+I\+E\+S O\+R C\+O\+N\+D\+I\+T\+I\+O\+N\+S O\+F A\+N\+Y K\+I\+N\+D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\+: Inventory.\+cpp Creation\+: 2015-\/05-\/27 04\+:44 Vincent Rey \href{mailto:vrey@student.42.fr}{\tt vrey@student.\+42.\+fr} Constructor that initiates the inventory for a given character 
+\begin{DoxyParams}{Parameters}
+{\em slots} & the number of slots you wanna give the inventory \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_inventory_a1b0ece283e2501901893f7c8d8ab9276}{\index{Inventory@{Inventory}!add\+Item\+To\+Inventory@{add\+Item\+To\+Inventory}}
+\index{add\+Item\+To\+Inventory@{add\+Item\+To\+Inventory}!Inventory@{Inventory}}
+\subsubsection[{add\+Item\+To\+Inventory}]{\setlength{\rightskip}{0pt plus 5cm}int Inventory\+::add\+Item\+To\+Inventory (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{item}
+\end{DoxyParamCaption}
+)}}\label{class_inventory_a1b0ece283e2501901893f7c8d8ab9276}
+
+
+Called by char when picking up an item. 
+
+When inventory is full, returns 1 and the game automatically drops the selected item through drop\+Selected\+Item 
+\begin{DoxyParams}{Parameters}
+{\em item} & the name of the item to add in the inventory \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+Characters\+::pickup\+Item 
+\end{DoxySeeAlso}
+\hypertarget{class_inventory_ac81fb1502f38a7d6b61019e0de7926e9}{\index{Inventory@{Inventory}!change\+Item\+Focus@{change\+Item\+Focus}}
+\index{change\+Item\+Focus@{change\+Item\+Focus}!Inventory@{Inventory}}
+\subsubsection[{change\+Item\+Focus}]{\setlength{\rightskip}{0pt plus 5cm}void Inventory\+::change\+Item\+Focus (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_inventory_ac81fb1502f38a7d6b61019e0de7926e9}
+
+
+change the currently selected item 
+
+Called by character when pressing the item button, to target another item for dropping/equipping 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Sources/inc/Inventory.\+hpp\item 
+Sources/src/Inventory.\+cpp\end{DoxyCompactItemize}

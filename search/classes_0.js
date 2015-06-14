@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['characters',['Characters',['../class_characters.html',1,'']]],
-  ['consumable',['Consumable',['../class_consumable.html',1,'']]],
-  ['contactfilter',['ContactFilter',['../class_contact_filter.html',1,'']]]
+  ['armor',['Armor',['../class_armor.html',1,'']]],
+  ['armorlist',['ArmorList',['../class_armor_list.html',1,'']]]
 ];

@@ -8,41 +8,62 @@
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{class_level_generator_a2ed675e422aedcf5ecab936468627128}{Level\+Generator} (int height, int width, int min\+Path\+Lenght, int room\+Pop\+Rate, int doors\+Pop\+Rate)
+\hyperlink{class_level_generator_ad509b6dd7dbfd144466315ce2c493513}{Level\+Generator} (int max\+Map\+Size, int min\+Path\+Lenght, int doors\+Pop\+Rate)
 \item 
 \hyperlink{class_level_generator_a9bd612e10a3d769537ba042a76c0cb5f}{$\sim$\+Level\+Generator} ()
 \item 
 \hypertarget{class_level_generator_ad3a873efd53cec998e5b3cbec90b1e6d}{void {\bfseries print} (void)}\label{class_level_generator_ad3a873efd53cec998e5b3cbec90b1e6d}
 
 \item 
-\hypertarget{class_level_generator_a0adda93371151dcbda015fd4a9a5b971}{void {\bfseries execute} ()}\label{class_level_generator_a0adda93371151dcbda015fd4a9a5b971}
+\hypertarget{class_level_generator_aabdbf98d1f6b41ef3f921c7c08bac691}{void {\bfseries execute} (void)}\label{class_level_generator_aabdbf98d1f6b41ef3f921c7c08bac691}
 
 \item 
-\hypertarget{class_level_generator_a67392d5702d8bb9b28d3b87cfa4f4435}{void {\bfseries first\+Pass} ()}\label{class_level_generator_a67392d5702d8bb9b28d3b87cfa4f4435}
+\hypertarget{class_level_generator_a3a3c144dfccee44c67f42da9ad77ca93}{void {\bfseries create\+First\+Room} (void)}\label{class_level_generator_a3a3c144dfccee44c67f42da9ad77ca93}
 
 \item 
-\hypertarget{class_level_generator_aaed4a6d35bf4ea14a1d472b247720f46}{void {\bfseries second\+Pass} ()}\label{class_level_generator_aaed4a6d35bf4ea14a1d472b247720f46}
+\hypertarget{class_level_generator_a1f333c183a88620a11fa542067408184}{void {\bfseries first\+Pass} (int distance)}\label{class_level_generator_a1f333c183a88620a11fa542067408184}
 
 \item 
-\hypertarget{class_level_generator_a8e8540de5d26ae5fd37f01863bb3a3ab}{void {\bfseries third\+Pass} ()}\label{class_level_generator_a8e8540de5d26ae5fd37f01863bb3a3ab}
+\hypertarget{class_level_generator_a9d352262bacb1e8505ed1f2c76266555}{void {\bfseries generate\+Rooms\+Behind\+Doors} (\hyperlink{class_room}{Room} $\ast$room)}\label{class_level_generator_a9d352262bacb1e8505ed1f2c76266555}
 
 \item 
-\hypertarget{class_level_generator_a9b9e75025c7dcacb88bcb717f2aa9f3b}{void {\bfseries fourth\+Pass} ()}\label{class_level_generator_a9b9e75025c7dcacb88bcb717f2aa9f3b}
+\hypertarget{class_level_generator_aabd2f2b813e71976ce760304ddd401d6}{\hyperlink{class_room}{Room} $\ast$ {\bfseries generate\+Room} (int x, int y, int distance, \hyperlink{class_room}{Room} $\ast$prev\+Room, int origin)}\label{class_level_generator_aabd2f2b813e71976ce760304ddd401d6}
+
+\item 
+\hypertarget{class_level_generator_aa8297433f2d818a0e1839faf9c899f4d}{bool {\bfseries test\+Door} (int x, int y)}\label{class_level_generator_aa8297433f2d818a0e1839faf9c899f4d}
+
+\item 
+\hypertarget{class_level_generator_a4ea22d65b574c874fdf8d1480dfb7ceb}{bool {\bfseries test\+Room} (int x, int y)}\label{class_level_generator_a4ea22d65b574c874fdf8d1480dfb7ceb}
 
 \item 
 \hypertarget{class_level_generator_aaaccd1f1c3b4331d30ba5a56b3d027f8}{void {\bfseries link\+Adjacent\+Rooms} (\hyperlink{class_room}{Room} $\ast$room)}\label{class_level_generator_aaaccd1f1c3b4331d30ba5a56b3d027f8}
 
 \item 
-\hypertarget{class_level_generator_afaa688bd1e11103c8afb45dbfa41c0c7}{void {\bfseries shockwave} ()}\label{class_level_generator_afaa688bd1e11103c8afb45dbfa41c0c7}
+\hypertarget{class_level_generator_ae7e5462d7434108c2ef3ae9c217a29c8}{void {\bfseries shockwave} (void)}\label{class_level_generator_ae7e5462d7434108c2ef3ae9c217a29c8}
 
 \item 
-\hypertarget{class_level_generator_ab9f4dd15ee1d8f0659d3df0956d087af}{int {\bfseries get\+Entry\+Id} ()}\label{class_level_generator_ab9f4dd15ee1d8f0659d3df0956d087af}
+\hypertarget{class_level_generator_a4a54eac0ab907095552548bf67a5aa55}{int {\bfseries get\+Entry\+Id} (void)}\label{class_level_generator_a4a54eac0ab907095552548bf67a5aa55}
 
 \item 
-\hypertarget{class_level_generator_af8a3c3f49855932e09da03107205c72f}{int {\bfseries add\+Distance\+To\+Adjacent\+Rooms} (\hyperlink{class_room}{Room} $\ast$room, int search\+Distance)}\label{class_level_generator_af8a3c3f49855932e09da03107205c72f}
+\hypertarget{class_level_generator_af415fc7e70da9af9d8b3cae64988e3db}{int {\bfseries id} (void)}\label{class_level_generator_af415fc7e70da9af9d8b3cae64988e3db}
 
 \item 
-\hypertarget{class_level_generator_a6af493402fdf30516ea0c122d2c82a4b}{\hyperlink{class_room}{Room} $\ast$ {\bfseries find\+Room\+By\+Pos} (int x, int y)}\label{class_level_generator_a6af493402fdf30516ea0c122d2c82a4b}
+\hypertarget{class_level_generator_a2a1aaa623b0fbb7c08a37b233bc0eddc}{std\+::vector$<$ std\+::vector$<$ int $>$ $>$ {\bfseries get\+Level} (void)}\label{class_level_generator_a2a1aaa623b0fbb7c08a37b233bc0eddc}
+
+\item 
+\hypertarget{class_level_generator_adc1012bf21a7bff0887cc3e74b8f18f1}{int {\bfseries get\+Start\+X} ()}\label{class_level_generator_adc1012bf21a7bff0887cc3e74b8f18f1}
+
+\item 
+\hypertarget{class_level_generator_a2724eb94a1f8a3c2cb96d284eddeab0f}{int {\bfseries get\+Start\+Y} ()}\label{class_level_generator_a2724eb94a1f8a3c2cb96d284eddeab0f}
+
+\item 
+\hypertarget{class_level_generator_ae198cc8f678e6bb3f51932099dc5f6c9}{int {\bfseries get\+Nb\+Maps} ()}\label{class_level_generator_ae198cc8f678e6bb3f51932099dc5f6c9}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_level_generator_aaeb382a82733c6d95569b9b77c0c3b11}{std\+::vector$<$ \hyperlink{class_room}{Room} $\ast$ $>$ $\ast$ {\bfseries \+\_\+rooms}}\label{class_level_generator_aaeb382a82733c6d95569b9b77c0c3b11}
 
 \end{DoxyCompactItemize}
 
@@ -55,17 +76,15 @@ Licensed to the Apache Software Foundation (A\+S\+F) under one or more contribut
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\+A\+S I\+S\char`\"{} B\+A\+S\+I\+S, W\+I\+T\+H\+O\+U\+T W\+A\+R\+R\+A\+N\+T\+I\+E\+S O\+R C\+O\+N\+D\+I\+T\+I\+O\+N\+S O\+F A\+N\+Y K\+I\+N\+D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\+: \hyperlink{_level_generator_8hpp_source}{Level\+Generator.\+hpp} Creation\+: 2015-\/03-\/02 16\+:05 Matthieu Maudet \href{mailto:mmaudet@student.42.fr}{\tt mmaudet@student.\+42.\+fr} 
 
 \subsection{Constructor \& Destructor Documentation}
-\hypertarget{class_level_generator_a2ed675e422aedcf5ecab936468627128}{\index{Level\+Generator@{Level\+Generator}!Level\+Generator@{Level\+Generator}}
+\hypertarget{class_level_generator_ad509b6dd7dbfd144466315ce2c493513}{\index{Level\+Generator@{Level\+Generator}!Level\+Generator@{Level\+Generator}}
 \index{Level\+Generator@{Level\+Generator}!Level\+Generator@{Level\+Generator}}
 \subsubsection[{Level\+Generator}]{\setlength{\rightskip}{0pt plus 5cm}Level\+Generator\+::\+Level\+Generator (
 \begin{DoxyParamCaption}
-\item[{int}]{height, }
-\item[{int}]{width, }
+\item[{int}]{max\+Map\+Size, }
 \item[{int}]{min\+Path\+Lenght, }
-\item[{int}]{room\+Pop\+Rate, }
 \item[{int}]{doors\+Pop\+Rate}
 \end{DoxyParamCaption}
-)}}\label{class_level_generator_a2ed675e422aedcf5ecab936468627128}
+)}}\label{class_level_generator_ad509b6dd7dbfd144466315ce2c493513}
 Licensed to the Apache Software Foundation (A\+S\+F) under one or more contributor license agreements. See the N\+O\+T\+I\+C\+E file distributed with this work for additional information regarding copyright ownership. The A\+S\+F licenses this file to you under the Apache License, Version 2.\+0 (the \char`\"{}\+License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
 \href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\+://www.\+apache.\+org/licenses/\+L\+I\+C\+E\+N\+S\+E-\/2.\+0}
@@ -88,5 +107,5 @@ Basic Destructor
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-inc/Level\+Generator.\+hpp\item 
-src/Level\+Generator.\+cpp\end{DoxyCompactItemize}
+Sources/inc/Level\+Generator.\+hpp\item 
+Sources/src/Level\+Generator.\+cpp\end{DoxyCompactItemize}

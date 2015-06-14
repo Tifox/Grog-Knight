@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>Grog-like: Sources/inc/HUDWindow.hpp Source File</title>
+<title>Grog-Like: Sources/inc/HUDWindow.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -14,6 +14,7 @@
   $(document).ready(function() { searchBox.OnSelectItem(0); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -21,9 +22,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="hero_000.png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="hero_023.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Grog-like
+   <div id="projectname">Grog-Like
    </div>
   </td>
  </tr>
@@ -94,80 +95,108 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"># include &quot;../../Angel/Angel.h&quot;</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor"># include &quot;Game.hpp&quot;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">class   </span><a class="code" href="class_game.html">Game</a>;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor"># include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="class_h_u_d_window.html">   36</a></span>&#160;<span class="keyword">class   </span><a class="code" href="class_h_u_d_window.html">HUDWindow</a> : <span class="keyword">public</span> HUDActor {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor"># include &quot;Map.hpp&quot;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">class   </span><a class="code" href="class_game.html">Game</a>;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">class   </span><a class="code" href="class_ring.html">Ring</a>;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">class   </span><a class="code" href="class_armor.html">Armor</a>;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor"># include &lt;iostream&gt;</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="class_h_u_d_window_1_1_text.html">   40</a></span>&#160;    <span class="keyword">class   </span><a class="code" href="class_h_u_d_window_1_1_text.html">Text</a> {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <a class="code" href="class_h_u_d_window_1_1_text.html">Text</a>() {};</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            ~<a class="code" href="class_h_u_d_window_1_1_text.html">Text</a>() {};</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            std::string     str;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keywordtype">int</span>             x;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <span class="keywordtype">int</span>             y;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            <span class="keywordtype">int</span>             colorR;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordtype">int</span>             colorG;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="keywordtype">int</span>             colorB;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordtype">int</span>             colorA;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    };</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <a class="code" href="class_h_u_d_window.html#a8d97402012deb77be8008cfed176fdd6">HUDWindow</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <a class="code" href="class_h_u_d_window.html#ac1c288c91430729735038fcefc4bcdb8">~HUDWindow</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <a class="code" href="class_h_u_d_window_1_1_text.html">HUDWindow::Text</a> *<a class="code" href="class_h_u_d_window.html#aedb23e2b82cc2b13ee024364deb52d64">setText</a>(std::string str, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <a class="code" href="class_h_u_d_window_1_1_text.html">HUDWindow::Text</a> *<a class="code" href="class_h_u_d_window.html#aedb23e2b82cc2b13ee024364deb52d64">setText</a>(std::string str, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, Vector3 color, <span class="keywordtype">int</span> alpha);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a0aedfd1f3c8354da1b69f1b592d4ad3e">removeText</a>(std::string str);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a0aedfd1f3c8354da1b69f1b592d4ad3e">removeText</a>(<a class="code" href="class_h_u_d_window_1_1_text.html">HUDWindow::Text</a> *t);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a12148d8845eaa5a663d816a4befba0dd">displayText</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a94366d6f68535133a56d0b38228460e0">addImage</a>(std::string p, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a94366d6f68535133a56d0b38228460e0">addImage</a>(std::string path, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <span class="keywordtype">float</span> size);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a8fc917fbfae792d046e90448c963100a">life</a>(<span class="keywordtype">int</span> l);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a6eb79b572849709a329e65ed2afd2e9e">mana</a>(<span class="keywordtype">int</span> <a class="code" href="class_h_u_d_window.html#a6eb79b572849709a329e65ed2afd2e9e">mana</a>);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a4eb34de71e2ea671f637381ac255edab">gold</a>(<span class="keywordtype">int</span> g);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a426914dc711c65337a55b44c188d1636">updateGold</a>(<span class="keywordtype">int</span> <a class="code" href="class_h_u_d_window.html#a4eb34de71e2ea671f637381ac255edab">gold</a>);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a9edf25a0b1cf568aa3f338281d81d99a">items</a>(<a class="code" href="class_weapon.html">Weapon</a> *w);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a1c6965adb9fdd22b230d20b26fef5ac0">armor</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#acd4fdbfd1c2562384b84d3bcda80fea1">boots</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a378bc8269cacb151f68cfb37114e0c38">consumable</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a8264836f3c55d8211f4e5166e9049628">minimap</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordtype">void</span>    setGame(<a class="code" href="class_game.html">Game</a> *);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <a class="code" href="class_game.html">Game</a>        *_g;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        std::list&lt;HUDActor *&gt;   _hearts;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        std::list&lt;HUDActor *&gt;   _mana;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        std::list&lt;HUDWindow::Text *&gt;    _text;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <a class="code" href="class_h_u_d_window_1_1_text.html">HUDWindow::Text</a> *       _gold;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;};</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="class_h_u_d_window.html">   39</a></span>&#160;<span class="keyword">class   </span><a class="code" href="class_h_u_d_window.html">HUDWindow</a> : <span class="keyword">public</span> HUDActor {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="class_h_u_d_window_1_1_text.html">   43</a></span>&#160;    <span class="keyword">class   </span><a class="code" href="class_h_u_d_window_1_1_text.html">Text</a> {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keyword">public</span>: </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <a class="code" href="class_h_u_d_window_1_1_text.html">Text</a>() {};</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            ~<a class="code" href="class_h_u_d_window_1_1_text.html">Text</a>() {};</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            std::string     str;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            std::string     font;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="keywordtype">int</span>             x;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordtype">int</span>             y;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            <span class="keywordtype">int</span>             colorR;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <span class="keywordtype">int</span>             colorG;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="keywordtype">int</span>             colorB;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordtype">int</span>             colorA;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <a class="code" href="class_characters.html">Characters</a>      *toFollow;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordtype">int</span>             isFading;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <span class="keywordtype">int</span>             isTalk;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    };</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <a class="code" href="class_h_u_d_window.html#a8d97402012deb77be8008cfed176fdd6">HUDWindow</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <a class="code" href="class_h_u_d_window.html#ac1c288c91430729735038fcefc4bcdb8">~HUDWindow</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <a class="code" href="class_h_u_d_window_1_1_text.html">HUDWindow::Text</a> *<a class="code" href="class_h_u_d_window.html#aedb23e2b82cc2b13ee024364deb52d64">setText</a>(std::string str, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <a class="code" href="class_h_u_d_window_1_1_text.html">HUDWindow::Text</a> *<a class="code" href="class_h_u_d_window.html#aedb23e2b82cc2b13ee024364deb52d64">setText</a>(std::string str, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, Vector3 color, <span class="keywordtype">int</span> alpha);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <a class="code" href="class_h_u_d_window_1_1_text.html">HUDWindow::Text</a> *<a class="code" href="class_h_u_d_window.html#aedb23e2b82cc2b13ee024364deb52d64">setText</a>(std::string str, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, Vector3 color, <span class="keywordtype">int</span> alpha, std::string font);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <a class="code" href="class_h_u_d_window_1_1_text.html">HUDWindow::Text</a> *<a class="code" href="class_h_u_d_window.html#aedb23e2b82cc2b13ee024364deb52d64">setText</a>(std::string str, <a class="code" href="class_characters.html">Characters</a> *toFollow, Vector3 color, <span class="keywordtype">int</span> isFading, <span class="keywordtype">int</span> isTalk);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a0aedfd1f3c8354da1b69f1b592d4ad3e">removeText</a>(std::string str);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a0aedfd1f3c8354da1b69f1b592d4ad3e">removeText</a>(<a class="code" href="class_h_u_d_window_1_1_text.html">HUDWindow::Text</a> *t);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a12148d8845eaa5a663d816a4befba0dd">displayText</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        HUDActor    *<a class="code" href="class_h_u_d_window.html#ac9f25e99acf17e9bef2160725dc0d5f9">addImage</a>(std::string p, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        HUDActor    *<a class="code" href="class_h_u_d_window.html#ac9f25e99acf17e9bef2160725dc0d5f9">addImage</a>(std::string path, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <span class="keywordtype">float</span> size);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        HUDActor    *<a class="code" href="class_h_u_d_window.html#ac9f25e99acf17e9bef2160725dc0d5f9">addImage</a>(std::string path, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <span class="keywordtype">float</span> size, <span class="keywordtype">int</span> layer);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a8fc917fbfae792d046e90448c963100a">life</a>(<span class="keywordtype">int</span> l);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a6eb79b572849709a329e65ed2afd2e9e">mana</a>(<span class="keywordtype">int</span> <a class="code" href="class_h_u_d_window.html#a6eb79b572849709a329e65ed2afd2e9e">mana</a>);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a4eb34de71e2ea671f637381ac255edab">gold</a>(<span class="keywordtype">int</span> g);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a426914dc711c65337a55b44c188d1636">updateGold</a>(<span class="keywordtype">int</span> <a class="code" href="class_h_u_d_window.html#a4eb34de71e2ea671f637381ac255edab">gold</a>);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a9edf25a0b1cf568aa3f338281d81d99a">items</a>(<a class="code" href="class_weapon.html">Weapon</a> *w);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a9edf25a0b1cf568aa3f338281d81d99a">items</a>(<a class="code" href="class_armor.html">Armor</a> *a);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a9edf25a0b1cf568aa3f338281d81d99a">items</a>(<a class="code" href="class_ring.html">Ring</a> *r);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a1c6965adb9fdd22b230d20b26fef5ac0">armor</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#acd4fdbfd1c2562384b84d3bcda80fea1">boots</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#aeeafdcca95bdcdb3b31a6bc4d2e1e379">consumable</a>(std::map&lt;int, std::string&gt; m);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a8264836f3c55d8211f4e5166e9049628">minimap</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordtype">void</span>    setGame(<a class="code" href="class_game.html">Game</a> *);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordtype">void</span>    setMaxMana(<span class="keywordtype">int</span> m);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordtype">void</span>    setMaxHP(<span class="keywordtype">int</span> h);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a072650c8490c0222c95b7ff99efb4924">bag</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keywordtype">void</span>    <a class="code" href="class_h_u_d_window.html#a30c4372e58de0f8615e772d9809a2664">initMinimapBackground</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <a class="code" href="class_game.html">Game</a>        *_g;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        std::list&lt;HUDActor *&gt;   _hearts;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        std::list&lt;HUDActor *&gt;   _mana;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        std::list&lt;HUDActor *&gt;   _bag;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        std::list&lt;HUDActor *&gt;   _minimap;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        std::map&lt;std::string, Elements*&gt;        _dialog;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        std::list&lt;HUDWindow::Text *&gt;    _text;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <a class="code" href="class_h_u_d_window_1_1_text.html">HUDWindow::Text</a> *       _gold;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keywordtype">int</span>                     _maxMana;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <span class="keywordtype">int</span>                     _maxHP;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keywordtype">void</span>                    _drawDoor(Vector2 size, Vector2 position);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;};</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="class_armor_html"><div class="ttname"><a href="class_armor.html">Armor</a></div><div class="ttdef"><b>Definition:</b> Armor.hpp:40</div></div>
+<div class="ttc" id="class_ring_html"><div class="ttname"><a href="class_ring.html">Ring</a></div><div class="ttdef"><b>Definition:</b> Ring.hpp:40</div></div>
 <div class="ttc" id="class_weapon_html"><div class="ttname"><a href="class_weapon.html">Weapon</a></div><div class="ttdef"><b>Definition:</b> Weapon.hpp:40</div></div>
-<div class="ttc" id="class_h_u_d_window_html_a1c6965adb9fdd22b230d20b26fef5ac0"><div class="ttname"><a href="class_h_u_d_window.html#a1c6965adb9fdd22b230d20b26fef5ac0">HUDWindow::armor</a></div><div class="ttdeci">void armor(void)</div><div class="ttdoc">Display armor. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:287</div></div>
-<div class="ttc" id="class_h_u_d_window_html_ac1c288c91430729735038fcefc4bcdb8"><div class="ttname"><a href="class_h_u_d_window.html#ac1c288c91430729735038fcefc4bcdb8">HUDWindow::~HUDWindow</a></div><div class="ttdeci">~HUDWindow(void)</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:41</div></div>
-<div class="ttc" id="class_h_u_d_window_html_a426914dc711c65337a55b44c188d1636"><div class="ttname"><a href="class_h_u_d_window.html#a426914dc711c65337a55b44c188d1636">HUDWindow::updateGold</a></div><div class="ttdeci">void updateGold(int gold)</div><div class="ttdoc">MAJ gold function. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:262</div></div>
-<div class="ttc" id="class_h_u_d_window_html_acd4fdbfd1c2562384b84d3bcda80fea1"><div class="ttname"><a href="class_h_u_d_window.html#acd4fdbfd1c2562384b84d3bcda80fea1">HUDWindow::boots</a></div><div class="ttdeci">void boots(void)</div><div class="ttdoc">Display boots function. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:297</div></div>
-<div class="ttc" id="class_h_u_d_window_html_a9edf25a0b1cf568aa3f338281d81d99a"><div class="ttname"><a href="class_h_u_d_window.html#a9edf25a0b1cf568aa3f338281d81d99a">HUDWindow::items</a></div><div class="ttdeci">void items(Weapon *w)</div><div class="ttdoc">Display items (Weapon) </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:275</div></div>
-<div class="ttc" id="class_h_u_d_window_html"><div class="ttname"><a href="class_h_u_d_window.html">HUDWindow</a></div><div class="ttdef"><b>Definition:</b> HUDWindow.hpp:36</div></div>
-<div class="ttc" id="class_h_u_d_window_html_a8fc917fbfae792d046e90448c963100a"><div class="ttname"><a href="class_h_u_d_window.html#a8fc917fbfae792d046e90448c963100a">HUDWindow::life</a></div><div class="ttdeci">void life(int l)</div><div class="ttdoc">Display HP function. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:195</div></div>
-<div class="ttc" id="class_h_u_d_window_html_a94366d6f68535133a56d0b38228460e0"><div class="ttname"><a href="class_h_u_d_window.html#a94366d6f68535133a56d0b38228460e0">HUDWindow::addImage</a></div><div class="ttdeci">void addImage(std::string p, int x, int y)</div><div class="ttdoc">Add an Image. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:160</div></div>
-<div class="ttc" id="class_h_u_d_window_1_1_text_html"><div class="ttname"><a href="class_h_u_d_window_1_1_text.html">HUDWindow::Text</a></div><div class="ttdef"><b>Definition:</b> HUDWindow.hpp:40</div></div>
-<div class="ttc" id="class_h_u_d_window_html_a12148d8845eaa5a663d816a4befba0dd"><div class="ttname"><a href="class_h_u_d_window.html#a12148d8845eaa5a663d816a4befba0dd">HUDWindow::displayText</a></div><div class="ttdeci">void displayText(void)</div><div class="ttdoc">Callback for Display text. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:144</div></div>
-<div class="ttc" id="class_game_html"><div class="ttname"><a href="class_game.html">Game</a></div><div class="ttdef"><b>Definition:</b> Game.hpp:52</div></div>
-<div class="ttc" id="class_h_u_d_window_html_a6eb79b572849709a329e65ed2afd2e9e"><div class="ttname"><a href="class_h_u_d_window.html#a6eb79b572849709a329e65ed2afd2e9e">HUDWindow::mana</a></div><div class="ttdeci">void mana(int mana)</div><div class="ttdoc">Display mana function. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:225</div></div>
-<div class="ttc" id="class_h_u_d_window_html_a378bc8269cacb151f68cfb37114e0c38"><div class="ttname"><a href="class_h_u_d_window.html#a378bc8269cacb151f68cfb37114e0c38">HUDWindow::consumable</a></div><div class="ttdeci">void consumable(void)</div><div class="ttdoc">Show the consumable function. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:307</div></div>
-<div class="ttc" id="class_h_u_d_window_html_a8264836f3c55d8211f4e5166e9049628"><div class="ttname"><a href="class_h_u_d_window.html#a8264836f3c55d8211f4e5166e9049628">HUDWindow::minimap</a></div><div class="ttdeci">void minimap(void)</div><div class="ttdoc">Display the minimap in the HUd. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:323</div></div>
-<div class="ttc" id="class_h_u_d_window_html_a4eb34de71e2ea671f637381ac255edab"><div class="ttname"><a href="class_h_u_d_window.html#a4eb34de71e2ea671f637381ac255edab">HUDWindow::gold</a></div><div class="ttdeci">void gold(int g)</div><div class="ttdoc">Display gold function. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:250</div></div>
-<div class="ttc" id="class_h_u_d_window_html_a0aedfd1f3c8354da1b69f1b592d4ad3e"><div class="ttname"><a href="class_h_u_d_window.html#a0aedfd1f3c8354da1b69f1b592d4ad3e">HUDWindow::removeText</a></div><div class="ttdeci">void removeText(std::string str)</div><div class="ttdoc">Remove Text. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:112</div></div>
-<div class="ttc" id="class_h_u_d_window_html_aedb23e2b82cc2b13ee024364deb52d64"><div class="ttname"><a href="class_h_u_d_window.html#aedb23e2b82cc2b13ee024364deb52d64">HUDWindow::setText</a></div><div class="ttdeci">HUDWindow::Text * setText(std::string str, int x, int y)</div><div class="ttdoc">Set text function. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:52</div></div>
+<div class="ttc" id="class_h_u_d_window_html_a1c6965adb9fdd22b230d20b26fef5ac0"><div class="ttname"><a href="class_h_u_d_window.html#a1c6965adb9fdd22b230d20b26fef5ac0">HUDWindow::armor</a></div><div class="ttdeci">void armor(void)</div><div class="ttdoc">Display armor. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:436</div></div>
+<div class="ttc" id="class_characters_html"><div class="ttname"><a href="class_characters.html">Characters</a></div><div class="ttdef"><b>Definition:</b> Characters.hpp:52</div></div>
+<div class="ttc" id="class_h_u_d_window_html_ac1c288c91430729735038fcefc4bcdb8"><div class="ttname"><a href="class_h_u_d_window.html#ac1c288c91430729735038fcefc4bcdb8">HUDWindow::~HUDWindow</a></div><div class="ttdeci">~HUDWindow(void)</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:43</div></div>
+<div class="ttc" id="class_h_u_d_window_html_a426914dc711c65337a55b44c188d1636"><div class="ttname"><a href="class_h_u_d_window.html#a426914dc711c65337a55b44c188d1636">HUDWindow::updateGold</a></div><div class="ttdeci">void updateGold(int gold)</div><div class="ttdoc">MAJ gold function. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:387</div></div>
+<div class="ttc" id="class_h_u_d_window_html_acd4fdbfd1c2562384b84d3bcda80fea1"><div class="ttname"><a href="class_h_u_d_window.html#acd4fdbfd1c2562384b84d3bcda80fea1">HUDWindow::boots</a></div><div class="ttdeci">void boots(void)</div><div class="ttdoc">Display boots function. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:446</div></div>
+<div class="ttc" id="class_h_u_d_window_html_a9edf25a0b1cf568aa3f338281d81d99a"><div class="ttname"><a href="class_h_u_d_window.html#a9edf25a0b1cf568aa3f338281d81d99a">HUDWindow::items</a></div><div class="ttdeci">void items(Weapon *w)</div><div class="ttdoc">Display items (Weapon) </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:400</div></div>
+<div class="ttc" id="class_h_u_d_window_html"><div class="ttname"><a href="class_h_u_d_window.html">HUDWindow</a></div><div class="ttdef"><b>Definition:</b> HUDWindow.hpp:39</div></div>
+<div class="ttc" id="class_h_u_d_window_html_aeeafdcca95bdcdb3b31a6bc4d2e1e379"><div class="ttname"><a href="class_h_u_d_window.html#aeeafdcca95bdcdb3b31a6bc4d2e1e379">HUDWindow::consumable</a></div><div class="ttdeci">void consumable(std::map&lt; int, std::string &gt; m)</div><div class="ttdoc">Show the consumable function. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:456</div></div>
+<div class="ttc" id="class_h_u_d_window_html_a8fc917fbfae792d046e90448c963100a"><div class="ttname"><a href="class_h_u_d_window.html#a8fc917fbfae792d046e90448c963100a">HUDWindow::life</a></div><div class="ttdeci">void life(int l)</div><div class="ttdoc">Display HP function. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:307</div></div>
+<div class="ttc" id="class_h_u_d_window_1_1_text_html"><div class="ttname"><a href="class_h_u_d_window_1_1_text.html">HUDWindow::Text</a></div><div class="ttdef"><b>Definition:</b> HUDWindow.hpp:43</div></div>
+<div class="ttc" id="class_h_u_d_window_html_a12148d8845eaa5a663d816a4befba0dd"><div class="ttname"><a href="class_h_u_d_window.html#a12148d8845eaa5a663d816a4befba0dd">HUDWindow::displayText</a></div><div class="ttdeci">void displayText(void)</div><div class="ttdoc">Callback for Display text. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:217</div></div>
+<div class="ttc" id="class_game_html"><div class="ttname"><a href="class_game.html">Game</a></div><div class="ttdef"><b>Definition:</b> Game.hpp:60</div></div>
+<div class="ttc" id="class_h_u_d_window_html_a072650c8490c0222c95b7ff99efb4924"><div class="ttname"><a href="class_h_u_d_window.html#a072650c8490c0222c95b7ff99efb4924">HUDWindow::bag</a></div><div class="ttdeci">void bag(void)</div><div class="ttdoc">Bag display function. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:559</div></div>
+<div class="ttc" id="class_h_u_d_window_html_a6eb79b572849709a329e65ed2afd2e9e"><div class="ttname"><a href="class_h_u_d_window.html#a6eb79b572849709a329e65ed2afd2e9e">HUDWindow::mana</a></div><div class="ttdeci">void mana(int mana)</div><div class="ttdoc">Display mana function. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:347</div></div>
+<div class="ttc" id="class_h_u_d_window_html_ac9f25e99acf17e9bef2160725dc0d5f9"><div class="ttname"><a href="class_h_u_d_window.html#ac9f25e99acf17e9bef2160725dc0d5f9">HUDWindow::addImage</a></div><div class="ttdeci">HUDActor * addImage(std::string p, int x, int y)</div><div class="ttdoc">Add an Image. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:249</div></div>
+<div class="ttc" id="class_h_u_d_window_html_a8264836f3c55d8211f4e5166e9049628"><div class="ttname"><a href="class_h_u_d_window.html#a8264836f3c55d8211f4e5166e9049628">HUDWindow::minimap</a></div><div class="ttdeci">void minimap(void)</div><div class="ttdoc">Display the minimap in the HUD. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:512</div></div>
+<div class="ttc" id="class_h_u_d_window_html_a4eb34de71e2ea671f637381ac255edab"><div class="ttname"><a href="class_h_u_d_window.html#a4eb34de71e2ea671f637381ac255edab">HUDWindow::gold</a></div><div class="ttdeci">void gold(int g)</div><div class="ttdoc">Display gold function. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:375</div></div>
+<div class="ttc" id="class_h_u_d_window_html_a0aedfd1f3c8354da1b69f1b592d4ad3e"><div class="ttname"><a href="class_h_u_d_window.html#a0aedfd1f3c8354da1b69f1b592d4ad3e">HUDWindow::removeText</a></div><div class="ttdeci">void removeText(std::string str)</div><div class="ttdoc">Remove Text. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:179</div></div>
+<div class="ttc" id="class_h_u_d_window_html_aedb23e2b82cc2b13ee024364deb52d64"><div class="ttname"><a href="class_h_u_d_window.html#aedb23e2b82cc2b13ee024364deb52d64">HUDWindow::setText</a></div><div class="ttdeci">HUDWindow::Text * setText(std::string str, int x, int y)</div><div class="ttdoc">Set text function. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:54</div></div>
 <div class="ttc" id="class_h_u_d_window_html_a8d97402012deb77be8008cfed176fdd6"><div class="ttname"><a href="class_h_u_d_window.html#a8d97402012deb77be8008cfed176fdd6">HUDWindow::HUDWindow</a></div><div class="ttdeci">HUDWindow(void)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:32</div></div>
+<div class="ttc" id="class_h_u_d_window_html_a30c4372e58de0f8615e772d9809a2664"><div class="ttname"><a href="class_h_u_d_window.html#a30c4372e58de0f8615e772d9809a2664">HUDWindow::initMinimapBackground</a></div><div class="ttdeci">void initMinimapBackground(void)</div><div class="ttdoc">Init the background of the minimap. </div><div class="ttdef"><b>Definition:</b> HUDWindow.cpp:482</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Apr 26 2015 08:13:24 for Grog-like by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jun 14 2015 22:02:37 for Grog-Like by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

@@ -1,0 +1,119 @@
+\hypertarget{class_c_pattern}{\section{C\+Pattern Class Reference}
+\label{class_c_pattern}\index{C\+Pattern@{C\+Pattern}}
+}
+Inheritance diagram for C\+Pattern\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_c_pattern}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_c_pattern_ae12b0c4a7114c39646a247db92ec42f0}{C\+Pattern} (void)
+\begin{DoxyCompactList}\small\item\em Basic constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_c_pattern_adcff074bdf5884ca2e6c9d1dbb61a442}{C\+Pattern} (std\+::string name)
+\begin{DoxyCompactList}\small\item\em Main constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_c_pattern_a205b6829b7c209bf098baabf0543426d}{C\+Pattern} (\hyperlink{class_c_pattern}{C\+Pattern} \&p)
+\begin{DoxyCompactList}\small\item\em Copy constructor. \end{DoxyCompactList}\item 
+\hypertarget{class_c_pattern_abba4a2b9392bacd627cf1ca879f98a26}{\hyperlink{class_c_pattern_abba4a2b9392bacd627cf1ca879f98a26}{$\sim$\+C\+Pattern} (void)}\label{class_c_pattern_abba4a2b9392bacd627cf1ca879f98a26}
+
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_c_pattern_a8f64aad3b6ebcd606b3c36fc77edf3fd}{tick} (\hyperlink{class_map}{Map} m)
+\begin{DoxyCompactList}\small\item\em Basic pattern tick. \end{DoxyCompactList}\item 
+\hypertarget{class_c_pattern_a4f24fedd79b39dd721d0517aa715ec74}{void {\bfseries set\+Enemy} (\hyperlink{class_enemy}{Enemy} $\ast$)}\label{class_c_pattern_a4f24fedd79b39dd721d0517aa715ec74}
+
+\item 
+\hypertarget{class_c_pattern_a03f821b54e9d88ce3c3d44eb2719012d}{std\+::string {\bfseries get\+Name} (void)}\label{class_c_pattern_a03f821b54e9d88ce3c3d44eb2719012d}
+
+\item 
+\hypertarget{class_c_pattern_a3a2b152515f456a8627dd2b82d912e97}{\hyperlink{class_enemy}{Enemy} $\ast$ {\bfseries get\+Enemy} (void)}\label{class_c_pattern_a3a2b152515f456a8627dd2b82d912e97}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_pattern_af5477fd7e6d52ab831542666933fb20b}{std\+::string {\bfseries \+\_\+name}}\label{class_c_pattern_af5477fd7e6d52ab831542666933fb20b}
+
+\item 
+\hypertarget{class_c_pattern_a5d51112f5170828e8a737f4426465997}{\hyperlink{class_enemy}{Enemy} $\ast$ {\bfseries \+\_\+enemy}}\label{class_c_pattern_a5d51112f5170828e8a737f4426465997}
+
+\item 
+\hypertarget{class_c_pattern_ac954eb7e5555235ae562f90882ddd64e}{int {\bfseries \+\_\+x}}\label{class_c_pattern_ac954eb7e5555235ae562f90882ddd64e}
+
+\item 
+\hypertarget{class_c_pattern_a42dd5f6ca01ee2f317e95c4dd8554c5b}{int {\bfseries \+\_\+y}}\label{class_c_pattern_a42dd5f6ca01ee2f317e95c4dd8554c5b}
+
+\item 
+\hypertarget{class_c_pattern_ab3b36dc6c18522191a770cb731efe486}{int {\bfseries \+\_\+orientation}}\label{class_c_pattern_ab3b36dc6c18522191a770cb731efe486}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_c_pattern_ae12b0c4a7114c39646a247db92ec42f0}{\index{C\+Pattern@{C\+Pattern}!C\+Pattern@{C\+Pattern}}
+\index{C\+Pattern@{C\+Pattern}!C\+Pattern@{C\+Pattern}}
+\subsubsection[{C\+Pattern}]{\setlength{\rightskip}{0pt plus 5cm}C\+Pattern\+::\+C\+Pattern (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_c_pattern_ae12b0c4a7114c39646a247db92ec42f0}
+
+
+Basic constructor. 
+
+Licensed to the Apache Software Foundation (A\+S\+F) under one or more contributor license agreements. See the N\+O\+T\+I\+C\+E file distributed with this work for additional information regarding copyright ownership. The A\+S\+F licenses this file to you under the Apache License, Version 2.\+0 (the \char`\"{}\+License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+\href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\+://www.\+apache.\+org/licenses/\+L\+I\+C\+E\+N\+S\+E-\/2.\+0}
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\+A\+S I\+S\char`\"{} B\+A\+S\+I\+S, W\+I\+T\+H\+O\+U\+T W\+A\+R\+R\+A\+N\+T\+I\+E\+S O\+R C\+O\+N\+D\+I\+T\+I\+O\+N\+S O\+F A\+N\+Y K\+I\+N\+D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\+: Pattern.\+cpp Creation\+: 2015-\/05-\/03 10\+:22 Louis Solofrizzo \href{mailto:louis@ne02ptzero.me}{\tt louis@ne02ptzero.\+me} This a void constructor, useless ftm. \hypertarget{class_c_pattern_adcff074bdf5884ca2e6c9d1dbb61a442}{\index{C\+Pattern@{C\+Pattern}!C\+Pattern@{C\+Pattern}}
+\index{C\+Pattern@{C\+Pattern}!C\+Pattern@{C\+Pattern}}
+\subsubsection[{C\+Pattern}]{\setlength{\rightskip}{0pt plus 5cm}C\+Pattern\+::\+C\+Pattern (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{name}
+\end{DoxyParamCaption}
+)}}\label{class_c_pattern_adcff074bdf5884ca2e6c9d1dbb61a442}
+
+
+Main constructor. 
+
+That's the main constructor for a pattern, using the pattern name in argue. 
+\begin{DoxyParams}{Parameters}
+{\em name} & The name of the Pattern. \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_c_pattern_a205b6829b7c209bf098baabf0543426d}{\index{C\+Pattern@{C\+Pattern}!C\+Pattern@{C\+Pattern}}
+\index{C\+Pattern@{C\+Pattern}!C\+Pattern@{C\+Pattern}}
+\subsubsection[{C\+Pattern}]{\setlength{\rightskip}{0pt plus 5cm}C\+Pattern\+::\+C\+Pattern (
+\begin{DoxyParamCaption}
+\item[{{\bf C\+Pattern} \&}]{p}
+\end{DoxyParamCaption}
+)}}\label{class_c_pattern_a205b6829b7c209bf098baabf0543426d}
+
+
+Copy constructor. 
+
+Copy constructor of Pattern (Coplien o/) 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_c_pattern_a8f64aad3b6ebcd606b3c36fc77edf3fd}{\index{C\+Pattern@{C\+Pattern}!tick@{tick}}
+\index{tick@{tick}!C\+Pattern@{C\+Pattern}}
+\subsubsection[{tick}]{\setlength{\rightskip}{0pt plus 5cm}void C\+Pattern\+::tick (
+\begin{DoxyParamCaption}
+\item[{{\bf Map}}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_c_pattern_a8f64aad3b6ebcd606b3c36fc77edf3fd}
+
+
+Basic pattern tick. 
+
+This function is virtual, just here for structure purposes. If you looking for the actual code of a pattern, go if the Pattern child itself. 
+
+Reimplemented in \hyperlink{class_passive_pattern_ac108c099eeb758e4944c4e7c4187682d}{Passive\+Pattern}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Sources/inc/Pattern.\+hpp\item 
+Sources/src/Pattern.\+cpp\end{DoxyCompactItemize}

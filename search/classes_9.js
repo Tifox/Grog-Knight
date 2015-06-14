@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['shooter',['Shooter',['../class_shooter.html',1,'']]]
+  ['passivepattern',['PassivePattern',['../class_passive_pattern.html',1,'']]],
+  ['projectile',['Projectile',['../class_projectile.html',1,'']]]
 ];

@@ -23,15 +23,21 @@ class \hyperlink{class_h_u_d_window_1_1_text}{Text}
 \begin{DoxyCompactList}\small\item\em Set text function. \end{DoxyCompactList}\item 
 \hyperlink{class_h_u_d_window_1_1_text}{H\+U\+D\+Window\+::\+Text} $\ast$ \hyperlink{class_h_u_d_window_a9ca581ceb96dd26684978140621ea468}{set\+Text} (std\+::string str, int x, int y, Vector3 color, int alpha)
 \begin{DoxyCompactList}\small\item\em Set text function. \end{DoxyCompactList}\item 
+\hyperlink{class_h_u_d_window_1_1_text}{H\+U\+D\+Window\+::\+Text} $\ast$ \hyperlink{class_h_u_d_window_a9a546c6c138ac863f464ec7bf606ea68}{set\+Text} (std\+::string str, int x, int y, Vector3 color, int alpha, std\+::string font)
+\begin{DoxyCompactList}\small\item\em Set text function. \end{DoxyCompactList}\item 
+\hyperlink{class_h_u_d_window_1_1_text}{H\+U\+D\+Window\+::\+Text} $\ast$ \hyperlink{class_h_u_d_window_a63b8e6cefedc40263fce659513e5b420}{set\+Text} (std\+::string str, \hyperlink{class_characters}{Characters} $\ast$to\+Follow, Vector3 color, int is\+Fading, int is\+Talk)
+\begin{DoxyCompactList}\small\item\em Characters-\/follow \hyperlink{class_h_u_d_window_1_1_text}{Text}. \end{DoxyCompactList}\item 
 void \hyperlink{class_h_u_d_window_a0aedfd1f3c8354da1b69f1b592d4ad3e}{remove\+Text} (std\+::string str)
 \begin{DoxyCompactList}\small\item\em Remove \hyperlink{class_h_u_d_window_1_1_text}{Text}. \end{DoxyCompactList}\item 
 void \hyperlink{class_h_u_d_window_a1fee364ef03930d6302cc62a2ce8ff56}{remove\+Text} (\hyperlink{class_h_u_d_window_1_1_text}{H\+U\+D\+Window\+::\+Text} $\ast$t)
 \begin{DoxyCompactList}\small\item\em Remove a text with an object. \end{DoxyCompactList}\item 
 void \hyperlink{class_h_u_d_window_a12148d8845eaa5a663d816a4befba0dd}{display\+Text} (void)
 \begin{DoxyCompactList}\small\item\em Callback for Display text. \end{DoxyCompactList}\item 
-void \hyperlink{class_h_u_d_window_a94366d6f68535133a56d0b38228460e0}{add\+Image} (std\+::string p, int x, int y)
+H\+U\+D\+Actor $\ast$ \hyperlink{class_h_u_d_window_ac9f25e99acf17e9bef2160725dc0d5f9}{add\+Image} (std\+::string p, int x, int y)
 \begin{DoxyCompactList}\small\item\em Add an Image. \end{DoxyCompactList}\item 
-void \hyperlink{class_h_u_d_window_aee140416af161a6d8acc2b0c83370088}{add\+Image} (std\+::string path, int x, int y, float size)
+H\+U\+D\+Actor $\ast$ \hyperlink{class_h_u_d_window_a65a770438d90ccde706a429893929680}{add\+Image} (std\+::string path, int x, int y, float size)
+\begin{DoxyCompactList}\small\item\em Add an image. \end{DoxyCompactList}\item 
+H\+U\+D\+Actor $\ast$ \hyperlink{class_h_u_d_window_a9eb6b2fbd2364591d56d75a0dfe0c8f9}{add\+Image} (std\+::string path, int x, int y, float size, int layer)
 \begin{DoxyCompactList}\small\item\em Add an image. \end{DoxyCompactList}\item 
 void \hyperlink{class_h_u_d_window_a8fc917fbfae792d046e90448c963100a}{life} (int l)
 \begin{DoxyCompactList}\small\item\em Display H\+P function. \end{DoxyCompactList}\item 
@@ -43,17 +49,32 @@ void \hyperlink{class_h_u_d_window_a426914dc711c65337a55b44c188d1636}{update\+Go
 \begin{DoxyCompactList}\small\item\em M\+A\+J gold function. \end{DoxyCompactList}\item 
 void \hyperlink{class_h_u_d_window_a9edf25a0b1cf568aa3f338281d81d99a}{items} (\hyperlink{class_weapon}{Weapon} $\ast$w)
 \begin{DoxyCompactList}\small\item\em Display items (\hyperlink{class_weapon}{Weapon}) \end{DoxyCompactList}\item 
+void \hyperlink{class_h_u_d_window_aa5d1623cd329eb921eec7ad625df442b}{items} (\hyperlink{class_armor}{Armor} $\ast$a)
+\begin{DoxyCompactList}\small\item\em Display items (\hyperlink{class_armor}{Armor}) \end{DoxyCompactList}\item 
+void \hyperlink{class_h_u_d_window_a34e0d171390db9eec346c242000b3a20}{items} (\hyperlink{class_ring}{Ring} $\ast$r)
+\begin{DoxyCompactList}\small\item\em Display items (\hyperlink{class_ring}{Ring}) \end{DoxyCompactList}\item 
 void \hyperlink{class_h_u_d_window_a1c6965adb9fdd22b230d20b26fef5ac0}{armor} (void)
 \begin{DoxyCompactList}\small\item\em Display armor. \end{DoxyCompactList}\item 
 void \hyperlink{class_h_u_d_window_acd4fdbfd1c2562384b84d3bcda80fea1}{boots} (void)
 \begin{DoxyCompactList}\small\item\em Display boots function. \end{DoxyCompactList}\item 
-void \hyperlink{class_h_u_d_window_a378bc8269cacb151f68cfb37114e0c38}{consumable} (void)
+void \hyperlink{class_h_u_d_window_aeeafdcca95bdcdb3b31a6bc4d2e1e379}{consumable} (std\+::map$<$ int, std\+::string $>$ m)
 \begin{DoxyCompactList}\small\item\em Show the consumable function. \end{DoxyCompactList}\item 
 void \hyperlink{class_h_u_d_window_a8264836f3c55d8211f4e5166e9049628}{minimap} (void)
-\begin{DoxyCompactList}\small\item\em Display the minimap in the H\+Ud. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Display the minimap in the H\+U\+D. \end{DoxyCompactList}\item 
 \hypertarget{class_h_u_d_window_a5baefc7b585437df2639fda359c3cf46}{void {\bfseries set\+Game} (\hyperlink{class_game}{Game} $\ast$)}\label{class_h_u_d_window_a5baefc7b585437df2639fda359c3cf46}
 
-\end{DoxyCompactItemize}
+\item 
+\hypertarget{class_h_u_d_window_a58ab83987f850c631909aa77af050423}{void {\bfseries set\+Max\+Mana} (int m)}\label{class_h_u_d_window_a58ab83987f850c631909aa77af050423}
+
+\item 
+\hypertarget{class_h_u_d_window_a1bc77dc304a6cac0a06ffb35040ba61d}{void {\bfseries set\+Max\+H\+P} (int h)}\label{class_h_u_d_window_a1bc77dc304a6cac0a06ffb35040ba61d}
+
+\item 
+void \hyperlink{class_h_u_d_window_a072650c8490c0222c95b7ff99efb4924}{bag} (void)
+\begin{DoxyCompactList}\small\item\em Bag display function. \end{DoxyCompactList}\item 
+\hypertarget{class_h_u_d_window_a30c4372e58de0f8615e772d9809a2664}{void \hyperlink{class_h_u_d_window_a30c4372e58de0f8615e772d9809a2664}{init\+Minimap\+Background} (void)}\label{class_h_u_d_window_a30c4372e58de0f8615e772d9809a2664}
+
+\begin{DoxyCompactList}\small\item\em Init the background of the minimap. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Constructor \& Destructor Documentation}
@@ -86,15 +107,15 @@ Destructor.
 Basic destructor 
 
 \subsection{Member Function Documentation}
-\hypertarget{class_h_u_d_window_a94366d6f68535133a56d0b38228460e0}{\index{H\+U\+D\+Window@{H\+U\+D\+Window}!add\+Image@{add\+Image}}
+\hypertarget{class_h_u_d_window_ac9f25e99acf17e9bef2160725dc0d5f9}{\index{H\+U\+D\+Window@{H\+U\+D\+Window}!add\+Image@{add\+Image}}
 \index{add\+Image@{add\+Image}!H\+U\+D\+Window@{H\+U\+D\+Window}}
-\subsubsection[{add\+Image}]{\setlength{\rightskip}{0pt plus 5cm}void H\+U\+D\+Window\+::add\+Image (
+\subsubsection[{add\+Image}]{\setlength{\rightskip}{0pt plus 5cm}H\+U\+D\+Actor $\ast$ H\+U\+D\+Window\+::add\+Image (
 \begin{DoxyParamCaption}
 \item[{std\+::string}]{path, }
 \item[{int}]{x, }
 \item[{int}]{y}
 \end{DoxyParamCaption}
-)}}\label{class_h_u_d_window_a94366d6f68535133a56d0b38228460e0}
+)}}\label{class_h_u_d_window_ac9f25e99acf17e9bef2160725dc0d5f9}
 
 
 Add an Image. 
@@ -108,16 +129,16 @@ Add an image in the H\+U\+D
 {\em y} & Y position \\
 \hline
 \end{DoxyParams}
-\hypertarget{class_h_u_d_window_aee140416af161a6d8acc2b0c83370088}{\index{H\+U\+D\+Window@{H\+U\+D\+Window}!add\+Image@{add\+Image}}
+\hypertarget{class_h_u_d_window_a65a770438d90ccde706a429893929680}{\index{H\+U\+D\+Window@{H\+U\+D\+Window}!add\+Image@{add\+Image}}
 \index{add\+Image@{add\+Image}!H\+U\+D\+Window@{H\+U\+D\+Window}}
-\subsubsection[{add\+Image}]{\setlength{\rightskip}{0pt plus 5cm}void H\+U\+D\+Window\+::add\+Image (
+\subsubsection[{add\+Image}]{\setlength{\rightskip}{0pt plus 5cm}H\+U\+D\+Actor $\ast$ H\+U\+D\+Window\+::add\+Image (
 \begin{DoxyParamCaption}
 \item[{std\+::string}]{path, }
 \item[{int}]{x, }
 \item[{int}]{y, }
 \item[{float}]{size}
 \end{DoxyParamCaption}
-)}}\label{class_h_u_d_window_aee140416af161a6d8acc2b0c83370088}
+)}}\label{class_h_u_d_window_a65a770438d90ccde706a429893929680}
 
 
 Add an image. 
@@ -133,6 +154,34 @@ Add an image in the H\+U\+D
 {\em size} & Size, in float. \\
 \hline
 \end{DoxyParams}
+\hypertarget{class_h_u_d_window_a9eb6b2fbd2364591d56d75a0dfe0c8f9}{\index{H\+U\+D\+Window@{H\+U\+D\+Window}!add\+Image@{add\+Image}}
+\index{add\+Image@{add\+Image}!H\+U\+D\+Window@{H\+U\+D\+Window}}
+\subsubsection[{add\+Image}]{\setlength{\rightskip}{0pt plus 5cm}H\+U\+D\+Actor $\ast$ H\+U\+D\+Window\+::add\+Image (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{path, }
+\item[{int}]{x, }
+\item[{int}]{y, }
+\item[{float}]{size, }
+\item[{int}]{layer}
+\end{DoxyParamCaption}
+)}}\label{class_h_u_d_window_a9eb6b2fbd2364591d56d75a0dfe0c8f9}
+
+
+Add an image. 
+
+Add an image in the H\+U\+D 
+\begin{DoxyParams}{Parameters}
+{\em path} & The path of the img \\
+\hline
+{\em x} & X position \\
+\hline
+{\em y} & Y position \\
+\hline
+{\em size} & Size, in float. \\
+\hline
+{\em layer} & The desired layer \\
+\hline
+\end{DoxyParams}
 \hypertarget{class_h_u_d_window_a1c6965adb9fdd22b230d20b26fef5ac0}{\index{H\+U\+D\+Window@{H\+U\+D\+Window}!armor@{armor}}
 \index{armor@{armor}!H\+U\+D\+Window@{H\+U\+D\+Window}}
 \subsubsection[{armor}]{\setlength{\rightskip}{0pt plus 5cm}void H\+U\+D\+Window\+::armor (
@@ -145,8 +194,19 @@ Add an image in the H\+U\+D
 Display armor. 
 
 Display the armor function. This function is a callback call in Character\+::set\+Armor. So you won't problably call this function ! \begin{DoxyRefDesc}{Todo}
-\item[\hyperlink{todo__todo000011}{Todo}]The description here is a lie. But it's gonna append ! \end{DoxyRefDesc}
-\hypertarget{class_h_u_d_window_acd4fdbfd1c2562384b84d3bcda80fea1}{\index{H\+U\+D\+Window@{H\+U\+D\+Window}!boots@{boots}}
+\item[\hyperlink{todo__todo000015}{Todo}]The description here is a lie. But it's gonna append ! \end{DoxyRefDesc}
+\hypertarget{class_h_u_d_window_a072650c8490c0222c95b7ff99efb4924}{\index{H\+U\+D\+Window@{H\+U\+D\+Window}!bag@{bag}}
+\index{bag@{bag}!H\+U\+D\+Window@{H\+U\+D\+Window}}
+\subsubsection[{bag}]{\setlength{\rightskip}{0pt plus 5cm}void H\+U\+D\+Window\+::bag (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_h_u_d_window_a072650c8490c0222c95b7ff99efb4924}
+
+
+Bag display function. 
+
+This function display an empty bag at the beggining of the game \hypertarget{class_h_u_d_window_acd4fdbfd1c2562384b84d3bcda80fea1}{\index{H\+U\+D\+Window@{H\+U\+D\+Window}!boots@{boots}}
 \index{boots@{boots}!H\+U\+D\+Window@{H\+U\+D\+Window}}
 \subsubsection[{boots}]{\setlength{\rightskip}{0pt plus 5cm}void H\+U\+D\+Window\+::boots (
 \begin{DoxyParamCaption}
@@ -158,20 +218,20 @@ Display the armor function. This function is a callback call in Character\+::set
 Display boots function. 
 
 Show the actual boots in the \hyperlink{class_h_u_d_window}{H\+U\+D\+Window} \begin{DoxyRefDesc}{Todo}
-\item[\hyperlink{todo__todo000012}{Todo}]No callback \& object for now, but have to do it ! \end{DoxyRefDesc}
-\hypertarget{class_h_u_d_window_a378bc8269cacb151f68cfb37114e0c38}{\index{H\+U\+D\+Window@{H\+U\+D\+Window}!consumable@{consumable}}
+\item[\hyperlink{todo__todo000016}{Todo}]No callback \& object for now, but have to do it ! \end{DoxyRefDesc}
+\hypertarget{class_h_u_d_window_aeeafdcca95bdcdb3b31a6bc4d2e1e379}{\index{H\+U\+D\+Window@{H\+U\+D\+Window}!consumable@{consumable}}
 \index{consumable@{consumable}!H\+U\+D\+Window@{H\+U\+D\+Window}}
 \subsubsection[{consumable}]{\setlength{\rightskip}{0pt plus 5cm}void H\+U\+D\+Window\+::consumable (
 \begin{DoxyParamCaption}
-\item[{void}]{}
+\item[{std\+::map$<$ int, std\+::string $>$}]{items}
 \end{DoxyParamCaption}
-)}}\label{class_h_u_d_window_a378bc8269cacb151f68cfb37114e0c38}
+)}}\label{class_h_u_d_window_aeeafdcca95bdcdb3b31a6bc4d2e1e379}
 
 
 Show the consumable function. 
 
 Display the consumable (potions, etc) in the H\+U\+D \begin{DoxyRefDesc}{Todo}
-\item[\hyperlink{todo__todo000013}{Todo}]Same here, no callback or object. \end{DoxyRefDesc}
+\item[\hyperlink{todo__todo000017}{Todo}]Same here, no callback or object. \end{DoxyRefDesc}
 \hypertarget{class_h_u_d_window_a12148d8845eaa5a663d816a4befba0dd}{\index{H\+U\+D\+Window@{H\+U\+D\+Window}!display\+Text@{display\+Text}}
 \index{display\+Text@{display\+Text}!H\+U\+D\+Window@{H\+U\+D\+Window}}
 \subsubsection[{display\+Text}]{\setlength{\rightskip}{0pt plus 5cm}void H\+U\+D\+Window\+::display\+Text (
@@ -210,9 +270,41 @@ Make it rain baby Like this all A\+P\+I, evrything his handled. Don't worry.
 
 Display items (\hyperlink{class_weapon}{Weapon}) 
 
-Display the weapon function. This function is a callback call in Character\+::set\+Weapon. So you won't problably call this function ! 
+Display the weapon function. This function is a callback call in Character\+::equip\+Weapon. So you won't problably call this function ! 
 \begin{DoxyParams}{Parameters}
 {\em w} & The \hyperlink{class_weapon}{Weapon} equipped. \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_h_u_d_window_aa5d1623cd329eb921eec7ad625df442b}{\index{H\+U\+D\+Window@{H\+U\+D\+Window}!items@{items}}
+\index{items@{items}!H\+U\+D\+Window@{H\+U\+D\+Window}}
+\subsubsection[{items}]{\setlength{\rightskip}{0pt plus 5cm}void H\+U\+D\+Window\+::items (
+\begin{DoxyParamCaption}
+\item[{{\bf Armor} $\ast$}]{a}
+\end{DoxyParamCaption}
+)}}\label{class_h_u_d_window_aa5d1623cd329eb921eec7ad625df442b}
+
+
+Display items (\hyperlink{class_armor}{Armor}) 
+
+Display the armor function. This function is a callback call in Character\+::equip\+Armor. So you won't problably call this function ! 
+\begin{DoxyParams}{Parameters}
+{\em a} & The \hyperlink{class_armor}{Armor} equipped. \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_h_u_d_window_a34e0d171390db9eec346c242000b3a20}{\index{H\+U\+D\+Window@{H\+U\+D\+Window}!items@{items}}
+\index{items@{items}!H\+U\+D\+Window@{H\+U\+D\+Window}}
+\subsubsection[{items}]{\setlength{\rightskip}{0pt plus 5cm}void H\+U\+D\+Window\+::items (
+\begin{DoxyParamCaption}
+\item[{{\bf Ring} $\ast$}]{r}
+\end{DoxyParamCaption}
+)}}\label{class_h_u_d_window_a34e0d171390db9eec346c242000b3a20}
+
+
+Display items (\hyperlink{class_ring}{Ring}) 
+
+Display the ring function. This function is a callback call in Character\+::equip\+Ring. So you won't problably call this function ! 
+\begin{DoxyParams}{Parameters}
+{\em r} & The \hyperlink{class_ring}{Ring} equipped. \\
 \hline
 \end{DoxyParams}
 \hypertarget{class_h_u_d_window_a8fc917fbfae792d046e90448c963100a}{\index{H\+U\+D\+Window@{H\+U\+D\+Window}!life@{life}}
@@ -232,7 +324,7 @@ Life is life (lalala) This function take care of the heart, in the H\+U\+D.
 \hline
 \end{DoxyParams}
 \begin{DoxyRefDesc}{Todo}
-\item[\hyperlink{todo__todo000010}{Todo}]Empty heart, half-\/heart. \end{DoxyRefDesc}
+\item[\hyperlink{todo__todo000014}{Todo}]Empty heart, half-\/heart. \end{DoxyRefDesc}
 \hypertarget{class_h_u_d_window_a6eb79b572849709a329e65ed2afd2e9e}{\index{H\+U\+D\+Window@{H\+U\+D\+Window}!mana@{mana}}
 \index{mana@{mana}!H\+U\+D\+Window@{H\+U\+D\+Window}}
 \subsubsection[{mana}]{\setlength{\rightskip}{0pt plus 5cm}void H\+U\+D\+Window\+::mana (
@@ -258,10 +350,10 @@ Show the mana in the H\+U\+D Same way as \hyperlink{class_h_u_d_window_a8fc917fb
 )}}\label{class_h_u_d_window_a8264836f3c55d8211f4e5166e9049628}
 
 
-Display the minimap in the H\+Ud. 
+Display the minimap in the H\+U\+D. 
 
 This function is not finished at all. So don't use it. Thank's. \begin{DoxyRefDesc}{Todo}
-\item[\hyperlink{todo__todo000014}{Todo}]Make this function work normally. \end{DoxyRefDesc}
+\item[\hyperlink{todo__todo000018}{Todo}]Make this function work normally. \end{DoxyRefDesc}
 \hypertarget{class_h_u_d_window_a0aedfd1f3c8354da1b69f1b592d4ad3e}{\index{H\+U\+D\+Window@{H\+U\+D\+Window}!remove\+Text@{remove\+Text}}
 \index{remove\+Text@{remove\+Text}!H\+U\+D\+Window@{H\+U\+D\+Window}}
 \subsubsection[{remove\+Text}]{\setlength{\rightskip}{0pt plus 5cm}void H\+U\+D\+Window\+::remove\+Text (
@@ -273,20 +365,8 @@ This function is not finished at all. So don't use it. Thank's. \begin{DoxyRefDe
 
 Remove \hyperlink{class_h_u_d_window_1_1_text}{Text}. 
 
-Set a text in the window 
+This function remove the asked text from the screen. 
 \begin{DoxyParams}{Parameters}
-{\em str} & The text message \\
-\hline
-{\em x} & X position \\
-\hline
-{\em y} & Y position \\
-\hline
-{\em color} & The color of the text (See Angel2d's Vector3 for more info) \\
-\hline
-{\em alpha} & The transparency. \\
-\hline
-{\em size} & The size of the text This function remove the asked text from the screen. \\
-\hline
 {\em str} & The text content message \\
 \hline
 \end{DoxyParams}
@@ -356,6 +436,68 @@ Set a text in the window
 {\em alpha} & The transparency. \\
 \hline
 \end{DoxyParams}
+\hypertarget{class_h_u_d_window_a9a546c6c138ac863f464ec7bf606ea68}{\index{H\+U\+D\+Window@{H\+U\+D\+Window}!set\+Text@{set\+Text}}
+\index{set\+Text@{set\+Text}!H\+U\+D\+Window@{H\+U\+D\+Window}}
+\subsubsection[{set\+Text}]{\setlength{\rightskip}{0pt plus 5cm}{\bf H\+U\+D\+Window\+::\+Text} $\ast$ H\+U\+D\+Window\+::set\+Text (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{str, }
+\item[{int}]{x, }
+\item[{int}]{y, }
+\item[{Vector3}]{color, }
+\item[{int}]{alpha, }
+\item[{std\+::string}]{font}
+\end{DoxyParamCaption}
+)}}\label{class_h_u_d_window_a9a546c6c138ac863f464ec7bf606ea68}
+
+
+Set text function. 
+
+Set a text in the window 
+\begin{DoxyParams}{Parameters}
+{\em str} & The text message \\
+\hline
+{\em x} & X position \\
+\hline
+{\em y} & Y position \\
+\hline
+{\em color} & The color of the text (See Angel2d's Vector3 for more info) \\
+\hline
+{\em alpha} & The transparency. \\
+\hline
+{\em font} & The font name \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_h_u_d_window_a63b8e6cefedc40263fce659513e5b420}{\index{H\+U\+D\+Window@{H\+U\+D\+Window}!set\+Text@{set\+Text}}
+\index{set\+Text@{set\+Text}!H\+U\+D\+Window@{H\+U\+D\+Window}}
+\subsubsection[{set\+Text}]{\setlength{\rightskip}{0pt plus 5cm}{\bf H\+U\+D\+Window\+::\+Text} $\ast$ H\+U\+D\+Window\+::set\+Text (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{str, }
+\item[{{\bf Characters} $\ast$}]{to\+Follow, }
+\item[{Vector3}]{color, }
+\item[{int}]{is\+Fading, }
+\item[{int}]{is\+Talk}
+\end{DoxyParamCaption}
+)}}\label{class_h_u_d_window_a63b8e6cefedc40263fce659513e5b420}
+
+
+Characters-\/follow \hyperlink{class_h_u_d_window_1_1_text}{Text}. 
+
+Set a \hyperlink{class_h_u_d_window_1_1_text}{Text} on a Character 
+\begin{DoxyParams}{Parameters}
+{\em str} & The \hyperlink{class_h_u_d_window_1_1_text}{Text} \\
+\hline
+{\em to\+Follow} & The Character \\
+\hline
+{\em color} & The R\+G\+B Color \\
+\hline
+{\em is\+Fading} & 0 / 1 If the text has to fade \\
+\hline
+{\em is\+Talk} & 0 / 1 If the text is a dialog \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+is\+Fading and is\+Talk can't be true at the same time 
+\end{DoxyNote}
 \hypertarget{class_h_u_d_window_a426914dc711c65337a55b44c188d1636}{\index{H\+U\+D\+Window@{H\+U\+D\+Window}!update\+Gold@{update\+Gold}}
 \index{update\+Gold@{update\+Gold}!H\+U\+D\+Window@{H\+U\+D\+Window}}
 \subsubsection[{update\+Gold}]{\setlength{\rightskip}{0pt plus 5cm}void H\+U\+D\+Window\+::update\+Gold (
@@ -376,5 +518,5 @@ New gold update function Remove the old gold, and display the new one
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-inc/H\+U\+D\+Window.\+hpp\item 
-src/H\+U\+D\+Window.\+cpp\end{DoxyCompactItemize}
+Sources/inc/H\+U\+D\+Window.\+hpp\item 
+Sources/src/H\+U\+D\+Window.\+cpp\end{DoxyCompactItemize}

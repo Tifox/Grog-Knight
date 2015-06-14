@@ -27,7 +27,45 @@ void \hyperlink{class_enemy_a2f1157b7c8d74371c2b06493563423ee}{action\+Callback}
 void \hyperlink{class_enemy_a4ed496f92f8c791133494d24b4eeaff6}{init} (void)
 \begin{DoxyCompactList}\small\item\em Init Animation. \end{DoxyCompactList}\item 
 void \hyperlink{class_enemy_a3938e3e2cf5f07d809e1f1927b09539a}{Begin\+Contact} (\hyperlink{class_elements}{Elements} $\ast$m, b2\+Contact $\ast$contact)
-\begin{DoxyCompactList}\small\item\em Begin collision function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Begin collision function. \end{DoxyCompactList}\item 
+void \hyperlink{class_enemy_ad67767dc83c2d22abbdc5f5e2455e4fc}{End\+Contact} (\hyperlink{class_elements}{Elements} $\ast$m, b2\+Contact $\ast$contact)
+\begin{DoxyCompactList}\small\item\em End collision function. \end{DoxyCompactList}\item 
+\hypertarget{class_enemy_abf7de128f98e8a047f163be2f6910404}{bool {\bfseries to\+Be\+Deleted} (void)}\label{class_enemy_abf7de128f98e8a047f163be2f6910404}
+
+\item 
+\hypertarget{class_enemy_a89ebe8ca907bb2ad7254dcda08badf7c}{void {\bfseries set\+Map} (\hyperlink{class_map}{Map} $\ast$m)}\label{class_enemy_a89ebe8ca907bb2ad7254dcda08badf7c}
+
+\item 
+\hypertarget{class_enemy_a22caa0c2bb4878e11c17395dc485be83}{\hyperlink{class_map}{Map} $\ast$ {\bfseries get\+Map} (void)}\label{class_enemy_a22caa0c2bb4878e11c17395dc485be83}
+
+\item 
+\hypertarget{class_enemy_aaf8b58bb1a1c4f56dc4625ce445271e4}{void {\bfseries set\+Pattern} (\hyperlink{class_c_pattern}{C\+Pattern} $\ast$p)}\label{class_enemy_aaf8b58bb1a1c4f56dc4625ce445271e4}
+
+\item 
+\hypertarget{class_enemy_a5b987d9b49394d58f240a094116d3617}{\hyperlink{class_c_pattern}{C\+Pattern} $\ast$ {\bfseries get\+Pattern} (void)}\label{class_enemy_a5b987d9b49394d58f240a094116d3617}
+
+\item 
+\hypertarget{class_enemy_a4a3260187a25ea0ec2d6ffcaa8a7a87d}{bool {\bfseries dead} (void)}\label{class_enemy_a4a3260187a25ea0ec2d6ffcaa8a7a87d}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_enemy_a04b41e988f90d434cafa885f4df757b5}{int {\bfseries \+\_\+is\+Taking\+Damage}}\label{class_enemy_a04b41e988f90d434cafa885f4df757b5}
+
+\item 
+\hypertarget{class_enemy_a6e55221aa524f0f826feadfd0c567b70}{bool {\bfseries is\+Dead}}\label{class_enemy_a6e55221aa524f0f826feadfd0c567b70}
+
+\item 
+\hypertarget{class_enemy_a3949d0dcc37aad7902833bd3f5c2689f}{\hyperlink{class_map}{Map} $\ast$ {\bfseries \+\_\+map}}\label{class_enemy_a3949d0dcc37aad7902833bd3f5c2689f}
+
+\item 
+\hypertarget{class_enemy_aefda324c0dec1f6b8a72d441ad04f76b}{\hyperlink{class_c_pattern}{C\+Pattern} $\ast$ {\bfseries \+\_\+pattern}}\label{class_enemy_aefda324c0dec1f6b8a72d441ad04f76b}
+
+\item 
+\hypertarget{class_enemy_aab9e0868dbea218aeb3d92f724876f52}{int {\bfseries \+\_\+last\+Element}}\label{class_enemy_aab9e0868dbea218aeb3d92f724876f52}
+
+\end{DoxyCompactItemize}
 \subsection*{Additional Inherited Members}
 
 
@@ -133,6 +171,29 @@ Collision begin callback /!\textbackslash{} This function is called just before 
 
 Reimplemented from \hyperlink{class_characters_ae1b52f35e60cd23ec118595a9a8e8760}{Characters}.
 
+\hypertarget{class_enemy_ad67767dc83c2d22abbdc5f5e2455e4fc}{\index{Enemy@{Enemy}!End\+Contact@{End\+Contact}}
+\index{End\+Contact@{End\+Contact}!Enemy@{Enemy}}
+\subsubsection[{End\+Contact}]{\setlength{\rightskip}{0pt plus 5cm}void Enemy\+::\+End\+Contact (
+\begin{DoxyParamCaption}
+\item[{{\bf Elements} $\ast$}]{elem, }
+\item[{b2\+Contact $\ast$}]{contact}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_enemy_ad67767dc83c2d22abbdc5f5e2455e4fc}
+
+
+End collision function. 
+
+Collision end callback /!\textbackslash{} This function is called A\+F\+T\+E\+R the elements leave another 
+\begin{DoxyParams}{Parameters}
+{\em elem} & The Element who left collision \\
+\hline
+{\em } & contact The b2\+Contact object of the collided element. See Box2\+D docs for more info. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_characters_a87c76bb34f5c11e2da4537be07d2f846}{Characters}.
+
 \hypertarget{class_enemy_a4ed496f92f8c791133494d24b4eeaff6}{\index{Enemy@{Enemy}!init@{init}}
 \index{init@{init}!Enemy@{Enemy}}
 \subsubsection[{init}]{\setlength{\rightskip}{0pt plus 5cm}void Enemy\+::init (
@@ -155,7 +216,7 @@ Do the first animation call. \hypertarget{class_enemy_ae4335909ac929e5e5db7eb01b
 
 Take Damage. 
 
-Function that applies damage In this function, we reduce the H\+P (no way ?), reduce the speed, play a sprite animation. 
+Function that applies damage In this function, we reduce the H\+P, reduce the speed, play a sprite animation. 
 \begin{DoxyParams}{Parameters}
 {\em damage} & The damage amount \\
 \hline
@@ -164,5 +225,5 @@ Function that applies damage In this function, we reduce the H\+P (no way ?), re
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-inc/Enemy.\+hpp\item 
-src/Enemy.\+cpp\end{DoxyCompactItemize}
+Sources/inc/Enemy.\+hpp\item 
+Sources/src/Enemy.\+cpp\end{DoxyCompactItemize}

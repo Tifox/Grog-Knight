@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>Grog-like: Room Class Reference</title>
+<title>Grog-Like: Room Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -14,6 +14,7 @@
   $(document).ready(function() { searchBox.OnSelectItem(0); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -21,9 +22,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="hero_000.png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="hero_023.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Grog-like
+   <div id="projectname">Grog-Like
    </div>
   </td>
  </tr>
@@ -63,7 +64,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -85,6 +86,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="class_room-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Room Class Reference</div>  </div>
@@ -93,8 +95,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aaef0b08fe3796290d4609470ddd9a0c4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_room.html#aaef0b08fe3796290d4609470ddd9a0c4">Room</a> (int id, int x, int y, int mapId)</td></tr>
-<tr class="separator:aaef0b08fe3796290d4609470ddd9a0c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5c220386a83d7426d9da237290d53eb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_room.html#af5c220386a83d7426d9da237290d53eb">Room</a> (int id, int y, int x, int distance, int mapId, bool topDoor, bool leftDoor, bool bottomDoor, bool rightDoor)</td></tr>
+<tr class="separator:af5c220386a83d7426d9da237290d53eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67d5da09983cc53097807fd43ba5481a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_room.html#a67d5da09983cc53097807fd43ba5481a">~Room</a> ()</td></tr>
 <tr class="separator:a67d5da09983cc53097807fd43ba5481a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a067f0dbf1e1981f3f53692c454032bad"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a067f0dbf1e1981f3f53692c454032bad"></a>
@@ -130,6 +132,21 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>getBottomDoor</b> () 
 <tr class="memitem:a257c82e3ac31634b8612c33900fc28bc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a257c82e3ac31634b8612c33900fc28bc"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>getRightDoor</b> () const </td></tr>
 <tr class="separator:a257c82e3ac31634b8612c33900fc28bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bdd728ac9dbf611b9dc7eb42612b863"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3bdd728ac9dbf611b9dc7eb42612b863"></a>
+<a class="el" href="class_room.html">Room</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getTopRoom</b> () const </td></tr>
+<tr class="separator:a3bdd728ac9dbf611b9dc7eb42612b863"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31b27a0c63af76a6c67de4010d37227d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a31b27a0c63af76a6c67de4010d37227d"></a>
+<a class="el" href="class_room.html">Room</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getLeftRoom</b> () const </td></tr>
+<tr class="separator:a31b27a0c63af76a6c67de4010d37227d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77e9db1315a41191da1fdfce26c4403a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a77e9db1315a41191da1fdfce26c4403a"></a>
+<a class="el" href="class_room.html">Room</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getBottomRoom</b> () const </td></tr>
+<tr class="separator:a77e9db1315a41191da1fdfce26c4403a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab863700e2c354d81777bc860d07a2332"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab863700e2c354d81777bc860d07a2332"></a>
+<a class="el" href="class_room.html">Room</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getRightRoom</b> () const </td></tr>
+<tr class="separator:ab863700e2c354d81777bc860d07a2332"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad53b1a8ac4f66088a851b1dc4b4e2c59"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad53b1a8ac4f66088a851b1dc4b4e2c59"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>closeDoor</b> (void)</td></tr>
+<tr class="separator:ad53b1a8ac4f66088a851b1dc4b4e2c59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9ce2180afaa86a1881a245d1b539e03"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab9ce2180afaa86a1881a245d1b539e03"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>addLink</b> ()</td></tr>
 <tr class="separator:ab9ce2180afaa86a1881a245d1b539e03"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,15 +162,78 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setBottomDoor</b> (bo
 <tr class="memitem:a5ba5a9b9807f26d2ea17c8b9377214af"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5ba5a9b9807f26d2ea17c8b9377214af"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setRightDoor</b> (bool state)</td></tr>
 <tr class="separator:a5ba5a9b9807f26d2ea17c8b9377214af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afebd779422904d4df29218a775daefb7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afebd779422904d4df29218a775daefb7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setTopRoom</b> (<a class="el" href="class_room.html">Room</a> *r)</td></tr>
+<tr class="separator:afebd779422904d4df29218a775daefb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2100c62dc850c1d78c5ef67529e785a8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2100c62dc850c1d78c5ef67529e785a8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setLeftRoom</b> (<a class="el" href="class_room.html">Room</a> *r)</td></tr>
+<tr class="separator:a2100c62dc850c1d78c5ef67529e785a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b30444583aafef29a6d4a87d4be92c4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0b30444583aafef29a6d4a87d4be92c4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setBottomRoom</b> (<a class="el" href="class_room.html">Room</a> *r)</td></tr>
+<tr class="separator:a0b30444583aafef29a6d4a87d4be92c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a732ac8a1e1f0913a984e16fe699e790e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a732ac8a1e1f0913a984e16fe699e790e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setRightRoom</b> (<a class="el" href="class_room.html">Room</a> *r)</td></tr>
+<tr class="separator:a732ac8a1e1f0913a984e16fe699e790e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8515625370a9aec953f76efded718e4b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8515625370a9aec953f76efded718e4b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setDistance</b> (int distance)</td></tr>
 <tr class="separator:a8515625370a9aec953f76efded718e4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c58b28fceef732f7cf3f865209ab847"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5c58b28fceef732f7cf3f865209ab847"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setSpecialType</b> (SpecialType type)</td></tr>
 <tr class="separator:a5c58b28fceef732f7cf3f865209ab847"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:aa97bb98fc26b53ea69dc2ead93c1f387"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa97bb98fc26b53ea69dc2ead93c1f387"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>_id</b></td></tr>
+<tr class="separator:aa97bb98fc26b53ea69dc2ead93c1f387"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bc1a09de14c29a10d5fea5a8f2e98de"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5bc1a09de14c29a10d5fea5a8f2e98de"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>_y</b></td></tr>
+<tr class="separator:a5bc1a09de14c29a10d5fea5a8f2e98de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc7126011673a7372edc89316d7ba92f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adc7126011673a7372edc89316d7ba92f"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>_x</b></td></tr>
+<tr class="separator:adc7126011673a7372edc89316d7ba92f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66b1c60370ab2db3210f1d5ade08ee78"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a66b1c60370ab2db3210f1d5ade08ee78"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>_mapId</b></td></tr>
+<tr class="separator:a66b1c60370ab2db3210f1d5ade08ee78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55bce8c6ce0d3d262b1067df6e8c0d51"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a55bce8c6ce0d3d262b1067df6e8c0d51"></a>
+DepthType&#160;</td><td class="memItemRight" valign="bottom"><b>_depthType</b></td></tr>
+<tr class="separator:a55bce8c6ce0d3d262b1067df6e8c0d51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80c70edbe9ec51b121504cd943218eac"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a80c70edbe9ec51b121504cd943218eac"></a>
+SpecialType&#160;</td><td class="memItemRight" valign="bottom"><b>_specialType</b></td></tr>
+<tr class="separator:a80c70edbe9ec51b121504cd943218eac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2aea023acbf7a7d3c1c7eb2c60383b61"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2aea023acbf7a7d3c1c7eb2c60383b61"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>_distance</b></td></tr>
+<tr class="separator:a2aea023acbf7a7d3c1c7eb2c60383b61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1afece5a895b2154352321935144897"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa1afece5a895b2154352321935144897"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>_links</b></td></tr>
+<tr class="separator:aa1afece5a895b2154352321935144897"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5e9fd2433a13bcd80f128034b6a2a11"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac5e9fd2433a13bcd80f128034b6a2a11"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>_topDoor</b></td></tr>
+<tr class="separator:ac5e9fd2433a13bcd80f128034b6a2a11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69527ff853d558a8ada29a9ffa773e9f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a69527ff853d558a8ada29a9ffa773e9f"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>_leftDoor</b></td></tr>
+<tr class="separator:a69527ff853d558a8ada29a9ffa773e9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33d03dec3d68b42ff5a46edd48a87846"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a33d03dec3d68b42ff5a46edd48a87846"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>_bottomDoor</b></td></tr>
+<tr class="separator:a33d03dec3d68b42ff5a46edd48a87846"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ca058c94f3641ec35f29088edc218f5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2ca058c94f3641ec35f29088edc218f5"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>_rightDoor</b></td></tr>
+<tr class="separator:a2ca058c94f3641ec35f29088edc218f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a144360bff28be14308054d0f5892f32f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a144360bff28be14308054d0f5892f32f"></a>
+<a class="el" href="class_room.html">Room</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_leftRoom</b></td></tr>
+<tr class="separator:a144360bff28be14308054d0f5892f32f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a61fe7ff8ad7aaa30c2a3468d5515e4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a61fe7ff8ad7aaa30c2a3468d5515e4"></a>
+<a class="el" href="class_room.html">Room</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_bottomRoom</b></td></tr>
+<tr class="separator:a7a61fe7ff8ad7aaa30c2a3468d5515e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c9023d5e0457d9bad0128ee35c26b17"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2c9023d5e0457d9bad0128ee35c26b17"></a>
+<a class="el" href="class_room.html">Room</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_topRoom</b></td></tr>
+<tr class="separator:a2c9023d5e0457d9bad0128ee35c26b17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9f608594a27625d336d821c3a98a41d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa9f608594a27625d336d821c3a98a41d"></a>
+<a class="el" href="class_room.html">Room</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_rightRoom</b></td></tr>
+<tr class="separator:aa9f608594a27625d336d821c3a98a41d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="aaef0b08fe3796290d4609470ddd9a0c4"></a>
+<a class="anchor" id="af5c220386a83d7426d9da237290d53eb"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -179,7 +259,37 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setSpecialType</b> (S
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>mapId</em>&#160;</td>
+          <td class="paramname"><em>distance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>mapId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>topDoor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>leftDoor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>bottomDoor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>rightDoor</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -218,7 +328,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setSpecialType</b> (S
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Apr 26 2015 08:13:25 for Grog-like by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jun 14 2015 22:02:38 for Grog-Like by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>Grog-like: HUDWindow::Text Class Reference</title>
+<title>Grog-Like: HUDWindow::Text Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -14,6 +14,7 @@
   $(document).ready(function() { searchBox.OnSelectItem(0); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -21,9 +22,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="hero_000.png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="hero_023.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Grog-like
+   <div id="projectname">Grog-Like
    </div>
   </td>
  </tr>
@@ -63,7 +64,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -100,6 +101,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a33f10a1d33234b7820a1adbd89c213da"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a33f10a1d33234b7820a1adbd89c213da"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>str</b></td></tr>
 <tr class="separator:a33f10a1d33234b7820a1adbd89c213da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90ba2f6ad7c27f789ed4f1c1d3b5f51e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a90ba2f6ad7c27f789ed4f1c1d3b5f51e"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>font</b></td></tr>
+<tr class="separator:a90ba2f6ad7c27f789ed4f1c1d3b5f51e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8fa18534f2539eb429a61e81d4757aa0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8fa18534f2539eb429a61e81d4757aa0"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>x</b></td></tr>
 <tr class="separator:a8fa18534f2539eb429a61e81d4757aa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -118,6 +122,15 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>colorB</b></td></tr>
 <tr class="memitem:a21f5f0d45795fb8f64fc9140aa912478"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a21f5f0d45795fb8f64fc9140aa912478"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>colorA</b></td></tr>
 <tr class="separator:a21f5f0d45795fb8f64fc9140aa912478"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf32e60e8e3b3cbef6263ad14a086137"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abf32e60e8e3b3cbef6263ad14a086137"></a>
+<a class="el" href="class_characters.html">Characters</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>toFollow</b></td></tr>
+<tr class="separator:abf32e60e8e3b3cbef6263ad14a086137"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76043db43bebccb6913aff2a44f1af0f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a76043db43bebccb6913aff2a44f1af0f"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>isFading</b></td></tr>
+<tr class="separator:a76043db43bebccb6913aff2a44f1af0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a83bfe4f3b1f4b8bf4930a0fcf292e2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4a83bfe4f3b1f4b8bf4930a0fcf292e2"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>isTalk</b></td></tr>
+<tr class="separator:a4a83bfe4f3b1f4b8bf4930a0fcf292e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>Sources/inc/<a class="el" href="_h_u_d_window_8hpp_source.html">HUDWindow.hpp</a></li>
@@ -125,7 +138,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>colorA</b></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Apr 26 2015 08:13:25 for Grog-like by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jun 14 2015 22:02:37 for Grog-Like by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

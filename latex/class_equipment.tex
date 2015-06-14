@@ -21,9 +21,21 @@ Inheritance diagram for Equipment\+:\begin{figure}[H]
 \hypertarget{class_equipment_aad2bafad2e0b780e3451da80b5414a62}{{\bfseries Equipment} (\hyperlink{class_weapon}{Weapon} $\ast$, \hyperlink{class_characters}{Characters} $\ast$)}\label{class_equipment_aad2bafad2e0b780e3451da80b5414a62}
 
 \item 
+\hypertarget{class_equipment_a1364671a5336020993020388d0f4a80b}{{\bfseries Equipment} (\hyperlink{class_armor}{Armor} $\ast$, \hyperlink{class_characters}{Characters} $\ast$)}\label{class_equipment_a1364671a5336020993020388d0f4a80b}
+
+\item 
+\hypertarget{class_equipment_a36564cf71dacc682dca4b9d3f8d8f5b8}{{\bfseries Equipment} (\hyperlink{class_ring}{Ring} $\ast$, \hyperlink{class_characters}{Characters} $\ast$)}\label{class_equipment_a36564cf71dacc682dca4b9d3f8d8f5b8}
+
+\item 
 \hypertarget{class_equipment_a3e7f53e57fa3004b5a4490e2c7a1fbaf}{\hyperlink{class_equipment_a3e7f53e57fa3004b5a4490e2c7a1fbaf}{$\sim$\+Equipment} ()}\label{class_equipment_a3e7f53e57fa3004b5a4490e2c7a1fbaf}
 
 \begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\hypertarget{class_equipment_a0f721d0f27cea8e8d4946b591ab6ac32}{\hyperlink{class_ring}{Ring} $\ast$ {\bfseries get\+Ring} (void)}\label{class_equipment_a0f721d0f27cea8e8d4946b591ab6ac32}
+
+\item 
+\hypertarget{class_equipment_aa257497229b90a64bda53df40b38871c}{\hyperlink{class_armor}{Armor} $\ast$ {\bfseries get\+Armor} (void)}\label{class_equipment_aa257497229b90a64bda53df40b38871c}
+
+\item 
 \hypertarget{class_equipment_a54fd1c2d6cca6b4d2584eb0cf8725bd2}{\hyperlink{class_weapon}{Weapon} $\ast$ {\bfseries get\+Weapon} (void)}\label{class_equipment_a54fd1c2d6cca6b4d2584eb0cf8725bd2}
 
 \item 
@@ -32,7 +44,10 @@ void \hyperlink{class_equipment_a0c706b45578e8d01fec7b8ee1b773987}{Begin\+Contac
 void \hyperlink{class_equipment_abda1acd976a1c33f3aa398b3a9a64555}{End\+Contact} (\hyperlink{class_elements}{Elements} $\ast$elem, b2\+Contact $\ast$contact)
 \begin{DoxyCompactList}\small\item\em End of collision callback. \end{DoxyCompactList}\item 
 void \hyperlink{class_equipment_ab195be955597ce6f64c117d675df3af4}{Receive\+Message} (Message $\ast$m)
-\begin{DoxyCompactList}\small\item\em Intern broadcasts function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Intern broadcasts function. \end{DoxyCompactList}\item 
+\hypertarget{class_equipment_a36ba8d5a456a49363e695e83311a396f}{virtual std\+::string {\bfseries get\+Name} ()}\label{class_equipment_a36ba8d5a456a49363e695e83311a396f}
+
+\end{DoxyCompactItemize}
 \subsection*{Additional Inherited Members}
 
 
@@ -60,7 +75,7 @@ Licensed to the Apache Software Foundation (A\+S\+F) under one or more contribut
 \href{http://www.apache.org/licenses/LICENSE-2.0}{\tt http\+://www.\+apache.\+org/licenses/\+L\+I\+C\+E\+N\+S\+E-\/2.\+0}
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\+A\+S I\+S\char`\"{} B\+A\+S\+I\+S, W\+I\+T\+H\+O\+U\+T W\+A\+R\+R\+A\+N\+T\+I\+E\+S O\+R C\+O\+N\+D\+I\+T\+I\+O\+N\+S O\+F A\+N\+Y K\+I\+N\+D, either express or implied. See the License for the specific language governing permissions and limitations under the License. File\+: Equipment.\+cpp Creation\+: 2015-\/03-\/06 15\+:51 Manon Budin \href{mailto:mbudin@student.42.fr}{\tt mbudin@student.\+42.\+fr} The basic constructor. In this constructor, we get the sprite and Init\+Physics. \begin{DoxyRefDesc}{Todo}
-\item[\hyperlink{todo__todo000005}{Todo}]The position is actually in the hard-\/way. Config file needed. \end{DoxyRefDesc}
+\item[\hyperlink{todo__todo000008}{Todo}]The position is actually in the hard-\/way. Config file needed. \end{DoxyRefDesc}
 \hypertarget{class_equipment_aeb2356275b65e0d7874aeaee05dc30a4}{\index{Equipment@{Equipment}!Equipment@{Equipment}}
 \index{Equipment@{Equipment}!Equipment@{Equipment}}
 \subsubsection[{Equipment}]{\setlength{\rightskip}{0pt plus 5cm}Equipment\+::\+Equipment (
@@ -146,5 +161,5 @@ The Receive Message function.
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-inc/Equipment.\+hpp\item 
-src/Equipment.\+cpp\end{DoxyCompactItemize}
+Sources/inc/Equipment.\+hpp\item 
+Sources/src/Equipment.\+cpp\end{DoxyCompactItemize}

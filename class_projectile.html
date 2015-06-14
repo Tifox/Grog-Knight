@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>Grog-like: Projectile Class Reference</title>
+<title>Grog-Like: Projectile Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -14,6 +14,7 @@
   $(document).ready(function() { searchBox.OnSelectItem(0); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -21,9 +22,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="hero_000.png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="hero_023.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Grog-like
+   <div id="projectname">Grog-Like
    </div>
   </td>
  </tr>
@@ -63,7 +64,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -93,17 +94,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="dynheader">
 Inheritance diagram for Projectile:</div>
 <div class="dyncontent">
-<div class="center"><img src="class_projectile__inherit__graph.png" border="0" usemap="#_projectile_inherit__map" alt="Inheritance graph"/></div>
-<map name="_projectile_inherit__map" id="_projectile_inherit__map">
+ <div class="center">
+  <img src="class_projectile.png" usemap="#Projectile_map" alt=""/>
+  <map id="Projectile_map" name="Projectile_map">
+<area href="class_elements.html" alt="Elements" shape="rect" coords="0,56,87,80"/>
 </map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
-<div class="dynheader">
-Collaboration diagram for Projectile:</div>
-<div class="dyncontent">
-<div class="center"><img src="class_projectile__coll__graph.png" border="0" usemap="#_projectile_coll__map" alt="Collaboration graph"/></div>
-<map name="_projectile_coll__map" id="_projectile_coll__map">
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+ </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -170,6 +166,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setXStart</b> (float 
 <tr class="memitem:a2214c37dc1288a3763db6780bf7d6ee5 inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2214c37dc1288a3763db6780bf7d6ee5"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setYStart</b> (float Y)</td></tr>
 <tr class="separator:a2214c37dc1288a3763db6780bf7d6ee5 inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8215e9cba9658fc711cfec7cd0b70cd1 inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8215e9cba9658fc711cfec7cd0b70cd1"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getXStart</b> (void)</td></tr>
+<tr class="separator:a8215e9cba9658fc711cfec7cd0b70cd1 inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c394148eb369b262ab60b5f4a59efec inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8c394148eb369b262ab60b5f4a59efec"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getYStart</b> (void)</td></tr>
+<tr class="separator:a8c394148eb369b262ab60b5f4a59efec inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16f6accfe5a20c996dae8154132e4bf7 inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a16f6accfe5a20c996dae8154132e4bf7"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setWidth</b> (int w)</td></tr>
 <tr class="separator:a16f6accfe5a20c996dae8154132e4bf7 inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -207,9 +209,15 @@ std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getAttrib
 <tr class="memitem:ad7e4ecb2ecc2402cf892e60d8d803070 inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad7e4ecb2ecc2402cf892e60d8d803070"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setHitbox</b> (std::string)</td></tr>
 <tr class="separator:ad7e4ecb2ecc2402cf892e60d8d803070 inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8564c0414afe21aaf6af86688a23033 inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac8564c0414afe21aaf6af86688a23033"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>addAnimation</b> (int frame, float time)</td></tr>
+<tr class="separator:ac8564c0414afe21aaf6af86688a23033 inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85bc66fe037551fcfa0b606cf32c4478 inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a85bc66fe037551fcfa0b606cf32c4478"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>callback</b> (<a class="el" href="class_elements.html">Elements</a> *elem)</td></tr>
 <tr class="separator:a85bc66fe037551fcfa0b606cf32c4478 inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6682ad84a7d56dd6d58ba0517965b584 inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_elements.html#a6682ad84a7d56dd6d58ba0517965b584">AnimCallback</a> (String s)</td></tr>
+<tr class="memdesc:a6682ad84a7d56dd6d58ba0517965b584 inherit pub_methods_class_elements"><td class="mdescLeft">&#160;</td><td class="mdescRight">Animation callback.  <a href="#a6682ad84a7d56dd6d58ba0517965b584">More...</a><br /></td></tr>
+<tr class="separator:a6682ad84a7d56dd6d58ba0517965b584 inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dd2e1e757c9077755bbe309c504740b inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2dd2e1e757c9077755bbe309c504740b"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>getOrientationX</b> (void)</td></tr>
 <tr class="separator:a2dd2e1e757c9077755bbe309c504740b inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -219,6 +227,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>getOrientationY</b> (v
 <tr class="memitem:add4340c523571631da317d8a64fc1368 inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="add4340c523571631da317d8a64fc1368"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>getLateralOrientation</b> (void)</td></tr>
 <tr class="separator:add4340c523571631da317d8a64fc1368 inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21476dd839923a41aa28c7c75273d562 inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a21476dd839923a41aa28c7c75273d562"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isDead</b> (void)</td></tr>
+<tr class="separator:a21476dd839923a41aa28c7c75273d562 inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad285c1b54452609bcf2343ba1f8dea41 inherit pub_methods_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad285c1b54452609bcf2343ba1f8dea41"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>isAdded</b> (void)</td></tr>
+<tr class="separator:ad285c1b54452609bcf2343ba1f8dea41 inherit pub_methods_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -233,6 +247,9 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>_hitboxType</b
 <tr class="memitem:a7e38d955602d5ea837411a6ffcb0d2cd inherit pro_attribs_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7e38d955602d5ea837411a6ffcb0d2cd"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>_hitbox</b></td></tr>
 <tr class="separator:a7e38d955602d5ea837411a6ffcb0d2cd inherit pro_attribs_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5eb994bf668a142382beaa6791920d9f inherit pro_attribs_class_elements"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5eb994bf668a142382beaa6791920d9f"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>_isDead</b></td></tr>
+<tr class="separator:a5eb994bf668a142382beaa6791920d9f inherit pro_attribs_class_elements"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a2131209b192886d9be4fcabe3511a1d3"></a>
@@ -325,7 +342,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>_hitbox</b></t
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Apr 26 2015 08:13:25 for Grog-like by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jun 14 2015 22:02:38 for Grog-Like by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

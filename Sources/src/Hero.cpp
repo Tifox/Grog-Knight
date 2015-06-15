@@ -143,10 +143,10 @@ void	Hero::actionCallback(std::string name, int status) {
 void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 	Characters::BeginContact(elem, contact);
 	if (elem->getAttribute("type") == "Enemy" && elem->isDead() == false) {
-		if (this->_isStomping == true) {
-			this->GetBody()->SetLinearVelocity(b2Vec2(0, 3));
-			theSwitchboard.Broadcast(new Message("stompEnd"));
-		}
+		// if (this->_isStomping == true) {
+		// 	this->GetBody()->SetLinearVelocity(b2Vec2(0, 3));
+		// 	theSwitchboard.Broadcast(new Message("stompEnd"));
+		// }
 		if (this->_invincibility == false)
 			this->_takeDamage(elem);
 		else {

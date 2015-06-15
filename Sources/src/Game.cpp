@@ -106,7 +106,6 @@ void	Game::start(void) {
 	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 	this->displayHero(*(hero));
 	hero->init();
-	
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
 	hero->equipRing(Game::rList->getRing("SmallRing"));
 	hero->equipArmor(Game::aList->getArmor("ChestArmor"));

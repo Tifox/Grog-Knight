@@ -76,7 +76,7 @@
 			"time": 0.1
 		},
 		"specialMove": {
-			"type": "stomp"
+			"type": "charge"
 		},
 		"dash": {
 			"cooldown": 1,
@@ -95,7 +95,7 @@
 		},
 		"stomp": {
 			"cooldown": 0,
-			"stompSpeed": 200
+			"stompSpeed": 50
 		},
 		"down": {
 			"subscribe": "down"

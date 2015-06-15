@@ -95,11 +95,12 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 		this->_isTakingDamage = 0;
 	}
 	if (m->getAttribute("type") == "HeroWeaponHitBox") {
+		Characters *h = Game::currentGame->getHero();
 		this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
 		Game::stopRunning(this);
 		if (this->takeDamage(w->getDamage()) == 1) {
 			this->_isTakingDamage = 1;
-			if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
+			if (this->GetBody()->GetWorldCenter().x > h->GetBody()->GetWorldCenter().x) {
 				this->ApplyLinearImpulse(Vector2(w->getPushback(), w->getPushback()), Vector2(0,0));
 			} else {
 				this->ApplyLinearImpulse(Vector2(-w->getPushback(), w->getPushback()), Vector2(0,0));
@@ -109,11 +110,12 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 			this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		}
 	} else if (m->getAttribute("type") == "HeroProjectile") {
+		Characters *h = Game::currentGame->getHero();
 		this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
 		Game::stopRunning(this);
 		this->_isTakingDamage = 1;
 		if (this->takeDamage(p->getDamage()) == 1) {
-			if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
+			if (this->GetBody()->GetWorldCenter().x > h->GetBody()->GetWorldCenter().x) {
 				this->ApplyLinearImpulse(Vector2(p->getPushback(), p->getPushback()), Vector2(0,0));
 			} else {
 				this->ApplyLinearImpulse(Vector2(-p->getPushback(), p->getPushback()), Vector2(0,0));
@@ -130,6 +132,7 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 		else
 			this->_orientation = LEFT;
 		if (static_cast<Hero*>(m)->getCharging() == true) {
+			this->takeDamage(static_cast<Characters*>(m)->getWeapon()->getDamage());
 			if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
 				this->GetBody()->SetLinearVelocity(b2Vec2(10, 10));
 			} else {

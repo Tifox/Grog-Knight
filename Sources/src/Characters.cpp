@@ -292,11 +292,14 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 	}
 	else if (m->GetMessageName() == "chargeEnd") {
+		this->_canMove = 1;
+		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 	}
 	else if (m->GetMessageName() == "stompEnd") {
 		this->_invincibility = false;
 		this->_isStomping = false;
 		this->_isCharging = false;
+		this->GetBody()->SetBullet(false);
 	}
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
 		attrName = this->_getAttr(i->first, "subscribe").asString();
@@ -811,6 +814,7 @@ void	Characters::_charge(void) {
 		this->_speMoveReady = 0;
 		this->_invincibility = true;
 		this->_isCharging = true;
+		this->_canMove = 0;
 		theSwitchboard.SubscribeTo(this, "speMoveReady");
 		theSwitchboard.SubscribeTo(this, "chargeEnd");
 		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
@@ -836,6 +840,7 @@ void	Characters::_stomp(void) {
 	if (this->_isAttacking == 0 && this->_canMove == 1 && this->_speMoveReady == 1
 		&& this->_grounds.size() == 0) {
 		this->_speMoveReady = 0;
+		this->GetBody()->SetBullet(true);
 		this->_invincibility = true;
 		this->_isStomping = true;
 		this->_isCharging = true;

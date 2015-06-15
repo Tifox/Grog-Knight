@@ -2,7 +2,7 @@
 	"infos": {
 		"name": "Hero",
 		"id": 0,
-		"HP": 75,
+		"HP": 100,
 		"maxHP": 75,
 		"mana": 80,
 		"maxMana": 100,
@@ -19,14 +19,14 @@
 			"beginFrame": 20,
 			"endFrame": 27,
 			"time": 0.1,
-			"force": 7
+			"force": 8
 		},
 		"backward": {
 			"subscribe": "backward",
 			"beginFrame": 28,
 			"endFrame": 35,
 			"time": 0.1,
-			"force": 7
+			"force": 8
 		},
 		"jump": {
 			"subscribe": "jump",
@@ -57,7 +57,7 @@
 			"endFrame_up": 63,
 			"beginFrame_down": 58,
 			"endFrame_down": 60,
-			"time": 0.1
+			"time": 0.05
 		},
 		"loadAttack_charge": {
 			"beginFrame_right": 64,
@@ -73,8 +73,29 @@
 			"endFrame_right": 68,
 			"beginFrame_left": 71,
 			"endFrame_left": 73,
-
 			"time": 0.1
+		},
+		"specialMove": {
+			"type": "stomp"
+		},
+		"dash": {
+			"cooldown": 1,
+			"dashSpeed": 30,
+			"uptime": 0.15,
+			"beginFrame_right": 66,
+			"endFrame_right": 68,
+			"beginFrame_left": 71,
+			"endFrame_left": 73,
+			"time": 0.1
+		},
+		"charge": {
+			"cooldown": 1,
+			"chargeSpeed": 20,
+			"uptime": 1
+		},
+		"stomp": {
+			"cooldown": 0,
+			"stompSpeed": 200
 		},
 		"down": {
 			"subscribe": "down"

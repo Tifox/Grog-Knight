@@ -35,6 +35,8 @@ class		Menu : public Actor {
         void    removeBaseMenu(void);
         void    settings(void);
         void    removeSettings(void);
+        void    parseSettings(void);
+        void	applySettings(void);
 
 	private:
 		Game		*_game;

@@ -138,6 +138,7 @@ void	Menu::ReceiveMessage(Message *m) {
 				}
 			} else if (m->GetMessageName() == "deletePressed") {
 				this->removeSettings();
+				this->applySettings();
 				this->_currentChoice = "Start Game";
 				this->listMenu();
 			}
@@ -178,16 +179,8 @@ void	Menu::settings(void) {
 	std::map<std::string, std::map<std::string, int> >::iterator	it;
 	std::map<std::string, int>::iterator	it2;
 
-	if (this->_settingsValues.size() == 0) {
-		this->_settingsValues["Resolution"] = std::map<std::string, int>();
-		this->_settingsValues["Resolution"]["1024 x 720"] = 1;
-		this->_settingsValues["Resolution"]["1524 x 1020"] = 0;
-		this->_settingsValues["Resolution"]["Fullscreen"] = 0;
-		
-		this->_settingsValues["Anti-Aliasing"] = std::map<std::string, int>();
-		this->_settingsValues["Anti-Aliasing"]["No"] = 1;
-		this->_settingsValues["Anti-Aliasing"]["Yes"] = 0;
-	}
+	if (this->_settingsValues.size() == 0)
+		this->parseSettings();
 	this->_window->removeText("Settings");
 	for (it = this->_settingsValues.begin(); it != this->_settingsValues.end(); it++) {
 		this->_window->removeText(it->first);
@@ -221,5 +214,55 @@ void	Menu::removeSettings(void) {
 		this->_window->removeText(it->first);
 		for (it2 = it->second.begin(); it2 != it->second.end(); it2++) 
 			this->_window->removeText(it2->first);
+	}
+}
+
+void	Menu::parseSettings(void) {
+	std::stringstream 	buffer;
+	std::ifstream		fd;
+	Json::Reader	read;
+	Json::Value		json;
+	Json::ValueIterator i, v;
+	int					j;
+
+	fd.open("Config/Settings.json");
+	if (!fd.is_open())
+		Log::error("Can't find Config/Settings.json");
+	buffer << fd.rdbuf();
+
+	if (!read.parse(buffer, json))
+		Log::error("Error in json syntax :\n" + read.getFormattedErrorMessages());
+
+	for (i = json.begin(); i != json.end(); i++) {
+		this->_settingsValues[i.key().asString()] = std::map<std::string, int>();
+		for (j = 0, v = (*i).begin(); v != (*i).end(); v++, j++) {
+			if (!j)
+				this->_settingsValues[i.key().asString()][v.key().asString()] = 1;
+			else
+				this->_settingsValues[i.key().asString()][v.key().asString()] = 0;
+		}
+	}
+}
+
+void	Menu::applySettings(void) {
+	std::map<std::string, std::map<std::string, int> >::iterator	it;
+	std::map<std::string, int>::iterator							it2;
+
+	for (it = this->_settingsValues.begin(); it != this->_settingsValues.end(); it++) {
+		for (it2 = it->second.begin(); it2 != it->second.end(); it2++) {
+			if (it2->second == 1) {
+				if (it->first == "Resolution") {
+					if (it2->first == "1024x720") {
+						glfwSetWindowSize(theWorld.GetMainWindow(), 1024, 720);
+					} else if (it2->first == "1524x1020") {
+						glfwSetWindowSize(theWorld.GetMainWindow(), 1524, 1020);
+					} else if (it2->first == "FullScreen") {
+						const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+						glfwSetWindowSize(theWorld.GetMainWindow(), mode->width, mode->height);
+					}
+					glfwSetWindowPos(theWorld.GetMainWindow(), 0, 0);
+				}
+			}
+		}
 	}
 }

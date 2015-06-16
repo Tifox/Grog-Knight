@@ -150,6 +150,7 @@ class Characters : public Elements {
 		virtual void	_dash(void);
 		virtual void	_charge(void);
 		virtual void	_stomp(void);
+		virtual void	_blink(void);
 		void			_destroyEnemy(void);
 		Elements*		getItem(void);
 

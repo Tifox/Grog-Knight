@@ -76,7 +76,7 @@
 			"time": 0.1
 		},
 		"specialMove": {
-			"type": "charge"
+			"type": "blink"
 		},
 		"dash": {
 			"cooldown": 1,
@@ -96,6 +96,10 @@
 		"stomp": {
 			"cooldown": 0,
 			"stompSpeed": 50
+		},
+		"blink": {
+			"cooldown": 1,
+			"blinkRange": 4
 		},
 		"down": {
 			"subscribe": "down"

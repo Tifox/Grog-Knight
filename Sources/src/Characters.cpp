@@ -284,18 +284,24 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->_specialMove();
 	}
 	else if (m->GetMessageName() == "speMoveReady") {
+		theSwitchboard.UnsubscribeFrom(this, "speMoveReady");
 		this->_speMoveReady = 1;
 	}
 	else if (m->GetMessageName() == "dashEnd") {
+		theSwitchboard.UnsubscribeFrom(this, "dashEnd");
 		this->GetBody()->SetGravityScale(1);
 		this->_canMove = 1;
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 	}
 	else if (m->GetMessageName() == "chargeEnd") {
+		theSwitchboard.UnsubscribeFrom(this, "chargeEnd");
 		this->_canMove = 1;
+		this->_isCharging = false;
+		this->_invincibility = false;
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 	}
 	else if (m->GetMessageName() == "stompEnd") {
+		theSwitchboard.UnsubscribeFrom(this, "stompEnd");
 		this->_invincibility = false;
 		this->_isStomping = false;
 		this->_isCharging = false;
@@ -401,6 +407,9 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				contact->SetEnabled(false);
 			}
 			else {
+				if (this->_isCharging == 1) {
+					theSwitchboard.Broadcast(new Message("chargeEnd"));
+				}
 				this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
 				if (this->_hp <= 0) {
 		this->_heroDeath();
@@ -430,10 +439,16 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 			}
 			this->_grounds.push_back(elem);
 		} else if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
+				if (this->_isCharging == 1) {
+					theSwitchboard.Broadcast(new Message("chargeEnd"));
+				}
 			if (this->_wallsLeft.size() > 0)
 				contact->SetEnabled(false);
 			this->_wallsLeft.push_back(elem);
 		} else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x) {
+				if (this->_isCharging == 1) {
+					theSwitchboard.Broadcast(new Message("chargeEnd"));
+				}
 			if (this->_wallsRight.size() > 0)
 				contact->SetEnabled(false);
 			this->_wallsRight.push_back(elem);
@@ -773,6 +788,8 @@ void	Characters::_specialMove(void) {
 		this->_charge();
 	else if (this->_getAttr("type").asString() == "stomp")
 		this->_stomp();
+	else if (this->_getAttr("type").asString() == "blink")
+		this->_blink();
 }
 
 //! Special move: dash
@@ -810,7 +827,7 @@ void	Characters::_dash(void) {
 
 void	Characters::_charge(void) {
 	this->_setCategory("charge");
-	if (this->_isAttacking == 0 && this->_canMove == 1 && this->_speMoveReady == 1) {
+	if (this->_isAttacking == 0 && this->_canMove == 1 && this->_speMoveReady == 1 && this->_grounds.size() > 0) {
 		this->_speMoveReady = 0;
 		this->_invincibility = true;
 		this->_isCharging = true;
@@ -849,6 +866,77 @@ void	Characters::_stomp(void) {
 		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
 										 this->_getAttr("cooldown").asFloat());
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, -this->_getAttr("stompSpeed").asInt()));
+	}
+}
+
+
+//! Special move: blink
+/**
+ * Teleports the player in the direction he's facing
+ * Properties of blink - instant
+ * @sa Characters::_specialMove()
+ */
+
+void	Characters::_blink(void) {
+	this->_setCategory("blink");
+	Map m = Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX];
+	int x = (this->GetBody()->GetWorldCenter().x) - m.getXStart();
+	int y = -((this->GetBody()->GetWorldCenter().y) - m.getYStart());
+	int range = this->_getAttr("blinkRange").asInt();
+	std::vector<std::vector<int>> t = m.getPhysicMap();
+
+	if (this->_isAttacking == 0 && this->_canMove == 1 && this->_speMoveReady == 1) {
+		this->_speMoveReady = 0;
+		theSwitchboard.SubscribeTo(this, "speMoveReady");
+		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
+										 this->_getAttr("cooldown").asFloat());
+		if (this->_orientation == UP) {
+			while (range > 0) {
+				if (y - range > 0 && !t[y - range][x])
+					break;
+				range--;
+			}
+			if (range > 0)
+				this->GetBody()->SetTransform(b2Vec2(this->GetBody()->GetWorldCenter().x,
+												 this->GetBody()->GetWorldCenter().y + range), 0);
+		}
+		else if (this->_orientation == DOWN) {
+			while (range > 0) {
+				if (y + range < (t.size() - 2) && !t[y + range][x])
+					break;
+				range--;
+			}
+			range--;
+			if (range > 0)
+				this->GetBody()->SetTransform(b2Vec2(this->GetBody()->GetWorldCenter().x,
+												 this->GetBody()->GetWorldCenter().y - range), 0);
+		}
+		else if (this->_orientation == RIGHT) {
+			while (range > 0) {
+				if (x + range < t[y].size() && !t[y][x + range])
+					break;
+				range--;
+			}
+			if (range > 0)
+				this->GetBody()->SetTransform(b2Vec2(this->GetBody()->GetWorldCenter().x + range,
+												 this->GetBody()->GetWorldCenter().y), 0);
+		}
+		else if (this->_orientation == LEFT) {
+			while (range > 0) {
+				if (x - range > 0 && !t[y][x - range])
+					break;
+				range--;
+			}
+			if (range > 0)
+				this->GetBody()->SetTransform(b2Vec2(this->GetBody()->GetWorldCenter().x - range,
+												 this->GetBody()->GetWorldCenter().y), 0);
+		}
+		if (range > 0) {
+			b2PolygonShape box = Game::hList->getHitbox(this->_hitbox);
+			b2Shape *shape = &box;
+			this->GetBody()->DestroyFixture(this->GetBody()->GetFixtureList());
+			this->GetBody()->CreateFixture(shape, 1);
+		}
 	}
 }
 

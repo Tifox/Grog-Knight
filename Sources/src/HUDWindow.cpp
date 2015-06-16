@@ -231,6 +231,7 @@ void	HUDWindow::displayText(void) {
 			if ((*i)->isFading) {
 				DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
 				(*i)->y += 1;
+				(*i)->colorA -= 0.05f;
 			} else if ((*i)->isTalk) {
 				DrawGameText((*i)->str, (*i)->font, x - 5, y - (*i)->y + 5, theCamera.GetRotation());
 			} else {

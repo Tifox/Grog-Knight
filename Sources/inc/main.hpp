@@ -27,7 +27,7 @@
 #ifndef __MAIN__
 # define __MAIN__
 
-# define NAME "rogue-like"
+# define NAME "Grog Like"
 # include "Maps.hpp"
 
 #endif

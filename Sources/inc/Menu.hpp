@@ -32,10 +32,15 @@ class		Menu : public Actor {
 		void	showMenu(Game *game);
 		void	ReceiveMessage(Message *m);
 		void	listMenu(void);
+        void    removeBaseMenu(void);
+        void    settings(void);
+        void    removeSettings(void);
 
 	private:
 		Game		*_game;
 		HUDWindow	*_window;
 		std::list<std::string>	_menuChoices;
 		std::string				_currentChoice;
+        int                 _inMenu;
+        std::map<std::string, std::map<std::string, int> >  _settingsValues;
 };

@@ -34,7 +34,7 @@
  */
 Game::Game(void) : _hero((new Characters())) {
 	#ifdef __APPLE__
-		theWorld.Initialize(1920, 1080, NAME, false, false);
+		theWorld.Initialize(1024, 720, NAME, true, false);
 	#else
 		theWorld.Initialize(1024, 720, NAME, false, false);
 	#endif

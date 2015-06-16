@@ -51,7 +51,7 @@ class	HUDWindow : public HUDActor {
 			int				colorR;
 			int				colorG;
 			int				colorB;
-			int				colorA;
+			float				colorA;
 			Characters		*toFollow;
 			int				isFading;
 			int				isTalk;

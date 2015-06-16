@@ -33,6 +33,7 @@ HUDWindow::HUDWindow(void) : HUDActor() {
 	RegisterFont("Resources/font.ttf", 14, "Gamefont");
 	RegisterFont("Resources/font.ttf", 8, "SmallGamefont");
 	RegisterFont("Resources/Fonts/fail.otf", 80, "dead");
+	RegisterFont("Resources/Fonts/Market_Deco.ttf", 80, "title");
 	return;
 }
 

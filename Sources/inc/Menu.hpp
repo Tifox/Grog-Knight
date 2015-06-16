@@ -31,8 +31,11 @@ class		Menu : public Actor {
 		~Menu(void);
 		void	showMenu(Game *game);
 		void	ReceiveMessage(Message *m);
+		void	listMenu(void);
 
 	private:
 		Game		*_game;
 		HUDWindow	*_window;
+		std::list<std::string>	_menuChoices;
+		std::string				_currentChoice;
 };

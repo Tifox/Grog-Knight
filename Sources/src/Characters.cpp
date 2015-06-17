@@ -128,6 +128,8 @@ void	Characters::_parseJson(std::string file) {
 			if (v.key().asString() == "subscribe") {
 				theSwitchboard.SubscribeTo(this, (*v).asString() + "Pressed");
 				theSwitchboard.SubscribeTo(this, (*v).asString() + "Released");
+				this->_subsc.push_back((*v).asString() + "Pressed");
+				//this->_subsc.push_back((*v).asString() + "Released");
 			}
 		}
 	}
@@ -1066,6 +1068,29 @@ void						Characters::_heroDeath(void) {
 	ghost->PlaySpriteAnimation(0.2f, SAT_OneShot, 0, 10, "ghost");
 }
 
+/**
+ * Unsubscribe the character to all the broadcasts
+ */
+void						Characters::unsubscribeFromAll(void) {
+	std::list<std::string>::iterator	it;
+
+	for (it = this->_subsc.begin(); it != this->_subsc.end(); it++) {
+		theSwitchboard.UnsubscribeFrom(this, *it);
+	}
+}
+
+/**
+ * Subscribe the character to all the broadcasts
+ */
+void						Characters::subscribeToAll(void) {
+	std::list<std::string>::iterator	it;
+
+	for (it = this->_subsc.begin(); it != this->_subsc.end(); it++) {
+		theSwitchboard.SubscribeTo(this, *it);
+	}
+}
+
+/* GETTERS */
 Characters::Orientation		Characters::getOrientation(void) { return this->_orientation; }
 std::string					Characters::getLastAction(void) { return this->_lastAction; };
 Elements*					Characters::getItem(void) { return this->_item; }
@@ -1077,3 +1102,4 @@ int							Characters::getGold(void) { return this->_gold; };
 void						Characters::changeCanMove(void) { this->_canMove = (this->_canMove ? false : true); };
 Weapon						*Characters::getWeapon(void) { return this->_weapon; };
 bool						Characters::getCharging(void) { return this->_isCharging; }
+std::list<std::string>		Characters::getSubscribes(void) { return this->_subsc; };

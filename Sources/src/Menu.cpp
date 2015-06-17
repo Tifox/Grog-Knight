@@ -26,13 +26,14 @@
 # include "Menu.hpp"
 
 //! Basic constructor
-Menu::Menu(void) : _currentChoice("Start Game") {
+Menu::Menu(void) : _currentChoice("Start Game"), _fadeActor(nullptr) {
 	theSwitchboard.SubscribeTo(this, "enterPressed");
 	theSwitchboard.SubscribeTo(this, "downPressed");
 	theSwitchboard.SubscribeTo(this, "upPressed");
 	theSwitchboard.SubscribeTo(this, "specialMove");
 	theSwitchboard.SubscribeTo(this, "PauseGame");
 	theSwitchboard.SubscribeTo(this, "deletePressed");
+	theSwitchboard.SubscribeTo(this, "escape");
 // Rebind key
 // Show text Menu
 // While make a choice
@@ -83,6 +84,8 @@ void	Menu::ReceiveMessage(Message *m) {
 					theSwitchboard.UnsubscribeFrom(this, "downPressed");
 					Game::removeHUDWindow(this->_window);
 					this->_game->start();
+					this->_window = Game::getHUD();
+					this->_inMenu = 0;
 				} else if (this->_currentChoice == "Settings") {
 					this->removeBaseMenu();
 					this->_currentChoice = "Anti-Aliasing";
@@ -142,6 +145,26 @@ void	Menu::ReceiveMessage(Message *m) {
 				this->_currentChoice = "Start Game";
 				this->listMenu();
 			}
+		}
+	} if (m->GetMessageName() == "escape") {
+		if (this->_inMenu == 0) {
+			Game::currentGame->getHero()->unsubscribeFromAll();
+			theWorld.PausePhysics();
+			this->_inMenu = 3;
+			this->pauseMenu();
+		} else if (this->_inMenu == 1 || this->_inMenu == 2){
+			exit(0);
+		} else {
+			std::list<HUDActor *>::iterator		it;
+
+			for (it = this->_elementsPauseMenu.begin(); it != this->_elementsPauseMenu.end(); it++)
+				theWorld.Remove(*it);
+			theWorld.Remove(this->_fadeActor);
+			this->_window->removeText("PAUSE");
+			Game::currentGame->getHero()->subscribeToAll();
+			theWorld.ResumePhysics();
+			this->_inMenu = 0;
+			this->_fadeActor = nullptr;
 		}
 	}
 }
@@ -257,12 +280,35 @@ void	Menu::applySettings(void) {
 					} else if (it2->first == "1524x1020") {
 						glfwSetWindowSize(theWorld.GetMainWindow(), 1524, 1020);
 					} else if (it2->first == "FullScreen") {
-						const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+						const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 						glfwSetWindowSize(theWorld.GetMainWindow(), mode->width, mode->height);
 					}
 					glfwSetWindowPos(theWorld.GetMainWindow(), 0, 0);
+				} else if (it->first == "Anti-Aliasing") {
+					if (it2->first == "Yes") {
+						glfwWindowHint(GLFW_SAMPLES, 4);
+					} else {
+						glfwWindowHint(GLFW_SAMPLES, 0);
+					}
 				}
 			}
 		}
+	}
+}
+
+void		Menu::pauseMenu(void) {
+	if (this->_fadeActor == nullptr) {
+		HUDActor	*fade = new HUDActor();
+
+		fade->SetSize(100000, 100000);
+		fade->SetColor(0, 0, 0, 0.5f);
+		fade->SetLayer(100000);
+		theWorld.Add(fade);
+		this->_fadeActor = fade;
+		goto render;
+	} else {
+render:
+		this->_window->setText("PAUSE", (theCamera.GetWindowWidth() / 2) - 100, (theCamera.GetWindowHeight() / 2) - 100,
+			Vector3(255.0f, 255.0f, 255.0f), 1, "title");
 	}
 }

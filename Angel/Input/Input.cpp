@@ -52,7 +52,7 @@ void keyboardInput(GLFWwindow* window, int key, int scancode, int state, int mod
 		/* Console event */
 		if (key == theWorld.GetConsole()->GetToggleConsoleKey())
 		{
-			theWorld.GetConsole()->Enable(!theWorld.GetConsole()->IsEnabled());
+			//theWorld.GetConsole()->Enable(!theWorld.GetConsole()->IsEnabled());
 			return;
 		}
 		else if (theWorld.GetConsole()->GetSpecialInputDown(key))
@@ -63,10 +63,10 @@ void keyboardInput(GLFWwindow* window, int key, int scancode, int state, int mod
 		if (theInput.OnKeyDown(key))
 			return;
 
-		if (key == GLFW_KEY_ESCAPE)
-		{
-			theWorld.StopGame();
-		}
+   /*     if (key == GLFW_KEY_ESCAPE)*/
+		//{
+			//theWorld.StopGame();
+		/*}*/
 	}
 	else if (state == GLFW_REPEAT) {
 		theInput.OnKeyDown(key);

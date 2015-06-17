@@ -173,3 +173,26 @@ void Switchboard::SendAllMessages()
 	}
 	_deferredAdds.clear();
 }
+
+void	Switchboard::SendPauseMessages(void) {
+	while (!_messages.empty())
+	{
+		String frontMessageName = _messages.front()->GetMessageName();
+		std::cout << frontMessageName << std::endl;
+		if (_subscribers.find(frontMessageName) != _subscribers.end())
+		{
+			std::set<MessageListener*>::iterator listenIt = _subscribers[frontMessageName].begin();
+			while (listenIt != _subscribers[frontMessageName].end())
+			{
+				if (this->_messages.front()->GetMessageName() == "escape") {
+					(*listenIt)->ReceiveMessage(this->_messages.front());
+									std::cout << "Here" << std::endl;
+					//return ;
+				}
+				listenIt++;
+			}
+		}
+		delete _messages.front();
+		_messages.pop();
+	}
+}

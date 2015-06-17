@@ -37,6 +37,7 @@ class		Menu : public Actor {
         void    removeSettings(void);
         void    parseSettings(void);
         void	applySettings(void);
+		void	pauseMenu(void);
 
 	private:
 		Game		*_game;
@@ -45,4 +46,6 @@ class		Menu : public Actor {
 		std::string				_currentChoice;
         int                 _inMenu;
         std::map<std::string, std::map<std::string, int> >  _settingsValues;
+		std::list<HUDActor *>								_elementsPauseMenu;
+		HUDActor											*_fadeActor;
 };

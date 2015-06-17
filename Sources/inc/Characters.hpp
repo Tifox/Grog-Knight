@@ -95,6 +95,9 @@ class Characters : public Elements {
 		virtual void	unequipRing(void);
 
 		void			changeCanMove(void);
+		std::list<std::string>		getSubscribes(void);
+		void						unsubscribeFromAll(void);
+		void						subscribeToAll(void);
 
 	//Moved in order to get loot infos outside of class
 		Json::Value		_getAttr(std::string category, std::string key);
@@ -135,6 +138,7 @@ class Characters : public Elements {
 		std::list<Elements*> 				_wallsLeft;
 		std::list<Elements*> 				_walls;
 		std::list<Elements*> 				_wallsRight;
+		std::list<std::string>				_subsc;
 
 		Json::Value		_getAttr(std::string key);
 		void			_setCategory(std::string category);

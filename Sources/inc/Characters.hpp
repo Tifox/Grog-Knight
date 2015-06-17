@@ -126,6 +126,8 @@ class Characters : public Elements {
 		int				_speMoveReady;
 		bool			_isCharging;
 		bool			_isStomping;
+		int				_hasDashed;
+		std::string		_speMove;
 		Weapon*			_weapon;
 		Armor*			_armor;
 		Ring*			_ring;

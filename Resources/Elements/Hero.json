@@ -76,7 +76,7 @@
 			"time": 0.1
 		},
 		"specialMove": {
-			"type": "blink"
+			"type": "wallJump"
 		},
 		"dash": {
 			"cooldown": 1,
@@ -100,6 +100,10 @@
 		"blink": {
 			"cooldown": 1,
 			"blinkRange": 4
+		},
+		"wallJump": {
+			"maxJump": 1,
+			"force": 6
 		},
 		"down": {
 			"subscribe": "down"

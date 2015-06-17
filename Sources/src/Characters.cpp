@@ -56,6 +56,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_gold = 0;
 	this->_isLoadingAttack = 0;
 	this->_speMoveReady = 1;
+	this->_hasDashed = 0;
 	this->SetLayer(100);
 	this->_readFile(name);
 }
@@ -405,6 +406,7 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 		if (this->GetBody()->GetWorldCenter().y - 0.905 >= elem->GetBody()->GetWorldCenter().y) {
 			if (this->_grounds.size() > 0) {
 				contact->SetEnabled(false);
+				this->_hasDashed = 0;
 			}
 			else {
 				if (this->_isCharging == 1) {
@@ -423,6 +425,7 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 					new Weapon(this->_weapon, this, -1);
 				}
 				this->_isJump = 0;
+				this->_hasDashed = 0;
 				if (this->_latOrientation == RIGHT && this->_isAttacking == false && this->_isLoadingAttack == 0) {
 					this->changeSizeTo(Vector2(1, 1));
 					this->PlaySpriteAnimation(0.1f, SAT_OneShot,
@@ -439,11 +442,16 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 			}
 			this->_grounds.push_back(elem);
 		} else if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
-				if (this->_isCharging == 1) {
-					theSwitchboard.Broadcast(new Message("chargeEnd"));
-				}
+			if (this->_isCharging == 1) {
+				theSwitchboard.Broadcast(new Message("chargeEnd"));
+			}
 			if (this->_wallsLeft.size() > 0)
 				contact->SetEnabled(false);
+			else {
+				if (this->_speMove == "wallJump" && this->_grounds.size() == 0) {
+					this->GetBody()->SetGravityScale(0.3);
+				}
+			}
 			this->_wallsLeft.push_back(elem);
 		} else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x) {
 				if (this->_isCharging == 1) {
@@ -451,6 +459,11 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				}
 			if (this->_wallsRight.size() > 0)
 				contact->SetEnabled(false);
+			else {
+				if (this->_speMove == "wallJump" && this->_grounds.size() == 0) {
+					this->GetBody()->SetGravityScale(0.3);
+				}
+			}
 			this->_wallsRight.push_back(elem);
 		}
 		if (elem->getAttribute("speType") == "canCross") {
@@ -486,21 +499,25 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 			this->_grounds.remove(elem);
 			if (this->_grounds.size() == 0) {
 				this->_isJump++;
-				if (this->_lastAction == "forward" && this->_canMove && this->_isAttacking == false && this->_isLoadingAttack == 0) {
+				if (this->_lastAction == "forward" && this->_canMove &&
+					this->_isAttacking == false && this->_isLoadingAttack == 0) {
 					this->changeSizeTo(Vector2(1, 1));
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 							this->_getAttr("jump", "fallingFrame_right").asInt(),
 							this->_getAttr("jump", "endFrame_right").asInt() - 3, "jump");
-				} else if (this->_lastAction == "backward" && this->_canMove && this->_isAttacking == false && this->_isLoadingAttack == 0) {
+				} else if (this->_lastAction == "backward" && this->_canMove &&
+						   this->_isAttacking == false && this->_isLoadingAttack == 0) {
 					this->changeSizeTo(Vector2(1, 1));
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-							this->_getAttr("jump", "fallingFrame_left").asInt(),
-							this->_getAttr("jump", "endFrame_left").asInt() - 3, "jump");
+											  this->_getAttr("jump", "fallingFrame_left").asInt(),
+											  this->_getAttr("jump", "endFrame_left").asInt() - 3, "jump");
 				}
 			}
 		}
 		else
 			this->_grounds.remove(elem);
+		if (this->_wallsLeft.size() == 0 && this->_wallsRight.size() == 0 && this->_speMove == "wallJump")
+			this->GetBody()->SetGravityScale(1);
 	}
 }
 
@@ -633,9 +650,29 @@ void	Characters::_jump(int status) {
 
 	if (status == 1 && this->_canJump == true) {
 		this->_canJump = false;
-		if (this->_isJump == 0 || (this->_isJump < this->_getAttr("max").asInt())) {
+		if (this->_speMove == "wallJump" && this->_grounds.size() == 0 &&
+			(this->_wallsLeft.size() > 0 || this->_wallsRight.size() > 0)) {
+			this->GetBody()->SetGravityScale(1);
+			if (this->_wallsLeft.size() > 0 && this->_wallsRight.size() == 0) {
+				this->GetBody()->SetLinearVelocity(b2Vec2(5, this->_getAttr("rejump").asFloat()));
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+										  this->_getAttr("beginFrame_right").asInt(),
+										  this->_getAttr("endFrame_right").asInt() - 3, "jump");
+			}
+			else if (this->_wallsRight.size() > 0 && this->_wallsLeft.size() == 0) {
+				this->GetBody()->SetLinearVelocity(b2Vec2(-5, this->_getAttr("rejump").asFloat()));
+					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+											  this->_getAttr("beginFrame_left").asInt(),
+											  this->_getAttr("endFrame_left").asInt() - 3, "jump");
+			}
+			else
+				this->GetBody()->SetLinearVelocity(b2Vec2(0, this->_getAttr("rejump").asFloat()));
+			Game::stopRunning(this);
+		}
+		else if (this->_isJump == 0 || (this->_isJump < this->_getAttr("max").asInt())) {
 			if (this->_isJump >= 1) {
-				this->GetBody()->SetLinearVelocity(b2Vec2(this->GetBody()->GetLinearVelocity().x, this->_getAttr("rejump").asFloat()));
+				this->GetBody()->SetLinearVelocity(b2Vec2(this->GetBody()->GetLinearVelocity().x,
+														  this->_getAttr("rejump").asFloat()));
 			}
 			else {
 				this->ApplyLinearImpulse(Vector2(0, this->_getAttr("force").asFloat()), Vector2(0, 0));
@@ -781,14 +818,13 @@ void	Characters::_pickupItem(int status) {
  */
 
 void	Characters::_specialMove(void) {
-	this->_setCategory("specialMove");
-	if (this->_getAttr("type").asString() == "dash")
+	if (this->_speMove == "dash")
 		this->_dash();
-	else if (this->_getAttr("type").asString() == "charge")
+	else if (this->_speMove == "charge")
 		this->_charge();
-	else if (this->_getAttr("type").asString() == "stomp")
+	else if (this->_speMove == "stomp")
 		this->_stomp();
-	else if (this->_getAttr("type").asString() == "blink")
+	else if (this->_speMove == "blink")
 		this->_blink();
 }
 
@@ -801,14 +837,12 @@ void	Characters::_specialMove(void) {
 
 void	Characters::_dash(void) {
 	this->_setCategory("dash");
-	if (this->_isAttacking == 0 && this->_canMove == 1 && this->_speMoveReady == 1) {
+	if (this->_isAttacking == 0 && this->_canMove == 1 && this->_hasDashed == 0) {
 		this->GetBody()->SetGravityScale(0);
-		this->_speMoveReady = 0;
 		this->_canMove = 0;
-		theSwitchboard.SubscribeTo(this, "speMoveReady");
+		if (this->_grounds.size() == 0)
+			this->_hasDashed = 1;
 		theSwitchboard.SubscribeTo(this, "dashEnd");
-		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
-										 this->_getAttr("cooldown").asFloat());
 		theSwitchboard.DeferredBroadcast(new Message("dashEnd"),
 										 this->_getAttr("uptime").asFloat());
 		if (this->_latOrientation == LEFT)

@@ -38,6 +38,7 @@ Hero::Hero(void) : Characters("Hero") {
 	theSwitchboard.SubscribeTo(this, "cycleInventory");
 	theSwitchboard.SubscribeTo(this, "dropItem");
 	theSwitchboard.SubscribeTo(this, "specialMove");
+	this->_speMove = this->_getAttr("specialMove", "type").asString();
 
 	return ;
 }

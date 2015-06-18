@@ -46,6 +46,8 @@ class		Menu : public Actor {
 		std::string				_currentChoice;
         int                 _inMenu;
         std::map<std::string, std::map<std::string, int> >  _settingsValues;
-		std::list<HUDActor *>								_elementsPauseMenu;
+		std::list<std::string>								_elementsPauseMenu;
 		HUDActor											*_fadeActor;
+		std::list<std::string>								_pauseMenuText;
+		int													_lastMenu;
 };

@@ -33,7 +33,7 @@ class		Menu : public Actor {
 		void	ReceiveMessage(Message *m);
 		void	listMenu(void);
         void    removeBaseMenu(void);
-        void    settings(void);
+        void    settings(int y = 0);
         void    removeSettings(void);
         void    parseSettings(void);
         void	applySettings(void);

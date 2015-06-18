@@ -122,13 +122,19 @@ void	Menu::ReceiveMessage(Message *m) {
 					}
 				}
 			}
-			this->settings();
+			if (this->_lastMenu == 3)
+					this->settings(theCamera.GetWindowHeight() / 2 - 100);
+				else
+					this->settings();
 		} else if (m->GetMessageName() == "downPressed") {
 			std::map<std::string, std::map<std::string, int> >::iterator	it;
 			it = this->_settingsValues.find(this->_currentChoice);
 			if ((++it) != this->_settingsValues.end()) {
 				this->_currentChoice = it->first;
-				this->settings();
+				if (this->_lastMenu == 3)
+					this->settings(theCamera.GetWindowHeight() / 2 - 100);
+				else
+					this->settings();
 			}
 		} else if (m->GetMessageName() == "upPressed") {
 			std::map<std::string, std::map<std::string, int> >::iterator	it;
@@ -136,7 +142,10 @@ void	Menu::ReceiveMessage(Message *m) {
 			if (it->first != this->_settingsValues.begin()->first) {
 				it--;
 				this->_currentChoice = it->first;
-				this->settings();
+				if (this->_lastMenu == 3)
+					this->settings(theCamera.GetWindowHeight() / 2 - 100);
+				else
+					this->settings();
 			}
 		} else if (m->GetMessageName() == "deletePressed") {
 			this->removeSettings();
@@ -183,7 +192,7 @@ void	Menu::ReceiveMessage(Message *m) {
 				this->_lastMenu = 3;
 				this->_inMenu = 2;
 				this->_currentChoice = "Anti-Aliasing";
-				this->settings();
+				this->settings(theCamera.GetWindowHeight() / 2 - 100);
 			}
 		}
 	}
@@ -249,9 +258,9 @@ void	Menu::removeBaseMenu(void) {
 	this->_window->removeText("Grog Like");
 }
 
-void	Menu::settings(void) {
-	int		y = theCamera.GetWindowHeight() / 2 - 250;
+void	Menu::settings(int y) {
 	int		x = theCamera.GetWindowWidth() / 2;
+	y = (y ? y : theCamera.GetWindowHeight() / 2 - 250);
 	std::map<std::string, std::map<std::string, int> >::iterator	it;
 	std::map<std::string, int>::iterator	it2;
 

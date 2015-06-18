@@ -34,6 +34,7 @@
 #include "../Infrastructure/World.h"
 #include "../Infrastructure/Console.h"
 #include "../Input/InputManager.h"
+#include "../../Sources/inc/Game.hpp"
 
 
 void charInput(GLFWwindow* window, unsigned int key)
@@ -49,6 +50,8 @@ void keyboardInput(GLFWwindow* window, int key, int scancode, int state, int mod
 {
 	if (state == GLFW_PRESS)
 	{
+		if (Game::isWaitingForBind)
+			Game::currentGame->menu->getBind(key);
 		/* Console event */
 		if (key == theWorld.GetConsole()->GetToggleConsoleKey())
 		{
@@ -62,11 +65,6 @@ void keyboardInput(GLFWwindow* window, int key, int scancode, int state, int mod
 
 		if (theInput.OnKeyDown(key))
 			return;
-
-   /*     if (key == GLFW_KEY_ESCAPE)*/
-		//{
-			//theWorld.StopGame();
-		/*}*/
 	}
 	else if (state == GLFW_REPEAT) {
 		theInput.OnKeyDown(key);

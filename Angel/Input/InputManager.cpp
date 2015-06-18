@@ -362,3 +362,14 @@ int InputManager::GetHashFromKeyName( const String& keyId )
 	return (*itr).second;
 
 }
+
+// Code by Louis
+String		InputManager::GetKeyNameFromHash(int key) {
+	KeyNameTable::iterator itr;
+   for (itr = this->_keyNameTable.begin(); itr != this->_keyNameTable.end(); itr++) {
+		if (itr->second == key)
+			return itr->first;
+	}
+	return "None";
+}
+// End

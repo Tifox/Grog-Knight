@@ -34,10 +34,6 @@ Menu::Menu(void) : _currentChoice("Start Game"), _fadeActor(nullptr) {
 	theSwitchboard.SubscribeTo(this, "PauseGame");
 	theSwitchboard.SubscribeTo(this, "deletePressed");
 	theSwitchboard.SubscribeTo(this, "escape");
-	// Rebind key
-	// Show text Menu
-	// While make a choice
-	// Launch game
 }
 
 //! Basic destructor
@@ -58,6 +54,7 @@ void	Menu::showMenu(Game *game) {
 	theWorld.SetBackgroundColor(*(new Color(.26f, .26f, .26f)));
 	this->_menuChoices.push_back("Start Game");
 	this->_menuChoices.push_back("Settings");
+	this->_menuChoices.push_back("Bindings");
 	this->_menuChoices.push_back("Exit");
 	this->_window = w;
 	this->listMenu();
@@ -89,8 +86,14 @@ void	Menu::ReceiveMessage(Message *m) {
 				this->_currentChoice = "Anti-Aliasing";
 				this->_lastMenu = 1;
 				this->settings();
-			}	else if (this->_currentChoice == "Exit")
+			} else if (this->_currentChoice == "Exit") {
 				exit(0);
+			} else if (this->_currentChoice == "Bindings") {
+				this->removeBaseMenu();
+				this->_lastMenu = 1;
+				this->_inMenu = 4;
+				this->bindingMenu();
+			}
 		} else if (m->GetMessageName() == "downPressed") {
 			it = std::find(this->_menuChoices.begin(), this->_menuChoices.end(), this->_currentChoice);
 			if ((++it) != this->_menuChoices.end()) {
@@ -163,22 +166,19 @@ void	Menu::ReceiveMessage(Message *m) {
 		if (m->GetMessageName() == "downPressed") {
 			std::list<std::string>::iterator	it;
 
-			for (it = this->_pauseMenuText.begin(); it != this->_pauseMenuText.end(); it++) {
-				if ((++it) != this->_pauseMenuText.end()) {
-					this->_currentChoice = *it;
-					this->pauseMenu();
-				}
+			for (it = this->_pauseMenuText.begin(); it != this->_pauseMenuText.end() && (*it) != this->_currentChoice; it++);
+			if ((++it) != this->_pauseMenuText.end()) {
+				this->_currentChoice = *it;
+				this->pauseMenu();
 			}
 		} else if (m->GetMessageName() == "upPressed") {
 			std::list<std::string>::iterator	it;
 
-			for (it = this->_pauseMenuText.begin(); it != this->_pauseMenuText.end(); it++) {
-				if (it != this->_pauseMenuText.begin()) {
-					--it;
-					this->_currentChoice = *it;
-					this->pauseMenu();
-					break ;
-				}
+			for (it = this->_pauseMenuText.begin(); it != this->_pauseMenuText.end() && (*it) != this->_currentChoice; it++);
+			if (it != this->_pauseMenuText.begin()) {
+				--it;
+				this->_currentChoice = *it;
+				this->pauseMenu();
 			}
 		} else if (m->GetMessageName() == "enterPressed") {
 			if (this->_currentChoice == "Quit") {
@@ -193,6 +193,88 @@ void	Menu::ReceiveMessage(Message *m) {
 				this->_inMenu = 2;
 				this->_currentChoice = "Anti-Aliasing";
 				this->settings(theCamera.GetWindowHeight() / 2 - 100);
+			} else if (this->_currentChoice == "Bindings") {
+				std::list<std::string>::iterator		it;
+
+				for (it = this->_pauseMenuText.begin(); it != this->_pauseMenuText.end(); it++)
+					this->_window->removeText(*it);
+				this->_window->removeText("PAUSE");
+				this->_lastMenu = 3;
+				this->_inMenu = 4;
+				this->bindingMenu(theCamera.GetWindowHeight() / 2 - 175);
+			}
+		}
+	} else if (this->_inMenu == 4) {
+		if (m->GetMessageName() == "downPressed") {
+			std::map<std::string, std::list<t_bind *> >::iterator	it = this->_bindingIterator;
+			std::list<t_bind *>::iterator	it2;
+
+			for (it2 = it->second.begin(); it2 != it->second.end() && (*it2)->name != this->_currentChoice; it2++);
+			if (++it2 == it->second.end()) {
+				if (++it != this->_bindingMenu.end()) {
+					this->_bindingIterator = it;
+					this->_currentChoice = (*it->second.begin())->name;
+				}
+			} else {
+				this->_currentChoice = (*it2)->name;
+			}
+			if (this->_lastMenu == 3)
+				this->bindingMenu(theCamera.GetWindowHeight() / 2 - 175);
+			else
+				this->bindingMenu();
+		} else if (m->GetMessageName() == "upPressed") {
+			std::map<std::string, std::list<t_bind *> >::iterator	it = this->_bindingIterator;
+			std::list<t_bind *>::iterator	it2;
+
+			for (it2 = it->second.begin(); it2 != it->second.end() && (*it2)->name != this->_currentChoice; it2++);
+			if (it2 == it->second.begin()) {
+				if (it != this->_bindingMenu.begin()) {
+					--it;
+					this->_bindingIterator = it;
+					it2 = it->second.end();
+					it2--;
+					this->_currentChoice = (*it2)->name;
+				}
+			} else {
+				it2--;
+				this->_currentChoice = (*it2)->name;
+			}
+			if (this->_lastMenu == 3)
+				this->bindingMenu(theCamera.GetWindowHeight() / 2 - 175);
+			else
+				this->bindingMenu();
+		} else if (m->GetMessageName() == "enterPressed") {
+			std::map<std::string, std::list<t_bind *> >::iterator	it = this->_bindingIterator;
+			std::list<t_bind *>::iterator	it2;
+			
+			for (it2 = it->second.begin(); it2 != it->second.end() && (*it2)->name != this->_currentChoice; it2++);
+			this->_window->removeText((*it2)->realKey);
+			(*it2)->realKey = "<Press a Key>";
+			if (this->_lastMenu == 3)
+				this->bindingMenu(theCamera.GetWindowHeight() / 2 - 175);
+			else
+				this->bindingMenu();
+			Game::isWaitingForBind = 1;
+		} else if (m->GetMessageName() == "deletePressed") {
+			std::map<std::string, std::list<t_bind *> >::iterator	it;
+			std::list<t_bind *>::iterator							it2;
+
+			for (it = this->_bindingMenu.begin(); it != this->_bindingMenu.end(); it++) {
+				this->_window->removeText(it->first);
+				for (it2 = it->second.begin(); it2 != it->second.end(); it2++) {
+					this->_window->removeText((*it2)->name);
+					this->_window->removeText((*it2)->realKey);
+				}
+			}
+			this->_window->removeText("Bindings");
+			if (this->_lastMenu == 1) {
+				this->_inMenu = 1;
+				this->_currentChoice = "Start Game";
+				this->listMenu();
+			} else if (this->_lastMenu == 3) {
+				this->_inMenu = 3;
+				this->_currentChoice = "Settings";
+				this->pauseMenu();
 			}
 		}
 	}
@@ -208,7 +290,7 @@ void	Menu::ReceiveMessage(Message *m) {
 			theWorld.PausePhysics();
 			this->_inMenu = 3;
 			this->pauseMenu();
-		} else if (this->_inMenu == 1 || this->_inMenu == 2){
+		} else if (this->_inMenu == 1 || this->_inMenu == 2 || this->_inMenu == 4){
 			exit(0);
 		} else {
 			std::list<std::string>::iterator		it;
@@ -329,6 +411,42 @@ void	Menu::parseSettings(void) {
 	}
 }
 
+void	Menu::parseBindings(void) {
+	std::stringstream 	buffer;
+	std::ifstream		fd;
+	Json::Reader	read;
+	Json::Value		json;
+	Json::ValueIterator i, v, j;
+	t_bind				*tmp;
+
+	fd.open("Config/Bindings.json");
+	if (!fd.is_open())
+		Log::error("Can't find Config/Settings.json");
+	buffer << fd.rdbuf();
+
+	if (!read.parse(buffer, json))
+		Log::error("Error in json syntax :\n" + read.getFormattedErrorMessages());
+
+	for (i = json.begin(); i != json.end(); i++) {
+		this->_bindingMenu[i.key().asString()] = std::list<t_bind *>();
+		for (v = (*i).begin(); v != (*i).end(); v++) {
+			tmp = new t_bind();
+			tmp->name = v.key().asString();
+			for (j = (*v).begin(); j != (*v).end(); j++) {
+				if (j.key().asString() == "broadcast")
+					tmp->broadcast = (*j).asString();
+				else if (j.key().asString() == "key") {
+					tmp->key = theInput.GetHashFromKeyName((*j).asString());
+					tmp->realKey = (*j).asString();
+				}
+			}
+			this->_bindingMenu[i.key().asString()].push_back(tmp);
+		}
+	}
+	this->_currentChoice = (*this->_bindingMenu.begin()->second.begin())->name;
+	this->_bindingIterator = this->_bindingMenu.begin();
+}
+
 void	Menu::applySettings(void) {
 	std::map<std::string, std::map<std::string, int> >::iterator	it;
 	std::map<std::string, int>::iterator							it2;
@@ -368,6 +486,7 @@ void		Menu::pauseMenu(void) {
 		theWorld.Add(fade);
 		this->_fadeActor = fade;
 		this->_pauseMenuText.push_back("Settings");
+		this->_pauseMenuText.push_back("Bindings");
 		this->_pauseMenuText.push_back("Quit");
 		this->_currentChoice = "Settings";
 		goto render;
@@ -389,4 +508,67 @@ render:
 				this->_window->setText(*it, x - ((*it).length() / 2 * 6), y, Vector3(255, 255, 255), 1);
 		}
 	}
+}
+
+void	Menu::getBind(int key) {
+	std::map<std::string, std::list<t_bind *> >::iterator	it = this->_bindingIterator;
+	std::list<t_bind *>::iterator	it2, tmp;
+
+	for (it2 = it->second.begin(); it2 != it->second.end() && (*it2)->name != this->_currentChoice; it2++);
+	this->_window->removeText((*it2)->realKey);
+	if (key <= 90 && key >= 65)
+		key += 32;
+	(*it2)->key = key;
+	(*it2)->realKey = theInput.GetKeyNameFromHash(key);
+	tmp = it2;
+
+	for (it = this->_bindingMenu.begin(); it != this->_bindingMenu.end(); it++) {
+		for (it2 = it->second.begin(); it2 != it->second.end(); it2++) {
+			if ((*it2)->key == (*tmp)->key && it2 != tmp) {
+				(*it2)->key = 0;
+				(*it2)->realKey = "<None>";
+			}
+		}
+	}
+	if (this->_lastMenu == 3)
+		this->bindingMenu(theCamera.GetWindowHeight() / 2 - 175);
+	else
+		this->bindingMenu();
+	Game::isWaitingForBind = 0;
+}
+
+void	Menu::bindingMenu(int y) {
+	int		x = theCamera.GetWindowWidth() / 2;
+	y = (y ? y : theCamera.GetWindowHeight() / 2 - 250);
+	std::map<std::string, std::list<t_bind *> >::iterator	it;
+	std::list<t_bind *>::iterator							it2;
+
+	if (!this->_bindingMenu.size()) {
+		this->parseBindings();
+	}
+
+	for (it = this->_bindingMenu.begin(); it != this->_bindingMenu.end(); it++) {
+		this->_window->removeText(it->first);
+		for (it2 = it->second.begin(); it2 != it->second.end(); it2++) {
+			this->_window->removeText((*it2)->name);
+			this->_window->removeText((*it2)->realKey);
+		}
+	}
+	this->_window->removeText("Bindings");
+
+	this->_window->setText("Bindings", (x - 180), y, Vector3(255, 255, 255), 1, "title");
+	y += 70;
+	for (it = this->_bindingMenu.begin(); it != this->_bindingMenu.end(); it++) {
+		this->_window->setText(it->first, x - ((it->first).length() / 2 * 16) - 50, y, Vector3(255, 255, 255), 1, "smallTitle");
+		y += 70;
+		for (it2 = it->second.begin(); it2 != it->second.end(); it2++, y += 20) {
+			if (this->_currentChoice == (*it2)->name)
+				this->_window->setText((*it2)->name, x - 150, y, Vector3(255, 0, 0), 1);
+			else
+				this->_window->setText((*it2)->name, x - 150, y, Vector3(255, 255, 255), 1);
+			this->_window->setText((*it2)->realKey, x + 50, y, Vector3(255, 255, 255), 1);
+		}
+		y += 70;
+	}
+
 }

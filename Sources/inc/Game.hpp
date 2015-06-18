@@ -48,6 +48,7 @@ class Characters;
 # include "RingList.hpp"
 # include "LevelGenerator.hpp"
 # include "Tooltip.hpp"
+# include "Menu.hpp"
 
 class ArmorList;
 class EnemyList;
@@ -56,6 +57,7 @@ class WeaponList;
 
 class Hitbox;
 class HUDWindow;
+class Menu;
 
 class Game {
 
@@ -100,6 +102,7 @@ class Game {
 		static Game*		currentGame;
 
 		Maps		*maps;
+		Menu		*menu;
 		std::vector<Room*>				*gameMap;
 		Tooltip 						*tooltip;
 		static int						currentIds;
@@ -121,6 +124,7 @@ class Game {
 		static int						minY;
 		static int						started;
 		static int						cameraTick;
+		static int						isWaitingForBind;
 
 	private:
 		float				beginXHero;

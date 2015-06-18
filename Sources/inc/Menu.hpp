@@ -23,7 +23,19 @@
  * Louis Solofrizzo <louis@ne02ptzero.me>
  */
 
-# include "Game.hpp"
+# ifndef __MENU__
+# define __MENU__
+#  include "Game.hpp"
+
+class		Game;
+class		HUDWindow;
+
+typedef struct		s_bind {
+	std::string		name;
+	std::string		broadcast;
+	std::string		realKey;
+	int				key;
+}					t_bind;
 
 class		Menu : public Actor {
 	public:
@@ -38,6 +50,9 @@ class		Menu : public Actor {
         void    parseSettings(void);
         void	applySettings(void);
 		void	pauseMenu(void);
+		void	getBind(int key);
+		void	parseBindings(void);
+		void	bindingMenu(int y = 0);
 
 	private:
 		Game		*_game;
@@ -50,4 +65,8 @@ class		Menu : public Actor {
 		HUDActor											*_fadeActor;
 		std::list<std::string>								_pauseMenuText;
 		int													_lastMenu;
+		int													_isBinding;
+		std::map<std::string, std::list<t_bind *> >			_bindingMenu;
+		std::map<std::string, std::list<t_bind *> >::iterator	_bindingIterator;
 };
+#endif

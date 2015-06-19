@@ -35,3 +35,7 @@ This project use [Angel2d](https://github.com/angel2d/angel2d), [Documentation](
 [Rules Here :)](Contributing.md)
 
 [Docs Here](http://ne02ptzero.github.io/Grog-Like)
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/Ne02ptzero/grog-like/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+

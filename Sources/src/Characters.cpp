@@ -45,12 +45,12 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->SetRestitution(0.0f);
 	this->SetFixedRotation(true);
 	this->_orientation = RIGHT;
+	this->_latOrientation = RIGHT;
 	this->_canMove = true;
 	this->_canJump = true;
 	this->_inventory = new Inventory(3);
 	this->_invincibility = false;
 	this->_grounds.clear();
-	this->_walls.clear();
 	this->_item = nullptr;
 	this->_isAttacking = 0;
 	this->_gold = 0;
@@ -416,19 +416,17 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				}
 				this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
 				if (this->_hp <= 0) {
-		this->_heroDeath();
-					return;
+				  this->_heroDeath();
+				  return;
 				}
+			if (this->_isStomping == true) {
+			  theSwitchboard.Broadcast(new Message("stompEnd"));
+			  new Weapon(this->_weapon, this, 1);
+			  new Weapon(this->_weapon, this, -1);
 			}
-			if (this->_isJump > 0) {
-				if (this->_isStomping == true) {
-					theSwitchboard.Broadcast(new Message("stompEnd"));
-					new Weapon(this->_weapon, this, 1);
-					new Weapon(this->_weapon, this, -1);
-				}
-				this->_isJump = 0;
-				this->_hasDashed = 0;
-				if (this->_latOrientation == RIGHT && this->_isAttacking == false && this->_isLoadingAttack == 0) {
+			  this->_isJump = 0;
+			  this->_hasDashed = 0;
+			  if (this->_latOrientation == RIGHT && this->_isAttacking == false && this->_isLoadingAttack == 0) {
 					this->changeSizeTo(Vector2(1, 1));
 					this->PlaySpriteAnimation(0.1f, SAT_OneShot,
 							this->_getAttr("jump", "endFrame_right").asInt() - 2,
@@ -443,6 +441,8 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				}
 			}
 			this->_grounds.push_back(elem);
+		} else if (this->GetBody()->GetWorldCenter().y <= elem->GetBody()->GetWorldCenter().y - 0.905) {
+		  this->_ceiling.push_back(elem);
 		} else if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
 			if (this->_isCharging == 1) {
 				theSwitchboard.Broadcast(new Message("chargeEnd"));
@@ -497,6 +497,7 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "ground") {
 		this->_wallsLeft.remove(elem);
 		this->_wallsRight.remove(elem);
+		this->_ceiling.remove(elem);
 		if (this->_grounds.size() == 1) {
 			this->_grounds.remove(elem);
 			if (this->_grounds.size() == 0) {

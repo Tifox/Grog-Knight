@@ -138,7 +138,7 @@ class Characters : public Elements {
 		std::list<Elements*>				_grounds;
 		std::list<Elements*>				_enemiesTouched;
 		std::list<Elements*> 				_wallsLeft;
-		std::list<Elements*> 				_walls;
+		std::list<Elements*> 				_ceiling;
 		std::list<Elements*> 				_wallsRight;
 		std::list<std::string>				_subsc;
 

@@ -96,6 +96,13 @@ void    Armor::_parseJson(std::string file) {
 		Log::warning("The class name is different with the name in the config file: " + this->_name + "/" + json["infos"].get("name", "").asString());
 	this->_name = json["infos"].get("name", "").asString();
 	this->_flavor = json["infos"].get("flavor", "").asString();
+
+		for (i = json["infos"].get("flavor","").begin(); i != json["infos"].get("flavor","").end(); i++) {
+		
+				std::cout << "pas lol" << std::endl;
+
+		}
+	
 	this->_lootLevel = json["infos"].get("lootLevel", "").asInt();
 	this->_sprite = json["infos"].get("sprites", "").asString();
 	for (i = json["bonus"].begin(); i != json["bonus"].end(); i++)

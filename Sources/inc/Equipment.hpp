@@ -52,6 +52,7 @@ private:
 	Armor*			_armor;
 	Ring*			_ring;
 	std::string		_name;
+	std::string 	_flavor;
 };
 
 #endif

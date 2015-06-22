@@ -1,7 +1,7 @@
 {
     "infos": {
    	    "name": "Bow",
-		"flavor": "This bow is supposed to shoot arrows. Supposed.",
+		"flavor": "This bow is supposed to\nshoot arrows. Supposed.",
 		"hitbox": "PROJECTILE",
 		"size": 0.5,
 		"active": 0.1,

@@ -1,7 +1,7 @@
 {
     "infos": {
    	    "name": "Robes",
-		"flavor": "Hey look, its a ARMOR. A pretty shitty one actually...",
+		"flavor": "Hey look, its a ARMOR.\nA pretty shitty one actually...",
 		"lvlRequired": 1,
 		"sprites": "Resources/Images/Armors/Robes.png",
 		"lootLevel": 2

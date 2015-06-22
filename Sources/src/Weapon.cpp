@@ -45,6 +45,7 @@ Weapon::Weapon(Weapon* weapon) {
 	this->_name = weapon->getName();
 	this->addAttribute("name", this->_name);
 	this->_flavor = weapon->getFlavor();
+	this->addAttribute("flavor", this->_flavor);
 	this->_damage = weapon->getDamage();
 	this->_recovery = weapon->getRecovery();
 	this->_active = weapon->getActive();

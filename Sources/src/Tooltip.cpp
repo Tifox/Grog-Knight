@@ -30,7 +30,7 @@
  * Basic constructor
  */
 
-Tooltip::Tooltip() : _name("") {
+Tooltip::Tooltip() : _name("") , _flavor(""){
 	theSwitchboard.SubscribeTo(this, "deleteTip");
 	return ;
 }
@@ -45,7 +45,7 @@ Tooltip::Tooltip() : _name("") {
 Tooltip::~Tooltip() {
 	return ;
 }
-
+ 
 //! Parse the type of the loot
 /**
  * Parse the type and set color and value
@@ -74,25 +74,56 @@ void	Tooltip::tip(Elements *elem, Characters *c) {
 }
 
 void 	Tooltip::info(Elements *elem) {
-	if (this->_name == "") {
+	std::string tmp;
+	int y, i = 0;
+	if (this->_name == "" && this->_flavor == "") {
 		HUDActor *equip = new HUDActor();
 		HUDWindow *hud = Game::getHUD();
 		this->_equip = equip;
 		this->_name = elem->getAttribute("name");
+		this->_flavor = elem->getAttribute("flavor");
+
+		for (y = 30; i < this->_flavor.size(); i++) {
+			if (this->_flavor[i] == '\n') {
+				hud->setText(tmp,theCamera.GetWindowWidth() - 190, y);
+				tmp.clear();
+				y += 15;
+			} else
+				tmp = tmp + this->_flavor[i];
+		}
+		hud->setText(tmp,theCamera.GetWindowWidth() - 190, y);
+
 
 		equip->SetSize(200, 100);
 		equip->SetPosition(theCamera.GetWindowWidth() - 100, 50);
 		equip->SetColor(0, 0, 0);
 		equip->SetDrawShape(ADS_Square);
-		theWorld.Add(equip);	
-		hud->setText(this->_name,theCamera.GetWindowWidth() - 100, 50);
+		theWorld.Add(equip);
+		hud->setText(this->_name,theCamera.GetWindowWidth() - 190, 10);
 	}
+
 	return ;
 }
 
 void	Tooltip::clearInfo(void) {
+	std::string tmp;
+	int i;
+
 	theWorld.Remove(this->_equip);
+
 	Game::getHUD()->removeText(this->_name);
+	for (i = 0; i < this->_flavor.size(); i++) {
+		if (this->_flavor[i] == '\n') {
+			Game::getHUD()->removeText(tmp);
+			tmp.clear();
+		} else
+			tmp = tmp + this->_flavor[i];
+	}
+	Game::getHUD()->removeText(tmp);
+
+	this->_name = "";
+	this->_flavor = "";
+
 }
 
 void 	Tooltip::ReceiveMessage(Message *m) {

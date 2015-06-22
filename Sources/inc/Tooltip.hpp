@@ -52,9 +52,10 @@ class Tooltip : public MessageListener {
 
 
 	private:
-		HUDActor	*_equip;
-		std::string _name;
-		std::string _val;
+		HUDActor			*_equip;
+		std::string 		_name;
+		std::string 		_flavor;
+		std::string 		_val;
 };
 
 

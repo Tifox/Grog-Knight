@@ -178,6 +178,11 @@ int		Enemy::takeDamage(int damage) {
 	if (this->_hp <= 0)
 		return 0;
 	this->actionCallback("takeDamage", 0);
+	if ((rand() % 5 + 1) ==  5) {
+		damage *= 2 ;
+		Game::getHUD()->setText("Crit !", Game::currentGame->getHero(), 
+								Vector3(255, 0, 0), 1, 0);
+	}
 	if (this->_hp - damage <= 0) {
 		this->_isDead = true;
 		this->actionCallback("death", 0);

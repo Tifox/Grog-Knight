@@ -34,6 +34,7 @@ typedef struct		s_bind {
 	std::string		name;
 	std::string		broadcast;
 	std::string		realKey;
+	std::string		oldKey;
 	int				key;
 }					t_bind;
 
@@ -53,8 +54,11 @@ class		Menu : public Actor {
 		void	getBind(int key);
 		void	parseBindings(void);
 		void	bindingMenu(int y = 0);
+		int		applyBindings(void);
 
 	private:
+		int			_isUpper(std::string s);
+
 		Game		*_game;
 		HUDWindow	*_window;
 		std::list<std::string>	_menuChoices;

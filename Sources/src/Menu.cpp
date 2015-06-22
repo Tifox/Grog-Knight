@@ -249,6 +249,7 @@ void	Menu::ReceiveMessage(Message *m) {
 			
 			for (it2 = it->second.begin(); it2 != it->second.end() && (*it2)->name != this->_currentChoice; it2++);
 			this->_window->removeText((*it2)->realKey);
+			(*it2)->oldKey = (*it2)->realKey;
 			(*it2)->realKey = "<Press a Key>";
 			if (this->_lastMenu == 3)
 				this->bindingMenu(theCamera.GetWindowHeight() / 2 - 175);
@@ -259,22 +260,24 @@ void	Menu::ReceiveMessage(Message *m) {
 			std::map<std::string, std::list<t_bind *> >::iterator	it;
 			std::list<t_bind *>::iterator							it2;
 
-			for (it = this->_bindingMenu.begin(); it != this->_bindingMenu.end(); it++) {
-				this->_window->removeText(it->first);
-				for (it2 = it->second.begin(); it2 != it->second.end(); it2++) {
-					this->_window->removeText((*it2)->name);
-					this->_window->removeText((*it2)->realKey);
+			if (this->applyBindings()) {
+				for (it = this->_bindingMenu.begin(); it != this->_bindingMenu.end(); it++) {
+					this->_window->removeText(it->first);
+					for (it2 = it->second.begin(); it2 != it->second.end(); it2++) {
+						this->_window->removeText((*it2)->name);
+						this->_window->removeText((*it2)->realKey);
+					}
 				}
-			}
-			this->_window->removeText("Bindings");
-			if (this->_lastMenu == 1) {
-				this->_inMenu = 1;
-				this->_currentChoice = "Start Game";
-				this->listMenu();
-			} else if (this->_lastMenu == 3) {
-				this->_inMenu = 3;
-				this->_currentChoice = "Settings";
-				this->pauseMenu();
+				this->_window->removeText("Bindings");
+				if (this->_lastMenu == 1) {
+					this->_inMenu = 1;
+					this->_currentChoice = "Start Game";
+					this->listMenu();
+				} else if (this->_lastMenu == 3) {
+					this->_inMenu = 3;
+					this->_currentChoice = "Settings";
+					this->pauseMenu();
+				}
 			}
 		}
 	}
@@ -570,5 +573,39 @@ void	Menu::bindingMenu(int y) {
 		}
 		y += 70;
 	}
+}
 
+int		Menu::applyBindings(void) {
+	std::map<std::string, std::list<t_bind *> >::iterator	it;
+	std::list<t_bind *>::iterator							it2;
+
+	for (it = this->_bindingMenu.begin(); it != this->_bindingMenu.end(); it++) {
+		for (it2 = it->second.begin(); it2 != it->second.end(); it2++) {
+			if ((*it2)->key == 0)
+				return 0;
+		}
+	}
+
+	for (it = this->_bindingMenu.begin(); it != this->_bindingMenu.end(); it++) {
+		for (it2 = it->second.begin(); it2 != it->second.end(); it2++) {
+			theInput.UnbindKey((*it2)->oldKey);
+			if (this->_isUpper((*it2)->broadcast)) {
+				theInput.BindKey((*it2)->realKey, (*it2)->broadcast);
+			} else {
+				theInput.BindKey((*it2)->realKey, "+" + (*it2)->broadcast + "Pressed");
+				theInput.BindKey((*it2)->realKey, "-" + (*it2)->broadcast + "Released");
+			}
+		}
+	}
+	return 1;
+}
+
+int		Menu::_isUpper(std::string s) {
+	int		i;
+
+	for (i = 0; i < s.size(); i++) {
+		if (s[i] >= 'A' && s[i] <= 'Z')
+			return 1;
+	}
+	return 0;
 }

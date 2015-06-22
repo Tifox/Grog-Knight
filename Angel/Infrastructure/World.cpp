@@ -506,10 +506,10 @@ void World::Simulate(bool simRunning)
 		_gameManager->Update(frame_dt);
 	}
 
+		theSwitchboard.SendAllMessages();
 	if (simRunning)
 	{
 		// Deliver any messages that have been queued from the last frame. 
-		theSwitchboard.SendAllMessages();
 
 		RunPhysics(frame_dt);
 		
@@ -529,7 +529,9 @@ void World::Simulate(bool simRunning)
 
 //   Updated: 2015/05/12 15:36:50 by noich            ###   ########.fr       //
 		//if there are any system updates that still need to be run, put them here
-	}
+	}/* else {*/
+		//theSwitchboard.SendPauseMessages();
+	/*}*/
 	
 	//making this the last update so we can accurately lock on position for rendering
 	theCamera.Update(frame_dt);
@@ -615,7 +617,6 @@ void World::SendCollisionNotifications(b2Contact* contact, bool beginning)
 
 	/* MODIFIED CODE BY Louis */
 	if (pa1 && pa2) {
-		std::cout << "CALL " << pa1->getId() << ", " << pa2->getId() << std::endl;
 		Game::callCallbacks(pa1->getId(), pa2->getId());
  		StringSet::iterator a = pa1->GetTags().begin();
  		StringSet::iterator b = pa2->GetTags().begin();

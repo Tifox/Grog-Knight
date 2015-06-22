@@ -1,0 +1,50 @@
+{
+	"Move": {
+		"Jump": {
+			"broadcast": "jump",
+			"key": "SPACE"
+		},
+		"Forward": {
+			"broadcast": "forward",
+			"key": "RIGHT_ARROW"
+		},
+		"Backward": {
+			"broadcast": "backward",
+			"key": "LEFT_ARROW"
+		},
+		"Look Up": {
+			"broadcast": "up",
+			"key": "UP_ARROW"
+		},
+		"Look Down": {
+			"broadcast": "down",
+			"key": "DOWN_ARROW"
+		},
+		"Attack": {
+			"broadcast": "attack",
+			"key": "E"
+		},
+		"Special Move": {
+			"broadcast": "specialMove",
+			"key": "T"
+		}
+	},
+	"Inventory": {
+		"Pick an Item": {
+			"broadcast": "pickupItemPressed",
+			"key": "F"
+		},
+		"Equip an Item": {
+			"broadcast": "equipSelectedItem",
+			"key": "R"
+		},
+		"Go to next Item": {
+			"broadcast": "cycleInventory",
+			"key": "TAB"
+		},
+		"Drop an Item": {
+			"broadcast": "dropItem",
+			"key": "V"
+		}
+	}
+}

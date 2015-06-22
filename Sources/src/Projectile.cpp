@@ -116,7 +116,7 @@ void	Projectile::ReceiveMessage(Message *m) {
  * @param contact The b2Contact object of the collision. See Box2D docs for more info.
  */
 void	Projectile::BeginContact(Elements *m, b2Contact *c) {
-	if (m->getAttribute("type") == "Object" )
+  if (m->getAttribute("type") == "Object" || m->getAttribute("type") == "Hero")
 		return;
 	Game::addToDestroyList(this);
 }

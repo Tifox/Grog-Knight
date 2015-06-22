@@ -448,7 +448,7 @@ void		Game::displayHUD(void) {
 	w->minimap();
 
 	// Work 
-   /* w->setText("Burp.", this->_hero, Vector3(0, 0, 0), 0, 1);*/
+   //w->setText("Burp.", this->_hero, Vector3(0, 0, 0), 0, 1);
 	/*w->removeText("Burp.");*/
 	Game::addHUDWindow(w);
 }
@@ -480,3 +480,4 @@ int							Game::currentY = 0;
 Game*						Game::currentGame = 0;
 int							Game::started = 0;
 int							Game::cameraTick = 0;
+int							Game::isWaitingForBind = 0;

@@ -108,6 +108,7 @@ public:
 	 */
 	const bool SubscribeTo(MessageListener* subscriber, const String& messageType);
 	
+
 	/**
 	 * Lets a MessageListener stop receiving notifications of specific 
 	 *  name. MessageListeners automatically unsubscribe from all their Messages 
@@ -150,7 +151,8 @@ public:
 	 *  directly in your game code. 
 	 */
 	void SendAllMessages();
-	
+
+	void SendPauseMessages();
 protected:
 	Switchboard();
 	static Switchboard* s_Switchboard;

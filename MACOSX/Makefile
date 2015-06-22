@@ -1,6 +1,6 @@
 NAME 	= rogue-like
 CC 		= g++
-CFLAGS 	= -std=c++0x -arch i386 -Wno-deprecated -g
+CFLAGS 	= -std=c++0x -arch i386 -Wno-deprecated -g -Wno-error=unused-command-line-argument  -Wno-error=null-conversion -Wno-return-type
 ANGEL_FLAG = -D ANGEL
 SRCS 	= ../Sources/src/Elements.cpp \
 		../Sources/src/Game.cpp \

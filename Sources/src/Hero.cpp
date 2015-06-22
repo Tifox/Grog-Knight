@@ -113,10 +113,6 @@ void	Hero::actionCallback(std::string name, int status) {
 		this->_isLoadingAttack = 0;
 		this->_fullChargedAttack = false;
 		this->changeSizeTo(Vector2(2, 2));
-		if (this->_latOrientation == LEFT)
-			this->GetBody()->SetLinearVelocity(b2Vec2(-5, 3));
-		else
-			this->GetBody()->SetLinearVelocity(b2Vec2(5, 3));
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 								  this->_getAttr("beginFrame_" + orientation).asInt(),
 								  this->_getAttr("endFrame_" + orientation).asInt(), "base");

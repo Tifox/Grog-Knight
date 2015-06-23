@@ -124,6 +124,7 @@ class Characters : public Elements {
 		int				_isLoadingAttack;
 		bool			_fullChargedAttack;
 		int				_speMoveReady;
+		bool			_canAttack;
 		bool			_isCharging;
 		bool			_isStomping;
 		int				_hasDashed;

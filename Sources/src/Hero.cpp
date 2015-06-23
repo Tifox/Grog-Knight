@@ -37,6 +37,7 @@ Hero::Hero(void) : Characters("Hero") {
 	theSwitchboard.SubscribeTo(this, "equipSelectedItem");
 	theSwitchboard.SubscribeTo(this, "cycleInventory");
 	theSwitchboard.SubscribeTo(this, "dropItem");
+	theSwitchboard.SubscribeTo(this, "attackReady");
 	theSwitchboard.SubscribeTo(this, "specialMove");
 	this->_speMove = this->_getAttr("specialMove", "type").asString();
 
@@ -71,10 +72,10 @@ void	Hero::init(void) {
 void	Hero::actionCallback(std::string name, int status) {
 	std::string 	orientation;
 	float				x = 2, y = 1;
-	if (name == "attack" && status == 0 && this->_weapon->attackReady() == 1 &&
+	if (name == "attack" && status == 0 && this->_canAttack == true &&
 		this->_fullChargedAttack == false && this->_isLoadingAttack == 0 &&
 		this->_isAttacking == 1) {
-		this->_weapon->isAttacking(0);
+		this->_canAttack = false;
 		if (this->_orientation == RIGHT) {
 			orientation = "right";
 		} else if (this->_orientation == LEFT) {
@@ -89,13 +90,11 @@ void	Hero::actionCallback(std::string name, int status) {
 		this->changeSizeTo(Vector2(x, y));
 		this->_setCategory("attack");
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-								  this->_getAttr("beginFrame_" +
-												 orientation).asInt(),
-								  this->_getAttr("endFrame_" +
-												 orientation).asInt(), "base");
+								  this->_getAttr("beginFrame_" + orientation).asInt(),
+								  this->_getAttr("endFrame_" + orientation).asInt(), "base");
 
 	} else if (name == "attack" && status == 0 &&
-			   this->_weapon->attackReady() == 1 &&
+			   this->_canAttack == true &&
 			   this->_fullChargedAttack == true) {
 		if (this->_orientation == RIGHT) {
 			orientation = "right";
@@ -109,10 +108,10 @@ void	Hero::actionCallback(std::string name, int status) {
 			orientation = "down";
 		}
 		this->_setCategory("loadAttack_done");
-		this->_weapon->isAttacking(0);
 		this->_isLoadingAttack = 0;
 		this->_fullChargedAttack = false;
 		this->changeSizeTo(Vector2(2, 2));
+		this->_canAttack = false;
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 								  this->_getAttr("beginFrame_" + orientation).asInt(),
 								  this->_getAttr("endFrame_" + orientation).asInt(), "base");
@@ -140,10 +139,6 @@ void	Hero::actionCallback(std::string name, int status) {
 void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 	Characters::BeginContact(elem, contact);
 	if (elem->getAttribute("type") == "Enemy" && elem->isDead() == false) {
-		// if (this->_isStomping == true) {
-		// 	this->GetBody()->SetLinearVelocity(b2Vec2(0, 3));
-		// 	theSwitchboard.Broadcast(new Message("stompEnd"));
-		// }
 		if (this->_invincibility == false)
 			this->_takeDamage(elem);
 		else {

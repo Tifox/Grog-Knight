@@ -253,10 +253,11 @@ void	Game::addElement(Elements & elem) {
  */
 void	Game::delElement(Elements* elem) {
 	for (int i = 0; Game::elementMap[i]; i++) {
-		if (Game::elementMap[i] == elem)
+		if (Game::elementMap[i] == elem) {
 			Game::elementMap.erase(i);
+
+		}
 	}
-	//delete elem;
 }
 
 //! Collision intern callbacks

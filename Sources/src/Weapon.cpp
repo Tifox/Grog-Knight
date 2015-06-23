@@ -32,7 +32,6 @@
  */
 Weapon::Weapon(std::string name) : _name(name) {
 	this->_readFile(name);
-	this->_canAttack = 1;
 }
 
 //!Constructor called by hero/equipment class, to copy a parsed version from weaponlist
@@ -55,9 +54,6 @@ Weapon::Weapon(Weapon* weapon) {
 	this->_sprite = weapon->getSprite();
 	this->_lootLevel = weapon->getLootLevel();
 	this->addAttribute("type3", "Weapon");
-	this->_canAttack = 1;
-
-	theSwitchboard.SubscribeTo(this, "canAttack");
 }
 
 //! Constructor called when stomping, create a hitbox on each side of the char
@@ -114,7 +110,6 @@ Weapon::Weapon(Weapon* w, Characters* c) {
 	this->_size = w->getSize();
 	this->_attack = w->getAttack();
 	this->_pushback = w->getPushback();
-	this->_canAttack = 1;
 	this->SetSize(1);
 	this->SetName("HeroWeaponHitbox");
 	if (c->getAttributes()["type"] == "Hero")
@@ -132,7 +127,7 @@ Weapon::Weapon(Weapon* w, Characters* c) {
 	this->SetIsSensor(true);
 	theSwitchboard.SubscribeTo(this, "deleteWeapon" + this->GetName());
 	theSwitchboard.DeferredBroadcast(new Message("deleteWeapon" + this->GetName()), w->getActive());
-	theSwitchboard.DeferredBroadcast(new Message("canAttack"), w->getRecovery());
+	theSwitchboard.DeferredBroadcast(new Message("attackReady"), w->getRecovery());
 	this->_initDirection(w, c);
 	theWorld.Add(this);
 }
@@ -266,8 +261,9 @@ Json::Value     Weapon::_getAttr(std::string category, std::string key) {
  * @param: linearVelocity (b2Vec2)
  */
 void	Weapon::attack(Characters *c) {
-	if (this->_attack == "melee")
+	if (this->_attack == "melee") {
 		new Weapon(this, c);
+	}
 	else if (this->_attack == "ranged")
 		new Projectile(this, c);
 }
@@ -278,8 +274,6 @@ void	Weapon::ReceiveMessage(Message *m) {
 		theSwitchboard.UnsubscribeFrom(this, "deleteWeapon");
 		theSwitchboard.Broadcast(new Message("disableAttackHitbox"));
 	}
-	if (m->GetMessageName() == "canAttack")
-		this->_canAttack = 1;
 }
 
 /* GETTERS */
@@ -293,11 +287,9 @@ int				Weapon::getSize(void) { return this->_size; }
 int				Weapon::getDamage(void) { return this->_damage; }
 int				Weapon::getPushback(void) { return this->_pushback; }
 float			Weapon::getRecovery(void) { return this->_recovery; }
-int				Weapon::attackReady(void) { return this->_canAttack; }
 
 /* SETTERS */
 
-void			Weapon::isAttacking(int i) {this->_canAttack = i;}
 
 void	Weapon::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttribute("type") != "ground") {

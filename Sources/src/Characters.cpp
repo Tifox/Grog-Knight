@@ -47,6 +47,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_orientation = RIGHT;
 	this->_latOrientation = RIGHT;
 	this->_canMove = true;
+	this->_canAttack = true;
 	this->_canJump = true;
 	this->_inventory = new Inventory(3);
 	this->_invincibility = false;
@@ -310,6 +311,10 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->_isCharging = false;
 		this->GetBody()->SetBullet(false);
 	}
+	else if (m->GetMessageName() == "attackReady") {
+		this->_canAttack = true;
+		return;
+	}
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
 		attrName = this->_getAttr(i->first, "subscribe").asString();
 		if (!strncmp(attrName.c_str(), m->GetMessageName().c_str(), strlen(attrName.c_str()))) {
@@ -560,10 +565,11 @@ void	Characters::_forward(int status) {
 		this->_latOrientation = RIGHT;
 		if ((this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() ||
 					(this->GetSpriteFrame() >= this->_getAttr("backward", "beginFrame").asInt() &&
-					 this->GetSpriteFrame() <= this->_getAttr("backward", "endFrame").asInt()))  && !this->_isJump)
+					 this->GetSpriteFrame() <= this->_getAttr("backward", "endFrame").asInt()))  &&
+			!this->_isJump && this->_isLoadingAttack)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 					this->_getAttr("beginFrame").asInt(), this->_getAttr("endFrame").asInt());
-		else if (this->_isJump) {
+		else if (this->_isJump && !this->_isLoadingAttack) {
 			this->_setCategory("jump");
 			if (this->GetSpriteFrame() >= this->_getAttr("beginFrame_left").asInt() && this->GetSpriteFrame() <= this->_getAttr("endFrame_left").asInt())
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
@@ -606,11 +612,12 @@ void	Characters::_backward(int status) {
 	if (status == 1) {
 		this->_orientation = LEFT;
 		this->_latOrientation = LEFT;
-		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() && !this->_isJump)
+		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() &&
+			!this->_isJump && this->_isLoadingAttack)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 					this->_getAttr("beginFrame").asInt(),
 					this->_getAttr("endFrame").asInt());
-		else if (this->_isJump) {
+		else if (this->_isJump && !this->_isLoadingAttack) {
 			this->_setCategory("jump");
 			if (this->GetSpriteFrame() >= this->_getAttr("beginFrame_right").asInt() && this->GetSpriteFrame() <= this->_getAttr("endFrame_right").asInt())
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
@@ -754,7 +761,7 @@ void	Characters::_down(int status) {
  * @sa Weapon::attack
  */
 void	Characters::_attack(int status) {
-	if (status == 1 && this->_weapon->attackReady() == 1) {
+	if (status == 1 && this->_canAttack == true) {
 		if (!this->_attackPressed && !this->_isLoadingAttack) {
 			this->_attackPressed = 1;
 			theSwitchboard.SubscribeTo(this, "startChargeAttack");
@@ -770,7 +777,8 @@ void	Characters::_attack(int status) {
 			this->actionCallback("loadAttack_charge", 1);
 		}
 	}
-	else if (status == 0 && this->_weapon->attackReady() == 1 && (this->_fullChargedAttack == true || this->_isLoadingAttack == 0))  {
+	else if (status == 0 && this->_canAttack == true && (this->_fullChargedAttack == true || this->_isLoadingAttack == 0))  {
+
 		theSwitchboard.UnsubscribeFrom(this, "fullChargedAttack");
 		theSwitchboard.UnsubscribeFrom(this, "startChargeAttack");
 		this->_isAttacking = 1;

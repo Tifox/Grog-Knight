@@ -54,7 +54,7 @@ Projectile::Projectile(Weapon* w, Characters* c){
 		this->addAttribute("type", "Projectile");
 	this->Tag("projectile");
 	this->_initDirection(w, c);
-	theSwitchboard.DeferredBroadcast(new Message("canAttack"), this->_recovery);
+	theSwitchboard.DeferredBroadcast(new Message("attackReady"), this->_recovery);
 	theWorld.Add(this);
 }
 

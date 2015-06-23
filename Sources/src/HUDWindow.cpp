@@ -320,6 +320,7 @@ void	HUDWindow::life(int life) {
 		if (x == 200) {
 			this->addImage("Resources/Images/HUD/hp.png", (x - 30), 35, 28.0f);
 		} if (life >= 25) {
+			std::cout << "COUCOU" << std::endl;
 			tmp = new HUDActor();
 			tmp->SetSprite("Resources/Images/HUD/heart.png");
 			tmp->SetPosition(x, 35);

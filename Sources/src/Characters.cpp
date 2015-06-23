@@ -1003,11 +1003,18 @@ void	Characters::unequipWeapon(void) {
  */
 void	Characters::equipArmor(Armor* armor) {
 	this->_armor = new Armor(armor);
-	if (this->_armor->getAttribute("hpBuff") != "")
+	if (this->_armor->getAttribute("hpBuff") != ""){
 	  	this->_maxHp += std::stoi(this->_armor->getAttribute("hpBuff"));
-	if (this->_armor->getAttribute("manaBuff") != "")
+	  	this->_hp += std::stoi(this->_armor->getAttribute("hpBuff"));
+	}
+	if (this->_armor->getAttribute("manaBuff") != ""){
 	  	this->_maxMana += std::stoi(this->_armor->getAttribute("manaBuff"));
+	  	this->_mana += std::stoi(this->_armor->getAttribute("manaBuff"));
+	}
 	Game::getHUD()->items(this->_armor);
+	Game::getHUD()->life(this->_maxHp);
+	Game::getHUD()->mana(this->_maxMana);
+
 }
 
 //! Unequip a armor
@@ -1035,6 +1042,8 @@ void	Characters::equipRing(Ring* ring) {
 	if (this->_ring->getAttribute("manaBuff") != "")
 	  	this->_maxMana += std::stoi(this->_ring->getAttribute("manaBuff"));
 	Game::getHUD()->items(this->_ring);
+	Game::getHUD()->life(this->_maxHp);
+	Game::getHUD()->mana(this->_maxMana);
 }
 
 //! Unequip a ring

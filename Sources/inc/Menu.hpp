@@ -29,6 +29,7 @@
 
 class		Game;
 class		HUDWindow;
+class		Quit;
 
 typedef struct		s_bind {
 	std::string		name;
@@ -45,16 +46,18 @@ class		Menu : public Actor {
 		void	showMenu(Game *game);
 		void	ReceiveMessage(Message *m);
 		void	listMenu(void);
-        void    removeBaseMenu(void);
-        void    settings(int y = 0);
-        void    removeSettings(void);
-        void    parseSettings(void);
-        void	applySettings(void);
+		void	removeBaseMenu(void);
+		void	settings(int y = 0);
+		void	removeSettings(void);
+		void	parseSettings(void);
+		void	applySettings(void);
 		void	pauseMenu(void);
 		void	getBind(int key);
 		void	parseBindings(void);
 		void	bindingMenu(int y = 0);
 		int		applyBindings(void);
+
+		std::map<std::string, std::list<t_bind *> >		getBindings(void);
 
 	private:
 		int			_isUpper(std::string s);
@@ -63,8 +66,8 @@ class		Menu : public Actor {
 		HUDWindow	*_window;
 		std::list<std::string>	_menuChoices;
 		std::string				_currentChoice;
-        int                 _inMenu;
-        std::map<std::string, std::map<std::string, int> >  _settingsValues;
+		int                 _inMenu;
+		std::map<std::string, std::map<std::string, int> >  _settingsValues;
 		std::list<std::string>								_elementsPauseMenu;
 		HUDActor											*_fadeActor;
 		std::list<std::string>								_pauseMenuText;
@@ -73,4 +76,7 @@ class		Menu : public Actor {
 		std::map<std::string, std::list<t_bind *> >			_bindingMenu;
 		std::map<std::string, std::list<t_bind *> >::iterator	_bindingIterator;
 };
+
+# include "Quit.hpp"
+
 #endif

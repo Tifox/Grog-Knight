@@ -33,7 +33,7 @@ Menu::Menu(void) : _currentChoice("Start Game"), _fadeActor(nullptr) {
 	theSwitchboard.SubscribeTo(this, "specialMove");
 	theSwitchboard.SubscribeTo(this, "PauseGame");
 	theSwitchboard.SubscribeTo(this, "deletePressed");
-	theSwitchboard.SubscribeTo(this, "escape");
+	theSwitchboard.SubscribeTo(this, "escapePressed");
 }
 
 //! Basic destructor
@@ -87,7 +87,7 @@ void	Menu::ReceiveMessage(Message *m) {
 				this->_lastMenu = 1;
 				this->settings();
 			} else if (this->_currentChoice == "Exit") {
-				exit(0);
+				Quit::quitGame();
 			} else if (this->_currentChoice == "Bindings") {
 				this->removeBaseMenu();
 				this->_lastMenu = 1;
@@ -182,7 +182,7 @@ void	Menu::ReceiveMessage(Message *m) {
 			}
 		} else if (m->GetMessageName() == "enterPressed") {
 			if (this->_currentChoice == "Quit") {
-				exit(0);
+				Quit::quitGame();
 			} else if (this->_currentChoice == "Settings") {
 				std::list<std::string>::iterator		it;
 
@@ -211,7 +211,7 @@ void	Menu::ReceiveMessage(Message *m) {
 
 			for (it2 = it->second.begin(); it2 != it->second.end() && (*it2)->name != this->_currentChoice; it2++);
 			if (++it2 == it->second.end()) {
-				if (++it != this->_bindingMenu.end()) {
+				if (++it != this->_bindingMenu.end() && it->first != "General") {
 					this->_bindingIterator = it;
 					this->_currentChoice = (*it->second.begin())->name;
 				}
@@ -230,10 +230,12 @@ void	Menu::ReceiveMessage(Message *m) {
 			if (it2 == it->second.begin()) {
 				if (it != this->_bindingMenu.begin()) {
 					--it;
-					this->_bindingIterator = it;
-					it2 = it->second.end();
-					it2--;
-					this->_currentChoice = (*it2)->name;
+					if (it->first != "General") {
+						this->_bindingIterator = it;
+						it2 = it->second.end();
+						it2--;
+						this->_currentChoice = (*it2)->name;
+					}
 				}
 			} else {
 				it2--;
@@ -282,7 +284,7 @@ void	Menu::ReceiveMessage(Message *m) {
 		}
 	}
 
-	if (m->GetMessageName() == "escape") {
+	if (m->GetMessageName() == "escapePressed") {
 		if (this->_inMenu == 0) {
 			std::list<std::string>				subs = Game::currentGame->getHero()->getSubscribes();
 			std::list<std::string>::iterator	it;
@@ -294,7 +296,7 @@ void	Menu::ReceiveMessage(Message *m) {
 			this->_inMenu = 3;
 			this->pauseMenu();
 		} else if (this->_inMenu == 1 || this->_inMenu == 2 || this->_inMenu == 4){
-			exit(0);
+			Quit::quitGame();
 		} else {
 			std::list<std::string>::iterator		it;
 
@@ -446,8 +448,9 @@ void	Menu::parseBindings(void) {
 			this->_bindingMenu[i.key().asString()].push_back(tmp);
 		}
 	}
-	this->_currentChoice = (*this->_bindingMenu.begin()->second.begin())->name;
 	this->_bindingIterator = this->_bindingMenu.begin();
+	this->_bindingIterator++;
+	this->_currentChoice = (*(this->_bindingIterator)->second.begin())->name;
 }
 
 void	Menu::applySettings(void) {
@@ -562,16 +565,18 @@ void	Menu::bindingMenu(int y) {
 	this->_window->setText("Bindings", (x - 180), y, Vector3(255, 255, 255), 1, "title");
 	y += 70;
 	for (it = this->_bindingMenu.begin(); it != this->_bindingMenu.end(); it++) {
-		this->_window->setText(it->first, x - ((it->first).length() / 2 * 16) - 50, y, Vector3(255, 255, 255), 1, "smallTitle");
-		y += 70;
-		for (it2 = it->second.begin(); it2 != it->second.end(); it2++, y += 20) {
-			if (this->_currentChoice == (*it2)->name)
-				this->_window->setText((*it2)->name, x - 150, y, Vector3(255, 0, 0), 1);
-			else
-				this->_window->setText((*it2)->name, x - 150, y, Vector3(255, 255, 255), 1);
-			this->_window->setText((*it2)->realKey, x + 50, y, Vector3(255, 255, 255), 1);
+		if (it->first != "General") {
+			this->_window->setText(it->first, x - ((it->first).length() / 2 * 16) - 50, y, Vector3(255, 255, 255), 1, "smallTitle");
+			y += 70;
+			for (it2 = it->second.begin(); it2 != it->second.end(); it2++, y += 20) {
+				if (this->_currentChoice == (*it2)->name)
+					this->_window->setText((*it2)->name, x - 150, y, Vector3(255, 0, 0), 1);
+				else
+					this->_window->setText((*it2)->name, x - 150, y, Vector3(255, 255, 255), 1);
+				this->_window->setText((*it2)->realKey, x + 50, y, Vector3(255, 255, 255), 1);
+			}
+			y += 70;
 		}
-		y += 70;
 	}
 }
 
@@ -609,3 +614,5 @@ int		Menu::_isUpper(std::string s) {
 	}
 	return 0;
 }
+
+std::map<std::string, std::list<t_bind *> >		Menu::getBindings(void) { return this->_bindingMenu; };

@@ -33,7 +33,8 @@ SRCS 	= ../Sources/src/Elements.cpp \
 		../Sources/src/Tooltip.cpp \
 		../Sources/src/Inventory.cpp \
 		../Sources/src/Pattern.cpp \
-		../Sources/src/PassivePattern.cpp
+		../Sources/src/PassivePattern.cpp \
+		../Sources/src/Quit.cpp
 
 OBJS 	 = $(SRCS:.cpp=.o)
 

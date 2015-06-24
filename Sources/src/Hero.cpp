@@ -29,7 +29,7 @@
 /**
  * This constructor is making some subscribtions for himself.
  */
-Hero::Hero(void) : Characters("Hero") {
+Hero::Hero(std::string name) : Characters(name) {
 	theSwitchboard.SubscribeTo(this, "canMove");
 	theSwitchboard.SubscribeTo(this, "endInvincibility");
 	theSwitchboard.SubscribeTo(this, "enableAttackHitbox");
@@ -39,6 +39,7 @@ Hero::Hero(void) : Characters("Hero") {
 	theSwitchboard.SubscribeTo(this, "dropItem");
 	theSwitchboard.SubscribeTo(this, "attackReady");
 	theSwitchboard.SubscribeTo(this, "specialMove");
+	this->addAttribute("type", "Hero");
 	this->_speMove = this->_getAttr("specialMove", "type").asString();
 
 	return ;

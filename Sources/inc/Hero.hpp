@@ -32,7 +32,7 @@
 class Hero : public Characters {
 
 	public:
-		Hero();
+		Hero(std::string);
 		~Hero();
 
 		void	init();

@@ -39,7 +39,7 @@ Characters::Characters(void) {
  */
 Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0) {
 	this->addAttribute("physic", "1");
-	this->addAttribute("type", name);
+	this->addAttribute("class", name);
 	this->SetDensity(1.0f);
 	this->SetFriction(1);
 	this->SetRestitution(0.0f);
@@ -566,7 +566,7 @@ void	Characters::_forward(int status) {
 		if ((this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() ||
 					(this->GetSpriteFrame() >= this->_getAttr("backward", "beginFrame").asInt() &&
 					 this->GetSpriteFrame() <= this->_getAttr("backward", "endFrame").asInt()))  &&
-			!this->_isJump && this->_isLoadingAttack)
+			!this->_isJump && !this->_isLoadingAttack)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 					this->_getAttr("beginFrame").asInt(), this->_getAttr("endFrame").asInt());
 		else if (this->_isJump && !this->_isLoadingAttack) {
@@ -613,7 +613,7 @@ void	Characters::_backward(int status) {
 		this->_orientation = LEFT;
 		this->_latOrientation = LEFT;
 		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() &&
-			!this->_isJump && this->_isLoadingAttack)
+			!this->_isJump && !this->_isLoadingAttack)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 					this->_getAttr("beginFrame").asInt(),
 					this->_getAttr("endFrame").asInt());

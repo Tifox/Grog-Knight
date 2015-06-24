@@ -98,19 +98,18 @@ void	Game::start(void) {
 //	Log::info("NbEnemy:" + trouver le nombre d ennemy);
 //	Log::info("NbMaps: " + info sur la sauvegarde (nivau du hero, gold etc...));
 
-	//theCamera.LockTo(hero);
 	Game::currentX = levelGenerator->getStartX();
 	Game::currentY = levelGenerator->getStartY();
 	theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
 						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 9.001);
 	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
+
 	this->displayHero(*(hero));
 	hero->init();
-	this->displayHUD();
-	hero->equipWeapon(Game::wList->getWeapon("Sword"));
-	hero->equipRing(Game::rList->getRing("SmallRing"));
-	hero->equipArmor(Game::aList->getArmor("ChestArmor"));
 	this->setHero(hero);
+
+	this->displayHUD();
+	hero->setStartingValues();
 
 	Game::started = 1;
 }
@@ -373,6 +372,24 @@ void	Game::makeItRun(void) {
 	for (i = Game::runningCharac.begin(); i != Game::runningCharac.end(); i++) {
 		(*i)->_run();
 	}
+}
+
+//! Changing character
+/**
+ * Will be called early on selection screen
+ */
+
+void	Game::changeCharacter(std::string name) {
+	Game::addToDestroyList(this->getHero());
+
+	Hero *hero = new Hero(name);
+
+	this->displayHero(*(hero));
+	hero->init();
+	this->setHero(hero);
+
+	hero->setStartingValues();
+
 }
 
 //! Intern callback for display text

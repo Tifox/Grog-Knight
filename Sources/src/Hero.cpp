@@ -39,9 +39,8 @@ Hero::Hero(std::string name) : Characters(name) {
 	theSwitchboard.SubscribeTo(this, "dropItem");
 	theSwitchboard.SubscribeTo(this, "attackReady");
 	theSwitchboard.SubscribeTo(this, "specialMove");
+	theSwitchboard.SubscribeTo(this, "changeCharacter");
 	this->addAttribute("type", "Hero");
-	this->_speMove = this->_getAttr("specialMove", "type").asString();
-
 	return ;
 }
 
@@ -253,4 +252,13 @@ void	Hero::_takeDamage(Elements* elem) {
   theSwitchboard.SubscribeTo(this, "colorDamageBlink2");
   theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
   this->_invincibility = true;
+}
+
+void	Hero::setStartingValues(void) {
+	this->_setCategory("starting");
+	this->_inventory = new Inventory(this->_getAttr("inventorySlots").asInt());
+	this->equipWeapon(Game::wList->getWeapon(this->_getAttr("weapon").asString()));
+	this->equipArmor(Game::aList->getArmor(this->_getAttr("armor").asString()));
+	this->equipRing(Game::rList->getRing(this->_getAttr("ring").asString()));
+	this->_speMove = this->_getAttr("specialMove").asString();
 }

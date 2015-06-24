@@ -8,11 +8,17 @@
 		"maxMana": 80,
 		"sprites": "Resources/Images/Hero/hero_000.png",
 		"size": 1.3,
-		"weapon": "Sword",
 		"hitboxType": "special",
 		"hitbox": "heroHitbox"
 	},
 	"Actions": {
+		"starting": {
+			"weapon": "Sword",
+			"armor": "ChestArmor",
+			"ring": "NiceRing",
+			"specialMove": "dash",
+			"inventorySlots": 2
+		},
 		"forward": {
 			"subscribe": "forward",
 			"beginFrame": 20,

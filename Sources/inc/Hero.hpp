@@ -40,5 +40,6 @@ class Hero : public Characters {
 		virtual void	EndContact(Elements* m, b2Contact* contact);
 		virtual void	actionCallback(std::string name, int status);
 		void			_takeDamage(Elements* m);
+		void			setStartingValues(void);
 };
 #endif

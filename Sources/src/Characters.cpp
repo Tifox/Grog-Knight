@@ -49,7 +49,6 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_canMove = true;
 	this->_canAttack = true;
 	this->_canJump = true;
-	this->_inventory = new Inventory(3);
 	this->_invincibility = false;
 	this->_grounds.clear();
 	this->_item = nullptr;
@@ -314,6 +313,14 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->_canAttack = true;
 		return;
 	}
+	// TEST - to be removed -
+	else if (m->GetMessageName() == "changeCharacter") {
+		if (this->getAttribute("class") == "Warrior")
+			Game::currentGame->changeCharacter("Archer");
+		else
+			Game::currentGame->changeCharacter("Warrior");
+	}
+	//END OF TEST
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
 		attrName = this->_getAttr(i->first, "subscribe").asString();
 		if (!strncmp(attrName.c_str(), m->GetMessageName().c_str(), strlen(attrName.c_str()))) {

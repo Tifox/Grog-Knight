@@ -295,8 +295,10 @@ void	Menu::ReceiveMessage(Message *m) {
 			theWorld.PausePhysics();
 			this->_inMenu = 3;
 			this->pauseMenu();
-		} else if (this->_inMenu == 1 || this->_inMenu == 2 || this->_inMenu == 4){
+		} else if (this->_inMenu == 1) {
 			Quit::quitGame();
+		} else if (this->_inMenu == 2 || this->_inMenu == 4) {
+			this->ReceiveMessage(new Message("deletePressed"));
 		} else {
 			std::list<std::string>::iterator		it;
 

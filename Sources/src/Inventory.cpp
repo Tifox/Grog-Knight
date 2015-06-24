@@ -99,3 +99,4 @@ std::string 	Inventory::equipSelectedItem(void) {
 
 /* GETTERS */
 std::map<int, std::string>		Inventory::getItems(void) { return this->_items; };
+int								Inventory::getSlots(void) { return this->_slots; };

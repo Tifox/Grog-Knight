@@ -31,7 +31,8 @@
  */
 HUDWindow::HUDWindow(void) : HUDActor() {
 	RegisterFont("Resources/font.ttf", 14, "Gamefont");
-	RegisterFont("Resources/font.ttf", 8, "SmallGamefont");
+	RegisterFont("Resources/font.ttf", 14, "Gamefont");
+	RegisterFont("Resources/font.ttf", 10, "MediumGamefont");
 	RegisterFont("Resources/Fonts/fail.otf", 80, "dead");
 	RegisterFont("Resources/Fonts/Market_Deco.ttf", 80, "title");
 	RegisterFont("Resources/Fonts/Market_Deco.ttf", 40, "smallTitle");
@@ -299,6 +300,28 @@ HUDActor	*HUDWindow::addImage(std::string path, int x, int y, float size, int la
 	return tmp;
 }
 
+//! Add an image
+/**
+ * Add an image in the HUD
+ * @param path The path of the img
+ * @param x X position
+ * @param y Y position
+ * @param size Size, X Y in float (Vector2).
+ * @param layer The desired layer
+ */
+HUDActor	*HUDWindow::addImage(std::string path, int x, int y, Vector2 size, int layer) {
+	HUDActor *tmp = new HUDActor();
+	tmp->SetSprite(path);
+	tmp->SetPosition(x, y);
+	tmp->SetSize(size.X, size.Y);
+	tmp->SetDrawShape(ADS_Square);
+	tmp->SetLayer(layer);
+	theWorld.Add(tmp);
+	return tmp;
+}
+
+
+
 
 //! Display HP function
 /**
@@ -308,37 +331,27 @@ HUDActor	*HUDWindow::addImage(std::string path, int x, int y, float size, int la
  * @todo Empty heart, half-heart.
  */
 void	HUDWindow::life(int life) {
-	int		x, v, sLife = life;
+	int		x, v, sLife = life, y, size;
 	std::list<HUDActor *>::iterator	i;
 	int		index;
 	HUDActor *tmp;
 
+	y = theCamera.GetWindowHeight() / 20 * 0.9;
+	size = theCamera.GetWindowWidth() / 20 * 0.6;
 	for (i = this->_hearts.begin(), index = 0; i != this->_hearts.end(); i++, index++)
 		theWorld.Remove(*(i));
 	this->_hearts.clear();
-	for (x = 200; life > 0; x += 25) {
-		if (x == 200) {
-			this->addImage("Resources/Images/HUD/hp.png", (x - 30), 35, 28.0f);
+	for (x = theCamera.GetWindowWidth() / 20 * 3; life > 0; x += theCamera.GetWindowWidth() / 35) {
+		if (x == theCamera.GetWindowWidth() / 20 * 3) {
+			this->addImage("Resources/Images/HUD/hp.png", (x - theCamera.GetWindowWidth() / 30), y, size - 2);
 		} if (life >= 25) {
-			std::cout << "COUCOU" << std::endl;
-			tmp = new HUDActor();
-			tmp->SetSprite("Resources/Images/HUD/heart.png");
-			tmp->SetPosition(x, 35);
-			tmp->SetSize(30.0f);
-			theWorld.Add(tmp);
-			this->_hearts.push_back(tmp);
+			this->_hearts.push_back(this->addImage("Resources/Images/HUD/heart.png", x, y, size, 100));
 			life -= 25;
 		}
 	}
 	if (sLife < this->_maxHP) {
-		for (v = 0; (this->_maxHP - sLife) > v; v += 25) {
-			tmp = new HUDActor();
-			tmp->SetSprite("Resources/Images/HUD/empty_heart.png");
-			tmp->SetPosition((x + v), 38);
-			tmp->SetSize(30);
-			theWorld.Add(tmp);
-			this->_hearts.push_back(tmp);
-		}
+		for (v = 0; (this->_maxHP - sLife) > v; v += 25)
+			this->_hearts.push_back(this->addImage("Resources/Images/HUD/empty_heart.png", x, y, size, 100));
 	}
 }
 
@@ -350,23 +363,26 @@ void	HUDWindow::life(int life) {
  */
 void	HUDWindow::mana(int mana) {
 	std::list<HUDActor *>::iterator	i;
-	int								x = 200, y, max = this->_maxMana;
+	float								x = theCamera.GetWindowWidth() / 20 * 3.05;
+	int									y, max = this->_maxMana;
+	float								 yHeight = theCamera.GetWindowHeight() / 20 * 1.56, size = theCamera.GetWindowWidth() / 20 * 0.25;
 
 	for (i = this->_mana.begin(); i != this->_mana.end(); i++)
 		theWorld.Remove(*(i));
 	this->_mana.clear();
-	this->addImage("Resources/Images/HUD/mp.png", (x - 30), 60, 26.0f);
-	this->addImage("Resources/Images/HUD/mp_bar_first.png", x, 60, 12.0f);
-	x += 11;
-	for (y = 0; y < (mana - 1); y += 10, x += 11) {
-		this->addImage("Resources/Images/HUD/mp_bar_mid.png", x, 60, 12.0f);
+	this->_mana.push_back(this->addImage("Resources/Images/HUD/mp.png", (x - theCamera.GetWindowWidth() / 30), yHeight, size * 2));
+	x -= theCamera.GetWindowWidth() / 80 * 0.8;
+	this->_mana.push_back(this->addImage("Resources/Images/HUD/mp_bar_first.png", x, yHeight, size));
+	x += theCamera.GetWindowWidth() / 80;
+	for (y = 0; y < (mana - 1); y += 10, x += theCamera.GetWindowWidth() / 80) {
+		this->_mana.push_back(this->addImage("Resources/Images/HUD/mp_bar_mid.png", x, yHeight, size));
 	}
 	if (y == max)
-		this->addImage("Resources/Images/HUD/mp_bar_full_end.png", x, 60, 12.0f);
+		this->_mana.push_back(this->addImage("Resources/Images/HUD/mp_bar_full_end.png", x, yHeight, size));
 	else {
-		for (; y < max; y += 10, x += 11)
-			this->addImage("Resources/Images/HUD/mp_bar_empty.png", x, 60, 12.0f);
-		this->addImage("Resources/Images/HUD/mp_bar_empty_end.png", x, 60, 12.0f);
+		for (; y < max; y += 10, x += theCamera.GetWindowWidth() / 80)
+			this->_mana.push_back(this->addImage("Resources/Images/HUD/mp_bar_empty.png", x, yHeight, size));
+		this->_mana.push_back(this->addImage("Resources/Images/HUD/mp_bar_empty_end.png", x, yHeight, size));
 	}
 }
 
@@ -377,9 +393,13 @@ void	HUDWindow::mana(int mana) {
  * @param gold The gold number
  */
 void	HUDWindow::gold(int gold) {
-	this->addImage("Resources/Images/HUD/xp.png", 340, 50, 20.0f);
-	this->addImage("Resources/Images/HUD/gold.png", 360, 50, 20.0f);
-	this->_gold = this->setText(std::to_string(gold), 375, 55, Vector3(246.0f, 255.0f, 0.0f), 1);
+	float								x = theCamera.GetWindowWidth() / 20 * 2.37;
+	int									y = theCamera.GetWindowHeight() / 20 * 2.2;
+	float								size = theCamera.GetWindowWidth() / 20 * 0.41;
+
+	this->addImage("Resources/Images/HUD/xp.png", x, y, Vector2(size + 3.5, size), 100);
+	this->addImage("Resources/Images/HUD/gold.png", x + (theCamera.GetWindowWidth() / 40 * 1.2), y, size);
+	this->_gold = this->setText(std::to_string(gold), x + theCamera.GetWindowWidth() / 40 * 2, y + theCamera.GetWindowHeight() / 20 * 0.15, Vector3(246.0f, 255.0f, 0.0f), 1);
 }
 
 //! MAJ gold function
@@ -389,9 +409,11 @@ void	HUDWindow::gold(int gold) {
  * @param gold The new gold number
  */
 void	HUDWindow::updateGold(int gold) {
+	float								x = theCamera.GetWindowWidth() / 20 * 2.37;
+	int									y = theCamera.GetWindowHeight() / 20 * 2.2;
+
 	this->removeText(this->_gold);
-	this->_gold = this->setText((std::to_string(gold)), 375, 55,
-			Vector3(246.0f, 255.0f, 0.0f), 1);
+	this->_gold = this->setText(std::to_string(gold), x + theCamera.GetWindowWidth() / 40 * 2, y + theCamera.GetWindowHeight() / 20 * 0.15, Vector3(246.0f, 255.0f, 0.0f), 1);
 }
 
 //! Display items (Weapon)
@@ -402,8 +424,8 @@ void	HUDWindow::updateGold(int gold) {
  * @param w The Weapon equipped.
  */
 void	HUDWindow::items(Weapon *w) {
-	this->addImage("Resources/Images/HUD/weapon_background.png", 770, 50, 60.0f);
-	this->addImage(w->getSprite(), 770, 50, 40.0f);
+	this->addImage("Resources/HUD/weapon_stuff.png", (theCamera.GetWindowWidth() / 20 * 11), theCamera.GetWindowHeight() / 20, theCamera.GetWindowWidth() / 20);
+	this->addImage(w->getSprite(), (theCamera.GetWindowWidth() / 20 * 11), theCamera.GetWindowHeight() / 20, theCamera.GetWindowWidth() / 20 * 0.7);
 }
 
 //! Display items (Armor)
@@ -414,8 +436,8 @@ void	HUDWindow::items(Weapon *w) {
  * @param a The Armor equipped.
  */
 void	HUDWindow::items(Armor *a) {
-	this->addImage("Resources/Images/HUD/weapon_background.png", 710, 50, 40.0f);
-	this->addImage(a->getSprite(), 710, 50, 30.0f);
+	this->addImage("Resources/HUD/normal_stuff.png", (theCamera.GetWindowWidth() / 20 * 9.8), theCamera.GetWindowHeight() / 20, theCamera.GetWindowWidth() / 20);
+	this->addImage(a->getSprite(), (theCamera.GetWindowWidth() / 20 * 9.8), theCamera.GetWindowHeight() / 20, theCamera.GetWindowWidth() / 20 * 0.7);
 }
 
 //! Display items (Ring)
@@ -426,8 +448,8 @@ void	HUDWindow::items(Armor *a) {
  * @param r The Ring equipped.
  */
 void	HUDWindow::items(Ring *r) {
-	this->addImage("Resources/Images/HUD/weapon_background.png", 660, 50, 40.0f);
-	this->addImage(r->getSprite(), 660, 50, 30.0f);
+	this->addImage("Resources/HUD/normal_stuff.png", (theCamera.GetWindowWidth() / 20 * 8.5), theCamera.GetWindowHeight() / 20, theCamera.GetWindowWidth() / 20);
+	this->addImage(r->getSprite(), (theCamera.GetWindowWidth() / 20 * 8.5), theCamera.GetWindowHeight() / 20, theCamera.GetWindowWidth() / 20 * 0.7);
 }
 
 //! Display armor 
@@ -458,24 +480,27 @@ void	HUDWindow::boots(void) {
  * @todo Same here, no callback or object.
  */
 void	HUDWindow::consumable(std::map<int, std::string> items) {
-	int		i, x;
+	int		i, x, y, size;
 	std::list<HUDActor *>::iterator		it;
 
 	for (it = this->_bag.begin(); it != this->_bag.end(); it++)
 		theWorld.Remove((*it));
 
-	for (i = 0, x = 445; i < 4; i++, x += 47) {
+	x = theCamera.GetWindowWidth() / 20 * 8.3;
+	y = theCamera.GetWindowHeight() / 20 * 2.3;
+	size = theCamera.GetWindowWidth() / 20 * 0.5;
+	for (i = 0; i < 4; i++, x += theCamera.GetWindowWidth() / 20) {
 		if (items[i] != "") {
 			HUDActor	*tmp;
 			if (Game::wList->checkExists(items[i])) {
 				Weapon *w = new Weapon(Game::wList->getWeapon(items[i]));
-				tmp = this->addImage(w->getSprite(), x, 50, 30);
+				tmp = this->addImage(w->getSprite(), x, y, size);
 			} else if (Game::aList->checkExists(items[i])) {
 				Armor* w = new Armor(Game::aList->getArmor(items[i]));
-				tmp = this->addImage(w->getSprite(), x, 50, 30);
+				tmp = this->addImage(w->getSprite(), x, y, size);
 			} else if (Game::rList->checkExists(items[i])) {
 				Ring* w = new Ring(Game::rList->getRing(items[i]));
-				tmp = this->addImage(w->getSprite(), x, 50, 30);
+				tmp = this->addImage(w->getSprite(), x, y, size);
 			}
 			this->_bag.push_back(tmp);
 		}
@@ -502,6 +527,7 @@ void	HUDWindow::_drawDoor(Vector2 size, Vector2 position) {
 	t->SetDrawShape(ADS_Square);
 	t->SetPosition(position.X, position.Y);
 	t->SetSize(size.X, size.Y);
+	t->SetLayer(100);
 	theWorld.Add(t);
 	this->_minimap.push_back(t);
 }
@@ -541,6 +567,7 @@ void	HUDWindow::minimap(void) {
 			else
 				tmp->SetColor(1, 1, 1);
 			tmp->SetDrawShape(ADS_Square);
+			tmp->SetLayer(100);
 			theWorld.Add(tmp);
 			this->_minimap.push_back(tmp);
 
@@ -561,20 +588,52 @@ void	HUDWindow::minimap(void) {
  * This function display an empty bag at the beggining of the game
  */
 void	HUDWindow::bag(void) {
-	HUDActor	*bag = new HUDActor();
-	int		i, x;
+	int		i, x, available;
 
-	bag->SetSize(200, 60);
-	bag->SetPosition(theCamera.GetWindowWidth() - 510, 50);
-	bag->SetSprite("Resources/Images/bag.png");
-	bag->SetDrawShape(ADS_Square);
-	theWorld.Add(bag);
-
-	for (i = 0, x = 445; i < 4; i++, x += 47) {
-		this->addImage("Resources/Images/bag_slot.png", x, 51, 40);
-		this->addImage("Resources/Images/round.png", x + 15, 65, 20, 200);
-		this->setText("S-" + std::to_string(i + 1), x + 10, 67, Vector3(255, 255, 255), 1, "SmallGamefont");
+	available = this->_g->getHero()->getMaxInventory();
+	for (i = 0, x = theCamera.GetWindowWidth() / 20 * 8.3; i < 4; i++, x += theCamera.GetWindowWidth() / 20) {
+		if (i >= available)
+			this->addImage("Resources/HUD/bag_unavailable.png", x, theCamera.GetWindowHeight() / 20 * 2.3, theCamera.GetWindowWidth() / 20 * 0.65);
+		else
+			this->addImage("Resources/HUD/bag_empty.png", x, theCamera.GetWindowHeight() / 20 * 2.3, theCamera.GetWindowWidth() / 20 * 0.65);
 	}
+}
+
+void	HUDWindow::showHud(void) {
+	this->showBackgrounds();
+	this->character();
+	this->spells();
+	this->bag();
+	this->minimap();
+}
+
+void	HUDWindow::showBackgrounds(void) {
+	int		x, y, height, length;
+
+	x = theCamera.GetWindowWidth() / 5 * 3;
+	y = (theCamera.GetWindowHeight() / 10);
+	this->addImage("Resources/HUD/bg1.png", x - ((theCamera.GetWindowWidth() / 5) * 1.5), y - (y / 4),
+			Vector2(x, (y * 1.5) ), 2);
+	this->addImage("Resources/HUD/bg2.png", x + (theCamera.GetWindowWidth() / 10), y - (y / 4), 
+			Vector2(theCamera.GetWindowWidth() / 5 * 1.5, y * 1.3), 1);
+	this->addImage("Resources/HUD/bg3.png", (theCamera.GetWindowWidth() - theCamera.GetWindowWidth() / 10), y - (y / 4), 
+			Vector2(theCamera.GetWindowWidth() / 5, y * 1.5), 2);
+}
+
+void	HUDWindow::character(void) {
+	this->addImage("Resources/HUD/perso_bg.png", (theCamera.GetWindowWidth() / 20) * 1.1, theCamera.GetWindowHeight() / 20 * 1.5,
+			theCamera.GetWindowWidth() / 13, 3);
+	this->addImage("Resources/HUD/perso_pin.png", theCamera.GetWindowWidth() / 20 * 0.4, theCamera.GetWindowHeight() / 20 * 0.8, 
+			theCamera.GetWindowWidth() / 32, 5);
+	this->addImage(this->_g->getHero()->getAttribute("spritesFrame"), theCamera.GetWindowWidth() / 20 * 1.1, theCamera.GetWindowHeight() / 20 * 1.5,
+			theCamera.GetWindowWidth() / 18, 4);
+	HUDActor	*bag = new HUDActor();
+	this->setText("Lvl " + std::to_string(this->_g->getHero()->getLevel()), theCamera.GetWindowWidth() / 20 * 0.2, theCamera.GetWindowHeight() / 20 * 0.9, Vector3(1, 1, 1), 1, "MediumGamefont");
+}
+
+void	HUDWindow::spells(void) {
+	this->addImage("Resources/HUD/spells_bg.png", (theCamera.GetWindowWidth() / 20) * 7, theCamera.GetWindowHeight() / 20 * 1.5, 
+			Vector2(theCamera.GetWindowWidth() / 15, theCamera.GetWindowHeight() / 10 * 1.2), 5);
 }
 
 void	HUDWindow::setGame(Game *g) { this->_g = g; };

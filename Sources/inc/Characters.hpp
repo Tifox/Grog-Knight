@@ -80,10 +80,12 @@ class Characters : public Elements {
 		void							setMana(int mana);
 		int								getMaxMana(void);
 		int								getMaxHP(void);
+		int								getLevel(void);
 		Weapon							*getWeapon(void);
 		Armor							*getArmor(void);
 		Ring							*getRing(void);
 		bool							getCharging(void);
+		int								getMaxInventory();
 
 		// Virtual function, overwritten in childs
 		virtual void	actionCallback(std::string name, int status) {};
@@ -128,6 +130,7 @@ class Characters : public Elements {
 		bool			_isCharging;
 		bool			_isStomping;
 		int				_hasDashed;
+		int				_level;
 		std::string		_speMove;
 		Weapon*			_weapon;
 		Armor*			_armor;

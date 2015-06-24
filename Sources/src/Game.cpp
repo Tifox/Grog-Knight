@@ -106,6 +106,7 @@ void	Game::start(void) {
 	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 	this->displayHero(*(hero));
 	hero->init();
+	this->setHero(hero);
 	this->displayHUD();
 	hero->equipWeapon(Game::wList->getWeapon("Sword"));
 	hero->equipRing(Game::rList->getRing("SmallRing"));
@@ -430,23 +431,22 @@ HUDWindow	*Game::getHUD(void) {
 void		Game::displayHUD(void) {
 	HUDWindow *w = new HUDWindow();
 	Characters*	hero = Game::getHero();
-	w->SetPosition(theCamera.GetWindowWidth() / 2 - 100, 50);
-	w->SetSize(theCamera.GetWindowWidth() - 200, 100.0f);
-	w->SetSprite("Resources/Images/HUD/background_hud.png");
-	w->SetDrawShape(ADS_Square);
-	w->SetLayer(-1);
-	w->addImage("Resources/Images/HUD/perso.png", 100, 50);
-	theWorld.Add(w);
+   /* w->SetPosition(theCamera.GetWindowWidth() / 2 - 100, 50);*/
+	//w->SetSize(theCamera.GetWindowWidth() - 200, 100.0f);
+	//w->SetSprite("Resources/Images/HUD/background_hud.png");
+	//w->SetDrawShape(ADS_Square);
+	//w->SetLayer(-1);
+	//w->addImage("Resources/Images/HUD/perso.png", 100, 50);
+	/*theWorld.Add(w);*/
 	Game	*g = this;
 	w->setGame(g);
-	w->setMaxMana(hero->getMaxMana());
+	w->showHud();
+   /* w->setMaxMana(hero->getMaxMana());*/
 	w->setMaxHP(hero->getMaxHP());
-	w->life(hero->getHP());
-	w->mana(hero->getMana());
 	w->gold(0);
-	w->bag();
-	w->initMinimapBackground();
-	w->minimap();
+	//w->bag();
+	//w->initMinimapBackground();
+	/*w->minimap();*/
 
 	// Work 
    //w->setText("Burp.", this->_hero, Vector3(0, 0, 0), 0, 1);

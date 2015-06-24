@@ -66,7 +66,7 @@ void	Quit::writeBindings(std::map<std::string, std::list<t_bind *> > binds) {
 			for (it2 = it->second.begin(); it2 != it->second.end(); it2++) {
 				// Json file
 				root[it->first][(*it2)->name]["broadcast"] = (*it2)->broadcast;
-					root[it->first][(*it2)->name]["key"] = (*it2)->realKey;
+				root[it->first][(*it2)->name]["key"] = (*it2)->realKey;
 
 				// Lua file
 				if (!Quit::isUpper((*it2)->broadcast)) {

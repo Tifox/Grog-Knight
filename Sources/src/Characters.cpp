@@ -24,10 +24,10 @@
  */
 
 # include "Characters.hpp"
-#include <cstdlib>
+# include <cstdlib>
 
 //! Base constructor
-Characters::Characters(void) {
+Characters::Characters(void) : _level(1) {
 	return ;
 }
 
@@ -37,7 +37,7 @@ Characters::Characters(void) {
  * @param name The name of the character (Enemy, Hero, etc ...)
  * @todo gotta parse the right number of slots from json for inventory
  */
-Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0) {
+Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0), _level(1) {
 	this->addAttribute("physic", "1");
 	this->addAttribute("type", name);
 	this->SetDensity(1.0f);
@@ -1155,3 +1155,5 @@ void						Characters::changeCanMove(void) { this->_canMove = (this->_canMove ? f
 Weapon						*Characters::getWeapon(void) { return this->_weapon; };
 bool						Characters::getCharging(void) { return this->_isCharging; }
 std::list<std::string>		Characters::getSubscribes(void) { return this->_subsc; };
+int							Characters::getLevel(void) { return this->_level; };
+int							Characters::getMaxInventory(void) { return this->_inventory->getSlots(); };

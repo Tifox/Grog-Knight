@@ -88,7 +88,8 @@ void	Hero::actionCallback(std::string name, int status) {
 			x = 1; y = 2.5f;
 			orientation = "down";
 		}
-		this->changeSizeTo(Vector2(x, y));
+		if (this->getAttribute("class") == "Warrior")
+			this->changeSizeTo(Vector2(x, y));
 		this->_setCategory("attack");
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 								  this->_getAttr("beginFrame_" + orientation).asInt(),
@@ -111,7 +112,8 @@ void	Hero::actionCallback(std::string name, int status) {
 		this->_setCategory("loadAttack_done");
 		this->_isLoadingAttack = 0;
 		this->_fullChargedAttack = false;
-		this->changeSizeTo(Vector2(2, 2));
+		if (this->getAttribute("class") == "Warrior")
+			this->changeSizeTo(Vector2(2, 2));
 		this->_canAttack = false;
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 								  this->_getAttr("beginFrame_" + orientation).asInt(),
@@ -122,7 +124,8 @@ void	Hero::actionCallback(std::string name, int status) {
 		} else if (this->_latOrientation == LEFT)
 			orientation = "left";
 		this->_setCategory("loadAttack_charge");
-		this->changeSizeTo(Vector2(2, 2));
+		if (this->getAttribute("class") == "Warrior")
+			this->changeSizeTo(Vector2(2, 2));
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 								  this->_getAttr("beginFrame_" + orientation).asInt(),
 								  this->_getAttr("endFrame_" + orientation).asInt());
@@ -222,7 +225,8 @@ void	Hero::_takeDamage(Elements* elem) {
   Game::stopRunning(this);
   this->_isRunning = 0;
   this->_isJump = 1;
-  this->changeSizeTo(Vector2(1, 1));
+  if (this->getAttribute("class") == "Warrior")
+	  this->changeSizeTo(Vector2(1, 1));
   if (this->_invincibility == false) {
 	  this->_canMove = 0;
 	  this->setHP(this->getHP() - 25);

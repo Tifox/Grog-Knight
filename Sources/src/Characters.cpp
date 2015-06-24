@@ -110,7 +110,6 @@ void	Characters::_parseJson(std::string file) {
 	this->_name = json["infos"].get("name", "").asString();
 	this->_id = json["infos"].get("id", "").asInt();
 	this->_size = json["infos"].get("size", "").asFloat();
-	this->_maxSpeed = json["infos"].get("maxSpeed", "").asFloat();
 	this->_hp = json["infos"].get("HP", "").asInt();
 	if (json["infos"].get("maxHP", "").isConvertibleTo(Json::ValueType::intValue))
 		this->_maxHp = json["infos"].get("maxHP", "").asInt();
@@ -356,7 +355,8 @@ void	Characters::AnimCallback(String s) {
 	if (s == "base") {
 		this->_isAttacking = 0;
 		if (this->_isRunning == 0 && this->_isAttacking == 0 && this->_isLoadingAttack == 0) {
-			this->changeSizeTo(Vector2(1, 1));
+			if (this->getAttribute("class") == "Warrior")
+				this->changeSizeTo(Vector2(1, 1));
 			if (this->_latOrientation == LEFT) {
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 						this->_getAttr("beginFrame_left").asInt(),
@@ -372,7 +372,8 @@ void	Characters::AnimCallback(String s) {
 			}
 		} else if (this->_isAttacking == 0) {
 			if (this->_isLoadingAttack == 0) {
-				this->changeSizeTo(Vector2(1, 1));
+				if (this->getAttribute("class") == "Warrior")
+					this->changeSizeTo(Vector2(1, 1));
 				if (this->_isRunning == 1) {
 					this->_setCategory("forward");
 				} else if (this->_isRunning == 2) {
@@ -389,7 +390,8 @@ void	Characters::AnimCallback(String s) {
 				} else if (this->_latOrientation == LEFT)
 					orientation = "left";
 				this->_setCategory("loadAttack_charge");
-				this->changeSizeTo(Vector2(2, 2));
+				if (this->getAttribute("class") == "Warrior")
+					this->changeSizeTo(Vector2(2, 2));
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 										  this->_getAttr("endFrame_" + orientation).asInt(),
 										  this->_getAttr("endFrame_" + orientation).asInt(), "loadAttack_charge");
@@ -408,8 +410,10 @@ void	Characters::AnimCallback(String s) {
  */
 void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "ground") {
-		if (this->_isAttacking == 0 && this->_isLoadingAttack == 0)
-			this->changeSizeTo(Vector2(1, 1));
+		if (this->_isAttacking == 0 && this->_isLoadingAttack == 0) {
+			if (this->getAttribute("class") == "Warrior")
+				this->changeSizeTo(Vector2(1, 1));
+		}
 		if (this->GetBody()->GetWorldCenter().y - 0.905 >= elem->GetBody()->GetWorldCenter().y) {
 			if (this->_grounds.size() > 0) {
 				contact->SetEnabled(false);
@@ -432,14 +436,16 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 			  this->_isJump = 0;
 			  this->_hasDashed = 0;
 			  if (this->_latOrientation == RIGHT && this->_isAttacking == false && this->_isLoadingAttack == 0) {
-					this->changeSizeTo(Vector2(1, 1));
+				  if (this->getAttribute("class") == "Warrior")
+					  this->changeSizeTo(Vector2(1, 1));
 					this->PlaySpriteAnimation(0.1f, SAT_OneShot,
 							this->_getAttr("jump", "endFrame_right").asInt() - 2,
 							this->_getAttr("jump", "endFrame_right").asInt(), "base");
 				} else if (this->_latOrientation == LEFT &&
 					this->_isAttacking == false &&
 					this->_isLoadingAttack == 0) {
-					this->changeSizeTo(Vector2(1, 1));
+				  if (this->getAttribute("class") == "Warrior")
+					  this->changeSizeTo(Vector2(1, 1));
 					this->PlaySpriteAnimation(0.1f, SAT_OneShot,
 							this->_getAttr("jump", "endFrame_left").asInt() - 2,
 							this->_getAttr("jump", "endFrame_left").asInt(), "base");
@@ -509,13 +515,15 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 				this->_isJump++;
 				if (this->_lastAction == "forward" && this->_canMove &&
 					this->_isAttacking == false && this->_isLoadingAttack == 0) {
-					this->changeSizeTo(Vector2(1, 1));
+					if (this->getAttribute("class") == "Warrior")
+						this->changeSizeTo(Vector2(1, 1));
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 							this->_getAttr("jump", "fallingFrame_right").asInt(),
 							this->_getAttr("jump", "endFrame_right").asInt() - 3, "jump");
 				} else if (this->_lastAction == "backward" && this->_canMove &&
 						   this->_isAttacking == false && this->_isLoadingAttack == 0) {
-					this->changeSizeTo(Vector2(1, 1));
+					if (this->getAttribute("class") == "Warrior")
+						this->changeSizeTo(Vector2(1, 1));
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 											  this->_getAttr("jump", "fallingFrame_left").asInt(),
 											  this->_getAttr("jump", "endFrame_left").asInt() - 3, "jump");
@@ -688,7 +696,8 @@ void	Characters::_jump(int status) {
 				this->ApplyLinearImpulse(Vector2(0, this->_getAttr("force").asFloat()), Vector2(0, 0));
 			}
 			if (this->_isAttacking == false && this->_isLoadingAttack == 0) {
-				this->changeSizeTo(Vector2(1, 1));
+				if (this->getAttribute("class") == "Warrior")
+					this->changeSizeTo(Vector2(1, 1));
 				if (this->_latOrientation == RIGHT) {
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 							this->_getAttr("beginFrame_right").asInt(),

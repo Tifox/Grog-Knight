@@ -29,7 +29,7 @@
 /**
  * This constructor is making some subscribtions for himself.
  */
-Hero::Hero(void) : Characters("Hero") {
+Hero::Hero(std::string name) : Characters(name) {
 	theSwitchboard.SubscribeTo(this, "canMove");
 	theSwitchboard.SubscribeTo(this, "endInvincibility");
 	theSwitchboard.SubscribeTo(this, "enableAttackHitbox");
@@ -39,8 +39,8 @@ Hero::Hero(void) : Characters("Hero") {
 	theSwitchboard.SubscribeTo(this, "dropItem");
 	theSwitchboard.SubscribeTo(this, "attackReady");
 	theSwitchboard.SubscribeTo(this, "specialMove");
-	this->_speMove = this->_getAttr("specialMove", "type").asString();
-
+	theSwitchboard.SubscribeTo(this, "changeCharacter");
+	this->addAttribute("type", "Hero");
 	return ;
 }
 
@@ -87,7 +87,8 @@ void	Hero::actionCallback(std::string name, int status) {
 			x = 1; y = 2.5f;
 			orientation = "down";
 		}
-		this->changeSizeTo(Vector2(x, y));
+		if (this->getAttribute("class") == "Warrior")
+			this->changeSizeTo(Vector2(x, y));
 		this->_setCategory("attack");
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 								  this->_getAttr("beginFrame_" + orientation).asInt(),
@@ -110,7 +111,8 @@ void	Hero::actionCallback(std::string name, int status) {
 		this->_setCategory("loadAttack_done");
 		this->_isLoadingAttack = 0;
 		this->_fullChargedAttack = false;
-		this->changeSizeTo(Vector2(2, 2));
+		if (this->getAttribute("class") == "Warrior")
+			this->changeSizeTo(Vector2(2, 2));
 		this->_canAttack = false;
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 								  this->_getAttr("beginFrame_" + orientation).asInt(),
@@ -121,7 +123,8 @@ void	Hero::actionCallback(std::string name, int status) {
 		} else if (this->_latOrientation == LEFT)
 			orientation = "left";
 		this->_setCategory("loadAttack_charge");
-		this->changeSizeTo(Vector2(2, 2));
+		if (this->getAttribute("class") == "Warrior")
+			this->changeSizeTo(Vector2(2, 2));
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 								  this->_getAttr("beginFrame_" + orientation).asInt(),
 								  this->_getAttr("endFrame_" + orientation).asInt());
@@ -221,7 +224,8 @@ void	Hero::_takeDamage(Elements* elem) {
   Game::stopRunning(this);
   this->_isRunning = 0;
   this->_isJump = 1;
-  this->changeSizeTo(Vector2(1, 1));
+  if (this->getAttribute("class") == "Warrior")
+	  this->changeSizeTo(Vector2(1, 1));
   if (this->_invincibility == false) {
 	  this->_canMove = 0;
 	  this->setHP(this->getHP() - 25);
@@ -248,4 +252,13 @@ void	Hero::_takeDamage(Elements* elem) {
   theSwitchboard.SubscribeTo(this, "colorDamageBlink2");
   theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
   this->_invincibility = true;
+}
+
+void	Hero::setStartingValues(void) {
+	this->_setCategory("starting");
+	this->_inventory = new Inventory(this->_getAttr("inventorySlots").asInt());
+	this->equipWeapon(Game::wList->getWeapon(this->_getAttr("weapon").asString()));
+	this->equipArmor(Game::aList->getArmor(this->_getAttr("armor").asString()));
+	this->equipRing(Game::rList->getRing(this->_getAttr("ring").asString()));
+	this->_speMove = this->_getAttr("specialMove").asString();
 }

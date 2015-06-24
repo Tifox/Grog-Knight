@@ -104,20 +104,12 @@ void	Game::start(void) {
 						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 9.001);
 	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 
+	Game::addHUDWindow(new HUDWindow());
 	this->displayHero(*(hero));
 	hero->init();
-//<<<<<<< HEAD
+	hero->setStartingValues();
 	this->setHero(hero);
-	hero->equipWeapon(Game::wList->getWeapon("Sword"));
-	hero->equipRing(Game::rList->getRing("SmallRing"));
-	hero->equipArmor(Game::aList->getArmor("ChestArmor"));
 	this->displayHUD();
-/*=======*/
-//>>>>>>> 82f5f31e4044f7cb2ee8dfcf1ddf85a99bddbf47
-	//this->setHero(hero);
-
-	//this->displayHUD();
-	//hero->setStartingValues();
 
 	Game::started = 1;
 }
@@ -453,7 +445,7 @@ HUDWindow	*Game::getHUD(void) {
  * @todo This function is nasty, we need a recap here.
  */
 void		Game::displayHUD(void) {
-	HUDWindow *w = new HUDWindow();
+	HUDWindow *w = Game::getHUD();
 	Characters*	hero = Game::getHero();
    /* w->SetPosition(theCamera.GetWindowWidth() / 2 - 100, 50);*/
 	//w->SetSize(theCamera.GetWindowWidth() - 200, 100.0f);
@@ -475,7 +467,7 @@ void		Game::displayHUD(void) {
 	// Work 
    //w->setText("Burp.", this->_hero, Vector3(0, 0, 0), 0, 1);
 	/*w->removeText("Burp.");*/
-	Game::addHUDWindow(w);
+	//Game::addHUDWindow(w);
 }
 
 /* SETTERS */

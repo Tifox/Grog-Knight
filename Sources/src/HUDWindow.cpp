@@ -36,6 +36,7 @@ HUDWindow::HUDWindow(void) : HUDActor() {
 	RegisterFont("Resources/Fonts/fail.otf", 80, "dead");
 	RegisterFont("Resources/Fonts/Market_Deco.ttf", 80, "title");
 	RegisterFont("Resources/Fonts/Market_Deco.ttf", 40, "smallTitle");
+	this->_hearts.clear();
 	return;
 }
 
@@ -343,7 +344,7 @@ void	HUDWindow::life(int life) {
 	this->_hearts.clear();
 	for (x = theCamera.GetWindowWidth() / 20 * 3; life > 0; x += theCamera.GetWindowWidth() / 35) {
 		if (x == theCamera.GetWindowWidth() / 20 * 3) {
-			this->addImage("Resources/Images/HUD/hp.png", (x - theCamera.GetWindowWidth() / 30), y, size - 2);
+			this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp.png", (x - theCamera.GetWindowWidth() / 30), y, size - 2));
 		} if (life >= 25) {
 			this->_hearts.push_back(this->addImage("Resources/Images/HUD/heart.png", x, y, size, 100));
 			life -= 25;

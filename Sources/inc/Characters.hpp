@@ -87,6 +87,9 @@ class Characters : public Elements {
 		bool							getCharging(void);
 		int								getMaxInventory();
 
+		int				forwardLimit;
+		int				backwardLimit;
+
 		// Virtual function, overwritten in childs
 		virtual void	actionCallback(std::string name, int status) {};
 		virtual void	equipWeapon(Weapon* weapon);

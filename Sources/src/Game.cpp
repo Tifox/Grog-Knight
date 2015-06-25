@@ -85,7 +85,7 @@ void	Game::start(void) {
 	Game::rList = new RingList();
 	this->tooltip = new Tooltip();
 	Game::currentGame = this;
-	Hero			*hero = new Hero("Archer");
+	Hero			*hero = new Hero("Warrior");
 
 
 
@@ -107,9 +107,9 @@ void	Game::start(void) {
 	Game::addHUDWindow(new HUDWindow());
 	this->displayHero(*(hero));
 	hero->init();
-	hero->setStartingValues();
 	this->setHero(hero);
 	this->displayHUD();
+	hero->setStartingValues();
 
 	Game::started = 1;
 }
@@ -181,6 +181,8 @@ int		Game::getNextId(void) {
 
 void	Game::checkHeroPosition(void) {
 	if (Game::started == 1) {
+		Game::currentGame->getHero()->forwardLimit = 0;
+		Game::currentGame->getHero()->backwardLimit = 0;
 		Game::currentGame->moveCamera();
 		Game::currentGame->simulateHeroItemContact();
 	}

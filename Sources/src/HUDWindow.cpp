@@ -312,6 +312,7 @@ HUDActor	*HUDWindow::addImage(std::string path, int x, int y, float size, int la
  */
 HUDActor	*HUDWindow::addImage(std::string path, int x, int y, Vector2 size, int layer) {
 	HUDActor *tmp = new HUDActor();
+	std::cout << x << ":" << y << std::endl;
 	tmp->SetSprite(path);
 	tmp->SetPosition(x, y);
 	tmp->SetSize(size.X, size.Y);

@@ -26,10 +26,12 @@
 # include "Characters.hpp"
 # include <cstdlib>
 
+
 //! Base constructor
 Characters::Characters(void) : _level(1) {
 	return ;
 }
+
 
 //! Main constructor
 /**
@@ -72,6 +74,7 @@ Characters::~Characters(void) {
  * For more documentation on the json style, uh, just wait we write it.
  * @param name (std::string)
  */
+
 void	Characters::_readFile(std::string name) {
 	std::string			file;
 	std::stringstream 	buffer;
@@ -576,6 +579,12 @@ void	Characters::_run(void) {
 void	Characters::_forward(int status) {
 	this->_setCategory("forward");
 	if (status == 1) {
+		if (this->getAttribute("type") == "Hero") {
+			if (this->forwardLimit == 0)
+				this->forwardLimit = 1;
+			else
+				return;
+		}
 		this->_orientation = RIGHT;
 		this->_latOrientation = RIGHT;
 		if ((this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() ||
@@ -625,6 +634,12 @@ void	Characters::_forward(int status) {
 void	Characters::_backward(int status) {
 	this->_setCategory("backward");
 	if (status == 1) {
+		if (this->getAttribute("type") == "Hero") {
+			if (this->backwardLimit == 0)
+			this->backwardLimit = 1;
+			else
+				return;
+		}
 		this->_orientation = LEFT;
 		this->_latOrientation = LEFT;
 		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() &&
@@ -1036,9 +1051,10 @@ void	Characters::equipArmor(Armor* armor) {
 	  	this->_mana += std::stoi(this->_armor->getAttribute("manaBuff"));
 	}
 	Game::getHUD()->items(this->_armor);
-	Game::getHUD()->life(this->_maxHp);
-	Game::getHUD()->mana(this->_maxMana);
-
+	Game::getHUD()->setMaxHP(this->_maxHp);
+	Game::getHUD()->life(this->_hp);
+	Game::getHUD()->setMaxMana(this->_maxMana);
+	Game::getHUD()->mana(this->_mana);
 }
 
 //! Unequip a armor
@@ -1065,9 +1081,11 @@ void	Characters::equipRing(Ring* ring) {
 	  	this->_maxHp += std::stoi(this->_ring->getAttribute("hpBuff"));
 	if (this->_ring->getAttribute("manaBuff") != "")
 	  	this->_maxMana += std::stoi(this->_ring->getAttribute("manaBuff"));
-	Game::getHUD()->items(this->_ring);
-	Game::getHUD()->life(this->_maxHp);
-	Game::getHUD()->mana(this->_maxMana);
+	Game::getHUD()->items(this->_armor);
+	Game::getHUD()->setMaxHP(this->_maxHp);
+	Game::getHUD()->life(this->_hp);
+	Game::getHUD()->setMaxMana(this->_maxMana);
+	Game::getHUD()->mana(this->_mana);
 }
 
 //! Unequip a ring

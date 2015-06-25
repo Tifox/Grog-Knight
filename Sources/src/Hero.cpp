@@ -41,6 +41,7 @@ Hero::Hero(std::string name) : Characters(name) {
 	theSwitchboard.SubscribeTo(this, "specialMove");
 	theSwitchboard.SubscribeTo(this, "changeCharacter");
 	this->addAttribute("type", "Hero");
+	this->_inventory = new Inventory(this->_getAttr("starting", "inventorySlots").asInt());
 	return ;
 }
 
@@ -256,7 +257,6 @@ void	Hero::_takeDamage(Elements* elem) {
 
 void	Hero::setStartingValues(void) {
 	this->_setCategory("starting");
-	this->_inventory = new Inventory(this->_getAttr("inventorySlots").asInt());
 	this->equipWeapon(Game::wList->getWeapon(this->_getAttr("weapon").asString()));
 	this->equipArmor(Game::aList->getArmor(this->_getAttr("armor").asString()));
 	this->equipRing(Game::rList->getRing(this->_getAttr("ring").asString()));

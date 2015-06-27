@@ -1081,7 +1081,7 @@ void	Characters::equipRing(Ring* ring) {
 	  	this->_maxHp += std::stoi(this->_ring->getAttribute("hpBuff"));
 	if (this->_ring->getAttribute("manaBuff") != "")
 	  	this->_maxMana += std::stoi(this->_ring->getAttribute("manaBuff"));
-	Game::getHUD()->items(this->_armor);
+	Game::getHUD()->items(this->_ring);
 	Game::getHUD()->setMaxHP(this->_maxHp);
 	Game::getHUD()->life(this->_hp);
 	Game::getHUD()->setMaxMana(this->_maxMana);

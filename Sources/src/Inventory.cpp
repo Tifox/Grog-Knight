@@ -83,7 +83,6 @@ int		Inventory::addItemToInventory(std::string item) {
 		return 1;
 	this->_inInventory++;
 	Game::getHUD()->consumable(this->_items);
-	this->changeItemFocus();
 }
 
 

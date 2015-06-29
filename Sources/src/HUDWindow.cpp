@@ -336,12 +336,15 @@ void	HUDWindow::life(int life) {
 	int		x, v, sLife = life, y, size;
 	std::list<HUDActor *>::iterator	i;
 	int		index;
-	HUDActor *tmp;
+	//HUDActor *tmp;
 
+	std::cout << life << ", " << this->_maxHP << std::endl;
 	y = theCamera.GetWindowHeight() / 20 * 0.9;
 	size = theCamera.GetWindowWidth() / 20 * 0.6;
-	for (i = this->_hearts.begin(), index = 0; i != this->_hearts.end(); i++, index++)
+	for (i = this->_hearts.begin(), index = 0; i != this->_hearts.end(); i++, index++) {
+		(*(i))->ChangeColorTo(Color(0, 0, 0, 0), 0);
 		theWorld.Remove(*(i));
+	}
 	this->_hearts.clear();
 	for (x = theCamera.GetWindowWidth() / 20 * 3; life > 0; x += theCamera.GetWindowWidth() / 35) {
 		if (x == theCamera.GetWindowWidth() / 20 * 3) {
@@ -352,8 +355,9 @@ void	HUDWindow::life(int life) {
 		}
 	}
 	if (sLife < this->_maxHP) {
-		for (v = 0; (this->_maxHP - sLife) > v; v += 25)
-			this->_hearts.push_back(this->addImage("Resources/Images/HUD/empty_heart.png", x, y, size, 100));
+		for (v = 0; (this->_maxHP - sLife) > v; v += 25, x += theCamera.GetWindowWidth() / 35) {
+			this->_hearts.push_back(this->addImage("Resources/Images/HUD/empty_heart.png", x, y + 2, size - 3, 105));
+		}
 	}
 }
 

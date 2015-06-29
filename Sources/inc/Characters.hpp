@@ -133,12 +133,9 @@ class Characters : public Elements {
 		bool			_canAttack;
 		bool			_isCharging;
 		bool			_isStomping;
-<<<<<<< HEAD
 		bool			_isFlying;
 		bool			_flyTrigger;
-=======
 		bool			_isDashing;
->>>>>>> c4c8658f7d26613aef8d314b92bb7b32cf9183cd
 		int				_hasDashed;
 		int				_level;
 		std::string		_speMove;

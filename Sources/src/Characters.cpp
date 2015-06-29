@@ -295,7 +295,7 @@ void	Characters::ReceiveMessage(Message *m) {
 	else if (m->GetMessageName() == "dashEnd") {
 		theSwitchboard.UnsubscribeFrom(this, "dashEnd");
 		this->GetBody()->SetGravityScale(1);
-		this->_canMove = 1;
+		Game::stopRunning(this);
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 	}
 	else if (m->GetMessageName() == "chargeEnd") {
@@ -364,9 +364,8 @@ void	Characters::AnimCallback(String s) {
 	this->_setCategory("breath");
 	if (s == "base") {
 		this->_isAttacking = 0;
-		if (this->_isRunning == 0 && this->_isAttacking == 0 && this->_isLoadingAttack == 0) {
-			if (this->getAttribute("class") == "Warrior")
-				this->changeSizeTo(Vector2(1, 1));
+		if (this->_isRunning == 0 && this->_isAttacking == 0 && this->_isLoadingAttack == 0 &&
+			this->_grounds.size() > 0) {
 			if (this->_latOrientation == LEFT) {
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 						this->_getAttr("beginFrame_left").asInt(),
@@ -380,9 +379,25 @@ void	Characters::AnimCallback(String s) {
 						this->_getAttr("beginFrame_right").asInt(),
 						this->_getAttr("endFrame_right").asInt(), "base");
 			}
+		} else if (this->_grounds.size() == 0 && this->getAttribute("type") == "Hero") {
+			this->_setCategory("jump");
+			if (this->_latOrientation == LEFT) {
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+						this->_getAttr("fallingFrame_left").asInt(),
+						this->_getAttr("fallingFrame_left").asInt(), "base");
+			} else if (this->_latOrientation == RIGHT) {
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+						this->_getAttr("fallingFrame_right").asInt(),
+						this->_getAttr("fallingFrame_right").asInt(), "base");
+			} else {
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+						this->_getAttr("beginFrame_right").asInt(),
+						this->_getAttr("endFrame_right").asInt(), "base");
+			}
+
 		} else if (this->_isAttacking == 0) {
 			if (this->_isLoadingAttack == 0) {
-				if (this->getAttribute("class") == "Warrior")
+				if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
 					this->changeSizeTo(Vector2(1, 1));
 				if (this->_isRunning == 1) {
 					this->_setCategory("forward");
@@ -400,13 +415,30 @@ void	Characters::AnimCallback(String s) {
 				} else if (this->_latOrientation == LEFT)
 					orientation = "left";
 				this->_setCategory("loadAttack_charge");
-				if (this->getAttribute("class") == "Warrior")
+				if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
 					this->changeSizeTo(Vector2(2, 2));
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 										  this->_getAttr("endFrame_" + orientation).asInt(),
 										  this->_getAttr("endFrame_" + orientation).asInt(), "loadAttack_charge");
 			}
 		}
+		if (this->getAttribute("class") == "Warrior")
+			this->changeSizeTo(Vector2(1, 1));
+		if (this->_isDashing == true) {
+			this->_isDashing = false;
+			this->_canMove = 1;
+		}
+	}
+	else if (s == "endDash") {
+		this->_setCategory("dash");
+		std::string orientation;
+		if (this->_latOrientation == RIGHT)
+			orientation = "right";
+		else if (this->_latOrientation == LEFT)
+			orientation = "left";
+		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+										  this->_getAttr("endFrame_" + orientation).asInt() - 1,
+										  this->_getAttr("endFrame_" + orientation).asInt(), "base");
 	}
 }
 
@@ -421,7 +453,7 @@ void	Characters::AnimCallback(String s) {
 void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttributes()["type"] == "ground") {
 		if (this->_isAttacking == 0 && this->_isLoadingAttack == 0) {
-			if (this->getAttribute("class") == "Warrior")
+			if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
 				this->changeSizeTo(Vector2(1, 1));
 		}
 		if (this->GetBody()->GetWorldCenter().y - 0.905 >= elem->GetBody()->GetWorldCenter().y) {
@@ -439,14 +471,15 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				  return;
 				}
 			if (this->_isStomping == true) {
-			  theSwitchboard.Broadcast(new Message("stompEnd"));
-			  new Weapon(this->_weapon, this, 1);
-			  new Weapon(this->_weapon, this, -1);
+				theSwitchboard.Broadcast(new Message("stompEnd"));
+				new Weapon(this->_weapon, this, 0.5);
+				new Weapon(this->_weapon, this, -0.5);
 			}
-			  this->_isJump = 0;
-			  this->_hasDashed = 0;
-			  if (this->_latOrientation == RIGHT && this->_isAttacking == false && this->_isLoadingAttack == 0) {
-				  if (this->getAttribute("class") == "Warrior")
+			this->_isJump = 0;
+			this->_hasDashed = 0;
+			if (this->_latOrientation == RIGHT && this->_isAttacking == false &&
+				this->_isLoadingAttack == 0) {
+				if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
 					  this->changeSizeTo(Vector2(1, 1));
 					this->PlaySpriteAnimation(0.1f, SAT_OneShot,
 							this->_getAttr("jump", "endFrame_right").asInt() - 2,
@@ -454,7 +487,7 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				} else if (this->_latOrientation == LEFT &&
 					this->_isAttacking == false &&
 					this->_isLoadingAttack == 0) {
-				  if (this->getAttribute("class") == "Warrior")
+				  if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
 					  this->changeSizeTo(Vector2(1, 1));
 					this->PlaySpriteAnimation(0.1f, SAT_OneShot,
 							this->_getAttr("jump", "endFrame_left").asInt() - 2,
@@ -525,14 +558,14 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 				this->_isJump++;
 				if (this->_lastAction == "forward" && this->_canMove &&
 					this->_isAttacking == false && this->_isLoadingAttack == 0) {
-					if (this->getAttribute("class") == "Warrior")
+					if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
 						this->changeSizeTo(Vector2(1, 1));
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 							this->_getAttr("jump", "fallingFrame_right").asInt(),
 							this->_getAttr("jump", "endFrame_right").asInt() - 3, "jump");
 				} else if (this->_lastAction == "backward" && this->_canMove &&
 						   this->_isAttacking == false && this->_isLoadingAttack == 0) {
-					if (this->getAttribute("class") == "Warrior")
+					if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
 						this->changeSizeTo(Vector2(1, 1));
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 											  this->_getAttr("jump", "fallingFrame_left").asInt(),
@@ -718,7 +751,7 @@ void	Characters::_jump(int status) {
 				this->ApplyLinearImpulse(Vector2(0, this->_getAttr("force").asFloat()), Vector2(0, 0));
 			}
 			if (this->_isAttacking == false && this->_isLoadingAttack == 0) {
-				if (this->getAttribute("class") == "Warrior")
+				if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
 					this->changeSizeTo(Vector2(1, 1));
 				if (this->_latOrientation == RIGHT) {
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
@@ -879,9 +912,13 @@ void	Characters::_specialMove(void) {
 
 void	Characters::_dash(void) {
 	this->_setCategory("dash");
-	if (this->_isAttacking == 0 && this->_canMove == 1 && this->_hasDashed == 0) {
+	if (this->_isAttacking == 0 && this->_canMove == 1 && this->_hasDashed == 0 &&
+		this->_isDashing == false) {
+		this->_isDashing = true;
 		this->GetBody()->SetGravityScale(0);
+		this->actionCallback("dash", 0);
 		this->_canMove = 0;
+		Game::stopRunning(this);
 		if (this->_grounds.size() == 0)
 			this->_hasDashed = 1;
 		theSwitchboard.SubscribeTo(this, "dashEnd");

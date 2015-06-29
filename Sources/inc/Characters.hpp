@@ -132,6 +132,7 @@ class Characters : public Elements {
 		bool			_canAttack;
 		bool			_isCharging;
 		bool			_isStomping;
+		bool			_isDashing;
 		int				_hasDashed;
 		int				_level;
 		std::string		_speMove;

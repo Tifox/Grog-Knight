@@ -130,6 +130,17 @@ void	Hero::actionCallback(std::string name, int status) {
 								  this->_getAttr("beginFrame_" + orientation).asInt(),
 								  this->_getAttr("endFrame_" + orientation).asInt());
 	}
+	else if (name == "dash") {
+		if (this->_latOrientation == RIGHT) {
+			orientation = "right";
+		} else if (this->_latOrientation == LEFT)
+			orientation = "left";
+		this->changeSizeTo(Vector2(2, 1));
+		this->_setCategory("dash");
+		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+								  this->_getAttr("beginFrame_" + orientation).asInt(),
+								  this->_getAttr("endFrame_" + orientation).asInt() - 2, "endDash");
+	}
 	return ;
 }
 

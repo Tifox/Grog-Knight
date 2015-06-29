@@ -85,7 +85,8 @@ class Characters : public Elements {
 		Armor							*getArmor(void);
 		Ring							*getRing(void);
 		bool							getCharging(void);
-		int								getMaxInventory();
+		int								getMaxInventory(void);
+		Inventory						*getInventory(void);
 
 		int				forwardLimit;
 		int				backwardLimit;
@@ -132,8 +133,12 @@ class Characters : public Elements {
 		bool			_canAttack;
 		bool			_isCharging;
 		bool			_isStomping;
+<<<<<<< HEAD
 		bool			_isFlying;
 		bool			_flyTrigger;
+=======
+		bool			_isDashing;
+>>>>>>> c4c8658f7d26613aef8d314b92bb7b32cf9183cd
 		int				_hasDashed;
 		int				_level;
 		std::string		_speMove;

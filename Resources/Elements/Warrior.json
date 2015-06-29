@@ -35,7 +35,7 @@
 		},
 		"jump": {
 			"subscribe": "jump",
-			"max": 3,
+			"max": 30,
 			"force": 6,
 			"rejump": 10,
 			"beginFrame_right": 4,
@@ -80,18 +80,15 @@
 			"endFrame_left": 73,
 			"time": 0.1
 		},
-		"specialMove": {
-			"type": "dash"
-		},
 		"dash": {
 			"cooldown": 1,
 			"dashSpeed": 30,
 			"uptime": 0.15,
-			"beginFrame_right": 66,
-			"endFrame_right": 68,
-			"beginFrame_left": 71,
-			"endFrame_left": 73,
-			"time": 0.1
+			"beginFrame_right": 74,
+			"endFrame_right": 78,
+			"beginFrame_left": 79,
+			"endFrame_left": 83,
+			"time": 0.05
 		},
 		"charge": {
 			"cooldown": 1,

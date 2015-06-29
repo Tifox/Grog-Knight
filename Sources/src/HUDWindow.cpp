@@ -312,7 +312,6 @@ HUDActor	*HUDWindow::addImage(std::string path, int x, int y, float size, int la
  */
 HUDActor	*HUDWindow::addImage(std::string path, int x, int y, Vector2 size, int layer) {
 	HUDActor *tmp = new HUDActor();
-	std::cout << x << ":" << y << std::endl;
 	tmp->SetSprite(path);
 	tmp->SetPosition(x, y);
 	tmp->SetSize(size.X, size.Y);
@@ -336,9 +335,7 @@ void	HUDWindow::life(int life) {
 	int		x, v, sLife = life, y, size;
 	std::list<HUDActor *>::iterator	i;
 	int		index;
-	//HUDActor *tmp;
 
-	std::cout << life << ", " << this->_maxHP << std::endl;
 	y = theCamera.GetWindowHeight() / 20 * 0.9;
 	size = theCamera.GetWindowWidth() / 20 * 0.6;
 	for (i = this->_hearts.begin(), index = 0; i != this->_hearts.end(); i++, index++) {
@@ -509,6 +506,10 @@ void	HUDWindow::consumable(std::map<int, std::string> items) {
 				tmp = this->addImage(w->getSprite(), x, y, size);
 			}
 			this->_bag.push_back(tmp);
+			if (items[i] == this->_g->getHero()->getInventory()->getCurrentFocus()) {
+				tmp = this->addImage("Resources/Images/HUD/selecItem.png", x, y, size + 15);
+				this->_bag.push_back(tmp);
+			}
 		}
 	}
 }

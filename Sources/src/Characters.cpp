@@ -1191,3 +1191,4 @@ bool						Characters::getCharging(void) { return this->_isCharging; }
 std::list<std::string>		Characters::getSubscribes(void) { return this->_subsc; };
 int							Characters::getLevel(void) { return this->_level; };
 int							Characters::getMaxInventory(void) { return this->_inventory->getSlots(); };
+Inventory					*Characters::getInventory(void) { return this->_inventory; };

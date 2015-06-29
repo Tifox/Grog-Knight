@@ -85,7 +85,8 @@ class Characters : public Elements {
 		Armor							*getArmor(void);
 		Ring							*getRing(void);
 		bool							getCharging(void);
-		int								getMaxInventory();
+		int								getMaxInventory(void);
+		Inventory						*getInventory(void);
 
 		int				forwardLimit;
 		int				backwardLimit;

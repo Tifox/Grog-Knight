@@ -51,6 +51,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_canMove = true;
 	this->_canAttack = true;
 	this->_canJump = true;
+	this->_isFlying = false;
 	this->_invincibility = false;
 	this->_grounds.clear();
 	this->_item = nullptr;
@@ -156,6 +157,15 @@ Json::Value		Characters::_getAttr(std::string category, std::string key) {
 	}
 	return nullptr;
 }
+
+//! Loop function called on every frame.
+/**
+ * Used to manage every frame based action on characters
+ */
+void	Characters::characterLoop(void) {
+	_tryFly();
+}
+
 
 //! Set the current working category
 /**
@@ -334,17 +344,17 @@ void	Characters::ReceiveMessage(Message *m) {
 				return;
 			if (attrName == "forward") {
 				this->_forward(status);
-			} else if (attrName == "backward") {
+			} if (attrName == "backward") {
 				this->_backward(status);
-			} else if (attrName == "up") {
+			} if (attrName == "up") {
 				this->_up(status);
-			} else if (attrName == "down") {
+			} if (attrName == "down") {
 				this->_down(status);
-			} else if (attrName == "jump") {
+			} if (attrName == "jump") {
 				this->_jump(status);
-			} else if (attrName == "attack") {
+			} if (attrName == "attack") {
 				this->_attack(status);
-			} else if (attrName == "pickupItem") {
+			} if (attrName == "pickupItem") {
 				this->_pickupItem(status);
 			}
 			this->_lastAction = attrName;
@@ -563,6 +573,22 @@ void	Characters::_run(void) {
 
 /****************************/
 /*                          */
+/*      CHARACTER LOOP      */
+/*                          */
+/****************************/
+
+void	Characters::_tryFly(void) {
+	if (_flyTrigger == true)
+		this->GetBody()->SetLinearVelocity(b2Vec2(this->GetBody()->GetLinearVelocity().x,
+			this->_getAttr("fly","force").asFloat()));
+	else if (this->_grounds.size() == 0 && this->_canMove == 1)
+		this->GetBody()->SetLinearVelocity(b2Vec2(this->GetBody()->GetLinearVelocity().x, -2));
+
+}
+
+
+/****************************/
+/*                          */
 /*          ACTIONS         */
 /*                          */
 /****************************/
@@ -571,7 +597,7 @@ void	Characters::_run(void) {
 /**
  * Making a Characters run forward.
  * This function handle the power size for moving, sprite animation, basicly everything.
- * So, if you want to make some modification, use the intern callback (Characters::callback), or override 
+ * So, if you want to make some modification, use the intern callback (Characters::callback), or override
  * this function in the children.
  * But, please, DO NOT modify this one.
  * @param status The status of the key (0 | 1)
@@ -590,10 +616,10 @@ void	Characters::_forward(int status) {
 		if ((this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() ||
 					(this->GetSpriteFrame() >= this->_getAttr("backward", "beginFrame").asInt() &&
 					 this->GetSpriteFrame() <= this->_getAttr("backward", "endFrame").asInt()))  &&
-			!this->_isJump && !this->_isLoadingAttack)
+			!this->_isJump && !this->_isLoadingAttack && !this->_isFlying)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 					this->_getAttr("beginFrame").asInt(), this->_getAttr("endFrame").asInt());
-		else if (this->_isJump && !this->_isLoadingAttack) {
+		else if (this->_isJump && !this->_isLoadingAttack && !this->_isFlying) {
 			this->_setCategory("jump");
 			if (this->GetSpriteFrame() >= this->_getAttr("beginFrame_left").asInt() && this->GetSpriteFrame() <= this->_getAttr("endFrame_left").asInt())
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
@@ -687,56 +713,63 @@ void	Characters::_backward(int status) {
  */
 void	Characters::_jump(int status) {
 	this->_setCategory("jump");
-
-	if (status == 1 && this->_canJump == true) {
-		this->_canJump = false;
-		if (this->_speMove == "wallJump" && this->_grounds.size() == 0 &&
-			(this->_wallsLeft.size() > 0 || this->_wallsRight.size() > 0)) {
-			this->GetBody()->SetGravityScale(1);
-			if (this->_wallsLeft.size() > 0 && this->_wallsRight.size() == 0) {
-				this->GetBody()->SetLinearVelocity(b2Vec2(5, this->_getAttr("rejump").asFloat()));
-				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-										  this->_getAttr("beginFrame_right").asInt(),
-										  this->_getAttr("endFrame_right").asInt() - 3, "jump");
-			}
-			else if (this->_wallsRight.size() > 0 && this->_wallsLeft.size() == 0) {
-				this->GetBody()->SetLinearVelocity(b2Vec2(-5, this->_getAttr("rejump").asFloat()));
+	if (_isFlying == 0) {
+		if (status == 1 && this->_canJump == true) {
+			this->_canJump = false;
+			if (this->_speMove == "wallJump" && this->_grounds.size() == 0 &&
+				(this->_wallsLeft.size() > 0 || this->_wallsRight.size() > 0)) {
+				this->GetBody()->SetGravityScale(1);
+				if (this->_wallsLeft.size() > 0 && this->_wallsRight.size() == 0) {
+					this->GetBody()->SetLinearVelocity(b2Vec2(5, this->_getAttr("rejump").asFloat()));
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-											  this->_getAttr("beginFrame_left").asInt(),
-											  this->_getAttr("endFrame_left").asInt() - 3, "jump");
+											  this->_getAttr("beginFrame_right").asInt(),
+											  this->_getAttr("endFrame_right").asInt() - 3, "jump");
+				}
+				else if (this->_wallsRight.size() > 0 && this->_wallsLeft.size() == 0) {
+					this->GetBody()->SetLinearVelocity(b2Vec2(-5, this->_getAttr("rejump").asFloat()));
+						this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+												  this->_getAttr("beginFrame_left").asInt(),
+												  this->_getAttr("endFrame_left").asInt() - 3, "jump");
+				}
+				else
+					this->GetBody()->SetLinearVelocity(b2Vec2(0, this->_getAttr("rejump").asFloat()));
+				Game::stopRunning(this);
 			}
-			else
-				this->GetBody()->SetLinearVelocity(b2Vec2(0, this->_getAttr("rejump").asFloat()));
-			Game::stopRunning(this);
+			else if (this->_isJump == 0 || (this->_isJump < this->_getAttr("max").asInt())) {
+				if (this->_isJump >= 1) {
+					this->GetBody()->SetLinearVelocity(b2Vec2(this->GetBody()->GetLinearVelocity().x,
+															  this->_getAttr("rejump").asFloat()));
+				}
+				else {
+					this->ApplyLinearImpulse(Vector2(0, this->_getAttr("force").asFloat()), Vector2(0, 0));
+				}
+				if (this->_isAttacking == false && this->_isLoadingAttack == 0) {
+					if (this->getAttribute("class") == "Warrior")
+						this->changeSizeTo(Vector2(1, 1));
+					if (this->_latOrientation == RIGHT) {
+						this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+								this->_getAttr("beginFrame_right").asInt(),
+								this->_getAttr("endFrame_right").asInt() - 3, "jump");
+					}
+					else if (this->_latOrientation == LEFT) {
+						this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+								this->_getAttr("beginFrame_left").asInt(),
+								this->_getAttr("endFrame_left").asInt() - 3, "jump");
+					}
+				}
+				if (this->_grounds.size() == 0)
+					this->_isJump++;
+			}
 		}
-		else if (this->_isJump == 0 || (this->_isJump < this->_getAttr("max").asInt())) {
-			if (this->_isJump >= 1) {
-				this->GetBody()->SetLinearVelocity(b2Vec2(this->GetBody()->GetLinearVelocity().x,
-														  this->_getAttr("rejump").asFloat()));
-			}
-			else {
-				this->ApplyLinearImpulse(Vector2(0, this->_getAttr("force").asFloat()), Vector2(0, 0));
-			}
-			if (this->_isAttacking == false && this->_isLoadingAttack == 0) {
-				if (this->getAttribute("class") == "Warrior")
-					this->changeSizeTo(Vector2(1, 1));
-				if (this->_latOrientation == RIGHT) {
-					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-							this->_getAttr("beginFrame_right").asInt(),
-							this->_getAttr("endFrame_right").asInt() - 3, "jump");
-				}
-				else if (this->_latOrientation == LEFT) {
-					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-							this->_getAttr("beginFrame_left").asInt(),
-							this->_getAttr("endFrame_left").asInt() - 3, "jump");
-				}
-			}
-			if (this->_grounds.size() == 0)
-				this->_isJump++;
+		else if (status == 0) {
+			this->_canJump = true;
 		}
 	}
-	else if (status == 0) {
-		this->_canJump = true;
+	else { //Hero is flying
+		if (status == 1)
+			_flyTrigger = true;
+		else if (status == 0)
+			_flyTrigger = false;
 	}
 	return ;
 }
@@ -868,6 +901,8 @@ void	Characters::_specialMove(void) {
 		this->_stomp();
 	else if (this->_speMove == "blink")
 		this->_blink();
+	else if (this->_speMove == "fly")
+		this->_fly();
 }
 
 //! Special move: dash
@@ -1013,6 +1048,22 @@ void	Characters::_blink(void) {
 			this->GetBody()->DestroyFixture(this->GetBody()->GetFixtureList());
 			this->GetBody()->CreateFixture(shape, 1);
 		}
+	}
+}
+
+//! Special move: fly
+/**
+ * Toggles fly mode on. When it's on, the jump button makes the character fly
+ * Properties of fly - toggle
+ * @sa Characters::_specialMove()
+ */
+
+void	Characters::_fly(void) {
+	if (_isFlying == false) {
+		_isFlying = true;
+	}
+	else {
+		_isFlying = false;
 	}
 }
 

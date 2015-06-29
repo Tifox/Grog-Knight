@@ -132,6 +132,8 @@ class Characters : public Elements {
 		bool			_canAttack;
 		bool			_isCharging;
 		bool			_isStomping;
+		bool			_isFlying;
+		bool			_flyTrigger;
 		int				_hasDashed;
 		int				_level;
 		std::string		_speMove;
@@ -151,6 +153,8 @@ class Characters : public Elements {
 
 		Json::Value		_getAttr(std::string key);
 		void			_setCategory(std::string category);
+		virtual void	characterLoop(void);
+		virtual void	_tryFly(void);
 		virtual void	_forward(int status);
 		virtual void	_backward(int status);
 		virtual void	_up(int status);
@@ -164,6 +168,7 @@ class Characters : public Elements {
 		virtual void	_charge(void);
 		virtual void	_stomp(void);
 		virtual void	_blink(void);
+		virtual void	_fly(void);
 		void			_destroyEnemy(void);
 		Elements*		getItem(void);
 

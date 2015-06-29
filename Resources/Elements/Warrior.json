@@ -16,7 +16,7 @@
 			"weapon": "Sword",
 			"armor": "ChestArmor",
 			"ring": "NiceRing",
-			"specialMove": "stomp",
+			"specialMove": "fly",
 			"inventorySlots": 2
 		},
 		"forward": {
@@ -105,6 +105,16 @@
 		"blink": {
 			"cooldown": 0,
 			"blinkRange": 4
+		},
+		"fly": {
+			"force": 4,
+			"beginFrame_right": 44,
+			"beginFrame_left": 44,
+			"fallingFrame_right": 44,
+			"fallingFrame_left": 44,
+			"endFrame_right": 44,
+			"endFrame_left": 44,
+			"time": 0.1
 		},
 		"wallJump": {
 			"maxJump": 1,

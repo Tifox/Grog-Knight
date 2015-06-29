@@ -185,6 +185,7 @@ void	Game::checkHeroPosition(void) {
 		Game::currentGame->getHero()->backwardLimit = 0;
 		Game::currentGame->moveCamera();
 		Game::currentGame->simulateHeroItemContact();
+		Game::currentGame->getHero()->characterLoop();
 	}
 }
 
@@ -466,7 +467,7 @@ void		Game::displayHUD(void) {
 	//w->initMinimapBackground();
 	/*w->minimap();*/
 
-	// Work 
+	// Work
    //w->setText("Burp.", this->_hero, Vector3(0, 0, 0), 0, 1);
 	/*w->removeText("Burp.");*/
 	//Game::addHUDWindow(w);

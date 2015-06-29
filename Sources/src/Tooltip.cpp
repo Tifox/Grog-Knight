@@ -75,7 +75,11 @@ void	Tooltip::tip(Elements *elem, Characters *c) {
 
 void 	Tooltip::info(Elements *elem) {
 	std::string tmp;
-	int y, i = 0;
+	int i = 0;
+	float	x = theCamera.GetWindowWidth() / 20 * 11.3;
+	float	y = 30;
+
+
 	if (this->_name == "" && this->_flavor == "") {
 		HUDActor *equip = new HUDActor();
 		HUDWindow *hud = Game::getHUD();
@@ -83,23 +87,22 @@ void 	Tooltip::info(Elements *elem) {
 		this->_name = elem->getAttribute("name");
 		this->_flavor = elem->getAttribute("flavor");
 
-		for (y = 30; i < this->_flavor.size(); i++) {
+		hud->setText(this->_name , x + theCamera.GetWindowWidth() / 40 * 2, y + theCamera.GetWindowHeight() / 20 * 0.15, Vector3(0, 0, 0), 1);
+		for (y = 45; i < this->_flavor.size(); i++) {
 			if (this->_flavor[i] == '\n') {
-				hud->setText(tmp,theCamera.GetWindowWidth() - 190, y);
+				hud->setText(tmp, x + theCamera.GetWindowWidth() / 40 * 2, y + theCamera.GetWindowHeight() / 20 * 0.15,  Vector3(0, 0, 0), 1);
 				tmp.clear();
 				y += 15;
 			} else
 				tmp = tmp + this->_flavor[i];
 		}
-		hud->setText(tmp,theCamera.GetWindowWidth() - 190, y);
-
+		hud->setText(tmp, x + theCamera.GetWindowWidth() / 40 * 2, y + theCamera.GetWindowHeight() / 20 * 0.15,  Vector3(0, 0, 0), 1);
 
 		equip->SetSize(200, 100);
 		equip->SetPosition(theCamera.GetWindowWidth() - 100, 50);
 		equip->SetColor(0, 0, 0);
 		equip->SetDrawShape(ADS_Square);
 		theWorld.Add(equip);
-		hud->setText(this->_name,theCamera.GetWindowWidth() - 190, 10);
 	}
 
 	return ;

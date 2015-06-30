@@ -27,6 +27,7 @@
 # define __Characters__
 
 # include "Inventory.hpp"
+# include "SpecialMoves.hpp"
 # include "Weapon.hpp"
 # include "Armor.hpp"
 # include "Ring.hpp"
@@ -36,6 +37,7 @@ class Inventory;
 class Weapon;
 class Armor;
 class Ring;
+class SpecialMoves;
 
 # ifdef __APPLE__
 #  include "../../Tools/jsoncpp/include/json/json.h"
@@ -55,6 +57,7 @@ class Characters : public Elements {
 		friend	class	Game;
 		friend	class	Pattern;
 		friend	class	PassivePattern;
+		friend	class	SpecialMoves;
 
 		enum Orientation {
 			UP,
@@ -139,6 +142,7 @@ class Characters : public Elements {
 		int				_hasDashed;
 		int				_level;
 		std::string		_speMove;
+		SpecialMoves*	_eqMove;
 		Weapon*			_weapon;
 		Armor*			_armor;
 		Ring*			_ring;
@@ -166,11 +170,11 @@ class Characters : public Elements {
 		virtual void	_pickupItem(int status);
 		virtual void	_run(void);
 		virtual void	_specialMove(void);
-		virtual void	_dash(void);
-		virtual void	_charge(void);
-		virtual void	_stomp(void);
-		virtual void	_blink(void);
-		virtual void	_fly(void);
+		// virtual void	_dash(void);
+		// virtual void	_charge(void);
+		// virtual void	_stomp(void);
+		// virtual void	_blink(void);
+		// virtual void	_fly(void);
 		void			_destroyEnemy(void);
 		Elements*		getItem(void);
 

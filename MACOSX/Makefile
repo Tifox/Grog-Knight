@@ -2,39 +2,40 @@ NAME 	= rogue-like
 CC 		= g++
 CFLAGS 	= -std=c++0x -arch i386 -Wno-deprecated -g -Wno-error=unused-command-line-argument  -Wno-error=null-conversion -Wno-return-type
 ANGEL_FLAG = -D ANGEL
-SRCS 	= ../Sources/src/Elements.cpp \
-		../Sources/src/Game.cpp \
-		../Sources/src/main.cpp \
-		../Sources/src/Maps.cpp \
-		../Sources/src/Hero.cpp \
-		../Sources/src/Projectile.cpp \
-		../Sources/src/Room.cpp \
-		../Sources/src/LevelGenerator.cpp \
-		../Sources/src/Loot.cpp \
-		../Sources/src/EnemyList.cpp \
-		../Sources/src/Enemy.cpp \
-		../Sources/src/GameContactListener.cpp \
-		../Sources/src/ContactFilter.cpp \
-		../Sources/src/Weapon.cpp \
-		../Sources/src/Log.cpp \
-		../Sources/src/Armor.cpp \
+SRCS 	= ../Sources/src/Armor.cpp \
 		../Sources/src/ArmorList.cpp \
 		../Sources/src/Characters.cpp \
-		../Sources/src/Object.cpp \
-		../Sources/src/WeaponList.cpp \
-		../Sources/src/Map.cpp \
-		../Sources/src/Equipment.cpp \
 		../Sources/src/Consumable.cpp \
+		../Sources/src/ContactFilter.cpp \
+		../Sources/src/Elements.cpp \
+		../Sources/src/Enemy.cpp \
+		../Sources/src/EnemyList.cpp \
+		../Sources/src/Equipment.cpp \
+		../Sources/src/Game.cpp \
+		../Sources/src/GameContactListener.cpp \
+		../Sources/src/Hero.cpp \
 		../Sources/src/Hitbox.cpp \
 		../Sources/src/HUDWindow.cpp \
+		../Sources/src/Inventory.cpp \
+		../Sources/src/LevelGenerator.cpp \
+		../Sources/src/Log.cpp \
+		../Sources/src/Loot.cpp \
+		../Sources/src/main.cpp \
+		../Sources/src/Map.cpp \
+		../Sources/src/Maps.cpp \
 		../Sources/src/Menu.cpp \
+		../Sources/src/Object.cpp \
+		../Sources/src/PassivePattern.cpp \
+		../Sources/src/Pattern.cpp \
+		../Sources/src/Projectile.cpp \
+		../Sources/src/Quit.cpp \
 		../Sources/src/Ring.cpp \
 		../Sources/src/RingList.cpp \
+		../Sources/src/Room.cpp \
+		../Sources/src/SpecialMoves.cpp \
 		../Sources/src/Tooltip.cpp \
-		../Sources/src/Inventory.cpp \
-		../Sources/src/Pattern.cpp \
-		../Sources/src/PassivePattern.cpp \
-		../Sources/src/Quit.cpp
+		../Sources/src/Weapon.cpp \
+		../Sources/src/WeaponList.cpp \
 
 OBJS 	 = $(SRCS:.cpp=.o)
 
@@ -91,7 +92,7 @@ quick: $(OBJS)
 	cd build/ && ./rogue-like
 
 %.o: %.cpp
-	$(CC) $(CFLAGS) $(INCLUDES) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS) -o $@ -c $^ 
+	$(CC) $(CFLAGS) $(INCLUDES) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS) -o $@ -c $^
 
 json:
 	$(CC) $(CFLAGS) -I../Tools/jsoncpp/include/ -c $(wildcard ../Tools/jsoncpp/src/lib_json/*.cpp) \

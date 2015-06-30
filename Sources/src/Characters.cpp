@@ -62,6 +62,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_hasDashed = 0;
 	this->SetLayer(100);
 	this->_readFile(name);
+	this->_eqMove = new SpecialMoves(this);
 }
 
 //! Basic destructor
@@ -926,177 +927,177 @@ void	Characters::_pickupItem(int status) {
 
 void	Characters::_specialMove(void) {
 	if (this->_speMove == "dash")
-		this->_dash();
+		this->_eqMove->_dash();
 	else if (this->_speMove == "charge")
-		this->_charge();
+		this->_eqMove->_charge();
 	else if (this->_speMove == "stomp")
-		this->_stomp();
+		this->_eqMove->_stomp();
 	else if (this->_speMove == "blink")
-		this->_blink();
+		this->_eqMove->_blink();
 	else if (this->_speMove == "fly")
-		this->_fly();
+		this->_eqMove->_fly();
 }
 
-//! Special move: dash
-/**
- * Character executes a dash if the cooldown is up and the conditions allows it
- * Properties of dash - no gravity, take damage, cant move
- * @sa Characters::_specialMove()
- */
-
-void	Characters::_dash(void) {
-	this->_setCategory("dash");
-	if (this->_isAttacking == 0 && this->_canMove == 1 && this->_hasDashed == 0 &&
-			this->_isDashing == false) {
-		this->_isDashing = true;
-		this->GetBody()->SetGravityScale(0);
-		this->actionCallback("dash", 0);
-		this->_canMove = 0;
-		Game::stopRunning(this);
-		if (this->_grounds.size() == 0)
-			this->_hasDashed = 1;
-		theSwitchboard.SubscribeTo(this, "dashEnd");
-		theSwitchboard.DeferredBroadcast(new Message("dashEnd"),
-				this->_getAttr("uptime").asFloat());
-		if (this->_latOrientation == LEFT)
-			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("dashSpeed").asInt(), 0));
-		else if (this->_latOrientation == RIGHT)
-			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("dashSpeed").asInt(), 0));
-	}
-}
-
-//! Special move: charge
-/**
- * Character executes a charge if the cooldown is up and the conditions allows it
- * Properties of charge - invincibility, can move
- * @sa Characters::_specialMove()
- */
-
-void	Characters::_charge(void) {
-	this->_setCategory("charge");
-	if (this->_isAttacking == 0 && this->_canMove == 1 && this->_speMoveReady == 1 && this->_grounds.size() > 0) {
-		this->_speMoveReady = 0;
-		this->_invincibility = true;
-		this->_isCharging = true;
-		this->_canMove = 0;
-		theSwitchboard.SubscribeTo(this, "speMoveReady");
-		theSwitchboard.SubscribeTo(this, "chargeEnd");
-		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
-				this->_getAttr("cooldown").asFloat());
-		theSwitchboard.DeferredBroadcast(new Message("chargeEnd"),
-				this->_getAttr("uptime").asFloat());
-		if (this->_latOrientation == LEFT)
-			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("chargeSpeed").asInt(), 0));
-		else if (this->_latOrientation == RIGHT)
-			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("chargeSpeed").asInt(), 0));
-	}
-}
-
-//! Special move: stomp
-/**
- * If airborne, will allow you to slam the ground and deal damage to enemies
- * Properties of stomp - invincibility, can move
- * @sa Characters::_specialMove()
- */
-
-void	Characters::_stomp(void) {
-	this->_setCategory("stomp");
-	if (this->_isAttacking == 0 && this->_canMove == 1 && this->_speMoveReady == 1
-			&& this->_grounds.size() == 0) {
-		this->_speMoveReady = 0;
-		this->GetBody()->SetBullet(true);
-		this->_invincibility = true;
-		this->_isStomping = true;
-		this->_isCharging = true;
-		theSwitchboard.SubscribeTo(this, "speMoveReady");
-		theSwitchboard.SubscribeTo(this, "stompEnd");
-		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
-				this->_getAttr("cooldown").asFloat());
-		this->GetBody()->SetLinearVelocity(b2Vec2(0, -this->_getAttr("stompSpeed").asInt()));
-	}
-}
-
-
-//! Special move: blink
-/**
- * Teleports the player in the direction he's facing
- * Properties of blink - instant
- * @sa Characters::_specialMove()
- */
-
-void	Characters::_blink(void) {
-	this->_setCategory("blink");
-	Map m = Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX];
-	int x = (this->GetBody()->GetWorldCenter().x) - m.getXStart();
-	int y = -((this->GetBody()->GetWorldCenter().y) - m.getYStart());
-	int range = this->_getAttr("blinkRange").asInt();
-	std::vector<std::vector<int>> t = m.getPhysicMap();
-
-	if (this->_isAttacking == 0 && this->_canMove == 1 && this->_speMoveReady == 1) {
-		this->_speMoveReady = 0;
-		theSwitchboard.SubscribeTo(this, "speMoveReady");
-		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
-				this->_getAttr("cooldown").asFloat());
-		if (this->_orientation == UP) {
-			while (range > 0) {
-				if (y - range > 0 && !t[y - range][x])
-					break;
-				range--;
-			}
-			if (range > 0)
-				this->GetBody()->SetTransform(b2Vec2(this->GetBody()->GetWorldCenter().x,
-							this->GetBody()->GetWorldCenter().y + range), 0);
-		}
-		else if (this->_orientation == DOWN) {
-			while (range > 0) {
-				if (y + range < (t.size() - 2) && !t[y + range][x])
-					break;
-				range--;
-			}
-			range--;
-			if (range > 0)
-				this->GetBody()->SetTransform(b2Vec2(this->GetBody()->GetWorldCenter().x,
-							this->GetBody()->GetWorldCenter().y - range), 0);
-		}
-		else if (this->_orientation == RIGHT) {
-			while (range > 0) {
-				if (x + range < t[y].size() && !t[y][x + range])
-					break;
-				range--;
-			}
-			if (range > 0)
-				this->GetBody()->SetTransform(b2Vec2(this->GetBody()->GetWorldCenter().x + range,
-							this->GetBody()->GetWorldCenter().y), 0);
-		}
-		else if (this->_orientation == LEFT) {
-			while (range > 0) {
-				if (x - range > 0 && !t[y][x - range])
-					break;
-				range--;
-			}
-			if (range > 0)
-				this->GetBody()->SetTransform(b2Vec2(this->GetBody()->GetWorldCenter().x - range,
-							this->GetBody()->GetWorldCenter().y), 0);
-		}
-		if (range > 0) {
-			b2PolygonShape box = Game::hList->getHitbox(this->_hitbox);
-			b2Shape *shape = &box;
-			this->GetBody()->DestroyFixture(this->GetBody()->GetFixtureList());
-			this->GetBody()->CreateFixture(shape, 1);
-		}
-	}
-}
-
-//! Special move: fly
-/**
- * Toggles fly mode on. When it's on, the jump button makes the character fly
- * Properties of fly - toggle
- * @sa Characters::_specialMove()
- */
-
-void	Characters::_fly(void) {
-	this->_isFlying = (this->_isFlying ? false : true);
-}
+// //! Special move: dash
+// /**
+//  * Character executes a dash if the cooldown is up and the conditions allows it
+//  * Properties of dash - no gravity, take damage, cant move
+//  * @sa Characters::_specialMove()
+//  */
+//
+// void	Characters::_dash(void) {
+// 	this->_setCategory("dash");
+// 	if (this->_isAttacking == 0 && this->_canMove == 1 && this->_hasDashed == 0 &&
+// 			this->_isDashing == false) {
+// 		this->_isDashing = true;
+// 		this->GetBody()->SetGravityScale(0);
+// 		this->actionCallback("dash", 0);
+// 		this->_canMove = 0;
+// 		Game::stopRunning(this);
+// 		if (this->_grounds.size() == 0)
+// 			this->_hasDashed = 1;
+// 		theSwitchboard.SubscribeTo(this, "dashEnd");
+// 		theSwitchboard.DeferredBroadcast(new Message("dashEnd"),
+// 				this->_getAttr("uptime").asFloat());
+// 		if (this->_latOrientation == LEFT)
+// 			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("dashSpeed").asInt(), 0));
+// 		else if (this->_latOrientation == RIGHT)
+// 			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("dashSpeed").asInt(), 0));
+// 	}
+// }
+//
+// //! Special move: charge
+// /**
+//  * Character executes a charge if the cooldown is up and the conditions allows it
+//  * Properties of charge - invincibility, can move
+//  * @sa Characters::_specialMove()
+//  */
+//
+// void	Characters::_charge(void) {
+// 	this->_setCategory("charge");
+// 	if (this->_isAttacking == 0 && this->_canMove == 1 && this->_speMoveReady == 1 && this->_grounds.size() > 0) {
+// 		this->_speMoveReady = 0;
+// 		this->_invincibility = true;
+// 		this->_isCharging = true;
+// 		this->_canMove = 0;
+// 		theSwitchboard.SubscribeTo(this, "speMoveReady");
+// 		theSwitchboard.SubscribeTo(this, "chargeEnd");
+// 		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
+// 				this->_getAttr("cooldown").asFloat());
+// 		theSwitchboard.DeferredBroadcast(new Message("chargeEnd"),
+// 				this->_getAttr("uptime").asFloat());
+// 		if (this->_latOrientation == LEFT)
+// 			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("chargeSpeed").asInt(), 0));
+// 		else if (this->_latOrientation == RIGHT)
+// 			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("chargeSpeed").asInt(), 0));
+// 	}
+// }
+//
+// //! Special move: stomp
+// /**
+//  * If airborne, will allow you to slam the ground and deal damage to enemies
+//  * Properties of stomp - invincibility, can move
+//  * @sa Characters::_specialMove()
+//  */
+//
+// void	Characters::_stomp(void) {
+// 	this->_setCategory("stomp");
+// 	if (this->_isAttacking == 0 && this->_canMove == 1 && this->_speMoveReady == 1
+// 			&& this->_grounds.size() == 0) {
+// 		this->_speMoveReady = 0;
+// 		this->GetBody()->SetBullet(true);
+// 		this->_invincibility = true;
+// 		this->_isStomping = true;
+// 		this->_isCharging = true;
+// 		theSwitchboard.SubscribeTo(this, "speMoveReady");
+// 		theSwitchboard.SubscribeTo(this, "stompEnd");
+// 		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
+// 				this->_getAttr("cooldown").asFloat());
+// 		this->GetBody()->SetLinearVelocity(b2Vec2(0, -this->_getAttr("stompSpeed").asInt()));
+// 	}
+// }
+//
+//
+// //! Special move: blink
+// /**
+//  * Teleports the player in the direction he's facing
+//  * Properties of blink - instant
+//  * @sa Characters::_specialMove()
+//  */
+//
+// void	Characters::_blink(void) {
+// 	this->_setCategory("blink");
+// 	Map m = Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX];
+// 	int x = (this->GetBody()->GetWorldCenter().x) - m.getXStart();
+// 	int y = -((this->GetBody()->GetWorldCenter().y) - m.getYStart());
+// 	int range = this->_getAttr("blinkRange").asInt();
+// 	std::vector<std::vector<int>> t = m.getPhysicMap();
+//
+// 	if (this->_isAttacking == 0 && this->_canMove == 1 && this->_speMoveReady == 1) {
+// 		this->_speMoveReady = 0;
+// 		theSwitchboard.SubscribeTo(this, "speMoveReady");
+// 		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
+// 				this->_getAttr("cooldown").asFloat());
+// 		if (this->_orientation == UP) {
+// 			while (range > 0) {
+// 				if (y - range > 0 && !t[y - range][x])
+// 					break;
+// 				range--;
+// 			}
+// 			if (range > 0)
+// 				this->GetBody()->SetTransform(b2Vec2(this->GetBody()->GetWorldCenter().x,
+// 							this->GetBody()->GetWorldCenter().y + range), 0);
+// 		}
+// 		else if (this->_orientation == DOWN) {
+// 			while (range > 0) {
+// 				if (y + range < (t.size() - 2) && !t[y + range][x])
+// 					break;
+// 				range--;
+// 			}
+// 			range--;
+// 			if (range > 0)
+// 				this->GetBody()->SetTransform(b2Vec2(this->GetBody()->GetWorldCenter().x,
+// 							this->GetBody()->GetWorldCenter().y - range), 0);
+// 		}
+// 		else if (this->_orientation == RIGHT) {
+// 			while (range > 0) {
+// 				if (x + range < t[y].size() && !t[y][x + range])
+// 					break;
+// 				range--;
+// 			}
+// 			if (range > 0)
+// 				this->GetBody()->SetTransform(b2Vec2(this->GetBody()->GetWorldCenter().x + range,
+// 							this->GetBody()->GetWorldCenter().y), 0);
+// 		}
+// 		else if (this->_orientation == LEFT) {
+// 			while (range > 0) {
+// 				if (x - range > 0 && !t[y][x - range])
+// 					break;
+// 				range--;
+// 			}
+// 			if (range > 0)
+// 				this->GetBody()->SetTransform(b2Vec2(this->GetBody()->GetWorldCenter().x - range,
+// 							this->GetBody()->GetWorldCenter().y), 0);
+// 		}
+// 		if (range > 0) {
+// 			b2PolygonShape box = Game::hList->getHitbox(this->_hitbox);
+// 			b2Shape *shape = &box;
+// 			this->GetBody()->DestroyFixture(this->GetBody()->GetFixtureList());
+// 			this->GetBody()->CreateFixture(shape, 1);
+// 		}
+// 	}
+// }
+//
+// //! Special move: fly
+// /**
+//  * Toggles fly mode on. When it's on, the jump button makes the character fly
+//  * Properties of fly - toggle
+//  * @sa Characters::_specialMove()
+//  */
+//
+// void	Characters::_fly(void) {
+// 	this->_isFlying = (this->_isFlying ? false : true);
+// }
 
 //! Equip a weapon
 /**

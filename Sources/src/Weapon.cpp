@@ -53,6 +53,7 @@ Weapon::Weapon(Weapon* weapon) {
 	this->_pushback = weapon->getPushback();
 	this->_sprite = weapon->getSprite();
 	this->_lootLevel = weapon->getLootLevel();
+	this->addAttribute("sprite", this->_sprite);
 	this->addAttribute("type3", "Weapon");
 }
 
@@ -229,6 +230,7 @@ void    Weapon::_parseJson(std::string file) {
 	this->_pushback = json["infos"].get("pushback", "").asFloat();
 	this->_attack = json["infos"].get("attack", "").asString();
 	this->_sprite = json["infos"].get("sprites", "").asString();
+	this->addAttribute("sprite", this->_sprite);
 	this->addAttribute("type3", "Weapon");
 }
 

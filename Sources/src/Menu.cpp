@@ -248,7 +248,7 @@ void	Menu::ReceiveMessage(Message *m) {
 		} else if (m->GetMessageName() == "enterPressed") {
 			std::map<std::string, std::list<t_bind *> >::iterator	it = this->_bindingIterator;
 			std::list<t_bind *>::iterator	it2;
-			
+
 			for (it2 = it->second.begin(); it2 != it->second.end() && (*it2)->name != this->_currentChoice; it2++);
 			this->_window->removeText((*it2)->realKey);
 			(*it2)->oldKey = (*it2)->realKey;
@@ -358,7 +358,7 @@ void	Menu::settings(int y) {
 	this->_window->removeText("Settings");
 	for (it = this->_settingsValues.begin(); it != this->_settingsValues.end(); it++) {
 		this->_window->removeText(it->first);
-		for (it2 = it->second.begin(); it2 != it->second.end(); it2++) 
+		for (it2 = it->second.begin(); it2 != it->second.end(); it2++)
 			this->_window->removeText(it2->first);
 	}
 
@@ -386,7 +386,7 @@ void	Menu::removeSettings(void) {
 	this->_window->removeText("Settings");
 	for (it = this->_settingsValues.begin(); it != this->_settingsValues.end(); it++) {
 		this->_window->removeText(it->first);
-		for (it2 = it->second.begin(); it2 != it->second.end(); it2++) 
+		for (it2 = it->second.begin(); it2 != it->second.end(); it2++)
 			this->_window->removeText(it2->first);
 	}
 }
@@ -575,7 +575,7 @@ void	Menu::bindingMenu(int y) {
 	for (it = this->_bindingMenu.begin(); it != this->_bindingMenu.end(); it++) {
 		if (it->first != "General") {
 			this->_window->setText(it->first, x - ((it->first).length() / 2 * 16) - 50, y, Vector3(255, 255, 255), 1, "smallTitle");
-			y += 70;
+			y += 20;
 			for (it2 = it->second.begin(); it2 != it->second.end(); it2++, y += 20) {
 				if (this->_currentChoice == (*it2)->name)
 					this->_window->setText((*it2)->name, x - 150, y, Vector3(255, 0, 0), 1);
@@ -583,7 +583,7 @@ void	Menu::bindingMenu(int y) {
 					this->_window->setText((*it2)->name, x - 150, y, Vector3(255, 255, 255), 1);
 				this->_window->setText((*it2)->realKey, x + 50, y, Vector3(255, 255, 255), 1);
 			}
-			y += 70;
+			y += 20;
 		}
 	}
 }

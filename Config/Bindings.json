@@ -77,6 +77,24 @@
 		{
 			"broadcast" : "specialMove",
 			"key" : "T"
+		},
+		"Swap Charcaters(Debug)" : 
+		{
+			"broadcast" : "changerCharacter",
+			"key" : "P"
+		}
+	},
+	"Targeting" : 
+	{
+		"Target an Enemy" : 
+		{
+			"broadcast" : "lockTarget",
+			"key" : "M"
+		},
+		"Unlock Target" : 
+		{
+			"broadcast" : "unlockTarget",
+			"key" : "K"
 		}
 	}
 }

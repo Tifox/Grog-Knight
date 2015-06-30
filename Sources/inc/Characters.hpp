@@ -149,6 +149,7 @@ class Characters : public Elements {
 		Elements*		_item;
 		Inventory*		_inventory;
 		HUDTargeting*	_target;
+		Actor			*_blast;
 		Characters::Orientation				_orientation;
 		Characters::Orientation				_latOrientation;
 		std::list<Elements*>				_grounds;

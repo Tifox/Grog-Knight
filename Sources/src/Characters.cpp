@@ -341,7 +341,11 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->SetLayer(99);
 		blast->LoadSpriteFrames("Resources/Images/Blast/blast_000.png");
 		theWorld.Add(blast);
+		theSwitchboard.SubscribeTo(this, "deleteStomp");
+		theSwitchboard.DeferredBroadcast(new Message("deleteStomp"), .5f);
 		blast->PlaySpriteAnimation(0.1f, SAT_OneShot, 0, 1);
+		blast->ChangeColorTo(Color(1, 1, 1, 0), .5f);
+		this->_blast = blast;
 	} else if (m->GetMessageName() == "attackReady") {
 		this->_canAttack = true;
 		return;
@@ -355,6 +359,9 @@ void	Characters::ReceiveMessage(Message *m) {
 	}
 	else if (m->GetMessageName() == "unlockTarget") {
 		destroyTarget();
+	} else if (m->GetMessageName() == "deleteStomp") {
+		theWorld.Remove(this->_blast);
+		theSwitchboard.UnsubscribeFrom(this, "deleteStomp");
 	}
 
 

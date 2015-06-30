@@ -94,9 +94,6 @@ class Characters : public Elements {
 		Inventory						*getInventory(void);
 		void							destroyTarget(void);
 
-		int				forwardLimit;
-		int				backwardLimit;
-
 		// Virtual function, overwritten in childs
 		virtual void	actionCallback(std::string name, int status) {};
 		virtual void	equipWeapon(Weapon* weapon);

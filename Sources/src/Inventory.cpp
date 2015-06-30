@@ -55,10 +55,8 @@ void			Inventory::changeItemFocus(void) {
 	} else if (Game::rList->checkExists(this->_items[this->_focused])) {
 		w = new Ring(Game::rList->getRing(this->_items[this->_focused]));
 	}
-	if (w != nullptr) {
-		Game::currentGame->tooltip->clearInfo();
-		Game::currentGame->tooltip->info(w);
-	}
+	//if (w != nullptr) {
+	//}
 }
 
 

@@ -181,8 +181,6 @@ int		Game::getNextId(void) {
 
 void	Game::checkHeroPosition(void) {
 	if (Game::started == 1) {
-		Game::currentGame->getHero()->forwardLimit = 0;
-		Game::currentGame->getHero()->backwardLimit = 0;
 		Game::currentGame->moveCamera();
 		Game::currentGame->simulateHeroItemContact();
 		Game::currentGame->getHero()->characterLoop();

@@ -485,6 +485,7 @@ void	HUDWindow::boots(void) {
 void	HUDWindow::consumable(std::map<int, std::string> items) {
 	int		i, x, y, size;
 	std::list<HUDActor *>::iterator		it;
+	Elements		*w;
 
 	for (it = this->_bag.begin(); it != this->_bag.end(); it++)
 		theWorld.Remove((*it));
@@ -496,17 +497,20 @@ void	HUDWindow::consumable(std::map<int, std::string> items) {
 		if (items[i] != "") {
 			HUDActor	*tmp;
 			if (Game::wList->checkExists(items[i])) {
-				Weapon *w = new Weapon(Game::wList->getWeapon(items[i]));
-				tmp = this->addImage(w->getSprite(), x, y, size);
+				w = new Weapon(Game::wList->getWeapon(items[i]));
+				tmp = this->addImage(w->getAttribute("sprite"), x, y, size);
 			} else if (Game::aList->checkExists(items[i])) {
-				Armor* w = new Armor(Game::aList->getArmor(items[i]));
-				tmp = this->addImage(w->getSprite(), x, y, size);
+				w = new Armor(Game::aList->getArmor(items[i]));
+				tmp = this->addImage(w->getAttribute("sprite"), x, y, size);
 			} else if (Game::rList->checkExists(items[i])) {
-				Ring* w = new Ring(Game::rList->getRing(items[i]));
-				tmp = this->addImage(w->getSprite(), x, y, size);
+				w = new Ring(Game::rList->getRing(items[i]));
+				tmp = this->addImage(w->getAttribute("sprite"), x, y, size);
 			}
+				std::cout << w->getAttribute("sprite") << std::endl;
 			this->_bag.push_back(tmp);
 			if (items[i] == this->_g->getHero()->getInventory()->getCurrentFocus()) {
+				Game::currentGame->tooltip->clearInfo();
+				Game::currentGame->tooltip->info(w);
 				tmp = this->addImage("Resources/Images/HUD/selecItem.png", x, y, size + 15);
 				this->_bag.push_back(tmp);
 			}

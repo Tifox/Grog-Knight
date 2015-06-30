@@ -187,12 +187,19 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 			}
 		}
 		else if (elem->getAttribute("type2") == "Equipment") {
+			Game::currentGame->tooltip->clearInfo();
 			Game::currentGame->tooltip->info(elem);
 			this->_item = elem;
 		}
 	}
 	if (elem->getAttribute("type") == "ground" &&
 		elem->getAttribute("speType") == "spikes") {
+		if (this->_isStomping == true) {
+			theSwitchboard.Broadcast(new Message("stompEnd"));
+			this->_invincibility = false;
+			new Weapon(this->_weapon, this, 1);
+			new Weapon(this->_weapon, this, 1);
+		}
 		if (this->_invincibility == false)
 			this->_takeDamage(elem);
 		else
@@ -221,7 +228,7 @@ void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 			this->_enemiesTouched.remove(elem);
 		}
 		if (elem->getAttribute("type2") == "Equipment") {
-			Game::currentGame->tooltip->clearInfo();
+			Game::currentGame->tooltip->clearInfo(0);
 		}
    /* if (elem->getAttribute("speType") == "water")*/
 		/*this->GetBody()->SetGravityScale(1);*/

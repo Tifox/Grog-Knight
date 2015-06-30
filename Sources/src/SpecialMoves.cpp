@@ -70,7 +70,6 @@
  		this->character->GetBody()->SetGravityScale(0);
  		this->character->actionCallback("dash", 0);
  		this->character->_canMove = 0;
- 		Game::stopRunning(this->character);
  		if (this->character->_grounds.size() == 0)
  			this->character->_hasDashed = 1;
  		theSwitchboard.SubscribeTo(this->character, "dashEnd");
@@ -146,7 +145,7 @@
  	this->character->_setCategory("blink");
  	Map m = Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX];
  	int x = (this->character->GetBody()->GetWorldCenter().x) - m.getXStart();
- 	int y = -((this->character->GetBody()->GetWorldCenter().y) - m.getYStart());
+ 	int y = -((this->character->GetBody()->GetWorldCenter().y) - m.getYStart() - 0.5);
  	int range = this->character->_getAttr("blinkRange").asInt();
  	std::vector<std::vector<int>> t = m.getPhysicMap();
 

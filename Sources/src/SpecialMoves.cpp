@@ -123,6 +123,7 @@
  		this->character->_speMoveReady = 0;
  		this->character->GetBody()->SetBullet(true);
  		this->character->_invincibility = true;
+ 		this->character->actionCallback("stomp", 0);
  		this->character->_isStomping = true;
  		this->character->_isCharging = true;
  		theSwitchboard.SubscribeTo(this->character, "speMoveReady");

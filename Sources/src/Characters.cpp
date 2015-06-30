@@ -58,6 +58,8 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_isAttacking = 0;
 	this->_gold = 0;
 	this->_isLoadingAttack = 0;
+	this->_isStomping = 0;
+	this->_isDashing = 0;
 	this->_speMoveReady = 1;
 	this->_hasDashed = 0;
 	this->SetLayer(100);
@@ -317,13 +319,29 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 	}
 	else if (m->GetMessageName() == "stompEnd") {
+		std::string orientation;
 		theSwitchboard.UnsubscribeFrom(this, "stompEnd");
 		this->_invincibility = false;
 		this->_isStomping = false;
 		this->_isCharging = false;
 		this->GetBody()->SetBullet(false);
-	}
-	else if (m->GetMessageName() == "attackReady") {
+		this->_setCategory("stomp");
+		if (this->_latOrientation == RIGHT) {
+			orientation = "right";
+		} else if (this->_latOrientation == LEFT)
+			orientation = "left";
+		this->PlaySpriteAnimation(0.3f, SAT_OneShot,
+								  this->_getAttr("beginFrame_" + orientation).asInt() + 2,
+								  this->_getAttr("endFrame_" + orientation).asInt());
+		Actor* blast = new Actor();
+		blast->SetPosition(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y);
+		blast->SetSprite("Resources/Images/Blast/blast_000.png", 0);
+		blast->SetSize(2, 1);
+		this->SetLayer(99);
+		blast->LoadSpriteFrames("Resources/Images/Blast/blast_000.png");
+		theWorld.Add(blast);
+		blast->PlaySpriteAnimation(0.1f, SAT_OneShot, 0, 1);
+	} else if (m->GetMessageName() == "attackReady") {
 		this->_canAttack = true;
 		return;
 	}
@@ -335,13 +353,6 @@ void	Characters::ReceiveMessage(Message *m) {
 			Game::currentGame->changeCharacter("Warrior");
 	}
 	//END OF TEST
-	if (this->_isStomping == true) {
-		theSwitchboard.UnsubscribeFrom(this, "stompEnd");
-		this->_invincibility = false;
-		this->_isStomping = false;
-		this->_isCharging = false;
-		this->GetBody()->SetBullet(false);
-	}
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
 		attrName = this->_getAttr(i->first, "subscribe").asString();
 		if (!strncmp(attrName.c_str(), m->GetMessageName().c_str(), strlen(attrName.c_str()))) {
@@ -446,8 +457,7 @@ void	Characters::AnimCallback(String s) {
 			this->_isDashing = false;
 			this->_canMove = 1;
 		}
-	}
-	else if (s == "endDash") {
+	} else if (s == "endDash") {
 		this->_setCategory("dash");
 		this->_isRunning = 0;
 		std::string orientation;
@@ -483,33 +493,25 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 			if (this->_grounds.size() > 0) {
 				contact->SetEnabled(false);
 				this->_hasDashed = 0;
-			}
-			else {
+			} else {
 				if (this->_isCharging == 1) {
 					theSwitchboard.Broadcast(new Message("chargeEnd"));
 				}
 				this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
-				if (this->_hp <= 0) {
-					this->_heroDeath();
-					return;
-				}
-				if (this->_isStomping == true) {
-					theSwitchboard.Broadcast(new Message("stompEnd"));
-					new Weapon(this->_weapon, this, 1);
-					new Weapon(this->_weapon, this, 1);
-				}
 				this->_isJump = 0;
 				this->_hasDashed = 0;
 				if (this->_latOrientation == RIGHT && this->_isAttacking == false &&
-						this->_isLoadingAttack == 0 && this->_isDashing == false) {
+					this->_isLoadingAttack == 0 && this->_isDashing == false &&
+					this->_isStomping == false) {
 					if (this->getAttribute("class") == "Warrior")
 						this->changeSizeTo(Vector2(1, 1));
 					this->PlaySpriteAnimation(0.1f, SAT_OneShot,
 							this->_getAttr("jump", "endFrame_right").asInt() - 2,
 							this->_getAttr("jump", "endFrame_right").asInt(), "base");
 				} else if (this->_latOrientation == LEFT &&
-						this->_isAttacking == false &&
-						this->_isLoadingAttack == 0) {
+						   this->_isAttacking == false &&
+						   this->_isLoadingAttack == 0 &&
+						   this->_isStomping == false) {
 					if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
 						this->changeSizeTo(Vector2(1, 1));
 					this->PlaySpriteAnimation(0.1f, SAT_OneShot,
@@ -518,6 +520,11 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				}
 			}
 			this->_grounds.push_back(elem);
+			if (this->_isStomping == true) {
+				theSwitchboard.Broadcast(new Message("stompEnd"));
+				new Weapon(this->_weapon, this, 1);
+				new Weapon(this->_weapon, this, -1);
+			}
 		} else if (this->GetBody()->GetWorldCenter().y <= elem->GetBody()->GetWorldCenter().y - 0.905) {
 			this->_ceiling.push_back(elem);
 		} else if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {

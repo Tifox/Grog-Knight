@@ -129,8 +129,7 @@ void	Hero::actionCallback(std::string name, int status) {
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 								  this->_getAttr("beginFrame_" + orientation).asInt(),
 								  this->_getAttr("endFrame_" + orientation).asInt());
-	}
-	else if (name == "dash") {
+	} else if (name == "dash") {
 		if (this->_latOrientation == RIGHT) {
 			orientation = "right";
 		} else if (this->_latOrientation == LEFT)
@@ -140,8 +139,16 @@ void	Hero::actionCallback(std::string name, int status) {
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 								  this->_getAttr("beginFrame_" + orientation).asInt(),
 								  this->_getAttr("endFrame_" + orientation).asInt() - 2, "endDash");
+	} else if (name == "stomp") {
+		if (this->_latOrientation == RIGHT) {
+			orientation = "right";
+		} else if (this->_latOrientation == LEFT)
+			orientation = "left";
+		this->PlaySpriteAnimation(this->_getAttr("stomp", "time").asFloat(), SAT_OneShot,
+								  this->_getAttr("stomp", "beginFrame_" + orientation).asInt(),
+								  this->_getAttr("stomp", "endFrame_" + orientation).asInt() - 2, "base");
 	}
-	return ;
+	return;
 }
 
 //! Begin collision function

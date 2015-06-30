@@ -16,7 +16,7 @@
 			"weapon": "Sword",
 			"armor": "ChestArmor",
 			"ring": "NiceRing",
-			"specialMove": "dash",
+			"specialMove": "stomp",
 			"inventorySlots": 2
 		},
 		"forward": {
@@ -97,7 +97,12 @@
 		},
 		"stomp": {
 			"cooldown": 0,
-			"stompSpeed": 50
+			"stompSpeed": 50,
+			"beginFrame_right": 84,
+			"endFrame_right": 87,
+			"beginFrame_left": 84,
+			"endFrame_left": 87,
+			"time": 0.1
 		},
 		"blink": {
 			"cooldown": 0,

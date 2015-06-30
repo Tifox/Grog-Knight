@@ -291,9 +291,9 @@ void	Menu::ReceiveMessage(Message *m) {
 
 			for (it = subs.begin(); it != subs.end(); it++)
 				theSwitchboard.SubscribeTo(this, *it);
-			Game::currentGame->getHero()->unsubscribeFromAll();
-			theWorld.PausePhysics();
-			this->_inMenu = 3;
+				Game::currentGame->getHero()->unsubscribeFromAll();
+				theWorld.PausePhysics();
+				this->_inMenu = 3;
 			this->pauseMenu();
 		} else if (this->_inMenu == 1) {
 			Quit::quitGame();
@@ -465,11 +465,14 @@ void	Menu::applySettings(void) {
 				if (it->first == "Resolution") {
 					if (it2->first == "1024x720") {
 						glfwSetWindowSize(theWorld.GetMainWindow(), 1024, 720);
+						theCamera.ResizeCallback(theWorld.GetMainWindow(), 1024, 720);
 					} else if (it2->first == "1524x1020") {
 						glfwSetWindowSize(theWorld.GetMainWindow(), 1524, 1020);
+						theCamera.ResizeCallback(theWorld.GetMainWindow(), 1524, 1020);
 					} else if (it2->first == "FullScreen") {
 						const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 						glfwSetWindowSize(theWorld.GetMainWindow(), mode->width, mode->height);
+						theCamera.ResizeCallback(theWorld.GetMainWindow(), mode->width, mode->height);
 					}
 					glfwSetWindowPos(theWorld.GetMainWindow(), 0, 0);
 				} else if (it->first == "Anti-Aliasing") {
@@ -481,6 +484,9 @@ void	Menu::applySettings(void) {
 				}
 			}
 		}
+	}
+	if (Game::started == 1) {
+		Game::reloadHUD = 1;
 	}
 }
 

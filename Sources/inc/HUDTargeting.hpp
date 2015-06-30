@@ -1,3 +1,4 @@
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,42 +19,31 @@
  */
 
 /**
- * File: Inventory.hpp
- * Creation: 2015-05-27 04:44
- * Vincent Rey <vrey@student.42.fr>
- */
+* File: HUDTargeting.hpp
+* Creation: 2015-06-30 14:20
+* Matthieu Maudet <arkhane84@gmail.com>
+*/
 
-#ifndef __Inventory__
-# define __Inventory__
+#ifndef __HUDTargeting__
+# define __HUDTargeting__
 
-# include "Log.hpp"
+# include "../../Angel/Angel.h"
+# include <list>
 # include "Elements.hpp"
-# ifdef __APPLE__
-#  include "../../Tools/jsoncpp/include/json/json.h"
-# else
-#  include "json/json.h"
-# endif
 
-class Inventory {
+class Enemy;
 
-public:
-	Inventory(int slots);
+class HUDTargeting : public Elements{
 
-	void			changeItemFocus(void);
-	std::string		getCurrentFocus(void);
-	int				addItemToInventory(std::string item);
-	std::string		dropSelectedItem(void);
-	std::string		equipSelectedItem(void);
-	void			swapEquipmentAndInventory(std::string item);
-	std::map<int, std::string>	getItems(void);
-	int							getSlots(void);
-	int							getNumFocus(void);
+    public:
 
-private:
-	int							_slots;
-	int							_focused;
-	int							_inInventory;
-	std::map<int, std::string>	_items;
+        HUDTargeting(void);
+        ~HUDTargeting(void);
+
+    private:
+
+        std::list<Enemy *> _enemies;
+
 };
 
 #endif

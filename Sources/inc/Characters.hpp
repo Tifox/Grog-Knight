@@ -32,12 +32,14 @@
 # include "Armor.hpp"
 # include "Ring.hpp"
 # include "Log.hpp"
+# include "HUDTargeting.hpp"
 
 class Inventory;
 class Weapon;
 class Armor;
 class Ring;
 class SpecialMoves;
+class HUDTargeting;
 
 # ifdef __APPLE__
 #  include "../../Tools/jsoncpp/include/json/json.h"
@@ -90,6 +92,7 @@ class Characters : public Elements {
 		bool							getCharging(void);
 		int								getMaxInventory(void);
 		Inventory						*getInventory(void);
+		void							destroyTarget(void);
 
 		// Virtual function, overwritten in childs
 		virtual void	actionCallback(std::string name, int status) {};
@@ -145,6 +148,7 @@ class Characters : public Elements {
 		Ring*			_ring;
 		Elements*		_item;
 		Inventory*		_inventory;
+		HUDTargeting*	_target;
 		Characters::Orientation				_orientation;
 		Characters::Orientation				_latOrientation;
 		std::list<Elements*>				_grounds;

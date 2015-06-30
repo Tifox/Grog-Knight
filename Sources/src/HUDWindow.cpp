@@ -259,6 +259,7 @@ HUDActor	*HUDWindow::addImage(std::string path, int x, int y) {
 	tmp->SetDrawShape(ADS_Square);
 	tmp->SetLayer(100);
 	theWorld.Add(tmp);
+	this->_allElems.push_back(tmp);
 	return tmp;
 }
 
@@ -278,6 +279,7 @@ HUDActor	*HUDWindow::addImage(std::string path, int x, int y, float size) {
 	tmp->SetDrawShape(ADS_Square);
 	tmp->SetLayer(100);
 	theWorld.Add(tmp);
+	this->_allElems.push_back(tmp);
 	return tmp;
 }
 
@@ -298,6 +300,7 @@ HUDActor	*HUDWindow::addImage(std::string path, int x, int y, float size, int la
 	tmp->SetDrawShape(ADS_Square);
 	tmp->SetLayer(layer);
 	theWorld.Add(tmp);
+	this->_allElems.push_back(tmp);
 	return tmp;
 }
 
@@ -318,6 +321,7 @@ HUDActor	*HUDWindow::addImage(std::string path, int x, int y, Vector2 size, int 
 	tmp->SetDrawShape(ADS_Square);
 	tmp->SetLayer(layer);
 	theWorld.Add(tmp);
+	this->_allElems.push_back(tmp);
 	return tmp;
 }
 
@@ -485,6 +489,7 @@ void	HUDWindow::boots(void) {
 void	HUDWindow::consumable(std::map<int, std::string> items) {
 	int		i, x, y, size;
 	std::list<HUDActor *>::iterator		it;
+	Elements		*w;
 
 	for (it = this->_bag.begin(); it != this->_bag.end(); it++)
 		theWorld.Remove((*it));
@@ -496,17 +501,19 @@ void	HUDWindow::consumable(std::map<int, std::string> items) {
 		if (items[i] != "") {
 			HUDActor	*tmp;
 			if (Game::wList->checkExists(items[i])) {
-				Weapon *w = new Weapon(Game::wList->getWeapon(items[i]));
-				tmp = this->addImage(w->getSprite(), x, y, size);
+				w = new Weapon(Game::wList->getWeapon(items[i]));
+				tmp = this->addImage(w->getAttribute("sprite"), x, y, size);
 			} else if (Game::aList->checkExists(items[i])) {
-				Armor* w = new Armor(Game::aList->getArmor(items[i]));
-				tmp = this->addImage(w->getSprite(), x, y, size);
+				w = new Armor(Game::aList->getArmor(items[i]));
+				tmp = this->addImage(w->getAttribute("sprite"), x, y, size);
 			} else if (Game::rList->checkExists(items[i])) {
-				Ring* w = new Ring(Game::rList->getRing(items[i]));
-				tmp = this->addImage(w->getSprite(), x, y, size);
+				w = new Ring(Game::rList->getRing(items[i]));
+				tmp = this->addImage(w->getAttribute("sprite"), x, y, size);
 			}
 			this->_bag.push_back(tmp);
-			if (items[i] == this->_g->getHero()->getInventory()->getCurrentFocus()) {
+			if (i == this->_g->getHero()->getInventory()->getNumFocus()) {
+				Game::currentGame->tooltip->clearInfo();
+				Game::currentGame->tooltip->info(w);
 				tmp = this->addImage("Resources/Images/HUD/selecItem.png", x, y, size + 15);
 				this->_bag.push_back(tmp);
 			}
@@ -536,6 +543,7 @@ void	HUDWindow::_drawDoor(Vector2 size, Vector2 position) {
 	t->SetSize(size.X, size.Y);
 	t->SetLayer(100);
 	theWorld.Add(t);
+	this->_allElems.push_back(t);
 	this->_minimap.push_back(t);
 }
 
@@ -576,6 +584,7 @@ void	HUDWindow::minimap(void) {
 			tmp->SetDrawShape(ADS_Square);
 			tmp->SetLayer(100);
 			theWorld.Add(tmp);
+			this->_allElems.push_back(tmp);
 			this->_minimap.push_back(tmp);
 
 			if (Game::currentGame->maps->getMapXY()[y2][x2 + 1].getXStart())
@@ -641,6 +650,16 @@ void	HUDWindow::character(void) {
 void	HUDWindow::spells(void) {
 	this->addImage("Resources/HUD/spells_bg.png", (theCamera.GetWindowWidth() / 20) * 7, theCamera.GetWindowHeight() / 20 * 1.5, 
 			Vector2(theCamera.GetWindowWidth() / 15, theCamera.GetWindowHeight() / 10 * 1.2), 5);
+}
+
+void	HUDWindow::clearHUD(void) {
+	std::list<HUDActor *>::iterator		it;
+
+	for (it = this->_allElems.begin(); it != this->_allElems.end(); it++) {
+		theWorld.Remove(*it);
+	}
+	this->removeText(this->_gold);
+	this->removeText("Lvl " + std::to_string(this->_g->getHero()->getLevel()));
 }
 
 void	HUDWindow::setGame(Game *g) { this->_g = g; };

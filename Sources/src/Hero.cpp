@@ -40,6 +40,8 @@ Hero::Hero(std::string name) : Characters(name) {
 	theSwitchboard.SubscribeTo(this, "attackReady");
 	theSwitchboard.SubscribeTo(this, "specialMove");
 	theSwitchboard.SubscribeTo(this, "changeCharacter");
+	theSwitchboard.SubscribeTo(this, "lockTarget");
+	theSwitchboard.SubscribeTo(this, "unlockTarget");
 	this->addAttribute("type", "Hero");
 	this->_inventory = new Inventory(this->_getAttr("starting", "inventorySlots").asInt());
 	return ;
@@ -192,6 +194,7 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 			}
 		}
 		else if (elem->getAttribute("type2") == "Equipment") {
+			Game::currentGame->tooltip->clearInfo();
 			Game::currentGame->tooltip->info(elem);
 			this->_item = elem;
 		}
@@ -232,7 +235,7 @@ void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 			this->_enemiesTouched.remove(elem);
 		}
 		if (elem->getAttribute("type2") == "Equipment") {
-			Game::currentGame->tooltip->clearInfo();
+			Game::currentGame->tooltip->clearInfo(0);
 		}
    /* if (elem->getAttribute("speType") == "water")*/
 		/*this->GetBody()->SetGravityScale(1);*/

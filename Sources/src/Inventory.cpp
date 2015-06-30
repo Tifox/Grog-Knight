@@ -55,10 +55,8 @@ void			Inventory::changeItemFocus(void) {
 	} else if (Game::rList->checkExists(this->_items[this->_focused])) {
 		w = new Ring(Game::rList->getRing(this->_items[this->_focused]));
 	}
-	if (w != nullptr) {
-		Game::currentGame->tooltip->clearInfo();
-		Game::currentGame->tooltip->info(w);
-	}
+	//if (w != nullptr) {
+	//}
 }
 
 
@@ -89,6 +87,8 @@ int		Inventory::addItemToInventory(std::string item) {
 std::string Inventory::getCurrentFocus(void) {
 	return this->_items[this->_focused];
 }
+
+int			Inventory::getNumFocus(void) { return this->_focused; };
 
 void		Inventory::swapEquipmentAndInventory(std::string item) {
 	this->_items[this->_focused] = item;

@@ -335,6 +335,13 @@ void	Characters::ReceiveMessage(Message *m) {
 			Game::currentGame->changeCharacter("Warrior");
 	}
 	//END OF TEST
+	if (this->_isStomping == true) {
+		theSwitchboard.UnsubscribeFrom(this, "stompEnd");
+		this->_invincibility = false;
+		this->_isStomping = false;
+		this->_isCharging = false;
+		this->GetBody()->SetBullet(false);
+	}
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
 		attrName = this->_getAttr(i->first, "subscribe").asString();
 		if (!strncmp(attrName.c_str(), m->GetMessageName().c_str(), strlen(attrName.c_str()))) {
@@ -463,6 +470,10 @@ void	Characters::AnimCallback(String s) {
  * @param contact The b2Contact object of the collision. See Box2D docs for more info.
  */
 void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
+	if (this->_hp <= 0 && this->getAttribute("type") == "Hero") {
+		this->_heroDeath();
+		return;
+	}
 	if (elem->getAttributes()["type"] == "ground") {
 		if (this->_isAttacking == 0 && this->_isLoadingAttack == 0) {
 			if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)

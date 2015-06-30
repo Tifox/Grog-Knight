@@ -151,6 +151,8 @@ Ring*		Equipment::getRing(void) { return this->_ring; }
 
 std::string	Equipment::getName(void) { return this->_name; }
 
+
+
 //! Intern broadcasts function.
 /**
  * The Receive Message function.

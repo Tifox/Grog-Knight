@@ -56,6 +56,7 @@ public:
 	std::string		getAttack(void);
 	std::string		getSprite(void);
 	float			getActive(void);
+	int				getCritRate(void);
 	int				getSize(void);
 	int				getLootLevel(void);
 	int				getDamage(void);
@@ -80,6 +81,7 @@ private:
 	int				_size;
 	int				_damage;
 	int				_pushback;
+	int				_critRate;
 	void			_initDirection(Weapon* w, Characters* c);
 	void			_readFile(std::string name);
 	void			_readFileFromFilename(std::string name);

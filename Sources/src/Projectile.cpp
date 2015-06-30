@@ -40,6 +40,7 @@ Projectile::Projectile(Weapon* w, Characters* c){
 	this->_damage = w->getDamage();
 	this->_pushback = w->getPushback();
 	this->_recovery = w->getRecovery();
+	this->_critRate = w->getCritRate();
 	this->SetSize(0.5f);
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	this->SetSprite("Resources/Images/arrow.png");
@@ -103,6 +104,7 @@ int             Projectile::getSize(void) { return this->_size; }
 int             Projectile::getDamage(void) { return this->_damage; }
 int             Projectile::getPushback(void) { return this->_pushback; }
 float           Projectile::getRecovery(void) { return this->_recovery; }
+int				Projectile::getCritRate(void) { return this->_critRate; }
 
 void	Projectile::ReceiveMessage(Message *m) {
 }

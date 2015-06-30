@@ -56,6 +56,7 @@ Weapon::Weapon(Weapon* weapon) {
 	this->_lootLevel = weapon->getLootLevel();
 	this->addAttribute("type3", "Weapon");
 	this->_canAttack = 1;
+	this->_critRate = weapon->getCritRate();
 
 	theSwitchboard.SubscribeTo(this, "canAttack");
 }
@@ -78,6 +79,7 @@ Weapon::Weapon(Weapon* w, Characters* c, int i) {
 	this->_attack = w->getAttack();
 	this->_pushback = w->getPushback();
 	this->SetSize(1);
+	this->_critRate = w->getCritRate();
 	this->SetName("HeroWeaponHitbox");
 	if (c->getAttributes()["type"] == "Hero")
 		this->addAttribute("type", "HeroWeaponHitBox");
@@ -116,6 +118,7 @@ Weapon::Weapon(Weapon* w, Characters* c) {
 	this->_pushback = w->getPushback();
 	this->_canAttack = 1;
 	this->SetSize(1);
+	this->_critRate = w->getCritRate();
 	this->SetName("HeroWeaponHitbox");
 	if (c->getAttributes()["type"] == "Hero")
 		this->addAttribute("type", "HeroWeaponHitBox");
@@ -234,7 +237,11 @@ void    Weapon::_parseJson(std::string file) {
 	this->_pushback = json["infos"].get("pushback", "").asFloat();
 	this->_attack = json["infos"].get("attack", "").asString();
 	this->_sprite = json["infos"].get("sprites", "").asString();
+	this->_critRate = json["infos"].get("critRate", "").asInt();
 	this->addAttribute("type3", "Weapon");
+
+	std::cout << "crit = " << _critRate << std::endl;
+
 }
 
 //! Function called to get an attr value from the parsed json
@@ -283,17 +290,18 @@ void	Weapon::ReceiveMessage(Message *m) {
 }
 
 /* GETTERS */
-std::string		Weapon::getName(void) { return this->_name; }
-std::string		Weapon::getFlavor(void) { return this->_flavor; }
-std::string		Weapon::getSprite(void) { return this->_sprite; }
-std::string		Weapon::getAttack(void) { return this->_attack; }
+std::string		Weapon::getName(void)      { return this->_name; }
+std::string		Weapon::getFlavor(void)    { return this->_flavor; }
+std::string		Weapon::getSprite(void)    { return this->_sprite; }
+std::string		Weapon::getAttack(void)    { return this->_attack; }
 int				Weapon::getLootLevel(void) { return this->_lootLevel; }
-float			Weapon::getActive(void) { return this->_active; }
-int				Weapon::getSize(void) { return this->_size; }
-int				Weapon::getDamage(void) { return this->_damage; }
-int				Weapon::getPushback(void) { return this->_pushback; }
-float			Weapon::getRecovery(void) { return this->_recovery; }
-int				Weapon::attackReady(void) { return this->_canAttack; }
+float			Weapon::getActive(void)    { return this->_active; }
+int				Weapon::getSize(void)      { return this->_size; }
+int				Weapon::getDamage(void)	   { return this->_damage; }
+int				Weapon::getPushback(void)  { return this->_pushback; }
+float			Weapon::getRecovery(void)  { return this->_recovery; }
+int				Weapon::attackReady(void)  { return this->_canAttack; }
+int				Weapon::getCritRate(void)  { return this->_critRate; }
 
 /* SETTERS */
 

@@ -224,6 +224,8 @@ void	Game::moveCamera(void) {
 		asChanged = true;
 	}
 	if (asChanged) {
+		// std::cout << "SHAME ! (game.cpp l.228)" << std::endl;
+		// this->_hero->destroyTarget();
 		this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 		theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
 			this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);

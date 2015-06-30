@@ -72,6 +72,7 @@ SRCS =	./Sources/src/Armor.cpp \
 		./Sources/src/GameContactListener.cpp \
 		./Sources/src/Hero.cpp \
 		./Sources/src/Hitbox.cpp \
+		./Sources/src/HUDTargeting.cpp \
 		./Sources/src/HUDWindow.cpp \
 		./Sources/src/Inventory.cpp \
 		./Sources/src/LevelGenerator.cpp \

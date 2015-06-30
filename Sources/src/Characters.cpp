@@ -442,6 +442,7 @@ void	Characters::AnimCallback(String s) {
 	}
 	else if (s == "endDash") {
 		this->_setCategory("dash");
+		this->_isRunning = 0;
 		std::string orientation;
 		if (this->_latOrientation == RIGHT)
 			orientation = "right";
@@ -489,8 +490,8 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				this->_isJump = 0;
 				this->_hasDashed = 0;
 				if (this->_latOrientation == RIGHT && this->_isAttacking == false &&
-						this->_isLoadingAttack == 0) {
-					if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
+						this->_isLoadingAttack == 0 && this->_isDashing == false) {
+					if (this->getAttribute("class") == "Warrior")
 						this->changeSizeTo(Vector2(1, 1));
 					this->PlaySpriteAnimation(0.1f, SAT_OneShot,
 							this->_getAttr("jump", "endFrame_right").asInt() - 2,
@@ -639,12 +640,6 @@ void	Characters::_tryFly(void) {
 void	Characters::_forward(int status) {
 	this->_setCategory("forward");
 	if (status == 1) {
-		if (this->getAttribute("type") == "Hero") {
-			if (this->forwardLimit == 0)
-				this->forwardLimit = 1;
-			else
-				return;
-		}
 		this->_orientation = RIGHT;
 		this->_latOrientation = RIGHT;
 		if ((this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() ||
@@ -678,7 +673,7 @@ void	Characters::_forward(int status) {
 		if (!this->_isJump && !this->_isAttacking)
 			this->AnimCallback("base");
 	} else {
-		if (this->_wallsRight.size() == 0 && this->_canMove == true)
+		if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0)
 			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
 	}
 	return ;
@@ -695,13 +690,9 @@ void	Characters::_backward(int status) {
 	this->_setCategory("backward");
 	if (status == 1) {
 		if (this->getAttribute("type") == "Hero") {
-			if (this->backwardLimit == 0)
-				this->backwardLimit = 1;
-			else
-				return;
+			this->_orientation = LEFT;
+			this->_latOrientation = LEFT;
 		}
-		this->_orientation = LEFT;
-		this->_latOrientation = LEFT;
 		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() &&
 				!this->_isJump && !this->_isLoadingAttack)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
@@ -732,8 +723,9 @@ void	Characters::_backward(int status) {
 		if (!this->_isJump && !this->_isAttacking)
 			this->AnimCallback("base");
 	} else {
-		if (this->_wallsLeft.size() == 0 && this->_canMove == true)
+		if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0) {
 			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
+		}
 	}
 	return ;
 }

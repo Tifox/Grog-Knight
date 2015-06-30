@@ -16,7 +16,7 @@
 			"weapon": "Sword",
 			"armor": "ChestArmor",
 			"ring": "NiceRing",
-			"specialMove": "stomp",
+			"specialMove": "dash",
 			"inventorySlots": 2
 		},
 		"forward": {

@@ -1,19 +1,24 @@
 {
 	"infos": {
-		"name": "Hero",
+		"name": "Warrior",
 		"id": 0,
-		"HP": 100,
+		"HP": 75,
 		"maxHP": 75,
 		"mana": 80,
-		"maxMana": 100,
+		"maxMana": 80,
 		"sprites": "Resources/Images/Hero/hero_000.png",
 		"size": 1.3,
-		"maxSpeed": 5,
-		"weapon": "Sword",
 		"hitboxType": "special",
 		"hitbox": "heroHitbox"
 	},
 	"Actions": {
+		"starting": {
+			"weapon": "Sword",
+			"armor": "ChestArmor",
+			"ring": "NiceRing",
+			"specialMove": "stomp",
+			"inventorySlots": 2
+		},
 		"forward": {
 			"subscribe": "forward",
 			"beginFrame": 20,
@@ -30,7 +35,7 @@
 		},
 		"jump": {
 			"subscribe": "jump",
-			"max": 3,
+			"max": 30,
 			"force": 6,
 			"rejump": 10,
 			"beginFrame_right": 4,
@@ -75,18 +80,15 @@
 			"endFrame_left": 73,
 			"time": 0.1
 		},
-		"specialMove": {
-			"type": "blink"
-		},
 		"dash": {
 			"cooldown": 1,
 			"dashSpeed": 30,
 			"uptime": 0.15,
-			"beginFrame_right": 66,
-			"endFrame_right": 68,
-			"beginFrame_left": 71,
-			"endFrame_left": 73,
-			"time": 0.1
+			"beginFrame_right": 74,
+			"endFrame_right": 78,
+			"beginFrame_left": 79,
+			"endFrame_left": 83,
+			"time": 0.05
 		},
 		"charge": {
 			"cooldown": 1,
@@ -95,11 +97,26 @@
 		},
 		"stomp": {
 			"cooldown": 0,
-			"stompSpeed": 50
+			"stompSpeed": 50,
+			"beginFrame_right": 84,
+			"endFrame_right": 87,
+			"beginFrame_left": 84,
+			"endFrame_left": 87,
+			"time": 0.1
 		},
 		"blink": {
 			"cooldown": 0,
 			"blinkRange": 4
+		},
+		"fly": {
+			"force": 4,
+			"beginFrame_right": 44,
+			"beginFrame_left": 44,
+			"fallingFrame_right": 44,
+			"fallingFrame_left": 44,
+			"endFrame_right": 44,
+			"endFrame_left": 44,
+			"time": 0.1
 		},
 		"wallJump": {
 			"maxJump": 1,

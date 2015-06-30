@@ -175,7 +175,6 @@ void	Enemy::EndContact(Elements *m, b2Contact *contact) {
  * @param damage The damage amount
  */
 int		Enemy::takeDamage(int damage, int critRate) {
-	std::cout << "critRate = " << critRate << std::endl;
 	if (this->_hp <= 0)
 		return 0;
 	this->actionCallback("takeDamage", 0);

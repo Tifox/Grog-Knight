@@ -49,13 +49,15 @@ Projectile::Projectile(Weapon* w, Characters* c){
 	this->SetRestitution(0.0f);
 	this->SetFixedRotation(true);
 	this->SetIsSensor(true);
-	if (c->getAttributes()["type"] == "Hero")
+	if (c->getAttribute("type") == "Hero") {
 		this->addAttribute("type", "HeroProjectile");
+	}
 	else
 		this->addAttribute("type", "Projectile");
 	this->Tag("projectile");
+	this->addAttribute("physic", "1");
 	this->_initDirection(w, c);
-	theSwitchboard.DeferredBroadcast(new Message("canAttack"), this->_recovery);
+	theSwitchboard.DeferredBroadcast(new Message("attackReady"), this->_recovery);
 	theWorld.Add(this);
 }
 

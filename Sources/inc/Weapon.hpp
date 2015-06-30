@@ -62,9 +62,6 @@ public:
 	int				getDamage(void);
 	int				getPushback(void);
 	float			getRecovery(void);
-	int				attackReady(void);
-
-	void			isAttacking(int i);
 
 private:
 	std::map<std::string, std::map<std::string, Json::Value> >	_attr;
@@ -74,7 +71,6 @@ private:
 	std::string		_sprite;
 	std::string		_attack;
 	std::string		_type;
-	int				_canAttack;
 	int				_lootLevel;
 	float			_recovery;
 	float			_active;

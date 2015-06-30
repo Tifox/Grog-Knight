@@ -1,7 +1,7 @@
 {
     "infos": {
    	    "name": "Sword",
-		"flavor": "Hey look, its a sword. A pretty shitty one actually...",
+		"flavor": "Hey look, its a sword.\nA pretty shitty one actually...",
 		"hitbox": "SWORD",
 		"size": 1,
 		"lvlRequired": 1,

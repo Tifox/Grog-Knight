@@ -27,15 +27,19 @@
 # define __Characters__
 
 # include "Inventory.hpp"
+# include "SpecialMoves.hpp"
 # include "Weapon.hpp"
 # include "Armor.hpp"
 # include "Ring.hpp"
 # include "Log.hpp"
+# include "HUDTargeting.hpp"
 
 class Inventory;
 class Weapon;
 class Armor;
 class Ring;
+class SpecialMoves;
+class HUDTargeting;
 
 # ifdef __APPLE__
 #  include "../../Tools/jsoncpp/include/json/json.h"
@@ -55,6 +59,7 @@ class Characters : public Elements {
 		friend	class	Game;
 		friend	class	Pattern;
 		friend	class	PassivePattern;
+		friend	class	SpecialMoves;
 
 		enum Orientation {
 			UP,
@@ -80,10 +85,14 @@ class Characters : public Elements {
 		void							setMana(int mana);
 		int								getMaxMana(void);
 		int								getMaxHP(void);
+		int								getLevel(void);
 		Weapon							*getWeapon(void);
 		Armor							*getArmor(void);
 		Ring							*getRing(void);
 		bool							getCharging(void);
+		int								getMaxInventory(void);
+		Inventory						*getInventory(void);
+		void							destroyTarget(void);
 
 		// Virtual function, overwritten in childs
 		virtual void	actionCallback(std::string name, int status) {};
@@ -124,15 +133,22 @@ class Characters : public Elements {
 		int				_isLoadingAttack;
 		bool			_fullChargedAttack;
 		int				_speMoveReady;
+		bool			_canAttack;
 		bool			_isCharging;
 		bool			_isStomping;
+		bool			_isFlying;
+		bool			_flyTrigger;
+		bool			_isDashing;
 		int				_hasDashed;
+		int				_level;
 		std::string		_speMove;
+		SpecialMoves*	_eqMove;
 		Weapon*			_weapon;
 		Armor*			_armor;
 		Ring*			_ring;
 		Elements*		_item;
 		Inventory*		_inventory;
+		HUDTargeting*	_target;
 		Characters::Orientation				_orientation;
 		Characters::Orientation				_latOrientation;
 		std::list<Elements*>				_grounds;
@@ -144,6 +160,8 @@ class Characters : public Elements {
 
 		Json::Value		_getAttr(std::string key);
 		void			_setCategory(std::string category);
+		virtual void	characterLoop(void);
+		virtual void	_tryFly(void);
 		virtual void	_forward(int status);
 		virtual void	_backward(int status);
 		virtual void	_up(int status);
@@ -153,10 +171,11 @@ class Characters : public Elements {
 		virtual void	_pickupItem(int status);
 		virtual void	_run(void);
 		virtual void	_specialMove(void);
-		virtual void	_dash(void);
-		virtual void	_charge(void);
-		virtual void	_stomp(void);
-		virtual void	_blink(void);
+		// virtual void	_dash(void);
+		// virtual void	_charge(void);
+		// virtual void	_stomp(void);
+		// virtual void	_blink(void);
+		// virtual void	_fly(void);
 		void			_destroyEnemy(void);
 		Elements*		getItem(void);
 

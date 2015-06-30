@@ -46,6 +46,7 @@ Ring::Ring(Ring* Ring) {
 	this->_sprite = Ring->getSprite();
 	this->addAttribute("type3", "Ring");
 	this->addAttribute("name", this->_name);
+	this->addAttribute("sprite", this->_sprite);
 	this->_lootLevel = Ring->getLootLevel();
 	if (Ring->getAttribute("hpBuff") != "")
 		this->addAttribute("hpBuff", Ring->getAttribute("hpBuff"));
@@ -102,6 +103,7 @@ void    Ring::_parseJson(std::string file) {
 		this->addAttribute( i.key().asString(), (*i).asString());
 	this->addAttribute("type3", "Armor");
 	this->addAttribute("type3", "Ring");
+	this->addAttribute("sprite", this->_sprite);
 }
 
 //! Function called to get an attr value from the parsed json

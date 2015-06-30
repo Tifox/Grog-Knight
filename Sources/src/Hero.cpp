@@ -29,7 +29,7 @@
 /**
  * This constructor is making some subscribtions for himself.
  */
-Hero::Hero(void) : Characters("Hero") {
+Hero::Hero(std::string name) : Characters(name) {
 	theSwitchboard.SubscribeTo(this, "canMove");
 	theSwitchboard.SubscribeTo(this, "endInvincibility");
 	theSwitchboard.SubscribeTo(this, "enableAttackHitbox");
@@ -37,9 +37,13 @@ Hero::Hero(void) : Characters("Hero") {
 	theSwitchboard.SubscribeTo(this, "equipSelectedItem");
 	theSwitchboard.SubscribeTo(this, "cycleInventory");
 	theSwitchboard.SubscribeTo(this, "dropItem");
+	theSwitchboard.SubscribeTo(this, "attackReady");
 	theSwitchboard.SubscribeTo(this, "specialMove");
-	this->_speMove = this->_getAttr("specialMove", "type").asString();
-
+	theSwitchboard.SubscribeTo(this, "changeCharacter");
+	theSwitchboard.SubscribeTo(this, "lockTarget");
+	theSwitchboard.SubscribeTo(this, "unlockTarget");
+	this->addAttribute("type", "Hero");
+	this->_inventory = new Inventory(this->_getAttr("starting", "inventorySlots").asInt());
 	return ;
 }
 
@@ -71,10 +75,10 @@ void	Hero::init(void) {
 void	Hero::actionCallback(std::string name, int status) {
 	std::string 	orientation;
 	float				x = 2, y = 1;
-	if (name == "attack" && status == 0 && this->_weapon->attackReady() == 1 &&
+	if (name == "attack" && status == 0 && this->_canAttack == true &&
 		this->_fullChargedAttack == false && this->_isLoadingAttack == 0 &&
 		this->_isAttacking == 1) {
-		this->_weapon->isAttacking(0);
+		this->_canAttack = false;
 		if (this->_orientation == RIGHT) {
 			orientation = "right";
 		} else if (this->_orientation == LEFT) {
@@ -86,16 +90,15 @@ void	Hero::actionCallback(std::string name, int status) {
 			x = 1; y = 2.5f;
 			orientation = "down";
 		}
-		this->changeSizeTo(Vector2(x, y));
+		if (this->getAttribute("class") == "Warrior")
+			this->changeSizeTo(Vector2(x, y));
 		this->_setCategory("attack");
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-								  this->_getAttr("beginFrame_" +
-												 orientation).asInt(),
-								  this->_getAttr("endFrame_" +
-												 orientation).asInt(), "base");
+								  this->_getAttr("beginFrame_" + orientation).asInt(),
+								  this->_getAttr("endFrame_" + orientation).asInt(), "base");
 
 	} else if (name == "attack" && status == 0 &&
-			   this->_weapon->attackReady() == 1 &&
+			   this->_canAttack == true &&
 			   this->_fullChargedAttack == true) {
 		if (this->_orientation == RIGHT) {
 			orientation = "right";
@@ -109,10 +112,11 @@ void	Hero::actionCallback(std::string name, int status) {
 			orientation = "down";
 		}
 		this->_setCategory("loadAttack_done");
-		this->_weapon->isAttacking(0);
 		this->_isLoadingAttack = 0;
 		this->_fullChargedAttack = false;
-		this->changeSizeTo(Vector2(2, 2));
+		if (this->getAttribute("class") == "Warrior")
+			this->changeSizeTo(Vector2(2, 2));
+		this->_canAttack = false;
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 								  this->_getAttr("beginFrame_" + orientation).asInt(),
 								  this->_getAttr("endFrame_" + orientation).asInt(), "base");
@@ -122,12 +126,31 @@ void	Hero::actionCallback(std::string name, int status) {
 		} else if (this->_latOrientation == LEFT)
 			orientation = "left";
 		this->_setCategory("loadAttack_charge");
-		this->changeSizeTo(Vector2(2, 2));
+		if (this->getAttribute("class") == "Warrior")
+			this->changeSizeTo(Vector2(2, 2));
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 								  this->_getAttr("beginFrame_" + orientation).asInt(),
 								  this->_getAttr("endFrame_" + orientation).asInt());
+	} else if (name == "dash") {
+		if (this->_latOrientation == RIGHT) {
+			orientation = "right";
+		} else if (this->_latOrientation == LEFT)
+			orientation = "left";
+		this->changeSizeTo(Vector2(2, 1));
+		this->_setCategory("dash");
+		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+								  this->_getAttr("beginFrame_" + orientation).asInt(),
+								  this->_getAttr("endFrame_" + orientation).asInt() - 2, "endDash");
+	} else if (name == "stomp") {
+		if (this->_latOrientation == RIGHT) {
+			orientation = "right";
+		} else if (this->_latOrientation == LEFT)
+			orientation = "left";
+		this->PlaySpriteAnimation(this->_getAttr("stomp", "time").asFloat(), SAT_OneShot,
+								  this->_getAttr("stomp", "beginFrame_" + orientation).asInt(),
+								  this->_getAttr("stomp", "endFrame_" + orientation).asInt() - 2, "base");
 	}
-	return ;
+	return;
 }
 
 //! Begin collision function
@@ -140,10 +163,6 @@ void	Hero::actionCallback(std::string name, int status) {
 void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 	Characters::BeginContact(elem, contact);
 	if (elem->getAttribute("type") == "Enemy" && elem->isDead() == false) {
-		// if (this->_isStomping == true) {
-		// 	this->GetBody()->SetLinearVelocity(b2Vec2(0, 3));
-		// 	theSwitchboard.Broadcast(new Message("stompEnd"));
-		// }
 		if (this->_invincibility == false)
 			this->_takeDamage(elem);
 		else {
@@ -175,12 +194,19 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 			}
 		}
 		else if (elem->getAttribute("type2") == "Equipment") {
+			Game::currentGame->tooltip->clearInfo();
 			Game::currentGame->tooltip->info(elem);
 			this->_item = elem;
 		}
 	}
 	if (elem->getAttribute("type") == "ground" &&
 		elem->getAttribute("speType") == "spikes") {
+		if (this->_isStomping == true) {
+			theSwitchboard.Broadcast(new Message("stompEnd"));
+			this->_invincibility = false;
+			new Weapon(this->_weapon, this, 1);
+			new Weapon(this->_weapon, this, 1);
+		}
 		if (this->_invincibility == false)
 			this->_takeDamage(elem);
 		else
@@ -209,7 +235,7 @@ void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 			this->_enemiesTouched.remove(elem);
 		}
 		if (elem->getAttribute("type2") == "Equipment") {
-			Game::currentGame->tooltip->clearInfo();
+			Game::currentGame->tooltip->clearInfo(0);
 		}
    /* if (elem->getAttribute("speType") == "water")*/
 		/*this->GetBody()->SetGravityScale(1);*/
@@ -226,7 +252,8 @@ void	Hero::_takeDamage(Elements* elem) {
   Game::stopRunning(this);
   this->_isRunning = 0;
   this->_isJump = 1;
-  this->changeSizeTo(Vector2(1, 1));
+  if (this->getAttribute("class") == "Warrior")
+	  this->changeSizeTo(Vector2(1, 1));
   if (this->_invincibility == false) {
 	  this->_canMove = 0;
 	  this->setHP(this->getHP() - 25);
@@ -253,4 +280,12 @@ void	Hero::_takeDamage(Elements* elem) {
   theSwitchboard.SubscribeTo(this, "colorDamageBlink2");
   theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
   this->_invincibility = true;
+}
+
+void	Hero::setStartingValues(void) {
+	this->_setCategory("starting");
+	this->equipWeapon(Game::wList->getWeapon(this->_getAttr("weapon").asString()));
+	this->equipArmor(Game::aList->getArmor(this->_getAttr("armor").asString()));
+	this->equipRing(Game::rList->getRing(this->_getAttr("ring").asString()));
+	this->_speMove = this->_getAttr("specialMove").asString();
 }

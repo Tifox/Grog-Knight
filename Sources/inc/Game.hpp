@@ -73,10 +73,12 @@ class Game {
 		void	displayEnemy(Elements & Enemy);
 		void	displayObject(Elements & Object);
 		void	showMap(void);
+		void	changeCharacter(std::string);
 		void	displayHUD(void);
 		void	setHero(Characters *h);
 		void	moveCamera(void);
 		void	simulateHeroItemContact(void);
+		void	reloadingHUD(void);
 		Characters	*getHero(void);
 
 		static bool	endGame;
@@ -125,6 +127,7 @@ class Game {
 		static int						started;
 		static int						cameraTick;
 		static int						isWaitingForBind;
+		static int						reloadHUD;
 
 	private:
 		float				beginXHero;

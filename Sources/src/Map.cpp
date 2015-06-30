@@ -219,8 +219,10 @@ void	Map::destroyMap(void) {
 
 	// Pause enemies
 	for (en = this->_enemies.begin(); en != this->_enemies.end(); en++) {
-		if (!(*en)->dead())
+		if (!(*en)->dead()) {
+			Game::stopRunning((*en));
 			(*en)->GetBody()->SetActive(false);
+		}
 	}
 }
 

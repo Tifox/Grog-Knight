@@ -7,7 +7,7 @@
 		"lootLevel": 2
 	},
 		"bonus": {
-			"hpBuff": 45,
-			"manaBuff": 90
+			"hpBuff": 50,
+			"manaBuff": 25
 		}
 }

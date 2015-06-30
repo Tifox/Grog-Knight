@@ -184,6 +184,7 @@ void	Game::checkHeroPosition(void) {
 		Game::currentGame->moveCamera();
 		Game::currentGame->simulateHeroItemContact();
 		Game::currentGame->getHero()->characterLoop();
+		Game::currentGame->reloadingHUD();
 	}
 }
 
@@ -448,27 +449,38 @@ HUDWindow	*Game::getHUD(void) {
 void		Game::displayHUD(void) {
 	HUDWindow *w = Game::getHUD();
 	Characters*	hero = Game::getHero();
-   /* w->SetPosition(theCamera.GetWindowWidth() / 2 - 100, 50);*/
-	//w->SetSize(theCamera.GetWindowWidth() - 200, 100.0f);
-	//w->SetSprite("Resources/Images/HUD/background_hud.png");
-	//w->SetDrawShape(ADS_Square);
-	//w->SetLayer(-1);
-	//w->addImage("Resources/Images/HUD/perso.png", 100, 50);
-	/*theWorld.Add(w);*/
+
 	Game	*g = this;
 	w->setGame(g);
 	w->showHud();
-   /* w->setMaxMana(hero->getMaxMana());*/
 	w->setMaxHP(hero->getMaxHP());
 	w->gold(0);
-	//w->bag();
-	//w->initMinimapBackground();
-	/*w->minimap();*/
-
 	// Work
    //w->setText("Burp.", this->_hero, Vector3(0, 0, 0), 0, 1);
 	/*w->removeText("Burp.");*/
 	//Game::addHUDWindow(w);
+}
+
+void		Game::reloadingHUD(void) {
+	if (Game::reloadHUD) {
+
+		theWorld.Render();
+		Game::getHUD()->clearHUD();
+		Game::getHUD()->showBackgrounds();
+		Game::getHUD()->character();
+		Game::getHUD()->spells();
+		Game::getHUD()->bag();
+		Game::getHUD()->minimap();
+		Game::getHUD()->life(this->getHero()->getHP());
+		Game::getHUD()->bag();
+		Game::getHUD()->mana(this->getHero()->getMana());
+		Game::getHUD()->items(this->getHero()->getWeapon());
+		Game::getHUD()->items(this->getHero()->getArmor());
+		Game::getHUD()->items(this->getHero()->getRing());
+		Game::getHUD()->consumable(this->getHero()->getInventory()->getItems());
+		Game::getHUD()->gold(this->getHero()->getGold());
+		Game::reloadHUD = 0;
+	}
 }
 
 /* SETTERS */
@@ -499,3 +511,4 @@ Game*						Game::currentGame = 0;
 int							Game::started = 0;
 int							Game::cameraTick = 0;
 int							Game::isWaitingForBind = 0;
+int							Game::reloadHUD = 0;

@@ -91,6 +91,7 @@ class	HUDWindow : public HUDActor {
 		void	showBackgrounds(void);
 		void	character(void);
 		void	spells(void);
+		void	clearHUD(void);
 
 	private:
 		Game		*_g;
@@ -100,6 +101,7 @@ class	HUDWindow : public HUDActor {
 		std::list<HUDActor *>	_minimap;
 		std::map<std::string, Elements*>		_dialog;
 		std::list<HUDWindow::Text *>	_text;
+		std::list<HUDActor *>	_allElems;
 		HUDWindow::Text	*		_gold;
 		int						_maxMana;
 		int						_maxHP;

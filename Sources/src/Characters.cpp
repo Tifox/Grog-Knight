@@ -1273,6 +1273,8 @@ int							Characters::getMaxHP(void) { return this->_maxHp; };
 int							Characters::getGold(void) { return this->_gold; };
 void						Characters::changeCanMove(void) { this->_canMove = (this->_canMove ? false : true); };
 Weapon						*Characters::getWeapon(void) { return this->_weapon; };
+Armor						*Characters::getArmor(void) { return this->_armor; };
+Ring						*Characters::getRing(void) { return this->_ring; };
 bool						Characters::getCharging(void) { return this->_isCharging; }
 std::list<std::string>		Characters::getSubscribes(void) { return this->_subsc; };
 int							Characters::getLevel(void) { return this->_level; };

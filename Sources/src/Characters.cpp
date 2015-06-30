@@ -1150,10 +1150,21 @@ void	Characters::equipArmor(Armor* armor) {
  */
 void	Characters::unequipArmor(void) {
 	this->_inventory->swapEquipmentAndInventory(this->_armor->getAttribute("name"));
-	if (this->_armor->getAttribute("hpBuff") != "")
+	if (this->_armor->getAttribute("hpBuff") != "") {
 		this->_maxHp -= std::stoi(this->_armor->getAttribute("hpBuff"));
-	if (this->_armor->getAttribute("manaBuff") != "")
+		if (this->_hp > this->_maxHp)
+			this->_hp = this->_maxHp;
+	}
+	if (this->_armor->getAttribute("manaBuff") != "") {
 		this->_maxMana -= std::stoi(this->_armor->getAttribute("manaBuff"));
+		if (this->_mana > this->_maxMana)
+			this->_mana = this->_maxMana;
+	}
+	Game::getHUD()->items(this->_armor);
+	Game::getHUD()->setMaxHP(this->_maxHp);
+	Game::getHUD()->life(this->_hp);
+	Game::getHUD()->setMaxMana(this->_maxMana);
+	Game::getHUD()->mana(this->_mana);
 }
 
 //! Equip a ring
@@ -1163,10 +1174,14 @@ void	Characters::unequipArmor(void) {
  */
 void	Characters::equipRing(Ring* ring) {
 	this->_ring = new Ring(ring);
-	if (this->_ring->getAttribute("hpBuff") != "")
+	if (this->_ring->getAttribute("hpBuff") != "") {
 		this->_maxHp += std::stoi(this->_ring->getAttribute("hpBuff"));
-	if (this->_ring->getAttribute("manaBuff") != "")
+		this->_hp += std::stoi(this->_ring->getAttribute("hpBuff"));
+	}
+	if (this->_ring->getAttribute("manaBuff") != "") {
 		this->_maxMana += std::stoi(this->_ring->getAttribute("manaBuff"));
+		this->_mana += std::stoi(this->_ring->getAttribute("manaBuff"));
+	}
 	Game::getHUD()->items(this->_ring);
 	Game::getHUD()->setMaxHP(this->_maxHp);
 	Game::getHUD()->life(this->_hp);
@@ -1181,10 +1196,16 @@ void	Characters::equipRing(Ring* ring) {
  */
 void	Characters::unequipRing(void) {
 	this->_inventory->swapEquipmentAndInventory(this->_ring->getAttribute("name"));
-	if (this->_ring->getAttribute("hpBuff") != "")
+	if (this->_ring->getAttribute("hpBuff") != "") {
 		this->_maxHp -= std::stoi(this->_ring->getAttribute("hpBuff"));
-	if (this->_ring->getAttribute("manaBuff") != "")
+		if (this->_hp > this->_maxHp)
+			this->_hp = this->_maxHp;
+	}
+	if (this->_ring->getAttribute("manaBuff") != "") {
 		this->_maxMana -= std::stoi(this->_ring->getAttribute("manaBuff"));
+		if (this->_mana > this->_maxMana)
+			this->_mana = this->_maxMana;
+	}
 }
 
 //! Set basics hp

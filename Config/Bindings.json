@@ -61,7 +61,7 @@
 		"Jump" : 
 		{
 			"broadcast" : "jump",
-			"key" : "G"
+			"key" : "SPACE"
 		},
 		"Look Down" : 
 		{

@@ -511,7 +511,7 @@ void	HUDWindow::consumable(std::map<int, std::string> items) {
 				tmp = this->addImage(w->getAttribute("sprite"), x, y, size);
 			}
 			this->_bag.push_back(tmp);
-			if (items[i] == this->_g->getHero()->getInventory()->getCurrentFocus()) {
+			if (i == this->_g->getHero()->getInventory()->getNumFocus()) {
 				Game::currentGame->tooltip->clearInfo();
 				Game::currentGame->tooltip->info(w);
 				tmp = this->addImage("Resources/Images/HUD/selecItem.png", x, y, size + 15);

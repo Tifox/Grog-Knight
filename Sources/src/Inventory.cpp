@@ -88,6 +88,8 @@ std::string Inventory::getCurrentFocus(void) {
 	return this->_items[this->_focused];
 }
 
+int			Inventory::getNumFocus(void) { return this->_focused; };
+
 void		Inventory::swapEquipmentAndInventory(std::string item) {
 	this->_items[this->_focused] = item;
 }

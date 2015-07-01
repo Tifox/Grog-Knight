@@ -101,6 +101,7 @@ std::string		Inventory::dropSelectedItem(void) {
 	itemName = this->_items[this->_focused];
 	this->_items[this->_focused].clear();
 	this->_inInventory--;
+	Game::getHUD()->consumable(this->_items);
 	return itemName;
 }
 

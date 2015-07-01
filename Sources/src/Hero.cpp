@@ -167,6 +167,12 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 			this->_takeDamage(elem);
 		else {
 			this->_enemiesTouched.push_back(elem);
+			if (this->_isStomping == true) {
+				this->GetBody()->SetLinearVelocity(b2Vec2(0, 3));
+				theSwitchboard.Broadcast(new Message("stompEnd"));
+				new Weapon(this->_weapon, this, 1);
+				new Weapon(this->_weapon, this, -1);
+			}
 		}
 	}
 	else if (elem->getAttribute("type") == "Object") {

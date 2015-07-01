@@ -236,9 +236,6 @@ void    Weapon::_parseJson(std::string file) {
 	this->_critRate = json["infos"].get("critRate", "").asInt();
 	this->addAttribute("sprite", this->_sprite);
 	this->addAttribute("type3", "Weapon");
-
-	std::cout << "crit = " << _critRate << std::endl;
-
 }
 
 //! Function called to get an attr value from the parsed json

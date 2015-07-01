@@ -93,27 +93,23 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 	if (m->getAttribute("type") == "ground") {
 		Game::startRunning(this);
 		this->_isTakingDamage = 0;
-	}
-	if (m->getAttribute("type") == "HeroWeaponHitBox") {
+	} else if (m->getAttribute("type") == "HeroWeaponHitBox") {
 		Characters *h = Game::currentGame->getHero();
 		this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
 		Game::stopRunning(this);
 		if (this->takeDamage(w->getDamage(), w->getCritRate()) == 1) {
-			this->_isTakingDamage = 1;
 			if (this->GetBody()->GetWorldCenter().x > h->GetBody()->GetWorldCenter().x) {
 				this->ApplyLinearImpulse(Vector2(w->getPushback(), w->getPushback()), Vector2(0,0));
 			} else {
 				this->ApplyLinearImpulse(Vector2(-w->getPushback(), w->getPushback()), Vector2(0,0));
 			}
-		}
-		else {
+		} else {
 			this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		}
 	} else if (m->getAttribute("type") == "HeroProjectile") {
 		Characters *h = Game::currentGame->getHero();
 		this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
 		Game::stopRunning(this);
-		this->_isTakingDamage = 1;
 		if (this->takeDamage(p->getDamage(), p->getCritRate()) == 1) {
 			if (this->GetBody()->GetWorldCenter().x > h->GetBody()->GetWorldCenter().x) {
 				this->ApplyLinearImpulse(Vector2(p->getPushback(), p->getPushback()), Vector2(0,0));
@@ -125,12 +121,7 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 			this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		}
 	} else if (m->getAttribute("type") == "Hero") {
-		this->_isTakingDamage = 1;
 		Game::stopRunning(this);
-		if (this->_orientation == LEFT)
-			this->_orientation = RIGHT;
-		else
-			this->_orientation = LEFT;
 		if (static_cast<Hero*>(m)->getCharging() == true) {
 			this->takeDamage(static_cast<Characters*>(m)->getWeapon()->getDamage(), static_cast<Characters*>(m)->getWeapon()->getCritRate());
 			if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
@@ -148,7 +139,6 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 		this->actionCallback("heroHit", 0);
 	}
 	else if (m->getAttribute("speType") == "spikes") {
-		this->_isTakingDamage = 1;
 		if (this->GetBody()->GetWorldCenter().x > m->GetBody()->GetWorldCenter().x) {
 			this->ApplyLinearImpulse(Vector2(5, 5), Vector2(0,0));
 		} else {
@@ -175,12 +165,15 @@ void	Enemy::EndContact(Elements *m, b2Contact *contact) {
  * @param damage The damage amount
  */
 int		Enemy::takeDamage(int damage, int critRate) {
+	if (this->_isTakingDamage == 1)
+		return 1;
+	this->_isTakingDamage = 1;
 	if (this->_hp <= 0)
 		return 0;
 	this->actionCallback("takeDamage", 0);
 	if ((rand() % critRate + 1) ==  critRate) {
 		damage *= 2 ;
-		Game::getHUD()->setText("Crit !", Game::currentGame->getHero(), 
+		Game::getHUD()->setText("Crit !", Game::currentGame->getHero(),
 								Vector3(255, 0, 0), 1, 0);
 	}
 	if (this->_hp - damage <= 0) {

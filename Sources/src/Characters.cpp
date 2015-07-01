@@ -351,6 +351,7 @@ void	Characters::ReceiveMessage(Message *m) {
 		return;
 	}
 	else if (m->GetMessageName() == "lockTarget") {
+		// std::cout << "Debug lock (Characters.cpp l.354)" << std::endl;
 		if (this->_target == nullptr)
 			this->_target = new HUDTargeting();
 		// else
@@ -398,6 +399,7 @@ void	Characters::ReceiveMessage(Message *m) {
 			}
 			this->_lastAction = attrName;
 			this->actionCallback(attrName, status);
+			return ;
 		}
 	}
 }
@@ -676,7 +678,10 @@ void	Characters::_tryFly(void) {
  * @param status The status of the key (0 | 1)
  */
 void	Characters::_forward(int status) {
+	static int i = 0;
 	this->_setCategory("forward");
+	// std::cout << "here " << i << std::endl;
+	// i++;
 	if (status == 1) {
 		this->_orientation = RIGHT;
 		this->_latOrientation = RIGHT;
@@ -1113,7 +1118,7 @@ void						Characters::_destroyEnemy(void) {
  */
 void						Characters::destroyTarget(void) {
 	if (this->_target != nullptr) {
-		std::cout << "destroyTarget (Characters.cpp l.1077)" << std::endl;
+		// std::cout << "destroyTarget (Characters.cpp l.1077)" << std::endl;
 		Game::addToDestroyList(this->_target);
 		this->_target = nullptr;
 	}

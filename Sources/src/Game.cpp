@@ -185,6 +185,7 @@ void	Game::checkHeroPosition(void) {
 		Game::currentGame->simulateHeroItemContact();
 		Game::currentGame->getHero()->characterLoop();
 		Game::currentGame->reloadingHUD();
+//		std::cout << "Debug tick (Game.cpp l.188)" << std::endl;
 	}
 }
 
@@ -350,7 +351,11 @@ bool	Game::destroyAllBodies(void) {
  * @param c The Element who start running.
  */
 void	Game::startRunning(Elements *c) {
-	Game::runningCharac.push_back(c);
+	std::list<Elements *>::iterator		it;
+
+	it = std::find(Game::runningCharac.begin(), Game::runningCharac.end(), c);
+	if (it == Game::runningCharac.end())
+		Game::runningCharac.push_back(c);
 }
 
 //! Intern callback for stoping running
@@ -372,7 +377,7 @@ void	Game::stopRunning(Elements *c) {
  */
 void	Game::makeItRun(void) {
 	std::list<Elements *>::iterator	i;
-
+	
 	for (i = Game::runningCharac.begin(); i != Game::runningCharac.end(); i++) {
 		(*i)->_run();
 	}

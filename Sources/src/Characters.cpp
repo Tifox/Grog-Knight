@@ -168,6 +168,7 @@ Json::Value		Characters::_getAttr(std::string category, std::string key) {
  */
 void	Characters::characterLoop(void) {
 	this->_tryFly();
+	this->_resetBroadcastFlags();
 }
 
 
@@ -658,9 +659,13 @@ void	Characters::_tryFly(void) {
 					this->_getAttr("fly","force").asFloat()));
 	else if (this->_grounds.size() == 0 && this->_canMove == 1 && this->_isFlying == true)
 		this->GetBody()->SetLinearVelocity(b2Vec2(this->GetBody()->GetLinearVelocity().x, -2));
-
 }
 
+void	Characters::_resetBroadcastFlags(void) {
+	this->_forwardFlag = false;
+	this->_backwardFlag = false;
+	this->_doFlyFlag = false;
+}
 
 /****************************/
 /*                          */
@@ -680,6 +685,9 @@ void	Characters::_tryFly(void) {
 void	Characters::_forward(int status) {
 	// static int i = 0;
 	this->_setCategory("forward");
+	if (this->_forwardFlag == true && status == 1)
+		return ;
+	this->_forwardFlag = true;
 	// std::cout << "here " << i << std::endl;
 	// i++;
 	if (status == 1) {
@@ -731,6 +739,9 @@ void	Characters::_forward(int status) {
  */
 void	Characters::_backward(int status) {
 	this->_setCategory("backward");
+	if (this->_backwardFlag == true && status == 1)
+		return ;
+	this->_backwardFlag = true;
 	if (status == 1) {
 		if (this->getAttribute("type") == "Hero") {
 			this->_orientation = LEFT;
@@ -837,6 +848,9 @@ void	Characters::_jump(int status) {
 			this->_canJump = true;
 		}
 	} else { //Hero is flying
+		if (this->_doFlyFlag == true && status == 1)
+			return ;
+		this->_doFlyFlag = true;
 		this->_flyTrigger = (status ? 1 : 0);
 	}
 	return ;

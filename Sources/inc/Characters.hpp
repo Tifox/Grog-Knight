@@ -158,11 +158,15 @@ class Characters : public Elements {
 		std::list<Elements*> 				_ceiling;
 		std::list<Elements*> 				_wallsRight;
 		std::list<std::string>				_subsc;
+		bool			_forwardFlag;
+		bool			_backwardFlag;
+		bool			_doFlyFlag;
 
 		Json::Value		_getAttr(std::string key);
 		void			_setCategory(std::string category);
 		virtual void	characterLoop(void);
 		virtual void	_tryFly(void);
+		virtual void	_resetBroadcastFlags(void);
 		virtual void	_forward(int status);
 		virtual void	_backward(int status);
 		virtual void	_up(int status);

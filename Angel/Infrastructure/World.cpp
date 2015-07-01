@@ -670,12 +670,12 @@ void World::TickAndRender()
 		Game::destroyAllBodies();
 		_physicsFPS++;
 	}
-	if (ms > this->_lastGraphics + this->_graphicsStep) {
-	 	this->_lastGraphics = ms;
+	// if (ms > this->_lastGraphics + this->_graphicsStep) {
+		// 	this->_lastGraphics = ms;
 		Render();
 		Game::showText();
 		_graphicsFPS++;
-	}
+	// }
 	if (ms > _lastFPS + 1000) {
 		std::cout << _physicsFPS << " / " << _graphicsFPS << " fps." << std::endl;
 		_lastFPS = ms;

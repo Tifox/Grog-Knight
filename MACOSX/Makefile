@@ -90,7 +90,7 @@ $(NAME): angel json $(OBJS)
 
 quick: $(OBJS)
 	$(CC) $(CFLAGS) $(ANGEL_FLAG) -o build/$(NAME) $^ $(INCLUDES) $(LIBS) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS)
-	cd build/ && ./rogue-like
+	cd build/ && lldb ./rogue-like
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS) -o $@ -c $^

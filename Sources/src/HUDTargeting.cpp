@@ -34,7 +34,9 @@
     _enemies = Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX].getEnemies();
     std::cout << _enemies.size() << std::endl;
     if (_enemies.size() > 0) {
-        this->SetSize(0.5);
+        this->_enemyId = 0;
+        this->_joint = nullptr;
+        this->SetSize(0.6);
         this->SetName("TargetGizmo");
         this->SetDrawShape(ADS_Square);
         this->SetColor(1, 0, 0, 1);
@@ -44,14 +46,9 @@
         this->SetDensity(0.0001);
         this->SetFixedRotation(true);
         this->SetIsSensor(true);
-        this->SetPosition(_enemies.front()->GetBody()->GetWorldCenter().x, _enemies.front()->GetBody()->GetWorldCenter().y);
+        this->SetPosition(this->_enemies.front()->GetBody()->GetWorldCenter().x, this->_enemies.front()->GetBody()->GetWorldCenter().y);
         this->InitPhysics();
-
-        b2DistanceJointDef jointDef;
-    	jointDef.Initialize(_enemies.front()->GetBody(), this->GetBody(), b2Vec2(_enemies.front()->GetBody()->GetWorldCenter().x, _enemies.front()->GetBody()->GetWorldCenter().y),
-    						 this->GetBody()->GetWorldCenter());
-    	jointDef.collideConnected = false;
-        b2DistanceJoint *joint = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef);
+        changeTarget();
 
         theWorld.Add(this);
     }
@@ -63,4 +60,26 @@
   */
  HUDTargeting::~HUDTargeting(void) {
  	return;
+ }
+
+
+ void HUDTargeting::changeTarget(void) {
+    std::list<Enemy *>::iterator it;
+    if (_enemies.size() > 0) {
+     	for (it = this->_enemies.begin(); it != this->_enemies.end(); it++) {
+     		if ((*it)->getId() != _enemyId) {
+     			_current = *it;
+                _enemyId = _current->getId();
+                if (this->_joint != nullptr)
+                    theWorld.GetPhysicsWorld().DestroyJoint(this->_joint);
+                this->GetBody()->SetTransform(b2Vec2(this->_current->GetBody()->GetWorldCenter().x, this->_current->GetBody()->GetWorldCenter().y), 0);
+                b2DistanceJointDef jointDef;
+             	jointDef.Initialize(_current->GetBody(), this->GetBody(), b2Vec2(_current->GetBody()->GetWorldCenter().x, _current->GetBody()->GetWorldCenter().y),
+             						 this->GetBody()->GetWorldCenter());
+             	jointDef.collideConnected = false;
+                this->_joint = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef);
+                return ;
+     		}
+     	}
+     }
  }

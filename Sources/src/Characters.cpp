@@ -354,8 +354,8 @@ void	Characters::ReceiveMessage(Message *m) {
 		// std::cout << "Debug lock (Characters.cpp l.354)" << std::endl;
 		if (this->_target == nullptr)
 			this->_target = new HUDTargeting();
-		// else
-		// 	this->_target->changeTarget();
+		else
+			this->_target->changeTarget();
 
 	}
 	else if (m->GetMessageName() == "unlockTarget") {
@@ -678,7 +678,7 @@ void	Characters::_tryFly(void) {
  * @param status The status of the key (0 | 1)
  */
 void	Characters::_forward(int status) {
-	static int i = 0;
+	// static int i = 0;
 	this->_setCategory("forward");
 	// std::cout << "here " << i << std::endl;
 	// i++;

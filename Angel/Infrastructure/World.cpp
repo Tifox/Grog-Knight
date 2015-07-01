@@ -1,29 +1,29 @@
 //////////////////////////////////////////////////////////////////////////////
 // Copyright (C) 2008-2014, Shane Liesegang
 // All rights reserved.
-// 
-// Redistribution and use in source and binary forms, with or without 
+//
+// Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
-// 
-//     * Redistributions of source code must retain the above copyright 
+//
+//     * Redistributions of source code must retain the above copyright
 //       notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above copyright 
-//       notice, this list of conditions and the following disclaimer in the 
+//     * Redistributions in binary form must reproduce the above copyright
+//       notice, this list of conditions and the following disclaimer in the
 //       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the copyright holder nor the names of any 
-//       contributors may be used to endorse or promote products derived from 
+//     * Neither the name of the copyright holder nor the names of any
+//       contributors may be used to endorse or promote products derived from
 //       this software without specific prior written permission.
-// 
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
-// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
-// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
-// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
-// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
-// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
-// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
-// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
-// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 //////////////////////////////////////////////////////////////////////////////
 
@@ -56,6 +56,7 @@
 	#include <comdef.h>
 #endif
 #include <algorithm>
+# include <sys/time.h>
 
 World* World::s_World = NULL;
 
@@ -75,8 +76,13 @@ World::World()
 	_gameManager = NULL;
 	_elementsLocked = false;
 	_highResScreen = false;
-	
+
 	_processingDeferredAdds = false;
+
+	_physicsStep = 5;
+	_graphicsStep = 10;
+	_lastPhysics = 0;
+	_lastGraphics = 0;
 }
 
 World& World::GetInstance()
@@ -113,7 +119,7 @@ bool World::Initialize(unsigned int windowWidth, unsigned int windowHeight, Stri
 	{
 		return false;
 	}
-	
+
 	_running = true;
 
 	// Windows DLL locations
@@ -155,12 +161,12 @@ bool World::Initialize(unsigned int windowWidth, unsigned int windowHeight, Stri
 			_chdir(bitsPath.c_str());
 		}
 	#endif
-	
+
 	// General windowing initialization
 	#if !ANGEL_MOBILE
 		glfwInit();
 	#endif
-	
+
 	#if defined(__APPLE__)
 		// Set up paths correctly in the .app bundle
 		#if !ANGEL_MOBILE
@@ -203,7 +209,7 @@ bool World::Initialize(unsigned int windowWidth, unsigned int windowHeight, Stri
 			chdir("Angel"); // the iPhone doesn't like having a "Resources" directory in the root of the .app bundle
 		#endif
 	#endif
-	
+
 	//Start scripting
 	LuaScriptingModule::Prep();
 
@@ -214,7 +220,7 @@ bool World::Initialize(unsigned int windowWidth, unsigned int windowHeight, Stri
 	windowHeight = thePrefs.OverrideInt("WindowSettings", "height", windowHeight);
 	windowWidth = thePrefs.OverrideInt("WindowSettings", "width", windowWidth);
 	windowName = thePrefs.OverrideString("WindowSettings", "name", windowName);
-	
+
 	//Windowing system setup
 	#if !ANGEL_MOBILE
 		if (antiAliasing)
@@ -226,7 +232,7 @@ bool World::Initialize(unsigned int windowWidth, unsigned int windowHeight, Stri
 		{
 			_antiAliased = false;
 		}
-		
+
 		GLFWmonitor* openOn = NULL; // windowed
 		if (fullScreen)
 		{
@@ -240,17 +246,17 @@ bool World::Initialize(unsigned int windowWidth, unsigned int windowHeight, Stri
 		{
 			glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 		}
-		
+
 		_mainWindow = glfwCreateWindow(windowWidth, windowHeight, windowName.c_str(), openOn, NULL);
 		glfwMakeContextCurrent(_mainWindow);
-	
+
 		int fbw, fbh;
 		glfwGetFramebufferSize(_mainWindow, &fbw, &fbh);
 		if (fbw == windowWidth * 2)
 		{
 			SetHighResolutionScreen(true);
 		}
-	
+
 		#if defined(WIN32)
 			glfwSwapInterval(0); // because double-buffering and Windows don't get along apparently
 		#else
@@ -264,14 +270,14 @@ bool World::Initialize(unsigned int windowWidth, unsigned int windowHeight, Stri
 		glfwSetScrollCallback(_mainWindow, MouseWheel);
 		glfwSetWindowCloseCallback(_mainWindow, windowClosed);
 		_prevTime = glfwGetTime();
-	
+
 		Camera::ResizeCallback(_mainWindow, fbw, fbh);
 	#else
 		struct timeval tv;
 		gettimeofday(&tv, NULL);
 		_currTime = _startTime = tv.tv_sec + (double) tv.tv_usec / 1000000.0;
 	#endif
-	
+
 	//OpenGL state setup
 	#if !ANGEL_MOBILE
 		glClearDepth(1.0f);
@@ -297,10 +303,10 @@ bool World::Initialize(unsigned int windowWidth, unsigned int windowHeight, Stri
 
 	//Get textures going
 	InitializeTextureLoading();
-	
+
 	//Subscribe to camera changes
 	theSwitchboard.SubscribeTo(this, "CameraChange");
-	
+
 	//initialize singletons
 	#if !ANGEL_MOBILE
 		theInput;
@@ -316,7 +322,7 @@ bool World::Initialize(unsigned int windowWidth, unsigned int windowHeight, Stri
 		RegisterFont("Resources/Fonts/Inconsolata.otf", 24, "Console");
 		RegisterFont("Resources/Fonts/Inconsolata.otf", 18, "ConsoleSmall");
 	#endif
-	
+
 	LuaScriptingModule::Initialize();
 
 	return _initialized = true;
@@ -388,7 +394,7 @@ bool World::SetupPhysics(const Vector2& gravity, const Vector2& maxVertex, const
 	_physicsWorld = new b2World(gravityVector);
 
 	_physicsWorld->SetContactListener(this);
-	
+
 	return _physicsSetUp = _physicsRunning = true;
 }
 
@@ -399,10 +405,10 @@ void World::Destroy()
 		theInput.Destroy();
 	#endif
 	theSound.Shutdown();
-	
+
 	FinalizeTextureLoading();
 	LuaScriptingModule::Finalize();
-    
+
     theUI.Shutdown();
 
 	if (_gameManager != NULL)
@@ -437,7 +443,7 @@ void World::StartGame()
 			glfwPollEvents();
 		#endif
 	}
-	
+
 	#if !ANGEL_MOBILE
 		glfwDestroyWindow(_mainWindow);
 		glfwTerminate();
@@ -474,7 +480,7 @@ float World::CalculateNewDT()
 		// SJML - We're now using the iOS GLKit to handle the timing of the update
 		//   functions, so there's no need to compare against time of day anymore.
 		//   This code is being left here (commented) in case we decide to someday
-		//   port to other mobile platforms, stop using GLKit, etc. 
+		//   port to other mobile platforms, stop using GLKit, etc.
 		// struct timeval tv;
 		// gettimeofday(&tv, NULL);
 		// _currTime = tv.tv_sec + (double) tv.tv_usec / 1000000.0 - _startTime;
@@ -484,7 +490,7 @@ float World::CalculateNewDT()
 	#endif
 	_dt = MathUtil::Clamp((_currTime - _prevTime), 0.0f, MAX_TIMESTEP);
 	_prevTime = _currTime;
-	return _dt;		
+	return _dt;
 }
 
 void World::Simulate(bool simRunning)
@@ -509,22 +515,22 @@ void World::Simulate(bool simRunning)
 		theSwitchboard.SendAllMessages();
 	if (simRunning)
 	{
-		// Deliver any messages that have been queued from the last frame. 
+		// Deliver any messages that have been queued from the last frame.
 
 		RunPhysics(frame_dt);
-		
+
 		//Flag that the _elements array is locked so we don't try to add any
 		// new actors during the update.
 		_elementsLocked = true;
 			UpdateRenderables(frame_dt);
 			CleanupRenderables();
-		_elementsLocked = false; 
+		_elementsLocked = false;
 
 		// Now that we're done updating the list, allow any deferred Adds to be processed.
 		ProcessDeferredAdds();
 		ProcessDeferredLayerChanges();
 		ProcessDeferredRemoves();
-		
+
 		theSwitchboard.Update(frame_dt);
 
 //   Updated: 2015/05/12 15:36:50 by noich            ###   ########.fr       //
@@ -532,21 +538,21 @@ void World::Simulate(bool simRunning)
 	}/* else {*/
 		//theSwitchboard.SendPauseMessages();
 	/*}*/
-	
+
 	//making this the last update so we can accurately lock on position for rendering
 	theCamera.Update(frame_dt);
 }
 
 void World::RunPhysics(float frame_dt)
 {
-	if (!_physicsSetUp || !_physicsRunning) 
+	if (!_physicsSetUp || !_physicsRunning)
 		return;
 
 	_currentTouches.clear();
-	
+
 	// fixed time step
 	const float physicsDT = 1.0f/60.f;
-	
+
 	float total_step = _physicsRemainderDT + frame_dt;
 	while (total_step >= physicsDT)
 	{
@@ -580,13 +586,13 @@ void World::SendCollisionNotifications(b2Contact* contact, bool beginning)
 	{
 		messageStart = "CollisionEndWith";
 	}
-	
+
 	PhysicsActor* pa1 /*= new PhysicsActor()*/;
 	PhysicsActor* pa2 /*= new PhysicsActor()*/;
 	pa1 = (PhysicsActor*)contact->GetFixtureA()->GetBody()->GetUserData();
 	pa2 = (PhysicsActor*)contact->GetFixtureB()->GetBody()->GetUserData();
 
-	
+
 	if (pa1 != NULL)
 	{
 		String pa1Message = messageStart + pa1->GetName();
@@ -600,7 +606,7 @@ void World::SendCollisionNotifications(b2Contact* contact, bool beginning)
 			_currentTouches[pa1].insert(pa2);
 		}
 	}
-	
+
 	if (pa2 != NULL)
 	{
 		String pa2Message = messageStart + pa2->GetName();
@@ -651,11 +657,31 @@ void World::EndContact(b2Contact* contact)
 
 void World::TickAndRender()
 {
-	Tick();
-	Game::checkHeroPosition();
-	Game::destroyAllBodies();
-	Render();
-	Game::showText();
+	static int _physicsFPS = 0;
+	static int _graphicsFPS = 0;
+	static unsigned long long _lastFPS = 0;
+
+	gettimeofday(&(this->_tp), NULL);
+	unsigned long long ms = this->_tp.tv_sec * 1000 + this->_tp.tv_usec / 1000;
+	if (ms > this->_lastPhysics + this->_physicsStep) {
+		this->_lastPhysics = ms;
+		Tick();
+		Game::checkHeroPosition();
+		Game::destroyAllBodies();
+		_physicsFPS++;
+	}
+	if (ms > this->_lastGraphics + this->_graphicsStep) {
+	 	this->_lastGraphics = ms;
+		Render();
+		Game::showText();
+		_graphicsFPS++;
+	}
+	if (ms > _lastFPS + 1000) {
+		std::cout << _physicsFPS << " / " << _graphicsFPS << " fps." << std::endl;
+		_lastFPS = ms;
+		_physicsFPS = 0;
+		_graphicsFPS = 0;
+	}
 }
 
 void World::Tick()
@@ -787,15 +813,15 @@ void World::Add(Renderable *newElement, int layer)
 		sysLog.Log("WARNING: Can't add a null element to the World.");
 		return;
 	}
-	
+
 	//Check to see if it's an Actor; give it a name if it doesn't have one
 	Actor *a = dynamic_cast<Actor*> (newElement);
 	if (a != NULL && !_processingDeferredAdds)
 	{
-		// Ensures that the actor has a unique, non-empty name. 
+		// Ensures that the actor has a unique, non-empty name.
 		a->SetName(a->GetName());
 	}
-	
+
 	// If we're not locked, add directly to _elements.
 	if (!_elementsLocked)
 	{
@@ -973,7 +999,7 @@ void World::SetSideBlockers(bool turnOn, float restitution)
 	float thickness = 5.0f; //just so it's thick enough to avoid tunnelling
 	Vector2 screenOrigin(((topRight.X - botLeft.X) * 0.5f) + botLeft.X,
 						 ((topRight.Y - botLeft.Y) * 0.5f) + botLeft.Y);
-	
+
 	//right blocker
 	_blockers[0] = new PhysicsActor();
 	_blockers[0]->SetPosition(topRight.X + (thickness * 0.5f), screenOrigin.Y);
@@ -993,7 +1019,7 @@ void World::SetSideBlockers(bool turnOn, float restitution)
 	_blockers[1]->SetFriction(0.1f);
 	_blockers[1]->SetRestitution(_blockerRestitution);
 	_blockers[1]->InitPhysics();
-	
+
 	//top blocker
 	_blockers[2] = new PhysicsActor();
 	_blockers[2]->SetPosition(screenOrigin.X, topRight.Y + (thickness * 0.5f));
@@ -1003,7 +1029,7 @@ void World::SetSideBlockers(bool turnOn, float restitution)
 	_blockers[2]->SetFriction(0.1f);
 	_blockers[2]->SetRestitution(_blockerRestitution);
 	_blockers[2]->InitPhysics();
-	
+
 	//bottom blocker
 	_blockers[3] = new PhysicsActor();
 	_blockers[3]->SetPosition(screenOrigin.X, botLeft.Y - (thickness * 0.5f));
@@ -1013,13 +1039,13 @@ void World::SetSideBlockers(bool turnOn, float restitution)
 	_blockers[3]->SetFriction(0.1f);
 	_blockers[3]->SetRestitution(_blockerRestitution);
 	_blockers[3]->InitPhysics();
-	
+
 	// We don't want these removed when we call ReloadLevel.
 	for (int i=0; i<4; ++i)
 	{
 		_blockers[i]->Tag("NoDelete");
 	}
-	
+
 	theWorld.Add(_blockers[0]);
 	theWorld.Add(_blockers[1]);
 	theWorld.Add(_blockers[2]);

@@ -185,7 +185,6 @@ void	Game::checkHeroPosition(void) {
 		Game::currentGame->simulateHeroItemContact();
 		Game::currentGame->getHero()->characterLoop();
 		Game::currentGame->reloadingHUD();
-//		std::cout << "Debug tick (Game.cpp l.188)" << std::endl;
 	}
 }
 
@@ -256,10 +255,11 @@ void	Game::addElement(Elements & elem) {
  * @param elem The element to delete (The reference is important !)
  */
 void	Game::delElement(Elements* elem) {
-	for (int i = 0; Game::elementMap[i]; i++) {
-		if (Game::elementMap[i] == elem) {
-			Game::elementMap.erase(i);
-
+	for (int i = 0; i < Game::elementMap.size(); i++) {
+		if (Game::elementMap[i]) {
+			if (Game::elementMap[i]->getId() == elem->getId()) {
+				Game::elementMap.erase(i);
+			}
 		}
 	}
 }
@@ -315,11 +315,12 @@ bool	Game::destroyAllBodies(void) {
 		theWorld.PausePhysics();
 		int i;
 		Game::getHUD()->setText("YOU ARE DEAD", 400, 400, Vector3(1, 0, 0), 1, "dead");
-		for (i = 0; i < Game::elementMap.size() - 2; i++) {
+		for (i = 0; i < Game::elementMap.size(); i++) {
 			if (Game::elementMap[i] && Game::elementMap[i]->getAttribute("type") != "Hero") {
 				Game::elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1, "PauseGame");
-				if (Game::elementMap[i]->getAttribute("physic") != "")
+				if (Game::elementMap[i]->getAttribute("physic") != "") {
 					theWorld.GetPhysicsWorld().DestroyBody((Game::elementMap[i])->GetBody());
+				}
 				theWorld.Remove(Game::elementMap[i]);
 			}
 		}
@@ -328,8 +329,10 @@ bool	Game::destroyAllBodies(void) {
 	} else {
 		for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
 			if ((*it)->getAttribute("physic") != "") {
-				(*it)->GetBody()->SetActive(false);
-				theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
+				if ((*it)->GetBody()) {
+					(*it)->GetBody()->SetActive(false);
+					theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
+				}
 			}
 			theWorld.Remove(*it);
 			Game::delElement(*it);
@@ -351,11 +354,7 @@ bool	Game::destroyAllBodies(void) {
  * @param c The Element who start running.
  */
 void	Game::startRunning(Elements *c) {
-	std::list<Elements *>::iterator		it;
-
-	it = std::find(Game::runningCharac.begin(), Game::runningCharac.end(), c);
-	if (it == Game::runningCharac.end())
-		Game::runningCharac.push_back(c);
+	Game::runningCharac.push_back(c);
 }
 
 //! Intern callback for stoping running
@@ -377,7 +376,7 @@ void	Game::stopRunning(Elements *c) {
  */
 void	Game::makeItRun(void) {
 	std::list<Elements *>::iterator	i;
-	
+
 	for (i = Game::runningCharac.begin(); i != Game::runningCharac.end(); i++) {
 		(*i)->_run();
 	}

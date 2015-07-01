@@ -34,7 +34,7 @@
  */
 Game::Game(void) : _hero((new Characters())) {
 	#ifdef __APPLE__
-		theWorld.Initialize(1920, 1080, NAME, false, false);
+		theWorld.Initialize(1024, 720, NAME, true, false);
 	#else
 		theWorld.Initialize(1024, 720, NAME, false, false);
 	#endif
@@ -85,7 +85,7 @@ void	Game::start(void) {
 	Game::rList = new RingList();
 	this->tooltip = new Tooltip();
 	Game::currentGame = this;
-	Hero			*hero = new Hero();
+	Hero			*hero = new Hero("Warrior");
 
 
 
@@ -98,20 +98,18 @@ void	Game::start(void) {
 //	Log::info("NbEnemy:" + trouver le nombre d ennemy);
 //	Log::info("NbMaps: " + info sur la sauvegarde (nivau du hero, gold etc...));
 
-	//theCamera.LockTo(hero);
 	Game::currentX = levelGenerator->getStartX();
 	Game::currentY = levelGenerator->getStartY();
 	theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
 						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 9.001);
 	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
+
+	Game::addHUDWindow(new HUDWindow());
 	this->displayHero(*(hero));
 	hero->init();
-	
-	hero->equipWeapon(Game::wList->getWeapon("Sword"));
-	hero->equipRing(Game::rList->getRing("SmallRing"));
-	hero->equipArmor(Game::aList->getArmor("ChestArmor"));
 	this->setHero(hero);
 	this->displayHUD();
+	hero->setStartingValues();
 
 	Game::started = 1;
 }
@@ -185,6 +183,8 @@ void	Game::checkHeroPosition(void) {
 	if (Game::started == 1) {
 		Game::currentGame->moveCamera();
 		Game::currentGame->simulateHeroItemContact();
+		Game::currentGame->getHero()->characterLoop();
+		Game::currentGame->reloadingHUD();
 	}
 }
 
@@ -224,6 +224,8 @@ void	Game::moveCamera(void) {
 		asChanged = true;
 	}
 	if (asChanged) {
+		// std::cout << "SHAME ! (game.cpp l.228)" << std::endl;
+		this->_hero->destroyTarget();
 		this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 		theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
 			this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
@@ -253,11 +255,13 @@ void	Game::addElement(Elements & elem) {
  * @param elem The element to delete (The reference is important !)
  */
 void	Game::delElement(Elements* elem) {
-	for (int i = 0; Game::elementMap[i]; i++) {
-		if (Game::elementMap[i] == elem)
-			Game::elementMap.erase(i);
+	for (int i = 0; i < Game::elementMap.size(); i++) {
+		if (Game::elementMap[i]) {
+			if (Game::elementMap[i]->getId() == elem->getId()) {
+				Game::elementMap.erase(i);
+			}
+		}
 	}
-	//delete elem;
 }
 
 //! Collision intern callbacks
@@ -311,11 +315,12 @@ bool	Game::destroyAllBodies(void) {
 		theWorld.PausePhysics();
 		int i;
 		Game::getHUD()->setText("YOU ARE DEAD", 400, 400, Vector3(1, 0, 0), 1, "dead");
-		for (i = 0; i < Game::elementMap.size() - 2; i++) {
+		for (i = 0; i < Game::elementMap.size(); i++) {
 			if (Game::elementMap[i] && Game::elementMap[i]->getAttribute("type") != "Hero") {
 				Game::elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1, "PauseGame");
-				if (Game::elementMap[i]->getAttribute("physic") != "")
+				if (Game::elementMap[i]->getAttribute("physic") != "") {
 					theWorld.GetPhysicsWorld().DestroyBody((Game::elementMap[i])->GetBody());
+				}
 				theWorld.Remove(Game::elementMap[i]);
 			}
 		}
@@ -324,8 +329,10 @@ bool	Game::destroyAllBodies(void) {
 	} else {
 		for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
 			if ((*it)->getAttribute("physic") != "") {
-				(*it)->GetBody()->SetActive(false);
-				theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
+				if ((*it)->GetBody()) {
+					(*it)->GetBody()->SetActive(false);
+					theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
+				}
 			}
 			theWorld.Remove(*it);
 			Game::delElement(*it);
@@ -373,6 +380,24 @@ void	Game::makeItRun(void) {
 	for (i = Game::runningCharac.begin(); i != Game::runningCharac.end(); i++) {
 		(*i)->_run();
 	}
+}
+
+//! Changing character
+/**
+ * Will be called early on selection screen
+ */
+
+void	Game::changeCharacter(std::string name) {
+	Game::addToDestroyList(this->getHero());
+
+	Hero *hero = new Hero(name);
+
+	this->displayHero(*(hero));
+	hero->init();
+	this->setHero(hero);
+
+	hero->setStartingValues();
+
 }
 
 //! Intern callback for display text
@@ -428,30 +453,39 @@ HUDWindow	*Game::getHUD(void) {
  * @todo This function is nasty, we need a recap here.
  */
 void		Game::displayHUD(void) {
-	HUDWindow *w = new HUDWindow();
+	HUDWindow *w = Game::getHUD();
 	Characters*	hero = Game::getHero();
-	w->SetPosition(theCamera.GetWindowWidth() / 2 - 100, 50);
-	w->SetSize(theCamera.GetWindowWidth() - 200, 100.0f);
-	w->SetSprite("Resources/Images/HUD/background_hud.png");
-	w->SetDrawShape(ADS_Square);
-	w->SetLayer(-1);
-	w->addImage("Resources/Images/HUD/perso.png", 100, 50);
-	theWorld.Add(w);
+
 	Game	*g = this;
 	w->setGame(g);
-	w->setMaxMana(hero->getMaxMana());
+	w->showHud();
 	w->setMaxHP(hero->getMaxHP());
-	w->life(hero->getHP());
-	w->mana(hero->getMana());
 	w->gold(0);
-	w->bag();
-	w->initMinimapBackground();
-	w->minimap();
-
-	// Work 
-   /* w->setText("Burp.", this->_hero, Vector3(0, 0, 0), 0, 1);*/
+	// Work
+   //w->setText("Burp.", this->_hero, Vector3(0, 0, 0), 0, 1);
 	/*w->removeText("Burp.");*/
-	Game::addHUDWindow(w);
+}
+
+void		Game::reloadingHUD(void) {
+	if (Game::reloadHUD) {
+
+		theWorld.Render();
+		Game::getHUD()->clearHUD();
+		Game::getHUD()->showBackgrounds();
+		Game::getHUD()->character();
+		Game::getHUD()->spells();
+		Game::getHUD()->bag();
+		Game::getHUD()->minimap();
+		Game::getHUD()->life(this->getHero()->getHP());
+		Game::getHUD()->bag();
+		Game::getHUD()->mana(this->getHero()->getMana());
+		Game::getHUD()->items(this->getHero()->getWeapon());
+		Game::getHUD()->items(this->getHero()->getArmor());
+		Game::getHUD()->items(this->getHero()->getRing());
+		Game::getHUD()->consumable(this->getHero()->getInventory()->getItems());
+		Game::getHUD()->gold(this->getHero()->getGold());
+		Game::reloadHUD = 0;
+	}
 }
 
 /* SETTERS */
@@ -481,3 +515,5 @@ int							Game::currentY = 0;
 Game*						Game::currentGame = 0;
 int							Game::started = 0;
 int							Game::cameraTick = 0;
+int							Game::isWaitingForBind = 0;
+int							Game::reloadHUD = 0;

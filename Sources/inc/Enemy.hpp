@@ -39,7 +39,7 @@ public:
 	Enemy(std::string);
 	~Enemy();
 
-	int				takeDamage(int damage);
+	int				takeDamage(int damage, int critRate);
 	void			actionCallback(std::string name, int status);
 	void			init(void);
 	void			BeginContact(Elements* m, b2Contact* contact);

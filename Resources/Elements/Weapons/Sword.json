@@ -1,11 +1,12 @@
 {
     "infos": {
    	    "name": "Sword",
-		"flavor": "Hey look, its a sword. A pretty shitty one actually...",
+		"flavor": "Hey look, its a sword.\nA pretty shitty one actually...",
 		"hitbox": "SWORD",
 		"size": 1,
 		"lvlRequired": 1,
-	 	"damage": 5,
+	 	"critRate": 5,
+		"damage": 5,
 		"recovery": 1,
 		"pushback": 5,
 		"active": 0.2,

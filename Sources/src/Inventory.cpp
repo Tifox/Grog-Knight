@@ -40,15 +40,23 @@ Inventory::Inventory(int slots): _slots(slots), _focused(0), _inInventory(0) {
  * to target another item for dropping/equipping
  */
 void			Inventory::changeItemFocus(void) {
-	if (this->_slots == 1)
+	if (this->_slots == 1 || this->_inInventory == 1)
 		return;
 	else if (this->_focused < this->_slots - 1) {
 		this->_focused++;
 	} else
-		  this->_focused = 0;
-	std::cout << this->_focused << ": " << this->_items[this->_focused] << std::endl;
-
-
+		this->_focused = 0;
+	Game::getHUD()->consumable(this->_items);
+	Elements *w = nullptr;
+	if (Game::wList->checkExists(this->_items[this->_focused])) {
+		w = new Weapon(Game::wList->getWeapon(this->_items[this->_focused]));
+	} else if (Game::aList->checkExists(this->_items[this->_focused])) {
+		w = new Armor(Game::aList->getArmor(this->_items[this->_focused]));
+	} else if (Game::rList->checkExists(this->_items[this->_focused])) {
+		w = new Ring(Game::rList->getRing(this->_items[this->_focused]));
+	}
+	//if (w != nullptr) {
+	//}
 }
 
 
@@ -61,13 +69,17 @@ void			Inventory::changeItemFocus(void) {
  */
 
 int		Inventory::addItemToInventory(std::string item) {
-	if (!this->_items.empty() && this->_inInventory > 0 &&
-		this->_items[this->_focused] != "")
-		return 1;
-	else {
-		this->_items[this->_focused] = item;
-		this->_inInventory++;
+	int i;
+	bool done = false;
+	for (i = 0; i < this->_slots; i++) {
+		if (this->_items[i] == "" && done == false) {
+			this->_items[i] = item;
+			done = true;
+		}
 	}
+	if (done == false)
+		return 1;
+	this->_inInventory++;
 	Game::getHUD()->consumable(this->_items);
 }
 
@@ -75,6 +87,8 @@ int		Inventory::addItemToInventory(std::string item) {
 std::string Inventory::getCurrentFocus(void) {
 	return this->_items[this->_focused];
 }
+
+int			Inventory::getNumFocus(void) { return this->_focused; };
 
 void		Inventory::swapEquipmentAndInventory(std::string item) {
 	this->_items[this->_focused] = item;
@@ -87,6 +101,7 @@ std::string		Inventory::dropSelectedItem(void) {
 	itemName = this->_items[this->_focused];
 	this->_items[this->_focused].clear();
 	this->_inInventory--;
+	Game::getHUD()->consumable(this->_items);
 	return itemName;
 }
 
@@ -99,3 +114,4 @@ std::string 	Inventory::equipSelectedItem(void) {
 
 /* GETTERS */
 std::map<int, std::string>		Inventory::getItems(void) { return this->_items; };
+int								Inventory::getSlots(void) { return this->_slots; };

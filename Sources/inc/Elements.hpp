@@ -63,8 +63,8 @@ public:
 
 	/* Virtual function, overridden in Childs */
 	virtual void	callback(Elements * elem) { };
-	virtual void	BeginContact(Elements * elem, b2Contact *contact) { };
-	virtual void	EndContact(Elements * elem, b2Contact *contact) { };
+	virtual void	BeginContact(Elements * elem, b2Contact *contact) {};
+	virtual void	EndContact(Elements * elem, b2Contact *contact) {};
 	virtual void	AnimCallback(String s);
 
 	int				getOrientationX(void);

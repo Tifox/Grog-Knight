@@ -48,6 +48,7 @@ class Characters;
 # include "RingList.hpp"
 # include "LevelGenerator.hpp"
 # include "Tooltip.hpp"
+# include "Menu.hpp"
 
 class ArmorList;
 class EnemyList;
@@ -56,6 +57,7 @@ class WeaponList;
 
 class Hitbox;
 class HUDWindow;
+class Menu;
 
 class Game {
 
@@ -71,10 +73,12 @@ class Game {
 		void	displayEnemy(Elements & Enemy);
 		void	displayObject(Elements & Object);
 		void	showMap(void);
+		void	changeCharacter(std::string);
 		void	displayHUD(void);
 		void	setHero(Characters *h);
 		void	moveCamera(void);
 		void	simulateHeroItemContact(void);
+		void	reloadingHUD(void);
 		Characters	*getHero(void);
 
 		static bool	endGame;
@@ -100,6 +104,7 @@ class Game {
 		static Game*		currentGame;
 
 		Maps		*maps;
+		Menu		*menu;
 		std::vector<Room*>				*gameMap;
 		Tooltip 						*tooltip;
 		static int						currentIds;
@@ -121,6 +126,8 @@ class Game {
 		static int						minY;
 		static int						started;
 		static int						cameraTick;
+		static int						isWaitingForBind;
+		static int						reloadHUD;
 
 	private:
 		float				beginXHero;

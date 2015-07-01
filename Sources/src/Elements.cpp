@@ -143,7 +143,6 @@ void	Elements::display(void) {
 		this->setFrameSprite(this->_frame - 1);
 	} else
 		this->SetColor(0, 0, 0, 0);
-	this->SetSize(1.00f);
 	this->SetDrawShape(ADS_Square);
 	if (this->getAttribute("type") == "wall" || this->getAttribute("type") == "ground") {
 		this->SetDensity(0);
@@ -207,7 +206,6 @@ void	Elements::AnimCallback(String s) {
 			this->_animIt = this->_animationList.begin();
 		this->PlaySpriteAnimation((*this->_animIt)->time, SAT_OneShot, (*this->_animIt)->frame, (*this->_animIt)->frame, "baseAnimation");
 		this->setFrameSprite((*this->_animIt)->frame);
-		
 	}
 }
 
@@ -217,3 +215,4 @@ void	Elements::addAnimation(int frame, float time) {
 	anim->time = time;
 	this->_animationList.push_back(anim);
 }
+

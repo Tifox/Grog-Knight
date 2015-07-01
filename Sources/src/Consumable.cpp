@@ -105,6 +105,10 @@ Consumable::Consumable(std::string type, std::string value, Characters* c) {
  * @todo This function is actually doing nothing.
  */
 void	Consumable::BeginContact(Elements *elem, b2Contact *contact) {
+	if (elem->getAttribute("type") != "ground") {
+		contact->SetEnabled(false);
+		contact->enableContact = false;
+	}
 }
 
 //! Destructor

@@ -42,6 +42,7 @@ public:
 	Weapon(std::string name);
 	Weapon(Weapon* weapon);
 	Weapon(Weapon* weapon, Characters* c);
+	Weapon(Weapon* weapon, Characters* c, int i);
 	~Weapon(void);
 
 	void			attack(Characters *c);
@@ -55,14 +56,12 @@ public:
 	std::string		getAttack(void);
 	std::string		getSprite(void);
 	float			getActive(void);
+	int				getCritRate(void);
 	int				getSize(void);
 	int				getLootLevel(void);
 	int				getDamage(void);
 	int				getPushback(void);
 	float			getRecovery(void);
-	int				attackReady(void);
-
-	void			isAttacking(int i);
 
 private:
 	std::map<std::string, std::map<std::string, Json::Value> >	_attr;
@@ -72,13 +71,13 @@ private:
 	std::string		_sprite;
 	std::string		_attack;
 	std::string		_type;
-	int				_canAttack;
 	int				_lootLevel;
 	float			_recovery;
 	float			_active;
 	int				_size;
 	int				_damage;
 	int				_pushback;
+	int				_critRate;
 	void			_initDirection(Weapon* w, Characters* c);
 	void			_readFile(std::string name);
 	void			_readFileFromFilename(std::string name);

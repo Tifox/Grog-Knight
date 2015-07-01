@@ -77,6 +77,7 @@ class InputManager
 	typedef hashmap_ns::hash_map<int, bool>					XboxButtonState;
 
 public:
+	friend class Menu;
 	static InputManager &GetInstance();
 	static void Destroy();
 
@@ -105,6 +106,7 @@ protected:
 private:
 	InputBinding* GetBinding( int hashVal );
 	int GetHashFromKeyName( const String& keyId );
+	String	GetKeyNameFromHash(int key);
 	void ClearXboxButtonStates();
 
 private:

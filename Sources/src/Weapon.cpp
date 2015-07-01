@@ -32,7 +32,6 @@
  */
 Weapon::Weapon(std::string name) : _name(name) {
 	this->_readFile(name);
-	this->_canAttack = 1;
 }
 
 //!Constructor called by hero/equipment class, to copy a parsed version from weaponlist
@@ -45,6 +44,7 @@ Weapon::Weapon(Weapon* weapon) {
 	this->_name = weapon->getName();
 	this->addAttribute("name", this->_name);
 	this->_flavor = weapon->getFlavor();
+	this->addAttribute("flavor", this->_flavor);
 	this->_damage = weapon->getDamage();
 	this->_recovery = weapon->getRecovery();
 	this->_active = weapon->getActive();
@@ -53,13 +53,49 @@ Weapon::Weapon(Weapon* weapon) {
 	this->_pushback = weapon->getPushback();
 	this->_sprite = weapon->getSprite();
 	this->_lootLevel = weapon->getLootLevel();
+	this->addAttribute("sprite", this->_sprite);
 	this->addAttribute("type3", "Weapon");
-	this->_canAttack = 1;
-
-	theSwitchboard.SubscribeTo(this, "canAttack");
+	this->_critRate = weapon->getCritRate();
 }
 
+//! Constructor called when stomping, create a hitbox on each side of the char
+/**
+ * Hitbox for the stomp
+ * @param w the weapon currently used to deal the damage
+ * @param c the character for the localisation
+ * @param i left or right spawn
+ */
 
+Weapon::Weapon(Weapon* w, Characters* c, int i) {
+	this->_name = w->getName();
+	this->_flavor = w->getFlavor();
+	this->_damage = w->getDamage();
+	this->_recovery = w->getRecovery();
+	this->_active = w->getActive();
+	this->_size = w->getSize();
+	this->_attack = w->getAttack();
+	this->_pushback = w->getPushback();
+	this->SetSize(1);
+	this->_critRate = w->getCritRate();
+	this->SetName("HeroWeaponHitbox");
+	if (c->getAttributes()["type"] == "Hero")
+		this->addAttribute("type", "HeroWeaponHitBox");
+	else
+		this->addAttribute("type", "WeaponHitBox");
+	this->SetDrawShape(ADS_Square);
+	this->SetColor(1, 1, 1, 0);
+	this->addAttribute("physic", "1");
+	this->_hitboxType = "special";
+	this->_hitbox = "octogonHitbox";
+	this->SetDensity(0);
+	this->SetFixedRotation(true);
+	this->Tag("weaponhitbox");
+	this->SetIsSensor(true);
+	theSwitchboard.SubscribeTo(this, "deleteWeapon" + this->GetName());
+	theSwitchboard.DeferredBroadcast(new Message("deleteWeapon" + this->GetName()), w->getActive());
+	this->SetPosition(c->GetBody()->GetWorldCenter().x + i, c->GetBody()->GetWorldCenter().y);
+	Game::bodiesToCreate.push_back(this);
+}
 
 //! Constructor called when attacking, creates the defined hitbox
 /**
@@ -77,8 +113,8 @@ Weapon::Weapon(Weapon* w, Characters* c) {
 	this->_size = w->getSize();
 	this->_attack = w->getAttack();
 	this->_pushback = w->getPushback();
-	this->_canAttack = 1;
 	this->SetSize(1);
+	this->_critRate = w->getCritRate();
 	this->SetName("HeroWeaponHitbox");
 	if (c->getAttributes()["type"] == "Hero")
 		this->addAttribute("type", "HeroWeaponHitBox");
@@ -93,9 +129,9 @@ Weapon::Weapon(Weapon* w, Characters* c) {
 	this->SetFixedRotation(true);
 	this->Tag("weaponhitbox");
 	this->SetIsSensor(true);
-	theSwitchboard.SubscribeTo(this, "deleteWeapon");
-	theSwitchboard.DeferredBroadcast(new Message("deleteWeapon"), w->getActive());
-	theSwitchboard.DeferredBroadcast(new Message("canAttack"), w->getRecovery());
+	theSwitchboard.SubscribeTo(this, "deleteWeapon" + this->GetName());
+	theSwitchboard.DeferredBroadcast(new Message("deleteWeapon" + this->GetName()), w->getActive());
+	theSwitchboard.DeferredBroadcast(new Message("attackReady"), w->getRecovery());
 	this->_initDirection(w, c);
 	theWorld.Add(this);
 }
@@ -197,6 +233,8 @@ void    Weapon::_parseJson(std::string file) {
 	this->_pushback = json["infos"].get("pushback", "").asFloat();
 	this->_attack = json["infos"].get("attack", "").asString();
 	this->_sprite = json["infos"].get("sprites", "").asString();
+	this->_critRate = json["infos"].get("critRate", "").asInt();
+	this->addAttribute("sprite", this->_sprite);
 	this->addAttribute("type3", "Weapon");
 }
 
@@ -229,40 +267,42 @@ Json::Value     Weapon::_getAttr(std::string category, std::string key) {
  * @param: linearVelocity (b2Vec2)
  */
 void	Weapon::attack(Characters *c) {
-	if (this->_attack == "melee")
+	if (this->_attack == "melee") {
 		new Weapon(this, c);
+	}
 	else if (this->_attack == "ranged")
 		new Projectile(this, c);
 }
 
 void	Weapon::ReceiveMessage(Message *m) {
-	if (m->GetMessageName() == "deleteWeapon") {
+	if (m->GetMessageName() == "deleteWeapon" + this->GetName()) {
 		Game::addToDestroyList(this);
 		theSwitchboard.UnsubscribeFrom(this, "deleteWeapon");
 		theSwitchboard.Broadcast(new Message("disableAttackHitbox"));
 	}
-	if (m->GetMessageName() == "canAttack")
-		this->_canAttack = 1;
 }
 
 /* GETTERS */
-std::string		Weapon::getName(void) { return this->_name; }
-std::string		Weapon::getFlavor(void) { return this->_flavor; }
-std::string		Weapon::getSprite(void) { return this->_sprite; }
-std::string		Weapon::getAttack(void) { return this->_attack; }
+std::string		Weapon::getName(void)      { return this->_name; }
+std::string		Weapon::getFlavor(void)    { return this->_flavor; }
+std::string		Weapon::getSprite(void)    { return this->_sprite; }
+std::string		Weapon::getAttack(void)    { return this->_attack; }
 int				Weapon::getLootLevel(void) { return this->_lootLevel; }
-float			Weapon::getActive(void) { return this->_active; }
-int				Weapon::getSize(void) { return this->_size; }
-int				Weapon::getDamage(void) { return this->_damage; }
-int				Weapon::getPushback(void) { return this->_pushback; }
-float			Weapon::getRecovery(void) { return this->_recovery; }
-int				Weapon::attackReady(void) { return this->_canAttack; }
+float			Weapon::getActive(void)    { return this->_active; }
+int				Weapon::getSize(void)      { return this->_size; }
+int				Weapon::getDamage(void)	   { return this->_damage; }
+int				Weapon::getPushback(void)  { return this->_pushback; }
+float			Weapon::getRecovery(void)  { return this->_recovery; }
+int				Weapon::getCritRate(void)  { return this->_critRate; }
 
 /* SETTERS */
 
-void			Weapon::isAttacking(int i) {this->_canAttack = i;}
 
 void	Weapon::BeginContact(Elements *elem, b2Contact *contact) {
+	if (elem->getAttribute("type") != "ground") {
+		contact->SetEnabled(false);
+		contact->enableContact = false;
+	}
 }
 
 void	Weapon::EndContact(Elements *elem, b2Contact *contact) {

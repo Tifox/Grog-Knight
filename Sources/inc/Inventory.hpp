@@ -46,6 +46,8 @@ public:
 	std::string		equipSelectedItem(void);
 	void			swapEquipmentAndInventory(std::string item);
 	std::map<int, std::string>	getItems(void);
+	int							getSlots(void);
+	int							getNumFocus(void);
 
 private:
 	int							_slots;

@@ -34,12 +34,12 @@
 
 Loot::Loot(Characters* c) {
 	int i;
-	if (rand() % 100 <= c->_getAttr("loot", "consumableRate").asInt()) {
-		if (rand() % 2 == 0) {
-			 new Consumable("HP", c->_getAttr("loot", "HPReward").asString(), c);
-	   } else
-			new Consumable("gold", c->_getAttr("loot", "XPReward").asString(), c);
-	} else if (rand() % 100 <= c->_getAttr("loot", "equipmentRate").asInt()) {
+   /* if (rand() % 100 <= c->_getAttr("loot", "consumableRate").asInt()) {*/
+		//if (rand() % 2 == 0) {
+			 //new Consumable("HP", c->_getAttr("loot", "HPReward").asString(), c);
+	   /*} else*/
+	//	new Consumable("gold", c->_getAttr("loot", "XPReward").asString(), c);
+   /* } else if (rand() % 100 <= c->_getAttr("loot", "equipmentRate").asInt()) {*/
 	int rant;
 	rant = rand() % 3;
 		if (rant == 1)
@@ -48,7 +48,17 @@ Loot::Loot(Characters* c) {
 			 new Equipment(Game::aList->getArmorRandom(c->_getAttr("loot", "EqReward").asInt()), c);
 		else
 			new Equipment(Game::rList->getRingRandom(c->_getAttr("loot", "EqReward").asInt()), c);
-	}
+	/*}*/
+}
+
+
+Loot::Loot(Characters* c, std::string toDrop) {
+	if (Game::wList->checkExists(toDrop))
+		new Equipment(Game::wList->getWeapon(toDrop), c);
+	else if (Game::aList->checkExists(toDrop))
+		new Equipment(Game::aList->getArmor(toDrop), c);
+	else if (Game::rList->checkExists(toDrop))
+		new Equipment(Game::rList->getRing(toDrop), c);
 }
 
 Loot::Loot(Characters* c, Weapon *toDrop) {

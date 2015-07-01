@@ -45,6 +45,7 @@ public:
     int             getPushback(void);
     float           getRecovery(void);
     int             attackReady(void);
+	int				getCritRate(void);
 
 	void	BeginContact(Elements *elem, b2Contact *contact);
 	void	EndContact(Elements *elem, b2Contact *contact);
@@ -61,5 +62,7 @@ private:
 	int			_damage;
 	int			_pushback;
 	float		_recovery;
+	int			_critRate;
+
 };
 #endif

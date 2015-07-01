@@ -30,7 +30,7 @@
  * Basic constructor
  */
 
-Tooltip::Tooltip() : _name("") {
+Tooltip::Tooltip() : _name("") , _flavor(""), _lastElem(nullptr) {
 	theSwitchboard.SubscribeTo(this, "deleteTip");
 	return ;
 }
@@ -45,7 +45,7 @@ Tooltip::Tooltip() : _name("") {
 Tooltip::~Tooltip() {
 	return ;
 }
-
+ 
 //! Parse the type of the loot
 /**
  * Parse the type and set color and value
@@ -74,25 +74,61 @@ void	Tooltip::tip(Elements *elem, Characters *c) {
 }
 
 void 	Tooltip::info(Elements *elem) {
-	if (this->_name == "") {
-		HUDActor *equip = new HUDActor();
-		HUDWindow *hud = Game::getHUD();
-		this->_equip = equip;
-		this->_name = elem->getAttribute("name");
+	std::string tmp;
+	int i = 0;
+	float	x = theCamera.GetWindowWidth() / 20 * 11.3;
+	float	y = 30;
 
-		equip->SetSize(200, 100);
-		equip->SetPosition(theCamera.GetWindowWidth() - 100, 50);
-		equip->SetColor(0, 0, 0);
-		equip->SetDrawShape(ADS_Square);
-		theWorld.Add(equip);	
-		hud->setText(this->_name,theCamera.GetWindowWidth() - 100, 50);
+
+	if (this->_name == "" && this->_flavor == "") {
+		HUDWindow *hud = Game::getHUD();
+		this->_name = elem->getAttribute("name");
+		this->_flavor = elem->getAttribute("flavor");
+
+		hud->setText(this->_name , x + theCamera.GetWindowWidth() / 40 * 2, y + theCamera.GetWindowHeight() / 20 * 0.15, Vector3(0, 0, 0), 1);
+		for (y = 45; i < this->_flavor.size(); i++) {
+			if (this->_flavor[i] == '\n') {
+				hud->setText(tmp, x + theCamera.GetWindowWidth() / 40 * 2, y + theCamera.GetWindowHeight() / 20 * 0.15,  Vector3(0, 0, 0), 1);
+				tmp.clear();
+				y += 15;
+			} else
+				tmp = tmp + this->_flavor[i];
+		}
+		hud->setText(tmp, x + theCamera.GetWindowWidth() / 40 * 2, y + theCamera.GetWindowHeight() / 20 * 0.15,  Vector3(0, 0, 0), 1);
 	}
 	return ;
 }
 
-void	Tooltip::clearInfo(void) {
-	theWorld.Remove(this->_equip);
+void	Tooltip::clearInfo(int clean) {
+	std::string tmp;
+	int i;
+
+
 	Game::getHUD()->removeText(this->_name);
+	for (i = 0; i < this->_flavor.size(); i++) {
+		if (this->_flavor[i] == '\n') {
+			Game::getHUD()->removeText(tmp);
+			tmp.clear();
+		} else
+			tmp = tmp + this->_flavor[i];
+	}
+	Game::getHUD()->removeText(tmp);
+	this->_name = "";
+	this->_flavor = "";
+
+	if (clean == 0) {
+		Elements	*w;
+		tmp = Game::currentGame->getHero()->getInventory()->getCurrentFocus();
+		if (tmp != "") {
+			if (Game::wList->checkExists(tmp))
+				w = new Weapon(Game::wList->getWeapon(tmp));
+			else if (Game::aList->checkExists(tmp))
+				w = new Armor(Game::aList->getArmor(tmp));
+			else if (Game::rList->checkExists(tmp))
+				w = new Ring(Game::rList->getRing(tmp));
+			this->info(w);
+		}
+	}
 }
 
 void 	Tooltip::ReceiveMessage(Message *m) {

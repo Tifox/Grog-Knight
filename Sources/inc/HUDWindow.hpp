@@ -51,7 +51,7 @@ class	HUDWindow : public HUDActor {
 			int				colorR;
 			int				colorG;
 			int				colorB;
-			int				colorA;
+			float				colorA;
 			Characters		*toFollow;
 			int				isFading;
 			int				isTalk;
@@ -70,6 +70,7 @@ class	HUDWindow : public HUDActor {
 		HUDActor	*addImage(std::string p, int x, int y);
 		HUDActor	*addImage(std::string path, int x, int y, float size);
 		HUDActor	*addImage(std::string path, int x, int y, float size, int layer);
+		HUDActor	*addImage(std::string path, int x, int y, Vector2 size, int layer);
 		void	life(int l);
 		void	mana(int mana);
 		void	gold(int g);
@@ -86,6 +87,11 @@ class	HUDWindow : public HUDActor {
 		void	setMaxHP(int h);
 		void	bag(void);
 		void	initMinimapBackground(void);
+		void	showHud(void);
+		void	showBackgrounds(void);
+		void	character(void);
+		void	spells(void);
+		void	clearHUD(void);
 
 	private:
 		Game		*_g;
@@ -95,6 +101,7 @@ class	HUDWindow : public HUDActor {
 		std::list<HUDActor *>	_minimap;
 		std::map<std::string, Elements*>		_dialog;
 		std::list<HUDWindow::Text *>	_text;
+		std::list<HUDActor *>	_allElems;
 		HUDWindow::Text	*		_gold;
 		int						_maxMana;
 		int						_maxHP;

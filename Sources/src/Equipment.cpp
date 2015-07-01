@@ -66,6 +66,8 @@ Equipment::Equipment(Weapon *w, Characters* c): Object() {
 	this->_weapon = new Weapon(w);
 	this->_name = w->getName();
 	this->addAttribute("name", w->getName());
+	this->_flavor = w->getFlavor();
+	this->addAttribute("flavor", w->getFlavor());
 	this->SetSprite(this->_weapon->getSprite());
 	this->SetName("loot");
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
@@ -81,6 +83,8 @@ Equipment::Equipment(Armor *w, Characters* c): Object() {
 	this->_armor = new Armor(w);
 	this->_name = w->getName();
 	this->addAttribute("name", w->getName());
+	this->_flavor = w->getFlavor();
+	this->addAttribute("flavor", w->getFlavor());
 	this->SetSprite(this->_armor->getSprite());
 	this->SetName("loot");
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
@@ -95,6 +99,8 @@ Equipment::Equipment(Ring *w, Characters* c): Object() {
 	this->_ring = new Ring(w);
 	this->_name = w->getName();
 	this->addAttribute("name", w->getName());
+	this->_flavor = w->getFlavor();
+	this->addAttribute("flavor", w->getFlavor());
 	this->SetSprite(this->_ring->getSprite());
 	this->SetName("loot");
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
@@ -117,9 +123,10 @@ Equipment::~Equipment(void) {
  * @param contact The Box2D contact object.
  */
 void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
-	// if (elem->getAttributes()["type"] == "Hero"){
-	// 	Game::getHUD()->setText(this->_weapon->getFlavor(), 450, 50);
-	// }
+	if (elem->getAttribute("type") != "ground") {
+		contact->SetEnabled(false);
+		contact->enableContact = false;
+	}
 }
 
 //! End of collision callback
@@ -143,6 +150,8 @@ Armor*		Equipment::getArmor(void) { return this->_armor; }
 Ring*		Equipment::getRing(void) { return this->_ring; }
 
 std::string	Equipment::getName(void) { return this->_name; }
+
+
 
 //! Intern broadcasts function.
 /**

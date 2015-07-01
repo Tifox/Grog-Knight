@@ -45,7 +45,10 @@ Object::Object(void) {
  * @param contact (b2Contact *)
  * @note This function is called just before a collision
  */
+
 void	Object::BeginContact(Elements *elem, b2Contact *contact) {
+		contact->SetEnabled(false);
+		contact->enableContact = false;
 }
 
 //! Destructor

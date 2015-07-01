@@ -47,14 +47,16 @@ class Tooltip : public MessageListener {
 
 		void	tip(Elements *elem, Characters *c);
 		void	info(Elements *elem);
-		void	clearInfo(void);
+		void	clearInfo(int clean = 1);
 		void 	ReceiveMessage(Message *m);
 
 
 	private:
-		HUDActor	*_equip;
-		std::string _name;
-		std::string _val;
+		HUDActor			*_equip;
+		std::string 		_name;
+		std::string 		_flavor;
+		std::string 		_val;
+		Elements			*_lastElem;
 };
 
 

@@ -40,6 +40,7 @@ Projectile::Projectile(Weapon* w, Characters* c){
 	this->_damage = w->getDamage();
 	this->_pushback = w->getPushback();
 	this->_recovery = w->getRecovery();
+	this->_critRate = w->getCritRate();
 	this->SetSize(0.5f);
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	this->SetSprite("Resources/Images/arrow.png");
@@ -48,13 +49,15 @@ Projectile::Projectile(Weapon* w, Characters* c){
 	this->SetRestitution(0.0f);
 	this->SetFixedRotation(true);
 	this->SetIsSensor(true);
-	if (c->getAttributes()["type"] == "Hero")
+	if (c->getAttribute("type") == "Hero") {
 		this->addAttribute("type", "HeroProjectile");
+	}
 	else
 		this->addAttribute("type", "Projectile");
 	this->Tag("projectile");
+	this->addAttribute("physic", "1");
 	this->_initDirection(w, c);
-	theSwitchboard.DeferredBroadcast(new Message("canAttack"), this->_recovery);
+	theSwitchboard.DeferredBroadcast(new Message("attackReady"), this->_recovery);
 	theWorld.Add(this);
 }
 
@@ -103,6 +106,7 @@ int             Projectile::getSize(void) { return this->_size; }
 int             Projectile::getDamage(void) { return this->_damage; }
 int             Projectile::getPushback(void) { return this->_pushback; }
 float           Projectile::getRecovery(void) { return this->_recovery; }
+int				Projectile::getCritRate(void) { return this->_critRate; }
 
 void	Projectile::ReceiveMessage(Message *m) {
 }
@@ -116,7 +120,7 @@ void	Projectile::ReceiveMessage(Message *m) {
  * @param contact The b2Contact object of the collision. See Box2D docs for more info.
  */
 void	Projectile::BeginContact(Elements *m, b2Contact *c) {
-	if (m->getAttribute("type") == "Object" )
+  if (m->getAttribute("type") == "Object" || m->getAttribute("type") == "Hero")
 		return;
 	Game::addToDestroyList(this);
 }

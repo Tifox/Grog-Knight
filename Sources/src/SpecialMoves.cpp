@@ -145,7 +145,7 @@
  void	SpecialMoves::_blink(void) {
  	this->character->_setCategory("blink");
  	Map m = Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX];
- 	int x = (this->character->GetBody()->GetWorldCenter().x) - m.getXStart();
+ 	int x = (this->character->GetBody()->GetWorldCenter().x) - m.getXStart() + 0.5;
  	int y = -((this->character->GetBody()->GetWorldCenter().y) - m.getYStart() - 0.5);
  	int range = this->character->_getAttr("blinkRange").asInt();
  	std::vector<std::vector<int>> t = m.getPhysicMap();

@@ -215,3 +215,35 @@
  void	SpecialMoves::_fly(void) {
  	this->character->_isFlying = (this->character->_isFlying ? false : true);
  }
+
+ //! Special move: totem
+ /**
+  * Puts a totem where the hero is, then teleports the hero on it when reactivated
+  * Properties of totem - place and activate
+  * @sa SpecialMoves::_specialMove()
+  */
+
+ void	SpecialMoves::_totem(void) {
+    if (this->character->_totem == nullptr && this->character->_grounds.size() > 0) {
+        this->character->_totem = new Elements();
+        this->character->_totem->SetSize(0.6);
+        this->character->_totem->SetName("Totem");
+        this->character->_totem->SetDrawShape(ADS_Square);
+        this->character->_totem->SetColor(0, 1, 0, 1);
+        this->character->_totem->SetSprite("Resources/Images/HUD/cible.png");
+        this->character->_totem->SetLayer(105);
+        this->character->_totem->addAttribute("physic", "1");
+        this->character->_totem->SetDensity(0);
+        this->character->_totem->SetFixedRotation(true);
+        this->character->_totem->SetIsSensor(true);
+        this->character->_totem->SetPosition(this->character->GetBody()->GetWorldCenter().x, this->character->GetBody()->GetWorldCenter().y);
+        this->character->_totem->InitPhysics();
+
+        theWorld.Add(this->character->_totem);
+    }
+    else if (this->character->_totem != nullptr) {
+        this->character->GetBody()->SetTransform(b2Vec2(this->character->_totem->GetBody()->GetWorldCenter().x, this->character->_totem->GetBody()->GetWorldCenter().y), 0);
+        Game::addToDestroyList(this->character->_totem);
+        this->character->_totem = nullptr;
+    }
+ }

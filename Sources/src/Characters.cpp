@@ -55,6 +55,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_invincibility = false;
 	this->_grounds.clear();
 	this->_item = nullptr;
+	this->_totem = nullptr;
 	this->_isAttacking = 0;
 	this->_gold = 0;
 	this->_isLoadingAttack = 0;
@@ -990,6 +991,8 @@ void	Characters::_specialMove(void) {
 		this->_eqMove->_blink();
 	else if (this->_speMove == "fly")
 		this->_eqMove->_fly();
+	else if (this->_speMove == "totem")
+		this->_eqMove->_totem();
 }
 
 //! Equip a weapon

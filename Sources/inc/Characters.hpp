@@ -147,6 +147,7 @@ class Characters : public Elements {
 		Armor*			_armor;
 		Ring*			_ring;
 		Elements*		_item;
+		Elements*		_totem;
 		Inventory*		_inventory;
 		HUDTargeting*	_target;
 		Actor			*_blast;

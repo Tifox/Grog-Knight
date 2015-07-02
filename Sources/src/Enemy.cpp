@@ -193,6 +193,7 @@ int		Enemy::takeDamage(int damage, int critRate) {
 				this->_getAttr("endFrame").asInt());
 		theSwitchboard.SubscribeTo(this, "destroyEnemy");
 		theSwitchboard.DeferredBroadcast(new Message("destroyEnemy"), 0.5);
+		theSwitchboard.Broadcast(new Message(std::to_string(this->getId())));
 		return 0;
 	}
 	this->_hp -= damage;

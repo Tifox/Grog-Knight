@@ -40,12 +40,17 @@ class HUDTargeting : public Elements{
         HUDTargeting(void);
         ~HUDTargeting(void);
 
+        virtual void	ReceiveMessage(Message *m);
+
         void changeTarget(void);
 
     private:
 
+        void Unsubscribe(void);
+
         std::list<Enemy *>  _enemies;
         int                 _enemyId;
+        int                 _enemyNb;
         Enemy*              _current;
         b2DistanceJoint*    _joint;
 

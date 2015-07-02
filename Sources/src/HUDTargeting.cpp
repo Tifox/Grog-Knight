@@ -32,6 +32,14 @@
 
  HUDTargeting::HUDTargeting(void) {
     _enemies = Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX].getEnemies();
+
+    std::list<Enemy *>::iterator it;
+
+    for (it = this->_enemies.begin(); it != this->_enemies.end(); it++) {
+        if ((*it) == nullptr)
+            this->_enemies.remove((*it));
+    }
+
     std::cout << _enemies.size() << std::endl;
     if (_enemies.size() > 0) {
         this->_enemyId = 0;
@@ -66,20 +74,50 @@
  void HUDTargeting::changeTarget(void) {
     std::list<Enemy *>::iterator it;
     if (_enemies.size() > 0) {
+        _enemyNb++;
+        if (_enemyNb > _enemies.size())
+            _enemyNb = 1;
+        int counter = 0;
      	for (it = this->_enemies.begin(); it != this->_enemies.end(); it++) {
-     		if ((*it)->getId() != _enemyId) {
-     			_current = *it;
-                _enemyId = _current->getId();
-                if (this->_joint != nullptr)
-                    theWorld.GetPhysicsWorld().DestroyJoint(this->_joint);
-                this->GetBody()->SetTransform(b2Vec2(this->_current->GetBody()->GetWorldCenter().x, this->_current->GetBody()->GetWorldCenter().y), 0);
-                b2DistanceJointDef jointDef;
-             	jointDef.Initialize(_current->GetBody(), this->GetBody(), b2Vec2(_current->GetBody()->GetWorldCenter().x, _current->GetBody()->GetWorldCenter().y),
-             						 this->GetBody()->GetWorldCenter());
-             	jointDef.collideConnected = false;
-                this->_joint = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef);
-                return ;
-     		}
+            counter++;
+            if (counter != _enemyNb)
+                continue ;
+ 			_current = *it;
+            this->Unsubscribe();
+            _enemyId = _current->getId();
+            theSwitchboard.SubscribeTo(this, std::to_string(_enemyId));
+            if (this->_joint != nullptr)
+                theWorld.GetPhysicsWorld().DestroyJoint(this->_joint);
+            this->GetBody()->SetTransform(b2Vec2(this->_current->GetBody()->GetWorldCenter().x, this->_current->GetBody()->GetWorldCenter().y), 0);
+            b2DistanceJointDef jointDef;
+         	jointDef.Initialize(_current->GetBody(), this->GetBody(), b2Vec2(_current->GetBody()->GetWorldCenter().x, _current->GetBody()->GetWorldCenter().y),
+         						 this->GetBody()->GetWorldCenter());
+         	jointDef.collideConnected = false;
+            this->_joint = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef);
+            return ;
      	}
      }
  }
+
+ void	HUDTargeting::ReceiveMessage(Message *m) {
+    std::cout << m->GetMessageName() << " pouet" << std::endl;
+ 	if (m->GetMessageName() == std::to_string(_enemyId)) {
+        std::cout << "destroy" << std::endl;
+        this->_joint = nullptr;
+        std::list<Enemy *>::iterator it;
+
+        for (it = this->_enemies.begin(); it != this->_enemies.end(); it++) {
+            if ((*it) == nullptr)
+                this->_enemies.remove((*it));
+        }
+ 	}
+ }
+
+void    HUDTargeting::Unsubscribe(void) {
+    StringSet sub;
+
+    sub = theSwitchboard.GetSubscriptionsFor(this);
+    for (StringSet::iterator k = sub.begin(); k != sub.end(); k++) {
+        theSwitchboard.UnsubscribeFrom(this, *k);
+    }
+}

@@ -213,7 +213,6 @@
  	this->character->_isFlying = (this->character->_isFlying ? false : true);
  }
 
-<<<<<<< HEAD
  //! Special move: totem
  /**
   * Puts a totem where the hero is, then teleports the hero on it when reactivated
@@ -245,7 +244,7 @@
         this->character->_totem = nullptr;
     }
  }
-=======
+
 //! Special move: shunpo
 /**
  * Special move that requires a target - on use, dashes to the target and deals damage
@@ -290,4 +289,3 @@ void	SpecialMoves::_shunpo(void) {
 		this->character->_target->getCurrentEnemy()->ApplyLinearImpulse(Vector2((3 * i), 3), Vector2(0,0));
 	}
 }
->>>>>>> 43bb41936a35859809d383b12cf7bc13767010f8

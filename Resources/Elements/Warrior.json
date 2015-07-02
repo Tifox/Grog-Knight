@@ -16,7 +16,7 @@
 			"weapon": "Sword",
 			"armor": "ChestArmor",
 			"ring": "NiceRing",
-			"specialMove": "stomp",
+			"specialMove": "shunpo",
 			"inventorySlots": 2
 		},
 		"forward": {
@@ -121,6 +121,11 @@
 		"wallJump": {
 			"maxJump": 1,
 			"force": 6
+		},
+		"shunpo": {
+			"damageScale": 2,
+			"range": 10,
+			"cooldown": 15
 		},
 		"down": {
 			"subscribe": "down"

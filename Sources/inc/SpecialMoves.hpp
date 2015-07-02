@@ -52,6 +52,7 @@
          virtual void	_stomp(void);
          virtual void	_blink(void);
          virtual void	_fly(void);
+         virtual void	_shunpo(void);
 
      private:
          std::string		_category;

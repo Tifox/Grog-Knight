@@ -182,9 +182,10 @@ int		Enemy::takeDamage(int damage, int critRate) {
 		this->_setCategory("death");
 		theSwitchboard.SubscribeTo(this, "setToStatic" + this->GetName());
 		theSwitchboard.Broadcast(new Message("setToStatic" + this->GetName()));
-		this->GetBody()->ResetMassData();
 		this->GetBody()->GetFixtureList()->SetSensor(true);
-		this->GetBody()->SetGravityScale(0);
+		this->GetBody()->GetFixtureList()->SetDensity(0);
+//		this->GetBody()->SetGravityScale(0);
+		this->GetBody()->ResetMassData();
 		this->LoadSpriteFrames(this->_getAttr("newSprites").asString());
 		this->changeSizeTo(Vector2(this->_getAttr("size").asInt(),
 					this->_getAttr("size").asInt()));

@@ -305,7 +305,6 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->_specialMove();
 	}
 	else if (m->GetMessageName() == "speMoveReady") {
-		theSwitchboard.UnsubscribeFrom(this, "speMoveReady");
 		this->_speMoveReady = 1;
 	}
 	else if (m->GetMessageName() == "dashEnd") {
@@ -990,6 +989,8 @@ void	Characters::_specialMove(void) {
 		this->_eqMove->_blink();
 	else if (this->_speMove == "fly")
 		this->_eqMove->_fly();
+	else if (this->_speMove == "shunpo")
+		this->_eqMove->_shunpo();
 }
 
 //! Equip a weapon

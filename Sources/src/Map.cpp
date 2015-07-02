@@ -229,8 +229,8 @@ void	Map::destroyMap(void) {
 void	Map::callAllPatterns(void) {
 	std::list<Enemy *>::iterator		en;
 
-	//for (en = this->_enemies.begin(); en != this->_enemies.end(); en++) {
-		//if (!(*en)->dead())
-			//(*en)->getPattern()->tick(*this);
-	/*}*/
+	for (en = this->_enemies.begin(); en != this->_enemies.end(); en++) {
+		if (!(*en)->dead())
+			(*en)->getPattern()->tick(*this);
+	}
 }

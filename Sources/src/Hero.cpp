@@ -39,6 +39,7 @@ Hero::Hero(std::string name) : Characters(name) {
 	theSwitchboard.SubscribeTo(this, "dropItem");
 	theSwitchboard.SubscribeTo(this, "attackReady");
 	theSwitchboard.SubscribeTo(this, "specialMove");
+	theSwitchboard.SubscribeTo(this, "speMoveReady");
 	theSwitchboard.SubscribeTo(this, "changeCharacter");
 	theSwitchboard.SubscribeTo(this, "lockTarget");
 	theSwitchboard.SubscribeTo(this, "unlockTarget");

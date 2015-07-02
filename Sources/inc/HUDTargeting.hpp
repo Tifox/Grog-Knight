@@ -41,6 +41,7 @@ class HUDTargeting : public Elements{
         ~HUDTargeting(void);
 
         void changeTarget(void);
+		Enemy*	getCurrentEnemy(void);
 
     private:
 

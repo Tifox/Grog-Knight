@@ -43,6 +43,7 @@ class HUDTargeting : public Elements{
         virtual void	ReceiveMessage(Message *m);
 
         void changeTarget(void);
+		Enemy*	getCurrentEnemy(void);
 
     private:
 

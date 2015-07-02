@@ -1,4 +1,4 @@
-{
+B1;3202;0c{
 	"infos": {
 		"name": "Archer",
 		"id": 0,
@@ -102,6 +102,11 @@
 		"wallJump": {
 			"maxJump": 1,
 			"force": 6
+		},
+		"shunpo": {
+			"damageScale":2,
+			"range":10,
+			"cooldown":15
 		},
 		"down": {
 			"subscribe": "down"

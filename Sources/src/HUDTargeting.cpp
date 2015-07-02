@@ -62,6 +62,11 @@
     }
  }
 
+//! Getter
+Enemy* HUDTargeting::getCurrentEnemy(void) {
+	return this->_current;
+}
+
  //! Destructor
  /**
   * Basic destructor

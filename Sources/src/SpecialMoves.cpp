@@ -96,7 +96,6 @@
  		this->character->_invincibility = true;
  		this->character->_isCharging = true;
  		this->character->_canMove = 0;
- 		theSwitchboard.SubscribeTo(this->character, "speMoveReady");
  		theSwitchboard.SubscribeTo(this->character, "chargeEnd");
  		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
  				this->character->_getAttr("cooldown").asFloat());
@@ -126,7 +125,6 @@
  		this->character->actionCallback("stomp", 0);
  		this->character->_isStomping = true;
  		this->character->_isCharging = true;
- 		theSwitchboard.SubscribeTo(this->character, "speMoveReady");
  		theSwitchboard.SubscribeTo(this->character, "stompEnd");
  		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
  				this->character->_getAttr("cooldown").asFloat());
@@ -152,7 +150,6 @@
 
  	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speMoveReady == 1) {
  		this->character->_speMoveReady = 0;
- 		theSwitchboard.SubscribeTo(this->character, "speMoveReady");
  		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
  				this->character->_getAttr("cooldown").asFloat());
  		if (this->character->_orientation == Characters::UP) {
@@ -216,6 +213,7 @@
  	this->character->_isFlying = (this->character->_isFlying ? false : true);
  }
 
+<<<<<<< HEAD
  //! Special move: totem
  /**
   * Puts a totem where the hero is, then teleports the hero on it when reactivated
@@ -247,3 +245,49 @@
         this->character->_totem = nullptr;
     }
  }
+=======
+//! Special move: shunpo
+/**
+ * Special move that requires a target - on use, dashes to the target and deals damage
+ * Properties of shunpo - requires target, range, deals damage, cooldown
+ */
+
+void	SpecialMoves::_shunpo(void) {
+	if (this->character->_target != nullptr) {
+		int i;
+		int x;
+		int x2;
+		int y;
+		int y2;
+		x = this->character->GetBody()->GetWorldCenter().x;
+		if (x < 0) x *= -1;
+		x2 = this->character->_target->getCurrentEnemy()->GetBody()->GetWorldCenter().x;
+		if (x2 < 0) x2 *= -1;
+		x = x - x2;
+		if (x < 0) x *= -1;
+		y = this->character->GetBody()->GetWorldCenter().y;
+		if (y < 0) y *= -1;
+		y2 = this->character->_target->getCurrentEnemy()->GetBody()->GetWorldCenter().y;
+		if (y2 < 0) y2 *= -1;
+		y = y - y2;
+		if (y < 0) y *= -1;
+		if (x + y > this->character->_getAttr("shunpo", "range").asInt()) {
+			std::cout << "too far" << std::endl;
+			return;
+		}
+		if (this->character->_speMoveReady == false || this->character->_canMove == false)
+			return;
+		this->character->_speMoveReady = false;
+		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"), this->character->_getAttr("shunpo", "cooldown").asFloat());
+		if (this->character->_target->getCurrentEnemy()->getOrientation() == Characters::LEFT)
+			i = 1;
+		else if (this->character->_target->getCurrentEnemy()->getOrientation() == Characters::RIGHT)
+			i = -1;
+		this->character->GetBody()->SetTransform(b2Vec2(this->character->_target->GetBody()->GetWorldCenter().x + 1,
+														this->character->_target->GetBody()->GetWorldCenter().y), 0);
+		if (this->character->_target->getCurrentEnemy()->takeDamage(this->character->_weapon->getDamage(),
+																	this->character->_weapon->getCritRate()) == 1)
+		this->character->_target->getCurrentEnemy()->ApplyLinearImpulse(Vector2((3 * i), 3), Vector2(0,0));
+	}
+}
+>>>>>>> 43bb41936a35859809d383b12cf7bc13767010f8

@@ -84,7 +84,7 @@ void	Game::start(void) {
 	Game::aList = new ArmorList();
 	Game::rList = new RingList();
 	this->tooltip = new Tooltip();
-	Game::currentGame = this;
+	Game::currentGame = this;x
 	Hero			*hero = new Hero("Warrior");
 
 

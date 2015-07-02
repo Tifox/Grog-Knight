@@ -66,6 +66,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_readFile(name);
 	this->_eqMove = new SpecialMoves(this);
 	this->_isStomping = false;
+	this->_flyTrigger = false;
 }
 
 //! Basic destructor
@@ -474,7 +475,7 @@ void	Characters::AnimCallback(String s) {
 						this->_getAttr("endFrame_" + orientation).asInt(), "loadAttack_charge");
 			}
 		}
-		if (this->getAttribute("class") == "Warrior")
+		if (this->getAttribute("class") == "Warrior" && !this->_isLoadingAttack)
 			this->changeSizeTo(Vector2(1, 1));
 		if (this->_isDashing == true) {
 			this->_isDashing = false;
@@ -708,6 +709,8 @@ void	Characters::_forward(int status) {
 			this->_setCategory("forward");
 		} else if (this->_isLoadingAttack) {
 			this->_setCategory("loadAttack_charge");
+			if (this->getAttribute("class") == "Warrior")
+				this->changeSizeTo(Vector2(2, 2));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 					this->_getAttr("endFrame_right").asInt(),
 					this->_getAttr("endFrame_right").asInt(), "loadAttack_charge");
@@ -761,6 +764,8 @@ void	Characters::_backward(int status) {
 			this->_setCategory("backward");
 		} else if (this->_isLoadingAttack) {
 			this->_setCategory("loadAttack_charge");
+			if (this->getAttribute("class") == "Warrior")
+				this->changeSizeTo(Vector2(2, 2));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 					this->_getAttr("endFrame_left").asInt(),
 					this->_getAttr("endFrame_left").asInt(), "loadAttack_charge");

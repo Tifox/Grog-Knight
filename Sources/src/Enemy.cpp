@@ -178,6 +178,7 @@ int		Enemy::takeDamage(int damage, int critRate) {
 	}
 	if (this->_hp - damage <= 0) {
 		this->_isDead = true;
+		Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX].removeEnemy(this);
 		this->actionCallback("death", 0);
 		this->_setCategory("death");
 		theSwitchboard.SubscribeTo(this, "setToStatic" + this->GetName());

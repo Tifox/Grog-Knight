@@ -468,7 +468,6 @@ void		Game::displayHUD(void) {
 
 void		Game::reloadingHUD(void) {
 	if (Game::reloadHUD) {
-
 		theWorld.Render();
 		Game::getHUD()->clearHUD();
 		Game::getHUD()->showBackgrounds();

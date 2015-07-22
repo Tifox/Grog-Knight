@@ -234,3 +234,7 @@ void	Map::callAllPatterns(void) {
 			(*en)->getPattern()->tick(*this);
 	}
 }
+
+void	Map::removeEnemy(Enemy *e) {
+	this->_enemies.remove(e);
+}

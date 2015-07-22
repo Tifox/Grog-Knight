@@ -74,6 +74,7 @@ class	Map {
 		std::list<Enemy *>		getEnemies(void);
 		std::vector<std::vector<int> >	getPhysicMap(void);
 		void	callAllPatterns(void);
+		void	removeEnemy(Enemy *e);
 
 	private:
 		int					_mapCount;

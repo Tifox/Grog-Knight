@@ -94,9 +94,12 @@ void	Hero::actionCallback(std::string name, int status) {
 		if (this->getAttribute("class") == "Warrior")
 			this->changeSizeTo(Vector2(x, y));
 		this->_setCategory("attack");
+
+		std::string type = this->_weapon->getType();
+
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-								  this->_getAttr("beginFrame_" + orientation).asInt(),
-								  this->_getAttr("endFrame_" + orientation).asInt(), "base");
+								  this->_getAttr("beginFrame" + type + "_" + orientation).asInt(),
+								  this->_getAttr("endFrame" + type + "_" + orientation).asInt(), "base");
 
 	} else if (name == "attack" && status == 0 &&
 			   this->_canAttack == true &&

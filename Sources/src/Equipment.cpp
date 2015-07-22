@@ -68,6 +68,7 @@ Equipment::Equipment(Weapon *w, Characters* c): Object() {
 	this->addAttribute("name", w->getName());
 	this->_flavor = w->getFlavor();
 	this->addAttribute("flavor", w->getFlavor());
+	this->addAttribute("type", w->getType());
 	this->SetSprite(this->_weapon->getSprite());
 	this->SetName("loot");
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());

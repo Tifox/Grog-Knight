@@ -125,7 +125,7 @@
 		"shunpo": {
 			"damageScale": 2,
 			"range": 10,
-			"cooldown": 15
+			"cooldown": 1
 		},
 		"down": {
 			"subscribe": "down"

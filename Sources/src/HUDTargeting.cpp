@@ -78,6 +78,7 @@ Enemy* HUDTargeting::getCurrentEnemy(void) {
 
  void HUDTargeting::changeTarget(void) {
     std::list<Enemy *>::iterator it;
+    _enemies = Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX].getEnemies();
     if (_enemies.size() > 0) {
         _enemyNb++;
         if (_enemyNb > _enemies.size())

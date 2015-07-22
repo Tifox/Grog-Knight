@@ -183,7 +183,7 @@ int		Enemy::takeDamage(int damage, int critRate) {
 		this->_setCategory("death");
 		theSwitchboard.SubscribeTo(this, "setToStatic" + this->GetName());
 		theSwitchboard.Broadcast(new Message("setToStatic" + this->GetName()));
-		this->GetBody()->GetFixtureList()->SetSensor(true);
+		//		this->GetBody()->GetFixtureList()->SetSensor(true);
 		this->GetBody()->GetFixtureList()->SetDensity(0);
 //		this->GetBody()->SetGravityScale(0);
 		this->GetBody()->ResetMassData();

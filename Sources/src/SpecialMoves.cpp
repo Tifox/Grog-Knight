@@ -283,8 +283,8 @@ void	SpecialMoves::_shunpo(void) {
 			i = -1;
 		this->character->GetBody()->SetTransform(b2Vec2(this->character->_target->GetBody()->GetWorldCenter().x + 1,
 														this->character->_target->GetBody()->GetWorldCenter().y), 0);
-		if (this->character->_target->getCurrentEnemy()->takeDamage(this->character->_weapon->getDamage(),
-																	this->character->_weapon->getCritRate()) == 1)
+		this->character->_target->getCurrentEnemy()->takeDamage(this->character->_weapon->getDamage(),
+																this->character->_weapon->getCritRate());
 		  this->character->_target->getCurrentEnemy()->GetBody()->SetLinearVelocity(b2Vec2((5 * i), 5));
 	}
 }

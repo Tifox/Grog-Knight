@@ -91,7 +91,7 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 	Weapon* w = static_cast<Weapon*>(m);
 	Projectile* p = static_cast<Projectile*>(m);
 	if (m->getAttribute("type") == "ground") {
-		Game::startRunning(this);
+	  //	Game::startRunning(this);
 		this->_isTakingDamage = 0;
 	} else if (m->getAttribute("type") == "HeroWeaponHitBox") {
 		Characters *h = Game::currentGame->getHero();
@@ -177,6 +177,8 @@ int		Enemy::takeDamage(int damage, int critRate) {
 								Vector3(255, 0, 0), 1, 0);
 	}
 	if (this->_hp - damage <= 0) {
+	  Game::stopRunning(this);
+	  this->GetBody()->SetLinearVelocity(b2Vec2(0,0));
 		this->_isDead = true;
 		Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX].removeEnemy(this);
 		this->actionCallback("death", 0);

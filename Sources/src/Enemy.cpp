@@ -30,6 +30,7 @@
  * A basic constructor, with an mother (Characters) init.
  */
 Enemy::Enemy(void) : Characters("Enemy") {
+  this->_lastHitID = 0;
 	return ;
 }
 
@@ -92,8 +93,11 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 	Projectile* p = static_cast<Projectile*>(m);
 	if (m->getAttribute("type") == "ground") {
 	  //	Game::startRunning(this);
-		this->_isTakingDamage = 0;
 	} else if (m->getAttribute("type") == "HeroWeaponHitBox") {
+	  if (this->_lastHitID == m->getId())
+		return;
+	  else
+		this->_lastHitID = m->getId();
 	  	Characters *h = Game::currentGame->getHero();
 		this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
 		Game::stopRunning(this);
@@ -107,6 +111,10 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 			this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		}
 	} else if (m->getAttribute("type") == "HeroProjectile") {
+	  if (this->_lastHitID == m->getId())
+		return;
+	  else
+		this->_lastHitID = m->getId();
 		Characters *h = Game::currentGame->getHero();
 		this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
 		Game::stopRunning(this);
@@ -165,9 +173,6 @@ void	Enemy::EndContact(Elements *m, b2Contact *contact) {
  * @param damage The damage amount
  */
 int		Enemy::takeDamage(int damage, int critRate) {
-	if (this->_isTakingDamage == 1)
-		return 1;
-	this->_isTakingDamage = 1;
 	if (this->_hp <= 0)
 		return 0;
 	this->actionCallback("takeDamage", 0);

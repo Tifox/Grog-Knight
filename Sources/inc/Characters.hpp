@@ -201,5 +201,6 @@ class Characters : public Elements {
 
 # include "Game.hpp"
 # include "Enemy.hpp"
+# include "MenuCharacter.hpp"
 
 #endif

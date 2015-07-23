@@ -29,6 +29,7 @@
 class	Map;
 class	Maps;
 class Characters;
+class MenuCharacter;
 
 # ifndef __Map__
 # include "Maps.hpp"
@@ -49,6 +50,7 @@ class Characters;
 # include "LevelGenerator.hpp"
 # include "Tooltip.hpp"
 # include "Menu.hpp"
+# include "InGameMenu.hpp"
 
 class ArmorList;
 class EnemyList;
@@ -80,6 +82,7 @@ class Game {
 		void	simulateHeroItemContact(void);
 		void	reloadingHUD(void);
 		Characters	*getHero(void);
+		void	menuInGame(void);
 
 		static bool	endGame;
 		static bool	ended;
@@ -125,6 +128,7 @@ class Game {
 		static int						currentY;
 		static int						minY;
 		static int						started;
+		static int						isInMenu;
 		static int						cameraTick;
 		static int						isWaitingForBind;
 		static int						reloadHUD;
@@ -135,5 +139,6 @@ class Game {
 		std::vector<std::vector<int> >	_tmpMap;
 		Characters	*_hero;
 };
+
 
 #endif

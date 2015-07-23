@@ -116,22 +116,21 @@ void	Game::start(void) {
 
 void	Game::menuInGame(void) {
 	theWorld.SetBackgroundColor(*(new Color(0, 0, 0)));
-	Game::wList = new WeaponList();
-	Game::eList = new EnemyList();
-	Game::aList = new ArmorList();
-	Game::rList = new RingList();
-	this->tooltip = new Tooltip();
 
 	InGameMenu	*menu = new InGameMenu();
 	Game::currentGame = this;
-	Hero			*hero = new Hero("Warrior");
+	//Hero			*hero = new Hero("Warrior");
+	MenuCharacter	*charac = new MenuCharacter();
 
 	menu->showMaps();
+	charac->setXStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid());
+	charac->setYStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid());
 	theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
 						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 18.002);
 	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
-	this->displayHero(*(hero));
-	this->setHero(hero);
+	charac->display();
+	//this->displayHero(*(hero));
+	this->setHero(static_cast<Characters *>(charac));
 	Game::started = 1;
 	Game::isInMenu = 1;
 }
@@ -248,9 +247,9 @@ void	Game::moveCamera(void) {
 	if (asChanged) {
 		this->_hero->destroyTarget();
 		if (Game::isInMenu == 0) {
-			this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 			Game::getHUD()->minimap();
 		}
+		this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 		theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
 			this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
 		asChanged = false;

@@ -120,6 +120,7 @@ void	Characters::_parseJson(std::string file) {
 	this->_name = json["infos"].get("name", "").asString();
 	this->_id = json["infos"].get("id", "").asInt();
 	this->_size = json["infos"].get("size", "").asFloat();
+	this->SetSize(this->_size);
 	this->_hp = json["infos"].get("HP", "").asInt();
 	if (json["infos"].get("maxHP", "").isConvertibleTo(Json::ValueType::intValue))
 		this->_maxHp = json["infos"].get("maxHP", "").asInt();
@@ -685,13 +686,10 @@ void	Characters::_resetBroadcastFlags(void) {
  * @param status The status of the key (0 | 1)
  */
 void	Characters::_forward(int status) {
-	// static int i = 0;
 	this->_setCategory("forward");
 	if (this->_forwardFlag == true && status == 1)
 		return ;
 	this->_forwardFlag = true;
-	// std::cout << "here " << i << std::endl;
-	// i++;
 	if (status == 1) {
 		this->_orientation = RIGHT;
 		this->_latOrientation = RIGHT;

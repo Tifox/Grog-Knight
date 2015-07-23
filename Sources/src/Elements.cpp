@@ -1,4 +1,3 @@
-
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -103,7 +102,7 @@ std::string	Elements::getAttribute(std::string name) {
 void	Elements::setFrameSprite(int frame) {
 	int imgHeight = this->_height;
 	int imgWidth = this->_width;
-	int	cutWidth = 32, cutHeight = 32;
+	int	cutWidth = 16, cutHeight = 16;
 	float nbPerRow = imgWidth / cutWidth;
 	float nbPerColumn = imgHeight / cutHeight;
 	float fY = (1.0f / float(imgHeight)) * float(cutHeight);
@@ -161,6 +160,10 @@ void	Elements::display(void) {
 	if (this->getAttribute("speType") == "water") {
 		this->SetIsSensor(true);
 		this->SetFixedRotation(true);
+	}
+	if (this->getAttribute("layer") != "") {
+		std::cout << "fwef" << std::endl;
+		this->SetLayer(std::stoi(this->getAttribute("layer")));
 	}
 	if (this->getAttribute("physic") != "") {
 		this->InitPhysics();

@@ -103,6 +103,7 @@ Map		Map::display(void) {
 				y--;
 			}
 			if (*(it) != 0) {
+				std::cout << *it << std::endl;
 				elem = new Elements();
 				elem->removeAttr("physic");
 				elem->addAttribute("image", this->_image);

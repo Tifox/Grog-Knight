@@ -80,10 +80,10 @@ void	Maps::readMaps(void) {
 		std::cout << "Error at opening dir" << std::endl;
 	for (; ent = readdir(dir); ) {
 		if (ent->d_name[0] != '.' && !this->rstrncmp(ent->d_name, ".json", 6)) {
-			file = "./Maps/" + std::string(ent->d_name);
+			file = this->_directory + std::string(ent->d_name);
 			fd.open(file.c_str());
 			buffer << fd.rdbuf();
-			//std::cout << file.c_str() << std::endl;
+			std::cout << file.c_str() << std::endl;
 
 			this->_root.clear();
 			if (!this->_reader.parse(buffer.str(), this->_root))

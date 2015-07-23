@@ -78,7 +78,8 @@ void	Menu::ReceiveMessage(Message *m) {
 				theSwitchboard.UnsubscribeFrom(this, "upPressed");
 				theSwitchboard.UnsubscribeFrom(this, "downPressed");
 				Game::removeHUDWindow(this->_window);
-				this->_game->start();
+				//this->_game->start();
+				this->_game->menuInGame();
 				this->_window = Game::getHUD();
 				this->_inMenu = 0;
 			} else if (this->_currentChoice == "Settings") {

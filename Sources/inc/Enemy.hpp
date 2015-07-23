@@ -52,6 +52,7 @@ public:
 	bool			dead(void);
 
 protected:
+	int				_lastHitID;
 	int				_isTakingDamage;
 	bool			isDead;
 	Map				*_map;

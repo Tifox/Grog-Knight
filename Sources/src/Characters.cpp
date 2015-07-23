@@ -43,6 +43,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->addAttribute("physic", "1");
 	this->addAttribute("class", name);
 	this->SetDensity(1.0f);
+	this->SetName(name);
 	this->SetFriction(1);
 	this->SetRestitution(0.0f);
 	this->SetFixedRotation(true);
@@ -268,7 +269,7 @@ void	Characters::ReceiveMessage(Message *m) {
 					this->_getAttr("jump", "fallingFrame_left").asInt(),
 					this->_getAttr("jump", "endFrame_left").asInt() - 3, "jump");
 	}
-	else if (m->GetMessageName() == "destroyEnemy") {
+	else if (m->GetMessageName() == "destroyEnemy" + this->GetName()) {
 		new Loot(this);
 		this->_destroyEnemy();
 		return;
@@ -1130,7 +1131,7 @@ void						Characters::setMana(int mana) {
  * Make theSwitchboard Unsubscribe from the object, and destroy it.
  */
 void						Characters::_destroyEnemy(void) {
-	theSwitchboard.UnsubscribeFrom(this, "destroyEnemy");
+  theSwitchboard.UnsubscribeFrom(this, "destroyEnemy" + this->GetName());
 	Game::addToDestroyList(this);
 }
 

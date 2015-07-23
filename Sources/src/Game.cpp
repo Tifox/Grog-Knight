@@ -114,6 +114,28 @@ void	Game::start(void) {
 	Game::started = 1;
 }
 
+void	Game::menuInGame(void) {
+	theWorld.SetBackgroundColor(*(new Color(0, 0, 0)));
+	Game::wList = new WeaponList();
+	Game::eList = new EnemyList();
+	Game::aList = new ArmorList();
+	Game::rList = new RingList();
+	this->tooltip = new Tooltip();
+
+	InGameMenu	*menu = new InGameMenu();
+	Game::currentGame = this;
+	Hero			*hero = new Hero("Warrior");
+
+	menu->showMaps();
+	theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
+						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 18.002);
+	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
+	this->displayHero(*(hero));
+	this->setHero(hero);
+	Game::started = 1;
+	Game::isInMenu = 1;
+}
+
 //! Read the maps
 /**
  * Launch Maps::readMaps
@@ -224,12 +246,13 @@ void	Game::moveCamera(void) {
 		asChanged = true;
 	}
 	if (asChanged) {
-		// std::cout << "SHAME ! (game.cpp l.228)" << std::endl;
 		this->_hero->destroyTarget();
-		this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
+		if (Game::isInMenu == 0) {
+			this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
+			Game::getHUD()->minimap();
+		}
 		theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
 			this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
-		Game::getHUD()->minimap();
 		asChanged = false;
 	}
 }
@@ -513,6 +536,7 @@ int							Game::currentX = 0;
 int							Game::currentY = 0;
 Game*						Game::currentGame = 0;
 int							Game::started = 0;
+int							Game::isInMenu = 0;
 int							Game::cameraTick = 0;
 int							Game::isWaitingForBind = 0;
 int							Game::reloadHUD = 0;

@@ -57,6 +57,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_item = nullptr;
 	this->_totem = nullptr;
 	this->_isAttacking = 0;
+	this->_target = nullptr;
 	this->_gold = 0;
 	this->_isLoadingAttack = 0;
 	this->_isStomping = 0;
@@ -1141,7 +1142,7 @@ void						Characters::_destroyEnemy(void) {
  */
 void						Characters::destroyTarget(void) {
 	if (this->_target != nullptr) {
-		// std::cout << "destroyTarget (Characters.cpp l.1077)" << std::endl;
+	  //		std::cout << "destroyTarget (Characters.cpp l.1077)" << std::endl;
 		Game::addToDestroyList(this->_target);
 		this->_target = nullptr;
 	}

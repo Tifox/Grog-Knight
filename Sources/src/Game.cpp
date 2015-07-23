@@ -351,14 +351,16 @@ bool	Game::destroyAllBodies(void) {
 		return true;
 	} else {
 		for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
+		  std::cout << "deleting element" << std::endl;
+		  std::cout << (*it) << std::endl;
 			if ((*it)->getAttribute("physic") != "") {
-				if ((*it)->GetBody()) {
-					(*it)->GetBody()->SetActive(false);
-					theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
-				}
+			  if ((*it)->GetBody()) {
+				(*it)->GetBody()->SetActive(false);
+				theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
+			  }
 			}
-			theWorld.Remove(*it);
-			Game::delElement(*it);
+		  theWorld.Remove(*it);
+		  Game::delElement(*it);
 		}
 		Game::bodiesToDestroy.clear();
 		for (std::list<Elements*>::iterator it = Game::bodiesToCreate.begin(); it != Game::bodiesToCreate.end(); it++) {

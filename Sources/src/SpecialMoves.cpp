@@ -271,7 +271,6 @@ void	SpecialMoves::_shunpo(void) {
 		y = y - y2;
 		if (y < 0) y *= -1;
 		if (x + y > this->character->_getAttr("shunpo", "range").asInt()) {
-			std::cout << "too far" << std::endl;
 			return;
 		}
 		if (this->character->_speMoveReady == false || this->character->_canMove == false)
@@ -280,12 +279,12 @@ void	SpecialMoves::_shunpo(void) {
 		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"), this->character->_getAttr("shunpo", "cooldown").asFloat());
 		if (this->character->_target->getCurrentEnemy()->getOrientation() == Characters::LEFT)
 			i = 1;
-		else if (this->character->_target->getCurrentEnemy()->getOrientation() == Characters::RIGHT)
+		else
 			i = -1;
 		this->character->GetBody()->SetTransform(b2Vec2(this->character->_target->GetBody()->GetWorldCenter().x + 1,
 														this->character->_target->GetBody()->GetWorldCenter().y), 0);
-		if (this->character->_target->getCurrentEnemy()->takeDamage(this->character->_weapon->getDamage(),
-																	this->character->_weapon->getCritRate()) == 1)
-		this->character->_target->getCurrentEnemy()->ApplyLinearImpulse(Vector2((3 * i), 3), Vector2(0,0));
+		this->character->_target->getCurrentEnemy()->takeDamage(this->character->_weapon->getDamage(),
+																this->character->_weapon->getCritRate());
+		  this->character->_target->getCurrentEnemy()->GetBody()->SetLinearVelocity(b2Vec2((5 * i), 5));
 	}
 }

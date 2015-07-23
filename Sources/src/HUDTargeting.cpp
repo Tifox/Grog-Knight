@@ -106,9 +106,7 @@ Enemy* HUDTargeting::getCurrentEnemy(void) {
  }
 
  void	HUDTargeting::ReceiveMessage(Message *m) {
-    std::cout << m->GetMessageName() << " pouet" << std::endl;
  	if (m->GetMessageName() == std::to_string(_enemyId)) {
-        std::cout << "destroy" << std::endl;
         this->_joint = nullptr;
         std::list<Enemy *>::iterator it;
 

@@ -94,7 +94,7 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 	  //	Game::startRunning(this);
 		this->_isTakingDamage = 0;
 	} else if (m->getAttribute("type") == "HeroWeaponHitBox") {
-		Characters *h = Game::currentGame->getHero();
+	  	Characters *h = Game::currentGame->getHero();
 		this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
 		Game::stopRunning(this);
 		if (this->takeDamage(w->getDamage(), w->getCritRate()) == 1) {
@@ -195,8 +195,8 @@ int		Enemy::takeDamage(int damage, int critRate) {
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 				this->_getAttr("beginFrame").asInt(),
 				this->_getAttr("endFrame").asInt());
-		theSwitchboard.SubscribeTo(this, "destroyEnemy");
-		theSwitchboard.DeferredBroadcast(new Message("destroyEnemy"), 0.5);
+		theSwitchboard.SubscribeTo(this, "destroyEnemy" + this->GetName());
+		theSwitchboard.DeferredBroadcast(new Message("destroyEnemy" + this->GetName()), 0.5);
 		theSwitchboard.Broadcast(new Message(std::to_string(this->getId())));
 		return 0;
 	}

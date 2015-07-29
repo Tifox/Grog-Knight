@@ -54,14 +54,14 @@
 		},
 		"attack": {
 			"subscribe": "attack",
-			"beginFrame_right": 18,
-			"endFrame_right": 22,
-			"beginFrame_left": 23,
-			"endFrame_left": 27,
-			"beginFrame_down": 28,
-			"endFrame_down": 33,
-			"beginFrame_up": 34,
-			"endFrame_up": 39,
+			"beginFrameBow_right": 18,
+			"endFrameBow_right": 22,
+			"beginFrameBow_left": 23,
+			"endFrameBow_left": 27,
+			"beginFrameBow_down": 28,
+			"endFrameBow_down": 33,
+			"beginFrameBow_up": 34,
+			"endFrameBow_up": 39,
 			"time": 0.05
 		},
 		"loadAttack_charge": {

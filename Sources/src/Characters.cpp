@@ -312,8 +312,9 @@ void	Characters::ReceiveMessage(Message *m) {
 	}
 	else if (m->GetMessageName() == "dashEnd") {
 		theSwitchboard.UnsubscribeFrom(this, "dashEnd");
+		this->_isDashing = false;
 		this->GetBody()->SetGravityScale(1);
-		Game::stopRunning(this);
+		//		Game::stopRunning(this);
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 	}
 	else if (m->GetMessageName() == "chargeEnd") {
@@ -436,11 +437,13 @@ void	Characters::AnimCallback(String s) {
 			}
 		} else if (this->_grounds.size() == 0 && this->getAttribute("type") == "Hero") {
 			this->_setCategory("jump");
-			if (this->_latOrientation == LEFT) {
+			if (this->_latOrientation == LEFT && this->_isDashing == false) {
+			  this->changeSizeTo(Vector2(1,1));
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 						this->_getAttr("fallingFrame_left").asInt(),
 						this->_getAttr("fallingFrame_left").asInt(), "base");
-			} else if (this->_latOrientation == RIGHT) {
+			} else if (this->_latOrientation == RIGHT && this->_isDashing == false) {
+			  this->changeSizeTo(Vector2(1,1));
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 						this->_getAttr("fallingFrame_right").asInt(),
 						this->_getAttr("fallingFrame_right").asInt(), "base");
@@ -485,7 +488,7 @@ void	Characters::AnimCallback(String s) {
 		}
 	} else if (s == "endDash") {
 		this->_setCategory("dash");
-		this->_isRunning = 0;
+		//this->_isRunning = 0;
 		std::string orientation;
 		if (this->_latOrientation == RIGHT)
 			orientation = "right";
@@ -616,6 +619,7 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 						this->_isAttacking == false && this->_isLoadingAttack == 0) {
 					if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
 						this->changeSizeTo(Vector2(1, 1));
+					if (this->_isDashing == false)
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 							this->_getAttr("jump", "fallingFrame_right").asInt(),
 							this->_getAttr("jump", "endFrame_right").asInt() - 3, "jump");
@@ -623,9 +627,12 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 						this->_isAttacking == false && this->_isLoadingAttack == 0) {
 					if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
 						this->changeSizeTo(Vector2(1, 1));
+					if (this->_isDashing == false) {
+					  this->changeSizeTo(Vector2(1,1));
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 							this->_getAttr("jump", "fallingFrame_left").asInt(),
 							this->_getAttr("jump", "endFrame_left").asInt() - 3, "jump");
+					}
 				}
 			}
 		}
@@ -691,8 +698,6 @@ void	Characters::_forward(int status) {
 	if (this->_forwardFlag == true && status == 1)
 		return ;
 	this->_forwardFlag = true;
-	// std::cout << "here " << i << std::endl;
-	// i++;
 	if (status == 1) {
 		this->_orientation = RIGHT;
 		this->_latOrientation = RIGHT;
@@ -719,17 +724,18 @@ void	Characters::_forward(int status) {
 			this->_setCategory("forward");
 		}
 		Game::startRunning(this);
-		if (this->_isRunning == 2)
+		if (this->_isRunning == 2 && this->_isDashing == false)
 			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
 		this->_isRunning = 1;
 	} else if (status == 0 && this->_latOrientation == RIGHT) {
+	  if (this->_isDashing == false)
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
-		Game::stopRunning(this);
+	  Game::stopRunning(this);
 		this->_isRunning = 0;
-		if (!this->_isJump && !this->_isAttacking)
+		if (!this->_isJump && !this->_isAttacking && this->_isDashing == false)
 			this->AnimCallback("base");
 	} else {
-		if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0)
+	  if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false)
 			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
 	}
 	return ;
@@ -774,17 +780,18 @@ void	Characters::_backward(int status) {
 			this->_setCategory("backward");
 		}
 		Game::startRunning(this);
-		if (this->_isRunning == 1)
+		if (this->_isRunning == 1 && this->_isDashing == false)
 			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
 		this->_isRunning = 2;
 	} else if (status == 0 && this->_latOrientation == LEFT) {
+	  if (this->_isDashing == false)
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
-		Game::stopRunning(this);
+	  Game::stopRunning(this);
 		this->_isRunning = 0;
-		if (!this->_isJump && !this->_isAttacking)
+		if (!this->_isJump && !this->_isAttacking && !this->_isDashing)
 			this->AnimCallback("base");
 	} else {
-		if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0) {
+		if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false) {
 			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
 		}
 	}

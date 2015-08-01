@@ -75,10 +75,9 @@ void	Menu::ReceiveMessage(Message *m) {
 	if (this->_inMenu == 1) {
 		if (m->GetMessageName() == "enterPressed") {
 			if (this->_currentChoice == "Start Game") {
-				theSwitchboard.UnsubscribeFrom(this, "upPressed");
-				theSwitchboard.UnsubscribeFrom(this, "downPressed");
+				//theSwitchboard.UnsubscribeFrom(this, "upPressed");
+				//theSwitchboard.UnsubscribeFrom(this, "downPressed");
 				Game::removeHUDWindow(this->_window);
-				//this->_game->start();
 				this->_game->menuInGame();
 				this->_window = Game::getHUD();
 				this->_inMenu = 0;
@@ -295,6 +294,7 @@ void	Menu::ReceiveMessage(Message *m) {
 				Game::currentGame->getHero()->unsubscribeFromAll();
 				theWorld.PausePhysics();
 				this->_inMenu = 3;
+				Game::isPaused = 1;
 			this->pauseMenu();
 		} else if (this->_inMenu == 1) {
 			Quit::quitGame();
@@ -314,6 +314,7 @@ void	Menu::ReceiveMessage(Message *m) {
 
 			Game::currentGame->getHero()->subscribeToAll();
 			theWorld.ResumePhysics();
+			Game::isPaused = 0;
 			this->_inMenu = 0;
 			this->_fadeActor = nullptr;
 			this->_pauseMenuText.clear();

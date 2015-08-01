@@ -29,6 +29,7 @@ MenuCharacter::MenuCharacter(void) : Characters("MenuCharacter") {
 	this->addAttribute("type", "Hero");
 	this->addAttribute("physic", "1");
 	this->addAttribute("hero", "1");
+	theSwitchboard.SubscribeTo(this, "enterPressed");
 }
 
 MenuCharacter::~MenuCharacter(void) {
@@ -40,15 +41,25 @@ void	MenuCharacter::init(void) {
 }
 
 void	MenuCharacter::actionCallback(std::string name, int status) {
-
 }
 
 void	MenuCharacter::BeginContact(Elements *elem, b2Contact *contact) {
-				contact->SetEnabled(false);
+	contact->SetEnabled(false);
 }
 
 void	MenuCharacter::EndContact(Elements *elem, b2Contact *contact) {
 
+}
+
+void	MenuCharacter::ReceiveMessage(Message *m) {
+	Characters::ReceiveMessage(m);
+	if (m->GetMessageName() == "enterPressed") {
+		if (Game::isPaused == 0) {
+			Game::isInMenu = 0;
+			Game::currentGame->start();
+			theSwitchboard.UnsubscribeFrom(this, "enterPressed");
+		}
+	}
 }
 
 void	MenuCharacter::AnimCallback(String s) {
@@ -73,7 +84,7 @@ void	MenuCharacter::_forward(int status) {
 	this->_forwardFlag = true;
 
 	if (status == 1) {
-		if (this->_isRunning == 0) {
+		if (this->_isRunning == 0 || this->_isRunning == 2) {
 			this->_orientation = RIGHT;
 			this->_latOrientation = RIGHT;
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
@@ -99,7 +110,7 @@ void	MenuCharacter::_backward(int status) {
 	this->_backwardFlag = true;
 
 	if (status == 1) {
-		if (this->_isRunning == 0) {
+		if (this->_isRunning == 0 || this->_isRunning == 1) {
 			this->_orientation = LEFT;
 			this->_latOrientation = LEFT;
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
@@ -116,5 +127,4 @@ void	MenuCharacter::_backward(int status) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(-(this->_getAttr("force").asFloat()), this->GetBody()->GetLinearVelocity().y));
 		this->_isRunning = 2;
 	}
-
 }

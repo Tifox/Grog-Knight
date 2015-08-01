@@ -84,10 +84,11 @@ void	Game::start(void) {
 	Game::aList = new ArmorList();
 	Game::rList = new RingList();
 	this->tooltip = new Tooltip();
+	delete(Game::currentGame->maps);
+	this->maps = new Maps("Maps/");
+	this->maps->readMaps();
 	Game::currentGame = this;
 	Hero			*hero = new Hero("Warrior");
-
-
 
 	LevelGenerator *levelGenerator = new LevelGenerator(4, 3, 60);
 	levelGenerator->execute();
@@ -104,13 +105,11 @@ void	Game::start(void) {
 						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 9.001);
 	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 
-	Game::addHUDWindow(new HUDWindow());
 	this->displayHero(*(hero));
 	hero->init();
 	this->setHero(hero);
 	this->displayHUD();
 	hero->setStartingValues();
-
 	Game::started = 1;
 }
 
@@ -119,17 +118,16 @@ void	Game::menuInGame(void) {
 
 	InGameMenu	*menu = new InGameMenu();
 	Game::currentGame = this;
-	//Hero			*hero = new Hero("Warrior");
 	MenuCharacter	*charac = new MenuCharacter();
 
 	menu->showMaps();
 	charac->setXStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid());
 	charac->setYStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid());
 	theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
-						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 18.002);
+						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 18.502);
 	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 	charac->display();
-	//this->displayHero(*(hero));
+	Game::addHUDWindow(new HUDWindow());
 	this->setHero(static_cast<Characters *>(charac));
 	Game::started = 1;
 	Game::isInMenu = 1;
@@ -489,7 +487,7 @@ void		Game::displayHUD(void) {
 }
 
 void		Game::reloadingHUD(void) {
-	if (Game::reloadHUD) {
+	if (Game::reloadHUD && !Game::isInMenu) {
 		theWorld.Render();
 		Game::getHUD()->clearHUD();
 		Game::getHUD()->showBackgrounds();
@@ -539,3 +537,4 @@ int							Game::isInMenu = 0;
 int							Game::cameraTick = 0;
 int							Game::isWaitingForBind = 0;
 int							Game::reloadHUD = 0;
+int							Game::isPaused = 0;

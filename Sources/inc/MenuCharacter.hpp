@@ -37,6 +37,7 @@ class		MenuCharacter : public Characters {
 		virtual void	BeginContact(Elements *elem, b2Contact *contact);
 		virtual void	EndContact(Elements *elem, b2Contact *contact);
 		virtual void	AnimCallback(String s);
+		virtual void	ReceiveMessage(Message *m);
 	protected:
 		virtual void	_forward(int status);
 		virtual void	_backward(int status);

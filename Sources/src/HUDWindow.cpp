@@ -659,7 +659,8 @@ void	HUDWindow::clearHUD(void) {
 		theWorld.Remove(*it);
 	}
 	this->removeText(this->_gold);
-	this->removeText("Lvl " + std::to_string(this->_g->getHero()->getLevel()));
+	if (this->_g)
+		this->removeText("Lvl " + std::to_string(this->_g->getHero()->getLevel()));
 }
 
 void	HUDWindow::setGame(Game *g) { this->_g = g; };

@@ -83,7 +83,7 @@ void	Maps::readMaps(void) {
 			file = this->_directory + std::string(ent->d_name);
 			fd.open(file.c_str());
 			buffer << fd.rdbuf();
-			std::cout << file.c_str() << std::endl;
+			//std::cout << file.c_str() << std::endl;
 
 			this->_root.clear();
 			if (!this->_reader.parse(buffer.str(), this->_root))

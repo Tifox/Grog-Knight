@@ -102,7 +102,7 @@ std::string	Elements::getAttribute(std::string name) {
 void	Elements::setFrameSprite(int frame) {
 	int imgHeight = this->_height;
 	int imgWidth = this->_width;
-	int	cutWidth = 16, cutHeight = 16;
+	int	cutWidth = this->_cutWidth, cutHeight = this->_cutHeight;
 	float nbPerRow = imgWidth / cutWidth;
 	float nbPerColumn = imgHeight / cutHeight;
 	float fY = (1.0f / float(imgHeight)) * float(cutHeight);
@@ -162,7 +162,6 @@ void	Elements::display(void) {
 		this->SetFixedRotation(true);
 	}
 	if (this->getAttribute("layer") != "") {
-		std::cout << "fwef" << std::endl;
 		this->SetLayer(std::stoi(this->getAttribute("layer")));
 	}
 	if (this->getAttribute("physic") != "") {

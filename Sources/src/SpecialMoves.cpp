@@ -69,7 +69,7 @@
  		this->character->_isDashing = true;
  		this->character->GetBody()->SetGravityScale(0);
  		this->character->actionCallback("dash", 0);
- 		this->character->_canMove = 0;
+		// 		this->character->_canMove = 0;
  		if (this->character->_grounds.size() == 0)
  			this->character->_hasDashed = 1;
  		theSwitchboard.SubscribeTo(this->character, "dashEnd");
@@ -85,7 +85,7 @@
  //! Special move: charge
  /**
   * Character executes a charge if the cooldown is up and the conditions allows it
-  * Properties of charge - invincibility, can move
+  * Properties of charge - invincibility, can move, deals damage
   * @sa SpecialMoves::_specialMove()
   */
 

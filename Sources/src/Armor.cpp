@@ -47,6 +47,7 @@ Armor::Armor(Armor* Armor) {
 	this->_flavor = Armor->getFlavor();
 	this->_sprite = Armor->getSprite();
 	this->addAttribute("sprite", this->_sprite);
+	this->addAttribute("flavor", this->_flavor);
 	this->_lootLevel = Armor->getLootLevel();
 	if (Armor->getAttribute("hpBuff") != "")
 		this->addAttribute("hpBuff", Armor->getAttribute("hpBuff"));

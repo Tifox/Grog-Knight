@@ -424,7 +424,6 @@ void	Characters::ReceiveMessage(Message *m) {
  */
 void	Characters::AnimCallback(String s) {
 	this->_setCategory("breath");
-	std::cout << s << std::endl;
 	if (s == "base" || s == "takeDamage") {
 		this->_isAttacking = 0;
 		if (this->_isRunning == 0 && this->_isAttacking == 0 && this->_isLoadingAttack == 0 &&

@@ -111,6 +111,7 @@ void	Game::start(void) {
 	this->displayHUD();
 	hero->setStartingValues();
 	Game::started = 1;
+	Game::currentGame = this;
 }
 
 void	Game::menuInGame(void) {
@@ -244,12 +245,11 @@ void	Game::moveCamera(void) {
 	}
 	if (asChanged) {
 		this->_hero->destroyTarget();
-		if (Game::isInMenu == 0) {
-			Game::getHUD()->minimap();
-		}
 		this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 		theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
 			this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
+		if (Game::isInMenu == 0)
+			Game::getHUD()->minimap();
 		asChanged = false;
 	}
 }

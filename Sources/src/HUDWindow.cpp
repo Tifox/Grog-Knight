@@ -31,7 +31,6 @@
  */
 HUDWindow::HUDWindow(void) : HUDActor() {
 	RegisterFont("Resources/font.ttf", 14, "Gamefont");
-	RegisterFont("Resources/font.ttf", 14, "Gamefont");
 	RegisterFont("Resources/font.ttf", 10, "MediumGamefont");
 	RegisterFont("Resources/Fonts/fail.otf", 80, "dead");
 	RegisterFont("Resources/Fonts/Market_Deco.ttf", 80, "title");
@@ -127,7 +126,7 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 colo
  * @note isFading and isTalk can't be true at the same time
  */
 HUDWindow::Text		*HUDWindow::setText(std::string str, Characters *toFollow, 
-		Vector3 color, int isFading, int isTalk) {
+		Vector3 color, int isFading, int isTalk, int isInMenu) {
 	HUDWindow::Text		*t = new HUDWindow::Text();
 
 	t->str = str;
@@ -144,9 +143,9 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, Characters *toFollow,
 		Elements	*test;
 
 		test = new Elements();
-		test->SetPosition(Game::currentGame->getHero()->GetBody()->GetWorldCenter().x, 
-			(Game::currentGame->getHero()->GetBody()->GetWorldCenter().y + 1));
 		test->SetSize(2.5, 0.7);
+		test->SetPosition(toFollow->GetBody()->GetWorldCenter().x, 
+			(toFollow->GetBody()->GetWorldCenter().y + 1));
 		test->SetSprite("Resources/Images/HUD/talk.png");
 		test->SetDrawShape(ADS_Square);
 		test->SetFixedRotation(true);
@@ -155,16 +154,15 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, Characters *toFollow,
 		test->SetRestitution(0);
 		test->SetFriction(0);
 		test->SetIsSensor(true);
-		test->SetLayer(1500);
 		test->InitPhysics();
 		b2DistanceJointDef jointDef1;
 		b2DistanceJointDef jointDef2;
-		jointDef1.Initialize(Game::currentGame->getHero()->GetBody(), test->GetBody(), 
-				b2Vec2(Game::currentGame->getHero()->GetBody()->GetWorldCenter().x + 0.4f, 
-				Game::currentGame->getHero()->GetBody()->GetWorldCenter().y + 0.4f), test->GetBody()->GetWorldCenter());
+		jointDef1.Initialize(toFollow->GetBody(), test->GetBody(), 
+				b2Vec2(toFollow->GetBody()->GetWorldCenter().x + 0.4f, 
+				toFollow->GetBody()->GetWorldCenter().y + 0.4f), test->GetBody()->GetWorldCenter());
 		jointDef1.collideConnected = false;
-		jointDef2.Initialize(Game::currentGame->getHero()->GetBody(), test->GetBody(), 
-			b2Vec2(Game::currentGame->getHero()->GetBody()->GetWorldCenter().x - 0.4f, test->GetBody()->GetWorldCenter().y - 0.4f), test->GetBody()->GetWorldCenter());
+		jointDef2.Initialize(toFollow->GetBody(), test->GetBody(), 
+			b2Vec2(toFollow->GetBody()->GetWorldCenter().x - 0.4f, test->GetBody()->GetWorldCenter().y - 0.4f), test->GetBody()->GetWorldCenter());
 		jointDef2.collideConnected = false;
 		b2DistanceJoint *joint1 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef1);
 		b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
@@ -548,12 +546,6 @@ void	HUDWindow::_drawDoor(Vector2 size, Vector2 position) {
 }
 
 //! Display the minimap in the HUD
-/**
- * This function is not finished at all.
- * So don't use it.
- * Thank's.
- * @todo Make this function work normally.
- */
 void	HUDWindow::minimap(void) {
 	int		x, y, x2, y2;
 	HUDActor *tmp;
@@ -577,8 +569,9 @@ void	HUDWindow::minimap(void) {
 			tmp = new HUDActor();
 			tmp->SetSize(40, 27);
 			tmp->SetPosition(x, y);
-			if (x2 == Game::currentX && y2 == Game::currentY)
+			if (x2 == Game::currentX && y2 == Game::currentY) {
 				tmp->SetColor(0, 1, 0);
+			}
 			else
 				tmp->SetColor(1, 1, 1);
 			tmp->SetDrawShape(ADS_Square);

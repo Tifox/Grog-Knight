@@ -75,8 +75,7 @@ void	Menu::ReceiveMessage(Message *m) {
 	if (this->_inMenu == 1) {
 		if (m->GetMessageName() == "enterPressed") {
 			if (this->_currentChoice == "Start Game") {
-				//theSwitchboard.UnsubscribeFrom(this, "upPressed");
-				//theSwitchboard.UnsubscribeFrom(this, "downPressed");
+				Game::isInMenu = 0;
 				Game::removeHUDWindow(this->_window);
 				this->_game->menuInGame();
 				this->_window = Game::getHUD();

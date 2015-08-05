@@ -55,6 +55,8 @@ class Tooltip : public MessageListener {
 		HUDActor			*_equip;
 		std::string 		_name;
 		std::string 		_flavor;
+		std::string 		_hp;
+		std::string 		_mana;
 		std::string 		_val;
 		Elements			*_lastElem;
 };

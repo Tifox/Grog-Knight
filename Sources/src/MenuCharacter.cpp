@@ -45,19 +45,27 @@ void	MenuCharacter::actionCallback(std::string name, int status) {
 
 void	MenuCharacter::BeginContact(Elements *elem, b2Contact *contact) {
 	contact->SetEnabled(false);
+	if (elem->getAttribute("trigger") != "") {
+		std::cout << elem->getAttribute("trigger") << std::endl;;
+		//this->trigger(name);
+	}
 }
 
 void	MenuCharacter::EndContact(Elements *elem, b2Contact *contact) {
 
 }
 
+void	MenuCharacter::trigger(std::string name) {
+
+}
+
 void	MenuCharacter::ReceiveMessage(Message *m) {
 	Characters::ReceiveMessage(m);
 	if (m->GetMessageName() == "enterPressed") {
-		if (Game::isPaused == 0) {
+		if (Game::isPaused == 0 && Game::isInMenu == 1) {
+			theSwitchboard.UnsubscribeFrom(this, "enterPressed");
 			Game::isInMenu = 0;
 			Game::currentGame->start();
-			theSwitchboard.UnsubscribeFrom(this, "enterPressed");
 		}
 	}
 }

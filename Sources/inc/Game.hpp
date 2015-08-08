@@ -41,6 +41,7 @@ class MenuCharacter;
 # include "GameContactListener.hpp"
 # include "ContactFilter.hpp"
 # include "Characters.hpp"
+# include "Dealer.hpp"
 # include "WeaponList.hpp"
 # include "Hitbox.hpp"
 # include "HUDWindow.hpp"
@@ -72,6 +73,7 @@ class Game {
 		void	start(void);
 		void	readMaps(void);
 		void	displayHero(Elements & Hero);
+		void	displayDealer(Elements & Dealer) ;
 		void	displayEnemy(Elements & Enemy);
 		void	displayObject(Elements & Object);
 		void	showMap(void);

@@ -112,6 +112,7 @@ void	Game::start(void) {
 	hero->setStartingValues();
 	Game::started = 1;
 	Game::currentGame = this;
+	new Shop(0,0,2,3);
 }
 
 void	Game::menuInGame(void) {

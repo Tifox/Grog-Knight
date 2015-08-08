@@ -73,6 +73,7 @@ class Game {
 		void	start(void);
 		void	readMaps(void);
 		void	displayHero(Elements & Hero);
+		void	displayDealer(Elements & Dealer);
 		void	displayEnemy(Elements & Enemy);
 		void	displayObject(Elements & Object);
 		void	showMap(void);

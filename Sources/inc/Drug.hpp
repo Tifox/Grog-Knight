@@ -57,8 +57,6 @@ public:
 	std::string		getType(void);
 	std::string		getFlavor(void);
 	std::string		getSprite(void);
-	Drug 			*getDrugName(void);
-	Drug 			*getDrugRandom(void);
 
 
 private:

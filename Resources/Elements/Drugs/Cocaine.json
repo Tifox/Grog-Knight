@@ -1,0 +1,12 @@
+{
+	"infos": {
+		"name": "Cocaine",
+		"id": 0,
+		"flavor": "I DO COCAIIIIIIIIIINE",
+		"sprites": "Resources/Images/gold.png"
+	},
+	"bonus": {
+		"damage": 25,
+		"speed": 50
+	}
+}

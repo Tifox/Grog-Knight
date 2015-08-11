@@ -148,12 +148,12 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, Characters *toFollow,
 			(toFollow->GetBody()->GetWorldCenter().y + 1));
 		test->SetSprite("Resources/Images/HUD/talk.png");
 		test->SetDrawShape(ADS_Square);
-		test->SetFixedRotation(true);
+/*		test->SetFixedRotation(true);
 		test->SetLayer(1500);
 		test->SetDensity(0.001f);
 		test->SetRestitution(0);
 		test->SetFriction(0);
-		test->SetIsSensor(true);
+		test->SetIsSensor(true);*/
 		test->InitPhysics();
 		b2DistanceJointDef jointDef1;
 		b2DistanceJointDef jointDef2;

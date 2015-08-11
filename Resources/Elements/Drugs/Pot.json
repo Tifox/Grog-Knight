@@ -1,0 +1,12 @@
+{
+	"infos": {
+		"name": "Pot",
+		"id": 0,
+		"flavor": "Smoke weed everyday...",
+		"sprites": "Resources/Images/gold.png"
+	},
+	"bonus": {
+		"invincibility": 30,
+		"puke": 30
+	} 
+}

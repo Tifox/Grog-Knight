@@ -14,15 +14,5 @@
 			"endFrame": 1,
 			"time": 0.3
 		}
-	},
-	"Drugs": {
-		"pot": {
-			"invincibility": 30,
-			"puke": 30
-		},
-		"coke": {
-			"damage": 25,
-			"speed": 50
-		}
 	}
 }

@@ -18,60 +18,62 @@
  */
 
 /**
- * File: Armor.cpp
- * Creation: 2015-05-07 15:23
+ * File: Drug.cpp
+ * Creation: 2015-05-07 17:43
  * Manon Budin <mbudin@student.42.fr>
  */
 
-# include "Armor.hpp"
+# include "Drug.hpp"
 
-//!Constructor called by the Armorlist class to parse all Armors
+//!Constructor called by the Druglist class to parse all Drugs
 /**
  * Default constructor, using the element that called the attack
  * @param name (std::string)
  */
-Armor::Armor(std::string name) : _name(name) {
+Drug::Drug(std::string name) : _name(name) {
 	this->_readFile(name);
+	this->_name = getName();
+	this->_flavor = getFlavor();
+	this->_sprite = getSprite();
+	this->addAttribute("type3", "Drug");
+	this->addAttribute("name", this->_name);
+	this->addAttribute("flavor", this->_flavor);
+	this->addAttribute("sprite", this->_sprite);
 }
 
-//!Constructor called by hero/equipment class, to copy a parsed version from Armorlist
+//!Constructor called by hero/equipment class, to copy a parsed version from Druglist
 /**
  * Copy constructor
- * @param Armor (Armor*)
+ * @param Drug (Drug*)
  */
 
-Armor::Armor(Armor* Armor) {
-	this->_name = Armor->getName();
-	this->addAttribute("type3", "Armor");
+Drug::Drug(Drug* Drug) {
+	this->_name = Drug->getName();
+	this->_flavor = Drug->getFlavor();
+	this->_sprite = Drug->getSprite();
+	this->addAttribute("type3", "Drug");
 	this->addAttribute("name", this->_name);
-	this->_flavor = Armor->getFlavor();
-	this->_sprite = Armor->getSprite();
-	this->addAttribute("sprite", this->_sprite);
 	this->addAttribute("flavor", this->_flavor);
-	this->_lootLevel = Armor->getLootLevel();
-	if (Armor->getAttribute("hpBuff") != "")
-		this->addAttribute("hpBuff", Armor->getAttribute("hpBuff"));
-	if (Armor->getAttribute("manaBuff") != "")
-		this->addAttribute("manaBuff", Armor->getAttribute("manaBuff"));
+	this->addAttribute("sprite", this->_sprite);
 }
 
 
 //! Basic destructor
 
-Armor::~Armor(void) {
+Drug::~Drug(void) {
 }
 
-//!Json parsing for the Armor files (differs a bit from the Characters, that's why we have both)
+//!Json parsing for the Drug files (differs a bit from the Characters, that's why we have both)
 /**
  * Read a config file, base on the name of the class
  * @param: name (std::string)
  */
-void	Armor::_readFile(std::string name) {
+void	Drug::_readFile(std::string name) {
 	std::string			file;
 	std::stringstream	buffer;
 	std::ifstream		fd;
 
-	file = "./Resources/Elements/Armors/" + name + ".json";
+	file = "./Resources/Elements/Drugs/" + name + ".json";
 	fd.open(file.c_str());
 	if (!fd.is_open())
 		Log::error("Can't open the file for the " +
@@ -86,7 +88,7 @@ void	Armor::_readFile(std::string name) {
  * @param: file (std::string)
  * @note: file is the whole file content
  */
-void    Armor::_parseJson(std::string file) {
+void    Drug::_parseJson(std::string file) {
 	Json::Reader    read;
 	Json::Value     json;
 	Json::ValueIterator i, v;
@@ -98,12 +100,11 @@ void    Armor::_parseJson(std::string file) {
 		Log::warning("The class name is different with the name in the config file: " + this->_name + "/" + json["infos"].get("name", "").asString());
 	this->_name = json["infos"].get("name", "").asString();
 	this->_flavor = json["infos"].get("flavor", "").asString();
-	this->_lootLevel = json["infos"].get("lootLevel", "").asInt();
 	this->_sprite = json["infos"].get("sprites", "").asString();
-	this->addAttribute("sprite", this->_sprite);
 	for (i = json["bonus"].begin(); i != json["bonus"].end(); i++)
 		this->addAttribute( i.key().asString(), (*i).asString());
-	this->addAttribute("type3", "Armor");
+	this->addAttribute("type3", "Drug");
+	this->addAttribute("sprite", this->_sprite);
 }
 
 //! Function called to get an attr value from the parsed json
@@ -113,7 +114,7 @@ void    Armor::_parseJson(std::string file) {
  * @param: key (std::string)
  * @note: See the docs for the utilisation of Json::Value
  */
-Json::Value     Armor::_getAttr(std::string category, std::string key) {
+Json::Value     Drug::_getAttr(std::string category, std::string key) {
 	if (this->_attr.find(category) != this->_attr.end()) {
 		if (this->_attr[category].find(key) != this->_attr[category].end())
 			return this->_attr[category][key];
@@ -125,24 +126,51 @@ Json::Value     Armor::_getAttr(std::string category, std::string key) {
 	return nullptr;
 }
 
-void	Armor::ReceiveMessage(Message *m) {
+void	Drug::ReceiveMessage(Message *m) {
 
 }
 
 /* GETTERS */
-std::string		Armor::getName(void) { return this->_name; }
-std::string		Armor::getFlavor(void) { return this->_flavor; }
-std::string		Armor::getSprite(void) { return this->_sprite; }
-int				Armor::getLootLevel(void) { return this->_lootLevel; }
-int				Armor::getHp(void) { return this->_hp; }
+std::string		Drug::getName(void) { return this->_name; }
+std::string		Drug::getFlavor(void) { return this->_flavor; }
+std::string		Drug::getSprite(void) { return this->_sprite; }
 
-void	Armor::BeginContact(Elements *elem, b2Contact *contact) {
-	if (elem->getAttribute("type") != "ground") {
-		contact->SetEnabled(false);
-		contact->enableContact = false;
+
+
+
+//! List Drugs names
+/**
+ * Read json files
+ */
+/*Drug*			Drug::getDrugName(void) {
+	DIR				*dir;
+	struct dirent	*dirEntry;
+
+	Log::info("Reading drug list...");
+	dir = opendir("./Resources/Elements/Drugs/");
+	while (dirEntry = readdir(dir)) {
+		if (dirEntry && strcmp(dirEntry->d_name, ".") != 0 && strcmp(dirEntry->d_name, "..") != 0) {
+		this->_allDrugs.push_back(std::string(dirEntry->d_name));
+		}
 	}
 }
+*/
+//! Returns one of the existing Drugs
+/**
+ * Returns a new random Drug
+ */
+/*Drug		*Drug::getDrugRandom(void) {
+	getDrugName();
+	std::list<std::string>::iterator it;
+	int	i = 0;
+	int value = (rand() % this->_allDrugs.size());
 
-void	Armor::EndContact(Elements *elem, b2Contact *contact) {
+	for (it = this->_allDrugs.begin(); it != this->_allDrugs.end(); it++) {
+		if (i == value) {
+			return (new Drug(*it));
+		} 
+		i++;
+	}
+	return (new Drug (*this->_allDrugs.begin()));
 }
-
+*/

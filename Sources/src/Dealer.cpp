@@ -67,7 +67,7 @@ void	Dealer::BeginContact(Elements* elem, b2Contact *contact) {
 		contact->enableContact = false;
 	}
 	if (elem->getAttribute("type") == "Hero") {
-		hud->setText("HI BUD YOU WANNA SOME " + this->_drug + "?", this, Vector3(255, 51, 255), 0, 0);
+	//	hud->setText("HI BUD YOU WANNA SOME DRUGS?", Game::currentGame->getHero(), Vector3(255, 51, 255), 0, 1);
 		return; 
 	}
 }
@@ -82,7 +82,8 @@ void	Dealer::BeginContact(Elements* elem, b2Contact *contact) {
 void	Dealer::EndContact(Elements *elem, b2Contact *contact) {
 		HUDWindow *hud = Game::getHUD();
 		if (elem->getAttribute("type") == "Hero") {
-			hud->removeText("HI BUD YOU WANNA SOME " + this->_drug + "?");
+			hud->removeText("HI BUD YOU WANNA SOME DRUGS?");
+			hud->removeText("Here you go buddy. See ya.");
 			return;
 		}
 }
@@ -93,7 +94,11 @@ void	Dealer::ReceiveMessage(Message *m) {
 
 //	if (this->_inMenu == 1) {
 		if (m->GetMessageName() == "enterPressed") {
-			hud->removeText("HI BUD YOU WANNA SOME " + this->_drug + "?");
+			hud->removeText("HI BUD YOU WANNA SOME DRUGS?");
+			Drug *drug = new Drug(Game::dList->getDrugRandom());
+			std::cout << "NAME ===> "<< drug->getName() << std::endl;
+			std::cout << "FLAVOR ===> "<< drug->getFlavor() << std::endl;
+		//	hud->setText("Here you go buddy. See ya.", Game::currentGame->getHero(), Vector3(255, 51, 255), 0, 1);
 		}
 	//}
 }

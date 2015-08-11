@@ -30,7 +30,7 @@
  * Basic constructor
  */
 
-Tooltip::Tooltip() : _name("") , _flavor(""), _lastElem(nullptr) {
+Tooltip::Tooltip() : _name("") , _flavor(""), _hp("") , _mana(""), _lastElem(nullptr) {
 	theSwitchboard.SubscribeTo(this, "deleteTip");
 	return ;
 }
@@ -79,13 +79,27 @@ void 	Tooltip::info(Elements *elem) {
 	float	x = theCamera.GetWindowWidth() / 20 * 11.3;
 	float	y = 30;
 
-
-	if (this->_name == "" && this->_flavor == "") {
+	if (this->_name == "" && this->_flavor == "" && this->_hp == "" && this->_mana == "") {
 		HUDWindow *hud = Game::getHUD();
 		this->_name = elem->getAttribute("name");
 		this->_flavor = elem->getAttribute("flavor");
+		int b;
+
+		if (elem->getAttribute("type3") == "Armor") {
+			b = atoi((elem->getAttribute("hpBuff").c_str())) - atoi(Game::currentGame->getHero()->getArmor()->getAttribute("hpBuff").c_str());
+			this->_hp = std::to_string(b) + " HP";
+			b = atoi((elem->getAttribute("manaBuff").c_str())) - atoi(Game::currentGame->getHero()->getArmor()->getAttribute("manaBuff").c_str());
+			this->_mana = std::to_string(b) + " MP";
+			}
+		if (elem->getAttribute("type3") == "Ring") {
+			b = atoi((elem->getAttribute("hpBuff").c_str())) - atoi(Game::currentGame->getHero()->getRing()->getAttribute("hpBuff").c_str());
+			this->_hp = std::to_string(b) + " HP";
+			b = atoi((elem->getAttribute("manaBuff").c_str())) - atoi(Game::currentGame->getHero()->getRing()->getAttribute("manaBuff").c_str());
+			this->_mana = std::to_string(b) + " MP";
+			}
 
 		hud->setText(this->_name , x + theCamera.GetWindowWidth() / 40 * 2, y + theCamera.GetWindowHeight() / 20 * 0.15, Vector3(0, 0, 0), 1);
+		
 		for (y = 45; i < this->_flavor.size(); i++) {
 			if (this->_flavor[i] == '\n') {
 				hud->setText(tmp, x + theCamera.GetWindowWidth() / 40 * 2, y + theCamera.GetWindowHeight() / 20 * 0.15,  Vector3(0, 0, 0), 1);
@@ -95,6 +109,15 @@ void 	Tooltip::info(Elements *elem) {
 				tmp = tmp + this->_flavor[i];
 		}
 		hud->setText(tmp, x + theCamera.GetWindowWidth() / 40 * 2, y + theCamera.GetWindowHeight() / 20 * 0.15,  Vector3(0, 0, 0), 1);
+		
+		if (this->_hp.find("-"))
+			hud->setText(this->_hp , x + theCamera.GetWindowWidth() / 40 * 2, y + 15 + theCamera.GetWindowHeight() / 20 * 0.15,  Vector3(0, 1, 0), 1);
+		else
+			hud->setText(this->_hp , x + theCamera.GetWindowWidth() / 40 * 2, y + 15 + theCamera.GetWindowHeight() / 20 * 0.15,  Vector3(1, 0, 0), 1);
+		if (this->_mana.find("-"))
+			hud->setText(this->_mana , x + 60  + theCamera.GetWindowWidth() / 40 * 2, y + 15 + theCamera.GetWindowHeight() / 20 * 0.15,  Vector3(0, 1, 0), 1);
+		else
+			hud->setText(this->_mana , x + 60  + theCamera.GetWindowWidth() / 40 * 2, y + 15 + theCamera.GetWindowHeight() / 20 * 0.15,  Vector3(1, 0, 0), 1);
 	}
 	return ;
 }
@@ -105,6 +128,7 @@ void	Tooltip::clearInfo(int clean) {
 
 
 	Game::getHUD()->removeText(this->_name);
+
 	for (i = 0; i < this->_flavor.size(); i++) {
 		if (this->_flavor[i] == '\n') {
 			Game::getHUD()->removeText(tmp);
@@ -112,9 +136,14 @@ void	Tooltip::clearInfo(int clean) {
 		} else
 			tmp = tmp + this->_flavor[i];
 	}
+
 	Game::getHUD()->removeText(tmp);
+	Game::getHUD()->removeText(this->_hp);
+	Game::getHUD()->removeText(this->_mana);
 	this->_name = "";
 	this->_flavor = "";
+	this->_hp = "";
+	this->_mana = "";
 
 	if (clean == 0) {
 		Elements	*w;

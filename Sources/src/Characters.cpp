@@ -62,6 +62,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_gold = 0;
 	this->_isLoadingAttack = 0;
 	this->_isStomping = 0;
+	this->_isCharging = 0;
 	this->_isDashing = 0;
 	this->_speMoveReady = 1;
 	this->_hasDashed = 0;
@@ -220,13 +221,17 @@ void	Characters::ReceiveMessage(Message *m) {
 	if (m->GetMessageName() == "canMove") {
 		if (this->getHP() > 0) {
 			this->_canMove = 1;
+			this->_isLoadingAttack = 0;
+			this->_isAttacking = 0;
+			this->_fullChargedAttack = 0;
 			if (this->_grounds.size() > 0)
 				this->AnimCallback("base");
 		}
 	}
 	else if (m->GetMessageName() == "fullChargedAttack") {
+	  if (this->_isLoadingAttack)
 		this->_fullChargedAttack = true;
-		theSwitchboard.UnsubscribeFrom(this, "fullChargedAttack");
+	  theSwitchboard.UnsubscribeFrom(this, "fullChargedAttack");
 	}
 	else if (m->GetMessageName() == "startChargeAttack") {
 		this->_isLoadingAttack = 1;
@@ -428,7 +433,7 @@ void	Characters::ReceiveMessage(Message *m) {
  */
 void	Characters::AnimCallback(String s) {
 	this->_setCategory("breath");
-	if (s == "base") {
+	if (s == "base" || s == "takeDamage") {
 		this->_isAttacking = 0;
 		if (this->_isRunning == 0 && this->_isAttacking == 0 && this->_isLoadingAttack == 0 &&
 				this->_grounds.size() > 0) {
@@ -476,7 +481,7 @@ void	Characters::AnimCallback(String s) {
 						SAT_Loop,
 						this->_getAttr("beginFrame").asInt(),
 						this->_getAttr("endFrame").asInt());
-			} else {
+			} else if (this->_fullChargedAttack == true) {
 				std::string orientation;
 				if (this->_latOrientation == RIGHT) {
 					orientation = "right";

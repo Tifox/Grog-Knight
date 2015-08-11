@@ -23,7 +23,7 @@
  * @author Louis Solofrizzo <louis@ne02ptzero.me>
  */
 
-#include "../inc/Game.hpp"
+#include "Game.hpp"
 
 //! Basic constructor, set the window to default value
 /**
@@ -89,6 +89,7 @@ void	Game::start(void) {
 	this->maps->readMaps();
 	Game::currentGame = this;
 	Hero			*hero = new Hero("Warrior");
+	Dealer			*dealer = new Dealer("Dealer");
 
 	LevelGenerator *levelGenerator = new LevelGenerator(4, 3, 60);
 	levelGenerator->execute();
@@ -107,10 +108,14 @@ void	Game::start(void) {
 
 	this->displayHero(*(hero));
 	hero->init();
+	dealer->init();
+	this->displayDealer(*(dealer));
 	this->setHero(hero);
 	this->displayHUD();
 	hero->setStartingValues();
 	Game::started = 1;
+	Game::currentGame = this;
+	new Shop(0,0,2,3);
 }
 
 void	Game::menuInGame(void) {
@@ -164,6 +169,14 @@ void	Game::displayHero(Elements & Hero) {
 	Hero.display();
 }
 
+
+void	Game::displayDealer(Elements & Dealer) {
+	//Here starts the game - parse the 1st map coordinates and hero start
+	Dealer.setXStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid());
+	Dealer.setYStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid());
+	Dealer.addAttribute("dealer", "1");
+	Dealer.display();
+}
 //! Display the Enemy
 /**
  * Add an Enemy to the world, with an init position (x, y)
@@ -244,12 +257,11 @@ void	Game::moveCamera(void) {
 	}
 	if (asChanged) {
 		this->_hero->destroyTarget();
-		if (Game::isInMenu == 0) {
-			Game::getHUD()->minimap();
-		}
 		this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 		theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
 			this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
+		if (Game::isInMenu == 0)
+			Game::getHUD()->minimap();
 		asChanged = false;
 	}
 }

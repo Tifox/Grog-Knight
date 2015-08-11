@@ -261,6 +261,10 @@ void	Hero::_takeDamage(Elements* elem) {
   this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
   Game::stopRunning(this);
   this->_isRunning = 0;
+  this->_isLoadingAttack = 0;
+  this->_isAttacking = 0;
+  this->_fullChargedAttack = false;
+  this->_attackPressed = 0;
   this->_isJump = 1;
   if (this->getAttribute("class") == "Warrior")
 	  this->changeSizeTo(Vector2(1, 1));

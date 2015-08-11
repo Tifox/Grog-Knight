@@ -51,6 +51,7 @@ class MenuCharacter;
 # include "Tooltip.hpp"
 # include "Menu.hpp"
 # include "InGameMenu.hpp"
+# include "Shop.hpp"
 
 class ArmorList;
 class EnemyList;
@@ -72,6 +73,7 @@ class Game {
 		void	start(void);
 		void	readMaps(void);
 		void	displayHero(Elements & Hero);
+		void	displayDealer(Elements & Dealer);
 		void	displayEnemy(Elements & Enemy);
 		void	displayObject(Elements & Object);
 		void	showMap(void);

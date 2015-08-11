@@ -26,6 +26,7 @@
 # include <ctime>
 # include "Game.hpp"
 # include "Hero.hpp"
+# include "Dealer.hpp"
 # include "Enemy.hpp"
 # include "Object.hpp"
 # include "WeaponList.hpp"

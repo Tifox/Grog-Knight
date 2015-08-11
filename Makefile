@@ -71,6 +71,7 @@ SRCS =	./Sources/src/Armor.cpp \
 		./Sources/src/Game.cpp \
 		./Sources/src/GameContactListener.cpp \
 		./Sources/src/Hero.cpp \
+		./Sources/src/Dealer.cpp \
 		./Sources/src/Hitbox.cpp \
 		./Sources/src/HUDTargeting.cpp \
 		./Sources/src/HUDWindow.cpp \
@@ -95,6 +96,7 @@ SRCS =	./Sources/src/Armor.cpp \
 		./Sources/src/Weapon.cpp \
 		./Sources/src/WeaponList.cpp \
 		./Sources/src/InGameMenu.cpp \
+		./Sources/src/Shop.cpp \
 		./Sources/src/MenuCharacter.cpp
 
 SYSOBJS = $(patsubst %.cpp,%.o,$(SYSSRCS))

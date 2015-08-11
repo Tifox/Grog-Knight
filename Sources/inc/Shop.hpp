@@ -18,28 +18,30 @@
  */
 
 /**
- * File: Consumable.hpp
- * Creation: 2015-03-06 15:39
- * Manon Budin <mbudin@student.42.fr>
+ * File: Shop.hpp
+ * Creation: 2015-08-02 14:44
+ * Vincent Rey <vrey@student.42.fr>
  */
 
-#ifndef __Consumable__
-# define __Consumable__
+#ifndef __Shop__
+# define __Shop__
 
-# include "Elements.hpp"
-# include "Hero.hpp"
-# include "Dealer.hpp"
-# include "WeaponList.hpp"
-# include "Object.hpp"
+# include "Characters.hpp"
 
-class Consumable : public Object {
+class Shop {
 public:
-	Consumable();
-	Consumable(std::string type, std::string value, Characters* c);
-	Consumable(Characters* c);
-	~Consumable();
+  Shop(void);
+  Shop(int x, int y, int lvl, int nb);
+  ~Shop(void);
+  void	revealShop(void);
+  void	hideShop(void);
 
-	void	BeginContact(Elements *elem, b2Contact *contact);
+private:
+  int	_nbItems;
+  int	_lvlItems;
+  std::map<int, std::string> _items;
+
+  
 };
 
 #endif

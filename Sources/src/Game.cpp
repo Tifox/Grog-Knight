@@ -83,6 +83,8 @@ void	Game::start(void) {
 	Game::eList = new EnemyList();
 	Game::aList = new ArmorList();
 	Game::rList = new RingList();
+	Game::dList = new DrugList();
+
 	this->tooltip = new Tooltip();
 	delete(Game::currentGame->maps);
 	this->maps = new Maps("Maps/");
@@ -115,6 +117,7 @@ void	Game::start(void) {
 	hero->setStartingValues();
 	Game::started = 1;
 	Game::currentGame = this;
+
 	new Shop(0,0,2,3);
 }
 
@@ -172,7 +175,7 @@ void	Game::displayHero(Elements & Hero) {
 
 void	Game::displayDealer(Elements & Dealer) {
 	//Here starts the game - parse the 1st map coordinates and hero start
-	Dealer.setXStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid());
+	Dealer.setXStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid() - 5);
 	Dealer.setYStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid());
 	Dealer.addAttribute("dealer", "1");
 	Dealer.display();
@@ -535,6 +538,7 @@ WeaponList*					Game::wList;
 RingList*					Game::rList;
 EnemyList*					Game::eList;
 Hitbox*						Game::hList;
+DrugList*					Game::dList;
 bool						Game::endGame = false;
 bool						Game::ended = false;
 int							Game::maxX = 0;

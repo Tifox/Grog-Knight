@@ -73,7 +73,7 @@ void	Tooltip::tip(Elements *elem, Characters *c) {
 
 }
 
-void 	Tooltip::info(Elements *elem) {
+void 	Tooltip::info(Elements *elem) { 
 	std::string tmp;
 	int i = 0;
 	float	x = theCamera.GetWindowWidth() / 20 * 11.3;

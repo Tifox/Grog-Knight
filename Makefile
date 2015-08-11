@@ -97,7 +97,9 @@ SRCS =	./Sources/src/Armor.cpp \
 		./Sources/src/WeaponList.cpp \
 		./Sources/src/InGameMenu.cpp \
 		./Sources/src/Shop.cpp \
-		./Sources/src/MenuCharacter.cpp
+		./Sources/src/MenuCharacter.cpp \
+		./Sources/src/Drug.cpp \
+		./Sources/src/DrugList.cpp 
 
 SYSOBJS = $(patsubst %.cpp,%.o,$(SYSSRCS))
 OBJS = $(patsubst %.cpp,%.o,$(SRCS))

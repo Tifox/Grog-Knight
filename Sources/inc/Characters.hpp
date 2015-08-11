@@ -141,6 +141,8 @@ class Characters : public Elements {
 		bool			_isDashing;
 		int				_hasDashed;
 		int				_level;
+	        bool			_isDisengaging;
+
 		std::string		_speMove;
 		SpecialMoves*	_eqMove;
 		Weapon*			_weapon;

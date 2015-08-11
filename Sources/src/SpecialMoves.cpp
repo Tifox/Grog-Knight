@@ -55,6 +55,29 @@
  }
 
 
+ void	SpecialMoves::_disengage(void) {
+ 	this->character->_setCategory("disengage");
+ 	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speMoveReady == 1) {
+ 		this->character->_speMoveReady = 0;
+ 		this->character->_isDisengaging = true;
+ 		this->character->_canMove = 0;
+ 		theSwitchboard.SubscribeTo(this->character, "disengageEnd");
+	        theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
+ 				this->character->_getAttr("cooldown").asFloat());
+		theSwitchboard.DeferredBroadcast(new Message("disengageEnd"),
+ 				this->character->_getAttr("uptime").asFloat());
+		Weapon *currentWeapon = Game::currentGame->getHero()->getWeapon();
+		theSwitchboard.SubscribeTo(this->character, "enableAttackHitbox");
+		theSwitchboard.Broadcast(new Message("enableAttackHitbox"));
+		theSwitchboard.UnsubscribeFrom(this->character, "enableAttackHitbox");
+		if (this->character->_latOrientation == Characters::LEFT)
+ 			this->character->GetBody()->SetLinearVelocity(b2Vec2(this->character->_getAttr("chargeSpeed").asInt(), 0));
+ 		else if (this->character->_latOrientation == Characters::RIGHT)
+ 			this->character->GetBody()->SetLinearVelocity(b2Vec2(-this->character->_getAttr("chargeSpeed").asInt(), 0));
+ 	}
+ }
+
+
  //! Special move: dash
  /**
   * Character executes a dash if the cooldown is up and the conditions allows it
@@ -63,9 +86,8 @@
   */
 
  void	SpecialMoves::_dash(void) {
- 	this->character->_setCategory("dash");
- 	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_hasDashed == 0 &&
- 			this->character->_isDashing == false) {
+   this->character->_setCategory("dash");
+ 	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_hasDashed == 0 && this->character->_isDashing == false) {
  		this->character->_isDashing = true;
  		this->character->GetBody()->SetGravityScale(0);
  		this->character->actionCallback("dash", 0);

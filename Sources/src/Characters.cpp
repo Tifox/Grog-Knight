@@ -70,6 +70,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_eqMove = new SpecialMoves(this);
 	this->_isStomping = false;
 	this->_flyTrigger = false;
+	this->_isDisengaging = false;
 }
 
 //! Basic destructor
@@ -316,6 +317,14 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->_isDashing = false;
 		this->GetBody()->SetGravityScale(1);
 		//		Game::stopRunning(this);
+		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+	}
+	else if (m->GetMessageName() == "disengageEnd") {
+		theSwitchboard.UnsubscribeFrom(this, "disengageEnd");
+		this->_isDisengaging = false;
+		//this->_speMoveReady = 1;
+		//		Game::stopRunning(this);
+		this->_canMove = 1;
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 	}
 	else if (m->GetMessageName() == "chargeEnd") {
@@ -1003,6 +1012,8 @@ void	Characters::_specialMove(void) {
 		this->_eqMove->_totem();
 	else if (this->_speMove == "shunpo")
 		this->_eqMove->_shunpo();
+	else if (this->_speMove == "disengage")
+		 this->_eqMove->_disengage();
 }
 
 //! Equip a weapon

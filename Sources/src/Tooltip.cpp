@@ -202,6 +202,6 @@ void 	Tooltip::ReceiveMessage(Message *m) {
 		Game::getHUD()->removeText(this->_val);
 	}
 	else if (m->GetMessageName() == "deleteTalk") {
-		clearInfo();
+		clearInfo(0);
 	}
 }

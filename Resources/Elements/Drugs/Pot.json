@@ -1,0 +1,12 @@
+{
+	"infos": {
+		"name": "Pot",
+		"id": 0,
+		"flavor": "This make you invincible\nAnd make you puke\n...a lot",
+		"sprites": "Resources/Images/gold.png"
+	},
+	"bonus": {
+		"invincibility": 30,
+		"puke": 30
+	} 
+}

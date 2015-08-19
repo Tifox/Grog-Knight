@@ -54,7 +54,8 @@
          virtual void	_fly(void);
          virtual void   _totem(void);
          virtual void	_shunpo(void);
-
+	 virtual void	_disengage(void);
+   
      private:
          std::string		_category;
 

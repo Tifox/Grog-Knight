@@ -18,28 +18,32 @@
  */
 
 /**
- * File: Consumable.hpp
- * Creation: 2015-03-06 15:39
- * Manon Budin <mbudin@student.42.fr>
+ * File: Dealer.hpp
+ * Creation: 2015-08-07 15:14
+ * Manon Budin <mbudin@student.42.fr> 
  */
 
-#ifndef __Consumable__
-# define __Consumable__
+#ifndef __Dealer__
+# define __Dealer__
 
-# include "Elements.hpp"
-# include "Hero.hpp"
-# include "Dealer.hpp"
-# include "WeaponList.hpp"
-# include "Object.hpp"
+# include "Characters.hpp"
 
-class Consumable : public Object {
-public:
-	Consumable();
-	Consumable(std::string type, std::string value, Characters* c);
-	Consumable(Characters* c);
-	~Consumable();
+class Dealer : public Characters {
 
-	void	BeginContact(Elements *elem, b2Contact *contact);
+	public:
+		Dealer(std::string);
+		~Dealer();
+
+		void	init();
+		virtual void	BeginContact(Elements* m, b2Contact* contact);
+		virtual void	EndContact(Elements* m, b2Contact* contact);
+		void			ReceiveMessage(Message *m);
+
+	private:
+		std::string		_name;
+		std::string		_talk;
+		std::string		_drug;
+		bool			_give;
+
 };
-
 #endif

@@ -18,28 +18,48 @@
  */
 
 /**
- * File: Consumable.hpp
- * Creation: 2015-03-06 15:39
+ * File: DrugList.hpp
+ * Creation: 2015-08-11 17:47
  * Manon Budin <mbudin@student.42.fr>
  */
 
-#ifndef __Consumable__
-# define __Consumable__
 
+#ifndef __DrugList__
+# define __DrugList__
+
+
+# include "Log.hpp"
 # include "Elements.hpp"
-# include "Hero.hpp"
-# include "Dealer.hpp"
-# include "WeaponList.hpp"
-# include "Object.hpp"
+# include <sstream>
 
-class Consumable : public Object {
+# ifdef __APPLE__
+#  include "../../Tools/jsoncpp/include/json/json.h"
+# else
+#  include "json/json.h"
+# endif
+
+# include <list>
+# include "../../Angel/Angel.h"
+# ifndef __Elements__
+# include "Elements.hpp"
+#endif
+
+class Drug;
+
+class DrugList: public Elements {
 public:
-	Consumable();
-	Consumable(std::string type, std::string value, Characters* c);
-	Consumable(Characters* c);
-	~Consumable();
+	DrugList(void);
+	~DrugList(void);
 
-	void	BeginContact(Elements *elem, b2Contact *contact);
+	int		checkExists(std::string);
+	Drug*	getDrug(std::string);
+	Drug*	getDrugRandom(void);
+
+private:
+	std::list<Drug*> _allDrugs;
+
 };
+
+# include "Drug.hpp"
 
 #endif

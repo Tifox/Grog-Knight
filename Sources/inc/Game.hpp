@@ -51,11 +51,14 @@ class MenuCharacter;
 # include "Tooltip.hpp"
 # include "Menu.hpp"
 # include "InGameMenu.hpp"
+# include "Shop.hpp"
+# include "DrugList.hpp"
 
 class ArmorList;
 class EnemyList;
 class RingList;
 class WeaponList;
+class DrugList;
 
 class Hitbox;
 class HUDWindow;
@@ -72,6 +75,7 @@ class Game {
 		void	start(void);
 		void	readMaps(void);
 		void	displayHero(Elements & Hero);
+		void	displayDealer(Elements & Dealer);
 		void	displayEnemy(Elements & Enemy);
 		void	displayObject(Elements & Object);
 		void	showMap(void);
@@ -121,6 +125,7 @@ class Game {
 		static ArmorList*				aList;
 		static EnemyList*				eList;
 		static Hitbox*					hList;
+		static DrugList*					dList;
 		static int						maxX;
 		static int						maxY;
 		static int						minX;

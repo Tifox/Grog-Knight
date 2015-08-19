@@ -116,6 +116,7 @@ class Characters : public Elements {
 	protected:
 		std::string		_name;
 		std::string		_lastAction;
+		std::string 	_talk;
 		int				_id;
 		int				_size;
 		int				_maxSpeed;
@@ -143,6 +144,8 @@ class Characters : public Elements {
 		int				_hasDashed;
 		int				_level;
 		std::string		_currentTrigger;
+		bool			_isDisengaging;
+
 		std::string		_speMove;
 		SpecialMoves*	_eqMove;
 		Weapon*			_weapon;

@@ -126,6 +126,7 @@ void 	Tooltip::info(Elements *elem) {
 
 
 void	Tooltip::talk(Elements *elem) {
+	clearInfo();
 	HUDWindow *hud = Game::getHUD();
 	this->_name = elem->getAttribute("name");
 	this->_talk = elem->getAttribute("talk");

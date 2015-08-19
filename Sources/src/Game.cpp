@@ -92,6 +92,8 @@ void	Game::start(void) {
 	Game::currentGame = this;
 	Hero			*hero = new Hero("Warrior");
 
+	Dealer			*dealer = new Dealer("Dealer");
+
 	LevelGenerator *levelGenerator = new LevelGenerator(4, 3, 60);
 	levelGenerator->execute();
 	this->_tmpMap = levelGenerator->getLevel();
@@ -109,6 +111,8 @@ void	Game::start(void) {
 
 	this->displayHero(*(hero));
 	hero->init();
+	this->displayDealer(*(dealer));
+	dealer->init();
 	this->setHero(hero);
 	this->displayHUD();
 	hero->setStartingValues();

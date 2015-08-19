@@ -115,6 +115,7 @@ class Characters : public Elements {
 	protected:
 		std::string		_name;
 		std::string		_lastAction;
+		std::string 	_talk;
 		int				_id;
 		int				_size;
 		int				_maxSpeed;

@@ -34,11 +34,9 @@ Drug::Drug(std::string name) : _name(name) {
 	this->_readFile(name);
 	this->_name = getName();
 	this->_flavor = getFlavor();
-	this->_sprite = getSprite();
 	this->addAttribute("type3", "Drug");
 	this->addAttribute("name", this->_name);
 	this->addAttribute("flavor", this->_flavor);
-	this->addAttribute("sprite", this->_sprite);
 }
 
 //!Constructor called by hero/equipment class, to copy a parsed version from Druglist
@@ -50,11 +48,9 @@ Drug::Drug(std::string name) : _name(name) {
 Drug::Drug(Drug* Drug) {
 	this->_name = Drug->getName();
 	this->_flavor = Drug->getFlavor();
-	this->_sprite = Drug->getSprite();
 	this->addAttribute("type3", "Drug");
 	this->addAttribute("name", this->_name);
 	this->addAttribute("flavor", this->_flavor);
-	this->addAttribute("sprite", this->_sprite);
 }
 
 
@@ -133,4 +129,3 @@ void	Drug::ReceiveMessage(Message *m) {
 /* GETTERS */
 std::string		Drug::getName(void) { return this->_name; }
 std::string		Drug::getFlavor(void) { return this->_flavor; }
-std::string		Drug::getSprite(void) { return this->_sprite; }

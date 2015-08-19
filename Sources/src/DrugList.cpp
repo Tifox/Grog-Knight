@@ -93,10 +93,11 @@ Drug		*DrugList::getDrugRandom(void) {
 
 	for (it = this->_allDrugs.begin(); it != this->_allDrugs.end(); it++) {
 		if (i == value) {
+			Game::getHUD()->addImage("Resources/Images/HUD/exta.png", theCamera.GetWindowWidth() / 20 * 1.8, theCamera.GetWindowHeight() / 20 * 0.8, theCamera.GetWindowWidth() / 32, 5);
 			return ((*it));
-		} 
+		}
 		i++;
 	}
+	Game::getHUD()->addImage("Resources/Images/HUD/exta.png", theCamera.GetWindowWidth() / 20 * 1.8, theCamera.GetWindowHeight() / 20 * 0.8, theCamera.GetWindowWidth() / 32, 5);
 	return (*this->_allDrugs.begin());
-
 }

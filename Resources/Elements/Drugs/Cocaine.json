@@ -2,7 +2,7 @@
 	"infos": {
 		"name": "Cocaine",
 		"id": 0,
-		"flavor": "I DO COCAIIIIIIIIIINE",
+		"flavor": "This cocaine gives you more damage\nAnd will increase your speed\n ...a lot.",
 		"sprites": "Resources/Images/gold.png"
 	},
 	"bonus": {

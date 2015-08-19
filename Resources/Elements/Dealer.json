@@ -2,6 +2,7 @@
 	"infos": {
 		"name": "Dealer",
 		"id": 0,
+		"talk":"Press key to drug yourself\nGood and bad effect",
 		"sprites": "Resources/Images/Dealer/dealer_000.png",
 		"size": 1.3,
 		"HP": 75,

@@ -94,7 +94,7 @@ Weapon		*WeaponList::getWeaponRandom(void) {
 	for (it = this->_allWeapons.begin(); it != this->_allWeapons.end(); it++) {
 		if (i == value) {
 			return ((*it));
-		}
+		} 
 		i++;
 	}
 	return (*this->_allWeapons.begin());

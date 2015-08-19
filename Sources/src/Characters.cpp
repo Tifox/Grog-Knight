@@ -122,6 +122,8 @@ void	Characters::_parseJson(std::string file) {
 	}
 	this->_name = json["infos"].get("name", "").asString();
 	this->_id = json["infos"].get("id", "").asInt();
+	this->_talk = json["infos"].get("talk", "").asString();
+	this->addAttribute("talk", json["infos"].get("talk", "").asString());
 	this->_size = json["infos"].get("size", "").asFloat();
 	this->SetSize(this->_size);
 	this->_hp = json["infos"].get("HP", "").asInt();

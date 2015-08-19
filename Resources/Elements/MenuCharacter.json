@@ -3,7 +3,7 @@
 		"name": "MenuCharacter",
 		"id": 4,
 		"HP": 1,
-		"sprites": "Resources/Images/Menu/Perso/perso_000.png",
+		"sprites": "Resources/Images/Menu/Warrior/perso_000.png",
 		"size": 5,
 		"maxSpeed": 5
 	},
@@ -28,6 +28,12 @@
 			"beginFrame_left": 16,
 			"endFrame_left": 17,
 			"time": 0.3
+		},
+		"down": {
+			"subscribe": "down"
+		},
+		"up": {
+			"subscribe": "up"
 		}
 	}
 }

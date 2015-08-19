@@ -606,10 +606,10 @@ public:
 	 */
 	virtual const String GetClassName() const { return "Actor"; }
 	void	changeSizeTo(const Vector2 & newSize);
+	Vector2 _position;
 	
 protected:
 	Vector2 _size;
-	Vector2 _position;
 	Color _color;
 	float _rotation;
 	

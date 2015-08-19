@@ -76,6 +76,7 @@ class Characters : public Elements {
 		virtual void	AnimCallback(String s);
 		virtual void	BeginContact(Elements *elem, b2Contact *contact);
 		virtual void	EndContact(Elements *elem, b2Contact *contact);
+		virtual void	trigger(std::string name, int status) {};
 		Characters::Orientation			getOrientation(void);
 		std::string						getLastAction(void);
 		int								getGold(void);
@@ -141,6 +142,7 @@ class Characters : public Elements {
 		bool			_isDashing;
 		int				_hasDashed;
 		int				_level;
+		std::string		_currentTrigger;
 		std::string		_speMove;
 		SpecialMoves*	_eqMove;
 		Weapon*			_weapon;
@@ -177,6 +179,7 @@ class Characters : public Elements {
 		virtual void	_pickupItem(int status);
 		virtual void	_run(void);
 		virtual void	_specialMove(void);
+		virtual void	_callTrigger(std::string name, int status);
 		// virtual void	_dash(void);
 		// virtual void	_charge(void);
 		// virtual void	_stomp(void);
@@ -187,6 +190,7 @@ class Characters : public Elements {
 
 	private:
 		std::map<std::string, std::map<std::string, Json::Value> >	_attr;
+		std::map<std::string, int>	_triggers;
 		std::string		_category;
 
 		void	_heroDeath();

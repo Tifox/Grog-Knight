@@ -208,6 +208,8 @@ void	Elements::AnimCallback(String s) {
 			this->_animIt = this->_animationList.begin();
 		this->PlaySpriteAnimation((*this->_animIt)->time, SAT_OneShot, (*this->_animIt)->frame, (*this->_animIt)->frame, "baseAnimation");
 		this->setFrameSprite((*this->_animIt)->frame);
+	} else if (s == "closeCloset") {
+		theWorld.Remove(this);
 	}
 }
 

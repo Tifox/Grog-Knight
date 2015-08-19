@@ -84,6 +84,11 @@ void	Game::start(void) {
 	Game::aList = new ArmorList();
 	Game::rList = new RingList();
 	this->tooltip = new Tooltip();
+	int i;
+	for (i = 0; i < 3; i++) {
+		this->maps->_XYMap[0][i].destroyMap();
+	}
+
 	delete(Game::currentGame->maps);
 	this->maps = new Maps("Maps/");
 	this->maps->readMaps();
@@ -122,10 +127,10 @@ void	Game::menuInGame(void) {
 	MenuCharacter	*charac = new MenuCharacter();
 
 	menu->showMaps();
-	charac->setXStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid());
-	charac->setYStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid());
-	theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
-						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 18.502);
+	charac->setXStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid() - 10);
+	charac->setYStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() - 4);
+	theCamera.MoveTo(Vector3(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
+						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 18.502), 1, true, "moveMenu");
 	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 	charac->display();
 	Game::addHUDWindow(new HUDWindow());
@@ -205,6 +210,9 @@ void	Game::checkHeroPosition(void) {
 		Game::currentGame->simulateHeroItemContact();
 		Game::currentGame->getHero()->characterLoop();
 		Game::currentGame->reloadingHUD();
+		if (Game::asToStart == 1)
+			Game::currentGame->start();
+			Game::asToStart = 0;
 	}
 }
 
@@ -538,3 +546,4 @@ int							Game::cameraTick = 0;
 int							Game::isWaitingForBind = 0;
 int							Game::reloadHUD = 0;
 int							Game::isPaused = 0;
+int							Game::asToStart = 0;

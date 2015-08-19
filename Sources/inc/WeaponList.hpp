@@ -54,6 +54,7 @@ public:
 	Weapon*	getWeapon(std::string);
 	Weapon*	getWeaponRandom(void);
 	Weapon*	getWeaponRandom(int level);
+	std::list<Weapon *>		get3Starters(int level);
 
 private:
 	std::list<Weapon*> _allWeapons;

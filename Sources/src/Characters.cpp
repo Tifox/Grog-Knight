@@ -514,6 +514,14 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 		this->_heroDeath();
 		return;
 	}
+	if (elem->getAttribute("trigger") != "") {
+		this->_callTrigger(elem->getAttribute("trigger"), 1);
+	} if (elem->getAttribute("triggerOn") != "") {
+		this->trigger(elem->getAttribute("triggerOn"), 1);
+	} if (elem->getAttribute("triggerOff") != "") {
+		this->trigger(elem->getAttribute("triggerOff"), 0);
+	}
+
 	if (elem->getAttributes()["type"] == "ground") {
 		if (this->_isAttacking == 0 && this->_isLoadingAttack == 0) {
 			if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
@@ -608,6 +616,14 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
  * @param: contact The b2Contact object of the collided element. See Box2D docs for more info.
  */
 void	Characters::EndContact(Elements *elem, b2Contact *contact) {
+	if (elem->getAttribute("trigger") != "") {
+		this->_callTrigger(elem->getAttribute("trigger"), 1);
+	} if (elem->getAttribute("triggerOn") != "") {
+		this->trigger(elem->getAttribute("triggerOn"), 1);
+	} if (elem->getAttribute("triggerOff") != "") {
+		this->trigger(elem->getAttribute("triggerOff"), 0);
+	}
+
 	if (elem->getAttributes()["type"] == "ground") {
 		this->_wallsLeft.remove(elem);
 		this->_wallsRight.remove(elem);
@@ -1196,6 +1212,13 @@ void						Characters::subscribeToAll(void) {
 
 	for (it = this->_subsc.begin(); it != this->_subsc.end(); it++) {
 		theSwitchboard.SubscribeTo(this, *it);
+	}
+}
+
+void						Characters::_callTrigger(std::string name, int s) {
+	if (this->_triggers[name] != s) {
+		this->_triggers[name] = s;
+		this->trigger(name, s);
 	}
 }
 

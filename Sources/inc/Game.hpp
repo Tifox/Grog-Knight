@@ -132,6 +132,7 @@ class Game {
 		static int						cameraTick;
 		static int						isWaitingForBind;
 		static int						reloadHUD;
+		static int						asToStart;
 		static int						isPaused;
 
 	private:

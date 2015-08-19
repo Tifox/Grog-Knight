@@ -1,0 +1,10 @@
+{
+	"infos": {
+		"name": "SomeRing",
+		"lvlRequired": 1,
+		"sprites": "Resources/Images/Rings/SomeRing.png",
+		"lootLevel": 1,
+		"flavor": "Some trinket",
+		"bonus": {}
+	}
+}

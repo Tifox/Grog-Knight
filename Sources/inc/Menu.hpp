@@ -75,6 +75,7 @@ class		Menu : public Actor {
 		int													_isBinding;
 		std::map<std::string, std::list<t_bind *> >			_bindingMenu;
 		std::map<std::string, std::list<t_bind *> >::iterator	_bindingIterator;
+		Map														*_background_map;
 };
 
 # include "Quit.hpp"

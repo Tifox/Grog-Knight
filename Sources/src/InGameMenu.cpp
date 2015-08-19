@@ -40,7 +40,7 @@ void	InGameMenu::showMaps(void) {
 	int						i;
 
 	this->_maps->_XYMap.push_back(std::vector<Map>(4));
-	for (i = 0; i < 2; i++) {
+	for (i = 0; i < 3; i++) {
 		map[i]->setXStart(i * 54);
 		map[i]->setYStart(0);
 		this->_maps->_XYMap[0][i] = *(map[i]);

@@ -4,7 +4,7 @@
 		"flavor": "Hey look, its a ARMOR.\nA pretty shitty one actually...",
 		"lvlRequired": 1,
 		"sprites": "Resources/Images/Armors/Robes.png",
-		"lootLevel": 2
+		"lootLevel": 1
 	},
 		"bonus": {
 			"hpBuff": 50,

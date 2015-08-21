@@ -16,7 +16,7 @@
 			"weapon": "Bow",
 			"armor": "Robes",
 			"ring": "SmallRing",
-			"specialMove": "wallJump",
+			"specialMove": "disengage",
 			"inventorySlots": 3
 		},
 		"forward": {
@@ -86,11 +86,18 @@
 			"uptime": 0.15,
 			"time": 0.1
 		},
+		 "disengage": {
+			"cooldown": 1,
+			"disengageSpeed": 30,
+			"uptime": 0.1,
+			"time": 0.1
+		 },
 		"charge": {
 			"cooldown": 1,
 			"chargeSpeed": 20,
 			"uptime": 1
 		},
+	    
 		"stomp": {
 			"cooldown": 0,
 			"stompSpeed": 50

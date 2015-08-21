@@ -32,8 +32,9 @@
 Dealer::Dealer(std::string name) : Characters(name) {
 	this->addAttribute("type", "Dealer");
 	this->SetLayer(10);
+	this->_give = false;
 	return ;
-}
+} 
 
 //! Destructor
 /**
@@ -48,7 +49,6 @@ Dealer::~Dealer(void) {
  * This function making the first animation call.
  */
 void	Dealer::init(void) {
-	theSwitchboard.SubscribeTo(this, "enterPressed");
 	this->AnimCallback("base");
 }
 
@@ -62,12 +62,24 @@ void	Dealer::init(void) {
  */
 void	Dealer::BeginContact(Elements* elem, b2Contact *contact) {
 	HUDWindow *hud = Game::getHUD();
+
 	if (elem->getAttribute("type") != "ground") {
 		contact->SetEnabled(false);
 		contact->enableContact = false;
 	}
-	if (elem->getAttribute("type") == "Hero") {
-		hud->setText("HI BUD YOU WANNA SOME " + this->_drug + "?", this, Vector3(255, 51, 255), 0, 0);
+	if (elem->getAttribute("type") == "Hero" && this->_give == false) {
+		theSwitchboard.SubscribeTo(this, "enterPressed");
+		this->PlaySpriteAnimation(this->_getAttr("give", "time").asFloat(), SAT_Loop,
+								  this->_getAttr("give", "beginFrame").asInt(),
+								  this->_getAttr("give", "endFrame").asInt(), "base");
+		hud->setText("HI BUD YOU WANNA SOME DRUGS?", this, Vector3(255, 51, 255), 0, 0);
+		return; 
+	}
+	if (elem->getAttribute("type") == "Hero" && this->_give == true) {
+		this->PlaySpriteAnimation(this->_getAttr("give", "time").asFloat(), SAT_Loop,
+								  this->_getAttr("give", "beginFrame").asInt(),
+								  this->_getAttr("give", "endFrame").asInt(), "base");
+		hud->setText("Get out. Nothing to see here.", this, Vector3(255, 51, 255), 0, 0);
 		return; 
 	}
 }
@@ -80,20 +92,27 @@ void	Dealer::BeginContact(Elements* elem, b2Contact *contact) {
  * @param contact The Box2D contact object
  */
 void	Dealer::EndContact(Elements *elem, b2Contact *contact) {
-		HUDWindow *hud = Game::getHUD();
-		if (elem->getAttribute("type") == "Hero") {
-			hud->removeText("HI BUD YOU WANNA SOME " + this->_drug + "?");
-			return;
-		}
+	HUDWindow *hud = Game::getHUD();
+
+	if (elem->getAttribute("type") == "Hero") {
+		this->AnimCallback("base");
+		hud->removeText("HI BUD YOU WANNA SOME DRUGS?");
+		hud->removeText("Here you go buddy. See ya.");
+		hud->removeText("Get out. Nothing to see here.");
+		return;
+	}
 }
 
 void	Dealer::ReceiveMessage(Message *m) {
-///	std::list<std::string>::iterator	it;
-		HUDWindow *hud = Game::getHUD();
+	HUDWindow *hud = Game::getHUD();
 
-//	if (this->_inMenu == 1) {
-		if (m->GetMessageName() == "enterPressed") {
-			hud->removeText("HI BUD YOU WANNA SOME " + this->_drug + "?");
-		}
-	//}
+	if (m->GetMessageName() == "enterPressed" && Game::isPaused == 0) {
+		this->_give = true;
+		theSwitchboard.UnsubscribeFrom(this, "enterPressed");
+		this->AnimCallback("base");
+		hud->removeText("HI BUD YOU WANNA SOME DRUGS?");
+		hud->setText("Here you go buddy. See ya.", this, Vector3(255, 51, 255), 0, 0);
+		Drug *drug = new Drug(Game::dList->getDrugRandom());
+		Game::currentGame->tooltip->talk(this);
+	}
 }

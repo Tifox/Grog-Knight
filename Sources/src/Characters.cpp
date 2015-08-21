@@ -71,6 +71,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_eqMove = new SpecialMoves(this);
 	this->_isStomping = false;
 	this->_flyTrigger = false;
+	this->_isDisengaging = false;
 }
 
 //! Basic destructor
@@ -121,6 +122,8 @@ void	Characters::_parseJson(std::string file) {
 	}
 	this->_name = json["infos"].get("name", "").asString();
 	this->_id = json["infos"].get("id", "").asInt();
+	this->_talk = json["infos"].get("talk", "").asString();
+	this->addAttribute("talk", json["infos"].get("talk", "").asString());
 	this->_size = json["infos"].get("size", "").asFloat();
 	this->SetSize(this->_size);
 	this->_hp = json["infos"].get("HP", "").asInt();
@@ -323,6 +326,14 @@ void	Characters::ReceiveMessage(Message *m) {
 		//		Game::stopRunning(this);
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 	}
+	else if (m->GetMessageName() == "disengageEnd") {
+		theSwitchboard.UnsubscribeFrom(this, "disengageEnd");
+		this->_isDisengaging = false;
+		//this->_speMoveReady = 1;
+		//		Game::stopRunning(this);
+		this->_canMove = 1;
+		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+	}
 	else if (m->GetMessageName() == "chargeEnd") {
 		theSwitchboard.UnsubscribeFrom(this, "chargeEnd");
 		this->_canMove = 1;
@@ -519,6 +530,14 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 		this->_heroDeath();
 		return;
 	}
+	if (elem->getAttribute("trigger") != "") {
+		this->_callTrigger(elem->getAttribute("trigger"), 1);
+	} if (elem->getAttribute("triggerOn") != "") {
+		this->trigger(elem->getAttribute("triggerOn"), 1);
+	} if (elem->getAttribute("triggerOff") != "") {
+		this->trigger(elem->getAttribute("triggerOff"), 0);
+	}
+
 	if (elem->getAttributes()["type"] == "ground") {
 		if (this->_isAttacking == 0 && this->_isLoadingAttack == 0) {
 			if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
@@ -613,6 +632,14 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
  * @param: contact The b2Contact object of the collided element. See Box2D docs for more info.
  */
 void	Characters::EndContact(Elements *elem, b2Contact *contact) {
+	if (elem->getAttribute("trigger") != "") {
+		this->_callTrigger(elem->getAttribute("trigger"), 1);
+	} if (elem->getAttribute("triggerOn") != "") {
+		this->trigger(elem->getAttribute("triggerOn"), 1);
+	} if (elem->getAttribute("triggerOff") != "") {
+		this->trigger(elem->getAttribute("triggerOff"), 0);
+	}
+
 	if (elem->getAttributes()["type"] == "ground") {
 		this->_wallsLeft.remove(elem);
 		this->_wallsRight.remove(elem);
@@ -1008,6 +1035,8 @@ void	Characters::_specialMove(void) {
 		this->_eqMove->_totem();
 	else if (this->_speMove == "shunpo")
 		this->_eqMove->_shunpo();
+	else if (this->_speMove == "disengage")
+		 this->_eqMove->_disengage();
 }
 
 //! Equip a weapon
@@ -1201,6 +1230,13 @@ void						Characters::subscribeToAll(void) {
 
 	for (it = this->_subsc.begin(); it != this->_subsc.end(); it++) {
 		theSwitchboard.SubscribeTo(this, *it);
+	}
+}
+
+void						Characters::_callTrigger(std::string name, int s) {
+	if (this->_triggers[name] != s) {
+		this->_triggers[name] = s;
+		this->trigger(name, s);
 	}
 }
 

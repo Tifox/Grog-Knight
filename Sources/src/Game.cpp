@@ -83,14 +83,22 @@ void	Game::start(void) {
 	Game::eList = new EnemyList();
 	Game::aList = new ArmorList();
 	Game::rList = new RingList();
+	Game::dList = new DrugList();
+
 	this->tooltip = new Tooltip();
+	int i;
+	for (i = 0; i < 3; i++) {
+		this->maps->_XYMap[0][i].destroyMap();
+	}
+
 	delete(Game::currentGame->maps);
 	this->maps = new Maps("Maps/");
 	this->maps->readMaps();
 	Game::currentGame = this;
 	Hero			*hero = new Hero("Warrior");
+
 	Dealer			*dealer = new Dealer("Dealer");
-	Shopkeeper		*shopkeeper = new Shopkeeper("Shopkeeper");
+	//	Shopkeeper		*shopkeeper = new Shopkeeper("Shopkeeper");
 
 	LevelGenerator *levelGenerator = new LevelGenerator(4, 3, 60);
 	levelGenerator->execute();
@@ -109,13 +117,16 @@ void	Game::start(void) {
 
 	this->displayHero(*(hero));
 	hero->init();
-	dealer->init();
 	this->displayDealer(*(dealer));
+	dealer->init();
 	this->setHero(hero);
 	this->displayHUD();
 	hero->setStartingValues();
 	Game::started = 1;
 	Game::currentGame = this;
+
+	//	new Shop(0,0,2,3);
+
 }
 
 void	Game::menuInGame(void) {
@@ -126,10 +137,10 @@ void	Game::menuInGame(void) {
 	MenuCharacter	*charac = new MenuCharacter();
 
 	menu->showMaps();
-	charac->setXStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid());
-	charac->setYStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid());
-	theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
-						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 18.502);
+	charac->setXStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid() - 10);
+	charac->setYStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() - 4);
+	theCamera.MoveTo(Vector3(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
+						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 18.502), 1, true, "moveMenu");
 	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 	charac->display();
 	Game::addHUDWindow(new HUDWindow());
@@ -172,7 +183,7 @@ void	Game::displayHero(Elements & Hero) {
 
 void	Game::displayDealer(Elements & Dealer) {
 	//Here starts the game - parse the 1st map coordinates and hero start
-	Dealer.setXStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid());
+	Dealer.setXStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid() - 5);
 	Dealer.setYStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid());
 	Dealer.addAttribute("dealer", "1");
 	Dealer.display();
@@ -217,6 +228,9 @@ void	Game::checkHeroPosition(void) {
 		Game::currentGame->simulateHeroItemContact();
 		Game::currentGame->getHero()->characterLoop();
 		Game::currentGame->reloadingHUD();
+		if (Game::asToStart == 1)
+			Game::currentGame->start();
+			Game::asToStart = 0;
 	}
 }
 
@@ -535,6 +549,7 @@ WeaponList*					Game::wList;
 RingList*					Game::rList;
 EnemyList*					Game::eList;
 Hitbox*						Game::hList;
+DrugList*					Game::dList;
 bool						Game::endGame = false;
 bool						Game::ended = false;
 int							Game::maxX = 0;
@@ -550,3 +565,4 @@ int							Game::cameraTick = 0;
 int							Game::isWaitingForBind = 0;
 int							Game::reloadHUD = 0;
 int							Game::isPaused = 0;
+int							Game::asToStart = 0;

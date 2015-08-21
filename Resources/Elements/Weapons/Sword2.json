@@ -1,0 +1,38 @@
+{
+    "infos": {
+   	    "name": "Sword2",
+		"flavor": "It was the knife of Arthas Menethil.\nFor cutting ham.\nAnd Zombies. \nOr maybe not.",
+		"type": "Sword",
+		"hitbox": "SWORD",
+		"size": 1,
+		"lvlRequired": 1,
+	 	"critRate": 5,
+		"damage": 5,
+		"recovery": 1,
+		"pushback": 5,
+		"active": 0.2,
+		"attack": "melee",
+		"combo": true,
+		"sprites": "Resources/Images/Sword2.png",
+		"heroAnim": "sword_anim_1",
+		"lootLevel": 2
+	},
+	"combo": {
+		"1": {
+			"damage": 10,
+			"particule": "entrecote",
+			"heroAnim": "sword_anim_2"
+		},
+		"2": {
+			"damage": 100,
+			"specialEffect": "stunSpecial",
+			"heroAnim": "sword_anim_3"
+		}
+	},
+	"capacities": {
+		"stunSpecial": {
+			"duration": 1,
+			"particule": "boom"
+		}
+	}
+}

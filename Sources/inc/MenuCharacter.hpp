@@ -27,8 +27,19 @@
 # define _MENU_CHARACTER_
 
 # include "Characters.hpp"
+# include "ArmorList.hpp"
+# include "WeaponList.hpp"
+# include "RingList.hpp"
 
 class		MenuCharacter : public Characters {
+
+	class	itemInfo {
+		public:
+			Actor					*background;
+			Actor					*sprite;
+			std::list<std::string>	textInfo;
+	};
+
 	public:
 		MenuCharacter(void);
 		~MenuCharacter(void);
@@ -38,11 +49,41 @@ class		MenuCharacter : public Characters {
 		virtual void	EndContact(Elements *elem, b2Contact *contact);
 		virtual void	AnimCallback(String s);
 		virtual void	ReceiveMessage(Message *m);
-		void			trigger(std::string name);
+		virtual void	trigger(std::string name, int status);
+
 	protected:
 		virtual void	_forward(int status);
 		virtual void	_backward(int status);
+		virtual void	_up(int status);
+		virtual void	_down(int status);
+		void			_showTextInfo(std::string text, std::string switchboard = "enterPressed");
+		void			_makeItChoice(void);
+		void			_openCloset(void);
+		void			_closeCloset(void);
+		void			_equipmentChoose(void);
+		void			_closetBackChoiceUpdate(void);
+		void			_updateSelection(void);
+		void			_showSelectInfo(Elements *obj);
+		void			_flavorInfo(std::string n);
+		void			_cleanCloset(void);
+
+	private:
+		HUDActor			*_image;
+		std::list<Elements *>	_choices;
+		std::list<Elements *>	_backChoices;
+		Elements				*_choicePointer;
+		Actor				*_target;
+		Actor				*_target2;
+		int					_isBlock;
+		std::string			_character;
+		Elements			*_closet;
+		std::list<Elements *>	_backCloset;
+		Elements				*_closetChoice;
+		std::list<Ring *>				_ringList;
+		std::list<Weapon *>				_weaponList;
+		std::list<Armor *>				_armorList;
+		int								_chooseEquipment;
+		std::map<std::string, Elements *> _equipSelection;
+		MenuCharacter::itemInfo				*_currentItemInfo;
 };
-
-
 #endif

@@ -40,7 +40,10 @@ class Dealer : public Characters {
 		void			ReceiveMessage(Message *m);
 
 	private:
+		std::string		_name;
+		std::string		_talk;
 		std::string		_drug;
+		bool			_give;
 
 };
 #endif

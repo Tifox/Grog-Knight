@@ -51,11 +51,12 @@ public:
 	ArmorList(void);
 	~ArmorList(void);
 
-	void	statArmor(std::string);
-	int		checkExists(std::string);
-	Armor*	getArmor(std::string);
-	Armor*	getArmorRandom(void);
-	Armor*	getArmorRandom(int level);
+	void					statArmor(std::string);
+	int						checkExists(std::string);
+	Armor*					getArmor(std::string);
+	Armor*					getArmorRandom(void);
+	Armor*					getArmorRandom(int level);
+	std::list<Armor *>		get3Starters(int level);
 
 private:
 	std::list<Armor*> _allArmors;

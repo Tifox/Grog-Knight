@@ -30,8 +30,10 @@
  * Basic constructor
  */
 
-Tooltip::Tooltip() : _name("") , _flavor(""), _hp("") , _mana(""), _lastElem(nullptr) {
+Tooltip::Tooltip() : _name("") , _flavor(""), _hp("") , _mana(""), _lastElem(nullptr), _talk("") {
 	theSwitchboard.SubscribeTo(this, "deleteTip");
+	theSwitchboard.SubscribeTo(this, "deleteTalk");
+
 	return ;
 }
 
@@ -73,7 +75,7 @@ void	Tooltip::tip(Elements *elem, Characters *c) {
 
 }
 
-void 	Tooltip::info(Elements *elem) {
+void 	Tooltip::info(Elements *elem) { 
 	std::string tmp;
 	int i = 0;
 	float	x = theCamera.GetWindowWidth() / 20 * 11.3;
@@ -122,6 +124,32 @@ void 	Tooltip::info(Elements *elem) {
 	return ;
 }
 
+
+void	Tooltip::talk(Elements *elem) {
+	clearInfo();
+	HUDWindow *hud = Game::getHUD();
+	this->_name = elem->getAttribute("name");
+	this->_talk = elem->getAttribute("talk");
+
+	std::string tmp;
+	int i = 0;
+	float	x = theCamera.GetWindowWidth() / 20 * 11.3;
+	float	y = 30;
+
+	hud->setText(this->_name , x + theCamera.GetWindowWidth() / 40 * 2, y + theCamera.GetWindowHeight() / 20 * 0.15, Vector3(0, 0, 0), 1);
+	
+	for (y = 45; i < this->_talk.size(); i++) {
+		if (this->_talk[i] == '\n') {
+			hud->setText(tmp, x + theCamera.GetWindowWidth() / 40 * 2, y + theCamera.GetWindowHeight() / 20 * 0.15,  Vector3(0, 0, 0), 1);
+			tmp.clear();
+			y += 15;
+		} else
+			tmp = tmp + this->_talk[i];
+	}
+	hud->setText(tmp, x + theCamera.GetWindowWidth() / 40 * 2, y + theCamera.GetWindowHeight() / 20 * 0.15,  Vector3(0, 0, 0), 1);
+	theSwitchboard.DeferredBroadcast(new Message("deleteTalk"), 2);
+}
+
 void	Tooltip::clearInfo(int clean) {
 	std::string tmp;
 	int i;
@@ -137,11 +165,20 @@ void	Tooltip::clearInfo(int clean) {
 			tmp = tmp + this->_flavor[i];
 	}
 
+	for (i = 0; i < this->_talk.size(); i++) {
+		if (this->_talk[i] == '\n') {
+			Game::getHUD()->removeText(tmp);
+			tmp.clear();
+		} else
+			tmp = tmp + this->_talk[i];
+	}
+
 	Game::getHUD()->removeText(tmp);
 	Game::getHUD()->removeText(this->_hp);
 	Game::getHUD()->removeText(this->_mana);
 	this->_name = "";
 	this->_flavor = "";
+	this->_talk = "";
 	this->_hp = "";
 	this->_mana = "";
 
@@ -163,5 +200,8 @@ void	Tooltip::clearInfo(int clean) {
 void 	Tooltip::ReceiveMessage(Message *m) {
 	if (m->GetMessageName() == "deleteTip") {
 		Game::getHUD()->removeText(this->_val);
+	}
+	else if (m->GetMessageName() == "deleteTalk") {
+		clearInfo(0);
 	}
 }

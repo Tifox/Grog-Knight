@@ -51,11 +51,14 @@ class MenuCharacter;
 # include "Tooltip.hpp"
 # include "Menu.hpp"
 # include "InGameMenu.hpp"
+# include "Shop.hpp"
+# include "DrugList.hpp"
 
 class ArmorList;
 class EnemyList;
 class RingList;
 class WeaponList;
+class DrugList;
 
 class Hitbox;
 class HUDWindow;
@@ -122,6 +125,7 @@ class Game {
 		static ArmorList*				aList;
 		static EnemyList*				eList;
 		static Hitbox*					hList;
+		static DrugList*					dList;
 		static int						maxX;
 		static int						maxY;
 		static int						minX;
@@ -133,6 +137,7 @@ class Game {
 		static int						cameraTick;
 		static int						isWaitingForBind;
 		static int						reloadHUD;
+		static int						asToStart;
 		static int						isPaused;
 
 	private:

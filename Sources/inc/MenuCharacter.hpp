@@ -50,6 +50,10 @@ class		MenuCharacter : public Characters {
 		virtual void	AnimCallback(String s);
 		virtual void	ReceiveMessage(Message *m);
 		virtual void	trigger(std::string name, int status);
+		std::string		getHeroType(void);
+		Weapon			*getWeapon(void);
+		Ring			*getRing(void);
+		Armor			*getArmor(void);
 
 	protected:
 		virtual void	_forward(int status);
@@ -82,6 +86,7 @@ class		MenuCharacter : public Characters {
 		std::list<Ring *>				_ringList;
 		std::list<Weapon *>				_weaponList;
 		std::list<Armor *>				_armorList;
+		std::list<Elements *>			_equipSelectionBack;
 		int								_chooseEquipment;
 		std::map<std::string, Elements *> _equipSelection;
 		MenuCharacter::itemInfo				*_currentItemInfo;

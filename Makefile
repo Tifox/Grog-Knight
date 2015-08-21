@@ -121,6 +121,12 @@ SWIG-Wrapper:
 $(WRAPPER): SWIG-Wrapper
 
 jsoncpp:
+	if [ ! -f Sources/inc/Key.hpp ] ; \
+	then \
+			echo -n "#define KEY \"" >> Sources/inc/Key.hpp ; \
+			echo -n $USER@$HOST | md5sum | cut -d' ' -f1 | xargs echo -n >> Sources/inc/Key.hpp ; \
+			echo "\"" >> Sources/inc/Key.hpp ; \
+	fi;
 	cd Tools/jsoncpp && cmake . && make
 
 $(TARGET): $(LIBANGEL) jsoncpp $(OBJS) $(SYSOBJS) $(WRAPPER)
@@ -132,3 +138,4 @@ clean:
 
 $(LIBANGEL):
 	cd Angel && make
+

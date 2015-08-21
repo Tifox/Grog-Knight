@@ -139,6 +139,7 @@ class Game {
 		static int						reloadHUD;
 		static int						asToStart;
 		static int						isPaused;
+		static MenuCharacter			*menuCharacter;
 
 	private:
 		float				beginXHero;

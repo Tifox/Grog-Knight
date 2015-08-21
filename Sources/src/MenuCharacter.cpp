@@ -35,6 +35,12 @@ MenuCharacter::MenuCharacter(void) : Characters("MenuCharacter") {
 	this->_isBlock = 0;
 	this->_chooseEquipment = 0;
 	this->_character = "Warrior";
+	// THIS IS TMP; DO NOT JUDGE ME
+	Elements		*tmp;
+	tmp = new Elements(); tmp->addAttribute("Name", "Sword"); this->_equipSelection["Weapon"] = tmp;
+	tmp = new Elements(); tmp->addAttribute("Name", "SmallRing"); this->_equipSelection["ring"] = tmp;
+	tmp = new Elements(); tmp->addAttribute("Name", "ChestArmor"); this->_equipSelection["Armor"] = tmp;
+	// END OF NASTY CODE. Well, actually no. But u know what i mean
 	theSwitchboard.SubscribeTo(this, "enterPressed");
 	theSwitchboard.SubscribeTo(this, "chooseEquipment");
 	theSwitchboard.SubscribeTo(this, "returnPressed");
@@ -96,6 +102,7 @@ void	MenuCharacter::trigger(std::string name, int status) {
 		theSwitchboard.UnsubscribeFrom(this, "returnPressed");
 		theSwitchboard.UnsubscribeFrom(this, "enterPressed");
 		Game::isInMenu = 0;
+		Game::menuCharacter = this;
 		Game::asToStart = 1;
 	}
 }
@@ -131,7 +138,7 @@ void	MenuCharacter::ReceiveMessage(Message *m) {
 				elem = new Elements();
 				elem->SetPosition(36, -23);
 				elem->SetSize(3);
-				elem->addAttribute("type", "BowGurl");
+				elem->addAttribute("type", "Archer");
 				elem->SetSprite("Resources/Images/Menu/perso_2.png");
 				theWorld.Add(elem);
 				this->_choices.push_back(elem);
@@ -292,7 +299,7 @@ void		MenuCharacter::_openCloset(void) {
 	elem->SetSize(36, 22);
 	elem->SetPosition(79, -19.5);
 	theWorld.Add(elem);
-	if (this->_character == "BowGurl")
+	if (this->_character == "Archer")
 		elem->PlaySpriteAnimation(0.3, SAT_OneShot, 1, 4);
 	else if (this->_character == "Warrior")
 		elem->PlaySpriteAnimation(0.3, SAT_OneShot, 5, 8);
@@ -300,7 +307,7 @@ void		MenuCharacter::_openCloset(void) {
 }
 
 void		MenuCharacter::_closeCloset(void) {
-	if (this->_character == "BowGurl")
+	if (this->_character == "Archer")
 		this->_closet->PlaySpriteAnimation(0.3, SAT_OneShot, 4, 1, "closeCloset");
 	else if (this->_character == "Warrior")
 		this->_closet->PlaySpriteAnimation(0.3, SAT_OneShot, 8, 5, "closeCloset");
@@ -424,6 +431,7 @@ void			MenuCharacter::_updateSelection(void) {
 	tmp->SetSize(2.5);
 	tmp2->SetSize(3);
 	tmp->SetSprite(this->_choicePointer->getAttribute("Sprite"));
+	tmp->addAttribute("Name", this->_choicePointer->getAttribute("Name"));
 	tmp->SetPosition(66, -9 + (-5 * std::stoi(this->_closetChoice->getAttribute("number"))));
 	tmp2->SetPosition(66, -9 + (-5 * std::stoi(this->_closetChoice->getAttribute("number"))));
 
@@ -433,6 +441,7 @@ void			MenuCharacter::_updateSelection(void) {
 		} else {
 			tmp2->SetSprite("Resources/Images/Menu/icon_yellow.png");
 			theWorld.Add(tmp2);
+			this->_equipSelectionBack.push_back(tmp2);
 		}
 		this->_equipSelection["ring"] = tmp;
 	} else if (this->_closetChoice->getAttribute("number") == "2") {
@@ -441,6 +450,7 @@ void			MenuCharacter::_updateSelection(void) {
 		} else {
 			tmp2->SetSprite("Resources/Images/Menu/icon_grey.png");
 			theWorld.Add(tmp2);
+			this->_equipSelectionBack.push_back(tmp2);
 		}
 		this->_equipSelection["Armor"] = tmp;
 	} else if (this->_closetChoice->getAttribute("number") == "3") {
@@ -449,6 +459,7 @@ void			MenuCharacter::_updateSelection(void) {
 		} else {
 			tmp2->SetSprite("Resources/Images/Menu/icon_red.png");
 			theWorld.Add(tmp2);
+			this->_equipSelectionBack.push_back(tmp2);
 		}
 		this->_equipSelection["Weapon"] = tmp;
 	}
@@ -535,6 +546,7 @@ void		MenuCharacter::_flavorInfo(std::string n) {
 void		MenuCharacter::_cleanCloset(void) {
 	std::list<Elements *>::iterator		it;
 	HUDWindow							*hud = Game::getHUD();
+	std::map<std::string, Elements *>::iterator		it2;
 
 	theCamera.MoveTo(Vector3(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
 		Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid(), 18.502), 1, true);
@@ -544,6 +556,10 @@ void		MenuCharacter::_cleanCloset(void) {
 		theWorld.Remove(*it);
 	for (it = this->_backChoices.begin(); it != this->_backChoices.end(); it++)
 		theWorld.Remove(*it);
+	for (it = this->_equipSelectionBack.begin(); it != this->_equipSelectionBack.end(); it++)
+		theWorld.Remove(*it);
+	for (it2 = this->_equipSelection.begin(); it2 != this->_equipSelection.end(); it2++)
+		theWorld.Remove(it2->second);
 	theWorld.Remove(this->_target);
 	theWorld.Remove(this->_target2);
 	if (this->_currentItemInfo != nullptr) {
@@ -565,3 +581,8 @@ void		MenuCharacter::_cleanCloset(void) {
 	this->_chooseEquipment = 0;
 	//this->_showTextInfo("Press enter to choose a new character");
 }
+
+std::string		MenuCharacter::getHeroType(void) { return this->_character; };
+Weapon			*MenuCharacter::getWeapon(void) { return new Weapon(this->_equipSelection["Weapon"]->getAttribute("Name")); };
+Ring			*MenuCharacter::getRing(void) { return new Ring(this->_equipSelection["ring"]->getAttribute("Name")); };
+Armor			*MenuCharacter::getArmor(void) { return new Armor(this->_equipSelection["Armor"]->getAttribute("Name")); };

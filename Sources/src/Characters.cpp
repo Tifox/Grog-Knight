@@ -60,7 +60,6 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_totem = nullptr;
 	this->_isAttacking = 0;
 	this->_target = nullptr;
-	this->_gold = 0;
 	this->_isLoadingAttack = 0;
 	this->_isStomping = 0;
 	this->_isCharging = 0;
@@ -1265,6 +1264,8 @@ int							Characters::getMana(void) { return this->_mana; };
 int							Characters::getMaxMana(void) { return this->_maxMana; };
 int							Characters::getMaxHP(void) { return this->_maxHp; };
 int							Characters::getGold(void) { return this->_gold; };
+void						Characters::setGold(int n) { this->_gold = n; };
+void						Characters::setLevel(int n) { this->_level = n; };
 void						Characters::changeCanMove(void) { this->_canMove = (this->_canMove ? false : true); };
 Weapon						*Characters::getWeapon(void) { return this->_weapon; };
 Armor						*Characters::getArmor(void) { return this->_armor; };

@@ -7726,6 +7726,10 @@
                 {
                  "physic":"0"
                 },
+             "20956":
+                {
+                 "trigger":"startGame"
+                },
              "21006":
                 {
                  "physic":"0"

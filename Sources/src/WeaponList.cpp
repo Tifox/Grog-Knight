@@ -130,7 +130,7 @@ std::list<Weapon *>		WeaponList::get3Starters(int level) {
 	Weapon					*tmp;
 
 	while (list.size() < 3) {
-		tmp = this->getWeaponRandom(level);
+		tmp = this->getWeaponRandom();
 		if (std::find(list.begin(), list.end(), tmp) == list.end())
 			list.push_back(tmp);
 	}

@@ -130,7 +130,7 @@ std::list<Ring *>		RingList::get3Starters(int level) {
 	Ring					*tmp;
 
 	while (list.size() < 3) {
-		tmp = this->getRingRandom(level);
+		tmp = this->getRingRandom();
 		if (std::find(list.begin(), list.end(), tmp) == list.end())
 			list.push_back(tmp);
 	}

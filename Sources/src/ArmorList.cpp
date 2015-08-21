@@ -134,7 +134,7 @@ std::list<Armor *>		ArmorList::get3Starters(int level) {
 	Armor					*tmp;
 
 	while (list.size() < 3) {
-		tmp = this->getArmorRandom(level);
+		tmp = this->getArmorRandom();
 		if (std::find(list.begin(), list.end(), tmp) == list.end())
 			list.push_back(tmp);
 	}

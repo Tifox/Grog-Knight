@@ -104,6 +104,7 @@ SRCS =	./Sources/src/Armor.cpp \
 
 SYSOBJS = $(patsubst %.cpp,%.o,$(SYSSRCS))
 OBJS = $(patsubst %.cpp,%.o,$(SRCS))
+HOST = $(shell hostname)
 
 .PHONY: clean all SWIG-Wrapper
 
@@ -124,7 +125,7 @@ jsoncpp:
 	if [ ! -f Sources/inc/Key.hpp ] ; \
 	then \
 			echo -n "#define KEY \"" >> Sources/inc/Key.hpp ; \
-			echo -n $USER@$HOST | md5sum | cut -d' ' -f1 | xargs echo -n >> Sources/inc/Key.hpp ; \
+			echo -n "$(USER)@$(HOST)" | md5sum | cut -d' ' -f1 | xargs echo -n >> Sources/inc/Key.hpp ; \
 			echo "\"" >> Sources/inc/Key.hpp ; \
 	fi;
 	cd Tools/jsoncpp && cmake . && make

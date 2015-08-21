@@ -119,6 +119,8 @@ std::map<std::string, Json::Value>		Quit::getSave(void) {
 			fileContent += tmp;
 	}
 	reader.parse(base64_decode(fileContent), root, false);
+	std::cout << root["key"].asString() << std::endl;
+	std::cout << KEY << std::endl;
 	if (root["key"].asString() != KEY)
 		Quit::cheater();
 	result["gold"] = root["gold"];
@@ -137,6 +139,7 @@ void		Quit::cheater(void) {
  \n\
 " << std::endl;
 	std::cout << "\033[0m";
+	_exit(0);
 }
 
 /* /!\ The following code is not ours.*/

@@ -95,7 +95,7 @@ void	Game::start(void) {
 	this->maps = new Maps("Maps/");
 	this->maps->readMaps();
 	Game::currentGame = this;
-	Hero			*hero = new Hero("Warrior");
+	Hero			*hero = new Hero(Game::menuCharacter->getHeroType());
 
 	Dealer			*dealer = new Dealer("Dealer");
 	//	Shopkeeper		*shopkeeper = new Shopkeeper("Shopkeeper");
@@ -566,3 +566,4 @@ int							Game::isWaitingForBind = 0;
 int							Game::reloadHUD = 0;
 int							Game::isPaused = 0;
 int							Game::asToStart = 0;
+MenuCharacter				*Game::menuCharacter = nullptr;

@@ -298,8 +298,8 @@ void	Hero::_takeDamage(Elements* elem) {
 
 void	Hero::setStartingValues(void) {
 	this->_setCategory("starting");
-	this->equipWeapon(Game::wList->getWeapon(this->_getAttr("weapon").asString()));
-	this->equipArmor(Game::aList->getArmor(this->_getAttr("armor").asString()));
-	this->equipRing(Game::rList->getRing(this->_getAttr("ring").asString()));
+	this->equipWeapon(Game::menuCharacter->getWeapon());
+	this->equipArmor(Game::menuCharacter->getArmor());
+	this->equipRing(Game::menuCharacter->getRing());
 	this->_speMove = this->_getAttr("specialMove").asString();
 }

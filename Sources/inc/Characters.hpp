@@ -80,6 +80,7 @@ class Characters : public Elements {
 		Characters::Orientation			getOrientation(void);
 		std::string						getLastAction(void);
 		int								getGold(void);
+		void							setGold(int);
 		int								getHP(void);
 		void							setHP(int hp);
 		int								getMana(void);
@@ -87,6 +88,7 @@ class Characters : public Elements {
 		int								getMaxMana(void);
 		int								getMaxHP(void);
 		int								getLevel(void);
+		void							setLevel(int);
 		Weapon							*getWeapon(void);
 		Armor							*getArmor(void);
 		Ring							*getRing(void);

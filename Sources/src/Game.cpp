@@ -95,8 +95,10 @@ void	Game::start(void) {
 	this->maps = new Maps("Maps/");
 	this->maps->readMaps();
 	Game::currentGame = this;
+	std::map<std::string, Json::Value>	save = Quit::getSave();
 	Hero			*hero = new Hero(Game::menuCharacter->getHeroType());
 
+	
 	Dealer			*dealer = new Dealer("Dealer");
 	//	Shopkeeper		*shopkeeper = new Shopkeeper("Shopkeeper");
 
@@ -119,6 +121,8 @@ void	Game::start(void) {
 	hero->init();
 	this->displayDealer(*(dealer));
 	dealer->init();
+	hero->setGold(save["gold"].asInt());
+	hero->setLevel(save["level"].asInt());
 	this->setHero(hero);
 	this->displayHUD();
 	hero->setStartingValues();
@@ -506,7 +510,7 @@ void		Game::displayHUD(void) {
 	w->setGame(g);
 	w->showHud();
 	w->setMaxHP(hero->getMaxHP());
-	w->gold(0);
+	w->gold(hero->getGold());
 	// Work
    //w->setText("Burp.", this->_hero, Vector3(0, 0, 0), 0, 1);
 	/*w->removeText("Burp.");*/

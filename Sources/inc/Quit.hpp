@@ -28,6 +28,19 @@
 # define __QUIT__
 
 # include "Menu.hpp"
+# include "Key.hpp"
+# ifdef __APPLE__
+#  include "../../Tools/jsoncpp/include/json/json.h"
+# else
+#  include "json/json.h"
+# endif
+
+# include <sstream>
+
+class	Hero;
+
+std::string base64_encode(unsigned char const* , unsigned int len);
+std::string base64_decode(std::string const& s);
 
 class	Quit {
 
@@ -38,6 +51,9 @@ class	Quit {
 		static void		quitGame(void);
 		static void		writeBindings(std::map<std::string, std::list<t_bind *> > binds);
 		static int		isUpper(std::string s);
+		static void		doSave(Hero *h);
+		static std::map<std::string, Json::Value>		getSave(void);
+		static void		cheater(void);
 };
 
 #endif

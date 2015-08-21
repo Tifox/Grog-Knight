@@ -98,7 +98,7 @@ void	Game::start(void) {
 	Hero			*hero = new Hero("Warrior");
 
 	Dealer			*dealer = new Dealer("Dealer");
-	//	Shopkeeper		*shopkeeper = new Shopkeeper("Shopkeeper");
+   	Shopkeeper		*shopkeeper = new Shopkeeper("Shopkeeper");
 
 	LevelGenerator *levelGenerator = new LevelGenerator(4, 3, 60);
 	levelGenerator->execute();
@@ -119,13 +119,12 @@ void	Game::start(void) {
 	hero->init();
 	this->displayDealer(*(dealer));
 	dealer->init();
+	shopkeeper->spawn();
 	this->setHero(hero);
 	this->displayHUD();
 	hero->setStartingValues();
 	Game::started = 1;
 	Game::currentGame = this;
-
-	//	new Shop(0,0,2,3);
 
 }
 
@@ -188,6 +187,7 @@ void	Game::displayDealer(Elements & Dealer) {
 	Dealer.addAttribute("dealer", "1");
 	Dealer.display();
 }
+
 //! Display the Enemy
 /**
  * Add an Enemy to the world, with an init position (x, y)
@@ -235,7 +235,7 @@ void	Game::checkHeroPosition(void) {
 }
 
 void	Game::simulateHeroItemContact(void) {
-	if (this->_hero->getItem() != nullptr) {
+  if (this->_hero->getItem() != nullptr && this->_hero->getItem()->GetBody()) {
 		if ((this->_hero->getItem()->GetBody()->GetWorldCenter().x >=
 			 this->_hero->GetBody()->GetWorldCenter().x + 1) ||
 			(this->_hero->getItem()->GetBody()->GetWorldCenter().x <=

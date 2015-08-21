@@ -1,28 +1,11 @@
 {
 	"infos": {
-		"name": "Dealer",
+		"name": "Shopkeeper",
 		"id": 0,
 		"sprites": "Resources/Images/Hero/hero_000.png",
 		"size": 1.3,
 		"HP": 75,
 		"hitboxType": "special",
 		"hitbox": "heroHitbox"
-	},
-	"Actions": {
-		"breath": {
-			"beginFrame": 0,
-			"endFrame": 1,
-			"time": 0.3
-		}
-	},
-	"Drugs": {
-		"pot": {
-			"invincibility": 30,
-			"puke": 30
-		},
-		"coke": {
-			"damage": 25,
-			"speed": 50
-		}
 	}
 }

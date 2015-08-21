@@ -35,7 +35,8 @@ Shop::Shop(void) {
  * and get it ready to appear when necessary
  */
 Shop::Shop(int x, int y, int lvl, int nb) {
-  for (int i = 0; i < nb; i++) {
+  int i;
+  for (i = 0; i < nb; i++) {
 	int rant = rand() % 3;
 	if (rant == 0)
 	  this->_items[i] = Game::wList->getWeaponRandom(lvl)->getName(); 
@@ -44,6 +45,7 @@ Shop::Shop(int x, int y, int lvl, int nb) {
 	if (rant == 2)
 	  this->_items[i] = Game::rList->getRingRandom(lvl)->getName(); 
   }
+  this->_items[i] = "end";
 }
 //! Deletes the merchant when changing floor
 Shop::~Shop(void) {
@@ -51,7 +53,35 @@ Shop::~Shop(void) {
 }
 
 //! Reveal the merchant when you enter the correct room
-void	Shop::revealShop(void) {
+void	Shop::revealShop(int x, int y) {
+  int i = 0;
+  for (i = 0; this->_items[i] != "end"; i++) {
+	if (this->_items[i] != "bought") {
+	  new ShopItem(this->_items[i], x + i - 1, y, i);
+	}
+  }
+  
+}
+
+Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
+  this->SetPosition(x, y);
+  this->addAttribute("type", "shopItem");
+  this->addAttribute("price", "10");
+  this->addAttribute("name", name);
+  this->addAttribute("shopPosition", std::to_string(num));
+  if (Game::wList->checkExists(name) == 1) {
+	this->SetSprite(Game::wList->getWeapon(name)->getSprite());
+  }
+  else if (Game::aList->checkExists(name) == 1) {
+	this->SetSprite(Game::aList->getArmor(name)->getSprite());
+  }
+  else if (Game::rList->checkExists(name) == 1) {
+	this->SetSprite(Game::rList->getRing(name)->getSprite());
+  }
+  this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
+  this->SetIsSensor(true);
+  this->SetDensity(0);
+  Game::bodiesToCreate.push_back(this);
 }
 
 //! Hide the merchant when you leave the roomz`

@@ -30,10 +30,14 @@
 
 class Shop {
 public:
+  class ShopItem: public Elements {
+  public:
+	ShopItem(std::string name, int x, int y, int num);
+  };
   Shop(void);
   Shop(int x, int y, int lvl, int nb);
   ~Shop(void);
-  void	revealShop(void);
+  void	revealShop(int x, int y);
   void	hideShop(void);
 
 private:

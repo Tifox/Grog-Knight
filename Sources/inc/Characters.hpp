@@ -152,6 +152,7 @@ class Characters : public Elements {
 		Armor*			_armor;
 		Ring*			_ring;
 		Elements*		_item;
+		std::string		_shopItem;
 		Elements*		_totem;
 		Inventory*		_inventory;
 		HUDTargeting*	_target;

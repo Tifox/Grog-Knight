@@ -56,6 +56,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_invincibility = false;
 	this->_grounds.clear();
 	this->_item = nullptr;
+	this->_shopItem = "";
 	this->_totem = nullptr;
 	this->_isAttacking = 0;
 	this->_target = nullptr;
@@ -994,23 +995,38 @@ void	Characters::_attack(int status) {
  * @param status The key status (1 | 0)
  */
 void	Characters::_pickupItem(int status) {
-	if (this->_item == nullptr)
-		return;
+  if (this->_shopItem != "") {
+	if (this->_inventory->addItemToInventory(this->_shopItem) == 1) {
+	  if (Game::wList->checkExists(this->_inventory->getCurrentFocus()))
+		new Loot(this, Game::wList->getWeapon(this->_inventory->dropSelectedItem()));
+	  else if (Game::aList->checkExists(this->_inventory->getCurrentFocus()))
+		new Loot(this, Game::aList->getArmor(this->_inventory->dropSelectedItem()));
+	  else if (Game::rList->checkExists(this->_inventory->getCurrentFocus()))
+		new Loot(this, Game::rList->getRing(this->_inventory->dropSelectedItem()));
+	  else
+		Log::error("An error occured trying to drop " + this->_inventory->getCurrentFocus());
+	}
+	  this->_inventory->addItemToInventory(this->_shopItem);
+  //	theSwitchboard.Broadcast(new Message("DeleteEquipment" +
+  // this->_item->GetName()));
+	  this->_shopItem = "";
+  }
+  else if (this->_item != nullptr) {
 	if (this->_inventory->addItemToInventory(this->_item->getAttribute("name")) == 1) {
-		if (Game::wList->checkExists(this->_inventory->getCurrentFocus()))
-			new Loot(this, Game::wList->getWeapon(this->_inventory->dropSelectedItem()));
-		else if (Game::aList->checkExists(this->_inventory->getCurrentFocus()))
-			new Loot(this, Game::aList->getArmor(this->_inventory->dropSelectedItem()));
-		else if (Game::rList->checkExists(this->_inventory->getCurrentFocus()))
-			new Loot(this, Game::rList->getRing(this->_inventory->dropSelectedItem()));
-		else
-			Log::error("An error occured trying to drop " + this->_inventory->getCurrentFocus());
-		this->_inventory->addItemToInventory(this->_item->getAttribute("name"));
+	  if (Game::wList->checkExists(this->_inventory->getCurrentFocus()))
+		new Loot(this, Game::wList->getWeapon(this->_inventory->dropSelectedItem()));
+	  else if (Game::aList->checkExists(this->_inventory->getCurrentFocus()))
+		new Loot(this, Game::aList->getArmor(this->_inventory->dropSelectedItem()));
+	  else if (Game::rList->checkExists(this->_inventory->getCurrentFocus()))
+		new Loot(this, Game::rList->getRing(this->_inventory->dropSelectedItem()));
+	  else
+		Log::error("An error occured trying to drop " + this->_inventory->getCurrentFocus());
+	  this->_inventory->addItemToInventory(this->_item->getAttribute("name"));
 	}
 	theSwitchboard.Broadcast(new Message("DeleteEquipment" +
-				this->_item->GetName()));
+										 this->_item->GetName()));
 	this->_item = nullptr;
-
+  }
 }
 
 //! Executes special move

@@ -222,6 +222,9 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		else
 			this->_enemiesTouched.push_back(elem);
 	}
+	else if (elem->getAttribute("type") == "shopItem") {
+		this->_shopItem = elem->getAttribute("name");
+	  }
    /* if (elem->getAttribute("speType") == "water")*/
 		/*this->GetBody()->SetGravityScale(0.3);*/
 }
@@ -239,6 +242,9 @@ void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 			if (elem->getAttributes()["type2"] == "Equipment") {
 				this->_item = nullptr;
 			}
+		}
+		if (elem->getAttribute("type") == "ShopItem") {
+		  this->_shopItem = "";
 		}
 		if (elem->getAttribute("type") == "Enemy" ||
 			elem->getAttribute("speType") == "spikes") {

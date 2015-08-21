@@ -26,24 +26,25 @@
 #ifndef __Shopkeeper__
 # define __Shopkeeper__
 
-# include "Characters.hpp"
+# include "Game.hpp"
 
 class Shop;
 
 class Shopkeeper : public Characters {
 
-	public:
-		Shopkeeper(std::string);
-		~Shopkeeper();
-
-		void	init();
-		virtual void	BeginContact(Elements* m, b2Contact* contact);
-		virtual void	EndContact(Elements* m, b2Contact* contact);
-		void			ReceiveMessage(Message *m);
-
-	private:
-  		Shop*			_shop;
-
+public:
+  Shopkeeper(std::string);
+  ~Shopkeeper();
+  
+  void	init();
+  virtual void	BeginContact(Elements* m, b2Contact* contact);
+  virtual void	EndContact(Elements* m, b2Contact* contact);
+  void			ReceiveMessage(Message *m);
+  void			spawn();
+  
+private:
+  Shop*			_shop;
+  
 };
 # include "Shop.hpp"
 

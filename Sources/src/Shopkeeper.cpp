@@ -18,9 +18,9 @@
  */
 
 /**
- * File: Dealer`.cpp
+ * File: Shopkeeper.cpp
  * Creation: 2015-08-07 15:09
- * Manon Budin <mbudin@student.42.fr> 
+ * Vincent Rey <vrey@student.42.fr>
  */
 
 # include "Shopkeeper.hpp"
@@ -51,6 +51,19 @@ Shopkeeper::~Shopkeeper(void) {
 void	Shopkeeper::init(void) {
 }
 
+//! Spawn shopkeeper
+/**
+ * Spawns the shopkeeper when you enter the correct room
+ *
+ */
+void	Shopkeeper::spawn(void) {
+	//Here starts the game - parse the 1st map coordinates and hero start
+  this->setXStart(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid() - 1);
+	this->setYStart(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 3);
+	this->addAttribute("shopkeeper", "1");
+	this->display();
+	this->_shop->revealShop(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid() - 1, Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 3);
+}
 
 //! Begin collision function
 /**

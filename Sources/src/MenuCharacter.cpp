@@ -277,7 +277,8 @@ void	MenuCharacter::_makeItChoice(void) {
 	Actor	*target = new Actor();
 	target->SetSprite("Resources/Images/HUD/selecItem.png");
 	target->SetSize(4);
-	target->SetPosition(this->_choicePointer->_position.X, this->_choicePointer->_position.Y);
+	target->SetLayer(100);
+	target->SetPosition(this->_choicePointer->GetPosition().X, this->_choicePointer->GetPosition().Y);
 	theWorld.Add(target);
 	if (this->_currentTrigger == "equipment") {
 		this->_showSelectInfo(this->_choicePointer);
@@ -334,7 +335,7 @@ void		MenuCharacter::_closetBackChoiceUpdate(void) {
 		theWorld.Remove(this->_target2);
 	this->_target2 = new Actor();
 	this->_target2->SetSize(4);
-	this->_target2->SetPosition(this->_closetChoice->_position.X, this->_closetChoice->_position.Y);
+	this->_target2->SetPosition(this->_closetChoice->GetPosition().X, this->_closetChoice->GetPosition().Y);
 	this->_target2->SetSprite("Resources/Images/HUD/selecItem2.png");
 	theWorld.Add(this->_target2);
 

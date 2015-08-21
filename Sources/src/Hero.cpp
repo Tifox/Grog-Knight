@@ -224,6 +224,8 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 	}
 	else if (elem->getAttribute("type") == "shopItem") {
 		this->_shopItem = elem->getAttribute("name");
+		this->_shopItemNumber = atoi(elem->getAttribute("number").c_str());
+		this->_shopItemPrice = atoi(elem->getAttribute("price").c_str());
 	  }
    /* if (elem->getAttribute("speType") == "water")*/
 		/*this->GetBody()->SetGravityScale(0.3);*/
@@ -245,6 +247,9 @@ void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 		}
 		if (elem->getAttribute("type") == "ShopItem") {
 		  this->_shopItem = "";
+		  this->_shopItemNumber = 0;
+		  this->_shopItemPrice = 0;
+
 		}
 		if (elem->getAttribute("type") == "Enemy" ||
 			elem->getAttribute("speType") == "spikes") {

@@ -995,7 +995,7 @@ void	Characters::_attack(int status) {
  * @param status The key status (1 | 0)
  */
 void	Characters::_pickupItem(int status) {
-  if (this->_shopItem != "") {
+  if (this->_shopItem != "" && this->_gold >= this->_shopItemPrice) {
 	if (this->_inventory->addItemToInventory(this->_shopItem) == 1) {
 	  if (Game::wList->checkExists(this->_inventory->getCurrentFocus()))
 		new Loot(this, Game::wList->getWeapon(this->_inventory->dropSelectedItem()));
@@ -1007,9 +1007,13 @@ void	Characters::_pickupItem(int status) {
 		Log::error("An error occured trying to drop " + this->_inventory->getCurrentFocus());
 	}
 	  this->_inventory->addItemToInventory(this->_shopItem);
-  //	theSwitchboard.Broadcast(new Message("DeleteEquipment" +
-  // this->_item->GetName()));
+	  theSwitchboard.Broadcast(new Message("DeleteShopItem" +
+										   this->_shopItemNumber));
 	  this->_shopItem = "";
+	  this->_gold -= this->_shopItemPrice;
+	  Game::getHUD()->updateGold(this->_gold);
+	  this->_shopItemNumber = 0;
+	  this->_shopItemPrice = 0;
   }
   else if (this->_item != nullptr) {
 	if (this->_inventory->addItemToInventory(this->_item->getAttribute("name")) == 1) {

@@ -90,6 +90,7 @@ void	Game::start(void) {
 	Game::currentGame = this;
 	Hero			*hero = new Hero("Warrior");
 	Dealer			*dealer = new Dealer("Dealer");
+	Shopkeeper		*shopkeeper = new Shopkeeper("Shopkeeper");
 
 	LevelGenerator *levelGenerator = new LevelGenerator(4, 3, 60);
 	levelGenerator->execute();
@@ -115,7 +116,6 @@ void	Game::start(void) {
 	hero->setStartingValues();
 	Game::started = 1;
 	Game::currentGame = this;
-	new Shop(0,0,2,3);
 }
 
 void	Game::menuInGame(void) {

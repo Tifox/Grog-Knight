@@ -51,7 +51,6 @@ class MenuCharacter;
 # include "Tooltip.hpp"
 # include "Menu.hpp"
 # include "InGameMenu.hpp"
-# include "Shop.hpp"
 
 class ArmorList;
 class EnemyList;

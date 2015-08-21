@@ -18,29 +18,33 @@
  */
 
 /**
- * File: Consumable.hpp
- * Creation: 2015-03-06 15:39
- * Manon Budin <mbudin@student.42.fr>
+ * File: Shopkeeper.hpp
+ * Creation: 2015-08-07 15:14
+ * Vincent Rey <vrey@student.42.fr>
  */
 
-#ifndef __Consumable__
-# define __Consumable__
+#ifndef __Shopkeeper__
+# define __Shopkeeper__
 
-# include "Elements.hpp"
-# include "Hero.hpp"
-# include "Dealer.hpp"
-# include "Shopkeeper.hpp"
-# include "WeaponList.hpp"
-# include "Object.hpp"
+# include "Characters.hpp"
 
-class Consumable : public Object {
-public:
-	Consumable();
-	Consumable(std::string type, std::string value, Characters* c);
-	Consumable(Characters* c);
-	~Consumable();
+class Shop;
 
-	void	BeginContact(Elements *elem, b2Contact *contact);
+class Shopkeeper : public Characters {
+
+	public:
+		Shopkeeper(std::string);
+		~Shopkeeper();
+
+		void	init();
+		virtual void	BeginContact(Elements* m, b2Contact* contact);
+		virtual void	EndContact(Elements* m, b2Contact* contact);
+		void			ReceiveMessage(Message *m);
+
+	private:
+  		Shop*			_shop;
+
 };
+# include "Shop.hpp"
 
 #endif

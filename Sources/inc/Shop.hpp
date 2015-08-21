@@ -26,7 +26,7 @@
 #ifndef __Shop__
 # define __Shop__
 
-# include "Characters.hpp"
+# include "Game.hpp"
 
 class Shop {
 public:
@@ -40,7 +40,6 @@ private:
   int	_nbItems;
   int	_lvlItems;
   std::map<int, std::string> _items;
-
   
 };
 

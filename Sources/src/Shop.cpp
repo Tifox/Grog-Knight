@@ -43,7 +43,6 @@ Shop::Shop(int x, int y, int lvl, int nb) {
 	  this->_items[i] = Game::aList->getArmorRandom(lvl)->getName(); 
 	if (rant == 2)
 	  this->_items[i] = Game::rList->getRingRandom(lvl)->getName(); 
-	std::cout << this->_items[i] << std::endl;
   }
 }
 //! Deletes the merchant when changing floor

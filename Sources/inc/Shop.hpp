@@ -28,23 +28,26 @@
 
 # include "Game.hpp"
 
-class Shop {
+class Shop: public Elements {
 public:
-  class ShopItem: public Elements {
-  public:
-	ShopItem(std::string name, int x, int y, int num);
-  };
-  Shop(void);
-  Shop(int x, int y, int lvl, int nb);
-  ~Shop(void);
-  void	revealShop(int x, int y);
-  void	hideShop(void);
+	class ShopItem: public Elements {
+	public:
+		ShopItem(std::string name, int x, int y, int num);
+	};
+	Shop(void);
+	Shop(int x, int y, int lvl, int nb);
+	~Shop(void);
+	void	revealShop(int x, int y);
+	void	hideShop(void);
+	void	ReceiveMessage(Message *m);
 
 private:
-  int	_nbItems;
-  int	_lvlItems;
-  std::map<int, std::string> _items;
-  
+	int	_nbItems;
+	int	_lvlItems;
+
+	std::map<int, std::string> _items;
+	std::map<int, ShopItem*> _shopItems;
+
 };
 
 #endif

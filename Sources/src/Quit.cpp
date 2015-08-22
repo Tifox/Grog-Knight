@@ -117,10 +117,12 @@ std::map<std::string, Json::Value>		Quit::getSave(void) {
 	if (file.is_open()) {
 		for (; std::getline(file, tmp); )
 			fileContent += tmp;
+	} else {
+		result["gold"] = 0;
+		result["level"] = 1;
+		return result;
 	}
 	reader.parse(base64_decode(fileContent), root, false);
-	std::cout << root["key"].asString() << std::endl;
-	std::cout << KEY << std::endl;
 	if (root["key"].asString() != KEY)
 		Quit::cheater();
 	result["gold"] = root["gold"];

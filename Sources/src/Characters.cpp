@@ -393,17 +393,11 @@ void	Characters::ReceiveMessage(Message *m) {
 	} else if (m->GetMessageName() == "deleteStomp") {
 		theWorld.Remove(this->_blast);
 		theSwitchboard.UnsubscribeFrom(this, "deleteStomp");
+	} else if (m->GetMessageName() == "mapPressed") {
+		Game::getHUD()->bigMap();
+	} else if (m->GetMessageName() == "deleteMapPressed") {
+		Game::getHUD()->deleteBigMap(1);
 	}
-
-
-	// TEST - to be removed -
-	else if (m->GetMessageName() == "changeCharacter") {
-		if (this->getAttribute("class") == "Warrior")
-			Game::currentGame->changeCharacter("Archer");
-		else
-			Game::currentGame->changeCharacter("Warrior");
-	}
-	//END OF TEST
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
 		attrName = this->_getAttr(i->first, "subscribe").asString();
 		if (!strncmp(attrName.c_str(), m->GetMessageName().c_str(), strlen(attrName.c_str()))) {
@@ -1013,11 +1007,12 @@ void	Characters::_pickupItem(int status) {
 		new Loot(this, Game::rList->getRing(this->_inventory->dropSelectedItem()));
 	  else
 		Log::error("An error occured trying to drop " + this->_inventory->getCurrentFocus());
-	}
 	  this->_inventory->addItemToInventory(this->_shopItem);
-	  theSwitchboard.Broadcast(new Message("DeleteShopItem" +
-										   this->_shopItemNumber));
-	  this->_shopItem = "";
+	}
+	theSwitchboard.Broadcast(new Message("deleteShopItem" +
+										 this->_shopItemNumber));
+	theSwitchboard.DeferredBroadcast(new Message("removeShopkeeperText"), 3);
+	this->_shopItem = "";
 	  this->_gold -= this->_shopItemPrice;
 	  Game::getHUD()->updateGold(this->_gold);
 	  this->_shopItemNumber = 0;

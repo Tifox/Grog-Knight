@@ -137,6 +137,12 @@
 		"up": {
 			"subscribe": "up"
 		},
+		"map": {
+			"subscribe": "map"
+		},
+		"deleteMap": {
+			"subscribe": "deleteMap"
+		},
 		"breath": {
 			"beginFrame_right": 0,
 			"endFrame_right": 1,

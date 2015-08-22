@@ -137,17 +137,23 @@ void	Maps::_getMap(void) {
 	this->_maps[atoi(this->_root["properties"].get("number", 0).asString().c_str())] = map;
 	int			n = 0;
 	for (j = this->_root["properties"].begin(); j != this->_root["properties"].end(); j++) {
-		if (j.key().asString() == "doorUp" || j.key().asString() == "door_up")
+		if (j.key().asString() == "doorUp" || j.key().asString() == "door_up") {
 			n++;
-		if (j.key().asString() == "doorRight" || j.key().asString() == "door_right")
+			map->doors["up"] = 1;
+		} if (j.key().asString() == "doorRight" || j.key().asString() == "door_right") {
 			n += 2;
-		if (j.key().asString() == "doorDown" || j.key().asString() == "door_down")
+			map->doors["right"] = 1;
+		} if (j.key().asString() == "doorDown" || j.key().asString() == "door_down") {
 			n += 4;
-		if (j.key().asString() == "doorLeft" || j.key().asString() == "door_left")
+			map->doors["down"] = 1;
+		} if (j.key().asString() == "doorLeft" || j.key().asString() == "door_left") {
 			n += 8;
+			map->doors["left"] = 1;
+		}
 	}
-	if (n != 0)
+	if (n != 0) {
 		this->_mapByDoor[n].push_back(map);
+	}
 
 	this->_root.clear();
 }

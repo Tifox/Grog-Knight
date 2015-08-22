@@ -35,17 +35,18 @@ Shop::Shop(void) {
  * and get it ready to appear when necessary
  */
 Shop::Shop(int x, int y, int lvl, int nb) {
-  int i;
-  for (i = 0; i < nb; i++) {
-	int rant = rand() % 3;
-	if (rant == 0)
-	  this->_items[i] = Game::wList->getWeaponRandom(lvl)->getName(); 
-	if (rant == 1)
-	  this->_items[i] = Game::aList->getArmorRandom(lvl)->getName(); 
-	if (rant == 2)
-	  this->_items[i] = Game::rList->getRingRandom(lvl)->getName(); 
-  }
-  this->_items[i] = "end";
+	int i;
+	for (i = 0; i < nb; i++) {
+		theSwitchboard.SubscribeTo(this, "deleteShopItem" + i);
+		int rant = rand() % 3;
+		if (rant == 0)
+			this->_items[i] = Game::wList->getWeaponRandom(lvl)->getName();
+		if (rant == 1)
+			this->_items[i] = Game::aList->getArmorRandom(lvl)->getName();
+		if (rant == 2)
+			this->_items[i] = Game::rList->getRingRandom(lvl)->getName();
+	}
+	this->_items[i] = "end";
 }
 //! Deletes the merchant when changing floor
 Shop::~Shop(void) {
@@ -57,10 +58,9 @@ void	Shop::revealShop(int x, int y) {
   int i = 0;
   for (i = 0; this->_items[i] != "end"; i++) {
 	if (this->_items[i] != "bought") {
-	  new ShopItem(this->_items[i], x + i - 1, y, i);
+		this->_shopItems[i] = new ShopItem(this->_items[i], x + i - 1, y, i);
 	}
   }
-  
 }
 
 Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
@@ -68,6 +68,7 @@ Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
   this->addAttribute("type", "shopItem");
   this->addAttribute("price", "10");
   this->addAttribute("name", name);
+  this->addAttribute("number", std::to_string(num));
   this->addAttribute("shopPosition", std::to_string(num));
   if (Game::wList->checkExists(name) == 1) {
 	this->SetSprite(Game::wList->getWeapon(name)->getSprite());
@@ -86,4 +87,16 @@ Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
 
 //! Hide the merchant when you leave the roomz`
 void	Shop::hideShop(void) {
+}
+
+void	Shop::ReceiveMessage(Message *m) {
+	int i;
+	for (i = 0; this->_items[i] != "end"; i++) {
+		if (m->GetMessageName() == "deleteShopItem" + i) {
+			this->_items[i] = "bought";
+			this->_shopItems[i]->GetBody()->SetActive(false);
+			theWorld.Remove(this->_shopItems[i]);
+			Game::currentGame->getShopkeeper()->displayText("A wise choice.");
+		}
+	}
 }

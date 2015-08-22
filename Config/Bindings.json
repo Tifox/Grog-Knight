@@ -17,6 +17,11 @@
 			"broadcast" : "escape",
 			"key" : "ESCAPE"
 		},
+		"MapToggle" : 
+		{
+			"broadcast" : "map",
+			"key" : "M"
+		},
 		"Return" : 
 		{
 			"broadcast" : "return",
@@ -94,7 +99,7 @@
 		"Target an Enemy" : 
 		{
 			"broadcast" : "lockTarget",
-			"key" : "M"
+			"key" : "N"
 		},
 		"Unlock Target" : 
 		{

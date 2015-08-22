@@ -385,17 +385,11 @@ void	Characters::ReceiveMessage(Message *m) {
 	} else if (m->GetMessageName() == "deleteStomp") {
 		theWorld.Remove(this->_blast);
 		theSwitchboard.UnsubscribeFrom(this, "deleteStomp");
+	} else if (m->GetMessageName() == "mapPressed") {
+		Game::getHUD()->bigMap();
+	} else if (m->GetMessageName() == "deleteMapPressed") {
+		Game::getHUD()->deleteBigMap(1);
 	}
-
-
-	// TEST - to be removed -
-	else if (m->GetMessageName() == "changeCharacter") {
-		if (this->getAttribute("class") == "Warrior")
-			Game::currentGame->changeCharacter("Archer");
-		else
-			Game::currentGame->changeCharacter("Warrior");
-	}
-	//END OF TEST
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
 		attrName = this->_getAttr(i->first, "subscribe").asString();
 		if (!strncmp(attrName.c_str(), m->GetMessageName().c_str(), strlen(attrName.c_str()))) {

@@ -109,8 +109,8 @@ class	HUDWindow : public HUDActor {
 		int						_maxHP;
 		std::list<HUDActor *>	_bigMapList;
 		HUDActor				*_currentObjectMap;
-
 		void					_drawDoor(Vector2 size, Vector2 position);
+		int						_doNotDelete;
 };
 
 #endif

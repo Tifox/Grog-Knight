@@ -602,8 +602,10 @@ void	HUDWindow::bigMap(void) {
 	std::list<HUDActor *>::iterator		it;
 	int			x, y, x2, y2;
 	static int			isToggled = 0;
+	static int			doNotDelete = 0;
 
 	if (isToggled == 0) {
+		this->_doNotDelete = 1;
 		for (y = 0, y2 = 0; y < map.size(); y++, y2 += 28) {
 			for (x = 0, x2 = 0; x < map[y].size(); x++, x2 += 41) {
 				if (map[y][x].getIsUsed()) {
@@ -632,6 +634,7 @@ void	HUDWindow::bigMap(void) {
 	} else {
 		this->deleteBigMap(0);
 		isToggled = 0;
+		this->_doNotDelete = 0;
 	}
 }
 
@@ -647,9 +650,11 @@ void	HUDWindow::deleteBigMap(int n) {
 		}
 		theSwitchboard.DeferredBroadcast(new Message("deleteMapPressed"), 1);
 	} else {
-		for (it = this->_bigMapList.begin(); it != this->_bigMapList.end(); it++)
-			theWorld.Remove(*it);
-		this->_bigMapList.clear();
+		if (this->_doNotDelete == 0) {
+			for (it = this->_bigMapList.begin(); it != this->_bigMapList.end(); it++)
+				theWorld.Remove(*it);
+			this->_bigMapList.clear();
+		}
 	}
 }
 

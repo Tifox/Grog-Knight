@@ -59,6 +59,17 @@ void Switchboard::DeferredBroadcast(Message* message, float delay)
 	_delayedMessages.push_back(mt);
 }
 
+void	Switchboard::CancelBroadcast(std::string m) {
+	std::vector<MessageTimer>::iterator it;
+	//MessageTimer mt(m, delay);
+
+	for (it = this->_delayedMessages.begin(); it != this->_delayedMessages.end(); it++) {
+		if (m == (*it)._message->GetMessageName()) {
+			this->_delayedMessages.erase(it);
+		}
+	}
+}
+
 void Switchboard::Update(float dt)
 {
 	std::vector<MessageTimer>::iterator it = _delayedMessages.begin();

@@ -551,6 +551,7 @@ void	HUDWindow::minimap(void) {
 	int		x, y, x2, y2;
 	HUDActor *tmp;
 	std::list<HUDActor *>::iterator		it;
+	std::map<std::string, int>			doors;
 
 	for (it = this->_minimap.begin(); it != this->_minimap.end(); it++)
 		theWorld.Remove(*it);
@@ -581,15 +582,74 @@ void	HUDWindow::minimap(void) {
 			this->_allElems.push_back(tmp);
 			this->_minimap.push_back(tmp);
 
-			if (Game::currentGame->maps->getMapXY()[y2][x2 + 1].getXStart())
+			doors = Game::currentGame->maps->getMapXY()[y2][x2].doors;
+			if (doors.find("right") != doors.end())
 				this->_drawDoor(Vector2(1, 5), Vector2(x + 1 + (40 / 2), y));
-			if (Game::currentGame->maps->getMapXY()[y2][x2 - 1].getXStart())
+			if (doors.find("left") != doors.end())
 				this->_drawDoor(Vector2(1, 5), Vector2(x - (40 / 2), y));
-			if (Game::currentGame->maps->getMapXY()[y2 - 1][x2].getXStart())
+			if (doors.find("up") != doors.end())
 				this->_drawDoor(Vector2(5, 1), Vector2(x, y - (27 / 2) - 1));
-			if (Game::currentGame->maps->getMapXY()[y2 + 1][x2].getXStart())
+			if (doors.find("down") != doors.end())
 				this->_drawDoor(Vector2(5, 1), Vector2(x, y + (27 / 2) + 1));
 		}
+	}
+}
+
+//! Display an entire level IG
+void	HUDWindow::bigMap(void) {
+	std::vector<std::vector<Map> >		map = Game::currentGame->maps->getMapXY();
+	HUDActor							*tmp;
+	std::list<HUDActor *>::iterator		it;
+	int			x, y, x2, y2;
+	static int			isToggled = 0;
+
+	if (isToggled == 0) {
+		for (y = 0, y2 = 0; y < map.size(); y++, y2 += 28) {
+			for (x = 0, x2 = 0; x < map[y].size(); x++, x2 += 41) {
+				if (map[y][x].getIsUsed()) {
+					tmp = new HUDActor();
+					tmp->SetSize(40, 27);
+					tmp->SetPosition(x2, y2);
+					if (x == Game::currentX && y == Game::currentY) {
+						this->_currentObjectMap = tmp;
+						tmp->SetColor(0, 1, 0, 0);
+					} else
+						tmp->SetColor(1, 1, 1, 0);
+					tmp->SetDrawShape(ADS_Square);
+					tmp->SetLayer(100);
+					theWorld.Add(tmp);
+					this->_bigMapList.push_back(tmp);
+				}
+			}
+		}
+		for (it = this->_bigMapList.begin(); it != this->_bigMapList.end(); it++) {
+			if ((*it) == this->_currentObjectMap)
+				(*it)->ChangeColorTo(Color(0, 1, 0), 1);
+			else
+				(*it)->ChangeColorTo(Color(1, 1, 1), 1);
+		}
+		isToggled = 1;
+	} else {
+		this->deleteBigMap(0);
+		isToggled = 0;
+	}
+}
+
+void	HUDWindow::deleteBigMap(int n) {
+	std::list<HUDActor *>::iterator		it;
+
+	if (n == 0) {
+		for (it = this->_bigMapList.begin(); it != this->_bigMapList.end(); it++) {
+			if ((*it) == this->_currentObjectMap)
+				(*it)->ChangeColorTo(Color(0, 1, 0, 0), 1);
+			else
+				(*it)->ChangeColorTo(Color(1, 1, 1, 0), 1);
+		}
+		theSwitchboard.DeferredBroadcast(new Message("deleteMapPressed"), 1);
+	} else {
+		for (it = this->_bigMapList.begin(); it != this->_bigMapList.end(); it++)
+			theWorld.Remove(*it);
+		this->_bigMapList.clear();
 	}
 }
 

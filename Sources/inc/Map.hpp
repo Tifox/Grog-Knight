@@ -62,6 +62,7 @@ class	Map {
 		void	setXStart(int x);
 		void	setYStart(int y);
 		void	setUsed(int n);
+		void	setScore(int n);
 		Map		display(void);
 		int		getHeight(void);
 		int		getWidth(void);
@@ -70,11 +71,13 @@ class	Map {
 		int		getXStart(void);
 		int		getYStart(void);
 		int		getIsUsed(void);
+		int		getScore(void);
 		void	destroyMap(void);
 		std::list<Enemy *>		getEnemies(void);
 		std::vector<std::vector<int> >	getPhysicMap(void);
 		void	callAllPatterns(void);
 		void	removeEnemy(Enemy *e);
+		std::map<std::string, int>		doors;
 
 	private:
 		int					_mapCount;

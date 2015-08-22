@@ -81,6 +81,7 @@ class Characters : public Elements {
 		std::string						getLastAction(void);
 		int								getGold(void);
 		void							setGold(int);
+		void							setDrug(std::string name);
 		int								getHP(void);
 		void							setHP(int hp);
 		int								getMana(void);
@@ -119,6 +120,7 @@ class Characters : public Elements {
 		std::string		_name;
 		std::string		_lastAction;
 		std::string 	_talk;
+		std::string 	_drug;
 		int				_id;
 		int				_size;
 		int				_maxSpeed;

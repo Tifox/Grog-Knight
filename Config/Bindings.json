@@ -30,6 +30,11 @@
 			"broadcast" : "dropItem",
 			"key" : "V"
 		},
+		"Drug yourself" : 
+		{
+			"broadcast" : "drug",
+			"key" : "D"
+		},
 		"Equip an Item" : 
 		{
 			"broadcast" : "equipSelectedItem",

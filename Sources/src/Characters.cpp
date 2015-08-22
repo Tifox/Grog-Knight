@@ -57,6 +57,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_grounds.clear();
 	this->_item = nullptr;
 	this->_shopItem = "";
+	this->_drug = "";
 	this->_totem = nullptr;
 	this->_isAttacking = 0;
 	this->_target = nullptr;
@@ -228,6 +229,13 @@ void	Characters::ReceiveMessage(Message *m) {
 			this->_fullChargedAttack = 0;
 			if (this->_grounds.size() > 0)
 				this->AnimCallback("base");
+		}
+	}
+	else if (m->GetMessageName() == "drugPressed") {
+		if(this->_drug != "") {
+			Drug *drug = new Drug(Game::dList->getDrug(this->_drug));
+			theSwitchboard.UnsubscribeFrom(this, "drugPressed");
+			this->_drug = "";
 		}
 	}
 	else if (m->GetMessageName() == "fullChargedAttack") {
@@ -1271,6 +1279,7 @@ int							Characters::getGold(void) { return this->_gold; };
 void						Characters::setGold(int n) { this->_gold = n; };
 void						Characters::setLevel(int n) { this->_level = n; };
 void						Characters::changeCanMove(void) { this->_canMove = (this->_canMove ? false : true); };
+void						Characters::setDrug(std::string name) { this->_drug = name; };
 Weapon						*Characters::getWeapon(void) { return this->_weapon; };
 Armor						*Characters::getArmor(void) { return this->_armor; };
 Ring						*Characters::getRing(void) { return this->_ring; };

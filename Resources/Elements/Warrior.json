@@ -151,6 +151,9 @@
 			"endFrame_left": 49,
 			"time": 0.1
 		},
+		"drug": {
+			"subscribe": "drug"
+		},
 		"death": {
 			"beginFrame_right": 50,
 			"endFrame_right": 57,

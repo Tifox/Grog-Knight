@@ -57,6 +57,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_grounds.clear();
 	this->_item = nullptr;
 	this->_shopItem = "";
+	this->_drug = "";
 	this->_totem = nullptr;
 	this->_isAttacking = 0;
 	this->_target = nullptr;
@@ -228,6 +229,13 @@ void	Characters::ReceiveMessage(Message *m) {
 			this->_fullChargedAttack = 0;
 			if (this->_grounds.size() > 0)
 				this->AnimCallback("base");
+		}
+	}
+	else if (m->GetMessageName() == "drugPressed") {
+		if(this->_drug != "") {
+			Drug *drug = new Drug(Game::dList->getDrug(this->_drug));
+			theSwitchboard.UnsubscribeFrom(this, "drugPressed");
+			this->_drug = "";
 		}
 	}
 	else if (m->GetMessageName() == "fullChargedAttack") {
@@ -999,11 +1007,12 @@ void	Characters::_pickupItem(int status) {
 		new Loot(this, Game::rList->getRing(this->_inventory->dropSelectedItem()));
 	  else
 		Log::error("An error occured trying to drop " + this->_inventory->getCurrentFocus());
-	}
 	  this->_inventory->addItemToInventory(this->_shopItem);
-	  theSwitchboard.Broadcast(new Message("DeleteShopItem" +
-										   this->_shopItemNumber));
-	  this->_shopItem = "";
+	}
+	theSwitchboard.Broadcast(new Message("deleteShopItem" +
+										 this->_shopItemNumber));
+	theSwitchboard.DeferredBroadcast(new Message("removeShopkeeperText"), 3);
+	this->_shopItem = "";
 	  this->_gold -= this->_shopItemPrice;
 	  Game::getHUD()->updateGold(this->_gold);
 	  this->_shopItemNumber = 0;
@@ -1265,6 +1274,7 @@ int							Characters::getGold(void) { return this->_gold; };
 void						Characters::setGold(int n) { this->_gold = n; };
 void						Characters::setLevel(int n) { this->_level = n; };
 void						Characters::changeCanMove(void) { this->_canMove = (this->_canMove ? false : true); };
+void						Characters::setDrug(std::string name) { this->_drug = name; };
 Weapon						*Characters::getWeapon(void) { return this->_weapon; };
 Armor						*Characters::getArmor(void) { return this->_armor; };
 Ring						*Characters::getRing(void) { return this->_ring; };

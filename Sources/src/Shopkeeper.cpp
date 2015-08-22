@@ -31,9 +31,9 @@
  */
 Shopkeeper::Shopkeeper(std::string name) : Characters(name) {
 	this->addAttribute("type", "Shopkeeper");
+	theSwitchboard.SubscribeTo(this, "removeShopkeeperText");
 	this->SetLayer(10);
 	this->_shop = new Shop(0,0,2,3);
-	return ;
 }
 
 //! Destructor
@@ -58,11 +58,14 @@ void	Shopkeeper::init(void) {
  */
 void	Shopkeeper::spawn(void) {
 	//Here starts the game - parse the 1st map coordinates and hero start
-  this->setXStart(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid() - 1);
+	this->setXStart(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid() - 1);
 	this->setYStart(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 3);
 	this->addAttribute("shopkeeper", "1");
 	this->display();
 	this->_shop->revealShop(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid() - 1, Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 3);
+	this->_currentPhrase = "Greetings, traveler.";
+	theSwitchboard.DeferredBroadcast(new Message("removeShopkeeperText"), 3);
+	Game::getHUD()->setText(this->_currentPhrase, this, Vector3(255, 51, 255), 0, 0);
 }
 
 //! Begin collision function
@@ -90,5 +93,20 @@ void	Shopkeeper::BeginContact(Elements* elem, b2Contact *contact) {
 void	Shopkeeper::EndContact(Elements *elem, b2Contact *contact) {
 }
 
+void	Shopkeeper::displayText(std::string say) {
+	HUDWindow* hud = Game::getHUD();
+		hud->removeText(this->_currentPhrase);
+		this->_currentPhrase = say;
+		hud->setText(this->_currentPhrase, this, Vector3(255, 51, 255), 0, 0);
+}
+
+void	Shopkeeper::removeText(void) {
+	Game::getHUD()->removeText(this->_currentPhrase);
+}
+
 void	Shopkeeper::ReceiveMessage(Message *m) {
+	if (m->GetMessageName() == "removeShopkeeperText") {
+		if (this->_currentPhrase == "A wise choice." || this->_currentPhrase == "Greetings, traveler.")
+			this->removeText();
+	}
 }

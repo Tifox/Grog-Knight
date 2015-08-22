@@ -33,18 +33,20 @@ class Shop;
 class Shopkeeper : public Characters {
 
 public:
-  Shopkeeper(std::string);
-  ~Shopkeeper();
-  
-  void	init();
-  virtual void	BeginContact(Elements* m, b2Contact* contact);
-  virtual void	EndContact(Elements* m, b2Contact* contact);
-  void			ReceiveMessage(Message *m);
-  void			spawn();
-  
+	Shopkeeper(std::string);
+	~Shopkeeper();
+
+	void	init();
+	virtual void	BeginContact(Elements* m, b2Contact* contact);
+	virtual void	EndContact(Elements* m, b2Contact* contact);
+	void			ReceiveMessage(Message *m);
+	void			spawn();
+	void			displayText(std::string say);
+	void			removeText(void);
+
 private:
-  Shop*			_shop;
-  
+	Shop*			_shop;
+	std::string		_currentPhrase;
 };
 # include "Shop.hpp"
 

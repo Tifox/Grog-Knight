@@ -100,7 +100,7 @@ void	Game::start(void) {
 
 	
 	Dealer			*dealer = new Dealer("Dealer");
-   	Shopkeeper		*shopkeeper = new Shopkeeper("Shopkeeper");
+	Game::_shopkeeper = new Shopkeeper("Shopkeeper");
 
 	LevelGenerator *levelGenerator = new LevelGenerator(4, 3, 60);
 	levelGenerator->execute();
@@ -121,7 +121,7 @@ void	Game::start(void) {
 	hero->init();
 	this->displayDealer(*(dealer));
 	dealer->init();
-	shopkeeper->spawn();
+	Game::_shopkeeper->spawn();
 	hero->setGold(save["gold"].asInt());
 	hero->setLevel(save["level"].asInt());
 	this->setHero(hero);
@@ -540,6 +540,7 @@ void		Game::reloadingHUD(void) {
 /* SETTERS */
 void		Game::setHero(Characters * h) { this->_hero = h; };
 Characters*	Game::getHero(void) { return this->_hero; };
+Shopkeeper*	Game::getShopkeeper(void) { return this->_shopkeeper; };
 
 // Set for the statics
 int Game::currentIds = 0;

@@ -226,6 +226,7 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		this->_shopItem = elem->getAttribute("name");
 		this->_shopItemNumber = atoi(elem->getAttribute("number").c_str());
 		this->_shopItemPrice = atoi(elem->getAttribute("price").c_str());
+		Game::currentGame->getShopkeeper()->displayText("This one is for " + std::to_string(this->_shopItemPrice) + "g");
 	  }
    /* if (elem->getAttribute("speType") == "water")*/
 		/*this->GetBody()->SetGravityScale(0.3);*/
@@ -245,10 +246,11 @@ void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 				this->_item = nullptr;
 			}
 		}
-		if (elem->getAttribute("type") == "ShopItem") {
-		  this->_shopItem = "";
-		  this->_shopItemNumber = 0;
-		  this->_shopItemPrice = 0;
+		if (elem->getAttribute("type") == "shopItem") {
+			this->_shopItem = "";
+			this->_shopItemNumber = 0;
+			this->_shopItemPrice = 0;
+			Game::currentGame->getShopkeeper()->removeText();
 
 		}
 		if (elem->getAttribute("type") == "Enemy" ||

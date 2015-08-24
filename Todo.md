@@ -83,4 +83,16 @@ Equipment
   Ring: rajouter bonus pour le perso
   Ajout de vie = conteneur vides ? Ou conteneur non rechargeables ?
   
+Bindings a simplifier
 
+HUD todo
+
+Tuto
+
+update doc
+
+debug position, fps, infos sur le niveau/perso etc
+
+classe dialogues
+
+Windoz

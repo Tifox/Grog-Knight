@@ -1,10 +1,24 @@
 language: cpp
 script: make
 sudo: false
-before_install: 
-     - sudo apt-get update
-     - sudo ./Angel/nix-prereqs.sh
-     - sudo apt-get install --only-upgrade g++
+addons:
+     apt:
+          packages:
+               - g++
+               - build-essential 
+               - cmake 
+               - libglu1-mesa-dev                  
+               - libreadline-dev 
+               - libdevil-dev 
+               - libxrandr-dev 
+               - libfreetype6-dev            
+               - joystick 
+               - libopenal-dev 
+               - libvorbis-dev 
+               - libpng12-dev                      
+               - libncurses5-dev 
+               - libxi-dev 
+               - xorg-dev
 notifications:
   webhooks:
     urls:

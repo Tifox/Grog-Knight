@@ -81,6 +81,7 @@ void 	Tooltip::info(Elements *elem) {
 	float	x = theCamera.GetWindowWidth() / 20 * 11.3;
 	float	y = 30;
 
+	clearInfo();
 	if (this->_name == "" && this->_flavor == "" && this->_hp == "" && this->_mana == "") {
 		HUDWindow *hud = Game::getHUD();
 		this->_name = elem->getAttribute("name");
@@ -147,7 +148,7 @@ void	Tooltip::talk(Elements *elem) {
 			tmp = tmp + this->_talk[i];
 	}
 	hud->setText(tmp, x + theCamera.GetWindowWidth() / 40 * 2, y + theCamera.GetWindowHeight() / 20 * 0.15,  Vector3(0, 0, 0), 1);
-	theSwitchboard.DeferredBroadcast(new Message("deleteTalk"), 2);
+	theSwitchboard.DeferredBroadcast(new Message("deleteTalk"), 5);
 }
 
 void	Tooltip::clearInfo(int clean) {

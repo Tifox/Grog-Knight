@@ -32,6 +32,7 @@
 Dealer::Dealer(std::string name) : Characters(name) {
 	this->addAttribute("type", "Dealer");
 	this->SetLayer(10);
+	this->SetDensity(0);
 	this->_give = false;
 	return ;
 } 

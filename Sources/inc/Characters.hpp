@@ -188,7 +188,7 @@ class Characters : public Elements {
 		virtual void	_attack(int status);
 		virtual void	_pickupItem(int status);
 		virtual void	_run(void);
-		virtual void	_specialMove(void);
+		virtual void	_specialMove(int status);
 		virtual void	_callTrigger(std::string name, int status);
 		// virtual void	_dash(void);
 		// virtual void	_charge(void);

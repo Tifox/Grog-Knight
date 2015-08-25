@@ -231,9 +231,9 @@
   * @sa SpecialMoves::_specialMove()
   */
 
- void	SpecialMoves::_fly(void) {
+void	SpecialMoves::_fly(void) {
  	this->character->_isFlying = (this->character->_isFlying ? false : true);
- }
+}
 
  //! Special move: totem
  /**
@@ -252,6 +252,8 @@
         this->character->_totem->SetSprite("Resources/Images/HUD/cible.png");
         this->character->_totem->SetLayer(105);
         this->character->_totem->addAttribute("physic", "1");
+        this->character->_totem->addAttribute("currentX", std::to_string(Game::currentX));
+        this->character->_totem->addAttribute("currentY", std::to_string(Game::currentY));
         this->character->_totem->SetDensity(0);
         this->character->_totem->SetFixedRotation(true);
         this->character->_totem->SetIsSensor(true);
@@ -261,7 +263,16 @@
         theWorld.Add(this->character->_totem);
     }
     else if (this->character->_totem != nullptr) {
+		Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
+		Game::currentX = atoi(this->character->_totem->getAttribute("currentX").c_str());
+		Game::currentY = atoi(this->character->_totem->getAttribute("currentY").c_str());
+		Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX] = Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].display();
+		theCamera.SetPosition(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(), Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
+		theCamera.SetPosition(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(), Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
         this->character->GetBody()->SetTransform(b2Vec2(this->character->_totem->GetBody()->GetWorldCenter().x, this->character->_totem->GetBody()->GetWorldCenter().y), 0);
+		if (Game::isInMenu == 0)
+			Game::getHUD()->minimap();
+
         Game::addToDestroyList(this->character->_totem);
         this->character->_totem = nullptr;
     }

@@ -314,6 +314,7 @@ void	Characters::ReceiveMessage(Message *m) {
 		}
 	}
 	else if (m->GetMessageName() == "removeTotem") {
+		theSwitchboard.UnsubscribeFrom(this, "removeTotem");
 		if (this->_totem == nullptr) {
 			Game::getHUD()->setText("Totem removed.", this, Vector3(255, 51, 255), 0, 0);
 			theSwitchboard.DeferredBroadcast(new Message("removeTotemText"), 1);
@@ -321,6 +322,7 @@ void	Characters::ReceiveMessage(Message *m) {
 			this->_totem = nullptr;
 		}
 	}  else if (m->GetMessageName() == "removeTotemText") {
+		theSwitchboard.UnsubscribeFrom(this, "removeTotemText");
 		Game::getHUD()->removeText("Totem removed.");
 	}
 	else if (m->GetMessageName() == "cycleInventory") {
@@ -1052,6 +1054,8 @@ void	Characters::_pickupItem(int status) {
 void	Characters::_specialMove(int status) {
 	if (status == 1) {
 		if (this->_speMove == "totem")
+			theSwitchboard.SubscribeTo(this, "removeTotem");
+			theSwitchboard.SubscribeTo(this, "removeTotemText");
 			theSwitchboard.DeferredBroadcast(new Message("removeTotem"), 3);
 	}
 	if (status == 0) {
@@ -1065,8 +1069,11 @@ void	Characters::_specialMove(int status) {
 			this->_eqMove->_blink();
 		else if (this->_speMove == "fly")
 			this->_eqMove->_fly();
-		else if (this->_speMove == "totem")
+		else if (this->_speMove == "totem") {
+			theSwitchboard.UnsubscribeFrom(this, "removeTotem");
+			theSwitchboard.UnsubscribeFrom(this, "removeTotemText");
 			this->_eqMove->_totem();
+		}
 		else if (this->_speMove == "shunpo")
 			this->_eqMove->_shunpo();
 		else if (this->_speMove == "disengage")

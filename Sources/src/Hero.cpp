@@ -36,8 +36,6 @@ Hero::Hero(std::string name) : Characters(name) {
 	theSwitchboard.SubscribeTo(this, "disableAttackHitbox");
 	theSwitchboard.SubscribeTo(this, "equipSelectedItem");
 	theSwitchboard.SubscribeTo(this, "dropItem");
-	theSwitchboard.SubscribeTo(this, "removeTotem");
-	theSwitchboard.SubscribeTo(this, "removeTotemText");
 	theSwitchboard.SubscribeTo(this, "attackReady");
 	theSwitchboard.SubscribeTo(this, "speMoveReady");
 	theSwitchboard.SubscribeTo(this, "changeCharacter");

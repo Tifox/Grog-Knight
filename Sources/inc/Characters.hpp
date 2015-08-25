@@ -148,6 +148,8 @@ class Characters : public Elements {
 		bool			_isFlying;
 		bool			_flyTrigger;
 		bool			_isDashing;
+		int				_totemPlaced;
+		int				_totemDeletionSent;
 		int				_hasDashed;
 		int				_level;
 		std::string		_currentTrigger;

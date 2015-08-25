@@ -60,6 +60,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_drug = "";
 	this->_totem = nullptr;
 	this->_isAttacking = 0;
+	this->_totemPlaced = 0;
 	this->_target = nullptr;
 	this->_isLoadingAttack = 0;
 	this->_isStomping = 0;
@@ -316,16 +317,12 @@ void	Characters::ReceiveMessage(Message *m) {
 	else if (m->GetMessageName() == "removeTotem") {
 		theSwitchboard.UnsubscribeFrom(this, "removeTotem");
 		if (this->_totem != nullptr) {
-			Game::getHUD()->setText("Totem removed.", this, Vector3(255, 51, 255), 0, 0);
-			theSwitchboard.DeferredBroadcast(new Message("removeTotemText"), 1);
 			Game::addToDestroyList(this->_totem);
 			this->_totem = nullptr;
+			this->_specialMove(0);
+			this->_totemPlaced = 1;
 		}
-	}  else if (m->GetMessageName() == "removeTotemText") {
-		theSwitchboard.UnsubscribeFrom(this, "removeTotemText");
-		Game::getHUD()->removeText("Totem removed.");
-	}
-	else if (m->GetMessageName() == "cycleInventory") {
+	} else if (m->GetMessageName() == "cycleInventory") {
 		this->_inventory->changeItemFocus();
 	}
 	else if (m->GetMessageName() == "dropItem") {
@@ -338,14 +335,11 @@ void	Characters::ReceiveMessage(Message *m) {
 		theSwitchboard.UnsubscribeFrom(this, "dashEnd");
 		this->_isDashing = false;
 		this->GetBody()->SetGravityScale(1);
-		//		Game::stopRunning(this);
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 	}
 	else if (m->GetMessageName() == "disengageEnd") {
 		theSwitchboard.UnsubscribeFrom(this, "disengageEnd");
 		this->_isDisengaging = false;
-		//this->_speMoveReady = 1;
-		//		Game::stopRunning(this);
 		this->_canMove = 1;
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 	}
@@ -388,7 +382,6 @@ void	Characters::ReceiveMessage(Message *m) {
 		return;
 	}
 	else if (m->GetMessageName() == "lockTarget") {
-		// std::cout << "Debug lock (Characters.cpp l.354)" << std::endl;
 		if (this->_target == nullptr)
 			this->_target = new HUDTargeting();
 		else
@@ -1053,9 +1046,9 @@ void	Characters::_pickupItem(int status) {
 
 void	Characters::_specialMove(int status) {
 	if (status == 1) {
-		if (this->_speMove == "totem")
+		if (this->_speMove == "totem" && this->_totemDeletionSent == 0)
+			this->_totemDeletionSent = 1;
 			theSwitchboard.SubscribeTo(this, "removeTotem");
-			theSwitchboard.SubscribeTo(this, "removeTotemText");
 			theSwitchboard.DeferredBroadcast(new Message("removeTotem"), 3);
 	}
 	if (status == 0) {
@@ -1070,9 +1063,12 @@ void	Characters::_specialMove(int status) {
 		else if (this->_speMove == "fly")
 			this->_eqMove->_fly();
 		else if (this->_speMove == "totem") {
+			this->_totemDeletionSent = 0;
 			theSwitchboard.UnsubscribeFrom(this, "removeTotem");
-			theSwitchboard.UnsubscribeFrom(this, "removeTotemText");
-			this->_eqMove->_totem();
+			if (this->_totemPlaced == 0)
+				this->_eqMove->_totem();
+			else
+				this->_totemPlaced = 0;
 		}
 		else if (this->_speMove == "shunpo")
 			this->_eqMove->_shunpo();

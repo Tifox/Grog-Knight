@@ -53,10 +53,14 @@ public:
 
 	int		checkExists(std::string);
 	Drug*	getDrug(std::string);
+	Drug*	removeDrug(std::string);
 	Drug*	getDrugRandom(void);
+	void	useDrug(std::string name);
+
 
 private:
 	std::list<Drug*> _allDrugs;
+	HUDActor *_sprite;
 
 };
 

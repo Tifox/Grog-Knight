@@ -65,6 +65,7 @@ int			DrugList::checkExists(std::string name) {
 	return 0;
 }
 
+
 //! Returns a Drug in order to use it afterwards
 /**
  * Get a Drug obj by name
@@ -82,6 +83,40 @@ Drug		*DrugList::getDrug(std::string name) {
 }
 
 
+//! Returns a Drug in order to use it afterwards
+/**
+ * Get a Drug obj by name
+ * @param name (std::string)
+ * @return *it
+ */
+Drug		*DrugList::removeDrug(std::string name) {
+	Game::currentGame->getHero()->setDrug("");
+	theSwitchboard.UnsubscribeFrom(Game::currentGame->getHero(), "drugPressed");
+	theWorld.Remove(this->_sprite);
+}
+
+
+//! Returns a Druglist function in order to use it
+/**
+ * Get a Drug effect by name
+ * @param name (std::string)
+ * @return function
+ */
+void		DrugList::useDrug(std::string name) {
+	std::list<Drug*>::iterator it;
+
+	for (it = this->_allDrugs.begin(); it != this->_allDrugs.end(); it++) {
+		if (name == (*it)->getName()) {
+			Game::currentGame->tooltip->info(getDrug(name));
+/*			if (name == "Pot")
+				Drug::pot();
+			if (name == "Cocaine")
+				Drug::cocaine();
+*/		}
+	}
+	removeDrug(name);
+}
+
 //! Returns one of the existing Drugs
 /**
  * Returns a Drug, no matter its level
@@ -93,11 +128,11 @@ Drug		*DrugList::getDrugRandom(void) {
 
 	for (it = this->_allDrugs.begin(); it != this->_allDrugs.end(); it++) {
 		if (i == value) {
-			Game::getHUD()->addImage("Resources/Images/HUD/exta.png", theCamera.GetWindowWidth() / 20 * 1.8, theCamera.GetWindowHeight() / 20 * 0.8, theCamera.GetWindowWidth() / 32, 5);
+			this->_sprite = Game::getHUD()->addImage("Resources/Images/HUD/exta.png", theCamera.GetWindowWidth() / 20 * 1.8, theCamera.GetWindowHeight() / 20 * 0.8, theCamera.GetWindowWidth() / 32, 5);
 			return ((*it));
 		}
 		i++;
 	}
-	Game::getHUD()->addImage("Resources/Images/HUD/exta.png", theCamera.GetWindowWidth() / 20 * 1.8, theCamera.GetWindowHeight() / 20 * 0.8, theCamera.GetWindowWidth() / 32, 5);
+	this->_sprite = Game::getHUD()->addImage("Resources/Images/HUD/exta.png", theCamera.GetWindowWidth() / 20 * 1.8, theCamera.GetWindowHeight() / 20 * 0.8, theCamera.GetWindowWidth() / 32, 5);
 	return (*this->_allDrugs.begin());
 }

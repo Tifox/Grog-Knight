@@ -26,7 +26,10 @@
 #ifndef __Dealer__
 # define __Dealer__
 
-# include "Characters.hpp"
+# ifndef __Characters__
+#  include "Characters.hpp"
+
+	class Characters;
 
 class Dealer : public Characters {
 
@@ -38,6 +41,7 @@ class Dealer : public Characters {
 		virtual void	BeginContact(Elements* m, b2Contact* contact);
 		virtual void	EndContact(Elements* m, b2Contact* contact);
 		void			ReceiveMessage(Message *m);
+		void			spawn(void);
 
 	private:
 		std::string		_name;
@@ -46,4 +50,7 @@ class Dealer : public Characters {
 		bool			_give;
 
 };
+
+# endif
+
 #endif

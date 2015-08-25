@@ -34,6 +34,7 @@
 
  
 class Weapon;
+class Map;
 
 class Elements : public PhysicsActor {
 public:

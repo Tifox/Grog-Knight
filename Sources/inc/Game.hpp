@@ -63,6 +63,7 @@ class Shopkeeper;
 class Hitbox;
 class HUDWindow;
 class Menu;
+class Dealer;
 
 class Game {
 
@@ -75,7 +76,6 @@ class Game {
 		void	start(void);
 		void	readMaps(void);
 		void	displayHero(Elements & Hero);
-		void	displayDealer(Elements & Dealer);
 		void	displayEnemy(Elements & Enemy);
 		void	displayObject(Elements & Object);
 		void	showMap(void);
@@ -87,6 +87,7 @@ class Game {
 		void	reloadingHUD(void);
 		Characters	*getHero(void);
 		Shopkeeper	*getShopkeeper(void);
+		void		setShopkeeper(Shopkeeper *s);
 		void	menuInGame(void);
 
 		static bool	endGame;
@@ -141,6 +142,9 @@ class Game {
 		static int						asToStart;
 		static int						isPaused;
 		static MenuCharacter			*menuCharacter;
+		static Vector2					spawnDealer;
+		static Vector2					spawnShop;
+		static Dealer					*dealer;
 
 	private:
 		float				beginXHero;
@@ -150,5 +154,6 @@ class Game {
 		Shopkeeper	*_shopkeeper;
 };
 
+# include "Dealer.hpp"
 
 #endif

@@ -99,8 +99,6 @@ void	Game::start(void) {
 	Hero			*hero = new Hero(Game::menuCharacter->getHeroType());
 
 	
-	Dealer			*dealer = new Dealer("Dealer");
-	Game::_shopkeeper = new Shopkeeper("Shopkeeper");
 
 	LevelGenerator *levelGenerator = new LevelGenerator(4, 3, 60);
 	levelGenerator->execute();
@@ -119,9 +117,6 @@ void	Game::start(void) {
 
 	this->displayHero(*(hero));
 	hero->init();
-	this->displayDealer(*(dealer));
-	dealer->init();
-	Game::_shopkeeper->spawn();
 	hero->setGold(save["gold"].asInt());
 	hero->setLevel(save["level"].asInt());
 	this->setHero(hero);
@@ -181,15 +176,6 @@ void	Game::displayHero(Elements & Hero) {
 	Hero.setYStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid());
 	Hero.addAttribute("hero", "1");
 	Hero.display();
-}
-
-
-void	Game::displayDealer(Elements & Dealer) {
-	//Here starts the game - parse the 1st map coordinates and hero start
-	Dealer.setXStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid() - 5);
-	Dealer.setYStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid());
-	Dealer.addAttribute("dealer", "1");
-	Dealer.display();
 }
 
 //! Display the Enemy
@@ -541,6 +527,7 @@ void		Game::reloadingHUD(void) {
 void		Game::setHero(Characters * h) { this->_hero = h; };
 Characters*	Game::getHero(void) { return this->_hero; };
 Shopkeeper*	Game::getShopkeeper(void) { return this->_shopkeeper; };
+void		Game::setShopkeeper(Shopkeeper *s) { this->_shopkeeper = s; };
 
 // Set for the statics
 int Game::currentIds = 0;
@@ -572,3 +559,6 @@ int							Game::reloadHUD = 0;
 int							Game::isPaused = 0;
 int							Game::asToStart = 0;
 MenuCharacter				*Game::menuCharacter = nullptr;
+Vector2						Game::spawnShop = Vector2();
+Vector2						Game::spawnDealer = Vector2();
+Dealer						*Game::dealer = nullptr;

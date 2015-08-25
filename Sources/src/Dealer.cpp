@@ -119,3 +119,10 @@ void	Dealer::ReceiveMessage(Message *m) {
 		Game::currentGame->tooltip->talk(this);
 	}
 }
+
+void		Dealer::spawn(void) {
+	this->setXStart(Game::spawnDealer.X);
+	this->setYStart(Game::spawnDealer.Y);
+	this->addAttribute("dealer", "1");
+	this->display();
+}

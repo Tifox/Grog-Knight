@@ -601,13 +601,12 @@ void	HUDWindow::bigMap(void) {
 	HUDActor							*tmp;
 	std::list<HUDActor *>::iterator		it;
 	int			x, y, x2, y2;
-	static int			isToggled = 0;
 	static int			doNotDelete = 0;
 
-	if (isToggled == 0) {
+	if (HUDWindow::isToggled == 0) {
 		this->_doNotDelete = 1;
-		for (y = 0, y2 = 0; y < map.size(); y++, y2 += 28) {
-			for (x = 0, x2 = 0; x < map[y].size(); x++, x2 += 41) {
+		for (y = 0, y2 = (theCamera.GetWindowHeight() / 2) - 100; y < map.size(); y++, y2 += 28) {
+			for (x = 0, x2 = (theCamera.GetWindowWidth() / 2) - 100; x < map[y].size(); x++, x2 += 41) {
 				if (map[y][x].getIsUsed()) {
 					tmp = new HUDActor();
 					tmp->SetSize(40, 27);
@@ -615,6 +614,11 @@ void	HUDWindow::bigMap(void) {
 					if (x == Game::currentX && y == Game::currentY) {
 						this->_currentObjectMap = tmp;
 						tmp->SetColor(0, 1, 0, 0);
+					} if (Game::currentGame->getHero()->_totem != nullptr) {
+						if (std::to_string(x) == Game::currentGame->getHero()->_totem->getAttribute("currentX") 
+							&& std::to_string(y) == Game::currentGame->getHero()->_totem->getAttribute("currentY")) {
+								this->setText("T", x2 - 2, y2 + 1, Vector3(1, 0, 0), 1);
+							}
 					} else
 						tmp->SetColor(1, 1, 1, 0);
 					tmp->SetDrawShape(ADS_Square);
@@ -626,14 +630,14 @@ void	HUDWindow::bigMap(void) {
 		}
 		for (it = this->_bigMapList.begin(); it != this->_bigMapList.end(); it++) {
 			if ((*it) == this->_currentObjectMap)
-				(*it)->ChangeColorTo(Color(0, 1, 0), 1);
+				(*it)->ChangeColorTo(Color(0, 1, 0, 0.5), 1);
 			else
-				(*it)->ChangeColorTo(Color(1, 1, 1), 1);
+				(*it)->ChangeColorTo(Color(1, 1, 1, 0.5), 1);
 		}
-		isToggled = 1;
+		HUDWindow::isToggled = 1;
 	} else {
 		this->deleteBigMap(0);
-		isToggled = 0;
+		HUDWindow::isToggled = 0;
 		this->_doNotDelete = 0;
 	}
 }
@@ -649,11 +653,44 @@ void	HUDWindow::deleteBigMap(int n) {
 				(*it)->ChangeColorTo(Color(1, 1, 1, 0), 1);
 		}
 		theSwitchboard.DeferredBroadcast(new Message("deleteMapPressed"), 1);
+		this->removeText("T");
 	} else {
 		if (this->_doNotDelete == 0) {
 			for (it = this->_bigMapList.begin(); it != this->_bigMapList.end(); it++)
 				theWorld.Remove(*it);
 			this->_bigMapList.clear();
+		}
+	}
+}
+
+void	HUDWindow::updateBigMap(void) {
+	if (HUDWindow::isToggled == 1) {
+		std::vector<std::vector<Map> >		map = Game::currentGame->maps->getMapXY();
+		HUDActor							*tmp;
+		int			x, y, x2, y2;
+		std::list<HUDActor *>::iterator		it;
+
+		for (it = this->_bigMapList.begin(); it != this->_bigMapList.end(); it++) {
+			if ((*it)->GetPosition() == this->_currentObjectMap->GetPosition() &&
+			(*it) != this->_currentObjectMap)
+				theWorld.Remove(*it);
+		}
+		this->_currentObjectMap->ChangeColorTo(Color(1, 1, 1, 0.5), 0.5);
+		for (y = 0, y2 = (theCamera.GetWindowHeight() / 2) - 100; y < map.size(); y++, y2 += 28) {
+			for (x = 0, x2 = (theCamera.GetWindowWidth() / 2) - 100; x < map[y].size(); x++, x2 += 41) {
+				if (x == Game::currentX && y == Game::currentY) {
+					tmp = new HUDActor();
+					tmp->SetSize(40, 27);
+					tmp->SetPosition(x2, y2);
+					this->_currentObjectMap = tmp;
+					tmp->SetColor(0, 1, 0, 0);
+					tmp->SetDrawShape(ADS_Square);
+					tmp->SetLayer(100);
+					theWorld.Add(tmp);
+					this->_bigMapList.push_back(tmp);
+					tmp->ChangeColorTo(Color(0, 1, 0, 0.5), 0.5);
+				}
+			}
 		}
 	}
 }
@@ -725,3 +762,5 @@ void	HUDWindow::clearHUD(void) {
 void	HUDWindow::setGame(Game *g) { this->_g = g; };
 void	HUDWindow::setMaxMana(int m) { this->_maxMana = m; };
 void	HUDWindow::setMaxHP(int h) { this->_maxHP = h; };
+
+int		HUDWindow::isToggled = 0;

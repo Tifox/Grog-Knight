@@ -315,7 +315,7 @@ void	Characters::ReceiveMessage(Message *m) {
 	}
 	else if (m->GetMessageName() == "removeTotem") {
 		theSwitchboard.UnsubscribeFrom(this, "removeTotem");
-		if (this->_totem == nullptr) {
+		if (this->_totem != nullptr) {
 			Game::getHUD()->setText("Totem removed.", this, Vector3(255, 51, 255), 0, 0);
 			theSwitchboard.DeferredBroadcast(new Message("removeTotemText"), 1);
 			Game::addToDestroyList(this->_totem);

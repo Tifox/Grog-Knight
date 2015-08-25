@@ -128,7 +128,7 @@ For each point itself, use the model below:
 > All weapons for Mage (TBD)
 
 - [ ] **Skills**
-  * Issue: Totem:[21](https://github.com/Ne02ptzero/Grog-Knight/issues/21)
+  * Issue: Totem: [#21](https://github.com/Ne02ptzero/Grog-Knight/issues/21)
 
 > Warrior:
 >

@@ -259,7 +259,7 @@ void	SpecialMoves::_fly(void) {
         this->character->_totem->SetIsSensor(true);
         this->character->_totem->SetPosition(this->character->GetBody()->GetWorldCenter().x, this->character->GetBody()->GetWorldCenter().y);
         this->character->_totem->InitPhysics();
-
+		Game::getHUD()->addTotemToBigMap();
         theWorld.Add(this->character->_totem);
     }
     else if (this->character->_totem != nullptr) {
@@ -276,6 +276,7 @@ void	SpecialMoves::_fly(void) {
         this->character->GetBody()->SetTransform(b2Vec2(this->character->_totem->GetBody()->GetWorldCenter().x, this->character->_totem->GetBody()->GetWorldCenter().y), 0);
         Game::addToDestroyList(this->character->_totem);
         this->character->_totem = nullptr;
+		Game::getHUD()->removeText("T");
     }
  }
 

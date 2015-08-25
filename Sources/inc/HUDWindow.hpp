@@ -95,6 +95,7 @@ class	HUDWindow : public HUDActor {
 		void	bigMap(void);
 		void	deleteBigMap(int n);
 		void	updateBigMap(void);
+		void	addTotemToBigMap(void);
 
 		static	int		isToggled;
 

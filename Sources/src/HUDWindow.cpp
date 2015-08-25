@@ -695,6 +695,21 @@ void	HUDWindow::updateBigMap(void) {
 	}
 }
 
+void		HUDWindow::addTotemToBigMap(void) {
+	if (HUDWindow::isToggled) {
+		std::vector<std::vector<Map> >		map = Game::currentGame->maps->getMapXY();
+		int			x, y, x2, y2;
+
+		for (y = 0, y2 = (theCamera.GetWindowHeight() / 2) - 100; y < map.size(); y++, y2 += 28) {
+			for (x = 0, x2 = (theCamera.GetWindowWidth() / 2) - 100; x < map[y].size(); x++, x2 += 41) {
+				if (x == Game::currentX && y == Game::currentY) {
+					this->setText("T", x2 - 2, y2 + 1, Vector3(1, 0, 0), 1);
+				}
+			}
+		}
+	}
+}
+
 //! Bag display function
 /**
  * This function display an empty bag at the beggining of the game

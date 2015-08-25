@@ -319,6 +319,7 @@ void	Characters::ReceiveMessage(Message *m) {
 		if (this->_totem != nullptr) {
 			Game::addToDestroyList(this->_totem);
 			this->_totem = nullptr;
+			Game::getHUD()->removeText("T");
 			this->_specialMove(0);
 			this->_totemPlaced = 1;
 		}
@@ -1046,7 +1047,7 @@ void	Characters::_pickupItem(int status) {
 
 void	Characters::_specialMove(int status) {
 	if (status == 1) {
-		if (this->_speMove == "totem" && this->_totemDeletionSent == 0)
+		if (this->_speMove == "totem" && this->_totemDeletionSent == 0 && this->_totem != nullptr)
 			this->_totemDeletionSent = 1;
 			theSwitchboard.SubscribeTo(this, "removeTotem");
 			theSwitchboard.DeferredBroadcast(new Message("removeTotem"), 3);

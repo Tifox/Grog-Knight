@@ -52,7 +52,7 @@ Ring::Ring(Ring* Ring) {
 	if (Ring->getAttribute("hpBuff") != "")
 		this->addAttribute("hpBuff", Ring->getAttribute("hpBuff"));
 	if (Ring->getAttribute("manaBuff") != "")
-		this->addAttribute("manaBuff", Ring->getAttribute("manaBuff"));	
+		this->addAttribute("manaBuff", Ring->getAttribute("manaBuff"));
 }
 
 

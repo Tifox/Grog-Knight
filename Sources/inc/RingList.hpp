@@ -54,6 +54,7 @@ public:
 	Ring*	getRing(std::string);
 	Ring*	getRingRandom(void);
 	Ring*	getRingRandom(int level);
+	std::list<Ring *>	get3Starters(int level);
 
 private:
 	std::list<Ring*> _allRings;

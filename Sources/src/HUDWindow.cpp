@@ -31,7 +31,7 @@
  */
 HUDWindow::HUDWindow(void) : HUDActor() {
 	RegisterFont("Resources/font.ttf", 14, "Gamefont");
-	RegisterFont("Resources/font.ttf", 14, "Gamefont");
+	RegisterFont("Resources/font.ttf", 20, "BigGamefont");
 	RegisterFont("Resources/font.ttf", 10, "MediumGamefont");
 	RegisterFont("Resources/Fonts/fail.otf", 80, "dead");
 	RegisterFont("Resources/Fonts/Market_Deco.ttf", 80, "title");
@@ -127,7 +127,7 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 colo
  * @note isFading and isTalk can't be true at the same time
  */
 HUDWindow::Text		*HUDWindow::setText(std::string str, Characters *toFollow, 
-		Vector3 color, int isFading, int isTalk) {
+		Vector3 color, int isFading, int isTalk, int isInMenu) {
 	HUDWindow::Text		*t = new HUDWindow::Text();
 
 	t->str = str;
@@ -144,27 +144,26 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, Characters *toFollow,
 		Elements	*test;
 
 		test = new Elements();
-		test->SetPosition(Game::currentGame->getHero()->GetBody()->GetWorldCenter().x, 
-			(Game::currentGame->getHero()->GetBody()->GetWorldCenter().y + 1));
 		test->SetSize(2.5, 0.7);
+		test->SetPosition(toFollow->GetBody()->GetWorldCenter().x, 
+			(toFollow->GetBody()->GetWorldCenter().y + 1));
 		test->SetSprite("Resources/Images/HUD/talk.png");
 		test->SetDrawShape(ADS_Square);
-		test->SetFixedRotation(true);
+/*		test->SetFixedRotation(true);
 		test->SetLayer(1500);
 		test->SetDensity(0.001f);
 		test->SetRestitution(0);
 		test->SetFriction(0);
-		test->SetIsSensor(true);
-		test->SetLayer(1500);
+		test->SetIsSensor(true);*/
 		test->InitPhysics();
 		b2DistanceJointDef jointDef1;
 		b2DistanceJointDef jointDef2;
-		jointDef1.Initialize(Game::currentGame->getHero()->GetBody(), test->GetBody(), 
-				b2Vec2(Game::currentGame->getHero()->GetBody()->GetWorldCenter().x + 0.4f, 
-				Game::currentGame->getHero()->GetBody()->GetWorldCenter().y + 0.4f), test->GetBody()->GetWorldCenter());
+		jointDef1.Initialize(toFollow->GetBody(), test->GetBody(), 
+				b2Vec2(toFollow->GetBody()->GetWorldCenter().x + 0.4f, 
+				toFollow->GetBody()->GetWorldCenter().y + 0.4f), test->GetBody()->GetWorldCenter());
 		jointDef1.collideConnected = false;
-		jointDef2.Initialize(Game::currentGame->getHero()->GetBody(), test->GetBody(), 
-			b2Vec2(Game::currentGame->getHero()->GetBody()->GetWorldCenter().x - 0.4f, test->GetBody()->GetWorldCenter().y - 0.4f), test->GetBody()->GetWorldCenter());
+		jointDef2.Initialize(toFollow->GetBody(), test->GetBody(), 
+			b2Vec2(toFollow->GetBody()->GetWorldCenter().x - 0.4f, test->GetBody()->GetWorldCenter().y - 0.4f), test->GetBody()->GetWorldCenter());
 		jointDef2.collideConnected = false;
 		b2DistanceJoint *joint1 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef1);
 		b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
@@ -548,16 +547,11 @@ void	HUDWindow::_drawDoor(Vector2 size, Vector2 position) {
 }
 
 //! Display the minimap in the HUD
-/**
- * This function is not finished at all.
- * So don't use it.
- * Thank's.
- * @todo Make this function work normally.
- */
 void	HUDWindow::minimap(void) {
 	int		x, y, x2, y2;
 	HUDActor *tmp;
 	std::list<HUDActor *>::iterator		it;
+	std::map<std::string, int>			doors;
 
 	for (it = this->_minimap.begin(); it != this->_minimap.end(); it++)
 		theWorld.Remove(*it);
@@ -577,8 +571,9 @@ void	HUDWindow::minimap(void) {
 			tmp = new HUDActor();
 			tmp->SetSize(40, 27);
 			tmp->SetPosition(x, y);
-			if (x2 == Game::currentX && y2 == Game::currentY)
+			if (x2 == Game::currentX && y2 == Game::currentY) {
 				tmp->SetColor(0, 1, 0);
+			}
 			else
 				tmp->SetColor(1, 1, 1);
 			tmp->SetDrawShape(ADS_Square);
@@ -587,14 +582,130 @@ void	HUDWindow::minimap(void) {
 			this->_allElems.push_back(tmp);
 			this->_minimap.push_back(tmp);
 
-			if (Game::currentGame->maps->getMapXY()[y2][x2 + 1].getXStart())
+			doors = Game::currentGame->maps->getMapXY()[y2][x2].doors;
+			if (doors.find("right") != doors.end())
 				this->_drawDoor(Vector2(1, 5), Vector2(x + 1 + (40 / 2), y));
-			if (Game::currentGame->maps->getMapXY()[y2][x2 - 1].getXStart())
+			if (doors.find("left") != doors.end())
 				this->_drawDoor(Vector2(1, 5), Vector2(x - (40 / 2), y));
-			if (Game::currentGame->maps->getMapXY()[y2 - 1][x2].getXStart())
+			if (doors.find("up") != doors.end())
 				this->_drawDoor(Vector2(5, 1), Vector2(x, y - (27 / 2) - 1));
-			if (Game::currentGame->maps->getMapXY()[y2 + 1][x2].getXStart())
+			if (doors.find("down") != doors.end())
 				this->_drawDoor(Vector2(5, 1), Vector2(x, y + (27 / 2) + 1));
+		}
+	}
+}
+
+//! Display an entire level IG
+void	HUDWindow::bigMap(void) {
+	std::vector<std::vector<Map> >		map = Game::currentGame->maps->getMapXY();
+	HUDActor							*tmp;
+	std::list<HUDActor *>::iterator		it;
+	int			x, y, x2, y2;
+	static int			doNotDelete = 0;
+
+	if (HUDWindow::isToggled == 0) {
+		this->_doNotDelete = 1;
+		for (y = 0, y2 = (theCamera.GetWindowHeight() / 2) - 100; y < map.size(); y++, y2 += 28) {
+			for (x = 0, x2 = (theCamera.GetWindowWidth() / 2) - 100; x < map[y].size(); x++, x2 += 41) {
+				if (map[y][x].getIsUsed()) {
+					tmp = new HUDActor();
+					tmp->SetSize(40, 27);
+					tmp->SetPosition(x2, y2);
+					if (x == Game::currentX && y == Game::currentY) {
+						this->_currentObjectMap = tmp;
+						tmp->SetColor(0, 1, 0, 0);
+					} if (Game::currentGame->getHero()->_totem != nullptr) {
+						if (std::to_string(x) == Game::currentGame->getHero()->_totem->getAttribute("currentX") 
+							&& std::to_string(y) == Game::currentGame->getHero()->_totem->getAttribute("currentY")) {
+								this->setText("T", x2 - 2, y2 + 1, Vector3(1, 0, 0), 1);
+							}
+					} else
+						tmp->SetColor(1, 1, 1, 0);
+					tmp->SetDrawShape(ADS_Square);
+					tmp->SetLayer(100);
+					theWorld.Add(tmp);
+					this->_bigMapList.push_back(tmp);
+				}
+			}
+		}
+		for (it = this->_bigMapList.begin(); it != this->_bigMapList.end(); it++) {
+			if ((*it) == this->_currentObjectMap)
+				(*it)->ChangeColorTo(Color(0, 1, 0, 0.5), 1);
+			else
+				(*it)->ChangeColorTo(Color(1, 1, 1, 0.5), 1);
+		}
+		HUDWindow::isToggled = 1;
+	} else {
+		this->deleteBigMap(0);
+		HUDWindow::isToggled = 0;
+		this->_doNotDelete = 0;
+	}
+}
+
+void	HUDWindow::deleteBigMap(int n) {
+	std::list<HUDActor *>::iterator		it;
+
+	if (n == 0) {
+		for (it = this->_bigMapList.begin(); it != this->_bigMapList.end(); it++) {
+			if ((*it) == this->_currentObjectMap)
+				(*it)->ChangeColorTo(Color(0, 1, 0, 0), 1);
+			else
+				(*it)->ChangeColorTo(Color(1, 1, 1, 0), 1);
+		}
+		theSwitchboard.DeferredBroadcast(new Message("deleteMapPressed"), 1);
+		this->removeText("T");
+	} else {
+		if (this->_doNotDelete == 0) {
+			for (it = this->_bigMapList.begin(); it != this->_bigMapList.end(); it++)
+				theWorld.Remove(*it);
+			this->_bigMapList.clear();
+		}
+	}
+}
+
+void	HUDWindow::updateBigMap(void) {
+	if (HUDWindow::isToggled == 1) {
+		std::vector<std::vector<Map> >		map = Game::currentGame->maps->getMapXY();
+		HUDActor							*tmp;
+		int			x, y, x2, y2;
+		std::list<HUDActor *>::iterator		it;
+
+		for (it = this->_bigMapList.begin(); it != this->_bigMapList.end(); it++) {
+			if ((*it)->GetPosition() == this->_currentObjectMap->GetPosition() &&
+			(*it) != this->_currentObjectMap)
+				theWorld.Remove(*it);
+		}
+		this->_currentObjectMap->ChangeColorTo(Color(1, 1, 1, 0.5), 0.5);
+		for (y = 0, y2 = (theCamera.GetWindowHeight() / 2) - 100; y < map.size(); y++, y2 += 28) {
+			for (x = 0, x2 = (theCamera.GetWindowWidth() / 2) - 100; x < map[y].size(); x++, x2 += 41) {
+				if (x == Game::currentX && y == Game::currentY) {
+					tmp = new HUDActor();
+					tmp->SetSize(40, 27);
+					tmp->SetPosition(x2, y2);
+					this->_currentObjectMap = tmp;
+					tmp->SetColor(0, 1, 0, 0);
+					tmp->SetDrawShape(ADS_Square);
+					tmp->SetLayer(100);
+					theWorld.Add(tmp);
+					this->_bigMapList.push_back(tmp);
+					tmp->ChangeColorTo(Color(0, 1, 0, 0.5), 0.5);
+				}
+			}
+		}
+	}
+}
+
+void		HUDWindow::addTotemToBigMap(void) {
+	if (HUDWindow::isToggled) {
+		std::vector<std::vector<Map> >		map = Game::currentGame->maps->getMapXY();
+		int			x, y, x2, y2;
+
+		for (y = 0, y2 = (theCamera.GetWindowHeight() / 2) - 100; y < map.size(); y++, y2 += 28) {
+			for (x = 0, x2 = (theCamera.GetWindowWidth() / 2) - 100; x < map[y].size(); x++, x2 += 41) {
+				if (x == Game::currentX && y == Game::currentY) {
+					this->setText("T", x2 - 2, y2 + 1, Vector3(1, 0, 0), 1);
+				}
+			}
 		}
 	}
 }
@@ -659,9 +770,12 @@ void	HUDWindow::clearHUD(void) {
 		theWorld.Remove(*it);
 	}
 	this->removeText(this->_gold);
-	this->removeText("Lvl " + std::to_string(this->_g->getHero()->getLevel()));
+	if (this->_g)
+		this->removeText("Lvl " + std::to_string(this->_g->getHero()->getLevel()));
 }
 
 void	HUDWindow::setGame(Game *g) { this->_g = g; };
 void	HUDWindow::setMaxMana(int m) { this->_maxMana = m; };
 void	HUDWindow::setMaxHP(int h) { this->_maxHP = h; };
+
+int		HUDWindow::isToggled = 0;

@@ -16,7 +16,7 @@
 			"weapon": "Sword",
 			"armor": "ChestArmor",
 			"ring": "NiceRing",
-			"specialMove": "stomp",
+			"specialMove": "totem",
 			"inventorySlots": 2
 		},
 		"forward": {
@@ -54,14 +54,18 @@
 		},
 		"attack": {
 			"subscribe": "attack",
-			"beginFrame_right": 36,
-			"endFrame_right": 39,
-			"beginFrame_left": 43,
-			"endFrame_left": 40,
-			"beginFrame_up": 61,
-			"endFrame_up": 63,
-			"beginFrame_down": 58,
-			"endFrame_down": 60,
+			"beginFrameSword_right": 36,
+			"endFrameSword_right": 39,
+			"beginFrameSword_left": 43,
+			"endFrameSword_left": 40,
+			"beginFrameAxe_right": 88,
+			"endFrameAxe_right": 91,
+			"beginFrameAxe_left": 92,
+			"endFrameAxe_left": 95,
+			"beginFrameSword_up": 61,
+			"endFrameSword_up": 63,
+			"beginFrameSword_down": 58,
+			"endFrameSword_down": 60,
 			"time": 0.05
 		},
 		"loadAttack_charge": {
@@ -79,6 +83,9 @@
 			"beginFrame_left": 71,
 			"endFrame_left": 73,
 			"time": 0.1
+		},
+		"specialMove": {
+			"subscribe": "specialmove"
 		},
 		"dash": {
 			"cooldown": 1,
@@ -122,11 +129,22 @@
 			"maxJump": 1,
 			"force": 6
 		},
+		"shunpo": {
+			"damageScale": 2,
+			"range": 10,
+			"cooldown": 1
+		},
 		"down": {
 			"subscribe": "down"
 		},
 		"up": {
 			"subscribe": "up"
+		},
+		"map": {
+			"subscribe": "map"
+		},
+		"deleteMap": {
+			"subscribe": "deleteMap"
 		},
 		"breath": {
 			"beginFrame_right": 0,
@@ -141,6 +159,9 @@
 			"beginFrame_left": 47,
 			"endFrame_left": 49,
 			"time": 0.1
+		},
+		"drug": {
+			"subscribe": "drug"
 		},
 		"death": {
 			"beginFrame_right": 50,

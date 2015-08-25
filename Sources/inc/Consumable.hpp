@@ -28,6 +28,8 @@
 
 # include "Elements.hpp"
 # include "Hero.hpp"
+# include "Dealer.hpp"
+# include "Shopkeeper.hpp"
 # include "WeaponList.hpp"
 # include "Object.hpp"
 

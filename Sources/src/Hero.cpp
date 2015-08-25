@@ -35,10 +35,9 @@ Hero::Hero(std::string name) : Characters(name) {
 	theSwitchboard.SubscribeTo(this, "enableAttackHitbox");
 	theSwitchboard.SubscribeTo(this, "disableAttackHitbox");
 	theSwitchboard.SubscribeTo(this, "equipSelectedItem");
-	theSwitchboard.SubscribeTo(this, "cycleInventory");
 	theSwitchboard.SubscribeTo(this, "dropItem");
 	theSwitchboard.SubscribeTo(this, "attackReady");
-	theSwitchboard.SubscribeTo(this, "specialMove");
+	theSwitchboard.SubscribeTo(this, "speMoveReady");
 	theSwitchboard.SubscribeTo(this, "changeCharacter");
 	theSwitchboard.SubscribeTo(this, "lockTarget");
 	theSwitchboard.SubscribeTo(this, "unlockTarget");
@@ -93,9 +92,12 @@ void	Hero::actionCallback(std::string name, int status) {
 		if (this->getAttribute("class") == "Warrior")
 			this->changeSizeTo(Vector2(x, y));
 		this->_setCategory("attack");
+
+		std::string type = this->_weapon->getType();
+
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-								  this->_getAttr("beginFrame_" + orientation).asInt(),
-								  this->_getAttr("endFrame_" + orientation).asInt(), "base");
+								  this->_getAttr("beginFrame" + type + "_" + orientation).asInt(),
+								  this->_getAttr("endFrame" + type + "_" + orientation).asInt(), "base");
 
 	} else if (name == "attack" && status == 0 &&
 			   this->_canAttack == true &&
@@ -218,6 +220,14 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		else
 			this->_enemiesTouched.push_back(elem);
 	}
+	else if (elem->getAttribute("type") == "shopItem") {
+		Game::currentGame->tooltip->clearInfo();
+		Game::currentGame->tooltip->info(elem);
+		this->_shopItem = elem->getAttribute("name");
+		this->_shopItemNumber = atoi(elem->getAttribute("number").c_str());
+		this->_shopItemPrice = atoi(elem->getAttribute("price").c_str());
+		Game::currentGame->getShopkeeper()->displayText("This one is for " + std::to_string(this->_shopItemPrice) + "g");
+	  }
    /* if (elem->getAttribute("speType") == "water")*/
 		/*this->GetBody()->SetGravityScale(0.3);*/
 }
@@ -235,6 +245,14 @@ void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 			if (elem->getAttributes()["type2"] == "Equipment") {
 				this->_item = nullptr;
 			}
+		}
+		if (elem->getAttribute("type") == "shopItem") {
+			Game::currentGame->tooltip->clearInfo(0);
+			this->_shopItem = "";
+			this->_shopItemNumber = 0;
+			this->_shopItemPrice = 0;
+			Game::currentGame->getShopkeeper()->removeText();
+
 		}
 		if (elem->getAttribute("type") == "Enemy" ||
 			elem->getAttribute("speType") == "spikes") {
@@ -257,6 +275,10 @@ void	Hero::_takeDamage(Elements* elem) {
   this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
   Game::stopRunning(this);
   this->_isRunning = 0;
+  this->_isLoadingAttack = 0;
+  this->_isAttacking = 0;
+  this->_fullChargedAttack = false;
+  this->_attackPressed = 0;
   this->_isJump = 1;
   if (this->getAttribute("class") == "Warrior")
 	  this->changeSizeTo(Vector2(1, 1));
@@ -290,8 +312,8 @@ void	Hero::_takeDamage(Elements* elem) {
 
 void	Hero::setStartingValues(void) {
 	this->_setCategory("starting");
-	this->equipWeapon(Game::wList->getWeapon(this->_getAttr("weapon").asString()));
-	this->equipArmor(Game::aList->getArmor(this->_getAttr("armor").asString()));
-	this->equipRing(Game::rList->getRing(this->_getAttr("ring").asString()));
+	this->equipWeapon(Game::menuCharacter->getWeapon());
+	this->equipArmor(Game::menuCharacter->getArmor());
+	this->equipRing(Game::menuCharacter->getRing());
 	this->_speMove = this->_getAttr("specialMove").asString();
 }

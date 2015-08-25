@@ -94,7 +94,7 @@ Weapon		*WeaponList::getWeaponRandom(void) {
 	for (it = this->_allWeapons.begin(); it != this->_allWeapons.end(); it++) {
 		if (i == value) {
 			return ((*it));
-		}
+		} 
 		i++;
 	}
 	return (*this->_allWeapons.begin());
@@ -123,5 +123,16 @@ Weapon		*WeaponList::getWeaponRandom(int level) {
 		i++;
 	}
 	return (*weapons.begin());
+}
 
+std::list<Weapon *>		WeaponList::get3Starters(int level) {
+	std::list<Weapon *>		list;
+	Weapon					*tmp;
+
+	while (list.size() < 3) {
+		tmp = this->getWeaponRandom();
+		if (std::find(list.begin(), list.end(), tmp) == list.end())
+			list.push_back(tmp);
+	}
+	return list;
 }

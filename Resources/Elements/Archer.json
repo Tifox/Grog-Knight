@@ -22,14 +22,14 @@
 		"forward": {
 			"subscribe": "forward",
 			"beginFrame": 02,
-			"endFrame": 07,
+			"endFrame": 09,
 			"time": 0.1,
 			"force": 12
 		},
 		"backward": {
 			"subscribe": "backward",
-			"beginFrame": 08,
-			"endFrame": 13,
+			"beginFrame": 10,
+			"endFrame": 17,
 			"time": 0.1,
 			"force": 12
 		},
@@ -39,11 +39,11 @@
 			"force": 8,
 			"rejump": 12,
 			"beginFrame_right": 2,
-			"beginFrame_left": 8,
+			"beginFrame_left": 10,
 			"fallingFrame_right": 5,
-			"fallingFrame_left": 10,
-			"endFrame_right": 7,
-			"endFrame_left": 13,
+			"fallingFrame_left": 13,
+			"endFrame_right": 9,
+			"endFrame_left": 17,
 			"time": 0.1
 		},
 		"pickupItem": {
@@ -54,14 +54,14 @@
 		},
 		"attack": {
 			"subscribe": "attack",
-			"beginFrame_right": 14,
-			"endFrame_right": 18,
-			"beginFrame_left": 19,
-			"endFrame_left": 23,
-			"beginFrame_down": 24,
-			"endFrame_down": 29,
-			"beginFrame_up": 30,
-			"endFrame_up": 35,
+			"beginFrameBow_right": 18,
+			"endFrameBow_right": 22,
+			"beginFrameBow_left": 23,
+			"endFrameBow_left": 27,
+			"beginFrameBow_down": 28,
+			"endFrameBow_down": 33,
+			"beginFrameBow_up": 34,
+			"endFrameBow_up": 39,
 			"time": 0.05
 		},
 		"loadAttack_charge": {
@@ -80,12 +80,21 @@
 			"endFrame_left": 0,
 			"time": 0.1
 		},
+		"specialMove": {
+			"subscribe": "specialmove"
+		},
 		"dash": {
 			"cooldown": 1,
 			"dashSpeed": 30,
 			"uptime": 0.15,
 			"time": 0.1
 		},
+		 "disengage": {
+			"cooldown": 1,
+			"disengageSpeed": 30,
+			"uptime": 0.1,
+			"time": 0.1
+		 },
 		"charge": {
 			"cooldown": 1,
 			"chargeSpeed": 20,
@@ -102,6 +111,11 @@
 		"wallJump": {
 			"maxJump": 1,
 			"force": 6
+		},
+		"shunpo": {
+			"damageScale":2,
+			"range":10,
+			"cooldown":15
 		},
 		"down": {
 			"subscribe": "down"

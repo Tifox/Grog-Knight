@@ -53,6 +53,7 @@ Weapon::Weapon(Weapon* weapon) {
 	this->_pushback = weapon->getPushback();
 	this->_sprite = weapon->getSprite();
 	this->_lootLevel = weapon->getLootLevel();
+	this->_type = weapon->getType();
 	this->addAttribute("sprite", this->_sprite);
 	this->addAttribute("type3", "Weapon");
 	this->_critRate = weapon->getCritRate();
@@ -234,6 +235,7 @@ void    Weapon::_parseJson(std::string file) {
 	this->_attack = json["infos"].get("attack", "").asString();
 	this->_sprite = json["infos"].get("sprites", "").asString();
 	this->_critRate = json["infos"].get("critRate", "").asInt();
+	this->_type = json["infos"].get("type", "").asString();
 	this->addAttribute("sprite", this->_sprite);
 	this->addAttribute("type3", "Weapon");
 }
@@ -287,6 +289,7 @@ std::string		Weapon::getName(void)      { return this->_name; }
 std::string		Weapon::getFlavor(void)    { return this->_flavor; }
 std::string		Weapon::getSprite(void)    { return this->_sprite; }
 std::string		Weapon::getAttack(void)    { return this->_attack; }
+std::string 	Weapon::getType(void)	   { return this->_type; }
 int				Weapon::getLootLevel(void) { return this->_lootLevel; }
 float			Weapon::getActive(void)    { return this->_active; }
 int				Weapon::getSize(void)      { return this->_size; }

@@ -98,7 +98,6 @@ Ring		*RingList::getRingRandom(void) {
 		i++;
 	}
 	return (*this->_allRings.begin());
-
 }
 
 //! Returns one of the existing Rings of the required level
@@ -124,4 +123,16 @@ Ring		*RingList::getRingRandom(int level) {
 	}
 	return (*Rings.begin());
 
+}
+
+std::list<Ring *>		RingList::get3Starters(int level) {
+	std::list<Ring *>		list;
+	Ring					*tmp;
+
+	while (list.size() < 3) {
+		tmp = this->getRingRandom();
+		if (std::find(list.begin(), list.end(), tmp) == list.end())
+			list.push_back(tmp);
+	}
+	return list;
 }

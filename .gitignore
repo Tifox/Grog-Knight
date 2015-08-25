@@ -5,3 +5,5 @@ Tools/jsoncpp/
 *.lo
 Angel/Libraries/Box2D-2.2.1/Build
 Angel/Libraries
+Sources/inc/Key.hpp
+.save

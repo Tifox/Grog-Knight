@@ -63,7 +63,7 @@ class	HUDWindow : public HUDActor {
 		HUDWindow::Text	*setText(std::string str, int x, int y);
 		HUDWindow::Text	*setText(std::string str, int x, int y, Vector3 color, int alpha);
 		HUDWindow::Text	*setText(std::string str, int x, int y, Vector3 color, int alpha, std::string font);
-		HUDWindow::Text	*setText(std::string str, Characters *toFollow, Vector3 color, int isFading, int isTalk);
+		HUDWindow::Text	*setText(std::string str, Characters *toFollow, Vector3 color, int isFading, int isTalk, int isInMenu = 0);
 		void	removeText(std::string str);
 		void	removeText(HUDWindow::Text *t);
 		void	displayText(void);
@@ -92,6 +92,12 @@ class	HUDWindow : public HUDActor {
 		void	character(void);
 		void	spells(void);
 		void	clearHUD(void);
+		void	bigMap(void);
+		void	deleteBigMap(int n);
+		void	updateBigMap(void);
+		void	addTotemToBigMap(void);
+
+		static	int		isToggled;
 
 	private:
 		Game		*_g;
@@ -105,8 +111,11 @@ class	HUDWindow : public HUDActor {
 		HUDWindow::Text	*		_gold;
 		int						_maxMana;
 		int						_maxHP;
-
+		std::list<HUDActor *>	_bigMapList;
+		HUDActor				*_currentObjectMap;
+		HUDActor				*_currentTotemMap;
 		void					_drawDoor(Vector2 size, Vector2 position);
+		int						_doNotDelete;
 };
 
 #endif

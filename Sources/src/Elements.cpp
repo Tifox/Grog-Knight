@@ -1,4 +1,3 @@
-
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -103,7 +102,7 @@ std::string	Elements::getAttribute(std::string name) {
 void	Elements::setFrameSprite(int frame) {
 	int imgHeight = this->_height;
 	int imgWidth = this->_width;
-	int	cutWidth = 32, cutHeight = 32;
+	int	cutWidth = this->_cutWidth, cutHeight = this->_cutHeight;
 	float nbPerRow = imgWidth / cutWidth;
 	float nbPerColumn = imgHeight / cutHeight;
 	float fY = (1.0f / float(imgHeight)) * float(cutHeight);
@@ -162,10 +161,14 @@ void	Elements::display(void) {
 		this->SetIsSensor(true);
 		this->SetFixedRotation(true);
 	}
+	if (this->getAttribute("layer") != "") {
+		this->SetLayer(std::stoi(this->getAttribute("layer")));
+	}
 	if (this->getAttribute("physic") != "") {
 		this->InitPhysics();
 	}
-
+	if (this->getAttribute("transparency") != "")
+		this->SetColor(0, 0, 0, 0);
 	if (this->getAttribute("animate") != "") {
 		this->_animIt = this->_animationList.begin();
 		this->PlaySpriteAnimation((*this->_animIt)->time, SAT_OneShot, (*this->_animIt)->frame, (*this->_animIt)->frame, "baseAnimation");
@@ -206,6 +209,8 @@ void	Elements::AnimCallback(String s) {
 			this->_animIt = this->_animationList.begin();
 		this->PlaySpriteAnimation((*this->_animIt)->time, SAT_OneShot, (*this->_animIt)->frame, (*this->_animIt)->frame, "baseAnimation");
 		this->setFrameSprite((*this->_animIt)->frame);
+	} else if (s == "closeCloset") {
+		theWorld.Remove(this);
 	}
 }
 

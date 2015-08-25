@@ -16,6 +16,16 @@
 		{
 			"broadcast" : "escape",
 			"key" : "ESCAPE"
+		},
+		"MapToggle" : 
+		{
+			"broadcast" : "map",
+			"key" : "M"
+		},
+		"Return" : 
+		{
+			"broadcast" : "return",
+			"key" : "BACKSPACE"
 		}
 	},
 	"Inventory" : 
@@ -24,6 +34,11 @@
 		{
 			"broadcast" : "dropItem",
 			"key" : "V"
+		},
+		"Drug yourself" : 
+		{
+			"broadcast" : "drug",
+			"key" : "D"
 		},
 		"Equip an Item" : 
 		{
@@ -75,12 +90,12 @@
 		},
 		"Special Move" : 
 		{
-			"broadcast" : "specialMove",
+			"broadcast" : "specialmove",
 			"key" : "T"
 		},
 		"Swap Charcaters(Debug)" : 
 		{
-			"broadcast" : "changerCharacter",
+			"broadcast" : "changeCharacter",
 			"key" : "P"
 		}
 	},
@@ -89,7 +104,7 @@
 		"Target an Enemy" : 
 		{
 			"broadcast" : "lockTarget",
-			"key" : "M"
+			"key" : "N"
 		},
 		"Unlock Target" : 
 		{

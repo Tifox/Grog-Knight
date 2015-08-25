@@ -47,6 +47,7 @@ Armor::Armor(Armor* Armor) {
 	this->_flavor = Armor->getFlavor();
 	this->_sprite = Armor->getSprite();
 	this->addAttribute("sprite", this->_sprite);
+	this->addAttribute("flavor", this->_flavor);
 	this->_lootLevel = Armor->getLootLevel();
 	if (Armor->getAttribute("hpBuff") != "")
 		this->addAttribute("hpBuff", Armor->getAttribute("hpBuff"));
@@ -97,13 +98,6 @@ void    Armor::_parseJson(std::string file) {
 		Log::warning("The class name is different with the name in the config file: " + this->_name + "/" + json["infos"].get("name", "").asString());
 	this->_name = json["infos"].get("name", "").asString();
 	this->_flavor = json["infos"].get("flavor", "").asString();
-
-		for (i = json["infos"].get("flavor","").begin(); i != json["infos"].get("flavor","").end(); i++) {
-		
-				std::cout << "pas lol" << std::endl;
-
-		}
-	
 	this->_lootLevel = json["infos"].get("lootLevel", "").asInt();
 	this->_sprite = json["infos"].get("sprites", "").asString();
 	this->addAttribute("sprite", this->_sprite);

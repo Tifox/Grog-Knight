@@ -55,6 +55,29 @@
  }
 
 
+ void	SpecialMoves::_disengage(void) {
+ 	this->character->_setCategory("disengage");
+ 	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speMoveReady == 1) {
+ 		this->character->_speMoveReady = 0;
+ 		this->character->_isDisengaging = true;
+ 		this->character->_canMove = 0;
+ 		theSwitchboard.SubscribeTo(this->character, "disengageEnd");
+	        theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
+ 				this->character->_getAttr("cooldown").asFloat());
+		theSwitchboard.DeferredBroadcast(new Message("disengageEnd"),
+ 				this->character->_getAttr("uptime").asFloat());
+		Weapon *currentWeapon = Game::currentGame->getHero()->getWeapon();
+		theSwitchboard.SubscribeTo(this->character, "enableAttackHitbox");
+		theSwitchboard.Broadcast(new Message("enableAttackHitbox"));
+		theSwitchboard.UnsubscribeFrom(this->character, "enableAttackHitbox");
+		if (this->character->_latOrientation == Characters::LEFT)
+ 			this->character->GetBody()->SetLinearVelocity(b2Vec2(this->character->_getAttr("chargeSpeed").asInt(), 0));
+ 		else if (this->character->_latOrientation == Characters::RIGHT)
+ 			this->character->GetBody()->SetLinearVelocity(b2Vec2(-this->character->_getAttr("chargeSpeed").asInt(), 0));
+ 	}
+ }
+
+
  //! Special move: dash
  /**
   * Character executes a dash if the cooldown is up and the conditions allows it
@@ -63,13 +86,12 @@
   */
 
  void	SpecialMoves::_dash(void) {
- 	this->character->_setCategory("dash");
- 	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_hasDashed == 0 &&
- 			this->character->_isDashing == false) {
+   this->character->_setCategory("dash");
+ 	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_hasDashed == 0 && this->character->_isDashing == false) {
  		this->character->_isDashing = true;
  		this->character->GetBody()->SetGravityScale(0);
  		this->character->actionCallback("dash", 0);
- 		this->character->_canMove = 0;
+		// 		this->character->_canMove = 0;
  		if (this->character->_grounds.size() == 0)
  			this->character->_hasDashed = 1;
  		theSwitchboard.SubscribeTo(this->character, "dashEnd");
@@ -85,7 +107,7 @@
  //! Special move: charge
  /**
   * Character executes a charge if the cooldown is up and the conditions allows it
-  * Properties of charge - invincibility, can move
+  * Properties of charge - invincibility, can move, deals damage
   * @sa SpecialMoves::_specialMove()
   */
 
@@ -96,7 +118,6 @@
  		this->character->_invincibility = true;
  		this->character->_isCharging = true;
  		this->character->_canMove = 0;
- 		theSwitchboard.SubscribeTo(this->character, "speMoveReady");
  		theSwitchboard.SubscribeTo(this->character, "chargeEnd");
  		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
  				this->character->_getAttr("cooldown").asFloat());
@@ -126,7 +147,6 @@
  		this->character->actionCallback("stomp", 0);
  		this->character->_isStomping = true;
  		this->character->_isCharging = true;
- 		theSwitchboard.SubscribeTo(this->character, "speMoveReady");
  		theSwitchboard.SubscribeTo(this->character, "stompEnd");
  		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
  				this->character->_getAttr("cooldown").asFloat());
@@ -145,14 +165,13 @@
  void	SpecialMoves::_blink(void) {
  	this->character->_setCategory("blink");
  	Map m = Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX];
- 	int x = (this->character->GetBody()->GetWorldCenter().x) - m.getXStart();
+ 	int x = (this->character->GetBody()->GetWorldCenter().x) - m.getXStart() + 0.5;
  	int y = -((this->character->GetBody()->GetWorldCenter().y) - m.getYStart() - 0.5);
  	int range = this->character->_getAttr("blinkRange").asInt();
  	std::vector<std::vector<int>> t = m.getPhysicMap();
 
  	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speMoveReady == 1) {
  		this->character->_speMoveReady = 0;
- 		theSwitchboard.SubscribeTo(this->character, "speMoveReady");
  		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
  				this->character->_getAttr("cooldown").asFloat());
  		if (this->character->_orientation == Characters::UP) {
@@ -212,6 +231,95 @@
   * @sa SpecialMoves::_specialMove()
   */
 
- void	SpecialMoves::_fly(void) {
+void	SpecialMoves::_fly(void) {
  	this->character->_isFlying = (this->character->_isFlying ? false : true);
+}
+
+ //! Special move: totem
+ /**
+  * Puts a totem where the hero is, then teleports the hero on it when reactivated
+  * Properties of totem - place and activate
+  * @sa SpecialMoves::_specialMove()
+  */
+
+ void	SpecialMoves::_totem(void) {
+    if (this->character->_totem == nullptr && this->character->_grounds.size() > 0) {
+        this->character->_totem = new Elements();
+        this->character->_totem->SetSize(0.6);
+        this->character->_totem->SetName("Totem");
+        this->character->_totem->SetDrawShape(ADS_Square);
+        this->character->_totem->SetColor(0, 1, 0, 1);
+        this->character->_totem->SetSprite("Resources/Images/HUD/cible.png");
+        this->character->_totem->SetLayer(105);
+        this->character->_totem->addAttribute("physic", "1");
+        this->character->_totem->addAttribute("currentX", std::to_string(Game::currentX));
+        this->character->_totem->addAttribute("currentY", std::to_string(Game::currentY));
+        this->character->_totem->SetDensity(0);
+        this->character->_totem->SetFixedRotation(true);
+        this->character->_totem->SetIsSensor(true);
+        this->character->_totem->SetPosition(this->character->GetBody()->GetWorldCenter().x, this->character->GetBody()->GetWorldCenter().y);
+        this->character->_totem->InitPhysics();
+		Game::getHUD()->addTotemToBigMap();
+        theWorld.Add(this->character->_totem);
+    }
+    else if (this->character->_totem != nullptr) {
+		if (atoi(this->character->_totem->getAttribute("currentX").c_str()) != Game::currentX && atoi(this->character->_totem->getAttribute("currentY").c_str()) != Game::currentY) {
+			Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
+			Game::currentX = atoi(this->character->_totem->getAttribute("currentX").c_str());
+			Game::currentY = atoi(this->character->_totem->getAttribute("currentY").c_str());
+			Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX] = Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].display();
+			theCamera.SetPosition(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(), Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
+			theCamera.SetPosition(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(), Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
+			if (Game::isInMenu == 0)
+				Game::getHUD()->minimap();
+		}
+        this->character->GetBody()->SetTransform(b2Vec2(this->character->_totem->GetBody()->GetWorldCenter().x, this->character->_totem->GetBody()->GetWorldCenter().y), 0);
+        Game::addToDestroyList(this->character->_totem);
+        this->character->_totem = nullptr;
+		Game::getHUD()->removeText("T");
+    }
  }
+
+//! Special move: shunpo
+/**
+ * Special move that requires a target - on use, dashes to the target and deals damage
+ * Properties of shunpo - requires target, range, deals damage, cooldown
+ */
+
+void	SpecialMoves::_shunpo(void) {
+	if (this->character->_target != nullptr) {
+		int i;
+		int x;
+		int x2;
+		int y;
+		int y2;
+		x = this->character->GetBody()->GetWorldCenter().x;
+		if (x < 0) x *= -1;
+		x2 = this->character->_target->getCurrentEnemy()->GetBody()->GetWorldCenter().x;
+		if (x2 < 0) x2 *= -1;
+		x = x - x2;
+		if (x < 0) x *= -1;
+		y = this->character->GetBody()->GetWorldCenter().y;
+		if (y < 0) y *= -1;
+		y2 = this->character->_target->getCurrentEnemy()->GetBody()->GetWorldCenter().y;
+		if (y2 < 0) y2 *= -1;
+		y = y - y2;
+		if (y < 0) y *= -1;
+		if (x + y > this->character->_getAttr("shunpo", "range").asInt()) {
+			return;
+		}
+		if (this->character->_speMoveReady == false || this->character->_canMove == false)
+			return;
+		this->character->_speMoveReady = false;
+		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"), this->character->_getAttr("shunpo", "cooldown").asFloat());
+		if (this->character->_target->getCurrentEnemy()->getOrientation() == Characters::LEFT)
+			i = 1;
+		else
+			i = -1;
+		this->character->GetBody()->SetTransform(b2Vec2(this->character->_target->GetBody()->GetWorldCenter().x + 1,
+														this->character->_target->GetBody()->GetWorldCenter().y), 0);
+		if (this->character->_target->getCurrentEnemy()->takeDamage(this->character->_weapon->getDamage(),
+																	this->character->_weapon->getCritRate()) == 1)
+		  this->character->_target->getCurrentEnemy()->GetBody()->SetLinearVelocity(b2Vec2((5 * i), 5));
+	}
+}

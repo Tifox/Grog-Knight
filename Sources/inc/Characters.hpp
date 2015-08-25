@@ -60,6 +60,7 @@ class Characters : public Elements {
 		friend	class	Pattern;
 		friend	class	PassivePattern;
 		friend	class	SpecialMoves;
+		friend	class	HUDWindow;
 
 		enum Orientation {
 			UP,
@@ -67,6 +68,9 @@ class Characters : public Elements {
 			LEFT,
 			RIGHT
 		};
+
+
+  			int bonusDmg;
 
 		Characters(void);
 		Characters(std::string name);
@@ -76,9 +80,12 @@ class Characters : public Elements {
 		virtual void	AnimCallback(String s);
 		virtual void	BeginContact(Elements *elem, b2Contact *contact);
 		virtual void	EndContact(Elements *elem, b2Contact *contact);
+		virtual void	trigger(std::string name, int status) {};
 		Characters::Orientation			getOrientation(void);
 		std::string						getLastAction(void);
 		int								getGold(void);
+		void							setGold(int);
+		void							setDrug(std::string name);
 		int								getHP(void);
 		void							setHP(int hp);
 		int								getMana(void);
@@ -86,6 +93,7 @@ class Characters : public Elements {
 		int								getMaxMana(void);
 		int								getMaxHP(void);
 		int								getLevel(void);
+		void							setLevel(int);
 		Weapon							*getWeapon(void);
 		Armor							*getArmor(void);
 		Ring							*getRing(void);
@@ -115,6 +123,8 @@ class Characters : public Elements {
 	protected:
 		std::string		_name;
 		std::string		_lastAction;
+		std::string 	_talk;
+		std::string 	_drug;
 		int				_id;
 		int				_size;
 		int				_maxSpeed;
@@ -139,14 +149,23 @@ class Characters : public Elements {
 		bool			_isFlying;
 		bool			_flyTrigger;
 		bool			_isDashing;
+		int				_totemPlaced;
+		int				_totemDeletionSent;
 		int				_hasDashed;
 		int				_level;
+		std::string		_currentTrigger;
+		bool			_isDisengaging;
+
 		std::string		_speMove;
 		SpecialMoves*	_eqMove;
 		Weapon*			_weapon;
 		Armor*			_armor;
 		Ring*			_ring;
 		Elements*		_item;
+		std::string		_shopItem;
+  		int				_shopItemNumber;
+		int				_shopItemPrice;
+		Elements*		_totem;
 		Inventory*		_inventory;
 		HUDTargeting*	_target;
 		Actor			*_blast;
@@ -175,7 +194,8 @@ class Characters : public Elements {
 		virtual void	_attack(int status);
 		virtual void	_pickupItem(int status);
 		virtual void	_run(void);
-		virtual void	_specialMove(void);
+		virtual void	_specialMove(int status);
+		virtual void	_callTrigger(std::string name, int status);
 		// virtual void	_dash(void);
 		// virtual void	_charge(void);
 		// virtual void	_stomp(void);
@@ -186,6 +206,7 @@ class Characters : public Elements {
 
 	private:
 		std::map<std::string, std::map<std::string, Json::Value> >	_attr;
+		std::map<std::string, int>	_triggers;
 		std::string		_category;
 
 		void	_heroDeath();
@@ -200,5 +221,6 @@ class Characters : public Elements {
 
 # include "Game.hpp"
 # include "Enemy.hpp"
+# include "MenuCharacter.hpp"
 
 #endif

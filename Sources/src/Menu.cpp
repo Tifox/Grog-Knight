@@ -34,6 +34,7 @@ Menu::Menu(void) : _currentChoice("Start Game"), _fadeActor(nullptr) {
 	theSwitchboard.SubscribeTo(this, "PauseGame");
 	theSwitchboard.SubscribeTo(this, "deletePressed");
 	theSwitchboard.SubscribeTo(this, "escapePressed");
+	theSwitchboard.SubscribeTo(this, "moveMenu");
 }
 
 //! Basic destructor
@@ -49,9 +50,16 @@ Menu::~Menu(void) {
  */
 void	Menu::showMenu(Game *game) {
 	HUDWindow		*w = new HUDWindow();
+	Maps			*maps = new Maps("Maps/background/");
+	maps->readMaps();
+	maps->_maps[3]->setXStart(0);
+	maps->_maps[3]->setYStart(-40);
+	maps->_maps[3]->display();
+	this->_background_map = maps->_maps[3];
+	delete(maps);
 
 	this->_game = game;
-	theWorld.SetBackgroundColor(*(new Color(.26f, .26f, .26f)));
+	theCamera.SetPosition(27, -60, 8.502);
 	this->_menuChoices.push_back("Start Game");
 	this->_menuChoices.push_back("Settings");
 	this->_menuChoices.push_back("Bindings");
@@ -72,13 +80,14 @@ void	Menu::showMenu(Game *game) {
 void	Menu::ReceiveMessage(Message *m) {
 	std::list<std::string>::iterator	it;
 
+	if (m->GetMessageName() == "moveMenu")
+		this->_background_map->destroyMap();
 	if (this->_inMenu == 1) {
 		if (m->GetMessageName() == "enterPressed") {
 			if (this->_currentChoice == "Start Game") {
-				theSwitchboard.UnsubscribeFrom(this, "upPressed");
-				theSwitchboard.UnsubscribeFrom(this, "downPressed");
+				Game::isInMenu = 0;
 				Game::removeHUDWindow(this->_window);
-				this->_game->start();
+				this->_game->menuInGame();
 				this->_window = Game::getHUD();
 				this->_inMenu = 0;
 			} else if (this->_currentChoice == "Settings") {
@@ -294,6 +303,7 @@ void	Menu::ReceiveMessage(Message *m) {
 				Game::currentGame->getHero()->unsubscribeFromAll();
 				theWorld.PausePhysics();
 				this->_inMenu = 3;
+				Game::isPaused = 1;
 			this->pauseMenu();
 		} else if (this->_inMenu == 1) {
 			Quit::quitGame();
@@ -313,6 +323,7 @@ void	Menu::ReceiveMessage(Message *m) {
 
 			Game::currentGame->getHero()->subscribeToAll();
 			theWorld.ResumePhysics();
+			Game::isPaused = 0;
 			this->_inMenu = 0;
 			this->_fadeActor = nullptr;
 			this->_pauseMenuText.clear();

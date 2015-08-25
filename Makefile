@@ -71,6 +71,7 @@ SRCS =	./Sources/src/Armor.cpp \
 		./Sources/src/Game.cpp \
 		./Sources/src/GameContactListener.cpp \
 		./Sources/src/Hero.cpp \
+		./Sources/src/Dealer.cpp \
 		./Sources/src/Hitbox.cpp \
 		./Sources/src/HUDTargeting.cpp \
 		./Sources/src/HUDWindow.cpp \
@@ -94,9 +95,16 @@ SRCS =	./Sources/src/Armor.cpp \
 		./Sources/src/Tooltip.cpp \
 		./Sources/src/Weapon.cpp \
 		./Sources/src/WeaponList.cpp \
+		./Sources/src/InGameMenu.cpp \
+		./Sources/src/Shopkeeper.cpp \
+		./Sources/src/Shop.cpp \
+		./Sources/src/MenuCharacter.cpp \
+		./Sources/src/Drug.cpp \
+		./Sources/src/DrugList.cpp 
 
 SYSOBJS = $(patsubst %.cpp,%.o,$(SYSSRCS))
 OBJS = $(patsubst %.cpp,%.o,$(SRCS))
+HOST = $(shell hostname)
 
 .PHONY: clean all SWIG-Wrapper
 
@@ -114,6 +122,12 @@ SWIG-Wrapper:
 $(WRAPPER): SWIG-Wrapper
 
 jsoncpp:
+	if [ ! -f Sources/inc/Key.hpp ] ; \
+	then \
+			echo -n "#define KEY \"" >> Sources/inc/Key.hpp ; \
+			echo -n "$(USER)@$(HOST)" | md5sum | cut -d' ' -f1 | xargs echo -n >> Sources/inc/Key.hpp ; \
+			echo "\"" >> Sources/inc/Key.hpp ; \
+	fi;
 	cd Tools/jsoncpp && cmake . && make
 
 $(TARGET): $(LIBANGEL) jsoncpp $(OBJS) $(SYSOBJS) $(WRAPPER)
@@ -125,3 +139,4 @@ clean:
 
 $(LIBANGEL):
 	cd Angel && make
+

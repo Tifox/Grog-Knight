@@ -29,6 +29,7 @@
 class	Map;
 class	Maps;
 class Characters;
+class MenuCharacter;
 
 # ifndef __Map__
 # include "Maps.hpp"
@@ -49,15 +50,20 @@ class Characters;
 # include "LevelGenerator.hpp"
 # include "Tooltip.hpp"
 # include "Menu.hpp"
+# include "InGameMenu.hpp"
+# include "Shop.hpp"
+# include "DrugList.hpp"
 
 class ArmorList;
 class EnemyList;
 class RingList;
 class WeaponList;
-
+class DrugList;
+class Shopkeeper;
 class Hitbox;
 class HUDWindow;
 class Menu;
+class Dealer;
 
 class Game {
 
@@ -80,6 +86,9 @@ class Game {
 		void	simulateHeroItemContact(void);
 		void	reloadingHUD(void);
 		Characters	*getHero(void);
+		Shopkeeper	*getShopkeeper(void);
+		void		setShopkeeper(Shopkeeper *s);
+		void	menuInGame(void);
 
 		static bool	endGame;
 		static bool	ended;
@@ -118,6 +127,7 @@ class Game {
 		static ArmorList*				aList;
 		static EnemyList*				eList;
 		static Hitbox*					hList;
+		static DrugList*				dList;
 		static int						maxX;
 		static int						maxY;
 		static int						minX;
@@ -125,15 +135,25 @@ class Game {
 		static int						currentY;
 		static int						minY;
 		static int						started;
+		static int						isInMenu;
 		static int						cameraTick;
 		static int						isWaitingForBind;
 		static int						reloadHUD;
+		static int						asToStart;
+		static int						isPaused;
+		static MenuCharacter			*menuCharacter;
+		static Vector2					spawnDealer;
+		static Vector2					spawnShop;
+		static Dealer					*dealer;
 
 	private:
 		float				beginXHero;
 		float				beginYHero;
 		std::vector<std::vector<int> >	_tmpMap;
 		Characters	*_hero;
+		Shopkeeper	*_shopkeeper;
 };
+
+# include "Dealer.hpp"
 
 #endif

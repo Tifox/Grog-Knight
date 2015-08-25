@@ -151,6 +151,7 @@ public:
 	 *  directly in your game code. 
 	 */
 	void SendAllMessages();
+	void CancelBroadcast(std::string s);
 
 	void SendPauseMessages();
 protected:

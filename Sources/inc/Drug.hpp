@@ -50,8 +50,8 @@ public:
 	Drug(Drug* Drug);
 	~Drug(void);
 
-	void	pot(void);
-	void	cocaine(void);
+	void	pot(int status);
+	void	cocaine(int status);
 
 
 	void			ReceiveMessage(Message *m);
@@ -71,7 +71,7 @@ private:
 	std::string		_type;
 	std::string		_flavor;
 	std::string		_sprite;
-
+	std::string 	_curDrug;
 	void			_readFile(std::string name);
 	void			_parseJson(std::string file);
 

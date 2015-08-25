@@ -6,7 +6,7 @@
 		"sprites": "Resources/Images/gold.png"
 	},
 	"bonus": {
-		"invincibility": 30,
+		"dmg": 2,
 		"puke": 30
 	} 
 }

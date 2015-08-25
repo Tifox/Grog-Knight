@@ -223,6 +223,8 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 			this->_enemiesTouched.push_back(elem);
 	}
 	else if (elem->getAttribute("type") == "shopItem") {
+		Game::currentGame->tooltip->clearInfo();
+		Game::currentGame->tooltip->info(elem);
 		this->_shopItem = elem->getAttribute("name");
 		this->_shopItemNumber = atoi(elem->getAttribute("number").c_str());
 		this->_shopItemPrice = atoi(elem->getAttribute("price").c_str());
@@ -247,6 +249,7 @@ void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 			}
 		}
 		if (elem->getAttribute("type") == "shopItem") {
+			Game::currentGame->tooltip->clearInfo(0);
 			this->_shopItem = "";
 			this->_shopItemNumber = 0;
 			this->_shopItemPrice = 0;

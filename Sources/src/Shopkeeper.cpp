@@ -33,6 +33,7 @@ Shopkeeper::Shopkeeper(std::string name) : Characters(name) {
 	this->addAttribute("type", "Shopkeeper");
 	theSwitchboard.SubscribeTo(this, "removeShopkeeperText");
 	this->SetLayer(10);
+	this->SetDensity(0);
 	this->_shop = new Shop(0,0,2,3);
 }
 

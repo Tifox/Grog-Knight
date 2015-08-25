@@ -55,12 +55,12 @@ For each point itself, use the model below:
 
 > A complete merchant-like system, but the dealer is delivering one random item, for free.
 >
-> Also, the item delivered is a buff of some sort, with a disaventage at the end.
+> Also, the item delivered is a buff of some sort, with a disadvantage at the end.
 
   - [ ] **Shop**
     * Issue: [#19](https://github.com/Ne02ptzero/Grog-Knight/issues/19)
 
-> A shop, basiclly proposing 3 items, with a price. The shop position is pre-determined in the maps.
+> A shop, basically offering 3 items, with a price. The shop position is pre-determined in the maps.
 
   - [ ] **In Game Menu**
     * Issue: /
@@ -161,7 +161,7 @@ For each point itself, use the model below:
 - [ ] **Equipment**
   * Issue: \
 
-> Recode the all API
+> Recode the whole API
 
 - [ ] **Bindings**
   * Issue: \
@@ -188,3 +188,9 @@ For each point itself, use the model below:
 
 - [ ] **Windoge Compilation**
   * Issue: \
+
+
+- [ ] ** Broadcasts **
+  * Issue: \
+
+> A function call to cancel a broadcast

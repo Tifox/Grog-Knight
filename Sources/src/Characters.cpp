@@ -320,36 +320,37 @@ void	Characters::ReceiveMessage(Message *m) {
 			theSwitchboard.DeferredBroadcast(new Message("removeTotemText"), 1);
 			Game::addToDestroyList(this->_totem);
 			this->_totem = nullptr;
+			Game::getHUD()->removeText("T");
 		}
 	}  else if (m->GetMessageName() == "removeTotemText") {
 		theSwitchboard.UnsubscribeFrom(this, "removeTotemText");
-		Game::getHUD()->removeText("Totem removed.");
-	}
-	else if (m->GetMessageName() == "cycleInventory") {
-		this->_inventory->changeItemFocus();
-	}
-	else if (m->GetMessageName() == "dropItem") {
-		new Loot(this, this->_inventory->dropSelectedItem());
-	}
-	else if (m->GetMessageName() == "speMoveReady") {
-		this->_speMoveReady = 1;
-	}
-	else if (m->GetMessageName() == "dashEnd") {
-		theSwitchboard.UnsubscribeFrom(this, "dashEnd");
-		this->_isDashing = false;
-		this->GetBody()->SetGravityScale(1);
-		//		Game::stopRunning(this);
-		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-	}
-	else if (m->GetMessageName() == "disengageEnd") {
-		theSwitchboard.UnsubscribeFrom(this, "disengageEnd");
-		this->_isDisengaging = false;
-		//this->_speMoveReady = 1;
-		//		Game::stopRunning(this);
-		this->_canMove = 1;
-		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-	}
-	else if (m->GetMessageName() == "chargeEnd") {
+			Game::getHUD()->removeText("Totem removed.");
+		}
+		else if (m->GetMessageName() == "cycleInventory") {
+			this->_inventory->changeItemFocus();
+		}
+		else if (m->GetMessageName() == "dropItem") {
+			new Loot(this, this->_inventory->dropSelectedItem());
+		}
+		else if (m->GetMessageName() == "speMoveReady") {
+			this->_speMoveReady = 1;
+		}
+		else if (m->GetMessageName() == "dashEnd") {
+			theSwitchboard.UnsubscribeFrom(this, "dashEnd");
+			this->_isDashing = false;
+			this->GetBody()->SetGravityScale(1);
+			//		Game::stopRunning(this);
+			this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+		}
+		else if (m->GetMessageName() == "disengageEnd") {
+			theSwitchboard.UnsubscribeFrom(this, "disengageEnd");
+			this->_isDisengaging = false;
+			//this->_speMoveReady = 1;
+			//		Game::stopRunning(this);
+			this->_canMove = 1;
+			this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+		}
+		else if (m->GetMessageName() == "chargeEnd") {
 		theSwitchboard.UnsubscribeFrom(this, "chargeEnd");
 		this->_canMove = 1;
 		this->_isCharging = false;

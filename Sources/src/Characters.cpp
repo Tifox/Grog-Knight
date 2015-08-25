@@ -233,15 +233,13 @@ void	Characters::ReceiveMessage(Message *m) {
 	}
 	else if (m->GetMessageName() == "drugPressed") {
 		if(this->_drug != "") {
-			Drug *drug = new Drug(Game::dList->getDrug(this->_drug));
-			theSwitchboard.UnsubscribeFrom(this, "drugPressed");
-			this->_drug = "";
+			Game::dList->useDrug(this->_drug);
 		}
 	}
 	else if (m->GetMessageName() == "fullChargedAttack") {
-	  if (this->_isLoadingAttack)
-		this->_fullChargedAttack = true;
-	  theSwitchboard.UnsubscribeFrom(this, "fullChargedAttack");
+		if (this->_isLoadingAttack)
+			this->_fullChargedAttack = true;
+			theSwitchboard.UnsubscribeFrom(this, "fullChargedAttack");
 	}
 	else if (m->GetMessageName() == "startChargeAttack") {
 		this->_isLoadingAttack = 1;

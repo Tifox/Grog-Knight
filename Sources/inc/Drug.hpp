@@ -50,7 +50,10 @@ public:
 	Drug(Drug* Drug);
 	~Drug(void);
 
-	
+	void	pot(void);
+	void	cocaine(void);
+
+
 	void			ReceiveMessage(Message *m);
 
 	std::string		getName(void);

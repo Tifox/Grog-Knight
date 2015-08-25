@@ -129,3 +129,16 @@ void	Drug::ReceiveMessage(Message *m) {
 /* GETTERS */
 std::string		Drug::getName(void) { return this->_name; }
 std::string		Drug::getFlavor(void) { return this->_flavor; }
+
+
+/* EFFECTS */
+
+
+void			Drug::pot(void) {
+	std::cout << "POT" << std::endl;
+}
+
+void			Drug::cocaine(void) {
+	std::cout << "COCAINE" << std::endl;
+}
+

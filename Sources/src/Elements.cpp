@@ -167,7 +167,8 @@ void	Elements::display(void) {
 	if (this->getAttribute("physic") != "") {
 		this->InitPhysics();
 	}
-
+	if (this->getAttribute("transparency") != "")
+		this->SetColor(0, 0, 0, 0);
 	if (this->getAttribute("animate") != "") {
 		this->_animIt = this->_animationList.begin();
 		this->PlaySpriteAnimation((*this->_animIt)->time, SAT_OneShot, (*this->_animIt)->frame, (*this->_animIt)->frame, "baseAnimation");

@@ -30,6 +30,7 @@
 # include <list>
 # include <iostream>
 class	Enemy;
+# include "Dealer.hpp"
 # include "Game.hpp"
 
 # ifdef __APPLE__
@@ -101,5 +102,6 @@ class	Map {
 		std::map<int, std::map<std::string, Json::Value> >	_properties;
 		std::vector<std::vector<int> >		_physicMap;
 };
+
 
 #endif

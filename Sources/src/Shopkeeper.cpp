@@ -59,8 +59,8 @@ void	Shopkeeper::init(void) {
  */
 void	Shopkeeper::spawn(void) {
 	//Here starts the game - parse the 1st map coordinates and hero start
-	this->setXStart(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid() - 1);
-	this->setYStart(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 3);
+	this->setXStart(Game::spawnShop.X);
+	this->setYStart(Game::spawnShop.Y);
 	this->addAttribute("shopkeeper", "1");
 	this->display();
 	this->_shop->revealShop(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid() - 1, Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 3);

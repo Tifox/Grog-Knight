@@ -195,6 +195,24 @@ Map		Map::display(void) {
 							}
 						}
 					}
+				} else if (elem->getAttribute("spawnShop") != "") {
+					// Check if shop spawn 
+					if (Game::currentGame->getShopkeeper() == nullptr) {
+						Shopkeeper	*shop;
+						Game::spawnShop = Vector2(x, y);
+						shop = new Shopkeeper("Shopkeeper");
+						shop->spawn();
+						Game::currentGame->setShopkeeper(shop);
+					}
+				} else if (elem->getAttribute("spawnDealer") != "") {
+					// Check if dealer is already spawn
+					// Tag map as Dealer host
+					// Pause Dealer Object in quit
+					if (Game::dealer == nullptr) {
+						Game::spawnDealer = Vector2(x, y);
+						Game::dealer = new Dealer("Dealer");
+						Game::dealer->spawn();
+					}
 				}
 				elem->display();
 				this->_elemOfTheMap.push_back(elem);

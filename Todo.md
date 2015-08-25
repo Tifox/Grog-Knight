@@ -190,7 +190,7 @@ For each point itself, use the model below:
   * Issue: \
 
 
-- [ ] ** Broadcasts **
+- [ ] **Broadcasts**
   * Issue: \
 
 > A function call to cancel a broadcast

@@ -94,6 +94,9 @@ class	HUDWindow : public HUDActor {
 		void	clearHUD(void);
 		void	bigMap(void);
 		void	deleteBigMap(int n);
+		void	updateBigMap(void);
+
+		static	int		isToggled;
 
 	private:
 		Game		*_g;
@@ -109,6 +112,7 @@ class	HUDWindow : public HUDActor {
 		int						_maxHP;
 		std::list<HUDActor *>	_bigMapList;
 		HUDActor				*_currentObjectMap;
+		HUDActor				*_currentTotemMap;
 		void					_drawDoor(Vector2 size, Vector2 position);
 		int						_doNotDelete;
 };

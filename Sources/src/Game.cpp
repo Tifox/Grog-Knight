@@ -264,8 +264,10 @@ void	Game::moveCamera(void) {
 		this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 		theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
 			this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
-		if (Game::isInMenu == 0)
+		if (Game::isInMenu == 0) {
+			Game::getHUD()->updateBigMap();
 			Game::getHUD()->minimap();
+		}
 		asChanged = false;
 	}
 }

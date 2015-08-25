@@ -60,6 +60,7 @@ class Characters : public Elements {
 		friend	class	Pattern;
 		friend	class	PassivePattern;
 		friend	class	SpecialMoves;
+		friend	class	HUDWindow;
 
 		enum Orientation {
 			UP,

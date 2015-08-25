@@ -313,14 +313,23 @@ void	Characters::ReceiveMessage(Message *m) {
 			Game::getHUD()->consumable(this->_inventory->getItems());
 		}
 	}
+	else if (m->GetMessageName() == "removeTotem") {
+		theSwitchboard.UnsubscribeFrom(this, "removeTotem");
+		if (this->_totem == nullptr) {
+			Game::getHUD()->setText("Totem removed.", this, Vector3(255, 51, 255), 0, 0);
+			theSwitchboard.DeferredBroadcast(new Message("removeTotemText"), 1);
+			Game::addToDestroyList(this->_totem);
+			this->_totem = nullptr;
+		}
+	}  else if (m->GetMessageName() == "removeTotemText") {
+		theSwitchboard.UnsubscribeFrom(this, "removeTotemText");
+		Game::getHUD()->removeText("Totem removed.");
+	}
 	else if (m->GetMessageName() == "cycleInventory") {
 		this->_inventory->changeItemFocus();
 	}
 	else if (m->GetMessageName() == "dropItem") {
 		new Loot(this, this->_inventory->dropSelectedItem());
-	}
-	else if (m->GetMessageName() == "specialMove") {
-		this->_specialMove();
 	}
 	else if (m->GetMessageName() == "speMoveReady") {
 		this->_speMoveReady = 1;
@@ -418,6 +427,8 @@ void	Characters::ReceiveMessage(Message *m) {
 				this->_attack(status);
 			} if (attrName == "pickupItem") {
 				this->_pickupItem(status);
+			} if (attrName == "specialmove") {
+				this->_specialMove(status);
 			}
 			this->_lastAction = attrName;
 			this->actionCallback(attrName, status);
@@ -1040,23 +1051,34 @@ void	Characters::_pickupItem(int status) {
  * @todo should not be based off the json config
  */
 
-void	Characters::_specialMove(void) {
-	if (this->_speMove == "dash")
-		this->_eqMove->_dash();
-	else if (this->_speMove == "charge")
-		this->_eqMove->_charge();
-	else if (this->_speMove == "stomp")
-		this->_eqMove->_stomp();
-	else if (this->_speMove == "blink")
-		this->_eqMove->_blink();
-	else if (this->_speMove == "fly")
-		this->_eqMove->_fly();
-	else if (this->_speMove == "totem")
-		this->_eqMove->_totem();
-	else if (this->_speMove == "shunpo")
-		this->_eqMove->_shunpo();
-	else if (this->_speMove == "disengage")
-		 this->_eqMove->_disengage();
+void	Characters::_specialMove(int status) {
+	if (status == 1) {
+		if (this->_speMove == "totem")
+			theSwitchboard.SubscribeTo(this, "removeTotem");
+			theSwitchboard.SubscribeTo(this, "removeTotemText");
+			theSwitchboard.DeferredBroadcast(new Message("removeTotem"), 3);
+	}
+	if (status == 0) {
+		if (this->_speMove == "dash")
+			this->_eqMove->_dash();
+		else if (this->_speMove == "charge")
+			this->_eqMove->_charge();
+		else if (this->_speMove == "stomp")
+			this->_eqMove->_stomp();
+		else if (this->_speMove == "blink")
+			this->_eqMove->_blink();
+		else if (this->_speMove == "fly")
+			this->_eqMove->_fly();
+		else if (this->_speMove == "totem") {
+			theSwitchboard.UnsubscribeFrom(this, "removeTotem");
+			theSwitchboard.UnsubscribeFrom(this, "removeTotemText");
+			this->_eqMove->_totem();
+		}
+		else if (this->_speMove == "shunpo")
+			this->_eqMove->_shunpo();
+		else if (this->_speMove == "disengage")
+			this->_eqMove->_disengage();
+	}
 }
 
 //! Equip a weapon

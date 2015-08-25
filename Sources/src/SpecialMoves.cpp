@@ -263,16 +263,17 @@ void	SpecialMoves::_fly(void) {
         theWorld.Add(this->character->_totem);
     }
     else if (this->character->_totem != nullptr) {
-		Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
-		Game::currentX = atoi(this->character->_totem->getAttribute("currentX").c_str());
-		Game::currentY = atoi(this->character->_totem->getAttribute("currentY").c_str());
-		Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX] = Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].display();
-		theCamera.SetPosition(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(), Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
-		theCamera.SetPosition(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(), Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
+		if (atoi(this->character->_totem->getAttribute("currentX").c_str()) != Game::currentX && atoi(this->character->_totem->getAttribute("currentY").c_str()) != Game::currentY) {
+			Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
+			Game::currentX = atoi(this->character->_totem->getAttribute("currentX").c_str());
+			Game::currentY = atoi(this->character->_totem->getAttribute("currentY").c_str());
+			Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX] = Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].display();
+			theCamera.SetPosition(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(), Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
+			theCamera.SetPosition(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(), Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
+			if (Game::isInMenu == 0)
+				Game::getHUD()->minimap();
+		}
         this->character->GetBody()->SetTransform(b2Vec2(this->character->_totem->GetBody()->GetWorldCenter().x, this->character->_totem->GetBody()->GetWorldCenter().y), 0);
-		if (Game::isInMenu == 0)
-			Game::getHUD()->minimap();
-
         Game::addToDestroyList(this->character->_totem);
         this->character->_totem = nullptr;
     }

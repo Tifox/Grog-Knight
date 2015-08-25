@@ -16,7 +16,7 @@
 			"weapon": "Sword",
 			"armor": "ChestArmor",
 			"ring": "NiceRing",
-			"specialMove": "shunpo",
+			"specialMove": "totem",
 			"inventorySlots": 2
 		},
 		"forward": {
@@ -83,6 +83,9 @@
 			"beginFrame_left": 71,
 			"endFrame_left": 73,
 			"time": 0.1
+		},
+		"specialMove": {
+			"subscribe": "specialmove"
 		},
 		"dash": {
 			"cooldown": 1,

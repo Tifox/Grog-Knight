@@ -217,7 +217,6 @@
    <property name="time" value="0.08"/>
   </properties>
  </tile>
-
  <tile id="27">
   <properties>
    <property name="physic" value="0"/>
@@ -374,14 +373,20 @@
  </tile>
  <tile id="77">
   <properties>
+   <property name="animate" value="1"/>
+   <property name="next" value="78"/>
    <property name="physic" value="0"/>
    <property name="speType" value="water"/>
+   <property name="time" value="0.1"/>
   </properties>
  </tile>
  <tile id="78">
   <properties>
+   <property name="animate" value="1"/>
+   <property name="next" value="77"/>
    <property name="physic" value="0"/>
    <property name="speType" value="water"/>
+   <property name="time" value="0.1"/>
   </properties>
  </tile>
  <tile id="79">

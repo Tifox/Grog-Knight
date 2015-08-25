@@ -36,6 +36,7 @@ Shop::Shop(void) {
  */
 Shop::Shop(int x, int y, int lvl, int nb) {
 	int i;
+	int j;
 	for (i = 0; i < nb; i++) {
 		theSwitchboard.SubscribeTo(this, "deleteShopItem" + i);
 		int rant = rand() % 3;
@@ -45,6 +46,15 @@ Shop::Shop(int x, int y, int lvl, int nb) {
 			this->_items[i] = Game::aList->getArmorRandom(lvl)->getName();
 		if (rant == 2)
 			this->_items[i] = Game::rList->getRingRandom(lvl)->getName();
+		// if (i != 0) {
+		// 	for (j = i; j >= 0; j--) {
+		// 		std::cout << j << std::endl;
+		// 		if (this->_items[j] == this->_items[i]) {
+		// 			i--;
+		// 			break;
+		// 		}
+		// 	}
+		// }
 	}
 	this->_items[i] = "end";
 }
@@ -58,31 +68,49 @@ void	Shop::revealShop(int x, int y) {
   int i = 0;
   for (i = 0; this->_items[i] != "end"; i++) {
 	if (this->_items[i] != "bought") {
-		this->_shopItems[i] = new ShopItem(this->_items[i], x + i - 1, y, i);
+		this->_shopItems[i] = new ShopItem(this->_items[i], x + i * 2 - 1, y, i);
 	}
   }
 }
 
 Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
-  this->SetPosition(x, y);
-  this->addAttribute("type", "shopItem");
-  this->addAttribute("price", "10");
-  this->addAttribute("name", name);
-  this->addAttribute("number", std::to_string(num));
-  this->addAttribute("shopPosition", std::to_string(num));
-  if (Game::wList->checkExists(name) == 1) {
-	this->SetSprite(Game::wList->getWeapon(name)->getSprite());
+	this->SetPosition(x, y);
+	this->addAttribute("type", "shopItem");
+	this->addAttribute("price", "10");
+	this->addAttribute("name", name);
+	this->addAttribute("number", std::to_string(num));
+	this->addAttribute("shopPosition", std::to_string(num));
+	if (Game::wList->checkExists(name) == 1) {
+		this->SetSprite(Game::wList->getWeapon(name)->getSprite());
+		this->addAttribute("flavor", Game::wList->getWeapon(name)->getFlavor());
+		this->addAttribute("type3", "Weapon");
+		if (Game::wList->getWeapon(name)->getAttribute("hpBuff") != "")
+			this->addAttribute("hpBuff", Game::wList->getWeapon(name)->getAttribute("hpBuff"));
+		if (Game::wList->getWeapon(name)->getAttribute("manaBuff") != "")
+			this->addAttribute("manaBuff", Game::wList->getWeapon(name)->getAttribute("manaBuff"));
+	}
+	else if (Game::aList->checkExists(name) == 1) {
+		this->SetSprite(Game::aList->getArmor(name)->getSprite());
+		this->addAttribute("type3", "Armor");
+		this->addAttribute("flavor", Game::aList->getArmor(name)->getFlavor());
+		if (Game::aList->getArmor(name)->getAttribute("hpBuff") != "")
+			this->addAttribute("hpBuff", Game::aList->getArmor(name)->getAttribute("hpBuff"));
+		if (Game::aList->getArmor(name)->getAttribute("manaBuff") != "")
+			this->addAttribute("manaBuff", Game::aList->getArmor(name)->getAttribute("manaBuff"));
   }
-  else if (Game::aList->checkExists(name) == 1) {
-	this->SetSprite(Game::aList->getArmor(name)->getSprite());
-  }
-  else if (Game::rList->checkExists(name) == 1) {
-	this->SetSprite(Game::rList->getRing(name)->getSprite());
-  }
-  this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
-  this->SetIsSensor(true);
-  this->SetDensity(0);
-  Game::bodiesToCreate.push_back(this);
+	else if (Game::rList->checkExists(name) == 1) {
+		this->addAttribute("flavor", Game::rList->getRing(name)->getFlavor());
+		this->addAttribute("type3", "Ring");
+		this->SetSprite(Game::rList->getRing(name)->getSprite());
+		if (Game::rList->getRing(name)->getAttribute("hpBuff") != "")
+			this->addAttribute("hpBuff", Game::rList->getRing(name)->getAttribute("hpBuff"));
+		if (Game::rList->getRing(name)->getAttribute("manaBuff") != "")
+			this->addAttribute("manaBuff", Game::rList->getRing(name)->getAttribute("manaBuff"));
+	}
+	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
+	this->SetIsSensor(true);
+	this->SetDensity(0);
+	Game::bodiesToCreate.push_back(this);
 }
 
 //! Hide the merchant when you leave the roomz`

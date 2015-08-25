@@ -108,11 +108,11 @@ void		DrugList::useDrug(std::string name) {
 	for (it = this->_allDrugs.begin(); it != this->_allDrugs.end(); it++) {
 		if (name == (*it)->getName()) {
 			Game::currentGame->tooltip->info(getDrug(name));
-/*			if (name == "Pot")
-				Drug::pot();
+			if (name == "Pot")
+				getDrug(name)->pot(1);
 			if (name == "Cocaine")
-				Drug::cocaine();
-*/		}
+				getDrug(name)->cocaine(1);
+			}
 	}
 	removeDrug(name);
 }

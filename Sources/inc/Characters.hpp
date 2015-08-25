@@ -68,6 +68,9 @@ class Characters : public Elements {
 			RIGHT
 		};
 
+
+  			int bonusDmg;
+
 		Characters(void);
 		Characters(std::string name);
 		~Characters();

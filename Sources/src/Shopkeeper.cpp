@@ -69,6 +69,8 @@ void	Shopkeeper::spawn(void) {
 	Game::getHUD()->setText(this->_currentPhrase, this, Vector3(255, 51, 255), 0, 0);
 }
 
+
+
 //! Begin collision function
 /**
  * Collision begin callback

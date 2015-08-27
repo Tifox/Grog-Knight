@@ -31,4 +31,10 @@ App::uses('Controller', 'Controller');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
+	public $components = array('Cookie', 'RequestHandler');
+
+	function beforeFilter() {
+		if ($this->RequestHandler->isAjax())
+			$this->layout = null;
+	}
 }

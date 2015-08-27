@@ -34,6 +34,12 @@ error_reporting(0);
 			"https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
 		));
 
+		echo $this->Html->script(array(
+			"https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js",
+			"Chart.min",
+			"main.js"
+		));
+
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');
@@ -41,6 +47,8 @@ error_reporting(0);
 </head>
 <body>
 	<div id="container">
+		<div class='transparent'></div>
+		<div class='out-window'></div>
 		<div id="header">
 			<div class='logo'>
 				<i class='fa fa-linux'></i>

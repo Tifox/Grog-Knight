@@ -1,41 +1,50 @@
-# Rogue-Like
-[![Build Status](https://travis-ci.org/Ne02ptzero/Grog-Like.svg?branch=build)](https://travis-ci.org/Ne02ptzero/Grog-Like)
-![Language](https://img.shields.io/badge/language-c%2B%2B-orange.svg)
-[![License](https://img.shields.io/badge/license-BSD-blue.svg)](LICENSE)
-[![Join the chat at https://gitter.im/Ne02ptzero/Grog-Like](https://img.shields.io/badge/chat-gitter-red.svg)](https://gitter.im/Ne02ptzero/Grog-Like?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# CakePHP
 
-### First draft on open project thoughts and timeline
+[![Latest Stable Version](https://poser.pugx.org/cakephp/cakephp/v/stable.svg)](https://packagist.org/packages/cakephp/cakephp)
+[![License](https://poser.pugx.org/cakephp/cakephp/license.svg)](https://packagist.org/packages/cakephp/cakephp)
+[![Bake Status](https://secure.travis-ci.org/cakephp/cakephp.png?branch=master)](http://travis-ci.org/cakephp/cakephp)
+[![Code consistency](http://squizlabs.github.io/PHP_CodeSniffer/analysis/cakephp/cakephp/grade.svg)](http://squizlabs.github.io/PHP_CodeSniffer/analysis/cakephp/cakephp/)
 
-Our goal is to create a video game based on the quite popular genre hybrid Rogue-Like. It is a very broad type of game, but the main idea behind it is always the same. A playthrough that isn’t too long (can be finished in an hour or so) but a huge replayability. Each time you run through the game, you’ll encounter different enemies, bosses, objects, map layout, and finishing a playthrough is rewarding in itself for the player as it unlocks new objects/enemies/levels in order to alter the gameplay for the next run. The death is permanent, and once your character dies, you have to restart from the beginning.
+[![CakePHP](http://cakephp.org/img/cake-logo.png)](http://www.cakephp.org)
 
-There are quite a few games available that use this concept. Overall, Rogue Legacy, Binding of Isaac, Faster Than Light depict it very well as they all offer this kind of gameplay. However, not a game is similar to the other. For example, Rogue Legacy is a 2D scrolling game with plateformer elements. Isaac is a 2D game where the gameplay is more inspired by “shoot them up” kind of games, and the view is overworld. Faster Than Light is an overworld game aswell, but the gameplay revolves more around unit-management.
-
-On the topic of our game, we are looking to create a 2D scrolling game with procedural-based map construction, using already existing tools such as a C++ open-sourced graphic and physics engine, in order to focus more heavily on the game itself. 
-
-## Installation:
-
-### Linux and OSX
-**Clone**:
-
-```
-git clone --recursive http://github.com/Ne02ptzero/rogue-like
-```
+CakePHP is a rapid development framework for PHP which uses commonly known design patterns like Active Record, Association Data Mapping, Front Controller and MVC.
+Our primary goal is to provide a structured framework that enables PHP users at all levels to rapidly develop robust web applications, without any loss to flexibility.
 
 
-## About:
-This project use [Angel2d](https://github.com/angel2d/angel2d), [Documentation](http://docs.angel2d.com/)
+## Some Handy Links
 
-### Authors:
+[CakePHP](http://www.cakephp.org) - The rapid development PHP framework
 
-*Vincent Rey* (N0ich) <vin100.rey@gmail.com>
+[CookBook](http://book.cakephp.org) - THE CakePHP user documentation; start learning here!
 
-*Louis Solofrizzo* (Ne02ptzero) <louis@ne02ptzero.me>
+[API](http://api.cakephp.org) - A reference to CakePHP's classes
 
-### Contributing
-[Rules Here :)](Contributing.md)
+[Plugins](http://plugins.cakephp.org/) - A repository of extensions to the framework
 
-[Docs Here](http://ne02ptzero.github.io/Grog-Like)
+[The Bakery](http://bakery.cakephp.org) - Tips, tutorials and articles
+
+[Community Center](http://community.cakephp.org) - A source for everything community related
+
+[Training](http://training.cakephp.org) - Join a live session and get skilled with the framework
+
+[CakeFest](http://cakefest.org) - Don't miss our annual CakePHP conference
+
+[Cake Software Foundation](http://cakefoundation.org) - Promoting development related to CakePHP
 
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/Ne02ptzero/grog-like/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+## Get Support!
 
+[#cakephp](http://webchat.freenode.net/?channels=#cakephp) on irc.freenode.net - Come chat with us, we have cake
+
+[Google Group](https://groups.google.com/group/cake-php) - Community mailing list and forum
+
+[GitHub Issues](https://github.com/cakephp/cakephp/issues) - Got issues? Please tell us!
+
+[Roadmaps](https://github.com/cakephp/cakephp/wiki#roadmaps) - Want to contribute? Get involved!
+
+
+## Contributing
+
+[CONTRIBUTING.md](CONTRIBUTING.md) - Quick pointers for contributing to the CakePHP project
+
+[CookBook "Contributing" Section (2.x)](http://book.cakephp.org/2.0/en/contributing.html) [(3.0)](http://book.cakephp.org/3.0/en/contributing.html) - Version-specific details about contributing to the project

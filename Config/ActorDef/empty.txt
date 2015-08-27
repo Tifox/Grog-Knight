@@ -1,1 +1,0 @@
--- Actor definitions go in this directory. (See the example in IntroGame.)

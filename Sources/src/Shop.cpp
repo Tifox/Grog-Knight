@@ -81,6 +81,7 @@ void	Shop::revealShop(int x, int y) {
 
 Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
 	this->SetPosition(x, y);
+	this->SetLayer(99);
 	this->addAttribute("type", "shopItem");
 	this->addAttribute("price", "10");
 	this->addAttribute("name", name);
@@ -120,6 +121,9 @@ Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
 }
 
 //! Hide the merchant when you leave the roomz`
+/**
+ * Not currently used
+ */
 void	Shop::hideShop(void) {
 	int i;
 	for (i = 0; i < this->_shopItems.size(); i++) {

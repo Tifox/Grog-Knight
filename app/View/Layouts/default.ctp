@@ -15,7 +15,8 @@
  */
 
 $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework');
-$cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
+$cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version());
+error_reporting(0);
 ?>
 <!DOCTYPE html>
 <html>
@@ -28,7 +29,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	<?php
 		echo $this->Html->meta('icon');
 
-		echo $this->Html->css('cake.generic');
+		echo $this->Html->css(array(
+			"main",
+			"https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
+		));
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
@@ -38,24 +42,23 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <body>
 	<div id="container">
 		<div id="header">
-			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
+			<div class='logo'>
+				<i class='fa fa-linux'></i>
+				<h1>Grog-Knight</h1>
+			</div>
+			<ul>
+				<li>Home</li>
+				<li>Armors</li>
+				<li>Rings</li>
+				<li>Weapons</li>
+				<li>Git</li>
+			</ul>
 		</div>
 		<div id="content">
-
 			<?php echo $this->Flash->render(); ?>
-
 			<?php echo $this->fetch('content'); ?>
 		</div>
 		<div id="footer">
-			<?php echo $this->Html->link(
-					$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
-					'http://www.cakephp.org/',
-					array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
-				);
-			?>
-			<p>
-				<?php echo $cakeVersion; ?>
-			</p>
 		</div>
 	</div>
 	<?php echo $this->element('sql_dump'); ?>

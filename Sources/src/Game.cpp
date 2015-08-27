@@ -98,8 +98,6 @@ void	Game::start(void) {
 	std::map<std::string, Json::Value>	save = Quit::getSave();
 	Hero			*hero = new Hero(Game::menuCharacter->getHeroType());
 
-	
-
 	LevelGenerator *levelGenerator = new LevelGenerator(4, 3, 60);
 	levelGenerator->execute();
 	this->_tmpMap = levelGenerator->getLevel();

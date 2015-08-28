@@ -2,7 +2,7 @@
 	echo "<script type=\"text/javascript\" id=\"runscript\">";
 	echo 'var data = { labels: ["Level Min", "Critical", "Damage", "Loot Level", "Recovery time"],';
 	echo "datasets: [";
-	echo '{"Label": "Stats", fillColor: "rgba(220,220,220,0.2)",
+	echo '{"Label": "Stats", fillColor: "rgba(30,30,32,0.2)",
             strokeColor: "rgba(220,220,220,1)",
             pointColor: "rgba(220,220,220,1)",
             pointStrokeColor: "#fff",
@@ -10,10 +10,26 @@
             pointHighlightStroke: "rgba(220,220,220,1)",';
 	echo "data: [".$res->infos->lvlRequired.",".$res->infos->critRate.",".$res->infos->damage.",".$res->infos->lootLevel.",".$res->infos->recovery."]}]};";
 	echo "</script>";
+	echo "<script type='text/javascript' id='runscripttwo'>";
+		echo "var baseHP = ".$hero->infos->HP.";";
+		echo "var baseCrit = ".$hero->infos->baseCrit.";";
+		echo "var baseDamage = ".$hero->infos->baseDamage.";";
+		echo "var baseSpeed = ".$hero->Actions->forward->force.";";
+		echo "var data2 = { labels: ['HP', 'Crit', 'Base Damage', 'Speed'],";
+		echo "datasets: [";
+		echo '{"Label": "Stats", fillColor: "rgba(30,30,32,0.5)",
+			strokeColor: "rgba(220,220,220,0.8)",
+			highlightFill: "rgba(220,220,220,0.75)",
+			highlightStroke: "rgba(220,220,220,1)",';
+		echo "data: [".$hero->infos->HP.",".($hero->infos->baseCrit + $res->infos->critRate).",".($hero->infos->baseDamage + $res->infos->damage).",".$hero->Actions->forward->force."]}]}";
+	echo "</script>";
 ?>
-
-<h1><?= $res->infos->name ?></h1>
-<canvas id="chart"></canvas>
+<ul>
+	<li class='main'>
+		<canvas id="chart"></canvas>
+		<canvas id="chart2"></canvas>
+	</li>
+	<li class='main'>
 <form>
 	<?php
 		$keys = array(
@@ -24,7 +40,7 @@
 			"recovery" => 4
 		);
 		foreach ($res->infos as $key => $f) {
-			echo "<ul>";
+			echo "<ul class='form'>";
 			if ($key == "flavor") {
 					echo "<li class='spe'><div class='before-t'>".$key."</div></li>";
 					echo "<li class='input'><textarea>".$f."</textarea></li>";
@@ -42,3 +58,4 @@
 		}
 	?>
 </form>
+</li>

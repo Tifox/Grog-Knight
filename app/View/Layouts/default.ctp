@@ -37,6 +37,7 @@ error_reporting(0);
 		echo $this->Html->script(array(
 			"https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js",
 			"Chart.min",
+			"Chart.HorizontalBar",
 			"main.js"
 		));
 

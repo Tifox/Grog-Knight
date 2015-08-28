@@ -127,10 +127,10 @@ body {
 
 .out-window {
 	position: fixed;
-	width: 50%;
-	left: 25%;
-	right: 25%;
-	top: 10%;
+	width: 80%;
+	left: 10%;
+	right: 10%;
+	top: 5%;
 	background: #D9CB9E;
 	z-index: 901;
 	height: 90%;
@@ -178,26 +178,49 @@ body {
 	width: 100%;
 }
 
-.out-window form ul {
+.out-window ul {
+	list-style: none;
+	width: 100%;
+	margin-top: 10px;
+}
+
+.out-window ul .main {
+	display: inline-block;
+	width: 49%;
+}
+
+.out-window form .form {
 	list-style: none;
 	width: 100%;
 	margin-left: 7%;
 }
 
-.out-window form ul li input {
+.out-window form .form li input {
 	width: 100%;
 	border: 0;
 	padding: 5px 0 5px 0;
 }
 
-.out-window form ul li textarea {
+.out-window form .form li textarea {
 	width: 119%;
 	border: 0;
 	margin-top: -5px;
 	height: 80px;
 }
 
-.out-window form ul li {
+.out-window form .form li {
 	display: inline-block;
 	margin-bottom: 5px;
+}
+
+.out-window #chart {
+	position: fixed;
+	top: 5%;
+	left: -5%;
+}
+
+.out-window #chart2 {
+	position: fixed;
+	top: 60%;
+	left: -8%;
 }

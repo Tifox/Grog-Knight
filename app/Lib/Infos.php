@@ -23,6 +23,12 @@ class Infos {
 		return $result;
 	}
 
+	public function		getHero($name) {
+		$content = file_get_contents($this->_path."Elements/".$name.".json");
+		$result = json_decode($content);
+		return $result;
+	}
+
 	public function		getStuffInfo($type, $name) {
 		$content = file_get_contents($this->_path."Elements/".$type."/".$name.".json");
 		return json_decode($content);

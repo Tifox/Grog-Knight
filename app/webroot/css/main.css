@@ -47,8 +47,34 @@ body {
 	color: #374140;
 }
 
+#header .character {
+	position: fixed;
+	bottom: 0;
+	color: #D9CB9E;
+	border-top: 3px solid #374140;
+	width: 20%;
+	padding-bottom: 20px;
+}
+
+#header .character h1 {
+	margin-bottom: 5%;
+}
+
+#header .character img {
+	width: 20%;
+	height: auto;
+}
+
+#header .character select {
+	width: 80%;
+	margin-top: 10%;
+	background: #D9CB9E;
+	color: #374140;
+	border: 0;
+}
+
 #header ul {
-	margin-top: 20%;
+	margin-top: 5%;
 	width: 100%;
 	color: #D9CB9E;
 	list-style: none;
@@ -223,4 +249,17 @@ body {
 	position: fixed;
 	top: 60%;
 	left: -8%;
+}
+
+.out-window .characterLevel {
+	position: fixed;
+	top: 90%;
+	left: 19%;
+	border: 0;
+	color: #374140;
+	background: #D9CB9E;
+	text-align: center;
+	font-size: large;
+	font-weight: bold;
+	width: auto;
 }

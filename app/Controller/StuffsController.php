@@ -14,7 +14,6 @@ class StuffsController extends AppController {
 	public function		getInfoOnWeapon($name) {
 		$infos = new Infos("../../Grog-Knight/Resources/");
 		$this->set("res", $infos->getStuffInfo("Weapons", $name));
-		$this->set("hero", $infos->getHero("Warrior"));
 	}
 }
 ?>

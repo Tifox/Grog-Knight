@@ -1,4 +1,5 @@
 <?php
+	$hero = $this->Session->read("character");
 	echo "<script type=\"text/javascript\" id=\"runscript\">";
 	echo 'var data = { labels: ["Level Min", "Critical", "Damage", "Loot Level", "Recovery time"],';
 	echo "datasets: [";
@@ -15,6 +16,9 @@
 		echo "var baseCrit = ".$hero->infos->baseCrit.";";
 		echo "var baseDamage = ".$hero->infos->baseDamage.";";
 		echo "var baseSpeed = ".$hero->Actions->forward->force.";";
+		echo "var critMult = ".$hero->Stats->critMult.";";
+		echo "var damageMult = ".$hero->Stats->damageMult.";";
+		echo "var HPMult = ".$hero->Stats->HPMult.";";
 		echo "var data2 = { labels: ['HP', 'Crit', 'Base Damage', 'Speed'],";
 		echo "datasets: [";
 		echo '{"Label": "Stats", fillColor: "rgba(30,30,32,0.5)",
@@ -28,6 +32,7 @@
 	<li class='main'>
 		<canvas id="chart"></canvas>
 		<canvas id="chart2"></canvas>
+		<input class='characterLevel' type="number" value="1">
 	</li>
 	<li class='main'>
 <form>

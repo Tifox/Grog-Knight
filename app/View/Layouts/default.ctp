@@ -62,6 +62,15 @@ error_reporting(0);
 				<li>Weapons</li>
 				<li>Git</li>
 			</ul>
+			<div class='character'>
+				<h1><?= $this->Session->read("character")->infos->name ?></h1>
+				<img src="/Grog-Knight/img/Images/<?= $this->Session->read("character")->infos->sprites ?>">
+				<br />
+				<select id="characterChange">
+					<option value="Warrior">Warrior</option>
+					<option value="Archer">Archer</option>
+				</select>
+			</div>
 		</div>
 		<div id="content">
 			<?php echo $this->Flash->render(); ?>

@@ -23,7 +23,7 @@
 			"weapon": "Sword",
 			"armor": "ChestArmor",
 			"ring": "NiceRing",
-			"specialMove": "totem",
+			"specialMove": "blink",
 			"inventorySlots": 2
 		},
 		"forward": {

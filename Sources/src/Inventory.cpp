@@ -55,10 +55,24 @@ void			Inventory::changeItemFocus(void) {
 	} else if (Game::rList->checkExists(this->_items[this->_focused])) {
 		w = new Ring(Game::rList->getRing(this->_items[this->_focused]));
 	}
-	//if (w != nullptr) {
-	//}
 }
 
+//! Change the selected item to another item directly
+/**
+ * this function is called with a number to change directly to the resquested item instead of tabbing through. Tab will be used in another way
+ * @param int - the button pressed (1, 2, 3, 4)
+ */
+
+void	Inventory::chooseItemFocus(int n) {
+	if (n > this->_slots || this->_items[n - 1] == "")
+		return;
+	if (n - 1 != this->_focused) {
+		this->_focused = n - 1;
+		Game::getHUD()->consumable(this->_items);
+	}
+	else
+		theSwitchboard.Broadcast(new Message("equipSelectedItem"));
+}
 
 //! Called by char when picking up an item
 /**

@@ -30,30 +30,35 @@
 	},
 	"Inventory" : 
 	{
-		"Drop an Item" : 
-		{
-			"broadcast" : "dropItem",
-			"key" : "V"
-		},
 		"Drug yourself" : 
 		{
 			"broadcast" : "drug",
 			"key" : "D"
 		},
-		"Equip an Item" : 
-		{
-			"broadcast" : "equipSelectedItem",
-			"key" : "R"
-		},
-		"Go to next Item" : 
-		{
-			"broadcast" : "cycleInventory",
-			"key" : "TAB"
-		},
-		"Pick an Item" : 
+		"Pick/Drop an Item" : 
 		{
 			"broadcast" : "pickupItemPressed",
 			"key" : "F"
+		},
+		"Select/equip 1st item" : 
+		{
+			"broadcast" : "chooseItem1",
+			"key" : "1"
+		},
+		"Select/equip 2nd item" : 
+		{
+			"broadcast" : "chooseItem2",
+			"key" : "2"
+		},
+		"Select/equip 3rd item" : 
+		{
+			"broadcast" : "chooseItem3",
+			"key" : "3"
+		},
+		"Select/equip 4th item" : 
+		{
+			"broadcast" : "chooseItem4",
+			"key" : "4"
 		}
 	},
 	"Move" : 

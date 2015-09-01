@@ -167,6 +167,7 @@ For each point itself, use the model below:
   * Issue: \
 
 > Simplify the bindings
+> Allow combination of SHIFT, CTRL, ALT and another bind
   
 - [ ] **HUD**
   * Issue: \
@@ -194,6 +195,7 @@ For each point itself, use the model below:
   * Issue: \
 
 > A function call to cancel a broadcast
+
 
  - Ideas:
     - cooldown or number of uses for a skill for a floor

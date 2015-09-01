@@ -71,10 +71,10 @@
 		theSwitchboard.Broadcast(new Message("enableAttackHitbox"));
 		theSwitchboard.UnsubscribeFrom(this->character, "enableAttackHitbox");
 		if (this->character->_latOrientation == Characters::LEFT)
- 			this->character->GetBody()->SetLinearVelocity(b2Vec2(this->character->_getAttr("chargeSpeed").asInt(), 0));
- 		else if (this->character->_latOrientation == Characters::RIGHT)
- 			this->character->GetBody()->SetLinearVelocity(b2Vec2(-this->character->_getAttr("chargeSpeed").asInt(), 0));
- 	}
+		  this->character->GetBody()->SetLinearVelocity(b2Vec2(this->character->_getAttr("chargeSpeed").asInt(), this->character->_getAttr("djump").asInt()));
+		else if (this->character->_latOrientation == Characters::RIGHT)
+		  this->character->GetBody()->SetLinearVelocity(b2Vec2(-this->character->_getAttr("chargeSpeed").asInt(), this->character->_getAttr("djump").asInt()));
+		 }
  }
 
 

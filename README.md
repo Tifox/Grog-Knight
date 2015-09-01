@@ -1,5 +1,5 @@
 # Rogue-Like
-[![Build Status](https://travis-ci.org/Ne02ptzero/Grog-Like.svg?branch=build)](https://travis-ci.org/Ne02ptzero/Grog-Like)
+[![Build Status](https://travis-ci.org/Ne02ptzero/Grog-Knight.svg?branch=build)](https://travis-ci.org/Ne02ptzero/Grog-Like)
 ![Language](https://img.shields.io/badge/language-c%2B%2B-orange.svg)
 [![License](https://img.shields.io/badge/license-BSD-blue.svg)](LICENSE)
 [![Join the chat at https://gitter.im/Ne02ptzero/Grog-Like](https://img.shields.io/badge/chat-gitter-red.svg)](https://gitter.im/Ne02ptzero/Grog-Like?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -18,7 +18,7 @@ On the topic of our game, we are looking to create a 2D scrolling game with proc
 **Clone**:
 
 ```
-git clone --recursive http://github.com/Ne02ptzero/rogue-like
+git clone --recursive http://github.com/Ne02ptzero/Grog-Knight
 ```
 
 
@@ -34,4 +34,4 @@ This project use [Angel2d](https://github.com/angel2d/angel2d), [Documentation](
 ### Contributing
 [Rules Here :)](Contributing.md)
 
-[Docs Here](http://ne02ptzero.github.io/Grog-Like)
+[Docs Here](http://ne02ptzero.github.io/Grog-Knight)

@@ -194,3 +194,8 @@ For each point itself, use the model below:
   * Issue: \
 
 > A function call to cancel a broadcast
+
+ - Ideas:
+    - cooldown or number of uses for a skill for a floor
+    - rebinding - tab for targeting, 1234 for skills and SHIFT+1234 for items
+    - Procs and special stuff on items: when you hit enemy, something happens

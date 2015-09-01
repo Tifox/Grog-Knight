@@ -53,6 +53,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_canAttack = true;
 	this->_canJump = true;
 	this->_isFlying = false;
+	this->_isChoosingItem = 0;
 	this->_invincibility = false;
 	this->_grounds.clear();
 	this->_item = nullptr;
@@ -327,10 +328,16 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->_inventory->changeItemFocus();
 	}
 	else if (m->GetMessageName() == "dropItem") {
-		new Loot(this, this->_inventory->dropSelectedItem());
+			new Loot(this, this->_inventory->dropSelectedItem());
 	}
 	else if (m->GetMessageName() == "speMoveReady") {
 		this->_speMoveReady = 1;
+	}
+	else if (m->GetMessageName().substr(0, 10) == "chooseItem") {
+		if (this->_isChoosingItem == 1)
+			return;
+		this->_isChoosingItem = 1;
+		this->_inventory->chooseItemFocus(atoi(m->GetMessageName().substr(10, 1).c_str()));
 	}
 	else if (m->GetMessageName() == "dashEnd") {
 		theSwitchboard.UnsubscribeFrom(this, "dashEnd");
@@ -542,7 +549,6 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 	} if (elem->getAttribute("triggerOff") != "") {
 		this->trigger(elem->getAttribute("triggerOff"), 0);
 	}
-
 	if (elem->getAttributes()["type"] == "ground") {
 		if (this->_isAttacking == 0 && this->_isLoadingAttack == 0) {
 			if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
@@ -713,6 +719,7 @@ void	Characters::_resetBroadcastFlags(void) {
 	this->_forwardFlag = false;
 	this->_backwardFlag = false;
 	this->_doFlyFlag = false;
+	this->_isChoosingItem = 0;
 }
 
 /****************************/
@@ -1036,6 +1043,9 @@ void	Characters::_pickupItem(int status) {
 	theSwitchboard.Broadcast(new Message("DeleteEquipment" +
 										 this->_item->GetName()));
 	this->_item = nullptr;
+  }
+  else {
+	  theSwitchboard.Broadcast(new Message("dropItem"));
   }
 }
 

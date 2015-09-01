@@ -133,6 +133,7 @@ class Characters : public Elements {
 		int				_isAttacking;
 		int				_hp;
 		int				_gold;
+		int				_isChoosingItem;
 		int				_maxHp;
 		int 			_mana;
 		int 			_maxMana;

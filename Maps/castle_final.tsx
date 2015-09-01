@@ -444,7 +444,7 @@
  </tile>
  <tile id="92">
   <properties>
-   <property name="physic" value="0"/>
+   <property name="speType" value="chestDoor"/>
   </properties>
  </tile>
  <tile id="93">
@@ -496,7 +496,7 @@
  </tile>
  <tile id="101">
   <properties>
-   <property name="physic" value="0"/>
+   <property name="speType" value="chestDoor"/>
   </properties>
  </tile>
  <tile id="102">
@@ -567,6 +567,7 @@
  <tile id="127">
   <properties>
    <property name="physic" value="0"/>
+   <property name="speType" value="chest"/>
   </properties>
  </tile>
 </tileset>

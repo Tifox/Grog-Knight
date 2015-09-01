@@ -232,6 +232,7 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		this->_shopItemNumber = atoi(elem->getAttribute("number").c_str());
 		this->_shopItemPrice = atoi(elem->getAttribute("price").c_str());
 		Game::currentGame->getShopkeeper()->displayText("This one is for " + std::to_string(this->_shopItemPrice) + "g");
+	}
 }
 
 //! End collision function

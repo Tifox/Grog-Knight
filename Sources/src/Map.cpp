@@ -196,7 +196,7 @@ Map		Map::display(void) {
 						}
 					}
 				} else if (elem->getAttribute("spawnShop") != "") {
-					// Check if shop spawn 
+					// Check if shop spawn
 					if (Game::currentGame->getShopkeeper() == nullptr) {
 						Shopkeeper	*shop;
 						Game::spawnShop = Vector2(x, y);
@@ -212,6 +212,15 @@ Map		Map::display(void) {
 						Game::spawnDealer = Vector2(x, y);
 						Game::dealer = new Dealer("Dealer");
 						Game::dealer->spawn();
+					}
+				} else if (elem->getAttribute("spawnChest") != "") {
+					// Check if chest is already spawn
+					// Tag map as Chest host
+					// Pause Chest Object in quit
+					if (Game::chest == nullptr) {
+						Game::spawnChest = Vector2(x, y);
+						Game::chest = new Chest();
+						Game::chest->spawn();
 					}
 				}
 				elem->display();

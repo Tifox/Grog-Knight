@@ -80,6 +80,8 @@ void	Menu::showMenu(Game *game) {
 void	Menu::ReceiveMessage(Message *m) {
 	std::list<std::string>::iterator	it;
 
+	if (Game::toggleMenu == false)
+		return;
 	if (m->GetMessageName() == "moveMenu")
 		this->_background_map->destroyMap();
 	if (this->_inMenu == 1) {

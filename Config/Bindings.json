@@ -63,6 +63,11 @@
 	},
 	"Move" : 
 	{
+		"Action" : 
+		{
+			"broadcast" : "action",
+			"key" : "R"
+		},
 		"Attack" : 
 		{
 			"broadcast" : "attack",

@@ -232,6 +232,8 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		this->_shopItemNumber = atoi(elem->getAttribute("number").c_str());
 		this->_shopItemPrice = atoi(elem->getAttribute("price").c_str());
 		Game::currentGame->getShopkeeper()->displayText("This one is for " + std::to_string(this->_shopItemPrice) + "g");
+	} else if (elem->getAttribute("type") == "Chest") {
+		this->_isTouchingChest = true;
 	}
 }
 
@@ -264,6 +266,10 @@ void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 		if (elem->getAttribute("type2") == "Equipment") {
 			Game::currentGame->tooltip->clearInfo(0);
 		}
+		if (elem->getAttribute("type") == "Chest") {
+			this->_isTouchingChest = false;
+	}
+
 }
 
 //! Function called when the hero is taking damage

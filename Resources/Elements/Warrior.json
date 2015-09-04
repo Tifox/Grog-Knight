@@ -26,6 +26,9 @@
 			"specialMove": "blink",
 			"inventorySlots": 2
 		},
+		"executeAction": {
+			"subscribe": "action"
+		},
 		"forward": {
 			"subscribe": "forward",
 			"beginFrame": 20,

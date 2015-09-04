@@ -75,6 +75,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_isStomping = false;
 	this->_flyTrigger = false;
 	this->_isDisengaging = false;
+	this->bonusDmg = 0;
 }
 
 //! Basic destructor

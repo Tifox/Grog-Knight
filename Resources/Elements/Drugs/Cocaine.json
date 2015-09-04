@@ -3,10 +3,7 @@
 		"name": "Cocaine",
 		"id": 0,
 		"flavor": "This cocaine gives you more damage\nAnd will increase your speed\n ...a lot.",
-		"sprites": "Resources/Images/gold.png"
-	},
-	"bonus": {
-		"damage": 25,
-		"speed": 50
+		"sprites": "Resources/Images/gold.png",
+		"effect": 5
 	}
 }

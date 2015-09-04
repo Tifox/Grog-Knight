@@ -70,7 +70,7 @@ class Characters : public Elements {
 		};
 
 
-  			int bonusDmg;
+  		int bonusDmg;
 
 		Characters(void);
 		Characters(std::string name);

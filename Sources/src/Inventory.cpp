@@ -109,9 +109,7 @@ void		Inventory::swapEquipmentAndInventory(std::string item) {
 }
 
 std::string		Inventory::dropSelectedItem(void) {
-
 	std::string itemName;
-
 
 	itemName = this->_items[this->_focused];
 	this->_items[this->_focused].clear();

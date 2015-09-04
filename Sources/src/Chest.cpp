@@ -38,6 +38,7 @@ Chest::Chest(void): isUsed(0) {
 	this->addAttribute("physic", "1");
 	this->addAttribute("sprite", "");
 	this->addAttribute("spritesFrame", "Resources/Images/Hero/hero_000.png");
+	this->_target = nullptr;
 	this->display();
 	return;
 }
@@ -51,21 +52,101 @@ void	Chest::spawn(void) {
 }
 
 void	Chest::displayInterface(void) {
+	HUDWindow		*w = Game::getHUD();
+	int				height = theCamera.GetWindowHeight(), width = theCamera.GetWindowWidth();
+
+	// Subscribe
 	theSwitchboard.SubscribeTo(this, "upPressed");
 	theSwitchboard.SubscribeTo(this, "downPressed");
 	theSwitchboard.SubscribeTo(this, "forwardPressed");
 	theSwitchboard.SubscribeTo(this, "backwardPressed");
 	theSwitchboard.SubscribeTo(this, "enterPressed");
+
+	// Display Interface
+	this->_interfaceElem.push_back(w->addImage("Resources/Images/bag.png", width / 2, 
+		height - ((height / 3) * 2),Vector2(width - (width / 2), height / 6), 101));
+	this->displayChestContent();
+}
+
+void	Chest::displayChestContent(void) {
+	int		height = theCamera.GetWindowHeight(), width = theCamera.GetWindowWidth();
+	HUDWindow		*w = Game::getHUD();
+	HUDActor		*tmp;
+	int		x = width / 2 - width / 6, y = height - ((height / 3) * 2), i;
+
+	for (i = 0; i < 3; i++, x += width / 6) {
+		tmp = w->addImage("Resources/Images/bag_slot.png", x, y, 80, 102);
+		this->_interfaceElem.push_back(tmp);
+		this->_choices.push_back(tmp);
+		if (i == 0)
+			this->_choicePointer = tmp;
+	}
+	this->makeChoices();
+	this->updateItems();
 }
 
 void	Chest::removeInterface(void) {
+	std::list<HUDActor *>::iterator		it;
+
+	// Unsubscribe
 	theSwitchboard.UnsubscribeFrom(this, "upPressed");
 	theSwitchboard.UnsubscribeFrom(this, "downPressed");
 	theSwitchboard.UnsubscribeFrom(this, "forwardPressed");
 	theSwitchboard.UnsubscribeFrom(this, "backwardPressed");
 	theSwitchboard.UnsubscribeFrom(this, "enterPressed");
+
+	for (it = this->_interfaceElem.begin(); it != this->_interfaceElem.end(); it++)
+		theWorld.Remove(*it);
+	theWorld.Remove(this->_target);
 }
 
 void	Chest::ReceiveMessage(Message *m) {
+	std::list<HUDActor *>::iterator		it = std::find(this->_choices.begin(), this->_choices.end(), this->_choicePointer);
 
+	if (m->GetMessageName() == "forwardPressed") {
+		if (++it != this->_choices.end())
+			this->_choicePointer = *it;
+	} else if (m->GetMessageName() == "backwardPressed") {
+		if (it != this->_choices.begin()) {
+			this->_choicePointer = *(--it);
+		}
+	}
+	this->makeChoices();
+	if (m->GetMessageName() == "enterPressed") {
+		int		i, j;
+
+		for (i = 0, it = this->_choices.begin(); this->_choicePointer != *it; i++, it++);
+		this->_chestItems[i] = Game::currentGame->getHero()->getInventory()->getCurrentFocus();
+		std::cout << this->_chestItems[i] << std::endl;
+		Game::currentGame->getHero()->getInventory()->dropSelectedItem();
+		this->updateItems();
+	}
+}
+
+void	Chest::makeChoices(void) {
+	if (this->_target != nullptr)
+		theWorld.Remove(this->_target);
+	this->_target = Game::getHUD()->addImage("Resources/Images/HUD/weapon_background.png", this->_choicePointer->GetPosition().X, this->_choicePointer->GetPosition().Y, 81, 103);
+}
+
+void	Chest::updateItems(void) {
+	std::map<int, std::string>::iterator	it;
+	int		height = theCamera.GetWindowHeight(), width = theCamera.GetWindowWidth();
+	HUDWindow		*w = Game::getHUD();
+	int		x = width / 2 - width / 6, y = height - ((height / 3) * 2);
+	std::string		path;
+
+	for (it = this->_chestItems.begin(); it != this->_chestItems.end(); it++) {
+		if (it->second != "") {
+			if (Game::wList->checkExists(it->second)) {
+				path = Game::wList->getWeapon(it->second)->getSprite();
+			} else if (Game::aList->checkExists(it->second)) {
+				path = Game::aList->getArmor(it->second)->getSprite();
+			} else if (Game::rList->checkExists(it->second)) {
+				path = Game::rList->getRing(it->second)->getSprite();
+			}
+			this->_interfaceElem.push_back(w->addImage(path, x + (width / 6 * it->first), y, 80, 104));
+		}
+	}
+	// Swap, take items, gold
 }

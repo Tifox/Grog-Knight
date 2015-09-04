@@ -160,7 +160,7 @@ class Characters : public Elements {
 		int				_level;
 		std::string		_currentTrigger;
 		bool			_isDisengaging;
-
+		bool			_isTouchingChest;
 		std::string		_speMove;
 		SpecialMoves*	_eqMove;
 		Weapon*			_weapon;
@@ -198,14 +198,10 @@ class Characters : public Elements {
 		virtual void	_jump(int status);
 		virtual void	_attack(int status);
 		virtual void	_pickupItem(int status);
+		virtual void 	_executeAction(int status);
 		virtual void	_run(void);
 		virtual void	_specialMove(int status);
 		virtual void	_callTrigger(std::string name, int status);
-		// virtual void	_dash(void);
-		// virtual void	_charge(void);
-		// virtual void	_stomp(void);
-		// virtual void	_blink(void);
-		// virtual void	_fly(void);
 		void			_destroyEnemy(void);
 		Elements*		getItem(void);
 

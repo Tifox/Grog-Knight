@@ -407,6 +407,14 @@ void	Characters::ReceiveMessage(Message *m) {
 		Game::getHUD()->bigMap();
 	} else if (m->GetMessageName() == "deleteMapPressed") {
 		Game::getHUD()->deleteBigMap(1);
+	} else if (m->GetMessageName() == "escapePressed") {
+		theSwitchboard.UnsubscribeFrom(this, "escapePressed");
+		Game::toggleMenu = true;
+		theCamera.MoveTo(Vector3(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
+								 Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 9.001), true);
+		this->subscribeToAll();
+		Game::chest->isUsed = 1;
+		Game::chest->removeInterface();
 	}
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
 		attrName = this->_getAttr(i->first, "subscribe").asString();
@@ -432,6 +440,8 @@ void	Characters::ReceiveMessage(Message *m) {
 				this->_pickupItem(status);
 			} if (attrName == "specialmove") {
 				this->_specialMove(status);
+			} if (attrName == "action") {
+				this->_executeAction(status);
 			}
 			this->_lastAction = attrName;
 			this->actionCallback(attrName, status);
@@ -729,6 +739,24 @@ void	Characters::_resetBroadcastFlags(void) {
 /*          ACTIONS         */
 /*                          */
 /****************************/
+
+//! Execute action
+/**
+ * The character will execute an action depending on what he currently touches
+ * if nothing is touched, drug is used
+ */
+void	Characters::_executeAction(int status) {
+	if (status == 0)
+		return;
+	if (this->_isTouchingChest == true && Game::chest->isUsed == 0) {
+		theCamera.MoveTo(Vector3(Game::spawnChest.X, Game::spawnChest.Y, 4), true);
+		Game::toggleMenu = false;
+		this->unsubscribeFromAll();
+		theSwitchboard.SubscribeTo(this, "escapePressed");
+		Game::chest->displayInterface();
+	}
+}
+
 
 //! Forward action
 /**

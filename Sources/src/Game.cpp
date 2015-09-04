@@ -562,3 +562,6 @@ MenuCharacter				*Game::menuCharacter = nullptr;
 Vector2						Game::spawnShop = Vector2();
 Vector2						Game::spawnDealer = Vector2();
 Dealer						*Game::dealer = nullptr;
+Vector2						Game::spawnChest = Vector2();
+Chest						*Game::chest = nullptr;
+bool						Game::toggleMenu = true;

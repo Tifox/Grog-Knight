@@ -64,6 +64,7 @@ class Hitbox;
 class HUDWindow;
 class Menu;
 class Dealer;
+class Chest;
 
 class Game {
 
@@ -144,7 +145,10 @@ class Game {
 		static MenuCharacter			*menuCharacter;
 		static Vector2					spawnDealer;
 		static Vector2					spawnShop;
+		static Vector2					spawnChest;
 		static Dealer					*dealer;
+		static Chest					*chest;
+		static bool						toggleMenu;
 
 	private:
 		float				beginXHero;
@@ -155,5 +159,6 @@ class Game {
 };
 
 # include "Dealer.hpp"
+# include "Chest.hpp"
 
 #endif

@@ -99,7 +99,6 @@ void		Quit::doSave(Hero *h) {
 
 	jsonFile.open(".save", std::ofstream::trunc);
 	root["gold"] = h->getGold();
-	std::cout << h->getGold() << std::endl;
 	root["level"] = h->getLevel();
 	root["key"] = KEY;
 

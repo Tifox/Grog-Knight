@@ -13,12 +13,17 @@
 		"baseCrit": 2,
 		"baseDamage": 30
 	},
+	"Stats": {
+		"critMult": 0.2,
+		"damageMult": 0.5,
+		"HPMult": 0.1
+	},
 	"Actions": {
 		"starting": {
 			"weapon": "Sword",
 			"armor": "ChestArmor",
 			"ring": "NiceRing",
-			"specialMove": "totem",
+			"specialMove": "blink",
 			"inventorySlots": 2
 		},
 		"forward": {

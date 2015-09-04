@@ -41,6 +41,11 @@ Hero::Hero(std::string name) : Characters(name) {
 	theSwitchboard.SubscribeTo(this, "changeCharacter");
 	theSwitchboard.SubscribeTo(this, "lockTarget");
 	theSwitchboard.SubscribeTo(this, "unlockTarget");
+	theSwitchboard.SubscribeTo(this, "cycleInventory");
+	theSwitchboard.SubscribeTo(this, "chooseItem1");
+	theSwitchboard.SubscribeTo(this, "chooseItem2");
+	theSwitchboard.SubscribeTo(this, "chooseItem3");
+	theSwitchboard.SubscribeTo(this, "chooseItem4");
 	this->addAttribute("type", "Hero");
 	this->_inventory = new Inventory(this->_getAttr("starting", "inventorySlots").asInt());
 	return ;
@@ -227,9 +232,7 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		this->_shopItemNumber = atoi(elem->getAttribute("number").c_str());
 		this->_shopItemPrice = atoi(elem->getAttribute("price").c_str());
 		Game::currentGame->getShopkeeper()->displayText("This one is for " + std::to_string(this->_shopItemPrice) + "g");
-	  }
-   /* if (elem->getAttribute("speType") == "water")*/
-		/*this->GetBody()->SetGravityScale(0.3);*/
+	}
 }
 
 //! End collision function
@@ -261,8 +264,6 @@ void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 		if (elem->getAttribute("type2") == "Equipment") {
 			Game::currentGame->tooltip->clearInfo(0);
 		}
-   /* if (elem->getAttribute("speType") == "water")*/
-		/*this->GetBody()->SetGravityScale(1);*/
 }
 
 //! Function called when the hero is taking damage

@@ -34,6 +34,7 @@ Drug::Drug(std::string name) : _name(name) {
 	this->_readFile(name);
 	this->_name = getName();
 	this->_flavor = getFlavor();
+	this->_effect = getEffect();
 	this->addAttribute("type3", "Drug");
 	this->addAttribute("name", this->_name);
 	this->addAttribute("flavor", this->_flavor);
@@ -48,6 +49,7 @@ Drug::Drug(std::string name) : _name(name) {
 Drug::Drug(Drug* Drug) {
 	this->_name = Drug->getName();
 	this->_flavor = Drug->getFlavor();
+	this->_effect = Drug->getEffect();
 	this->addAttribute("type3", "Drug");
 	this->addAttribute("name", this->_name);
 	this->addAttribute("flavor", this->_flavor);
@@ -97,8 +99,7 @@ void    Drug::_parseJson(std::string file) {
 	this->_name = json["infos"].get("name", "").asString();
 	this->_flavor = json["infos"].get("flavor", "").asString();
 	this->_sprite = json["infos"].get("sprites", "").asString();
-	for (i = json["bonus"].begin(); i != json["bonus"].end(); i++)
-		this->addAttribute( i.key().asString(), (*i).asString());
+	this->_effect = json["infos"].get("effect", 0).asInt();
 	this->addAttribute("type3", "Drug");
 	this->addAttribute("sprite", this->_sprite);
 }
@@ -140,6 +141,7 @@ void	Drug::ReceiveMessage(Message *m) {
 /* GETTERS */
 std::string		Drug::getName(void) { return this->_name; }
 std::string		Drug::getFlavor(void) { return this->_flavor; }
+int 			Drug::getEffect(void) { return this->_effect; }
 
 
 /* EFFECTS */
@@ -147,7 +149,9 @@ std::string		Drug::getFlavor(void) { return this->_flavor; }
 
 void			Drug::pot(int status) {
 	Characters *hero = Game::currentGame->getHero();
+
 	if (status == 1) {
+		Game::getHUD()->setText(":)", hero, Vector3(0, 255, 0), 1, 0);
 		hero->bonusDmg = hero->getWeapon()->getDamage();
 		this->_curDrug = "pot";
 		theSwitchboard.SubscribeTo(this, "endBonus");
@@ -155,7 +159,8 @@ void			Drug::pot(int status) {
 		theSwitchboard.DeferredBroadcast(new Message("endBonus"), 15);
 		theSwitchboard.DeferredBroadcast(new Message("endMalus"), 30);
 	} else if(status == 0) {
-		hero->bonusDmg = -(hero->getWeapon()->getDamage() / 2);
+		Game::getHUD()->setText(":(", hero, Vector3(255, 0, 0), 1, 0);
+		hero->bonusDmg = -(hero->getWeapon()->getDamage() / getEffect());
 	}
 	else if(status == 2) {
 		hero->bonusDmg = 0;
@@ -163,10 +168,11 @@ void			Drug::pot(int status) {
 }
 
 void			Drug::cocaine(int status) {
-	Characters *hero = Game::currentGame->getHero();
+pot(1);
+/*	Characters *hero = Game::currentGame->getHero();
 	if (status == 1) {
 		hero->bonusDmg = hero->getWeapon()->getDamage();
-		this->_curDrug = "pot";
+		this->_curDrug = "cocaine";
 		theSwitchboard.SubscribeTo(this, "endBonus");
 		theSwitchboard.SubscribeTo(this, "endMalus");
 		theSwitchboard.DeferredBroadcast(new Message("endBonus"), 15);
@@ -176,5 +182,5 @@ void			Drug::cocaine(int status) {
 	}
 	else if(status == 2) {
 		hero->bonusDmg = 0;
-	}
+	}*/
 }

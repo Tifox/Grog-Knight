@@ -101,7 +101,7 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 	  	Characters *h = Game::currentGame->getHero();
 		this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
 		Game::stopRunning(this);
-		if (this->takeDamage(w->getDamage() + h->bonusDmg, w->getCritRate()) == 1) {
+		if (this->takeDamage(w->getDamage() + h->buff.bonusDmg, w->getCritRate()) == 1) {
 			if (this->GetBody()->GetWorldCenter().x > h->GetBody()->GetWorldCenter().x) {
 				this->ApplyLinearImpulse(Vector2(w->getPushback(), w->getPushback()), Vector2(0,0));
 			} else {
@@ -118,7 +118,7 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 		Characters *h = Game::currentGame->getHero();
 		this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
 		Game::stopRunning(this);
-		if (this->takeDamage(p->getDamage() + h->bonusDmg, p->getCritRate()) == 1) {
+		if (this->takeDamage(p->getDamage() + h->buff.bonusDmg, p->getCritRate()) == 1) {
 			if (this->GetBody()->GetWorldCenter().x > h->GetBody()->GetWorldCenter().x) {
 				this->ApplyLinearImpulse(Vector2(p->getPushback(), p->getPushback()), Vector2(0,0));
 			} else {

@@ -70,9 +70,9 @@ Shop::~Shop(void) {
 void	Shop::revealShop(int x, int y) {
 	this->_shopItems = std::vector<ShopItem*>(this->_items.size());
   int i = 0;
-  for (i = 0; i < this->_items.size(); i++) {
+  for (i = 0, x -= 2; i < this->_items.size(); i++, x += 3) {
 	if (this->_items[i] != "bought") {
-		this->_shopItems[i] = new ShopItem(this->_items[i], x + i * 2 - 1, y, i);
+		this->_shopItems[i] = new ShopItem(this->_items[i], x, y - 7, i);
 	}
 	else
 		this->_shopItems[i] = nullptr;

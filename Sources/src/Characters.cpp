@@ -748,7 +748,7 @@ void	Characters::_resetBroadcastFlags(void) {
 void	Characters::_executeAction(int status) {
 	if (status == 0)
 		return;
-	if (this->_isTouchingChest == true && Game::chest->isUsed == 0) {
+	if (this->_isTouchingChest == true /*&& Game::chest->isUsed == 0*/) {
 		theCamera.MoveTo(Vector3(Game::spawnChest.X, Game::spawnChest.Y, 4), true);
 		Game::toggleMenu = false;
 		this->unsubscribeFromAll();

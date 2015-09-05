@@ -234,6 +234,12 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		Game::currentGame->getShopkeeper()->displayText("This one is for " + std::to_string(this->_shopItemPrice) + "g");
 	} else if (elem->getAttribute("type") == "Chest") {
 		this->_isTouchingChest = true;
+	} else if (elem->getAttribute("type") == "Door") {
+		if (elem->getAttribute("type2") == "Boss") {
+			this->_isTouchingBossDoor = true;
+		} else if (elem->getAttribute("type2") == "Secret") {
+			this->_isTouchingSecretDoor = true;
+		}
 	}
 }
 
@@ -268,6 +274,12 @@ void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 		}
 		if (elem->getAttribute("type") == "Chest") {
 			this->_isTouchingChest = false;
+		} else if (elem->getAttribute("type") == "Door") {
+			if (elem->getAttribute("type2") == "Boss") {
+				this->_isTouchingBossDoor = false;
+		} else if (elem->getAttribute("type2") == "Secret") {
+				this->_isTouchingSecretDoor = false;
+		}
 	}
 
 }

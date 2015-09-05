@@ -222,7 +222,20 @@ Map		Map::display(void) {
 						Game::chest = new Chest();
 						Game::chest->spawn();
 					}
+				} else if (elem->getAttribute("spawnDoor") != "") {
+					if (elem->getAttribute("doorType") == "boss") {
+						if (Game::bossDoor == nullptr) {
+							Game::spawnBossDoor = Vector2(x, y);
+							Game::bossDoor = new Door("Boss");
+						}
+					} else if (elem->getAttribute("doorType") == "secret") {
+						if (Game::secretDoor == nullptr) {
+						Game::spawnSecretDoor = Vector2(x, y);
+						Game::secretDoor = new Door("Secret");
+					}
+					}
 				}
+
 				elem->display();
 				this->_elemOfTheMap.push_back(elem);
 			}

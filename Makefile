@@ -101,6 +101,7 @@ SRCS =	./Sources/src/Armor.cpp \
 		./Sources/src/MenuCharacter.cpp \
 		./Sources/src/Drug.cpp \
 		./Sources/src/Chest.cpp \
+		./Sources/src/Door.cpp \
 		./Sources/src/DrugList.cpp 
 
 SYSOBJS = $(patsubst %.cpp,%.o,$(SYSSRCS))

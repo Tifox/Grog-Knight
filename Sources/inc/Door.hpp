@@ -18,25 +18,20 @@
  */
 
 /**
- * File: Chest.cpp
+ * File: Door.cpp
  * Creation: 2015-08-27 04:44
  * Vincent Rey <vrey@student.42.fr>
  */
 
-#ifndef __Chest__
-# define __Chest__
+#ifndef __Door__
+# define __Door__
 
 # include "Elements.hpp"
 
-class Chest: public Elements {
+class Door: public Elements {
 public:
-	Chest(void);
-	~Chest(void);
-	void		spawn(void);
-	int			isUsed;
-	void		displayInterface(void);
-	void		removeInterface(void);
-	void		ReceiveMessage(Message *m);
+	Door(std::string type);
+	~Door(void);
 	int			spawnX;
 	int			spawnY;
 };

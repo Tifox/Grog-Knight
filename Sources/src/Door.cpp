@@ -18,27 +18,34 @@
  */
 
 /**
- * File: Chest.cpp
+ * File: Door.cpp
  * Creation: 2015-08-27 04:44
  * Vincent Rey <vrey@student.42.fr>
  */
 
-#ifndef __Chest__
-# define __Chest__
+#include "Door.hpp"
 
-# include "Elements.hpp"
+Door::Door(std::string type) {
+	this->SetLayer(10);
+	this->SetDensity(0);
+	this->SetIsSensor(1);
+	this->addAttribute("type", "Door");
+	this->addAttribute("type2", type);
+	this->addAttribute("chest", "1");
+	this->addAttribute("physic", "1");
+	this->SetSize(Vector2(3,3));
+	if (type == "Secret") {
+		this->addAttribute("sprite", "Resources/Images/Door/SecretDoor.png");
+		this->setXStart(Game::spawnSecretDoor.X);
+		this->setYStart(Game::spawnSecretDoor.Y);
+	} if (type == "Boss") {
+		this->addAttribute("sprite", "Resources/Images/Door/BossDoor.png");
+		this->setXStart(Game::spawnBossDoor.X);
+		this->setYStart(Game::spawnBossDoor.Y);
+	}
+	this->display();
+	return;
+}
 
-class Chest: public Elements {
-public:
-	Chest(void);
-	~Chest(void);
-	void		spawn(void);
-	int			isUsed;
-	void		displayInterface(void);
-	void		removeInterface(void);
-	void		ReceiveMessage(Message *m);
-	int			spawnX;
-	int			spawnY;
-};
+Door::~Door(void) {}
 
-# endif

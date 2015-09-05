@@ -65,6 +65,7 @@ class HUDWindow;
 class Menu;
 class Dealer;
 class Chest;
+class Door;
 
 class Game {
 
@@ -144,10 +145,14 @@ class Game {
 		static int						isPaused;
 		static MenuCharacter			*menuCharacter;
 		static Vector2					spawnDealer;
+		static Vector2					spawnSecretDoor;
+		static Vector2					spawnBossDoor;
 		static Vector2					spawnShop;
 		static Vector2					spawnChest;
 		static Dealer					*dealer;
 		static Chest					*chest;
+		static Door						*bossDoor;
+		static Door						*secretDoor;
 		static bool						toggleMenu;
 
 	private:
@@ -160,5 +165,6 @@ class Game {
 
 # include "Dealer.hpp"
 # include "Chest.hpp"
+# include "Door.hpp"
 
 #endif

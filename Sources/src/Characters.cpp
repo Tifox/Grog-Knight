@@ -53,6 +53,9 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_canAttack = true;
 	this->_canJump = true;
 	this->_isFlying = false;
+	this->_isTouchingBossDoor = false;
+	this->_isTouchingSecretDoor = false;
+	this->_isTouchingChest = false;
 	this->_isChoosingItem = 0;
 	this->_invincibility = false;
 	this->_grounds.clear();
@@ -753,6 +756,10 @@ void	Characters::_executeAction(int status) {
 		this->unsubscribeFromAll();
 		theSwitchboard.SubscribeTo(this, "escapePressed");
 		Game::chest->displayInterface();
+	} else if (this->_isTouchingBossDoor == true) {
+		std::cout << "GOTO BOSS ROOM" << std::endl;
+	} else if (this->_isTouchingSecretDoor == true) {
+		std::cout << "GOTO SECRET ROOM" << std::endl;
 	}
 }
 

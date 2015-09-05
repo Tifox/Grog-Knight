@@ -157,6 +157,8 @@ class Characters : public Elements {
 		std::string		_currentTrigger;
 		bool			_isDisengaging;
 		bool			_isTouchingChest;
+		bool			_isTouchingSecretDoor;
+		bool			_isTouchingBossDoor;
 		std::string		_speMove;
 		SpecialMoves*	_eqMove;
 		Weapon*			_weapon;

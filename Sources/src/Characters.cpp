@@ -864,7 +864,6 @@ void	Characters::_backward(int status) {
 		if (this->_isRunning == 1 && this->_isDashing == false)
 			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
 		this->_isRunning = 2;
-		std::cout << this->buff.bonusSpeed << " bonus speed" << std::endl;
 	} else if (status == 0 && this->_latOrientation == LEFT) {
 	  if (this->_isDashing == false)
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));

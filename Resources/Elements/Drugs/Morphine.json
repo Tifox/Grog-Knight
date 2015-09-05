@@ -1,0 +1,9 @@
+{
+	"infos": {
+		"name": "Morphine",
+		"id": 0,
+		"flavor": "You're invincible!\nAnd you loose some hp.",
+		"sprites": "Resources/Images/gold.png",
+		"effect": 25
+	}
+}

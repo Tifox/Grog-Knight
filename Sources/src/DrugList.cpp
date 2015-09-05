@@ -112,6 +112,9 @@ void		DrugList::useDrug(std::string name) {
 				getDrug(name)->pot(1);
 			if (name == "Cocaine")
 				getDrug(name)->cocaine(1);
+			if (name == "Morphine")
+				getDrug(name)->morphine(1);
+
 			}
 	}
 	removeDrug(name);

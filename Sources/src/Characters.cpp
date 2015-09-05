@@ -78,7 +78,8 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_isStomping = false;
 	this->_flyTrigger = false;
 	this->_isDisengaging = false;
-	this->bonusDmg = 0;
+	this->buff.bonusDmg = 0;
+	this->buff.bonusSpeed = 0;
 }
 
 //! Basic destructor
@@ -805,7 +806,7 @@ void	Characters::_forward(int status) {
 		}
 		Game::startRunning(this);
 		if (this->_isRunning == 2 && this->_isDashing == false)
-			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
+			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
 		this->_isRunning = 1;
 	} else if (status == 0 && this->_latOrientation == RIGHT) {
 	  if (this->_isDashing == false)
@@ -816,7 +817,7 @@ void	Characters::_forward(int status) {
 			this->AnimCallback("base");
 	} else {
 	  if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false)
-			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
+			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
 	}
 	return ;
 }
@@ -861,8 +862,9 @@ void	Characters::_backward(int status) {
 		}
 		Game::startRunning(this);
 		if (this->_isRunning == 1 && this->_isDashing == false)
-			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
+			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
 		this->_isRunning = 2;
+		std::cout << this->buff.bonusSpeed << " bonus speed" << std::endl;
 	} else if (status == 0 && this->_latOrientation == LEFT) {
 	  if (this->_isDashing == false)
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
@@ -872,7 +874,7 @@ void	Characters::_backward(int status) {
 			this->AnimCallback("base");
 	} else {
 		if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false) {
-			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
+			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
 		}
 	}
 	return ;
@@ -1240,6 +1242,7 @@ void						Characters::setHP(int hp) {
 		this->_hp = this->_maxHp;
 	else
 		this->_hp = hp;
+	Game::getHUD()->life(this->_hp);
 };
 
 //! Set basics mana
@@ -1252,6 +1255,15 @@ void						Characters::setMana(int mana) {
 		this->_mana = this->_maxMana;
 	else
 		this->_mana = mana;
+};
+
+//! Set invincibility
+/**
+ * Set invincibility to the Character.
+ * @param invincibility 
+ */
+void						Characters::setInvincibility(bool invincibility) {
+	this->_invincibility = invincibility;
 };
 
 //! Destroy an Enemy.

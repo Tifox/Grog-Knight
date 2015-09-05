@@ -53,6 +53,11 @@ class HUDTargeting;
 #  include "Elements.hpp"
 # endif
 
+typedef struct s_buff {
+  		int bonusDmg;
+  		int bonusSpeed;
+}				t_buff;
+
 class Characters : public Elements {
 
 	public:
@@ -69,9 +74,7 @@ class Characters : public Elements {
 			RIGHT
 		};
 
-
-  		int bonusDmg;
-
+	
 		Characters(void);
 		Characters(std::string name);
 		~Characters();
@@ -94,6 +97,7 @@ class Characters : public Elements {
 		int								getMaxHP(void);
 		int								getLevel(void);
 		void							setLevel(int);
+		void							setInvincibility(bool invincibility);
 		Weapon							*getWeapon(void);
 		Armor							*getArmor(void);
 		Ring							*getRing(void);
@@ -115,6 +119,7 @@ class Characters : public Elements {
 		std::list<std::string>		getSubscribes(void);
 		void						unsubscribeFromAll(void);
 		void						subscribeToAll(void);
+		t_buff						buff;
 
 	//Moved in order to get loot infos outside of class
 		Json::Value		_getAttr(std::string category, std::string key);

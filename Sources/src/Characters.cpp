@@ -1235,6 +1235,7 @@ void						Characters::setHP(int hp) {
 		this->_hp = this->_maxHp;
 	else
 		this->_hp = hp;
+	Game::getHUD()->life(this->_hp);
 };
 
 //! Set basics mana
@@ -1247,6 +1248,15 @@ void						Characters::setMana(int mana) {
 		this->_mana = this->_maxMana;
 	else
 		this->_mana = mana;
+};
+
+//! Set invincibility
+/**
+ * Set invincibility to the Character.
+ * @param invincibility 
+ */
+void						Characters::setInvincibility(bool invincibility) {
+	this->_invincibility = invincibility;
 };
 
 //! Destroy an Enemy.

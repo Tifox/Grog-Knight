@@ -97,6 +97,7 @@ class Characters : public Elements {
 		int								getMaxHP(void);
 		int								getLevel(void);
 		void							setLevel(int);
+		void							setInvincibility(bool invincibility);
 		Weapon							*getWeapon(void);
 		Armor							*getArmor(void);
 		Ring							*getRing(void);

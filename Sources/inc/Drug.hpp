@@ -53,6 +53,7 @@ public:
 	void	pot(int status);
 	void	cocaine(int status);
 	void	morphine(int status);
+	void	mdma(int status);
 
 
 	void			ReceiveMessage(Message *m);

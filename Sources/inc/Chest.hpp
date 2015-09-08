@@ -34,7 +34,7 @@ class Chest: public Elements {
 		Chest(void);
 		~Chest(void);
 		void		spawn(void);
-		int		isUsed;
+		int			isUsed;
 		void		displayInterface(void);
 		void		removeInterface(void);
 		void		displayChestContent(void);
@@ -44,7 +44,8 @@ class Chest: public Elements {
 
 	private:
 		std::list<HUDActor *>		_interfaceElem;
-		std::map<int, std::string>		_chestItems;
+		std::map<int, std::string>	_chestItems;
+		std::map<int, HUDActor*>	_img;
 		std::list<HUDActor *>		_choices;
 		HUDActor *					_choicePointer;
 		HUDActor*					_target;

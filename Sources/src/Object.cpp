@@ -47,8 +47,8 @@ Object::Object(void) {
  */
 
 void	Object::BeginContact(Elements *elem, b2Contact *contact) {
-		contact->SetEnabled(false);
-		contact->enableContact = false;
+	contact->SetEnabled(false);
+	contact->enableContact = false;
 }
 
 //! Destructor

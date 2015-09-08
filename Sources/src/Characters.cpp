@@ -773,7 +773,6 @@ void	Characters::_executeAction(int status) {
 		} else {
 			this->inSpecialMap = 2;
 		}
-		std::cout << this->inSpecialMap << std::endl;
 		Game::currentGame->getCurrentMap().display();
 		theCamera.SetPosition(Game::currentGame->getCurrentMap().getXMid(), Game::currentGame->getCurrentMap().getYMid() + 1.8);
 		this->GetBody()->SetTransform(b2Vec2(Game::currentGame->getCurrentMap().getXMid(), Game::currentGame->getCurrentMap().getYMid() + 1.8), 0);

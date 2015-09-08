@@ -108,7 +108,8 @@ void	Consumable::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttribute("type") != "ground") {
 		contact->SetEnabled(false);
 		contact->enableContact = false;
-	}
+	} else
+		this->GetBody()->SetGravityScale(0);
 }
 
 //! Destructor

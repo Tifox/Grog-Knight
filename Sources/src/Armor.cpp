@@ -140,7 +140,8 @@ void	Armor::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttribute("type") != "ground") {
 		contact->SetEnabled(false);
 		contact->enableContact = false;
-	}
+	} else
+		this->GetBody()->SetGravityScale(0);
 }
 
 void	Armor::EndContact(Elements *elem, b2Contact *contact) {

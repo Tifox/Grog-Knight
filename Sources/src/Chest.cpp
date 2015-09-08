@@ -40,6 +40,7 @@ Chest::Chest(void): isUsed(0) {
 	this->addAttribute("spritesFrame", "Resources/Images/Chest/chest_000.png");
 	this->_target = nullptr;
 	this->display();
+	this->_chestItems[0] = this->_chestItems[1] = this->_chestItems[2] = "";
 	return;
 }
 
@@ -116,8 +117,24 @@ void	Chest::ReceiveMessage(Message *m) {
 		int		i, j;
 
 		for (i = 0, it = this->_choices.begin(); this->_choicePointer != *it; i++, it++);
-		this->_chestItems[i] = Game::currentGame->getHero()->getInventory()->getCurrentFocus();
-		Game::currentGame->getHero()->getInventory()->dropSelectedItem();
+		if (this->_chestItems[i] == "") {
+			this->_chestItems[i] = Game::currentGame->getHero()->getInventory()->getCurrentFocus();
+			Game::currentGame->getHero()->getInventory()->dropSelectedItem();
+		} else if (this->_chestItems[i] != "" 
+						&& Game::currentGame->getHero()->getInventory()->getCurrentFocus() != "") {
+			std::string tmp =  Game::currentGame->getHero()->getInventory()->getCurrentFocus();
+			std::string tmp2 = this->_chestItems[i];
+			int			focus = Game::currentGame->getHero()->getInventory()->getNumFocus();
+
+			theWorld.Remove(this->_img[i]);
+			Game::currentGame->getHero()->getInventory()->dropSelectedItem();
+			Game::currentGame->getHero()->getInventory()->addItemToInventory(tmp2);
+			this->_chestItems[i] = tmp;
+		} else {
+			Game::currentGame->getHero()->getInventory()->addItemToInventory(this->_chestItems[i]);
+			this->_chestItems[i] = "";
+			theWorld.Remove(this->_img[i]);
+		}
 		this->updateItems();
 	}
 }
@@ -134,6 +151,7 @@ void	Chest::updateItems(void) {
 	HUDWindow		*w = Game::getHUD();
 	int		x = width / 2 - width / 6, y = height - ((height / 3) * 2);
 	std::string		path;
+	HUDActor		*tmp;
 
 	for (it = this->_chestItems.begin(); it != this->_chestItems.end(); it++) {
 		if (it->second != "") {
@@ -144,7 +162,9 @@ void	Chest::updateItems(void) {
 			} else if (Game::rList->checkExists(it->second)) {
 				path = Game::rList->getRing(it->second)->getSprite();
 			}
-			this->_interfaceElem.push_back(w->addImage(path, x + (width / 6 * it->first), y, 80, 104));
+			tmp = w->addImage(path, x + (width / 6 * it->first), y, 80, 104);
+			this->_interfaceElem.push_back(tmp);
+			this->_img[it->first] = tmp;
 		}
 	}
 	// Swap, take items, gold

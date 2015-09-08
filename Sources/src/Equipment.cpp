@@ -62,6 +62,7 @@ Equipment::Equipment(Characters* c): Object() {
 Equipment::Equipment(Weapon *w, Characters* c): Object() {
 	this->addAttribute("type2", "Equipment");
 	this->addAttribute("type3", "Weapon");
+	this->SetLayer(15);
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_weapon = new Weapon(w);
 	this->_name = w->getName();
@@ -79,6 +80,7 @@ Equipment::Equipment(Weapon *w, Characters* c): Object() {
 Equipment::Equipment(Armor *w, Characters* c): Object() {
   	this->addAttribute("type2", "Equipment");
 	this->addAttribute("type3", "Armor");
+	this->SetLayer(15);
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_armor = new Armor(w);
 	this->_name = w->getName();
@@ -99,6 +101,7 @@ Equipment::Equipment(Armor *w, Characters* c): Object() {
 Equipment::Equipment(Ring *w, Characters* c): Object() {
 	this->addAttribute("type2", "Equipment");
 	this->addAttribute("type3", "Ring");
+	this->SetLayer(15);
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_ring = new Ring(w);
 	this->_name = w->getName();

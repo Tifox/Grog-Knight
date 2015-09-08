@@ -237,9 +237,7 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 	} else if (elem->getAttribute("type") == "Door") {
 		if (elem->getAttribute("type2") == "Boss") {
 			this->_isTouchingBossDoor = true;
-			std::cout << "not here" << std::endl;
 		} else if (elem->getAttribute("type2") == "Secret") {
-			std::cout << "yes pls" << std::endl;
 			this->_isTouchingSecretDoor = true;
 		}
 	}

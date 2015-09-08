@@ -133,6 +133,8 @@ void	Drug::ReceiveMessage(Message *m) {
 			this->cocaine(0);
 		if (this->_curDrug == "morphine")
 			this->morphine(0);
+		if (this->_curDrug == "mdma")
+			this->mdma(0);
 	}
 	else if (m->GetMessageName() == "endMalus") {
 		if (this->_curDrug == "pot")
@@ -141,6 +143,8 @@ void	Drug::ReceiveMessage(Message *m) {
 			this->cocaine(2);
 		if (this->_curDrug == "morphine")
 			this->morphine(2);
+		if (this->_curDrug == "mdma")
+			this->mdma(2);
 	}
 }
 
@@ -191,7 +195,6 @@ void			Drug::cocaine(int status) {
 	}
 }
 
-
 void			Drug::morphine(int status) {
 	Characters *hero = Game::currentGame->getHero();
 
@@ -208,5 +211,26 @@ void			Drug::morphine(int status) {
 		hero->setHP(getEffect());
 	} else if(status == 2) {
 		hero->setInvincibility(false);
+	}
+}
+
+void			Drug::mdma(int status) {
+	Characters *hero = Game::currentGame->getHero();
+
+	if (status == 1) {
+		Game::getHUD()->setText(":)", hero, Vector3(0, 255, 0), 1, 0);
+
+		/* JUST DO IT ( Mobs are in love with you <3 ) */
+		
+		this->_curDrug = "mdma";
+		theSwitchboard.SubscribeTo(this, "endBonus");
+		theSwitchboard.SubscribeTo(this, "endMalus");
+		theSwitchboard.DeferredBroadcast(new Message("endBonus"), 10);
+		theSwitchboard.DeferredBroadcast(new Message("endMalus"), 30);
+	} else if(status == 0) {
+		Game::getHUD()->setText(":(", hero, Vector3(255, 0, 0), 1, 0);
+		hero->buff.bonusSpeed = (hero->_getAttr("forward", "force").asInt() * -(getEffect()));
+	} else if(status == 2) {
+		hero->buff.bonusSpeed = 0;
 	}
 }

@@ -201,3 +201,4 @@ For each point itself, use the model below:
     - cooldown or number of uses for a skill for a floor
     - rebinding - tab for targeting, 1234 for skills and SHIFT+1234 for items
     - Procs and special stuff on items: when you hit enemy, something happens
+    - Change the current way hearts are counted

@@ -1,0 +1,9 @@
+{
+	"infos": {
+		"name": "Mdma",
+		"id": 0,
+		"flavor": "Enemies will not attack you!\nAnd you will feel lost.",
+		"sprites": "Resources/Images/gold.png",
+		"effect": 2
+	}
+}

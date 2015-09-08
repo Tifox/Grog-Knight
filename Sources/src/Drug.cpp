@@ -133,6 +133,8 @@ void	Drug::ReceiveMessage(Message *m) {
 			this->cocaine(0);
 		if (this->_curDrug == "morphine")
 			this->morphine(0);
+		if (this->_curDrug == "mdma")
+			this->mdma(0);
 	}
 	else if (m->GetMessageName() == "endMalus") {
 		if (this->_curDrug == "pot")
@@ -141,6 +143,8 @@ void	Drug::ReceiveMessage(Message *m) {
 			this->cocaine(2);
 		if (this->_curDrug == "morphine")
 			this->morphine(2);
+		if (this->_curDrug == "mdma")
+			this->mdma(2);
 	}
 }
 
@@ -167,8 +171,7 @@ void			Drug::pot(int status) {
 	} else if(status == 0) {
 		Game::getHUD()->setText(":(", hero, Vector3(255, 0, 0), 1, 0);
 		hero->buff.bonusDmg = -(hero->getWeapon()->getDamage() / getEffect());
-	}
-	else if(status == 2) {
+	} else if(status == 2) {
 		hero->buff.bonusDmg = 0;
 	}
 }
@@ -187,31 +190,47 @@ void			Drug::cocaine(int status) {
 	} else if(status == 0) {
 		Game::getHUD()->setText(":(", hero, Vector3(255, 0, 0), 1, 0);
 		hero->buff.bonusSpeed = -(hero->_getAttr("forward", "force").asInt() / getEffect());
-		}
-	else if(status == 2) {
+	} else if(status == 2) {
 		hero->buff.bonusSpeed = 0;
 	}
 }
 
-
 void			Drug::morphine(int status) {
 	Characters *hero = Game::currentGame->getHero();
-	std::cout << "EFFECT ==== > " << this->getEffect() << std::endl;
 
 	if (status == 1) {
 		Game::getHUD()->setText(":)", hero, Vector3(0, 255, 0), 1, 0);
 		hero->setInvincibility(true);
-	std::cout << "EFFECT ==== > " << this->getEffect() << std::endl;
 		this->_curDrug = "morphine";
+		theSwitchboard.SubscribeTo(this, "endBonus");
+		theSwitchboard.SubscribeTo(this, "endMalus");
+		theSwitchboard.DeferredBroadcast(new Message("endBonus"), 20);
+		theSwitchboard.DeferredBroadcast(new Message("endMalus"), 20);
+	} else if(status == 0) {
+		Game::getHUD()->setText(":(", hero, Vector3(255, 0, 0), 1, 0);
+		hero->setHP(getEffect());
+	} else if(status == 2) {
+		hero->setInvincibility(false);
+	}
+}
+
+void			Drug::mdma(int status) {
+	Characters *hero = Game::currentGame->getHero();
+
+	if (status == 1) {
+		Game::getHUD()->setText(":)", hero, Vector3(0, 255, 0), 1, 0);
+
+		/* JUST DO IT ( Mobs are in love with you <3 ) */
+		
+		this->_curDrug = "mdma";
 		theSwitchboard.SubscribeTo(this, "endBonus");
 		theSwitchboard.SubscribeTo(this, "endMalus");
 		theSwitchboard.DeferredBroadcast(new Message("endBonus"), 10);
 		theSwitchboard.DeferredBroadcast(new Message("endMalus"), 30);
 	} else if(status == 0) {
 		Game::getHUD()->setText(":(", hero, Vector3(255, 0, 0), 1, 0);
-		hero->setHP(getEffect());
-		}
-	else if(status == 2) {
-		hero->setInvincibility(false);
+		hero->buff.bonusSpeed = (hero->_getAttr("forward", "force").asInt() * -(getEffect()));
+	} else if(status == 2) {
+		hero->buff.bonusSpeed = 0;
 	}
 }

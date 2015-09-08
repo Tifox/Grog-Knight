@@ -30,7 +30,12 @@ Door::Door(std::string type) {
 	this->SetDensity(0);
 	this->SetIsSensor(1);
 	this->addAttribute("type", "Door");
-	this->addAttribute("type2", type);
+	if (type == "SecretReturn") {
+		this->addAttribute("type2", "Secret");
+		this->addAttribute("speType", "return");
+	}
+	else
+		this->addAttribute("type2", type);
 	this->addAttribute("chest", "1");
 	this->addAttribute("physic", "1");
 	this->SetSize(Vector2(3,3));
@@ -38,7 +43,11 @@ Door::Door(std::string type) {
 		this->addAttribute("sprite", "Resources/Images/Door/SecretDoor.png");
 		this->setXStart(Game::spawnSecretDoor.X);
 		this->setYStart(Game::spawnSecretDoor.Y);
-	} if (type == "Boss") {
+	} else if (type == "SecretReturn") {
+		this->addAttribute("sprite", "Resources/Images/Door/SecretDoor.png");
+		this->setXStart(Game::spawnSecretReturnDoor.X);
+		this->setYStart(Game::spawnSecretReturnDoor.Y);
+	} else if (type == "Boss") {
 		this->addAttribute("sprite", "Resources/Images/Door/BossDoor.png");
 		this->setXStart(Game::spawnBossDoor.X);
 		this->setYStart(Game::spawnBossDoor.Y);

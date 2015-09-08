@@ -159,7 +159,7 @@ void	Enemy::EndContact(Elements *m, b2Contact *contact) {
 	Characters::EndContact(m, contact);
 	if (m->getAttribute("type") == "ground" && !this->_isDead && !this->_isTakingDamage) {
 		if (this->_lastElement != m->getId()) {
-			this->_pattern->tick(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX]);
+			this->_pattern->tick(Game::currentGame->getCurrentMap());
 			this->_lastElement = m->getId();
 		}
 	}

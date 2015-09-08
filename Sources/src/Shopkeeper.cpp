@@ -63,7 +63,7 @@ void	Shopkeeper::spawn(void) {
 	this->setYStart(Game::spawnShop.Y);
 	this->addAttribute("shopkeeper", "1");
 	this->display();
-	this->_shop->revealShop(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid() - 1, Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 3);
+	this->_shop->revealShop(Game::currentGame->getCurrentMap().getXMid() - 1, Game::currentGame->getCurrentMap().getYMid() + 3);
 	this->_currentPhrase = "Greetings, traveler.";
 	theSwitchboard.DeferredBroadcast(new Message("removeShopkeeperText"), 3);
 	Game::getHUD()->setText(this->_currentPhrase, this, Vector3(255, 51, 255), 0, 0);

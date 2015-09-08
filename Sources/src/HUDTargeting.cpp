@@ -39,8 +39,6 @@
         if ((*it) == nullptr)
             this->_enemies.remove((*it));
     }
-
-    std::cout << _enemies.size() << std::endl;
     if (_enemies.size() > 0) {
         this->_enemyId = 0;
         this->_joint = nullptr;

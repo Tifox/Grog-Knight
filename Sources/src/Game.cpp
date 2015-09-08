@@ -145,6 +145,16 @@ void	Game::menuInGame(void) {
 	Game::isInMenu = 1;
 }
 
+Map		Game::getCurrentMap(void) {
+	if (this->_hero->inSpecialMap == 0)
+		return (this->maps->getMapXY()[Game::currentY][Game::currentX]);
+	else if (this->_hero->inSpecialMap == 1)
+		return *(this->maps->bossMap);
+	else if (this->_hero->inSpecialMap == 2) {
+		return *(this->maps->secretMap);
+	}
+}
+
 //! Read the maps
 /**
  * Launch Maps::readMaps
@@ -240,33 +250,35 @@ void	Game::moveCamera(void) {
 	bool	asChanged = false;
 	Map		&tmp = this->maps->_XYMap[Game::currentY][Game::currentX];
 
-   if (this->_hero->GetBody()->GetWorldCenter().x >= (tmp.getXStart() + tmp.getWidth() - 0.5)) {
-		this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
-		Game::currentX++;
-		asChanged = true;
-	} else if (this->_hero->GetBody()->GetWorldCenter().x <= (tmp.getXStart() - 1)) {
-		this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
+	if (this->_hero->inSpecialMap == 0) {
+		if (this->_hero->GetBody()->GetWorldCenter().x >= (tmp.getXStart() + tmp.getWidth() - 0.5)) {
+			this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
+			Game::currentX++;
+			asChanged = true;
+		} else if (this->_hero->GetBody()->GetWorldCenter().x <= (tmp.getXStart() - 1)) {
+			this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
 		Game::currentX--;
 		asChanged = true;
-	} else if (this->_hero->GetBody()->GetWorldCenter().y >= tmp.getYStart()) {
-		this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
-		Game::currentY--;
-		asChanged = true;
-	} else if (this->_hero->GetBody()->GetWorldCenter().y <= (tmp.getYStart() - tmp.getHeight())) {
-		this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
-		Game::currentY++;
-		asChanged = true;
-	}
-	if (asChanged) {
-		this->_hero->destroyTarget();
-		this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
-		theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
-			this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
-		if (Game::isInMenu == 0) {
-			Game::getHUD()->updateBigMap();
-			Game::getHUD()->minimap();
+		} else if (this->_hero->GetBody()->GetWorldCenter().y >= tmp.getYStart()) {
+			this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
+			Game::currentY--;
+			asChanged = true;
+		} else if (this->_hero->GetBody()->GetWorldCenter().y <= (tmp.getYStart() - tmp.getHeight())) {
+			this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
+			Game::currentY++;
+			asChanged = true;
 		}
-		asChanged = false;
+		if (asChanged) {
+			this->_hero->destroyTarget();
+			this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
+			theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
+								  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
+			if (Game::isInMenu == 0) {
+				Game::getHUD()->updateBigMap();
+				Game::getHUD()->minimap();
+			}
+			asChanged = false;
+		}
 	}
 }
 
@@ -562,10 +574,12 @@ MenuCharacter				*Game::menuCharacter = nullptr;
 Vector2						Game::spawnShop = Vector2();
 Vector2						Game::spawnBossDoor = Vector2();
 Vector2						Game::spawnSecretDoor = Vector2();
+Vector2						Game::spawnSecretReturnDoor = Vector2();
 Vector2						Game::spawnDealer = Vector2();
 Dealer						*Game::dealer = nullptr;
 Door						*Game::bossDoor = nullptr;
 Door						*Game::secretDoor = nullptr;
+Door						*Game::secretReturnDoor = nullptr;
 Vector2						Game::spawnChest = Vector2();
 Chest						*Game::chest = nullptr;
 bool						Game::toggleMenu = true;

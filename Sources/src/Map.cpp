@@ -230,9 +230,13 @@ Map		Map::display(void) {
 						}
 					} else if (elem->getAttribute("doorType") == "secret") {
 						if (Game::secretDoor == nullptr) {
-						Game::spawnSecretDoor = Vector2(x, y);
-						Game::secretDoor = new Door("Secret");
-					}
+							Game::spawnSecretDoor = Vector2(x, y);
+							Game::secretDoor = new Door("Secret");
+						}
+						if (elem->getAttribute("speType") == "return") {
+							Game::spawnSecretReturnDoor = Vector2(x, y);
+							Game::secretReturnDoor = new Door("SecretReturn");
+						}
 					}
 				}
 

@@ -44,6 +44,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->addAttribute("class", name);
 	this->SetDensity(1.0f);
 	this->SetName(name);
+	this->inSpecialMap = false;
 	this->SetFriction(1);
 	this->SetRestitution(0.0f);
 	this->SetFixedRotation(true);
@@ -413,8 +414,8 @@ void	Characters::ReceiveMessage(Message *m) {
 	} else if (m->GetMessageName() == "escapePressed") {
 		theSwitchboard.UnsubscribeFrom(this, "escapePressed");
 		Game::toggleMenu = true;
-		theCamera.MoveTo(Vector3(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
-								 Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 9.001), true);
+		theCamera.MoveTo(Vector3(Game::currentGame->getCurrentMap().getXMid(),
+								 Game::currentGame->getCurrentMap().getYMid() + 1.8, 9.001), true);
 		this->subscribeToAll();
 		Game::chest->isUsed = 1;
 		Game::chest->removeInterface();
@@ -758,9 +759,24 @@ void	Characters::_executeAction(int status) {
 		theSwitchboard.SubscribeTo(this, "escapePressed");
 		Game::chest->displayInterface();
 	} else if (this->_isTouchingBossDoor == true) {
-		std::cout << "GOTO BOSS ROOM" << std::endl;
+		Game::currentGame->getCurrentMap().destroyMap();
+		this->inSpecialMap = 1;
+		this->destroyTarget();
+		Game::currentGame->maps->bossMap->display();
+		theCamera.SetPosition(Game::currentGame->maps->bossMap->getXMid(), Game::currentGame->maps->bossMap->getYMid() + 1.8);
+		this->GetBody()->SetTransform(b2Vec2(Game::currentGame->maps->bossMap->getXMid(), Game::currentGame->maps->bossMap->getYMid() + 1.8), 0);
 	} else if (this->_isTouchingSecretDoor == true) {
-		std::cout << "GOTO SECRET ROOM" << std::endl;
+		Game::currentGame->getCurrentMap().destroyMap();
+		this->destroyTarget();
+		if (this->inSpecialMap == 2) {
+			this->inSpecialMap = 0;
+		} else {
+			this->inSpecialMap = 2;
+		}
+		std::cout << this->inSpecialMap << std::endl;
+		Game::currentGame->getCurrentMap().display();
+		theCamera.SetPosition(Game::currentGame->getCurrentMap().getXMid(), Game::currentGame->getCurrentMap().getYMid() + 1.8);
+		this->GetBody()->SetTransform(b2Vec2(Game::currentGame->getCurrentMap().getXMid(), Game::currentGame->getCurrentMap().getYMid() + 1.8), 0);
 	}
 }
 

@@ -81,6 +81,7 @@ class Game {
 		void	displayEnemy(Elements & Enemy);
 		void	displayObject(Elements & Object);
 		void	showMap(void);
+		Map		getCurrentMap(void);
 		void	changeCharacter(std::string);
 		void	displayHUD(void);
 		void	setHero(Characters *h);
@@ -147,12 +148,14 @@ class Game {
 		static Vector2					spawnDealer;
 		static Vector2					spawnSecretDoor;
 		static Vector2					spawnBossDoor;
+		static Vector2					spawnSecretReturnDoor;
 		static Vector2					spawnShop;
 		static Vector2					spawnChest;
 		static Dealer					*dealer;
 		static Chest					*chest;
 		static Door						*bossDoor;
 		static Door						*secretDoor;
+		static Door						*secretReturnDoor;
 		static bool						toggleMenu;
 
 	private:

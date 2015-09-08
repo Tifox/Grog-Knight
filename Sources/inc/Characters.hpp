@@ -74,7 +74,6 @@ class Characters : public Elements {
 			RIGHT
 		};
 
-	
 		Characters(void);
 		Characters(std::string name);
 		~Characters();
@@ -120,6 +119,7 @@ class Characters : public Elements {
 		void						unsubscribeFromAll(void);
 		void						subscribeToAll(void);
 		t_buff						buff;
+		int							inSpecialMap;
 
 	//Moved in order to get loot infos outside of class
 		Json::Value		_getAttr(std::string category, std::string key);

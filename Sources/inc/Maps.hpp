@@ -55,6 +55,8 @@ class Maps {
 		std::map<int, Map *>	_maps;
 		Map		*getMapByDoor(int n);
 		void	displayLevel(std::vector<std::vector<int> > map);
+		Map*				bossMap;
+		Map*				secretMap;
 		std::vector<std::vector<Map> >	getMapXY(void);
 		std::vector<std::vector<Map> > _XYMap;
 

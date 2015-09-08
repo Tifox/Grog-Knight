@@ -134,6 +134,16 @@ void	Maps::_getMap(void) {
 		map->setMap(intMap);
 		intMap.clear();
 	}
+	if (this->_root["properties"].get("bossMap", 0).isConvertibleTo(Json::ValueType::stringValue) == true && this->_root["properties"].get("bossMap", 0).asString() == "1") {
+		this->bossMap = map;
+		this->bossMap->setXStart(0);
+		this->bossMap->setYStart(30);
+	}
+	if (this->_root["properties"].get("secretMap", 0).isConvertibleTo(Json::ValueType::stringValue) && this->_root["properties"].get("secretMap", 0).asString() == "1") {
+		this->secretMap = map;
+		this->secretMap->setXStart(-30);
+		this->secretMap->setYStart(0);
+	}
 	this->_maps[atoi(this->_root["properties"].get("number", 0).asString().c_str())] = map;
 	int			n = 0;
 	for (j = this->_root["properties"].begin(); j != this->_root["properties"].end(); j++) {
@@ -205,7 +215,7 @@ Map		*Maps::getMapByDoor(int n) {
 	if (this->_mapByDoor[n].size() == 1)
 		return this->_mapByDoor[n].front();
 	random = rand() % this->_mapByDoor[n].size();
-	for (i = 0, it = this->_mapByDoor[n].begin(); it != this->_mapByDoor[n].end() && i < random; 
+	for (i = 0, it = this->_mapByDoor[n].begin(); it != this->_mapByDoor[n].end() && i < random;
 			i++, it++);
 	return *(it);
 }

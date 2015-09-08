@@ -237,7 +237,9 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 	} else if (elem->getAttribute("type") == "Door") {
 		if (elem->getAttribute("type2") == "Boss") {
 			this->_isTouchingBossDoor = true;
+			std::cout << "not here" << std::endl;
 		} else if (elem->getAttribute("type2") == "Secret") {
+			std::cout << "yes pls" << std::endl;
 			this->_isTouchingSecretDoor = true;
 		}
 	}
@@ -252,36 +254,34 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
  */
 void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 	Characters::EndContact(elem, contact);
-		if (elem->getAttribute("type") == "Object") {
-			if (elem->getAttributes()["type2"] == "Equipment") {
-				this->_item = nullptr;
-			}
-		}
-		if (elem->getAttribute("type") == "shopItem") {
-			Game::currentGame->tooltip->clearInfo(0);
-			this->_shopItem = "";
-			this->_shopItemNumber = 0;
-			this->_shopItemPrice = 0;
-			Game::currentGame->getShopkeeper()->removeText();
-
-		}
-		if (elem->getAttribute("type") == "Enemy" ||
-			elem->getAttribute("speType") == "spikes") {
-			this->_enemiesTouched.remove(elem);
-		}
-		if (elem->getAttribute("type2") == "Equipment") {
-			Game::currentGame->tooltip->clearInfo(0);
-		}
-		if (elem->getAttribute("type") == "Chest") {
-			this->_isTouchingChest = false;
-		} else if (elem->getAttribute("type") == "Door") {
-			if (elem->getAttribute("type2") == "Boss") {
-				this->_isTouchingBossDoor = false;
-		} else if (elem->getAttribute("type2") == "Secret") {
-				this->_isTouchingSecretDoor = false;
+	if (elem->getAttribute("type") == "Object") {
+		if (elem->getAttributes()["type2"] == "Equipment") {
+			this->_item = nullptr;
 		}
 	}
-
+	if (elem->getAttribute("type") == "shopItem") {
+		Game::currentGame->tooltip->clearInfo(0);
+		this->_shopItem = "";
+		this->_shopItemNumber = 0;
+		this->_shopItemPrice = 0;
+		Game::currentGame->getShopkeeper()->removeText();
+	}
+	if (elem->getAttribute("type") == "Enemy" ||
+		elem->getAttribute("speType") == "spikes") {
+		this->_enemiesTouched.remove(elem);
+	}
+	if (elem->getAttribute("type2") == "Equipment") {
+		Game::currentGame->tooltip->clearInfo(0);
+	}
+	if (elem->getAttribute("type") == "Chest") {
+		this->_isTouchingChest = false;
+	} else if (elem->getAttribute("type") == "Door") {
+		if (elem->getAttribute("type2") == "Boss") {
+			this->_isTouchingBossDoor = false;
+		} else if (elem->getAttribute("type2") == "Secret") {
+			this->_isTouchingSecretDoor = false;
+		}
+	}
 }
 
 //! Function called when the hero is taking damage

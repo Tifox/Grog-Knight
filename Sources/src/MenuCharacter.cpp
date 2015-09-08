@@ -115,8 +115,8 @@ void	MenuCharacter::ReceiveMessage(Message *m) {
 				this->ClearSpriteInfo();
 				this->LoadSpriteFrames("Resources/Images/Menu/"+ this->_choicePointer->getAttribute("type") +"/perso_000.png");
 				this->_character = this->_choicePointer->getAttribute("type");
-				theCamera.MoveTo(Vector3(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
-				Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 18.002), 1, true);
+				theCamera.MoveTo(Vector3(Game::currentGame->getCurrentMap().getXMid(),
+				Game::currentGame->getCurrentMap().getYMid() + 1.8, 18.002), 1, true);
 				this->_isBlock = 0;
 			   std::list<Elements *>::iterator	it;
 				for (it = this->_choices.begin(); it != this->_choices.end(); it++)
@@ -548,8 +548,8 @@ void		MenuCharacter::_cleanCloset(void) {
 	HUDWindow							*hud = Game::getHUD();
 	std::map<std::string, Elements *>::iterator		it2;
 
-	theCamera.MoveTo(Vector3(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
-		Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid(), 18.502), 1, true);
+	theCamera.MoveTo(Vector3(Game::currentGame->getCurrentMap().getXMid(),
+		Game::currentGame->getCurrentMap().getYMid(), 18.502), 1, true);
 	for (it = this->_backCloset.begin(); it != this->_backCloset.end(); it++)
 		theWorld.Remove(*it);
 	for (it = this->_choices.begin(); it != this->_choices.end(); it++)

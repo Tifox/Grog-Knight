@@ -164,7 +164,7 @@
 
  void	SpecialMoves::_blink(void) {
  	this->character->_setCategory("blink");
- 	Map m = Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX];
+ 	Map m = Game::currentGame->getCurrentMap();
  	int x = (this->character->GetBody()->GetWorldCenter().x) - m.getXStart() + 0.5;
  	int y = -((this->character->GetBody()->GetWorldCenter().y) - m.getYStart() - 0.5);
  	int range = this->character->_getAttr("blinkRange").asInt();
@@ -264,12 +264,11 @@ void	SpecialMoves::_fly(void) {
     }
     else if (this->character->_totem != nullptr) {
 		if (atoi(this->character->_totem->getAttribute("currentX").c_str()) != Game::currentX && atoi(this->character->_totem->getAttribute("currentY").c_str()) != Game::currentY) {
-			Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
+			Game::currentGame->getCurrentMap().destroyMap();
 			Game::currentX = atoi(this->character->_totem->getAttribute("currentX").c_str());
 			Game::currentY = atoi(this->character->_totem->getAttribute("currentY").c_str());
-			Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX] = Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].display();
-			theCamera.SetPosition(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(), Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
-			theCamera.SetPosition(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(), Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
+			Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX] = Game::currentGame->getCurrentMap().display();
+			theCamera.SetPosition(Game::currentGame->getCurrentMap().getXMid(), Game::currentGame->getCurrentMap().getYMid() + 1.8);
 			if (Game::isInMenu == 0)
 				Game::getHUD()->minimap();
 		}

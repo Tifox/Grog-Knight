@@ -44,6 +44,7 @@
 
             },
          "spacing":0,
+         "tilecount":180,
          "tileheight":32,
          "tileproperties":
             {

@@ -37,7 +37,7 @@ Chest::Chest(void): isUsed(0) {
 	this->addAttribute("chest", "1");
 	this->addAttribute("physic", "1");
 	this->addAttribute("sprite", "");
-	this->addAttribute("spritesFrame", "Resources/Images/Hero/hero_000.png");
+	this->addAttribute("spritesFrame", "Resources/Images/Chest/chest_000.png");
 	this->_target = nullptr;
 	this->display();
 	return;
@@ -117,7 +117,6 @@ void	Chest::ReceiveMessage(Message *m) {
 
 		for (i = 0, it = this->_choices.begin(); this->_choicePointer != *it; i++, it++);
 		this->_chestItems[i] = Game::currentGame->getHero()->getInventory()->getCurrentFocus();
-		std::cout << this->_chestItems[i] << std::endl;
 		Game::currentGame->getHero()->getInventory()->dropSelectedItem();
 		this->updateItems();
 	}

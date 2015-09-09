@@ -48,7 +48,7 @@ Chest::~Chest(void) {}
 
 void	Chest::spawn(void) {
 	if (this->isUsed == 0) {
-		this->PlaySpriteAnimation(0.4f, SAT_OneShot, 0, 4);
+		this->PlaySpriteAnimation(0.4f, SAT_OneShot, 0, 2);
 	}
 }
 
@@ -64,7 +64,7 @@ void	Chest::displayInterface(void) {
 	theSwitchboard.SubscribeTo(this, "enterPressed");
 
 	// Display Interface
-	this->_interfaceElem.push_back(w->addImage("Resources/Images/bag.png", width / 2, 
+	this->_interfaceElem.push_back(w->addImage("Resources/Images/bag.png", width / 2,
 		height - ((height / 3) * 2),Vector2(width - (width / 2), height / 6), 101));
 	this->displayChestContent();
 }
@@ -120,7 +120,7 @@ void	Chest::ReceiveMessage(Message *m) {
 		if (this->_chestItems[i] == "") {
 			this->_chestItems[i] = Game::currentGame->getHero()->getInventory()->getCurrentFocus();
 			Game::currentGame->getHero()->getInventory()->dropSelectedItem();
-		} else if (this->_chestItems[i] != "" 
+		} else if (this->_chestItems[i] != ""
 						&& Game::currentGame->getHero()->getInventory()->getCurrentFocus() != "") {
 			std::string tmp =  Game::currentGame->getHero()->getInventory()->getCurrentFocus();
 			std::string tmp2 = this->_chestItems[i];

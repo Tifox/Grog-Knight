@@ -185,6 +185,7 @@ class Characters : public Elements {
 		std::list<Elements*> 				_ceiling;
 		std::list<Elements*> 				_wallsRight;
 		std::list<std::string>				_subsc;
+		bool			_execFlag;
 		bool			_forwardFlag;
 		bool			_backwardFlag;
 		bool			_doFlyFlag;

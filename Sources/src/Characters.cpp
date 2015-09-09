@@ -48,6 +48,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->SetFriction(1);
 	this->SetRestitution(0.0f);
 	this->SetFixedRotation(true);
+	this->_execFlag = 0;
 	this->_orientation = RIGHT;
 	this->_latOrientation = RIGHT;
 	this->_canMove = true;
@@ -750,8 +751,13 @@ void	Characters::_resetBroadcastFlags(void) {
  * if nothing is touched, drug is used
  */
 void	Characters::_executeAction(int status) {
-	if (status == 0)
+	if (status == 1 && this->_execFlag == 1)
 		return;
+	if (status == 0) {
+		this->_execFlag = 0;
+		return;
+	}
+	this->_execFlag = 1;
 	if (this->_isTouchingChest == true /*&& Game::chest->isUsed == 0*/) {
 		theCamera.MoveTo(Vector3(Game::spawnChest.X, Game::spawnChest.Y, 4), true);
 		Game::toggleMenu = false;
@@ -764,18 +770,29 @@ void	Characters::_executeAction(int status) {
 		this->destroyTarget();
 		Game::currentGame->maps->bossMap->display();
 		theCamera.SetPosition(Game::currentGame->maps->bossMap->getXMid(), Game::currentGame->maps->bossMap->getYMid() + 1.8);
-		this->GetBody()->SetTransform(b2Vec2(Game::currentGame->maps->bossMap->getXMid(), Game::currentGame->maps->bossMap->getYMid() + 1.8), 0);
+		this->GetBody()->SetTransform(b2Vec2(Game::currentGame->maps->bossMap->getXMid() - 10, Game::currentGame->maps->bossMap->getYMid() + 1.8), 0);
 	} else if (this->_isTouchingSecretDoor == true) {
 		Game::currentGame->getCurrentMap().destroyMap();
 		this->destroyTarget();
 		if (this->inSpecialMap == 2) {
 			this->inSpecialMap = 0;
+			Game::currentGame->getCurrentMap().display();
+			theCamera.SetPosition(Game::currentGame->getCurrentMap().getXMid(), Game::currentGame->getCurrentMap().getYMid() + 1.8);
+			this->GetBody()->SetTransform(b2Vec2(Game::spawnSecretDoor.X, Game::spawnSecretDoor.Y), 0);
+ 			b2PolygonShape box = Game::hList->getHitbox(this->_hitbox);
+ 			b2Shape *shape = &box;
+ 			this->GetBody()->DestroyFixture(this->GetBody()->GetFixtureList());
+ 			this->GetBody()->CreateFixture(shape, 1);
 		} else {
 			this->inSpecialMap = 2;
+			Game::currentGame->getCurrentMap().display();
+			theCamera.SetPosition(Game::currentGame->getCurrentMap().getXMid(), Game::currentGame->getCurrentMap().getYMid() + 1.8);
+			this->GetBody()->SetTransform(b2Vec2(Game::spawnSecretReturnDoor.X, Game::spawnSecretReturnDoor.Y), 0);
+ 			b2PolygonShape box = Game::hList->getHitbox(this->_hitbox);
+ 			b2Shape *shape = &box;
+ 			this->GetBody()->DestroyFixture(this->GetBody()->GetFixtureList());
+ 			this->GetBody()->CreateFixture(shape, 1);
 		}
-		Game::currentGame->getCurrentMap().display();
-		theCamera.SetPosition(Game::currentGame->getCurrentMap().getXMid(), Game::currentGame->getCurrentMap().getYMid() + 1.8);
-		this->GetBody()->SetTransform(b2Vec2(Game::currentGame->getCurrentMap().getXMid(), Game::currentGame->getCurrentMap().getYMid() + 1.8), 0);
 	}
 }
 

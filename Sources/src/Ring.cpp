@@ -44,6 +44,7 @@ Ring::Ring(Ring* Ring) {
 	this->_name = Ring->getName();
 	this->_flavor = Ring->getFlavor();
 	this->_sprite = Ring->getSprite();
+	this->SetLayer(15);
 	this->addAttribute("type3", "Ring");
 	this->addAttribute("name", this->_name);
 	this->addAttribute("flavor", this->_flavor);
@@ -127,7 +128,10 @@ Json::Value     Ring::_getAttr(std::string category, std::string key) {
 }
 
 void	Ring::ReceiveMessage(Message *m) {
-
+	if (m->GetMessageName() == "DeleteEquipment" + this->GetName()) {
+		this->SetLayer(-1);
+		Game::addToDestroyList(this);
+	}
 }
 
 /* GETTERS */

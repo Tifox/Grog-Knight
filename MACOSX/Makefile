@@ -99,7 +99,7 @@ $(NAME): angel json $(OBJS)
 
 quick: $(OBJS)
 	$(CC) $(CFLAGS) $(ANGEL_FLAG) -o build/$(NAME) $^ $(INCLUDES) $(LIBS) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS)
-	cd build/ && lldb ./rogue-like
+	cd build/ && ./rogue-like
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS) -o $@ -c $^
@@ -123,6 +123,9 @@ quick-clean:
 	rm $(OBJS)
 
 exec:
+	cd build/ && ./rogue-like
+
+exec-debug:
 	cd build/ && lldb ./rogue-like
 
 re: clean all

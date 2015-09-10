@@ -62,9 +62,10 @@ Equipment::Equipment(Characters* c): Object() {
 Equipment::Equipment(Weapon *w, Characters* c): Object() {
 	this->addAttribute("type2", "Equipment");
 	this->addAttribute("type3", "Weapon");
-	this->SetLayer(15);
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_weapon = new Weapon(w);
+	this->_ring = nullptr;
+	this->_armor = nullptr;
 	this->_name = w->getName();
 	this->addAttribute("name", w->getName());
 	this->_flavor = w->getFlavor();
@@ -80,9 +81,10 @@ Equipment::Equipment(Weapon *w, Characters* c): Object() {
 Equipment::Equipment(Armor *w, Characters* c): Object() {
   	this->addAttribute("type2", "Equipment");
 	this->addAttribute("type3", "Armor");
-	this->SetLayer(15);
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_armor = new Armor(w);
+	this->_weapon = nullptr;
+	this->_ring = nullptr;
 	this->_name = w->getName();
 	this->addAttribute("name", w->getName());
 	this->_flavor = w->getFlavor();
@@ -92,7 +94,7 @@ Equipment::Equipment(Armor *w, Characters* c): Object() {
 	if (w->getAttribute("hpBuff") != "")
 		this->addAttribute("hpBuff", w->getAttribute("hpBuff"));
 	if (w->getAttribute("manaBuff") != "")
-		this->addAttribute("manaBuff", w->getAttribute("manaBuff"));	
+		this->addAttribute("manaBuff", w->getAttribute("manaBuff"));
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	Game::bodiesToCreate.push_back(this);
@@ -101,9 +103,10 @@ Equipment::Equipment(Armor *w, Characters* c): Object() {
 Equipment::Equipment(Ring *w, Characters* c): Object() {
 	this->addAttribute("type2", "Equipment");
 	this->addAttribute("type3", "Ring");
-	this->SetLayer(15);
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_ring = new Ring(w);
+	this->_armor = nullptr;
+	this->_weapon = nullptr;
 	this->_name = w->getName();
 	this->addAttribute("name", w->getName());
 	this->_flavor = w->getFlavor();
@@ -113,7 +116,7 @@ Equipment::Equipment(Ring *w, Characters* c): Object() {
 	if (w->getAttribute("hpBuff") != "")
 		this->addAttribute("hpBuff", w->getAttribute("hpBuff"));
 	if (w->getAttribute("manaBuff") != "")
-		this->addAttribute("manaBuff", w->getAttribute("manaBuff"));	
+		this->addAttribute("manaBuff", w->getAttribute("manaBuff"));
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	Game::bodiesToCreate.push_back(this);
@@ -170,6 +173,17 @@ std::string	Equipment::getName(void) { return this->_name; }
  * @param m The Broadcasted message. (See Angel2D docs for more info.)
  */
 void		Equipment::ReceiveMessage(Message *m) {
-	if (m->GetMessageName() == "DeleteEquipment" + this->GetName())
+	if (m->GetMessageName() == "DeleteEquipment" + this->GetName()) {
+		if (this->_ring != nullptr) {
+			std::cout << "ring" << std::endl;
+			Game::addToDestroyList(this->_ring);
+		} else if (this->_armor != nullptr) {
+			std::cout << "armor" << std::endl;
+			Game::addToDestroyList(this->_armor);
+		} else if (this->_weapon != nullptr) {
+			std::cout << "weapon" << std::endl;
+			Game::addToDestroyList(this->_weapon);
+		}
 		Game::addToDestroyList(this);
+	}
 }

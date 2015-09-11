@@ -90,41 +90,6 @@
 		"specialMove": {
 			"subscribe": "specialmove"
 		},
-		"dash": {
-			"cooldown": 1,
-			"dashSpeed": 30,
-			"uptime": 0.15,
-			"time": 0.1
-		},
-		 "disengage": {
-			"cooldown": 1,
-			"disengageSpeed": 30,
-			"djump": 8,
-			"uptime": 0.1,
-			"time": 0.1
-		 },
-		"charge": {
-			"cooldown": 1,
-			"chargeSpeed": 20,
-			"uptime": 1
-		},
-		"stomp": {
-			"cooldown": 0,
-			"stompSpeed": 50
-		},
-		"blink": {
-			"cooldown": 0,
-			"blinkRange": 4
-		},
-		"wallJump": {
-			"maxJump": 1,
-			"force": 6
-		},
-		"shunpo": {
-			"damageScale":2,
-			"range":10,
-			"cooldown":15
-		},
 		"down": {
 			"subscribe": "down"
 		},

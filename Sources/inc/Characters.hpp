@@ -160,6 +160,7 @@ class Characters : public Elements {
 		int				_hasDashed;
 		int				_level;
 		std::string		_currentTrigger;
+		bool			_speMoveIsSet;
 		bool			_isDisengaging;
 		bool			_isTouchingChest;
 		bool			_isTouchingSecretDoor;

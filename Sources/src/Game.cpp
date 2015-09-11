@@ -111,7 +111,7 @@ void	Game::start(void) {
 	Game::currentX = levelGenerator->getStartX();
 	Game::currentY = levelGenerator->getStartY();
 	theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
-						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 50.001);
+						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 9.001);
 	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 
 	this->displayHero(*(hero));

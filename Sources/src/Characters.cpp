@@ -62,6 +62,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_isChoosingItem = 0;
 	this->_invincibility = false;
 	this->_grounds.clear();
+	this->_speMoveIsSet = false;
 	this->_item = nullptr;
 	this->_shopItem = "";
 	this->_drug = "";

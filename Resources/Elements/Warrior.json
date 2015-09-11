@@ -97,53 +97,6 @@
 		"specialMove": {
 			"subscribe": "specialmove"
 		},
-		"dash": {
-			"cooldown": 1,
-			"dashSpeed": 30,
-			"uptime": 0.15,
-			"beginFrame_right": 74,
-			"endFrame_right": 78,
-			"beginFrame_left": 79,
-			"endFrame_left": 83,
-			"time": 0.05
-		},
-		"charge": {
-			"cooldown": 1,
-			"chargeSpeed": 20,
-			"uptime": 1
-		},
-		"stomp": {
-			"cooldown": 0,
-			"stompSpeed": 50,
-			"beginFrame_right": 84,
-			"endFrame_right": 87,
-			"beginFrame_left": 84,
-			"endFrame_left": 87,
-			"time": 0.1
-		},
-		"blink": {
-			"cooldown": 0,
-			"blinkRange": 4
-		},
-		"fly": {
-			"force": 4,
-			"beginFrame_right": 44,
-			"beginFrame_left": 44,
-			"fallingFrame_right": 44,
-			"fallingFrame_left": 44,
-			"endFrame_right": 44,
-			"endFrame_left": 44,
-			"time": 0.1
-		},
-		"wallJump": {
-			"maxJump": 1,
-			"force": 6
-		},
-		"shunpo": {
-			"damageScale": 2,
-			"range": 10,
-			"cooldown": 1
-		},
 		"down": {
 			"subscribe": "down"
 		},

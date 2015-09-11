@@ -35,7 +35,26 @@
 
  //! Main constructor
  SpecialMoves::SpecialMoves(Characters* charac) : character(charac) {
-
+	 std::string		file;
+	 std::stringstream 	buffer;
+	 std::ifstream		fd;
+	 Json::Reader		read;
+	 Json::Value		json;
+	 Json::ValueIterator i, v;
+	 std::map<std::string, Json::Value>	tmp;
+	 file = "Resources/Elements/SpecialMoves.json";
+	 fd.open(file.c_str());
+	 if (!fd.is_open())
+		Log::error("Can't open the file for the specialmoves class.");
+	buffer << fd.rdbuf();
+	 if (!read.parse(buffer, json))
+		 Log::error("Error in json syntax :\n" + read.getFormattedErrorMessages());
+	 for (i = json.begin(); i != json.end(); i++) {
+		 for (v = (*i).begin(); v != (*i).end(); v++) {
+			 tmp[v.key().asString()] = (*v);
+			 this->character->_attr[i.key().asString()] = tmp;
+		 }
+	 }
  }
 
  //! Basic destructor
@@ -169,9 +188,6 @@
  	int y = -((this->character->GetBody()->GetWorldCenter().y) - m.getYStart() - 0.5);
  	int range = this->character->_getAttr("blinkRange").asInt();
  	std::vector<std::vector<int>> t = m.getPhysicMap();
-	std::cout << x << std::endl;
-	std::cout << y << std::endl;
-	std::cout << t.size() << std::endl;
  	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speMoveReady == 1) {
  		this->character->_speMoveReady = 0;
  		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),

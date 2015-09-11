@@ -245,40 +245,43 @@ void	SpecialMoves::_fly(void) {
   */
 
  void	SpecialMoves::_totem(void) {
-    if (this->character->_totem == nullptr && this->character->_grounds.size() > 0) {
-        this->character->_totem = new Elements();
-        this->character->_totem->SetSize(0.6);
-        this->character->_totem->SetName("Totem");
-        this->character->_totem->SetDrawShape(ADS_Square);
-        this->character->_totem->SetColor(0, 1, 0, 1);
-        this->character->_totem->SetSprite("Resources/Images/HUD/cible.png");
-        this->character->_totem->SetLayer(105);
-        this->character->_totem->addAttribute("physic", "1");
-        this->character->_totem->addAttribute("currentX", std::to_string(Game::currentX));
-        this->character->_totem->addAttribute("currentY", std::to_string(Game::currentY));
-        this->character->_totem->SetDensity(0);
-        this->character->_totem->SetFixedRotation(true);
-        this->character->_totem->SetIsSensor(true);
-        this->character->_totem->SetPosition(this->character->GetBody()->GetWorldCenter().x, this->character->GetBody()->GetWorldCenter().y);
-        this->character->_totem->InitPhysics();
-		Game::getHUD()->addTotemToBigMap();
-        theWorld.Add(this->character->_totem);
-    }
-    else if (this->character->_totem != nullptr) {
-		if (atoi(this->character->_totem->getAttribute("currentX").c_str()) != Game::currentX && atoi(this->character->_totem->getAttribute("currentY").c_str()) != Game::currentY) {
-			Game::currentGame->getCurrentMap().destroyMap();
-			Game::currentX = atoi(this->character->_totem->getAttribute("currentX").c_str());
-			Game::currentY = atoi(this->character->_totem->getAttribute("currentY").c_str());
-			Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX] = Game::currentGame->getCurrentMap().display();
-			theCamera.SetPosition(Game::currentGame->getCurrentMap().getXMid(), Game::currentGame->getCurrentMap().getYMid() + 1.8);
-			if (Game::isInMenu == 0)
-				Game::getHUD()->minimap();
-		}
-        this->character->GetBody()->SetTransform(b2Vec2(this->character->_totem->GetBody()->GetWorldCenter().x, this->character->_totem->GetBody()->GetWorldCenter().y), 0);
-        Game::addToDestroyList(this->character->_totem);
-        this->character->_totem = nullptr;
-		Game::getHUD()->removeText("T");
-    }
+	 if (Game::stopPattern == true)
+		 return;
+	 if (this->character->_totem == nullptr && this->character->_grounds.size() > 0) {
+		 this->character->_totem = new Elements();
+		 this->character->_totem->SetSize(0.6);
+		 this->character->_totem->SetName("Totem");
+		 this->character->_totem->SetDrawShape(ADS_Square);
+		 this->character->_totem->SetColor(0, 1, 0, 1);
+		 this->character->_totem->SetSprite("Resources/Images/HUD/cible.png");
+		 this->character->_totem->SetLayer(105);
+		 this->character->_totem->addAttribute("physic", "1");
+		 this->character->_totem->addAttribute("currentX", std::to_string(Game::currentX));
+		 this->character->_totem->addAttribute("currentY", std::to_string(Game::currentY));
+		 this->character->_totem->SetDensity(0);
+		 this->character->_totem->SetFixedRotation(true);
+		 this->character->_totem->SetIsSensor(true);
+		 this->character->_totem->SetPosition(this->character->GetBody()->GetWorldCenter().x, this->character->GetBody()->GetWorldCenter().y);
+		 this->character->_totem->InitPhysics();
+		 Game::getHUD()->addTotemToBigMap();
+		 theWorld.Add(this->character->_totem);
+	 }
+	 else if (this->character->_totem != nullptr) {
+		 if (atoi(this->character->_totem->getAttribute("currentX").c_str()) != Game::currentX && atoi(this->character->_totem->getAttribute("currentY").c_str()) != Game::currentY) {
+			 Game::currentGame->getCurrentMap().destroyMap();
+			 this->character->inSpecialMap = 0;
+			 Game::currentX = atoi(this->character->_totem->getAttribute("currentX").c_str());
+			 Game::currentY = atoi(this->character->_totem->getAttribute("currentY").c_str());
+			 Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX] = Game::currentGame->getCurrentMap().display();
+			 theCamera.SetPosition(Game::currentGame->getCurrentMap().getXMid(), Game::currentGame->getCurrentMap().getYMid() + 1.8);
+			 if (Game::isInMenu == 0)
+				 Game::getHUD()->minimap();
+		 }
+		 this->character->GetBody()->SetTransform(b2Vec2(this->character->_totem->GetBody()->GetWorldCenter().x, this->character->_totem->GetBody()->GetWorldCenter().y), 0);
+		 Game::addToDestroyList(this->character->_totem);
+		 this->character->_totem = nullptr;
+		 Game::getHUD()->removeText("T");
+	 }
  }
 
 //! Special move: shunpo

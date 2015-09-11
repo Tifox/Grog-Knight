@@ -54,6 +54,8 @@ public:
 	void	cocaine(int status);
 	void	morphine(int status);
 	void	mdma(int status);
+	void	mushroom(int status);
+
 
 
 	void			ReceiveMessage(Message *m);

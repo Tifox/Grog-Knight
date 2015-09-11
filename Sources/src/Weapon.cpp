@@ -43,6 +43,7 @@ Weapon::Weapon(std::string name) : _name(name) {
 Weapon::Weapon(Weapon* weapon) {
 	this->_name = weapon->getName();
 	this->addAttribute("name", this->_name);
+	this->SetLayer(15);
 	this->_flavor = weapon->getFlavor();
 	this->addAttribute("flavor", this->_flavor);
 	this->_damage = weapon->getDamage();
@@ -277,6 +278,9 @@ void	Weapon::attack(Characters *c) {
 }
 
 void	Weapon::ReceiveMessage(Message *m) {
+	if (m->GetMessageName() == "DeleteEquipment" + this->GetName()) {
+		Game::addToDestroyList(this);
+	}
 	if (m->GetMessageName() == "deleteWeapon" + this->GetName()) {
 		Game::addToDestroyList(this);
 		theSwitchboard.UnsubscribeFrom(this, "deleteWeapon");
@@ -305,7 +309,8 @@ void	Weapon::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttribute("type") != "ground") {
 		contact->SetEnabled(false);
 		contact->enableContact = false;
-	}
+	} else
+		this->GetBody()->SetGravityScale(0);
 }
 
 void	Weapon::EndContact(Elements *elem, b2Contact *contact) {

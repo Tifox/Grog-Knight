@@ -44,6 +44,7 @@ Armor::Armor(Armor* Armor) {
 	this->_name = Armor->getName();
 	this->addAttribute("type3", "Armor");
 	this->addAttribute("name", this->_name);
+	this->SetLayer(15);
 	this->_flavor = Armor->getFlavor();
 	this->_sprite = Armor->getSprite();
 	this->addAttribute("sprite", this->_sprite);
@@ -126,7 +127,10 @@ Json::Value     Armor::_getAttr(std::string category, std::string key) {
 }
 
 void	Armor::ReceiveMessage(Message *m) {
-
+	if (m->GetMessageName() == "DeleteEquipment" + this->GetName()) {
+		this->SetLayer(0);
+		Game::addToDestroyList(this);
+	}
 }
 
 /* GETTERS */

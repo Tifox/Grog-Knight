@@ -2,7 +2,7 @@ NAME 	= rogue-like
 CC 		= g++
 CFLAGS 	= -std=c++0x -arch i386 -Wno-deprecated -g -Wno-error=unused-command-line-argument  -Wno-error=null-conversion -Wno-return-type
 ANGEL_FLAG = -D ANGEL
-SRCS 	= ../Sources/src/Armor.cpp \
+SRCS =	../Sources/src/Armor.cpp \
 		../Sources/src/ArmorList.cpp \
 		../Sources/src/Characters.cpp \
 		../Sources/src/Consumable.cpp \
@@ -14,6 +14,7 @@ SRCS 	= ../Sources/src/Armor.cpp \
 		../Sources/src/Game.cpp \
 		../Sources/src/GameContactListener.cpp \
 		../Sources/src/Hero.cpp \
+		../Sources/src/Dealer.cpp \
 		../Sources/src/Hitbox.cpp \
 		../Sources/src/HUDTargeting.cpp \
 		../Sources/src/HUDWindow.cpp \
@@ -37,6 +38,14 @@ SRCS 	= ../Sources/src/Armor.cpp \
 		../Sources/src/Tooltip.cpp \
 		../Sources/src/Weapon.cpp \
 		../Sources/src/WeaponList.cpp \
+		../Sources/src/InGameMenu.cpp \
+		../Sources/src/Shopkeeper.cpp \
+		../Sources/src/Shop.cpp \
+		../Sources/src/MenuCharacter.cpp \
+		../Sources/src/Drug.cpp \
+		../Sources/src/DrugList.cpp \
+		../Sources/src/Chest.cpp \
+		../Sources/src/Door.cpp 
 
 OBJS 	 = $(SRCS:.cpp=.o)
 
@@ -90,7 +99,7 @@ $(NAME): angel json $(OBJS)
 
 quick: $(OBJS)
 	$(CC) $(CFLAGS) $(ANGEL_FLAG) -o build/$(NAME) $^ $(INCLUDES) $(LIBS) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS)
-	cd build/ && lldb ./rogue-like
+	cd build/ && ./rogue-like
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(FRAMEWORKS) $(LIBS_FLAG) $(LIBS_DIRS) -o $@ -c $^
@@ -114,6 +123,9 @@ quick-clean:
 	rm $(OBJS)
 
 exec:
+	cd build/ && ./rogue-like
+
+exec-debug:
 	cd build/ && lldb ./rogue-like
 
 re: clean all

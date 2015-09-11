@@ -100,8 +100,6 @@ void    Drug::_parseJson(std::string file) {
 	this->_flavor = json["infos"].get("flavor", "").asString();
 	this->_sprite = json["infos"].get("sprites", "").asString();
 	this->_effect = json["infos"].get("effect", 0).asInt();
-		std::cout << this->getEffect() << std::endl;
-
 	this->addAttribute("type3", "Drug");
 	this->addAttribute("sprite", this->_sprite);
 }
@@ -232,5 +230,30 @@ void			Drug::mdma(int status) {
 		hero->buff.bonusSpeed = (hero->_getAttr("forward", "force").asInt() * -(getEffect()));
 	} else if(status == 2) {
 		hero->buff.bonusSpeed = 0;
+	}
+}
+
+
+void			Drug::mushroom(int status) {
+
+	/* Don't forget Druglist.cpp && mushroom.json */
+
+
+	Characters *hero = Game::currentGame->getHero();
+
+	if (status == 1) {
+		Game::getHUD()->setText(":)", hero, Vector3(0, 255, 0), 1, 0);
+
+		/* JUST DO IT ( Pet is helping you <3 ) */
+		
+		this->_curDrug = "mushroom";
+		theSwitchboard.SubscribeTo(this, "endBonus");
+		theSwitchboard.SubscribeTo(this, "endMalus");
+		theSwitchboard.DeferredBroadcast(new Message("endBonus"), 10);
+		theSwitchboard.DeferredBroadcast(new Message("endMalus"), 30);
+	} else if(status == 0) {
+		/* Pet attacks you */
+	} else if(status == 2) {
+		/* Pet vanish */
 	}
 }

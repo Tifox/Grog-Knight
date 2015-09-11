@@ -158,6 +158,7 @@ class Game {
 		static Door						*secretDoor;
 		static Door						*secretReturnDoor;
 		static bool						toggleMenu;
+		static bool						stopPattern;
 
 	private:
 		float				beginXHero;

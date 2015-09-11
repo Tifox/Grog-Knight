@@ -100,6 +100,7 @@ void    Drug::_parseJson(std::string file) {
 	this->_flavor = json["infos"].get("flavor", "").asString();
 	this->_sprite = json["infos"].get("sprites", "").asString();
 	this->_effect = json["infos"].get("effect", 0).asInt();
+
 	this->addAttribute("type3", "Drug");
 	this->addAttribute("sprite", this->_sprite);
 }

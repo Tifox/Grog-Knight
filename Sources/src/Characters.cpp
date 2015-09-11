@@ -425,9 +425,12 @@ void	Characters::ReceiveMessage(Message *m) {
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
 		attrName = this->_getAttr(i->first, "subscribe").asString();
 		if (!strncmp(attrName.c_str(), m->GetMessageName().c_str(), strlen(attrName.c_str()))) {
-
 			// Get the key status (1 = Pressed, 0 = Released)
 			status = (m->GetMessageName().substr(strlen(attrName.c_str()), 7) == "Pressed" ? 1 : 0);
+			if (this->_actionFlag == false && status == 1)
+				return;
+			else if (status == 1)
+				this->_actionFlag = false;
 			if (this->_canMove == false)
 				return;
 			if (attrName == "forward") {
@@ -734,6 +737,7 @@ void	Characters::_tryFly(void) {
 }
 
 void	Characters::_resetBroadcastFlags(void) {
+	this->_actionFlag = true;
 	this->_forwardFlag = false;
 	this->_backwardFlag = false;
 	this->_doFlyFlag = false;
@@ -766,6 +770,7 @@ void	Characters::_executeAction(int status) {
 		theSwitchboard.SubscribeTo(this, "escapePressed");
 		Game::chest->displayInterface();
 	} else if (this->_isTouchingBossDoor == true) {
+		Game::stopPattern = true;
 		Game::currentGame->getCurrentMap().destroyMap();
 		this->inSpecialMap = 1;
 		this->destroyTarget();
@@ -773,11 +778,11 @@ void	Characters::_executeAction(int status) {
 		theCamera.SetPosition(Game::currentGame->maps->bossMap->getXMid(), Game::currentGame->maps->bossMap->getYMid() + 1.8);
 		this->GetBody()->SetTransform(b2Vec2(Game::currentGame->maps->bossMap->getXMid() - 10, Game::currentGame->maps->bossMap->getYMid() + 1.8), 0);
 	} else if (this->_isTouchingSecretDoor == true) {
-		Game::currentGame->getCurrentMap().destroyMap();
 		this->destroyTarget();
 		if (this->inSpecialMap == 2) {
+			Game::stopPattern = false;
+			Game::currentGame->maps->secretMap->destroyMap();
 			this->inSpecialMap = 0;
-			Game::currentGame->getCurrentMap().display();
 			theCamera.SetPosition(Game::currentGame->getCurrentMap().getXMid(), Game::currentGame->getCurrentMap().getYMid() + 1.8);
 			this->GetBody()->SetTransform(b2Vec2(Game::spawnSecretDoor.X, Game::spawnSecretDoor.Y), 0);
  			b2PolygonShape box = Game::hList->getHitbox(this->_hitbox);
@@ -785,8 +790,9 @@ void	Characters::_executeAction(int status) {
  			this->GetBody()->DestroyFixture(this->GetBody()->GetFixtureList());
  			this->GetBody()->CreateFixture(shape, 1);
 		} else {
+			Game::stopPattern = true;
 			this->inSpecialMap = 2;
-			Game::currentGame->getCurrentMap().display();
+			Game::currentGame->maps->secretMap->display();
 			theCamera.SetPosition(Game::currentGame->getCurrentMap().getXMid(), Game::currentGame->getCurrentMap().getYMid() + 1.8);
 			this->GetBody()->SetTransform(b2Vec2(Game::spawnSecretReturnDoor.X, Game::spawnSecretReturnDoor.Y), 0);
  			b2PolygonShape box = Game::hList->getHitbox(this->_hitbox);
@@ -813,9 +819,6 @@ void	Characters::_executeAction(int status) {
  */
 void	Characters::_forward(int status) {
 	this->_setCategory("forward");
-	if (this->_forwardFlag == true && status == 1)
-		return ;
-	this->_forwardFlag = true;
 	if (status == 1) {
 		this->_orientation = RIGHT;
 		this->_latOrientation = RIGHT;
@@ -870,9 +873,6 @@ void	Characters::_forward(int status) {
  */
 void	Characters::_backward(int status) {
 	this->_setCategory("backward");
-	if (this->_backwardFlag == true && status == 1)
-		return ;
-	this->_backwardFlag = true;
 	if (status == 1) {
 		if (this->getAttribute("type") == "Hero") {
 			this->_orientation = LEFT;

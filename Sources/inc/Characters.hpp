@@ -189,6 +189,7 @@ class Characters : public Elements {
 		bool			_execFlag;
 		bool			_forwardFlag;
 		bool			_backwardFlag;
+		bool			_actionFlag;
 		bool			_doFlyFlag;
 
 		Json::Value		_getAttr(std::string key);

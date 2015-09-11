@@ -136,13 +136,13 @@ void	Maps::_getMap(void) {
 	}
 	if (this->_root["properties"].get("bossMap", 0).isConvertibleTo(Json::ValueType::stringValue) == true && this->_root["properties"].get("bossMap", 0).asString() == "1") {
 		this->bossMap = map;
-		this->bossMap->setXStart(0);
+		this->bossMap->setXStart(30);
 		this->bossMap->setYStart(30);
 	}
 	if (this->_root["properties"].get("secretMap", 0).isConvertibleTo(Json::ValueType::stringValue) && this->_root["properties"].get("secretMap", 0).asString() == "1") {
 		this->secretMap = map;
-		this->secretMap->setXStart(-30);
-		this->secretMap->setYStart(0);
+		this->secretMap->setXStart(0);
+		this->secretMap->setYStart(30);
 	}
 	this->_maps[atoi(this->_root["properties"].get("number", 0).asString().c_str())] = map;
 	int			n = 0;

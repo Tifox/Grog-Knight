@@ -240,6 +240,8 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		} else if (elem->getAttribute("type2") == "Secret") {
 			this->_isTouchingSecretDoor = true;
 		}
+	} else if (elem->getAttribute("type") == "Dealer") {
+		this->_isTouchingDealer = true;
 	}
 }
 
@@ -279,6 +281,9 @@ void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 		} else if (elem->getAttribute("type2") == "Secret") {
 			this->_isTouchingSecretDoor = false;
 		}
+	}
+	if (elem->getAttribute("type") == "Dealer") {
+		this->_isTouchingDealer = false;
 	}
 }
 

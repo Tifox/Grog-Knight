@@ -164,6 +164,7 @@ class Characters : public Elements {
 		bool			_isTouchingChest;
 		bool			_isTouchingSecretDoor;
 		bool			_isTouchingBossDoor;
+		bool			_isTouchingDealer;
 		std::string		_speMove;
 		SpecialMoves*	_eqMove;
 		Weapon*			_weapon;

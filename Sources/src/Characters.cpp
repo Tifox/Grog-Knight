@@ -58,6 +58,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_isTouchingBossDoor = false;
 	this->_isTouchingSecretDoor = false;
 	this->_isTouchingChest = false;
+	this->_isTouchingDealer = false;
 	this->_isChoosingItem = 0;
 	this->_invincibility = false;
 	this->_grounds.clear();
@@ -794,6 +795,10 @@ void	Characters::_executeAction(int status) {
  			this->GetBody()->CreateFixture(shape, 1);
 		}
 	}
+	if(this->_isTouchingDealer == true)
+		theSwitchboard.Broadcast(new Message("giveDrug"));
+	if (this->_drug != "")
+		theSwitchboard.Broadcast(new Message("drugPressed"));
 }
 
 

@@ -848,7 +848,9 @@ void	Characters::_forward(int status) {
 		if (!this->_isJump && !this->_isAttacking && this->_isDashing == false)
 			this->AnimCallback("base");
 	} else {
-	  if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false)
+		if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed != this->_getAttr("forward", "force").asInt() * -2)
+			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
+		else if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed == this->_getAttr("forward", "force").asInt() * -2)
 			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
 	}
 	return ;
@@ -901,12 +903,13 @@ void	Characters::_backward(int status) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
 	  Game::stopRunning(this);
 		this->_isRunning = 0;
-		if (!this->_isJump && !this->_isAttacking && !this->_isDashing)
+		if (!this->_isJump && !this->_isAttacking && !this->_isDashing) 
 			this->AnimCallback("base");
 	} else {
-		if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false) {
+		if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed != this->_getAttr("forward", "force").asInt() * -2)
 			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
-		}
+		else if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed == this->_getAttr("forward", "force").asInt() * -2)
+			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
 	}
 	return ;
 }

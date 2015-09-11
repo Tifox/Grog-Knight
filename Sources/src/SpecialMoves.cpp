@@ -164,12 +164,14 @@
 
  void	SpecialMoves::_blink(void) {
  	this->character->_setCategory("blink");
- 	Map m = Game::currentGame->getCurrentMap();
+	Map m = Game::currentGame->getCurrentMap();
  	int x = (this->character->GetBody()->GetWorldCenter().x) - m.getXStart() + 0.5;
  	int y = -((this->character->GetBody()->GetWorldCenter().y) - m.getYStart() - 0.5);
  	int range = this->character->_getAttr("blinkRange").asInt();
  	std::vector<std::vector<int>> t = m.getPhysicMap();
-
+	std::cout << x << std::endl;
+	std::cout << y << std::endl;
+	std::cout << t.size() << std::endl;
  	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speMoveReady == 1) {
  		this->character->_speMoveReady = 0;
  		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
@@ -186,7 +188,7 @@
  		}
  		else if (this->character->_orientation == Characters::DOWN) {
  			while (range > 0) {
- 				if (y + range < (t.size() - 2) && !t[y + range][x])
+ 				if (y + range < (t.size()) && !t[y + range - 1][x])
  					break;
  				range--;
  			}

@@ -68,6 +68,7 @@ void	Quit::writeBindings(std::map<std::string, std::list<t_bind *> > binds) {
 				// Json file
 				root[it->first][(*it2)->name]["broadcast"] = (*it2)->broadcast;
 				root[it->first][(*it2)->name]["key"] = (*it2)->realKey;
+				root[it->first][(*it2)->name]["controller"] = (*it2)->controller;
 
 				// Lua file
 				if (!Quit::isUpper((*it2)->broadcast)) {
@@ -78,6 +79,7 @@ void	Quit::writeBindings(std::map<std::string, std::list<t_bind *> > binds) {
 				}
 			}
 		}
+		luaFile << "\n;; Controller\n\n\tP1BUTTON_A = +buttonAPressed\n\tP1BUTTON_A = -buttonAReleased\n\tP1BUTTON_B = +buttonBPressed\n\tP1BUTTON_B = -buttonBReleased\n\tP1BUTTON_X = +buttonXPressed\n\tP1BUTTON_X = -buttonXReleased\n\tP1BUTTON_Y = +buttonYPressed\n\tP1BUTTON_Y = -buttonYReleased\n\tP1BUTTON_START = buttonSTARTPressed\n\tP1BUTTON_BACK = buttonBACKPressed\n\tP1BUTTON_RIGHTBUMPER = buttonRBPressed\n\tP1BUTTON_LEFTBUMPER = buttonLBPressed";
 		jsonFile << root << std::endl;
 	}
 }

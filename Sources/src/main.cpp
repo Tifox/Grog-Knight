@@ -72,6 +72,7 @@ int		main(int ac, char **av) {
 	}
 	else {
 		game->menu = menu;
+		Game::isInMenu = 1;
 		menu->showMenu(game);
 	}
 	return 0;

@@ -26,7 +26,14 @@
 # include "ControllerInputManager.hpp"
 
 ControllerInputManager::ControllerInputManager(void) {
-	;
+	std::list<std::string>::iterator		it;
+
+	this->_buttons = {"A", "B", "X", "Y", "START", "BACK", "RB"};
+	for (it = this->_buttons.begin(); it != this->_buttons.end(); it++) {
+		theSwitchboard.SubscribeTo(this, "button" + (*it) + "Pressed");
+		theSwitchboard.SubscribeTo(this, "button" + (*it) + "Released");
+	}
+	this->_parseBindings();
 }
 
 ControllerInputManager::~ControllerInputManager(void) {
@@ -34,7 +41,32 @@ ControllerInputManager::~ControllerInputManager(void) {
 }
 
 void	ControllerInputManager::ReceiveMessage(Message *m) {
+	int		i, isUpper;
+	std::string		message;
 
+	for (i = 6, message = m->GetMessageName(); (message[i] >= 65 && message[i] <= 90) 
+		&& i < message.size(); i++);
+	std::string button = m->GetMessageName().substr(6, i - 7);
+	std::string status = m->GetMessageName().substr(7 + (i - 8), m->GetMessageName().size() - (i - 6));
+
+	if (button == "BACK") {
+		std::cout << "here" << std::endl;
+		theController.SetLeftVibration(250);
+		theController.SetRightVibration(250);
+	}
+	if (Game::isPaused == 1 || Game::isInMenu != 0) {
+		if (button == "A")
+			theSwitchboard.Broadcast(new Message("enterPressed"));
+		else if (button == "B")
+			theSwitchboard.Broadcast(new Message("deletePressed"));
+	}
+	for (isUpper = i = 0; i < message.size(); i++) {
+		if (message[i] >= 65 && message[i] <= 90)
+			isUpper++;
+	}
+	if (isUpper)
+		theSwitchboard.Broadcast(new Message(this->_bindings[button] + status));
+	theSwitchboard.Broadcast(new Message(this->_bindings[button]));
 }
 
 void	ControllerInputManager::tick(void) {
@@ -51,11 +83,48 @@ void	ControllerInputManager::tick(void) {
 		direction = "backward";
 	}
 
-	if (direction == "" || this->_lastDirection != direction) {
+	if ((direction == "" || this->_lastDirection != direction) && this->flag == 0) {
 		theSwitchboard.Broadcast(new Message(this->_lastDirection + "Released"));
 	}
-	if (direction != "") {
+	if (direction != "" && this->flag == 0) {
 		theSwitchboard.Broadcast(new Message(direction + "Pressed"));
 		this->_lastDirection = direction;
+		this->flag = 1;
 	}
+}
+
+void	ControllerInputManager::addBindings(std::string button, std::string broadcast) {
+	this->_bindings[button] = broadcast;
+}
+
+void	ControllerInputManager::_parseBindings(void) {
+	std::stringstream 	buffer;
+	std::ifstream		fd;
+	Json::Reader	read;
+	Json::Value		json;
+	Json::ValueIterator i, v, j;
+	std::string broadcast, controller;
+
+	fd.open("Config/Bindings.json");
+	if (!fd.is_open())
+		Log::error("Can't find Config/Settings.json");
+	buffer << fd.rdbuf();
+
+	if (!read.parse(buffer, json))
+		Log::error("Error in json syntax :\n" + read.getFormattedErrorMessages());
+
+	for (i = json.begin(); i != json.end(); i++) {
+		for (v = (*i).begin(); v != (*i).end(); v++) {
+			broadcast = controller = "";
+			for (j = (*v).begin(); j != (*v).end(); j++) {
+				if (j.key().asString() == "broadcast")
+					broadcast = (*j).asString();
+				else if (j.key().asString() == "controller")
+					controller = (*j).asString();
+			}
+			if (controller != "" && broadcast != "")
+				this->addBindings(controller, broadcast);
+		}
+	}
+
 }

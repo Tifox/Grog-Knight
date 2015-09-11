@@ -5,26 +5,31 @@
 		"Backspace" : 
 		{
 			"broadcast" : "deletePressed",
+			"controller" : "",
 			"key" : "BACKSPACE"
 		},
 		"Enter" : 
 		{
 			"broadcast" : "enterPressed",
+			"controller" : "",
 			"key" : "ENTER"
 		},
 		"Escape" : 
 		{
 			"broadcast" : "escape",
+			"controller" : "START",
 			"key" : "ESCAPE"
 		},
 		"MapToggle" : 
 		{
 			"broadcast" : "map",
+			"controller" : "BACK",
 			"key" : "M"
 		},
 		"Return" : 
 		{
 			"broadcast" : "return",
+			"controller" : "",
 			"key" : "BACKSPACE"
 		}
 	},
@@ -33,31 +38,37 @@
 		"Drug yourself" : 
 		{
 			"broadcast" : "drug",
-			"key" : "D"
+			"controller" : "",
+			"key" : "B"
 		},
 		"Pick/Drop an Item" : 
 		{
 			"broadcast" : "pickupItemPressed",
+			"controller" : "RB",
 			"key" : "F"
 		},
 		"Select/equip 1st item" : 
 		{
 			"broadcast" : "chooseItem1",
+			"controller" : "",
 			"key" : "1"
 		},
 		"Select/equip 2nd item" : 
 		{
 			"broadcast" : "chooseItem2",
+			"controller" : "",
 			"key" : "2"
 		},
 		"Select/equip 3rd item" : 
 		{
 			"broadcast" : "chooseItem3",
+			"controller" : "",
 			"key" : "3"
 		},
 		"Select/equip 4th item" : 
 		{
 			"broadcast" : "chooseItem4",
+			"controller" : "",
 			"key" : "4"
 		}
 	},
@@ -66,46 +77,55 @@
 		"Action" : 
 		{
 			"broadcast" : "action",
+			"controller" : "Y",
 			"key" : "R"
 		},
 		"Attack" : 
 		{
 			"broadcast" : "attack",
+			"controller" : "B",
 			"key" : "E"
 		},
 		"Backward" : 
 		{
 			"broadcast" : "backward",
+			"controller" : "",
 			"key" : "LEFT_ARROW"
 		},
 		"Forward" : 
 		{
 			"broadcast" : "forward",
+			"controller" : "",
 			"key" : "RIGHT_ARROW"
 		},
 		"Jump" : 
 		{
 			"broadcast" : "jump",
+			"controller" : "A",
 			"key" : "SPACE"
 		},
 		"Look Down" : 
 		{
 			"broadcast" : "down",
+			"controller" : "",
 			"key" : "DOWN_ARROW"
 		},
 		"Look Up" : 
 		{
 			"broadcast" : "up",
+			"controller" : "",
 			"key" : "UP_ARROW"
 		},
 		"Special Move" : 
 		{
 			"broadcast" : "specialmove",
+			"controller" : "X",
 			"key" : "T"
 		},
 		"Swap Charcaters(Debug)" : 
 		{
 			"broadcast" : "changeCharacter",
+			"controller" : "",
 			"key" : "P"
 		}
 	},
@@ -114,11 +134,13 @@
 		"Target an Enemy" : 
 		{
 			"broadcast" : "lockTarget",
+			"controller" : "",
 			"key" : "N"
 		},
 		"Unlock Target" : 
 		{
 			"broadcast" : "unlockTarget",
+			"controller" : "",
 			"key" : "K"
 		}
 	}

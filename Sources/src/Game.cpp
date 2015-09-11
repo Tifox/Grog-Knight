@@ -222,12 +222,13 @@ int		Game::getNextId(void) {
 }
 
 void	Game::checkHeroPosition(void) {
+	Game::currentGame->_controller->flag = 0;
+	Game::currentGame->_controller->tick();
 	if (Game::started == 1) {
 		Game::currentGame->moveCamera();
 		Game::currentGame->simulateHeroItemContact();
 		Game::currentGame->getHero()->characterLoop();
 		Game::currentGame->reloadingHUD();
-		Game::currentGame->_controller->tick();
 		if (Game::asToStart == 1)
 			Game::currentGame->start();
 			Game::asToStart = 0;
@@ -254,19 +255,19 @@ void	Game::moveCamera(void) {
 
 	if (this->_hero->inSpecialMap == 0) {
 		if (this->_hero->GetBody()->GetWorldCenter().x >= (tmp.getXStart() + tmp.getWidth() - 0.5)) {
-			this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
+			this->getCurrentMap().destroyMap();
 			Game::currentX++;
 			asChanged = true;
 		} else if (this->_hero->GetBody()->GetWorldCenter().x <= (tmp.getXStart() - 1)) {
-			this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
+			this->getCurrentMap().destroyMap();
 		Game::currentX--;
 		asChanged = true;
 		} else if (this->_hero->GetBody()->GetWorldCenter().y >= tmp.getYStart()) {
-			this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
+			this->getCurrentMap().destroyMap();
 			Game::currentY--;
 			asChanged = true;
 		} else if (this->_hero->GetBody()->GetWorldCenter().y <= (tmp.getYStart() - tmp.getHeight())) {
-			this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
+			this->getCurrentMap().destroyMap();
 			Game::currentY++;
 			asChanged = true;
 		}

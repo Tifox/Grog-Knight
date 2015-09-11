@@ -36,6 +36,7 @@ typedef struct		s_bind {
 	std::string		broadcast;
 	std::string		realKey;
 	std::string		oldKey;
+	std::string		controller;
 	int				key;
 }					t_bind;
 

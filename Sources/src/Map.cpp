@@ -89,8 +89,9 @@ Map		Map::display(void) {
 
 	// Allocation for the _physicMap
 	if (!this->_isUsed) {
-		for (v = 0; v < this->_height; v++)
+		for (v = 0; v < this->_height; v++) {
 			this->_physicMap.push_back(std::vector<int>(this->getWidth()));
+		}
 	}
 	for (layers = this->_map.begin(), v = 0; layers != this->_map.end(); layers++, v++) {
 		x = this->_xStart;

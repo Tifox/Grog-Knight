@@ -27,6 +27,12 @@
 # define __Controller_Manager__
 
 # include "../../Angel/Angel.h"
+# include "../../Tools/jsoncpp/include/json/json.h"
+# include "Log.hpp"
+# include <list>
+# include <map>
+# include <iostream>
+# include <fstream>
 
 class	ControllerInputManager : public MessageListener {
 	public:
@@ -34,10 +40,19 @@ class	ControllerInputManager : public MessageListener {
 		~ControllerInputManager(void);
 		void	ReceiveMessage(Message *m);
 		void	tick(void);
+		void	addBindings(std::string button, std::string broadcast);
+
+		int										flag;
 
 	private:
+		void			_parseBindings(void);
+
 		std::string		_lastDirection;
+		std::list<std::string>	_buttons;
+		std::map<std::string, std::string>		_bindings;
 
 };
+
+# include "Game.hpp"
 
 #endif

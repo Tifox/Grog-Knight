@@ -458,7 +458,8 @@ void	Menu::parseBindings(void) {
 				else if (j.key().asString() == "key") {
 					tmp->key = theInput.GetHashFromKeyName((*j).asString());
 					tmp->realKey = (*j).asString();
-				}
+				} else if (j.key().asString() == "controller")
+					tmp->controller = (*j).asString();
 			}
 			this->_bindingMenu[i.key().asString()].push_back(tmp);
 		}

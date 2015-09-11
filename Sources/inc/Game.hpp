@@ -53,6 +53,7 @@ class MenuCharacter;
 # include "InGameMenu.hpp"
 # include "Shop.hpp"
 # include "DrugList.hpp"
+# include "ControllerInputManager.hpp"
 
 class ArmorList;
 class EnemyList;
@@ -164,6 +165,7 @@ class Game {
 		std::vector<std::vector<int> >	_tmpMap;
 		Characters	*_hero;
 		Shopkeeper	*_shopkeeper;
+		ControllerInputManager		*_controller;
 };
 
 # include "Dealer.hpp"

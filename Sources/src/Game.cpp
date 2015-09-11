@@ -44,6 +44,7 @@ Game::Game(void) : _hero((new Characters())) {
 	ContactFilter *gFilter = new ContactFilter();
 	theWorld.GetPhysicsWorld().SetContactFilter(gFilter);
 	this->maps = new Maps("Maps/");
+	this->_controller = new ControllerInputManager();
 	return ;
 }
 
@@ -226,6 +227,7 @@ void	Game::checkHeroPosition(void) {
 		Game::currentGame->simulateHeroItemContact();
 		Game::currentGame->getHero()->characterLoop();
 		Game::currentGame->reloadingHUD();
+		Game::currentGame->_controller->tick();
 		if (Game::asToStart == 1)
 			Game::currentGame->start();
 			Game::asToStart = 0;

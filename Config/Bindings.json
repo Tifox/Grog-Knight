@@ -35,12 +35,6 @@
 	},
 	"Inventory" : 
 	{
-		"Drug yourself" : 
-		{
-			"broadcast" : "drug",
-			"controller" : "",
-			"key" : "B"
-		},
 		"Pick/Drop an Item" : 
 		{
 			"broadcast" : "pickupItemPressed",

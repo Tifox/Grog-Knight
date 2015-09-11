@@ -160,10 +160,12 @@ class Characters : public Elements {
 		int				_hasDashed;
 		int				_level;
 		std::string		_currentTrigger;
+		bool			_speMoveIsSet;
 		bool			_isDisengaging;
 		bool			_isTouchingChest;
 		bool			_isTouchingSecretDoor;
 		bool			_isTouchingBossDoor;
+		bool			_isTouchingDealer;
 		std::string		_speMove;
 		SpecialMoves*	_eqMove;
 		Weapon*			_weapon;
@@ -188,6 +190,7 @@ class Characters : public Elements {
 		bool			_execFlag;
 		bool			_forwardFlag;
 		bool			_backwardFlag;
+		bool			_actionFlag;
 		bool			_doFlyFlag;
 
 		Json::Value		_getAttr(std::string key);

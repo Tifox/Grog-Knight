@@ -35,7 +35,26 @@
 
  //! Main constructor
  SpecialMoves::SpecialMoves(Characters* charac) : character(charac) {
-
+	 std::string		file;
+	 std::stringstream 	buffer;
+	 std::ifstream		fd;
+	 Json::Reader		read;
+	 Json::Value		json;
+	 Json::ValueIterator i, v;
+	 std::map<std::string, Json::Value>	tmp;
+	 file = "Resources/Elements/SpecialMoves.json";
+	 fd.open(file.c_str());
+	 if (!fd.is_open())
+		Log::error("Can't open the file for the specialmoves class.");
+	buffer << fd.rdbuf();
+	 if (!read.parse(buffer, json))
+		 Log::error("Error in json syntax :\n" + read.getFormattedErrorMessages());
+	 for (i = json.begin(); i != json.end(); i++) {
+		 for (v = (*i).begin(); v != (*i).end(); v++) {
+			 tmp[v.key().asString()] = (*v);
+			 this->character->_attr[i.key().asString()] = tmp;
+		 }
+	 }
  }
 
  //! Basic destructor
@@ -164,12 +183,11 @@
 
  void	SpecialMoves::_blink(void) {
  	this->character->_setCategory("blink");
- 	Map m = Game::currentGame->getCurrentMap();
+	Map m = Game::currentGame->getCurrentMap();
  	int x = (this->character->GetBody()->GetWorldCenter().x) - m.getXStart() + 0.5;
  	int y = -((this->character->GetBody()->GetWorldCenter().y) - m.getYStart() - 0.5);
  	int range = this->character->_getAttr("blinkRange").asInt();
  	std::vector<std::vector<int>> t = m.getPhysicMap();
-
  	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speMoveReady == 1) {
  		this->character->_speMoveReady = 0;
  		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
@@ -186,7 +204,7 @@
  		}
  		else if (this->character->_orientation == Characters::DOWN) {
  			while (range > 0) {
- 				if (y + range < (t.size() - 2) && !t[y + range][x])
+ 				if (y + range < (t.size()) && !t[y + range - 1][x])
  					break;
  				range--;
  			}
@@ -243,40 +261,43 @@ void	SpecialMoves::_fly(void) {
   */
 
  void	SpecialMoves::_totem(void) {
-    if (this->character->_totem == nullptr && this->character->_grounds.size() > 0) {
-        this->character->_totem = new Elements();
-        this->character->_totem->SetSize(0.6);
-        this->character->_totem->SetName("Totem");
-        this->character->_totem->SetDrawShape(ADS_Square);
-        this->character->_totem->SetColor(0, 1, 0, 1);
-        this->character->_totem->SetSprite("Resources/Images/HUD/cible.png");
-        this->character->_totem->SetLayer(105);
-        this->character->_totem->addAttribute("physic", "1");
-        this->character->_totem->addAttribute("currentX", std::to_string(Game::currentX));
-        this->character->_totem->addAttribute("currentY", std::to_string(Game::currentY));
-        this->character->_totem->SetDensity(0);
-        this->character->_totem->SetFixedRotation(true);
-        this->character->_totem->SetIsSensor(true);
-        this->character->_totem->SetPosition(this->character->GetBody()->GetWorldCenter().x, this->character->GetBody()->GetWorldCenter().y);
-        this->character->_totem->InitPhysics();
-		Game::getHUD()->addTotemToBigMap();
-        theWorld.Add(this->character->_totem);
-    }
-    else if (this->character->_totem != nullptr) {
-		if (atoi(this->character->_totem->getAttribute("currentX").c_str()) != Game::currentX && atoi(this->character->_totem->getAttribute("currentY").c_str()) != Game::currentY) {
-			Game::currentGame->getCurrentMap().destroyMap();
-			Game::currentX = atoi(this->character->_totem->getAttribute("currentX").c_str());
-			Game::currentY = atoi(this->character->_totem->getAttribute("currentY").c_str());
-			Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX] = Game::currentGame->getCurrentMap().display();
-			theCamera.SetPosition(Game::currentGame->getCurrentMap().getXMid(), Game::currentGame->getCurrentMap().getYMid() + 1.8);
-			if (Game::isInMenu == 0)
-				Game::getHUD()->minimap();
-		}
-        this->character->GetBody()->SetTransform(b2Vec2(this->character->_totem->GetBody()->GetWorldCenter().x, this->character->_totem->GetBody()->GetWorldCenter().y), 0);
-        Game::addToDestroyList(this->character->_totem);
-        this->character->_totem = nullptr;
-		Game::getHUD()->removeText("T");
-    }
+	 if (Game::stopPattern == true)
+		 return;
+	 if (this->character->_totem == nullptr && this->character->_grounds.size() > 0) {
+		 this->character->_totem = new Elements();
+		 this->character->_totem->SetSize(0.6);
+		 this->character->_totem->SetName("Totem");
+		 this->character->_totem->SetDrawShape(ADS_Square);
+		 this->character->_totem->SetColor(0, 1, 0, 1);
+		 this->character->_totem->SetSprite("Resources/Images/HUD/cible.png");
+		 this->character->_totem->SetLayer(105);
+		 this->character->_totem->addAttribute("physic", "1");
+		 this->character->_totem->addAttribute("currentX", std::to_string(Game::currentX));
+		 this->character->_totem->addAttribute("currentY", std::to_string(Game::currentY));
+		 this->character->_totem->SetDensity(0);
+		 this->character->_totem->SetFixedRotation(true);
+		 this->character->_totem->SetIsSensor(true);
+		 this->character->_totem->SetPosition(this->character->GetBody()->GetWorldCenter().x, this->character->GetBody()->GetWorldCenter().y);
+		 this->character->_totem->InitPhysics();
+		 Game::getHUD()->addTotemToBigMap();
+		 theWorld.Add(this->character->_totem);
+	 }
+	 else if (this->character->_totem != nullptr) {
+		 if (atoi(this->character->_totem->getAttribute("currentX").c_str()) != Game::currentX && atoi(this->character->_totem->getAttribute("currentY").c_str()) != Game::currentY) {
+			 Game::currentGame->getCurrentMap().destroyMap();
+			 this->character->inSpecialMap = 0;
+			 Game::currentX = atoi(this->character->_totem->getAttribute("currentX").c_str());
+			 Game::currentY = atoi(this->character->_totem->getAttribute("currentY").c_str());
+			 Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX] = Game::currentGame->getCurrentMap().display();
+			 theCamera.SetPosition(Game::currentGame->getCurrentMap().getXMid(), Game::currentGame->getCurrentMap().getYMid() + 1.8);
+			 if (Game::isInMenu == 0)
+				 Game::getHUD()->minimap();
+		 }
+		 this->character->GetBody()->SetTransform(b2Vec2(this->character->_totem->GetBody()->GetWorldCenter().x, this->character->_totem->GetBody()->GetWorldCenter().y), 0);
+		 Game::addToDestroyList(this->character->_totem);
+		 this->character->_totem = nullptr;
+		 Game::getHUD()->removeText("T");
+	 }
  }
 
 //! Special move: shunpo

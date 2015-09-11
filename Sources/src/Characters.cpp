@@ -58,9 +58,11 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_isTouchingBossDoor = false;
 	this->_isTouchingSecretDoor = false;
 	this->_isTouchingChest = false;
+	this->_isTouchingDealer = false;
 	this->_isChoosingItem = 0;
 	this->_invincibility = false;
 	this->_grounds.clear();
+	this->_speMoveIsSet = false;
 	this->_item = nullptr;
 	this->_shopItem = "";
 	this->_drug = "";
@@ -424,9 +426,12 @@ void	Characters::ReceiveMessage(Message *m) {
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
 		attrName = this->_getAttr(i->first, "subscribe").asString();
 		if (!strncmp(attrName.c_str(), m->GetMessageName().c_str(), strlen(attrName.c_str()))) {
-
 			// Get the key status (1 = Pressed, 0 = Released)
 			status = (m->GetMessageName().substr(strlen(attrName.c_str()), 7) == "Pressed" ? 1 : 0);
+			if (this->_actionFlag == false && status == 1)
+				return;
+			else if (status == 1)
+				this->_actionFlag = false;
 			if (this->_canMove == false)
 				return;
 			if (attrName == "forward") {
@@ -733,6 +738,7 @@ void	Characters::_tryFly(void) {
 }
 
 void	Characters::_resetBroadcastFlags(void) {
+	this->_actionFlag = true;
 	this->_forwardFlag = false;
 	this->_backwardFlag = false;
 	this->_doFlyFlag = false;
@@ -765,6 +771,7 @@ void	Characters::_executeAction(int status) {
 		theSwitchboard.SubscribeTo(this, "escapePressed");
 		Game::chest->displayInterface();
 	} else if (this->_isTouchingBossDoor == true) {
+		Game::stopPattern = true;
 		Game::currentGame->getCurrentMap().destroyMap();
 		this->inSpecialMap = 1;
 		this->destroyTarget();
@@ -772,11 +779,11 @@ void	Characters::_executeAction(int status) {
 		theCamera.SetPosition(Game::currentGame->maps->bossMap->getXMid(), Game::currentGame->maps->bossMap->getYMid() + 1.8);
 		this->GetBody()->SetTransform(b2Vec2(Game::currentGame->maps->bossMap->getXMid() - 10, Game::currentGame->maps->bossMap->getYMid() + 1.8), 0);
 	} else if (this->_isTouchingSecretDoor == true) {
-		Game::currentGame->getCurrentMap().destroyMap();
 		this->destroyTarget();
 		if (this->inSpecialMap == 2) {
+			Game::stopPattern = false;
+			Game::currentGame->maps->secretMap->destroyMap();
 			this->inSpecialMap = 0;
-			Game::currentGame->getCurrentMap().display();
 			theCamera.SetPosition(Game::currentGame->getCurrentMap().getXMid(), Game::currentGame->getCurrentMap().getYMid() + 1.8);
 			this->GetBody()->SetTransform(b2Vec2(Game::spawnSecretDoor.X, Game::spawnSecretDoor.Y), 0);
  			b2PolygonShape box = Game::hList->getHitbox(this->_hitbox);
@@ -784,8 +791,9 @@ void	Characters::_executeAction(int status) {
  			this->GetBody()->DestroyFixture(this->GetBody()->GetFixtureList());
  			this->GetBody()->CreateFixture(shape, 1);
 		} else {
+			Game::stopPattern = true;
 			this->inSpecialMap = 2;
-			Game::currentGame->getCurrentMap().display();
+			Game::currentGame->maps->secretMap->display();
 			theCamera.SetPosition(Game::currentGame->getCurrentMap().getXMid(), Game::currentGame->getCurrentMap().getYMid() + 1.8);
 			this->GetBody()->SetTransform(b2Vec2(Game::spawnSecretReturnDoor.X, Game::spawnSecretReturnDoor.Y), 0);
  			b2PolygonShape box = Game::hList->getHitbox(this->_hitbox);
@@ -794,6 +802,10 @@ void	Characters::_executeAction(int status) {
  			this->GetBody()->CreateFixture(shape, 1);
 		}
 	}
+	if(this->_isTouchingDealer == true)
+		theSwitchboard.Broadcast(new Message("giveDrug"));
+	if (this->_drug != "")
+		theSwitchboard.Broadcast(new Message("drugPressed"));
 }
 
 
@@ -808,9 +820,6 @@ void	Characters::_executeAction(int status) {
  */
 void	Characters::_forward(int status) {
 	this->_setCategory("forward");
-	if (this->_forwardFlag == true && status == 1)
-		return ;
-	this->_forwardFlag = true;
 	if (status == 1) {
 		this->_orientation = RIGHT;
 		this->_latOrientation = RIGHT;
@@ -848,7 +857,9 @@ void	Characters::_forward(int status) {
 		if (!this->_isJump && !this->_isAttacking && this->_isDashing == false)
 			this->AnimCallback("base");
 	} else {
-	  if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false)
+		if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed != this->_getAttr("forward", "force").asInt() * -2)
+			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
+		else if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed == this->_getAttr("forward", "force").asInt() * -2)
 			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
 	}
 	return ;
@@ -863,9 +874,6 @@ void	Characters::_forward(int status) {
  */
 void	Characters::_backward(int status) {
 	this->_setCategory("backward");
-	if (this->_backwardFlag == true && status == 1)
-		return ;
-	this->_backwardFlag = true;
 	if (status == 1) {
 		if (this->getAttribute("type") == "Hero") {
 			this->_orientation = LEFT;
@@ -901,12 +909,13 @@ void	Characters::_backward(int status) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
 	  Game::stopRunning(this);
 		this->_isRunning = 0;
-		if (!this->_isJump && !this->_isAttacking && !this->_isDashing)
+		if (!this->_isJump && !this->_isAttacking && !this->_isDashing) 
 			this->AnimCallback("base");
 	} else {
-		if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false) {
+		if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed != this->_getAttr("forward", "force").asInt() * -2)
 			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
-		}
+		else if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed == this->_getAttr("forward", "force").asInt() * -2)
+			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
 	}
 	return ;
 }
@@ -1185,11 +1194,9 @@ void	Characters::equipArmor(Armor* armor) {
 	this->_armor = new Armor(armor);
 	if (this->_armor->getAttribute("hpBuff") != ""){
 		this->_maxHp += std::stoi(this->_armor->getAttribute("hpBuff"));
-		this->_hp += std::stoi(this->_armor->getAttribute("hpBuff"));
 	}
 	if (this->_armor->getAttribute("manaBuff") != ""){
 		this->_maxMana += std::stoi(this->_armor->getAttribute("manaBuff"));
-		this->_mana += std::stoi(this->_armor->getAttribute("manaBuff"));
 	}
 	Game::getHUD()->items(this->_armor);
 	Game::getHUD()->setMaxHP(this->_maxHp);
@@ -1231,11 +1238,9 @@ void	Characters::equipRing(Ring* ring) {
 	this->_ring = new Ring(ring);
 	if (this->_ring->getAttribute("hpBuff") != "") {
 		this->_maxHp += std::stoi(this->_ring->getAttribute("hpBuff"));
-		this->_hp += std::stoi(this->_ring->getAttribute("hpBuff"));
 	}
 	if (this->_ring->getAttribute("manaBuff") != "") {
 		this->_maxMana += std::stoi(this->_ring->getAttribute("manaBuff"));
-		this->_mana += std::stoi(this->_ring->getAttribute("manaBuff"));
 	}
 	Game::getHUD()->items(this->_ring);
 	Game::getHUD()->setMaxHP(this->_maxHp);

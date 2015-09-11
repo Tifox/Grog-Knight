@@ -1,0 +1,68 @@
+{
+	"dash": {
+		"subscribe": "specialmove",
+		"cooldown": 1,
+		"dashSpeed": 30,
+		"uptime": 0.15,
+		"beginFrame_right": 74,
+		"endFrame_right": 78,
+		"beginFrame_left": 79,
+		"endFrame_left": 83,
+		"time": 0.05
+	},
+	"charge": {
+		"subscribe": "specialmove",
+		"cooldown": 1,
+		"chargeSpeed": 20,
+		"time": 0.1,
+		"uptime": 1
+	},
+	"stomp": {
+		"subscribe": "specialmove",
+		"cooldown": 0,
+		"stompSpeed": 50,
+		"beginFrame_right": 84,
+		"endFrame_right": 87,
+		"beginFrame_left": 84,
+		"endFrame_left": 87,
+		"time": 0.1
+	},
+	"blink": {
+		"subscribe": "specialmove",
+		"time": 0.1,
+		"cooldown": 0,
+		"blinkRange": 4
+	},
+	"fly": {
+		"subscribe": "specialmove",
+		"force": 4,
+		"beginFrame_right": 44,
+		"beginFrame_left": 44,
+		"fallingFrame_right": 44,
+		"fallingFrame_left": 44,
+		"endFrame_right": 44,
+		"endFrame_left": 44,
+		"time": 0.1
+	},
+	"wallJump": {
+		"subscribe": "specialmove",
+		"time": 0.1,
+		"maxJump": 1,
+		"force": 6
+	},
+	"shunpo": {
+		"subscribe": "specialmove",
+		"damageScale": 2,
+		"time": 0.1,
+		"range": 10,
+		"cooldown": 1
+	},
+	 "disengage": {
+		"subscribe": "specialmove",
+		"cooldown": 1,
+		"disengageSpeed": 30,
+		"djump": 8,
+		"uptime": 0.1,
+		"time": 0.1
+	 }
+}

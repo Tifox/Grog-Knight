@@ -586,3 +586,4 @@ Door						*Game::secretReturnDoor = nullptr;
 Vector2						Game::spawnChest = Vector2();
 Chest						*Game::chest = nullptr;
 bool						Game::toggleMenu = true;
+bool						Game::stopPattern = false;

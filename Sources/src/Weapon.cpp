@@ -43,7 +43,7 @@ Weapon::Weapon(std::string name) : _name(name) {
 Weapon::Weapon(Weapon* weapon) {
 	this->_name = weapon->getName();
 	this->addAttribute("name", this->_name);
-	this->SetLayer(15);
+	this->SetLayer(70);
 	this->_flavor = weapon->getFlavor();
 	this->addAttribute("flavor", this->_flavor);
 	this->_damage = weapon->getDamage();
@@ -286,6 +286,9 @@ void	Weapon::ReceiveMessage(Message *m) {
 		theSwitchboard.UnsubscribeFrom(this, "deleteWeapon");
 		theSwitchboard.Broadcast(new Message("disableAttackHitbox"));
 	}
+	if (m->GetMessageName() == "setToStatic" + this->GetName()) {
+		this->GetBody()->SetType(b2_staticBody);
+	}
 }
 
 /* GETTERS */
@@ -306,11 +309,6 @@ int				Weapon::getCritRate(void)  { return this->_critRate; }
 
 
 void	Weapon::BeginContact(Elements *elem, b2Contact *contact) {
-	if (elem->getAttribute("type") != "ground") {
-		contact->SetEnabled(false);
-		contact->enableContact = false;
-	} else
-		this->GetBody()->SetGravityScale(0);
 }
 
 void	Weapon::EndContact(Elements *elem, b2Contact *contact) {

@@ -64,6 +64,7 @@ Equipment::Equipment(Weapon *w, Characters* c): Object() {
 	this->addAttribute("type3", "Weapon");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_weapon = new Weapon(w);
+	this->SetLayer(15);
 	this->_ring = nullptr;
 	this->_armor = nullptr;
 	this->_name = w->getName();
@@ -83,6 +84,7 @@ Equipment::Equipment(Armor *w, Characters* c): Object() {
 	this->addAttribute("type3", "Armor");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_armor = new Armor(w);
+	this->SetLayer(15);
 	this->_weapon = nullptr;
 	this->_ring = nullptr;
 	this->_name = w->getName();
@@ -105,6 +107,7 @@ Equipment::Equipment(Ring *w, Characters* c): Object() {
 	this->addAttribute("type3", "Ring");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_ring = new Ring(w);
+	this->SetLayer(15);
 	this->_armor = nullptr;
 	this->_weapon = nullptr;
 	this->_name = w->getName();
@@ -140,6 +143,12 @@ void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttribute("type") != "ground") {
 		contact->SetEnabled(false);
 		contact->enableContact = false;
+	} else {
+	std::cout << "set to static" << std::endl;
+	theSwitchboard.SubscribeTo(this, "setToStatic" + this->GetName());
+	theSwitchboard.Broadcast(new Message("setToStatic" + this->GetName()));
+	this->GetBody()->GetFixtureList()->SetDensity(0);
+	this->GetBody()->ResetMassData();
 	}
 }
 
@@ -151,9 +160,6 @@ void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
  * @param contact The Box2D contact object
  */
 void	Equipment::EndContact(Elements *elem, b2Contact *contact) {
-	// if (elem->getAttributes()["type"] == "Hero"){
-	// 	Game::getHUD()->removeText(this->_weapon->getFlavor());
-	// }
 }
 
 /*GETTERS*/
@@ -175,15 +181,16 @@ std::string	Equipment::getName(void) { return this->_name; }
 void		Equipment::ReceiveMessage(Message *m) {
 	if (m->GetMessageName() == "DeleteEquipment" + this->GetName()) {
 		if (this->_ring != nullptr) {
-			std::cout << "ring" << std::endl;
 			Game::addToDestroyList(this->_ring);
 		} else if (this->_armor != nullptr) {
-			std::cout << "armor" << std::endl;
 			Game::addToDestroyList(this->_armor);
 		} else if (this->_weapon != nullptr) {
-			std::cout << "weapon" << std::endl;
 			Game::addToDestroyList(this->_weapon);
 		}
+		this->ChangeColorTo(Color(1,1,1,0), 0);
 		Game::addToDestroyList(this);
+	}
+	if (m->GetMessageName() == "setToStatic" + this->GetName()) {
+		this->GetBody()->SetType(b2_staticBody);
 	}
 }

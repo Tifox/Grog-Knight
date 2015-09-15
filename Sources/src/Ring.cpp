@@ -44,7 +44,7 @@ Ring::Ring(Ring* Ring) {
 	this->_name = Ring->getName();
 	this->_flavor = Ring->getFlavor();
 	this->_sprite = Ring->getSprite();
-	this->SetLayer(15);
+	this->SetLayer(70);
 	this->addAttribute("type3", "Ring");
 	this->addAttribute("name", this->_name);
 	this->addAttribute("flavor", this->_flavor);
@@ -132,6 +132,9 @@ void	Ring::ReceiveMessage(Message *m) {
 		this->SetLayer(-1);
 		Game::addToDestroyList(this);
 	}
+	if (m->GetMessageName() == "setToStatic" + this->GetName()) {
+		this->GetBody()->SetType(b2_staticBody);
+	}
 }
 
 /* GETTERS */
@@ -143,11 +146,6 @@ int				Ring::getLootLevel(void) { return this->_lootLevel; }
 /* SETTERS */
 
 void	Ring::BeginContact(Elements *elem, b2Contact *contact) {
-	if (elem->getAttribute("type") != "ground") {
-		contact->SetEnabled(false);
-		contact->enableContact = false;
-	} else
-		this->GetBody()->SetGravityScale(0);
 }
 
 void	Ring::EndContact(Elements *elem, b2Contact *contact) {

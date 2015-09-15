@@ -140,6 +140,12 @@ void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttribute("type") != "ground") {
 		contact->SetEnabled(false);
 		contact->enableContact = false;
+	} else {
+	std::cout << "set to static" << std::endl;
+	theSwitchboard.SubscribeTo(this, "setToStatic" + this->GetName());
+	theSwitchboard.Broadcast(new Message("setToStatic" + this->GetName()));
+	this->GetBody()->GetFixtureList()->SetDensity(0);
+	this->GetBody()->ResetMassData();
 	}
 }
 
@@ -151,9 +157,6 @@ void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
  * @param contact The Box2D contact object
  */
 void	Equipment::EndContact(Elements *elem, b2Contact *contact) {
-	// if (elem->getAttributes()["type"] == "Hero"){
-	// 	Game::getHUD()->removeText(this->_weapon->getFlavor());
-	// }
 }
 
 /*GETTERS*/
@@ -175,15 +178,15 @@ std::string	Equipment::getName(void) { return this->_name; }
 void		Equipment::ReceiveMessage(Message *m) {
 	if (m->GetMessageName() == "DeleteEquipment" + this->GetName()) {
 		if (this->_ring != nullptr) {
-			std::cout << "ring" << std::endl;
 			Game::addToDestroyList(this->_ring);
 		} else if (this->_armor != nullptr) {
-			std::cout << "armor" << std::endl;
 			Game::addToDestroyList(this->_armor);
 		} else if (this->_weapon != nullptr) {
-			std::cout << "weapon" << std::endl;
 			Game::addToDestroyList(this->_weapon);
 		}
 		Game::addToDestroyList(this);
+	}
+	if (m->GetMessageName() == "setToStatic" + this->GetName()) {
+		this->GetBody()->SetType(b2_staticBody);
 	}
 }

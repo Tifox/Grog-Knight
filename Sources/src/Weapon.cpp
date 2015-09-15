@@ -43,7 +43,7 @@ Weapon::Weapon(std::string name) : _name(name) {
 Weapon::Weapon(Weapon* weapon) {
 	this->_name = weapon->getName();
 	this->addAttribute("name", this->_name);
-	this->SetLayer(15);
+	this->SetLayer(70);
 	this->_flavor = weapon->getFlavor();
 	this->addAttribute("flavor", this->_flavor);
 	this->_damage = weapon->getDamage();
@@ -288,7 +288,6 @@ void	Weapon::ReceiveMessage(Message *m) {
 	}
 	if (m->GetMessageName() == "setToStatic" + this->GetName()) {
 		this->GetBody()->SetType(b2_staticBody);
-
 	}
 }
 
@@ -310,15 +309,6 @@ int				Weapon::getCritRate(void)  { return this->_critRate; }
 
 
 void	Weapon::BeginContact(Elements *elem, b2Contact *contact) {
-	if (elem->getAttribute("type") != "ground") {
-		contact->SetEnabled(false);
-		contact->enableContact = false;
-	} else {
-		theSwitchboard.SubscribeTo(this, "setToStatic" + this->GetName());
-		theSwitchboard.Broadcast(new Message("setToStatic" + this->GetName()));
-		this->GetBody()->GetFixtureList()->SetDensity(0);
-		this->GetBody()->ResetMassData();
-	}
 }
 
 void	Weapon::EndContact(Elements *elem, b2Contact *contact) {

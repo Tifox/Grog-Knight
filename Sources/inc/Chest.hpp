@@ -27,6 +27,7 @@
 # define __Chest__
 
 # include "Elements.hpp"
+# include "../../Tools/jsoncpp/include/json/json.h"
 
 class Chest: public Elements {
 
@@ -41,6 +42,11 @@ class Chest: public Elements {
 		void		makeChoices(void);
 		void		updateItems(void);
 		int			isUsed(void);
+		std::map<int, std::string>	getItems(void);
+		int							getGold(void);
+		void		applySave(std::map<std::string, Json::Value> save);
+
+		int		isSpawn;
 
 	private:
 		void						_makeItUsed(void);
@@ -52,6 +58,7 @@ class Chest: public Elements {
 		HUDActor *					_choicePointer;
 		HUDActor*					_target;
 		int							_isUsed;
+		int							_gold;
 };
 
 # endif

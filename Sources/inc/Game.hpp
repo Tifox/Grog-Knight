@@ -93,6 +93,7 @@ class Game {
 		Shopkeeper	*getShopkeeper(void);
 		void		setShopkeeper(Shopkeeper *s);
 		void	menuInGame(void);
+		std::map<std::string, Json::Value>	getSave(void);
 
 		static bool	endGame;
 		static bool	ended;
@@ -167,6 +168,7 @@ class Game {
 		Characters	*_hero;
 		Shopkeeper	*_shopkeeper;
 		ControllerInputManager		*_controller;
+		std::map<std::string, Json::Value>	_save;
 };
 
 # include "Dealer.hpp"

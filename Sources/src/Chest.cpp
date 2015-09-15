@@ -25,31 +25,35 @@
 
 #include "Chest.hpp"
 
-Chest::Chest(void) {
-//	this->_contains = nullptr;
+Chest::Chest(void) : isSpawn(0) {
+	//	this->_contains = nullptr;
 	this->SetLayer(10);
 	this->SetDensity(0);
 	this->SetIsSensor(1);
 	this->addAttribute("class", "Chest");
 	this->addAttribute("type", "Chest");
-	this->setXStart(Game::spawnChest.X);
-	this->setYStart(Game::spawnChest.Y);
 	this->addAttribute("chest", "1");
 	this->addAttribute("physic", "1");
 	this->addAttribute("sprite", "");
 	this->addAttribute("spritesFrame", "Resources/Images/Chest/chest_000.png");
 	this->_target = nullptr;
-	this->display();
 	this->_chestItems[0] = this->_chestItems[1] = this->_chestItems[2] = "";
-	this->_isUsed = 0;
+	this->_isUsed = this->_gold = 0;
 	return;
 }
 
 Chest::~Chest(void) {}
 
 void	Chest::spawn(void) {
+	this->setXStart(Game::spawnChest.X);
+	this->setYStart(Game::spawnChest.Y);
+	this->display();
+	this->isSpawn = 1;
 	if (this->_isUsed == 0) {
-		this->PlaySpriteAnimation(0.4f, SAT_OneShot, 0, 2);
+		if (this->_gold)
+			this->PlaySpriteAnimation(0.4f, SAT_OneShot, 0, 2);
+		else
+			this->PlaySpriteAnimation(0.4f, SAT_OneShot, 3, 4);
 	}
 }
 
@@ -66,7 +70,7 @@ void	Chest::displayInterface(void) {
 
 	// Display Interface
 	this->_interfaceElem.push_back(w->addImage("Resources/Images/bag.png", width / 2,
-		height - ((height / 3) * 2),Vector2(width - (width / 2), height / 6), 101));
+				height - ((height / 3) * 2), Vector2(width - (width / 4), height / 5), 101));
 	this->displayChestContent();
 }
 
@@ -74,7 +78,7 @@ void	Chest::displayChestContent(void) {
 	int		height = theCamera.GetWindowHeight(), width = theCamera.GetWindowWidth();
 	HUDWindow		*w = Game::getHUD();
 	HUDActor		*tmp;
-	int		x = width / 2 - width / 6, y = height - ((height / 3) * 2), i;
+	int		x = width / 2 - width / 4, y = height - ((height / 3) * 2), i;
 
 	for (i = 0; i < 3; i++, x += width / 6) {
 		tmp = w->addImage("Resources/Images/bag_slot.png", x, y, 80, 102);
@@ -83,6 +87,9 @@ void	Chest::displayChestContent(void) {
 		if (i == 0)
 			this->_choicePointer = tmp;
 	}
+	tmp = w->addImage("Resources/Images/gold.png", x, y, 80, 150);
+	this->_choices.push_back(tmp);
+	this->_interfaceElem.push_back(tmp);
 	this->makeChoices();
 	this->updateItems();
 }
@@ -101,7 +108,7 @@ void	Chest::removeInterface(void) {
 		theWorld.Remove(*it);
 	theWorld.Remove(this->_target);
 	theCamera.MoveTo(Vector3(Game::currentGame->getCurrentMap().getXMid(),
-		Game::currentGame->getCurrentMap().getYMid() + 1.8, 9.001), true);
+				Game::currentGame->getCurrentMap().getYMid() + 1.8, 9.001), true);
 	Game::toggleMenu = true;
 	Game::currentGame->getHero()->subscribeToAll();
 	if (this->_isUsed == 1)
@@ -124,30 +131,39 @@ void	Chest::ReceiveMessage(Message *m) {
 		int		i, j;
 
 		for (i = 0, it = this->_choices.begin(); this->_choicePointer != *it; i++, it++);
-		if (this->_chestItems[i] == "" && Game::currentGame->getHero()->getInventory()->getCurrentFocus() == "")
+		if (i < 3) {
+			if (this->_chestItems[i] == "" && Game::currentGame->getHero()->getInventory()->getCurrentFocus() == "")
 				return ;
-		if (this->_chestItems[i] == "" && Game::currentGame->getHero()->getInventory()->getCurrentFocus() != "") {
-			this->_chestItems[i] = Game::currentGame->getHero()->getInventory()->getCurrentFocus();
-			Game::currentGame->getHero()->getInventory()->dropSelectedItem();
-			this->_isUsed = 1;
-		} else if (this->_chestItems[i] != ""
-						&& Game::currentGame->getHero()->getInventory()->getCurrentFocus() != "") {
-			std::string tmp =  Game::currentGame->getHero()->getInventory()->getCurrentFocus();
-			std::string tmp2 = this->_chestItems[i];	
-			int			focus = Game::currentGame->getHero()->getInventory()->getNumFocus();
+			if (this->_chestItems[i] == "" && Game::currentGame->getHero()->getInventory()->getCurrentFocus() != "") {
+				this->_chestItems[i] = Game::currentGame->getHero()->getInventory()->getCurrentFocus();
+				Game::currentGame->getHero()->getInventory()->dropSelectedItem();
+				this->_isUsed = 1;
+			} else if (this->_chestItems[i] != ""
+					&& Game::currentGame->getHero()->getInventory()->getCurrentFocus() != "") {
+				std::string tmp =  Game::currentGame->getHero()->getInventory()->getCurrentFocus();
+				std::string tmp2 = this->_chestItems[i];
+				int			focus = Game::currentGame->getHero()->getInventory()->getNumFocus();
 
-			theWorld.Remove(this->_img[i]);
-			Game::currentGame->getHero()->getInventory()->dropSelectedItem();
-			Game::currentGame->getHero()->getInventory()->addItemToInventory(tmp2);
-			this->_chestItems[i] = tmp;
-			this->_isUsed = 1;
+				theWorld.Remove(this->_img[i]);
+				Game::currentGame->getHero()->getInventory()->dropSelectedItem();
+				Game::currentGame->getHero()->getInventory()->addItemToInventory(tmp2);
+				this->_chestItems[i] = tmp;
+				this->_isUsed = 1;
+			} else {
+				Game::currentGame->getHero()->getInventory()->addItemToInventory(this->_chestItems[i]);
+				this->_chestItems[i] = "";
+				theWorld.Remove(this->_img[i]);
+				this->_isUsed = 1;
+			}
+			this->updateItems();
 		} else {
-			Game::currentGame->getHero()->getInventory()->addItemToInventory(this->_chestItems[i]);
-			this->_chestItems[i] = "";
-			theWorld.Remove(this->_img[i]);
-			this->_isUsed = 1;
+			if (Game::currentGame->getHero()->getGold()) {
+				this->_gold += Game::currentGame->getHero()->getGold();
+				Game::currentGame->getHero()->setGold(0);
+				Game::getHUD()->updateGold(0);
+				this->_isUsed = 1;
+			}
 		}
-		this->updateItems();
 	}
 }
 
@@ -161,7 +177,7 @@ void	Chest::updateItems(void) {
 	std::map<int, std::string>::iterator	it;
 	int		height = theCamera.GetWindowHeight(), width = theCamera.GetWindowWidth();
 	HUDWindow		*w = Game::getHUD();
-	int		x = width / 2 - width / 6, y = height - ((height / 3) * 2);
+	int		x = width / 2 - width / 4, y = height - ((height / 3) * 2);
 	std::string		path;
 	HUDActor		*tmp;
 
@@ -187,4 +203,18 @@ void	Chest::_makeItUsed(void) {
 	this->PlaySpriteAnimation(0.4f, SAT_OneShot, 2, 0);
 }
 
+void		Chest::applySave(std::map<std::string, Json::Value> save) {
+	Json::ValueIterator		it;
+
+	for (it = save["chest"].begin(); it != save["chest"].end(); it++) {
+		if (it.key().asString() != "gold") {
+			this->_chestItems[atoi(it.key().asString().c_str())] = it->asString();
+		} else {
+			this->_gold = it->asInt();
+		}
+	}
+}
+
 int		Chest::isUsed(void) { return this->_isUsed; };
+int		Chest::getGold(void) { return this->_gold; };
+std::map<int, std::string>	Chest::getItems(void) { return this->_chestItems; };

@@ -218,9 +218,8 @@ Map		Map::display(void) {
 					// Check if chest is already spawn
 					// Tag map as Chest host
 					// Pause Chest Object in quit
-					if (Game::chest == nullptr) {
+					if (Game::chest->isSpawn == 0) {
 						Game::spawnChest = Vector2(x, y);
-						Game::chest = new Chest();
 						Game::chest->spawn();
 					}
 				} else if (elem->getAttribute("spawnDoor") != "") {

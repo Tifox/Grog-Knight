@@ -79,6 +79,7 @@ void	Quit::writeBindings(std::map<std::string, std::list<t_bind *> > binds) {
 				}
 			}
 		}
+		// Yeah yeah, nasty AF.
 		luaFile << "\n;; Controller\n\n\tP1BUTTON_A = +buttonAPressed\n\tP1BUTTON_A = -buttonAReleased\n\tP1BUTTON_B = +buttonBPressed\n\tP1BUTTON_B = -buttonBReleased\n\tP1BUTTON_X = +buttonXPressed\n\tP1BUTTON_X = -buttonXReleased\n\tP1BUTTON_Y = +buttonYPressed\n\tP1BUTTON_Y = -buttonYReleased\n\tP1BUTTON_START = buttonSTARTPressed\n\tP1BUTTON_BACK = buttonBACKPressed\n\tP1BUTTON_RIGHTBUMPER = buttonRBPressed\n\tP1BUTTON_LEFTBUMPER = buttonLBPressed";
 		jsonFile << root << std::endl;
 	}
@@ -95,14 +96,21 @@ int		Quit::isUpper(std::string s) {
 }
 
 void		Quit::doSave(Hero *h) {
-	Json::Value		root;
+	Json::Value		root, chest;
 	std::ofstream	jsonFile;
 	std::stringstream	string;
+	std::map<int, std::string>		items = Game::chest->getItems();
+	std::map<int, std::string>::iterator		it;
 
 	jsonFile.open(".save", std::ofstream::trunc);
-	root["gold"] = h->getGold();
 	root["level"] = h->getLevel();
 	root["key"] = KEY;
+
+   for (it = items.begin(); it != items.end(); it++) {
+		if (it->second != "")
+			root["chest"][std::to_string(it->first)] = it->second;
+	}
+	root["chest"]["gold"] = Game::chest->getGold();
 
 	string << root << std::endl;
 	jsonFile << base64_encode((unsigned char *)string.str().c_str(), string.str().length()) << std::endl;
@@ -126,7 +134,7 @@ std::map<std::string, Json::Value>		Quit::getSave(void) {
 	reader.parse(base64_decode(fileContent), root, false);
 	if (root["key"].asString() != KEY)
 		Quit::cheater();
-	result["gold"] = root["gold"];
+	result["chest"] = root["chest"];
 	result["level"] = root["level"];
 	return result;
 }

@@ -85,6 +85,7 @@ void	Game::start(void) {
 	Game::aList = new ArmorList();
 	Game::rList = new RingList();
 	Game::dList = new DrugList();
+	Game::chest = new Chest();
 
 	this->tooltip = new Tooltip();
 	int i;
@@ -96,7 +97,6 @@ void	Game::start(void) {
 	this->maps = new Maps("Maps/");
 	this->maps->readMaps();
 	Game::currentGame = this;
-	std::map<std::string, Json::Value>	save = Quit::getSave();
 	Hero			*hero = new Hero(Game::menuCharacter->getHeroType());
 
 	LevelGenerator *levelGenerator = new LevelGenerator(4, 3, 60);
@@ -116,14 +116,14 @@ void	Game::start(void) {
 
 	this->displayHero(*(hero));
 	hero->init();
-	hero->setGold(save["gold"].asInt());
-	hero->setLevel(save["level"].asInt());
+	hero->setGold(0);
+	hero->setLevel(this->_save["level"].asInt());
+	Game::chest->applySave(this->_save);
 	this->setHero(hero);
 	this->displayHUD();
 	hero->setStartingValues();
 	Game::started = 1;
 	Game::currentGame = this;
-
 }
 
 void	Game::menuInGame(void) {
@@ -132,6 +132,8 @@ void	Game::menuInGame(void) {
 	InGameMenu	*menu = new InGameMenu();
 	Game::currentGame = this;
 	MenuCharacter	*charac = new MenuCharacter();
+
+	this->_save = Quit::getSave();
 
 	menu->showMaps();
 	charac->setXStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid() - 10);
@@ -543,6 +545,7 @@ void		Game::setHero(Characters * h) { this->_hero = h; };
 Characters*	Game::getHero(void) { return this->_hero; };
 Shopkeeper*	Game::getShopkeeper(void) { return this->_shopkeeper; };
 void		Game::setShopkeeper(Shopkeeper *s) { this->_shopkeeper = s; };
+std::map<std::string, Json::Value>		Game::getSave(void) { return this->_save; };
 
 // Set for the statics
 int Game::currentIds = 0;

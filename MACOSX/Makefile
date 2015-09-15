@@ -45,7 +45,8 @@ SRCS =	../Sources/src/Armor.cpp \
 		../Sources/src/Drug.cpp \
 		../Sources/src/DrugList.cpp \
 		../Sources/src/Chest.cpp \
-		../Sources/src/Door.cpp 
+		../Sources/src/Door.cpp \
+		../Sources/src/ControllerInputManager.cpp
 
 OBJS 	 = $(SRCS:.cpp=.o)
 

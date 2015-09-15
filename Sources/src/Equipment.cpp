@@ -64,6 +64,7 @@ Equipment::Equipment(Weapon *w, Characters* c): Object() {
 	this->addAttribute("type3", "Weapon");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_weapon = new Weapon(w);
+	this->SetLayer(15);
 	this->_ring = nullptr;
 	this->_armor = nullptr;
 	this->_name = w->getName();
@@ -83,6 +84,7 @@ Equipment::Equipment(Armor *w, Characters* c): Object() {
 	this->addAttribute("type3", "Armor");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_armor = new Armor(w);
+	this->SetLayer(15);
 	this->_weapon = nullptr;
 	this->_ring = nullptr;
 	this->_name = w->getName();
@@ -105,6 +107,7 @@ Equipment::Equipment(Ring *w, Characters* c): Object() {
 	this->addAttribute("type3", "Ring");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_ring = new Ring(w);
+	this->SetLayer(15);
 	this->_armor = nullptr;
 	this->_weapon = nullptr;
 	this->_name = w->getName();
@@ -184,6 +187,7 @@ void		Equipment::ReceiveMessage(Message *m) {
 		} else if (this->_weapon != nullptr) {
 			Game::addToDestroyList(this->_weapon);
 		}
+		this->ChangeColorTo(Color(1,1,1,0), 0);
 		Game::addToDestroyList(this);
 	}
 	if (m->GetMessageName() == "setToStatic" + this->GetName()) {

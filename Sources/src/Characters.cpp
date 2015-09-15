@@ -417,10 +417,7 @@ void	Characters::ReceiveMessage(Message *m) {
 	} else if (m->GetMessageName() == "escapePressed") {
 		theSwitchboard.UnsubscribeFrom(this, "escapePressed");
 		Game::toggleMenu = true;
-		theCamera.MoveTo(Vector3(Game::currentGame->getCurrentMap().getXMid(),
-								 Game::currentGame->getCurrentMap().getYMid() + 1.8, 9.001), true);
 		this->subscribeToAll();
-		Game::chest->isUsed = 1;
 		Game::chest->removeInterface();
 	}
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
@@ -764,7 +761,7 @@ void	Characters::_executeAction(int status) {
 		return;
 	}
 	this->_execFlag = 1;
-	if (this->_isTouchingChest == true /*&& Game::chest->isUsed == 0*/) {
+	if (this->_isTouchingChest == true && Game::chest->isUsed() == 0) {
 		theCamera.MoveTo(Vector3(Game::spawnChest.X, Game::spawnChest.Y, 4), true);
 		Game::toggleMenu = false;
 		this->unsubscribeFromAll();

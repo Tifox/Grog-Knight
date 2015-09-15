@@ -286,6 +286,10 @@ void	Weapon::ReceiveMessage(Message *m) {
 		theSwitchboard.UnsubscribeFrom(this, "deleteWeapon");
 		theSwitchboard.Broadcast(new Message("disableAttackHitbox"));
 	}
+	if (m->GetMessageName() == "setToStatic" + this->GetName()) {
+		this->GetBody()->SetType(b2_staticBody);
+
+	}
 }
 
 /* GETTERS */
@@ -309,8 +313,12 @@ void	Weapon::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttribute("type") != "ground") {
 		contact->SetEnabled(false);
 		contact->enableContact = false;
-	} else
-		this->GetBody()->SetGravityScale(0);
+	} else {
+		theSwitchboard.SubscribeTo(this, "setToStatic" + this->GetName());
+		theSwitchboard.Broadcast(new Message("setToStatic" + this->GetName()));
+		this->GetBody()->GetFixtureList()->SetDensity(0);
+		this->GetBody()->ResetMassData();
+	}
 }
 
 void	Weapon::EndContact(Elements *elem, b2Contact *contact) {

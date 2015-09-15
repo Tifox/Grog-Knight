@@ -41,7 +41,7 @@ Shop::Shop(int x, int y, int lvl, int nb) {
 	this->_items = std::vector<std::string>(nb);
 	for (i = 0; i < nb; i++) {
 		std::string item;
-		theSwitchboard.SubscribeTo(this, "deleteShopItem" + i);
+		theSwitchboard.SubscribeTo(this, "deleteShopItem" + std::to_string(i));
 		rant = rand() % 3;
 		if (rant == 0)
 			item = Game::wList->getWeaponRandom(lvl)->getName();

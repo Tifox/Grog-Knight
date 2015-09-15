@@ -1098,7 +1098,7 @@ void	Characters::_pickupItem(int status) {
 	  this->_inventory->addItemToInventory(this->_shopItem);
 	}
 	theSwitchboard.Broadcast(new Message("deleteShopItem" +
-										 this->_shopItemNumber));
+										 std::to_string(this->_shopItemNumber)));
 	theSwitchboard.DeferredBroadcast(new Message("removeShopkeeperText"), 3);
 	this->_shopItem = "";
 	  this->_gold -= this->_shopItemPrice;

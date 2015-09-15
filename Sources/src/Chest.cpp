@@ -25,7 +25,7 @@
 
 #include "Chest.hpp"
 
-Chest::Chest(void): isUsed(0) {
+Chest::Chest(void) {
 //	this->_contains = nullptr;
 	this->SetLayer(10);
 	this->SetDensity(0);
@@ -41,13 +41,14 @@ Chest::Chest(void): isUsed(0) {
 	this->_target = nullptr;
 	this->display();
 	this->_chestItems[0] = this->_chestItems[1] = this->_chestItems[2] = "";
+	this->_isUsed = 0;
 	return;
 }
 
 Chest::~Chest(void) {}
 
 void	Chest::spawn(void) {
-	if (this->isUsed == 0) {
+	if (this->_isUsed == 0) {
 		this->PlaySpriteAnimation(0.4f, SAT_OneShot, 0, 2);
 	}
 }
@@ -99,6 +100,12 @@ void	Chest::removeInterface(void) {
 	for (it = this->_interfaceElem.begin(); it != this->_interfaceElem.end(); it++)
 		theWorld.Remove(*it);
 	theWorld.Remove(this->_target);
+	theCamera.MoveTo(Vector3(Game::currentGame->getCurrentMap().getXMid(),
+		Game::currentGame->getCurrentMap().getYMid() + 1.8, 9.001), true);
+	Game::toggleMenu = true;
+	Game::currentGame->getHero()->subscribeToAll();
+	if (this->_isUsed == 1)
+		this->PlaySpriteAnimation(0.4f, SAT_OneShot, 2, 0);
 }
 
 void	Chest::ReceiveMessage(Message *m) {
@@ -117,23 +124,28 @@ void	Chest::ReceiveMessage(Message *m) {
 		int		i, j;
 
 		for (i = 0, it = this->_choices.begin(); this->_choicePointer != *it; i++, it++);
-		if (this->_chestItems[i] == "") {
+		if (this->_chestItems[i] == "" && Game::currentGame->getHero()->getInventory()->getCurrentFocus() == "")
+				return ;
+		if (this->_chestItems[i] == "" && Game::currentGame->getHero()->getInventory()->getCurrentFocus() != "") {
 			this->_chestItems[i] = Game::currentGame->getHero()->getInventory()->getCurrentFocus();
 			Game::currentGame->getHero()->getInventory()->dropSelectedItem();
+			this->_isUsed = 1;
 		} else if (this->_chestItems[i] != ""
 						&& Game::currentGame->getHero()->getInventory()->getCurrentFocus() != "") {
 			std::string tmp =  Game::currentGame->getHero()->getInventory()->getCurrentFocus();
-			std::string tmp2 = this->_chestItems[i];
+			std::string tmp2 = this->_chestItems[i];	
 			int			focus = Game::currentGame->getHero()->getInventory()->getNumFocus();
 
 			theWorld.Remove(this->_img[i]);
 			Game::currentGame->getHero()->getInventory()->dropSelectedItem();
 			Game::currentGame->getHero()->getInventory()->addItemToInventory(tmp2);
 			this->_chestItems[i] = tmp;
+			this->_isUsed = 1;
 		} else {
 			Game::currentGame->getHero()->getInventory()->addItemToInventory(this->_chestItems[i]);
 			this->_chestItems[i] = "";
 			theWorld.Remove(this->_img[i]);
+			this->_isUsed = 1;
 		}
 		this->updateItems();
 	}
@@ -167,5 +179,12 @@ void	Chest::updateItems(void) {
 			this->_img[it->first] = tmp;
 		}
 	}
-	// Swap, take items, gold
 }
+
+void	Chest::_makeItUsed(void) {
+	this->_isUsed = 1;
+	this->removeInterface();
+	this->PlaySpriteAnimation(0.4f, SAT_OneShot, 2, 0);
+}
+
+int		Chest::isUsed(void) { return this->_isUsed; };

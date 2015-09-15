@@ -34,21 +34,24 @@ class Chest: public Elements {
 		Chest(void);
 		~Chest(void);
 		void		spawn(void);
-		int			isUsed;
 		void		displayInterface(void);
 		void		removeInterface(void);
 		void		displayChestContent(void);
 		void		ReceiveMessage(Message *m);
 		void		makeChoices(void);
 		void		updateItems(void);
+		int			isUsed(void);
 
 	private:
+		void						_makeItUsed(void);
+
 		std::list<HUDActor *>		_interfaceElem;
 		std::map<int, std::string>	_chestItems;
 		std::map<int, HUDActor*>	_img;
 		std::list<HUDActor *>		_choices;
 		HUDActor *					_choicePointer;
 		HUDActor*					_target;
+		int							_isUsed;
 };
 
 # endif

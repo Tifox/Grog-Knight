@@ -62,6 +62,8 @@ Equipment::Equipment(Characters* c): Object() {
 Equipment::Equipment(Weapon *w, Characters* c): Object() {
 	this->addAttribute("type2", "Equipment");
 	this->addAttribute("type3", "Weapon");
+	this->addAttribute("hitbox", "heroHitbox");
+	this->addAttribute("hitboxType", "special");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_weapon = new Weapon(w);
 	this->SetLayer(15);
@@ -82,6 +84,8 @@ Equipment::Equipment(Weapon *w, Characters* c): Object() {
 Equipment::Equipment(Armor *w, Characters* c): Object() {
   	this->addAttribute("type2", "Equipment");
 	this->addAttribute("type3", "Armor");
+	this->addAttribute("hitbox", "heroHitbox");
+	this->addAttribute("hitboxType", "special");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_armor = new Armor(w);
 	this->SetLayer(15);
@@ -103,6 +107,8 @@ Equipment::Equipment(Armor *w, Characters* c): Object() {
 Equipment::Equipment(Ring *w, Characters* c): Object() {
 	this->addAttribute("type2", "Equipment");
 	this->addAttribute("type3", "Ring");
+	this->addAttribute("hitbox", "heroHitbox");
+	this->addAttribute("hitboxType", "special");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_ring = new Ring(w);
 	this->SetLayer(15);
@@ -139,8 +145,7 @@ void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
 	if (elem->getAttribute("type") != "ground") {
 		contact->SetEnabled(false);
 		contact->enableContact = false;
-	} else {
-	std::cout << "set to static" << std::endl;
+	} else if (this->GetBody()->GetWorldCenter().y - 1 > elem->GetBody()->GetWorldCenter().y) {
 	theSwitchboard.SubscribeTo(this, "setToStatic" + this->GetName());
 	theSwitchboard.Broadcast(new Message("setToStatic" + this->GetName()));
 	this->GetBody()->GetFixtureList()->SetDensity(0);

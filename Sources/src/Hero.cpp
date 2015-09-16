@@ -286,42 +286,51 @@ void	Hero::EndContact(Elements *elem, b2Contact *contact) {
  * @todo monster damage should not be hard-written to 25
  */
 void	Hero::_takeDamage(Elements* elem) {
-  this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-  Game::stopRunning(this);
-  this->_isRunning = 0;
-  this->_isLoadingAttack = 0;
-  this->_isAttacking = 0;
-  this->_fullChargedAttack = false;
-  this->_attackPressed = 0;
-  this->_isJump = 1;
-  if (this->getAttribute("class") == "Warrior")
-	  this->changeSizeTo(Vector2(1, 1));
-  if (this->_invincibility == false) {
-	  this->_canMove = 0;
-	  this->setHP(this->getHP() - 25);
-	  theSwitchboard.DeferredBroadcast(new Message("canMove"), 0.4f);
-	  theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1.5f);
-	  Game::getHUD()->life(this->getHP());
-  }
-  if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
-	this->ApplyLinearImpulse(Vector2(4, 4), Vector2(0, 0));
-	this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-							  this->_getAttr("takeDamage", "beginFrame_left").asInt(),
-							  this->_getAttr("takeDamage", "endFrame_left").asInt(),
-							  "takeDamage");
-  }
-  else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x) {
-	this->ApplyLinearImpulse(Vector2(-4, 4), Vector2(0, 0));
-	this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-							  this->_getAttr("takeDamage", "beginFrame_right").asInt(),
-							  this->_getAttr("takeDamage", "endFrame_right").asInt(),
-							  "takeDamage");
-  }
-  this->SetColor(1,0,0,0.8f);
-  theSwitchboard.SubscribeTo(this, "colorDamageBlink1");
-  theSwitchboard.SubscribeTo(this, "colorDamageBlink2");
-  theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
-  this->_invincibility = true;
+	int damage;
+
+	this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+	Game::stopRunning(this);
+	this->_isRunning = 0;
+	this->_isLoadingAttack = 0;
+	this->_isAttacking = 0;
+	this->_fullChargedAttack = false;
+	this->_attackPressed = 0;
+	this->_isJump = 1;
+	if (elem->getAttribute("speType") == "spikes") {
+		damage = 25;
+	} else
+		damage = atoi(this->getAttribute("damage").c_str());
+	damage -= this->buff.dmgReduc;
+	if (damage < 0)
+		damage = 0;
+	if (this->getAttribute("class") == "Warrior")
+		this->changeSizeTo(Vector2(1, 1));
+	if (this->_invincibility == false) {
+		this->_canMove = 0;
+		this->setHP(this->getHP() - damage);
+		theSwitchboard.DeferredBroadcast(new Message("canMove"), 0.4f);
+		theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1.5f);
+		Game::getHUD()->life(this->getHP());
+	}
+	if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
+		this->ApplyLinearImpulse(Vector2(4, 4), Vector2(0, 0));
+		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
+								  this->_getAttr("takeDamage", "beginFrame_left").asInt(),
+								  this->_getAttr("takeDamage", "endFrame_left").asInt(),
+								  "takeDamage");
+	}
+	else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x) {
+		this->ApplyLinearImpulse(Vector2(-4, 4), Vector2(0, 0));
+		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
+								  this->_getAttr("takeDamage", "beginFrame_right").asInt(),
+								  this->_getAttr("takeDamage", "endFrame_right").asInt(),
+								  "takeDamage");
+	}
+	this->SetColor(1,0,0,0.8f);
+	theSwitchboard.SubscribeTo(this, "colorDamageBlink1");
+	theSwitchboard.SubscribeTo(this, "colorDamageBlink2");
+	theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
+	this->_invincibility = true;
 }
 
 void	Hero::setStartingValues(void) {

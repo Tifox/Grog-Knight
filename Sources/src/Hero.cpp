@@ -306,8 +306,6 @@ void	Hero::_takeDamage(Elements* elem) {
 	if (this->getAttribute("class") == "Warrior")
 		this->changeSizeTo(Vector2(1, 1));
 	if (this->_invincibility == false) {
-		std::cout << damage << std::endl;
-		std::cout << this->buff.dmgReduc << std::endl;
 		this->_canMove = 0;
 		this->setHP(this->getHP() - damage);
 		theSwitchboard.DeferredBroadcast(new Message("canMove"), 0.4f);

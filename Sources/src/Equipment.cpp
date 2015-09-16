@@ -95,8 +95,6 @@ Equipment::Equipment(Armor *w, Characters* c): Object() {
 	this->SetName("loot");
 	if (w->getAttribute("hpBuff") != "")
 		this->addAttribute("hpBuff", w->getAttribute("hpBuff"));
-	if (w->getAttribute("manaBuff") != "")
-		this->addAttribute("manaBuff", w->getAttribute("manaBuff"));
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	Game::bodiesToCreate.push_back(this);
@@ -118,8 +116,6 @@ Equipment::Equipment(Ring *w, Characters* c): Object() {
 	this->SetName("loot");
 	if (w->getAttribute("hpBuff") != "")
 		this->addAttribute("hpBuff", w->getAttribute("hpBuff"));
-	if (w->getAttribute("manaBuff") != "")
-		this->addAttribute("manaBuff", w->getAttribute("manaBuff"));
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	Game::bodiesToCreate.push_back(this);

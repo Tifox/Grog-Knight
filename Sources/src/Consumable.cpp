@@ -90,8 +90,6 @@ Consumable::Consumable(std::string type, std::string value, Characters* c) {
 		this->SetSprite("Resources/Images/heart.png");
 	else if (type == "gold")
 		this->SetSprite("Resources/Images/gold.png");
-	else
-		this->SetSprite("Resources/Images/mana.png");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	Game::bodiesToCreate.push_back(this);
 }

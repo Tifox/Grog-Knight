@@ -111,7 +111,7 @@ void	Game::start(void) {
 	Game::currentX = levelGenerator->getStartX();
 	Game::currentY = levelGenerator->getStartY();
 	theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
-						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 29.001);
+						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 9.001);
 	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 
 	this->displayHero(*(hero));
@@ -530,7 +530,6 @@ void		Game::reloadingHUD(void) {
 		Game::getHUD()->minimap();
 		Game::getHUD()->life(this->getHero()->getHP());
 		Game::getHUD()->bag();
-		Game::getHUD()->mana(this->getHero()->getMana());
 		Game::getHUD()->items(this->getHero()->getWeapon());
 		Game::getHUD()->items(this->getHero()->getArmor());
 		Game::getHUD()->items(this->getHero()->getRing());

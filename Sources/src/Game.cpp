@@ -99,6 +99,8 @@ void	Game::start(void) {
 	Game::currentGame = this;
 	Hero			*hero = new Hero(Game::menuCharacter->getHeroType());
 
+	theWorld.Remove(Game::menuCharacter);
+	theWorld.GetPhysicsWorld().DestroyBody(Game::menuCharacter->GetBody());
 	LevelGenerator *levelGenerator = new LevelGenerator(4, 3, 60);
 	levelGenerator->execute();
 	this->_tmpMap = levelGenerator->getLevel();
@@ -130,7 +132,9 @@ void	Game::menuInGame(void) {
 	theWorld.SetBackgroundColor(*(new Color(0, 0, 0)));
 
 	InGameMenu	*menu = new InGameMenu();
-	Game::currentGame = this;
+	Game::endGame = false;
+	if (Game::currentGame == nullptr)
+		Game::currentGame = this;
 	MenuCharacter	*charac = new MenuCharacter();
 
 	this->_save = Quit::getSave();
@@ -142,7 +146,8 @@ void	Game::menuInGame(void) {
 						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 18.502), 1, true, "moveMenu");
 	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 	charac->display();
-	Game::addHUDWindow(new HUDWindow());
+	if (Game::getHUD() == nullptr)
+		Game::addHUDWindow(new HUDWindow());
 	this->setHero(static_cast<Characters *>(charac));
 	Game::started = 1;
 	Game::isInMenu = 1;
@@ -361,6 +366,15 @@ void	Game::endingGame(void) {
 		}
 	}
 	Game::elementMap.clear();
+	Game::getHUD()->removeText("YOU ARE DEAD");
+	theWorld.ResumePhysics();
+	theWorld.Remove(Game::currentGame->getHero()->getGhost());
+	theWorld.GetPhysicsWorld().DestroyBody(Game::currentGame->getHero()->GetBody());
+	theWorld.Remove(Game::currentGame->getHero());
+	Game::currentGame->setHero(nullptr);
+	Game::ended = false;
+	Game::endGame = false;
+	Game::menuInGame();
 }
 
 //! Intern callback for destroying an element.
@@ -376,15 +390,18 @@ bool	Game::destroyAllBodies(void) {
 	if (Game::endGame == true) {
 		Game::ended = true;
 		theWorld.PausePhysics();
-		int i;
+		int i, j = 0;
 		Game::getHUD()->setText("YOU ARE DEAD", 400, 400, Vector3(1, 0, 0), 1, "dead");
 		Game::getHUD()->clearHUD();
 		for (i = 0; i < Game::elementMap.size(); i++) {
 			if (Game::elementMap[i] && Game::elementMap[i]->getAttribute("type") != "Hero") {
-				Game::elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1, "PauseGame");
+				if (j++ == 0)
+					theSwitchboard.DeferredBroadcast(new Message("PauseGame"), 1);
+				else
+					Game::elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1);
 				if (Game::elementMap[i]->getAttribute("physic") != "") {
 					if (Game::elementMap[i]->GetBody() != 0)
-					theWorld.GetPhysicsWorld().DestroyBody((Game::elementMap[i])->GetBody());
+						theWorld.GetPhysicsWorld().DestroyBody((Game::elementMap[i])->GetBody());
 				}
 			}
 		}
@@ -507,6 +524,8 @@ void	Game::removeHUDWindow(HUDWindow *w) {
  * assuming this object is the first added to the list.
  */
 HUDWindow	*Game::getHUD(void) {
+	if (Game::windows.size() == 0)
+		return nullptr;
 	return Game::windows.front();
 }
 

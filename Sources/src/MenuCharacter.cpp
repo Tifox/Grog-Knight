@@ -98,9 +98,7 @@ void	MenuCharacter::trigger(std::string name, int status) {
 			this->_closeCloset();
 		}
 	} else if (name == "startGame") {
-		theSwitchboard.UnsubscribeFrom(this, "chooseEquipment");
-		theSwitchboard.UnsubscribeFrom(this, "returnPressed");
-		theSwitchboard.UnsubscribeFrom(this, "enterPressed");
+		this->unsubscribeFromAll();
 		Game::isInMenu = 0;
 		Game::menuCharacter = this;
 		Game::asToStart = 1;

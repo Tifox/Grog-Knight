@@ -81,12 +81,12 @@ void	Menu::showMenu(Game *game) {
 void	Menu::ReceiveMessage(Message *m) {
 	std::list<std::string>::iterator	it;
 
+	if (m->GetMessageName() == "PauseGame")
+		Game::currentGame->endingGame();
 	if (Game::toggleMenu == false)
 		return;
 	if (m->GetMessageName() == "moveMenu")
 		this->_background_map->destroyMap();
-	else if (m->GetMessageName() == "PauseGame")
-		Game::currentGame->endingGame();
 	if (this->_inMenu == 1) {
 		if (m->GetMessageName() == "enterPressed") {
 			if (this->_currentChoice == "Start Game") {

@@ -49,3 +49,4 @@ void	InGameMenu::showMaps(void) {
 	Game::currentY = 0;
 	Game::currentX = 0;
 }
+

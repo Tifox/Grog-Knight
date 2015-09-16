@@ -1315,6 +1315,7 @@ void						Characters::_heroDeath(void) {
 	ghost->SetLayer(101);
 	theWorld.Add(ghost);
 	ghost->PlaySpriteAnimation(0.2f, SAT_OneShot, 0, 10, "ghost");
+	this->_ghost = ghost;
 }
 
 /**
@@ -1353,6 +1354,7 @@ Elements*					Characters::getItem(void) { return this->_item; }
 int							Characters::getHP(void) { return this->_hp; };
 int							Characters::getMaxHP(void) { return this->_maxHp; };
 int							Characters::getGold(void) { return this->_gold; };
+Actor						*Characters::getGhost(void) { return this->_ghost; };
 void						Characters::setGold(int n) { this->_gold = n; };
 void						Characters::setLevel(int n) { this->_level = n; };
 void						Characters::changeCanMove(void) { this->_canMove = (this->_canMove ? false : true); };

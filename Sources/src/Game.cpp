@@ -374,7 +374,7 @@ void	Game::endingGame(void) {
 	Game::currentGame->setHero(nullptr);
 	Game::ended = false;
 	Game::endGame = false;
-	Game::menuInGame();
+	Game::deadWaiting = true;
 }
 
 //! Intern callback for destroying an element.
@@ -618,3 +618,4 @@ Vector2						Game::spawnChest = Vector2();
 Chest						*Game::chest = nullptr;
 bool						Game::toggleMenu = true;
 bool						Game::stopPattern = false;
+bool						Game::deadWaiting = false;

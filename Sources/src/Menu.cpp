@@ -83,6 +83,8 @@ void	Menu::ReceiveMessage(Message *m) {
 
 	if (m->GetMessageName() == "PauseGame")
 		Game::currentGame->endingGame();
+	if (m->GetMessageName() == "enterPressed" && Game::deadWaiting)
+		Game::currentGame->menuInGame();
 	if (Game::toggleMenu == false)
 		return;
 	if (m->GetMessageName() == "moveMenu")

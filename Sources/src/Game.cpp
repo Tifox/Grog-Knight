@@ -372,6 +372,7 @@ bool	Game::destroyAllBodies(void) {
 			if (Game::elementMap[i] && Game::elementMap[i]->getAttribute("type") != "Hero") {
 				Game::elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1, "PauseGame");
 				if (Game::elementMap[i]->getAttribute("physic") != "") {
+					if (Game::elementMap[i]->GetBody() != 0)
 					theWorld.GetPhysicsWorld().DestroyBody((Game::elementMap[i])->GetBody());
 				}
 				theWorld.Remove(Game::elementMap[i]);

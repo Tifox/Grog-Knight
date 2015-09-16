@@ -84,7 +84,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_isDisengaging = false;
 	this->buff.bonusDmg = 0;
 	this->buff.bonusSpeed = 0;
-//	this->buff.dmgReduc = 0;
+	this->buff.dmgReduc = 0;
 }
 
 //! Basic destructor

@@ -195,6 +195,19 @@ void	HUDWindow::removeText(std::string str) {
 	}
 }
 
+void	HUDWindow::updateText(std::string org, std::string newStr) {
+	std::list<HUDWindow::Text *>::iterator	i;
+
+	for (i = this->_text.begin(); i != this->_text.end(); i++) {
+		if ((*i)->str == org)
+			break ;
+	}
+	if (i != this->_text.end()) {
+		(*i)->str = newStr;
+	}
+
+}
+
 //! Remove a text with an object
 /**
  * Remove a text from the screen with a HUDWindow::Text

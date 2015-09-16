@@ -35,6 +35,7 @@ Menu::Menu(void) : _currentChoice("Start Game"), _fadeActor(nullptr) {
 	theSwitchboard.SubscribeTo(this, "deletePressed");
 	theSwitchboard.SubscribeTo(this, "escapePressed");
 	theSwitchboard.SubscribeTo(this, "moveMenu");
+	theSwitchboard.SubscribeTo(this, "PauseGame");
 }
 
 //! Basic destructor
@@ -84,6 +85,8 @@ void	Menu::ReceiveMessage(Message *m) {
 		return;
 	if (m->GetMessageName() == "moveMenu")
 		this->_background_map->destroyMap();
+	else if (m->GetMessageName() == "PauseGame")
+		Game::currentGame->endingGame();
 	if (this->_inMenu == 1) {
 		if (m->GetMessageName() == "enterPressed") {
 			if (this->_currentChoice == "Start Game") {

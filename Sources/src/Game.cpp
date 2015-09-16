@@ -353,6 +353,16 @@ void	Game::addToDestroyList(Elements *m) {
 	Game::bodiesToDestroy.push_back(m);
 }
 
+void	Game::endingGame(void) {
+	int		i;
+	for (i = 0; i < Game::elementMap.size(); i++) {
+		if (Game::elementMap[i] && Game::elementMap[i]->getAttribute("type") != "Hero") {
+			theWorld.Remove(Game::elementMap[i]);
+		}
+	}
+	Game::elementMap.clear();
+}
+
 //! Intern callback for destroying an element.
 /**
  * Called after each tick() in order to destroy all elements set to destroy.
@@ -368,6 +378,7 @@ bool	Game::destroyAllBodies(void) {
 		theWorld.PausePhysics();
 		int i;
 		Game::getHUD()->setText("YOU ARE DEAD", 400, 400, Vector3(1, 0, 0), 1, "dead");
+		Game::getHUD()->clearHUD();
 		for (i = 0; i < Game::elementMap.size(); i++) {
 			if (Game::elementMap[i] && Game::elementMap[i]->getAttribute("type") != "Hero") {
 				Game::elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1, "PauseGame");
@@ -375,10 +386,8 @@ bool	Game::destroyAllBodies(void) {
 					if (Game::elementMap[i]->GetBody() != 0)
 					theWorld.GetPhysicsWorld().DestroyBody((Game::elementMap[i])->GetBody());
 				}
-				theWorld.Remove(Game::elementMap[i]);
 			}
 		}
-		Game::elementMap.clear();
 		return true;
 	} else {
 		for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {

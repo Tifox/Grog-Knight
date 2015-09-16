@@ -9,7 +9,8 @@
 		"hitboxType": "special",
 		"hitbox": "enemyHitbox",
 		"level": 1,
-		"flying": false
+		"flying": false,
+		"damage": "20"
 	},
 	"Actions": {
 		"breath": {

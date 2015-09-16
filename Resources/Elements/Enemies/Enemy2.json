@@ -9,7 +9,8 @@
 		"hitboxType": "special",
 		"hitbox": "enemyHitbox",
 		"level": 2,
-		"flying": true
+		"flying": true,
+		"damage": "25"
 	},
 	"Actions": {
 		"breath": {
@@ -18,19 +19,19 @@
 				"beginFrame_left": 0,
 				"endFrame_left": 6,
 				"time": 0.05
-			},
+		},
 		"jump": {
 				"beginFrame": 1,
 				"endFrame": 4,
 				"time": 0.1
-			},
+		},
 		"loot": {
 				"consumableRate": 50,
 				"equipmentRate": 25,
 				"HPReward": 25,
 				"XPReward": 20,
 				"EqReward": 2
-			},
+		},
 		"death": {
 				"newSprites": "Resources/Images/Explosion/explode_000.png",
 				"beginFrame": 0,
@@ -43,13 +44,13 @@
 				"endFrame": 6,
 				"time": 0.05,
 				"force": 3
-			},
-	"backward": {
+		},
+		"backward": {
 				"beginFrame": 0,
 				"endFrame": 6,
 				"time": 0.05,
 				"force": 3
-			}
+		}
 
 	}
 }

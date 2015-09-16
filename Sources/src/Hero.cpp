@@ -299,13 +299,14 @@ void	Hero::_takeDamage(Elements* elem) {
 	if (elem->getAttribute("speType") == "spikes") {
 		damage = 25;
 	} else
-		damage = atoi(this->getAttribute("damage").c_str());
+		damage = atoi(elem->getAttribute("damage").c_str());
 	damage -= this->buff.dmgReduc;
 	if (damage < 0)
 		damage = 0;
 	if (this->getAttribute("class") == "Warrior")
 		this->changeSizeTo(Vector2(1, 1));
 	if (this->_invincibility == false) {
+		std::cout << damage << std::endl;
 		this->_canMove = 0;
 		this->setHP(this->getHP() - damage);
 		theSwitchboard.DeferredBroadcast(new Message("canMove"), 0.4f);

@@ -99,18 +99,29 @@ void		Quit::doSave(Hero *h) {
 	Json::Value		root, chest;
 	std::ofstream	jsonFile;
 	std::stringstream	string;
-	std::map<int, std::string>		items = Game::chest->getItems();
+	std::map<int, std::string>		items;
 	std::map<int, std::string>::iterator		it;
+
+	if (Game::currentGame->getSave().size() == 0)
+		return ;
+
+	if (Game::chest != nullptr)
+		items = Game::chest->getItems();
+	else {
+		root["chest"] = Game::currentGame->getSave()["chest"];
+	}
 
 	jsonFile.open(".save", std::ofstream::trunc);
 	root["level"] = h->getLevel();
 	root["key"] = KEY;
 
-   for (it = items.begin(); it != items.end(); it++) {
-		if (it->second != "")
-			root["chest"][std::to_string(it->first)] = it->second;
+	if (Game::chest != nullptr) {
+		for (it = items.begin(); it != items.end(); it++) {
+			if (it->second != "")
+				root["chest"][std::to_string(it->first)] = it->second;
+		}
+		root["chest"]["gold"] = Game::chest->getGold();
 	}
-	root["chest"]["gold"] = Game::chest->getGold();
 
 	string << root << std::endl;
 	jsonFile << base64_encode((unsigned char *)string.str().c_str(), string.str().length()) << std::endl;

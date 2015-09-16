@@ -425,8 +425,7 @@ void	Characters::ReceiveMessage(Message *m) {
 			status = (m->GetMessageName().substr(strlen(attrName.c_str()), 7) == "Pressed" ? 1 : 0);
 			if (this->_actionFlag == false && status == 1)
 				return;
-			else if (status == 1)
-				this->_actionFlag = false;
+			this->_actionFlag = false;
 			if (this->_canMove == false)
 				return;
 			if (attrName == "forward") {
@@ -816,6 +815,9 @@ void	Characters::_executeAction(int status) {
 void	Characters::_forward(int status) {
 	this->_setCategory("forward");
 	if (status == 1) {
+		if (this->_forwardFlag == true)
+			return;
+		this->_forwardFlag = true;
 		this->_orientation = RIGHT;
 		this->_latOrientation = RIGHT;
 		if ((this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() ||
@@ -852,6 +854,9 @@ void	Characters::_forward(int status) {
 		if (!this->_isJump && !this->_isAttacking && this->_isDashing == false)
 			this->AnimCallback("base");
 	} else {
+		if (this->_forwardFlag == true)
+			return;
+		this->_forwardFlag = true;
 		if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed != this->_getAttr("forward", "force").asInt() * -2)
 			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
 		else if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed == this->_getAttr("forward", "force").asInt() * -2)
@@ -870,6 +875,9 @@ void	Characters::_forward(int status) {
 void	Characters::_backward(int status) {
 	this->_setCategory("backward");
 	if (status == 1) {
+		if (this->_backwardFlag == true)
+			return;
+		this->_backwardFlag = true;
 		if (this->getAttribute("type") == "Hero") {
 			this->_orientation = LEFT;
 			this->_latOrientation = LEFT;
@@ -907,6 +915,9 @@ void	Characters::_backward(int status) {
 		if (!this->_isJump && !this->_isAttacking && !this->_isDashing) 
 			this->AnimCallback("base");
 	} else {
+		if (this->_backwardFlag == true)
+			return;
+		this->_backwardFlag = true;
 		if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed != this->_getAttr("forward", "force").asInt() * -2)
 			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
 		else if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed == this->_getAttr("forward", "force").asInt() * -2)
@@ -1134,8 +1145,6 @@ void	Characters::_specialMove(int status) {
 			this->_totemDeletionSent = 1;
 			theSwitchboard.SubscribeTo(this, "removeTotem");
 			theSwitchboard.DeferredBroadcast(new Message("removeTotem"), 3);
-	}
-	if (status == 0) {
 		if (this->_speMove == "dash")
 			this->_eqMove->_dash();
 		else if (this->_speMove == "charge")
@@ -1146,7 +1155,13 @@ void	Characters::_specialMove(int status) {
 			this->_eqMove->_blink();
 		else if (this->_speMove == "fly")
 			this->_eqMove->_fly();
-		else if (this->_speMove == "totem") {
+		else if (this->_speMove == "shunpo")
+			this->_eqMove->_shunpo();
+		else if (this->_speMove == "disengage")
+			this->_eqMove->_disengage();
+	}
+	if (status == 0) {
+		if (this->_speMove == "totem") {
 			this->_totemDeletionSent = 0;
 			theSwitchboard.UnsubscribeFrom(this, "removeTotem");
 			if (this->_totemPlaced == 0)
@@ -1154,10 +1169,6 @@ void	Characters::_specialMove(int status) {
 			else
 				this->_totemPlaced = 0;
 		}
-		else if (this->_speMove == "shunpo")
-			this->_eqMove->_shunpo();
-		else if (this->_speMove == "disengage")
-			this->_eqMove->_disengage();
 	}
 }
 

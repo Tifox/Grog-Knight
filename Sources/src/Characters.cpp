@@ -84,6 +84,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_isDisengaging = false;
 	this->buff.bonusDmg = 0;
 	this->buff.bonusSpeed = 0;
+//	this->buff.dmgReduc = 0;
 }
 
 //! Basic destructor
@@ -148,7 +149,8 @@ void	Characters::_parseJson(std::string file) {
 	this->_hitboxType = json["infos"].get("hitboxType", "").asString();
 	this->_hitbox = json["infos"].get("hitbox", "").asString();
 	this->addAttribute("spritesFrame", json["infos"].get("sprites", "").asString());
-
+	if (json["infos"].get("damage", "").isConvertibleTo(Json::ValueType::stringValue))
+		this->addAttribute("damage", json["infos"].get("damage", "").asString());
 	for (i = json["Actions"].begin(); i != json["Actions"].end(); i++) {
 		for (v = (*i).begin(); v != (*i).end(); v++) {
 			tmp[v.key().asString()] = (*v);

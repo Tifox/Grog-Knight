@@ -56,6 +56,7 @@ class HUDTargeting;
 typedef struct s_buff {
   		int bonusDmg;
   		int bonusSpeed;
+		int dmgReduc;
 }				t_buff;
 
 class Characters : public Elements {

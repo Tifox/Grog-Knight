@@ -58,7 +58,6 @@ class Tooltip : public MessageListener {
 		std::string 		_flavor;
 		std::string 		_talk;
 		std::string 		_hp;
-		std::string 		_mana;
 		std::string 		_val;
 		Elements			*_lastElem;
 };

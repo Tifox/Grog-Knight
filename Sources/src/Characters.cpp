@@ -142,10 +142,6 @@ void	Characters::_parseJson(std::string file) {
 	this->_hp = json["infos"].get("HP", "").asInt();
 	if (json["infos"].get("maxHP", "").isConvertibleTo(Json::ValueType::intValue))
 		this->_maxHp = json["infos"].get("maxHP", "").asInt();
-	if (json["infos"].get("mana", "").isConvertibleTo(Json::ValueType::intValue))
-		this->_mana = json["infos"].get("mana", "").asInt();
-	if (json["infos"].get("maxMana", "").isConvertibleTo(Json::ValueType::intValue))
-		this->_maxMana = json["infos"].get("maxMana", "").asInt();
 	this->_hitboxType = json["infos"].get("hitboxType", "").asString();
 	this->_hitbox = json["infos"].get("hitbox", "").asString();
 	this->addAttribute("spritesFrame", json["infos"].get("sprites", "").asString());
@@ -1194,14 +1190,9 @@ void	Characters::equipArmor(Armor* armor) {
 	if (this->_armor->getAttribute("hpBuff") != ""){
 		this->_maxHp += std::stoi(this->_armor->getAttribute("hpBuff"));
 	}
-	if (this->_armor->getAttribute("manaBuff") != ""){
-		this->_maxMana += std::stoi(this->_armor->getAttribute("manaBuff"));
-	}
 	Game::getHUD()->items(this->_armor);
 	Game::getHUD()->setMaxHP(this->_maxHp);
 	Game::getHUD()->life(this->_hp);
-	Game::getHUD()->setMaxMana(this->_maxMana);
-	Game::getHUD()->mana(this->_mana);
 }
 
 //! Unequip a armor
@@ -1216,16 +1207,9 @@ void	Characters::unequipArmor(void) {
 		if (this->_hp > this->_maxHp)
 			this->_hp = this->_maxHp;
 	}
-	if (this->_armor->getAttribute("manaBuff") != "") {
-		this->_maxMana -= std::stoi(this->_armor->getAttribute("manaBuff"));
-		if (this->_mana > this->_maxMana)
-			this->_mana = this->_maxMana;
-	}
 	Game::getHUD()->items(this->_armor);
 	Game::getHUD()->setMaxHP(this->_maxHp);
 	Game::getHUD()->life(this->_hp);
-	Game::getHUD()->setMaxMana(this->_maxMana);
-	Game::getHUD()->mana(this->_mana);
 }
 
 //! Equip a ring
@@ -1238,14 +1222,9 @@ void	Characters::equipRing(Ring* ring) {
 	if (this->_ring->getAttribute("hpBuff") != "") {
 		this->_maxHp += std::stoi(this->_ring->getAttribute("hpBuff"));
 	}
-	if (this->_ring->getAttribute("manaBuff") != "") {
-		this->_maxMana += std::stoi(this->_ring->getAttribute("manaBuff"));
-	}
 	Game::getHUD()->items(this->_ring);
 	Game::getHUD()->setMaxHP(this->_maxHp);
 	Game::getHUD()->life(this->_hp);
-	Game::getHUD()->setMaxMana(this->_maxMana);
-	Game::getHUD()->mana(this->_mana);
 }
 
 //! Unequip a ring
@@ -1260,11 +1239,6 @@ void	Characters::unequipRing(void) {
 		if (this->_hp > this->_maxHp)
 			this->_hp = this->_maxHp;
 	}
-	if (this->_ring->getAttribute("manaBuff") != "") {
-		this->_maxMana -= std::stoi(this->_ring->getAttribute("manaBuff"));
-		if (this->_mana > this->_maxMana)
-			this->_mana = this->_maxMana;
-	}
 }
 
 //! Set basics hp
@@ -1278,18 +1252,6 @@ void						Characters::setHP(int hp) {
 	else
 		this->_hp = hp;
 	Game::getHUD()->life(this->_hp);
-};
-
-//! Set basics mana
-/**
- * Set Mana to the Character.
- * @param mana The Mana number
- */
-void						Characters::setMana(int mana) {
-	if (mana > this->_maxMana)
-		this->_mana = this->_maxMana;
-	else
-		this->_mana = mana;
 };
 
 //! Set invincibility
@@ -1377,8 +1339,6 @@ Characters::Orientation		Characters::getOrientation(void) { return this->_orient
 std::string					Characters::getLastAction(void) { return this->_lastAction; };
 Elements*					Characters::getItem(void) { return this->_item; }
 int							Characters::getHP(void) { return this->_hp; };
-int							Characters::getMana(void) { return this->_mana; };
-int							Characters::getMaxMana(void) { return this->_maxMana; };
 int							Characters::getMaxHP(void) { return this->_maxHp; };
 int							Characters::getGold(void) { return this->_gold; };
 void						Characters::setGold(int n) { this->_gold = n; };

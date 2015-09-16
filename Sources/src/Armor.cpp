@@ -52,8 +52,6 @@ Armor::Armor(Armor* Armor) {
 	this->_lootLevel = Armor->getLootLevel();
 	if (Armor->getAttribute("hpBuff") != "")
 		this->addAttribute("hpBuff", Armor->getAttribute("hpBuff"));
-	if (Armor->getAttribute("manaBuff") != "")
-		this->addAttribute("manaBuff", Armor->getAttribute("manaBuff"));
 }
 
 

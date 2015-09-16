@@ -72,7 +72,6 @@ class	HUDWindow : public HUDActor {
 		HUDActor	*addImage(std::string path, int x, int y, float size, int layer);
 		HUDActor	*addImage(std::string path, int x, int y, Vector2 size, int layer);
 		void	life(int l);
-		void	mana(int mana);
 		void	gold(int g);
 		void	updateGold(int gold);
 		void	items(Weapon *w);
@@ -83,7 +82,6 @@ class	HUDWindow : public HUDActor {
 		void	consumable(std::map<int, std::string> m);
 		void	minimap(void);
 		void	setGame(Game *);
-		void	setMaxMana(int m);
 		void	setMaxHP(int h);
 		void	bag(void);
 		void	initMinimapBackground(void);
@@ -102,14 +100,12 @@ class	HUDWindow : public HUDActor {
 	private:
 		Game		*_g;
 		std::list<HUDActor *>	_hearts;
-		std::list<HUDActor *>	_mana;
 		std::list<HUDActor *>	_bag;
 		std::list<HUDActor *>	_minimap;
 		std::map<std::string, Elements*>		_dialog;
 		std::list<HUDWindow::Text *>	_text;
 		std::list<HUDActor *>	_allElems;
 		HUDWindow::Text	*		_gold;
-		int						_maxMana;
 		int						_maxHP;
 		std::list<HUDActor *>	_bigMapList;
 		HUDActor				*_currentObjectMap;

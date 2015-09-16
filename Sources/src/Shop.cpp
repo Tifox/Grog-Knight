@@ -93,8 +93,6 @@ Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
 		this->addAttribute("type3", "Weapon");
 		if (Game::wList->getWeapon(name)->getAttribute("hpBuff") != "")
 			this->addAttribute("hpBuff", Game::wList->getWeapon(name)->getAttribute("hpBuff"));
-		if (Game::wList->getWeapon(name)->getAttribute("manaBuff") != "")
-			this->addAttribute("manaBuff", Game::wList->getWeapon(name)->getAttribute("manaBuff"));
 	}
 	else if (Game::aList->checkExists(name) == 1) {
 		this->SetSprite(Game::aList->getArmor(name)->getSprite());
@@ -102,8 +100,6 @@ Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
 		this->addAttribute("flavor", Game::aList->getArmor(name)->getFlavor());
 		if (Game::aList->getArmor(name)->getAttribute("hpBuff") != "")
 			this->addAttribute("hpBuff", Game::aList->getArmor(name)->getAttribute("hpBuff"));
-		if (Game::aList->getArmor(name)->getAttribute("manaBuff") != "")
-			this->addAttribute("manaBuff", Game::aList->getArmor(name)->getAttribute("manaBuff"));
   }
 	else if (Game::rList->checkExists(name) == 1) {
 		this->addAttribute("flavor", Game::rList->getRing(name)->getFlavor());
@@ -111,8 +107,6 @@ Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
 		this->SetSprite(Game::rList->getRing(name)->getSprite());
 		if (Game::rList->getRing(name)->getAttribute("hpBuff") != "")
 			this->addAttribute("hpBuff", Game::rList->getRing(name)->getAttribute("hpBuff"));
-		if (Game::rList->getRing(name)->getAttribute("manaBuff") != "")
-			this->addAttribute("manaBuff", Game::rList->getRing(name)->getAttribute("manaBuff"));
 	}
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	this->SetIsSensor(true);

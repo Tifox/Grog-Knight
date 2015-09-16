@@ -530,7 +530,6 @@ void		Game::reloadingHUD(void) {
 		Game::getHUD()->minimap();
 		Game::getHUD()->life(this->getHero()->getHP());
 		Game::getHUD()->bag();
-		Game::getHUD()->mana(this->getHero()->getMana());
 		Game::getHUD()->items(this->getHero()->getWeapon());
 		Game::getHUD()->items(this->getHero()->getArmor());
 		Game::getHUD()->items(this->getHero()->getRing());

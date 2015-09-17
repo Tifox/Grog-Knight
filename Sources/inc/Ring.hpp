@@ -48,19 +48,23 @@ public:
 	void			ReceiveMessage(Message *m);
 
 	std::string		getName(void);
+	std::string		getDisplayName(void);
 	std::string		getType(void);
 	std::string		getFlavor(void);
 	std::string		getSprite(void);
 	int				getLootLevel(void);
+	int				getPrice(void);
 
 private:
 	std::map<std::string, std::map<std::string, Json::Value> >	_attr;
 
 	std::string		_name;
+	std::string		_displayName;
 	std::string		_type;
 	std::string		_flavor;
 	std::string		_sprite;
 	int				_lootLevel;
+	int				_price;
 	void			_readFile(std::string name);
 	void			_parseJson(std::string file);
 

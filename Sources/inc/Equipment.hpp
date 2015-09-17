@@ -47,12 +47,16 @@ public:
 	void		EndContact(Elements *elem, b2Contact *contact);
 	void		ReceiveMessage(Message* m);
 	virtual std::string		getName();
+	virtual	int				getPrice();
 private:
 	Weapon*			_weapon;
 	Armor*			_armor;
 	Ring*			_ring;
 	std::string		_name;
 	std::string 	_flavor;
+	std::string		_displayName;
+	std::string 	_equipable;
+	int			 	_price;
 };
 
 #endif

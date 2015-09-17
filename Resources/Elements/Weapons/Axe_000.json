@@ -1,38 +1,20 @@
 {
     "infos": {
    	    "name": "Axe_000",
+		"displayName": "Sexy Axe",
 		"flavor": "Look at my axe\nMy axe is amazing\nGive it a lick",
+		"equipable": "Warrior",
 		"type": "Axe",
 		"hitbox": "SWORD",
+		"price": 10,
 		"size": 1,
-		"lvlRequired": 1,
 	 	"critRate": 5,
 		"damage": 5,
 		"recovery": 1,
 		"pushback": 5,
 		"active": 0.2,
 		"attack": "melee",
-		"combo": true,
 		"sprites": "Resources/Images/Weapons/Axe_000.png",
-		"heroAnim": "sword_anim_1",
 		"lootLevel": 1
-	},
-	"combo": {
-		"1": {
-			"damage": 10,
-			"particule": "entrecote",
-			"heroAnim": "sword_anim_2"
-		},
-		"2": {
-			"damage": 100,
-			"specialEffect": "stunSpecial",
-			"heroAnim": "sword_anim_3"
-		}
-	},
-	"capacities": {
-		"stunSpecial": {
-			"duration": 1,
-			"particule": "boom"
-		}
 	}
 }

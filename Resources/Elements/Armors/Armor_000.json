@@ -1,8 +1,9 @@
 {
     "infos": {
    	    "name": "Armor_000",
+		"displayName": "Stick Armor",
 		"flavor": "Hey look, its a ARMOR.\nA pretty shitty one actually...",
-		"lvlRequired": 1,
+		"price": 10,
 		"sprites": "Resources/Images/Armors/Armor_000.png",
 		"lootLevel": 1
 	},

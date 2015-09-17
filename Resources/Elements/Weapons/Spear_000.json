@@ -1,10 +1,10 @@
 {
     "infos": {
-   	    "name": "Sword_000",
-		"displayName": "Sharp Sword",
-		"flavor": "Hey look, its a sword.\nA pretty shitty one actually...",
-		"type": "Sword",
+   	    "name": "Spear_000",
+		"displayName": "Light Spear",
+		"flavor": "Really not heavy\nDoes it actually hurts?",
 		"equipable": "Warrior",
+		"type": "Spear",
 		"price": 10,
 		"hitbox": "SWORD",
 		"size": 1,
@@ -14,7 +14,7 @@
 		"pushback": 5,
 		"active": 0.2,
 		"attack": "melee",
-		"sprites": "Resources/Images/Weapons/Sword_000.png",
+		"sprites": "Resources/Images/Weapons/Spear_000.png",
 		"lootLevel": 1
 	}
 }

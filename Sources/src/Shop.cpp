@@ -38,17 +38,42 @@ Shop::Shop(int x, int y, int lvl, int nb) {
 	int i;
 	int j;
 	int rant;
+	int rant2;
 	this->_items = std::vector<std::string>(nb);
 	for (i = 0; i < nb; i++) {
 		std::string item;
 		theSwitchboard.SubscribeTo(this, "deleteShopItem" + std::to_string(i));
 		rant = rand() % 3;
-		if (rant == 0)
+		if (rant == 0) {
+			rant2 = rand() % 3;
+			if (rant2 == 1)
+				lvl--;
+			else if (rant2 == 3)
+				lvl++;
+			if (lvl < 1)
+				lvl = 1;
 			item = Game::wList->getWeaponRandom(lvl)->getName();
-		if (rant == 1)
+		}
+		if (rant == 1) {
+			rant2 = rand() % 3;
+			if (rant2 == 1)
+				lvl--;
+			else if (rant2 == 3)
+				lvl++;
+			if (lvl < 1)
+				lvl = 1;
 			item = Game::aList->getArmorRandom(lvl)->getName();
-		if (rant == 2)
+		}
+		if (rant == 2) {
+			rant2 = rand() % 3;
+			if (rant2 == 1)
+				lvl--;
+			else if (rant2 == 3)
+				lvl++;
+			if (lvl < 1)
+				lvl = 1;
 			item = Game::rList->getRingRandom(lvl)->getName();
+		}
 		if (i != 0) {
 			if (std::find(this->_items.begin(), this->_items.end(), item) == this->_items.end())
 				this->_items[i] = item;

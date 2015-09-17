@@ -1,10 +1,11 @@
 {
     "infos": {
    	    "name": "Armor_001",
+		"displayName": "Light Armor",
 		"flavor": "Legends pretend it can\nprotect its user for at\nleast one hit",
-		"lvlRequired": 1,
+		"price": 15,
 		"sprites": "Resources/Images/Armors/Armor_001.png",
-		"lootLevel": 1
+		"lootLevel": 2
 	},
 		"bonus": {
 			"hpBuff": 10

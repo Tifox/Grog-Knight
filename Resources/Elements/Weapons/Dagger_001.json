@@ -1,0 +1,20 @@
+{
+    "infos": {
+   	    "name": "Dagger_001",
+		"displayName": "Shining Dagger",
+		"flavor": "Where does the shining comes from...?",
+		"type": "Dagger",
+		"equipable": "Archer",
+		"price": 15,
+		"hitbox": "SWORD",
+		"size": 1,
+	 	"critRate": 5,
+		"damage": 5,
+		"recovery": 1,
+		"pushback": 5,
+		"active": 0.2,
+		"attack": "melee",
+		"sprites": "Resources/Images/Weapons/Dagger_001.png",
+		"lootLevel": 2
+	}
+}

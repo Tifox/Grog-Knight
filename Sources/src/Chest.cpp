@@ -221,5 +221,6 @@ void		Chest::applySave(std::map<std::string, Json::Value> save) {
 }
 
 int		Chest::isUsed(void) { return this->_isUsed; };
+void	Chest::reset(void) { this->_isUsed = 0; };
 int		Chest::getGold(void) { return this->_gold; };
 std::map<int, std::string>	Chest::getItems(void) { return this->_chestItems; };

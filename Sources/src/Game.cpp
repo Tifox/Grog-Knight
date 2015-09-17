@@ -148,6 +148,12 @@ void	Game::menuInGame(void) {
 	charac->display();
 	if (Game::getHUD() == nullptr)
 		Game::addHUDWindow(new HUDWindow());
+	else {
+		Game::getHUD()->removeText("Press Enter to restart.");
+		Game::getHUD()->removeText("YOU ARE DEAD");
+		theWorld.Remove(this->getHero()->getGhost());
+		delete this->getHero();
+	}
 	this->setHero(static_cast<Characters *>(charac));
 	Game::started = 1;
 	Game::isInMenu = 1;
@@ -231,7 +237,7 @@ int		Game::getNextId(void) {
 void	Game::checkHeroPosition(void) {
 	Game::currentGame->_controller->flag = 0;
 	Game::currentGame->_controller->tick();
-	if (Game::started == 1) {
+	if (Game::started == 1 && Game::currentGame->getHero() != nullptr) {
 		Game::currentGame->moveCamera();
 		Game::currentGame->simulateHeroItemContact();
 		Game::currentGame->getHero()->characterLoop();
@@ -366,15 +372,19 @@ void	Game::endingGame(void) {
 		}
 	}
 	Game::elementMap.clear();
-	Game::getHUD()->removeText("YOU ARE DEAD");
+	Game::getHUD()->setText("Press Enter to restart.", 500, 500);
 	theWorld.ResumePhysics();
-	theWorld.Remove(Game::currentGame->getHero()->getGhost());
 	theWorld.GetPhysicsWorld().DestroyBody(Game::currentGame->getHero()->GetBody());
 	theWorld.Remove(Game::currentGame->getHero());
-	Game::currentGame->setHero(nullptr);
 	Game::ended = false;
 	Game::endGame = false;
+	Game::secretDoor = nullptr;
+	Game::bossDoor = nullptr;
+	Game::dealer = nullptr;
+	Game::currentGame->setShopkeeper(nullptr);
+	Game::chest->reset();
 	Game::deadWaiting = true;
+	// Chest, Shop Items
 }
 
 //! Intern callback for destroying an element.

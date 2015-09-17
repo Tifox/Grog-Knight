@@ -94,6 +94,7 @@ void	Game::start(void) {
 	}
 
 	delete(Game::currentGame->maps);
+	Game::elementMap.clear();
 	this->maps = new Maps("Maps/");
 	this->maps->readMaps();
 	Game::currentGame = this;
@@ -400,15 +401,14 @@ bool	Game::destroyAllBodies(void) {
 	if (Game::endGame == true) {
 		Game::ended = true;
 		theWorld.PausePhysics();
-		int i, j = 0;
+		int i, j = 0, k;
 		Game::getHUD()->setText("YOU ARE DEAD", 400, 400, Vector3(1, 0, 0), 1, "dead");
 		Game::getHUD()->clearHUD();
-		for (i = 0; i < Game::elementMap.size(); i++) {
+		k = Game::elementMap.size();
+		theSwitchboard.DeferredBroadcast(new Message("PauseGame"), 1);
+		for (i = 0; i < k; i++) {
 			if (Game::elementMap[i] && Game::elementMap[i]->getAttribute("type") != "Hero") {
-				if (j++ == 0)
-					theSwitchboard.DeferredBroadcast(new Message("PauseGame"), 1);
-				else
-					Game::elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1);
+				Game::elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1);
 				if (Game::elementMap[i]->getAttribute("physic") != "") {
 					if (Game::elementMap[i]->GetBody() != 0)
 						theWorld.GetPhysicsWorld().DestroyBody((Game::elementMap[i])->GetBody());

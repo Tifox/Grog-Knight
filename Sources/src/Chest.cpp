@@ -195,6 +195,7 @@ void	Chest::updateItems(void) {
 			} else if (Game::rList->checkExists(it->second)) {
 				path = Game::rList->getRing(it->second)->getSprite();
 			}
+			std::cout << path << ", " << it->second << std::endl;
 			tmp = w->addImage(path, x + (width / 6 * it->first), y, 80, 104);
 			this->_interfaceElem.push_back(tmp);
 			this->_img[it->first] = tmp;

@@ -173,6 +173,11 @@ Map		Map::display(void) {
 				}
 				if (elem->getAttribute("spawnEnemy") != "") {
 					if (!this->_isUsed) {
+						int		level = 1;
+						//if (elem->getAttribute("enemyLevel") == "+1")
+							//level++;
+						//else if (elem->getAttribute("enemyLevel") == "-1")
+							/*level--;*/
 						if (elem->getAttribute("isFlying") != "")
 							tmp = new Enemy(Game::eList->getEnemyRandom(true));
 						else

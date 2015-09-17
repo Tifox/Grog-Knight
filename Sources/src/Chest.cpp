@@ -88,7 +88,7 @@ void	Chest::displayChestContent(void) {
 			this->_choicePointer = tmp;
 	}
 	tmp = w->addImage("Resources/Images/gold.png", x, y, 80, 150);
-	w->setText(std::to_string(this->_gold), x - (std::to_string(this->_gold).length() / 2) * 10, y + 50, Vector3(1, 1, 0), 1);
+	w->setText(std::to_string(this->_gold) + "G", x - (std::to_string(this->_gold).length() / 2) * 10, y + 50, Vector3(1, 1, 0), 1);
 	this->_choices.push_back(tmp);
 	this->_interfaceElem.push_back(tmp);
 	this->makeChoices();
@@ -114,7 +114,7 @@ void	Chest::removeInterface(void) {
 	Game::currentGame->getHero()->subscribeToAll();
 	if (this->_isUsed == 1)
 		this->PlaySpriteAnimation(0.4f, SAT_OneShot, 2, 0);
-	Game::getHUD()->removeText(std::to_string(this->_gold));
+	Game::getHUD()->removeText(std::to_string(this->_gold) + "G");
 }
 
 void	Chest::ReceiveMessage(Message *m) {
@@ -161,9 +161,8 @@ void	Chest::ReceiveMessage(Message *m) {
 		} else {
 			if (Game::currentGame->getHero()->getGold()) {
 				j = this->_gold;
-				std::cout << j << std::endl;
 				this->_gold += Game::currentGame->getHero()->getGold();
-				Game::getHUD()->updateText(std::to_string(j), std::to_string(this->_gold));
+				Game::getHUD()->updateText(std::to_string(j), std::to_string(this->_gold) + "G");
 				Game::currentGame->getHero()->setGold(0);
 				Game::getHUD()->updateGold(0);
 				this->_isUsed = 1;

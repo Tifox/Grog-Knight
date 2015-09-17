@@ -162,6 +162,7 @@ class Game {
 		static bool						toggleMenu;
 		static bool						stopPattern;
 		static bool						deadWaiting;
+		static int						World;
 
 	private:
 		float				beginXHero;

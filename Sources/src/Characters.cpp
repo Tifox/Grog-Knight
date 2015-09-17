@@ -1182,6 +1182,7 @@ void	Characters::equipWeapon(Weapon* weapon) {
 		this->_weapon = new Weapon(weapon);
 		Game::getHUD()->items(this->_weapon);
 	}
+}
 
 //! Unequip a weapon
 /**

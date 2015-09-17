@@ -150,7 +150,7 @@ Equipment::~Equipment(void) {
  * @param contact The Box2D contact object.
  */
 void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
-	if (elem->getAttribute("type") != "ground") {
+	if (elem->getAttribute("type") != "ground" || elem->getAttribute("speType") == "spikes") {
 		contact->SetEnabled(false);
 		contact->enableContact = false;
 	} else if (this->GetBody()->GetWorldCenter().y - 1 > elem->GetBody()->GetWorldCenter().y) {

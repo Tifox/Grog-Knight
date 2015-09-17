@@ -1178,9 +1178,10 @@ void	Characters::_specialMove(int status) {
  * @param The Weapon object
  */
 void	Characters::equipWeapon(Weapon* weapon) {
-	this->_weapon = new Weapon(weapon);
-	Game::getHUD()->items(this->_weapon);
-}
+	if (weapon->getEquipable() == this->getAttribute("class")) {
+		this->_weapon = new Weapon(weapon);
+		Game::getHUD()->items(this->_weapon);
+	}
 
 //! Unequip a weapon
 /**

@@ -127,9 +127,9 @@ std::string		Inventory::dropSelectedItem(void) {
 }
 
 std::string 	Inventory::equipSelectedItem(void) {
-	if (this->_items[this->_focused].empty()) {
-		return "";
-	}
+	if (this->_items[this->_focused].empty()
+		|| Game::wList->getWeapon(this->_items[this->_focused])->getEquipable() != Game::currentGame->getHero()->getAttribute("class"))
+			return "";
 	return this->_items[this->_focused];
 }
 

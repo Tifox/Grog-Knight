@@ -42,11 +42,13 @@ Ring::Ring(std::string name) : _name(name) {
 
 Ring::Ring(Ring* Ring) {
 	this->_name = Ring->getName();
+	this->_displayName = Ring->getDisplayName();
 	this->_flavor = Ring->getFlavor();
 	this->_sprite = Ring->getSprite();
 	this->SetLayer(70);
 	this->addAttribute("type3", "Ring");
 	this->addAttribute("name", this->_name);
+	this->addAttribute("displayName", this->_displayName);
 	this->addAttribute("flavor", this->_flavor);
 	this->addAttribute("sprite", this->_sprite);
 	this->_lootLevel = Ring->getLootLevel();

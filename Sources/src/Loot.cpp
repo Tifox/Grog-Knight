@@ -43,7 +43,7 @@ Loot::Loot(Characters* c) {
 // 		int rant;
 // 		rant = rand() % 3;
 // 		if (rant == 1)
-//			 new Equipment(Game::wList->getWeaponRandom(c->_getAttr("loot", "EqReward").asInt()), c);
+// 			 new Equipment(Game::wList->getWeaponRandom(c->_getAttr("loot", "EqReward").asInt()), c);
 // 		else if (rant == 0)
 // 			 new Equipment(Game::aList->getArmorRandom(c->_getAttr("loot", "EqReward").asInt()), c);
 // 		else

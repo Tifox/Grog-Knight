@@ -1,0 +1,12 @@
+{
+    "infos": {
+   	    "name": "Armor_002",
+		"flavor": "Looks like this thing is an armor.\nMaybe.",
+		"lvlRequired": 1,
+		"sprites": "Resources/Images/Armors/Armor_002.png",
+		"lootLevel": 1
+	},
+	"bonus": {
+		"hpBuff": 50
+	}
+}

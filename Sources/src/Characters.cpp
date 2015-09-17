@@ -1289,7 +1289,6 @@ void						Characters::_destroyEnemy(void) {
  */
 void						Characters::destroyTarget(void) {
 	if (this->_target != nullptr) {
-	  //		std::cout << "destroyTarget (Characters.cpp l.1077)" << std::endl;
 		Game::addToDestroyList(this->_target);
 		this->_target = nullptr;
 	}

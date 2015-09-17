@@ -131,9 +131,10 @@ void	Shop::hideShop(void) {
 void	Shop::ReceiveMessage(Message *m) {
 	int i;
 	for (i = 0; i < this->_items.size(); i++) {
-		if (m->GetMessageName() == "deleteShopItem" + i) {
+		if (m->GetMessageName() == "deleteShopItem" + std::to_string(i)) {
 			this->_items[i] = "bought";
 			this->_shopItems[i]->GetBody()->SetActive(false);
+			this->_shopItems[i]->ChangeColorTo(Color(0, 0, 0, 0), 0);
 			theWorld.Remove(this->_shopItems[i]);
 			this->_shopItems[i] = nullptr;
 			Game::currentGame->getShopkeeper()->displayText("A wise choice.");

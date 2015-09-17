@@ -38,8 +38,8 @@ MenuCharacter::MenuCharacter(void) : Characters("MenuCharacter") {
 	// THIS IS TMP; DO NOT JUDGE ME
 	Elements		*tmp;
 	tmp = new Elements(); tmp->addAttribute("Name", "Axe_000"); this->_equipSelection["Weapon"] = tmp;
-	tmp = new Elements(); tmp->addAttribute("Name", "SmallRing"); this->_equipSelection["ring"] = tmp;
-	tmp = new Elements(); tmp->addAttribute("Name", "ChestArmor"); this->_equipSelection["Armor"] = tmp;
+	tmp = new Elements(); tmp->addAttribute("Name", "Ring_000"); this->_equipSelection["ring"] = tmp;
+	tmp = new Elements(); tmp->addAttribute("Name", "Armor_000"); this->_equipSelection["Armor"] = tmp;
 	// END OF NASTY CODE. Well, actually no. But u know what i mean
 	theSwitchboard.SubscribeTo(this, "enterPressed");
 	theSwitchboard.SubscribeTo(this, "chooseEquipment");

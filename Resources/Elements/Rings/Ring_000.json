@@ -1,0 +1,10 @@
+{
+    "infos": {
+   	    "name": "Ring_000",
+		"flavor": "Hey look, its a FUCKING RING.\nFUCK YOU TOO IM NOT A DESIGNER",
+		"lvlRequired": 1,
+		"sprites": "Resources/Images/Rings/Ring_000.png",
+		"lootLevel": 1,
+		"bonus": {}
+	}
+}

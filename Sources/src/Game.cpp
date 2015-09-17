@@ -94,7 +94,7 @@ void	Game::start(void) {
 	}
 
 	delete(Game::currentGame->maps);
-	Game::elementMap.clear();
+//	Game::elementMap.clear();
 	this->maps = new Maps("Maps/");
 	this->maps->readMaps();
 	Game::currentGame = this;

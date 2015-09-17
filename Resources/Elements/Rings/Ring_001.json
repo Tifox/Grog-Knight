@@ -1,0 +1,10 @@
+{
+	"infos": {
+		"name": "Ring_001",
+		"lvlRequired": 1,
+		"sprites": "Resources/Images/Rings/Ring_001.png",
+		"lootLevel": 2,
+		"flavor": "Legends says you can wear it\nBut it does nothing",
+		"bonus": {}
+	}
+}

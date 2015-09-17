@@ -142,7 +142,6 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, Characters *toFollow,
 	t->y = 0;
 	if (isTalk) {
 		Elements	*test;
-
 		test = new Elements();
 		test->SetSize(2.5, 0.7);
 		test->SetPosition(toFollow->GetBody()->GetWorldCenter().x, 
@@ -239,7 +238,7 @@ void	HUDWindow::displayText(void) {
 			DrawGameText((*i)->str, (*i)->font, (*i)->x, (*i)->y, theCamera.GetRotation());
 		else {
 			int		x, y, mult = 6;
-			Map		m = Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX];
+			Map		m = Game::currentGame->getCurrentMap();
 
 			x = ((((*i)->toFollow->GetBody()->GetWorldCenter().x + 0.5) - m.getXStart()) * 40) - 40;
 			y = -((((*i)->toFollow->GetBody()->GetWorldCenter().y - 0.5) - m.getYStart()) * 40) + 50;

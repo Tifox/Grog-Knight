@@ -83,7 +83,7 @@ void 	Tooltip::info(Elements *elem) {
 	clearInfo();
 	if (this->_name == "" && this->_flavor == "" && this->_hp == "" /*&& this->_mana == ""*/) {
 		HUDWindow *hud = Game::getHUD();
-		this->_name = elem->getAttribute("name");
+		this->_name = elem->getAttribute("displayName");
 		this->_flavor = elem->getAttribute("flavor");
 		int b;
 

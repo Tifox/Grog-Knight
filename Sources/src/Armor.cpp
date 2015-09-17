@@ -42,8 +42,10 @@ Armor::Armor(std::string name) : _name(name) {
 
 Armor::Armor(Armor* Armor) {
 	this->_name = Armor->getName();
+	this->_displayName = Armor->getDisplayName();
 	this->addAttribute("type3", "Armor");
 	this->addAttribute("name", this->_name);
+	this->addAttribute("dislayName", this->_displayName);
 	this->SetLayer(70);
 	this->_flavor = Armor->getFlavor();
 	this->_sprite = Armor->getSprite();
@@ -96,6 +98,7 @@ void    Armor::_parseJson(std::string file) {
 	if (this->_name != json["infos"].get("name", "").asString())
 		Log::warning("The class name is different with the name in the config file: " + this->_name + "/" + json["infos"].get("name", "").asString());
 	this->_name = json["infos"].get("name", "").asString();
+	this->_displayName = json["infos"].get("displayName", "").asString();
 	this->_flavor = json["infos"].get("flavor", "").asString();
 	this->_lootLevel = json["infos"].get("lootLevel", "").asInt();
 	this->_sprite = json["infos"].get("sprites", "").asString();
@@ -136,6 +139,7 @@ void	Armor::ReceiveMessage(Message *m) {
 
 /* GETTERS */
 std::string		Armor::getName(void) { return this->_name; }
+std::string		Armor::getDisplayName(void) { return this->_displayName; }
 std::string		Armor::getFlavor(void) { return this->_flavor; }
 std::string		Armor::getSprite(void) { return this->_sprite; }
 int				Armor::getLootLevel(void) { return this->_lootLevel; }

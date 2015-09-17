@@ -53,6 +53,8 @@ private:
 	Ring*			_ring;
 	std::string		_name;
 	std::string 	_flavor;
+	std::string		_displayName;
+	std::string 	_equipable;
 };
 
 #endif

@@ -116,6 +116,7 @@ Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
 		this->SetSprite(Game::wList->getWeapon(name)->getSprite());
 		this->addAttribute("flavor", Game::wList->getWeapon(name)->getFlavor());
 		this->addAttribute("type3", "Weapon");
+		this->addAttribute("displayName",Game::wList->getWeapon(name)->getDisplayName());
 		if (Game::wList->getWeapon(name)->getAttribute("hpBuff") != "")
 			this->addAttribute("hpBuff", Game::wList->getWeapon(name)->getAttribute("hpBuff"));
 	}
@@ -123,6 +124,7 @@ Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
 		this->SetSprite(Game::aList->getArmor(name)->getSprite());
 		this->addAttribute("type3", "Armor");
 		this->addAttribute("flavor", Game::aList->getArmor(name)->getFlavor());
+		this->addAttribute("displayName",Game::aList->getArmor(name)->getDisplayName());
 		if (Game::aList->getArmor(name)->getAttribute("hpBuff") != "")
 			this->addAttribute("hpBuff", Game::aList->getArmor(name)->getAttribute("hpBuff"));
   }

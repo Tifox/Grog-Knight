@@ -71,8 +71,12 @@ Equipment::Equipment(Weapon *w, Characters* c): Object() {
 	this->_armor = nullptr;
 	this->_name = w->getName();
 	this->addAttribute("name", w->getName());
+	this->_displayName = w->getDisplayName();
+	this->addAttribute("displayName", w->getDisplayName());
 	this->_flavor = w->getFlavor();
 	this->addAttribute("flavor", w->getFlavor());
+	this->_equipable = w->getEquipable();
+	this->addAttribute("equipable", w->getEquipable());
 	this->SetSprite(this->_weapon->getSprite());
 	this->SetName("loot");
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
@@ -93,6 +97,8 @@ Equipment::Equipment(Armor *w, Characters* c): Object() {
 	this->_ring = nullptr;
 	this->_name = w->getName();
 	this->addAttribute("name", w->getName());
+	this->_displayName = w->getDisplayName();
+	this->addAttribute("displayName", w->getDisplayName());
 	this->_flavor = w->getFlavor();
 	this->addAttribute("flavor", w->getFlavor());
 	this->SetSprite(this->_armor->getSprite());
@@ -116,6 +122,8 @@ Equipment::Equipment(Ring *w, Characters* c): Object() {
 	this->_weapon = nullptr;
 	this->_name = w->getName();
 	this->addAttribute("name", w->getName());
+	//this->_displayName = w->getDisplayName();
+	//this->addAttribute("displayName", w->getDisplayName());
 	this->_flavor = w->getFlavor();
 	this->addAttribute("flavor", w->getFlavor());
 	this->SetSprite(this->_ring->getSprite());

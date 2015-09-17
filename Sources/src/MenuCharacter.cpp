@@ -37,7 +37,7 @@ MenuCharacter::MenuCharacter(void) : Characters("MenuCharacter") {
 	this->_character = "Warrior";
 	// THIS IS TMP; DO NOT JUDGE ME
 	Elements		*tmp;
-	tmp = new Elements(); tmp->addAttribute("Name", "Sword"); this->_equipSelection["Weapon"] = tmp;
+	tmp = new Elements(); tmp->addAttribute("Name", "Axe_000"); this->_equipSelection["Weapon"] = tmp;
 	tmp = new Elements(); tmp->addAttribute("Name", "SmallRing"); this->_equipSelection["ring"] = tmp;
 	tmp = new Elements(); tmp->addAttribute("Name", "ChestArmor"); this->_equipSelection["Armor"] = tmp;
 	// END OF NASTY CODE. Well, actually no. But u know what i mean

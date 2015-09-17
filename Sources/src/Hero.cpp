@@ -193,12 +193,14 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		if (elem->getAttribute("type2") == "Consumable") {
 			if (elem->getAttribute("type3") == "HP") {
 				if (this->_hp != this->_maxHp) {
+					elem->ChangeColorTo(Color(0,0,0,0), 0);
 					Game::addToDestroyList(elem);
 					this->setHP(this->getHP() + stoi(elem->getAttribute("value")));
 					Game::currentGame->tooltip->tip(elem, this);
 					Game::getHUD()->life(this->getHP());
 				}
 			} if (elem->getAttribute("type3") == "gold") {
+				elem->ChangeColorTo(Color(0,0,0,0), 0);
 				Game::addToDestroyList(elem);
 				this->_gold += stoi(elem->getAttribute("value"));
 				Game::currentGame->tooltip->tip(elem, this);

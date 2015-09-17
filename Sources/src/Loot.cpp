@@ -38,7 +38,7 @@ Loot::Loot(Characters* c) {
 // 		if (rand() % 2 == 0) {
 // 			 new Consumable("HP", c->_getAttr("loot", "HPReward").asString(), c);
 // 	   } else
-//		new Consumable("gold", c->_getAttr("loot", "XPReward").asString(), c);
+		new Consumable("gold", c->_getAttr("loot", "XPReward").asString(), c);
 // 	} else if (rand() % 100 <= c->_getAttr("loot", "equipmentRate").asInt()) {
 // 		int rant;
 // 		rant = rand() % 3;
@@ -47,7 +47,7 @@ Loot::Loot(Characters* c) {
 // 		else if (rant == 0)
 // 			 new Equipment(Game::aList->getArmorRandom(c->_getAttr("loot", "EqReward").asInt()), c);
 // 		else
- 			new Equipment(Game::rList->getRingRandom(c->_getAttr("loot", "EqReward").asInt()), c);
+// 			new Equipment(Game::rList->getRingRandom(c->_getAttr("loot", "EqReward").asInt()), c);
 // 	}
 }
 

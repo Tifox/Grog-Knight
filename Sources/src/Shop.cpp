@@ -108,7 +108,6 @@ Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
 	this->SetPosition(x, y);
 	this->SetLayer(99);
 	this->addAttribute("type", "shopItem");
-	this->addAttribute("price", "10");
 	this->addAttribute("name", name);
 	this->addAttribute("number", std::to_string(num));
 	this->addAttribute("shopPosition", std::to_string(num));
@@ -116,6 +115,7 @@ Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
 		this->SetSprite(Game::wList->getWeapon(name)->getSprite());
 		this->addAttribute("flavor", Game::wList->getWeapon(name)->getFlavor());
 		this->addAttribute("type3", "Weapon");
+		this->addAttribute("price", Game::wList->getWeapon(name)->getPrice());
 		if (Game::wList->getWeapon(name)->getAttribute("hpBuff") != "")
 			this->addAttribute("hpBuff", Game::wList->getWeapon(name)->getAttribute("hpBuff"));
 	}
@@ -123,6 +123,7 @@ Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
 		this->SetSprite(Game::aList->getArmor(name)->getSprite());
 		this->addAttribute("type3", "Armor");
 		this->addAttribute("flavor", Game::aList->getArmor(name)->getFlavor());
+		this->addAttribute("price", Game::aList->getArmor(name)->getPrice());
 		if (Game::aList->getArmor(name)->getAttribute("hpBuff") != "")
 			this->addAttribute("hpBuff", Game::aList->getArmor(name)->getAttribute("hpBuff"));
   }
@@ -130,6 +131,7 @@ Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
 		this->addAttribute("flavor", Game::rList->getRing(name)->getFlavor());
 		this->addAttribute("type3", "Ring");
 		this->SetSprite(Game::rList->getRing(name)->getSprite());
+		this->addAttribute("price", Game::rList->getRing(name)->getPrice());
 		if (Game::rList->getRing(name)->getAttribute("hpBuff") != "")
 			this->addAttribute("hpBuff", Game::rList->getRing(name)->getAttribute("hpBuff"));
 	}

@@ -79,6 +79,8 @@ void	Hero::init(void) {
 void	Hero::actionCallback(std::string name, int status) {
 	std::string 	orientation;
 	float				x = 2, y = 1;
+	std::string type = this->_weapon->getType();
+
 	if (name == "attack" && status == 0 && this->_canAttack == true &&
 		this->_fullChargedAttack == false && this->_isLoadingAttack == 0 &&
 		this->_isAttacking == 1) {
@@ -98,8 +100,9 @@ void	Hero::actionCallback(std::string name, int status) {
 			this->changeSizeTo(Vector2(x, y));
 		this->_setCategory("attack");
 
-		std::string type = this->_weapon->getType();
-
+		if (type == "Axe") {
+			this->changeSizeTo(Vector2(2,1));
+		}
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 								  this->_getAttr("beginFrame" + type + "_" + orientation).asInt(),
 								  this->_getAttr("endFrame" + type + "_" + orientation).asInt(), "base");
@@ -125,19 +128,23 @@ void	Hero::actionCallback(std::string name, int status) {
 			this->changeSizeTo(Vector2(2, 2));
 		this->_canAttack = false;
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-								  this->_getAttr("beginFrame_" + orientation).asInt(),
-								  this->_getAttr("endFrame_" + orientation).asInt(), "base");
+								  this->_getAttr("beginFrame" + type + "_" + orientation).asInt(),
+								  this->_getAttr("endFrame" + type + "_" + orientation).asInt(), "base");
 	} else if (name == "loadAttack_charge") {
 		if (this->_latOrientation == RIGHT) {
 			orientation = "right";
 		} else if (this->_latOrientation == LEFT)
 			orientation = "left";
 		this->_setCategory("loadAttack_charge");
-		if (this->getAttribute("class") == "Warrior")
-			this->changeSizeTo(Vector2(2, 2));
+		if (this->getAttribute("class") == "Warrior") {
+			if (type == "Sword")
+				this->changeSizeTo(Vector2(2, 2));
+			else if (type == "Axe")
+				this->changeSizeTo(Vector2(2, 1.5));
+		}
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-								  this->_getAttr("beginFrame_" + orientation).asInt(),
-								  this->_getAttr("endFrame_" + orientation).asInt());
+								  this->_getAttr("beginFrame" + type + "_" + orientation).asInt(),
+								  this->_getAttr("endFrame" + type + "_" + orientation).asInt());
 	} else if (name == "dash") {
 		if (this->_latOrientation == RIGHT) {
 			orientation = "right";

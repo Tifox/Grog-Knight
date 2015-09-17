@@ -1,8 +1,8 @@
 {
     "infos": {
-   	    "name": "Sword2",
-		"flavor": "It was the knife of Arthas Menethil.\nFor cutting ham.\nAnd Zombies. \nOr maybe not.",
-		"type": "Sword",
+   	    "name": "Axe_001",
+		"flavor": "Hey isn't iFUCK YOUJ",
+		"type": "Axe",
 		"hitbox": "SWORD",
 		"size": 1,
 		"lvlRequired": 1,
@@ -13,9 +13,9 @@
 		"active": 0.2,
 		"attack": "melee",
 		"combo": true,
-		"sprites": "Resources/Images/Sword2.png",
+		"sprites": "Resources/Images/Weapons/Axe_001.png",
 		"heroAnim": "sword_anim_1",
-		"lootLevel": 2
+		"lootLevel": 1
 	},
 	"combo": {
 		"1": {

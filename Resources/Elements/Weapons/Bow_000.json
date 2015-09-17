@@ -1,6 +1,6 @@
 {
     "infos": {
-   	    "name": "Bow",
+   	    "name": "Bow_000",
 		"flavor": "This bow is supposed to\nshoot arrows. Supposed.",
 		"type": "Bow",
 		"hitbox": "PROJECTILE",
@@ -12,7 +12,7 @@
 	 	"pushback": 1,
 		"recovery": 0.5,
 		"attack": "ranged",
-		"sprites": "Resources/Images/bow.png",
+		"sprites": "Resources/Images/Weapons/Bow_000.png",
 		"heroAnim": "sword_anim_1",
 		"lootLevel": 2
 	}

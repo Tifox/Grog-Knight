@@ -1,7 +1,7 @@
 {
     "infos": {
-   	    "name": "Sword",
-		"flavor": "Hey look, its a sword.\nA pretty shitty one actually...",
+   	    "name": "Sword_001",
+		"flavor": "It was the Arthas Menethil's knife.\nFor cutting ham.\nAnd Zombies. \nOr maybe not.",
 		"type": "Sword",
 		"hitbox": "SWORD",
 		"size": 1,
@@ -13,9 +13,9 @@
 		"active": 0.2,
 		"attack": "melee",
 		"combo": true,
-		"sprites": "Resources/Images/Sword.png",
+		"sprites": "Resources/Images/Weapons/Sword_001.png",
 		"heroAnim": "sword_anim_1",
-		"lootLevel": 1
+		"lootLevel": 2
 	},
 	"combo": {
 		"1": {

@@ -153,6 +153,7 @@ void	Shop::hideShop(void) {
 	for (i = 0; i < this->_shopItems.size(); i++) {
 		if (this->_shopItems[i] != nullptr)
 			this->_shopItems[i]->GetBody()->SetActive(false);
+			this->_shopItems[i]->ChangeColorTo(Color(0, 0, 0, 0), 1);
 			theWorld.Remove(this->_shopItems[i]);
 			this->_shopItems[i] = nullptr;
 	}

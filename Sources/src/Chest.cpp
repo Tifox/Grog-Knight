@@ -88,7 +88,7 @@ void	Chest::displayChestContent(void) {
 			this->_choicePointer = tmp;
 	}
 	tmp = w->addImage("Resources/Images/gold.png", x, y, 80, 150);
-	w->setText(std::to_string(this->_gold) + "G", x - (std::to_string(this->_gold).length() / 2) * 10, y + 50, Vector3(1, 1, 0), 1);
+	w->setText(std::to_string(this->_gold) + "G", x - (std::to_string(this->_gold).length() / 2) * 10, y + 50, Vector3(0, 0, 0), 1);
 	this->_choices.push_back(tmp);
 	this->_interfaceElem.push_back(tmp);
 	this->makeChoices();

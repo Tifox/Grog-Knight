@@ -113,3 +113,5 @@ void	Shopkeeper::ReceiveMessage(Message *m) {
 			this->removeText();
 	}
 }
+
+Shop	*Shopkeeper::getShop(void) { return this->_shop; };

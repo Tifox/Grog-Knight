@@ -132,8 +132,12 @@ void	Game::start(void) {
 void	Game::menuInGame(void) {
 	theWorld.SetBackgroundColor(*(new Color(0, 0, 0)));
 
+	theWorld.ResumePhysics();
+	Game::currentIds = 0;
+	Game::elementMap.clear();
 	InGameMenu	*menu = new InGameMenu();
 	Game::endGame = false;
+	Game::deadWaiting = 0;
 	if (Game::currentGame == nullptr)
 		Game::currentGame = this;
 	MenuCharacter	*charac = new MenuCharacter();
@@ -374,17 +378,18 @@ void	Game::endingGame(void) {
 	}
 	Game::elementMap.clear();
 	Game::getHUD()->setText("Press Enter to restart.", 500, 500);
-	theWorld.ResumePhysics();
-	theWorld.GetPhysicsWorld().DestroyBody(Game::currentGame->getHero()->GetBody());
 	theWorld.Remove(Game::currentGame->getHero());
 	Game::ended = false;
 	Game::endGame = false;
 	Game::secretDoor = nullptr;
 	Game::bossDoor = nullptr;
 	Game::dealer = nullptr;
+	Game::currentGame->getShopkeeper()->getShop()->hideShop();
+	theWorld.Remove(Game::currentGame->getShopkeeper());
 	Game::currentGame->setShopkeeper(nullptr);
 	Game::chest->reset();
 	Game::deadWaiting = true;
+	Game::currentIds = 0;
 	// Chest, Shop Items
 }
 
@@ -408,7 +413,8 @@ bool	Game::destroyAllBodies(void) {
 		theSwitchboard.DeferredBroadcast(new Message("PauseGame"), 1);
 		for (i = 0; i < k; i++) {
 			if (Game::elementMap[i] && Game::elementMap[i]->getAttribute("type") != "Hero") {
-				Game::elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1);
+				if (Game::elementMap[i]->getAttribute("transparency") == "")
+					Game::elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1);
 				if (Game::elementMap[i]->getAttribute("physic") != "") {
 					if (Game::elementMap[i]->GetBody() != 0)
 						theWorld.GetPhysicsWorld().DestroyBody((Game::elementMap[i])->GetBody());

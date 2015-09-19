@@ -114,7 +114,7 @@ void	Dealer::ReceiveMessage(Message *m) {
 		hud->removeText("HI BUD YOU WANNA SOME DRUGS?");
 		hud->setText("Here you go buddy. See ya.", this, Vector3(255, 51, 255), 0, 0);
 		Drug *drug = new Drug(Game::dList->getDrugRandom());
-		Game::currentGame->getHero()->setDrug(drug->getName());
+		Game::currentGame->getHero()->setDrug(drug->getDisplayName());
 		theSwitchboard.SubscribeTo(Game::currentGame->getHero(), "drugPressed");
 		Game::currentGame->tooltip->talk(this);
 	}

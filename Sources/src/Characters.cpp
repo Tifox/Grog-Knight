@@ -1200,9 +1200,15 @@ void	Characters::unequipWeapon(void) {
  */
 void	Characters::equipArmor(Armor* armor) {
 	this->_armor = new Armor(armor);
-	if (this->_armor->getAttribute("hpBuff") != ""){
+
+	if (this->_armor->getAttribute("hpBuff") != "")
 		this->_maxHp += std::stoi(this->_armor->getAttribute("hpBuff"));
-	}
+	if (this->_armor->getAttribute("dmgReduc") != "")
+		this->buff.dmgReduc += std::stoi(this->_armor->getAttribute("dmgReduc"));
+	if (this->_armor->getAttribute("bonusSpeed") != "")
+		this->buff.bonusSpeed += std::stoi(this->_armor->getAttribute("bonusSpeed"));
+	if (this->_armor->getAttribute("bonusDmg") != "")
+		this->buff.bonusDmg += std::stoi(this->_armor->getAttribute("bonusDmg"));
 	Game::getHUD()->items(this->_armor);
 	Game::getHUD()->setMaxHP(this->_maxHp);
 	Game::getHUD()->life(this->_hp);
@@ -1220,6 +1226,12 @@ void	Characters::unequipArmor(void) {
 		if (this->_hp > this->_maxHp)
 			this->_hp = this->_maxHp;
 	}
+	if (this->_armor->getAttribute("dmgReduc") != "")
+		this->buff.dmgReduc -= std::stoi(this->_armor->getAttribute("dmgReduc"));
+	if (this->_armor->getAttribute("bonusSpeed") != "")
+		this->buff.bonusSpeed -= std::stoi(this->_armor->getAttribute("bonusSpeed"));
+	if (this->_armor->getAttribute("bonusDmg") != "")
+		this->buff.bonusDmg -= std::stoi(this->_armor->getAttribute("bonusDmg"));
 	Game::getHUD()->items(this->_armor);
 	Game::getHUD()->setMaxHP(this->_maxHp);
 	Game::getHUD()->life(this->_hp);
@@ -1232,9 +1244,15 @@ void	Characters::unequipArmor(void) {
  */
 void	Characters::equipRing(Ring* ring) {
 	this->_ring = new Ring(ring);
-	if (this->_ring->getAttribute("hpBuff") != "") {
+
+	if (this->_ring->getAttribute("hpBuff") != "")
 		this->_maxHp += std::stoi(this->_ring->getAttribute("hpBuff"));
-	}
+	if (this->_ring->getAttribute("dmgReduc") != "")
+		this->buff.dmgReduc += std::stoi(this->_ring->getAttribute("dmgReduc"));
+	if (this->_ring->getAttribute("bonusSpeed") != "")
+		this->buff.bonusSpeed += std::stoi(this->_ring->getAttribute("bonusSpeed"));
+	if (this->_ring->getAttribute("bonusDmg") != "")
+		this->buff.bonusDmg += std::stoi(this->_ring->getAttribute("bonusDmg"));
 	Game::getHUD()->items(this->_ring);
 	Game::getHUD()->setMaxHP(this->_maxHp);
 	Game::getHUD()->life(this->_hp);
@@ -1252,6 +1270,12 @@ void	Characters::unequipRing(void) {
 		if (this->_hp > this->_maxHp)
 			this->_hp = this->_maxHp;
 	}
+	if (this->_ring->getAttribute("dmgReduc") != "")
+		this->buff.dmgReduc -= std::stoi(this->_ring->getAttribute("dmgReduc"));
+	if (this->_ring->getAttribute("bonusSpeed") != "")
+		this->buff.bonusSpeed -= std::stoi(this->_ring->getAttribute("bonusSpeed"));
+	if (this->_ring->getAttribute("bonusDmg") != "")
+		this->buff.bonusDmg -= std::stoi(this->_ring->getAttribute("bonusDmg"));
 }
 
 //! Set basics hp

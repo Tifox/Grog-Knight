@@ -8,6 +8,9 @@
 		"lootLevel": 1
 	},
 	"bonus": {
-		"hpBuff": 0
+		"hpBuff": 0,
+		"dmgReduc": 1,
+		"bonusSpeed": 2,
+		"bonusDmg": 5
 	}
 }

@@ -54,6 +54,12 @@ Ring::Ring(Ring* Ring) {
 	this->_lootLevel = Ring->getLootLevel();
 	if (Ring->getAttribute("hpBuff") != "")
 		this->addAttribute("hpBuff", Ring->getAttribute("hpBuff"));
+	if (Ring->getAttribute("dmgReduc") != "")
+		this->addAttribute("dmgReduc", Ring->getAttribute("dmgReduc"));
+	if (Ring->getAttribute("bonusSpeed") != "")
+		this->addAttribute("bonusSpeed", Ring->getAttribute("bonusSpeed"));
+	if (Ring->getAttribute("bonusDmg") != "")
+		this->addAttribute("bonusDmg", Ring->getAttribute("bonusDmg"));
 }
 
 

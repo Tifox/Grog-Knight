@@ -4,6 +4,6 @@
 		"id": 0,
 		"flavor": "This cocaine increase your speed\nAnd will decrease it\n ...a lot.",
 		"sprites": "Resources/Images/gold.png",
-		"effect": 2
+		"effect": 1
 	}
 }

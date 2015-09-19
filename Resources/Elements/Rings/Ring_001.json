@@ -7,5 +7,11 @@
 		"sprites": "Resources/Images/Rings/Ring_001.png",
 		"lootLevel": 2,
 		"flavor": "Legends says you can wear it\nBut it does nothing"
+	},
+	"bonus": {
+		"hpBuff": 0,
+		"dmgReduc": 0,
+		"bonusSpeed": 0,
+		"bonusDmg": 0
 	}
 }

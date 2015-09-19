@@ -43,9 +43,9 @@ Armor::Armor(std::string name) : _name(name) {
 Armor::Armor(Armor* Armor) {
 	this->_name = Armor->getName();
 	this->_displayName = Armor->getDisplayName();
-	this->addAttribute("type3", "Armor");
 	this->addAttribute("name", this->_name);
-	this->addAttribute("dislayName", this->_displayName);
+	this->addAttribute("displayName", this->_displayName);
+	this->addAttribute("type3", "Armor");
 	this->SetLayer(70);
 	this->_flavor = Armor->getFlavor();
 	this->_sprite = Armor->getSprite();

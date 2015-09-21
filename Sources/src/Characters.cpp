@@ -77,7 +77,6 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_speMoveReady = 1;
 	this->_hasDashed = 0;
 	this->SetLayer(100);
-	this->_readFile(name);
 	this->_eqMove = new SpecialMoves(this);
 	this->_isStomping = false;
 	this->_flyTrigger = false;
@@ -85,6 +84,8 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->buff.bonusDmg = 0;
 	this->buff.bonusSpeed = 0;
 	this->buff.dmgReduc = 0;
+	this->buff.critBuff = 0;
+	this->_readFile(name);
 }
 
 //! Basic destructor
@@ -139,7 +140,6 @@ void	Characters::_parseJson(std::string file) {
 	this->addAttribute("talk", json["infos"].get("talk", "").asString());
 	this->_size = json["infos"].get("size", "").asFloat();
 	this->SetSize(this->_size);
-	this->_hp = json["infos"].get("HP", "").asInt();
 	if (json["infos"].get("maxHP", "").isConvertibleTo(Json::ValueType::intValue))
 		this->_maxHp = json["infos"].get("maxHP", "").asInt();
 	this->_hitboxType = json["infos"].get("hitboxType", "").asString();
@@ -147,6 +147,13 @@ void	Characters::_parseJson(std::string file) {
 	this->addAttribute("spritesFrame", json["infos"].get("sprites", "").asString());
 	if (json["infos"].get("damage", "").isConvertibleTo(Json::ValueType::stringValue))
 		this->addAttribute("damage", json["infos"].get("damage", "").asString());
+	this->buff.critBuff = json["infos"].get("baseCrit", 0).asInt();
+	this->buff.bonusDmg = json["infos"].get("baseDamage", 0).asInt();
+	this->_maxHp += (this->_maxHp * json["Stats"].get("HPMult", 0).asFloat()) * this->_level;
+	this->_hp = this->_maxHp;
+	this->buff.critBuff += (this->buff.critBuff * json["Stats"].get("critMult", 0).asFloat() * this->_level);
+	this->buff.bonusDmg += (this->buff.bonusDmg * json["Stats"].get("damageMult", 0).asFloat() * this->_level);
+
 	for (i = json["Actions"].begin(); i != json["Actions"].end(); i++) {
 		for (v = (*i).begin(); v != (*i).end(); v++) {
 			tmp[v.key().asString()] = (*v);

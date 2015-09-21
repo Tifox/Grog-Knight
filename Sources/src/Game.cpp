@@ -94,7 +94,6 @@ void	Game::start(void) {
 	}
 
 	delete(Game::currentGame->maps);
-//	Game::elementMap.clear();
 	this->maps = new Maps("Maps/");
 	this->maps->readMaps();
 	Game::currentGame = this;
@@ -125,6 +124,7 @@ void	Game::start(void) {
 	this->setHero(hero);
 	this->displayHUD();
 	hero->setStartingValues();
+	this->setHero(hero);
 	Game::started = 1;
 	Game::currentGame = this;
 }

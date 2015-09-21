@@ -2,7 +2,6 @@
 	"infos": {
 		"name": "Warrior",
 		"id": 0,
-		"HP": 75,
 		"maxHP": 75,
 		"mana": 80,
 		"maxMana": 80,

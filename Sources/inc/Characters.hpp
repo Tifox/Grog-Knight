@@ -57,6 +57,7 @@ typedef struct s_buff {
   		int bonusDmg;
   		int bonusSpeed;
 		int dmgReduc;
+		int critBuff;
 }				t_buff;
 
 class Characters : public Elements {

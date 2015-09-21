@@ -265,8 +265,8 @@ void	MenuCharacter::_up(int status) {
 void	MenuCharacter::_down(int status) {
 	if (status == 1 && this->_currentTrigger == "equipment") {
 		std::list<Elements *>::iterator		it = std::find(this->_backCloset.begin(), this->_backCloset.end(), this->_closetChoice);
-		if (it != this->_backCloset.end()) {
-			this->_closetChoice = *(++it);
+		if ((++it) != this->_backCloset.end()) {
+			this->_closetChoice = *(it);
 			this->_closetBackChoiceUpdate();
 		}
 	}

@@ -384,8 +384,10 @@ void	Game::endingGame(void) {
 	Game::secretDoor = nullptr;
 	Game::bossDoor = nullptr;
 	Game::dealer = nullptr;
-	Game::currentGame->getShopkeeper()->getShop()->hideShop();
-	theWorld.Remove(Game::currentGame->getShopkeeper());
+	if (Game::currentGame->getShopkeeper()) {
+		Game::currentGame->getShopkeeper()->getShop()->hideShop();
+		theWorld.Remove(Game::currentGame->getShopkeeper());
+	}
 	Game::currentGame->setShopkeeper(nullptr);
 	Game::chest->reset();
 	Game::deadWaiting = true;

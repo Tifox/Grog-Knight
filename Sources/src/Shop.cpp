@@ -150,12 +150,15 @@ Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
  */
 void	Shop::hideShop(void) {
 	int i;
+	std::cout << "Here" << std::endl;
 	for (i = 0; i < this->_shopItems.size(); i++) {
-		if (this->_shopItems[i] != nullptr)
+		std::cout << i << std::endl;
+		if (this->_shopItems[i] != nullptr) {
 			this->_shopItems[i]->GetBody()->SetActive(false);
 			this->_shopItems[i]->ChangeColorTo(Color(0, 0, 0, 0), 1);
 			theWorld.Remove(this->_shopItems[i]);
 			this->_shopItems[i] = nullptr;
+		}
 	}
 }
 

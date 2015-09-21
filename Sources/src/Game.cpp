@@ -100,8 +100,8 @@ void	Game::start(void) {
 	Game::currentGame = this;
 	Hero			*hero = new Hero(Game::menuCharacter->getHeroType());
 
-	theWorld.Remove(Game::menuCharacter);
 	theWorld.GetPhysicsWorld().DestroyBody(Game::menuCharacter->GetBody());
+	theWorld.Remove(Game::menuCharacter);
 	LevelGenerator *levelGenerator = new LevelGenerator(4, 3, 60);
 	levelGenerator->execute();
 	this->_tmpMap = levelGenerator->getLevel();

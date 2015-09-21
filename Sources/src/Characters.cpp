@@ -423,8 +423,8 @@ void	Characters::ReceiveMessage(Message *m) {
 		if (!strncmp(attrName.c_str(), m->GetMessageName().c_str(), strlen(attrName.c_str()))) {
 			// Get the key status (1 = Pressed, 0 = Released)
 			status = (m->GetMessageName().substr(strlen(attrName.c_str()), 7) == "Pressed" ? 1 : 0);
-			if (this->_actionFlag == false && status == 1)
-				return;
+			//if (this->_actionFlag == false && status == 1)
+				//return;
 			this->_actionFlag = false;
 			if (this->_canMove == false)
 				return;

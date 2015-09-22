@@ -1,3 +1,4 @@
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -74,11 +75,14 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_isStomping = 0;
 	this->_isCharging = 0;
 	this->_isDashing = 0;
+	this->_isWhirlwinding = false;
 	this->_speMoveReady = 1;
+	this->_speAttReady = 1;
 	this->_hasDashed = 0;
 	this->SetLayer(100);
 	this->_readFile(name);
 	this->_eqMove = new SpecialMoves(this);
+	this->_eqAtt = new SpecialAttack(this);
 	this->_isStomping = false;
 	this->_flyTrigger = false;
 	this->_isDisengaging = false;
@@ -342,6 +346,10 @@ void	Characters::ReceiveMessage(Message *m) {
 	else if (m->GetMessageName() == "speMoveReady") {
 		this->_speMoveReady = 1;
 	}
+	else if (m->GetMessageName() == "speAttReady") {
+		std::cout <<  "speattready" << std::endl;
+		this->_speAttReady = 1;
+	}
 	else if (m->GetMessageName().substr(0, 10) == "chooseItem") {
 		if (this->_isChoosingItem == 1)
 			return;
@@ -353,6 +361,12 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->_isDashing = false;
 		this->GetBody()->SetGravityScale(1);
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+	}
+	else if (m->GetMessageName() == "whirlwindEnd") {
+		theSwitchboard.UnsubscribeFrom(this, "whirlwindEnd");
+		this->_isWhirlwinding = false;
+		Game::currentGame->getHero()->buff.bonusSpeed = 0;
+		std::cout << "whirlwindEnd" << std::endl;
 	}
 	else if (m->GetMessageName() == "disengageEnd") {
 		theSwitchboard.UnsubscribeFrom(this, "disengageEnd");
@@ -447,6 +461,8 @@ void	Characters::ReceiveMessage(Message *m) {
 				this->_pickupItem(status);
 			} if (attrName == "specialmove") {
 				this->_specialMove(status);
+			} if (attrName == "specialattack") {
+				this->_specialAttack(status);
 			} if (attrName == "action") {
 				this->_executeAction(status);
 			}
@@ -1160,6 +1176,13 @@ void	Characters::_specialMove(int status) {
 			this->_eqMove->_shunpo();
 		else if (this->_speMove == "disengage")
 			this->_eqMove->_disengage();
+	}
+}
+
+void	Characters::_specialAttack(int status) {
+	if (status == 0) {
+		if (this->_speAtt == "whirlwind")
+			this->_eqAtt->_whirlwind();
 	}
 }
 

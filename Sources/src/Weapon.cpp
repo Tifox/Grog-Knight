@@ -191,6 +191,12 @@ void	Weapon::_initDirection(Weapon* w, Characters* c) {
 	b2DistanceJoint *joint1 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef1);
 	b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
 }
+//! Seter
+
+void	Weapon::setActive(float f) {
+	this->_active = f;
+}
+
 
 //! Basic destructor
 

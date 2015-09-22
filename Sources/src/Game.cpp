@@ -94,14 +94,13 @@ void	Game::start(void) {
 	}
 
 	delete(Game::currentGame->maps);
-//	Game::elementMap.clear();
 	this->maps = new Maps("Maps/");
 	this->maps->readMaps();
 	Game::currentGame = this;
 	Hero			*hero = new Hero(Game::menuCharacter->getHeroType());
 
-	theWorld.Remove(Game::menuCharacter);
 	theWorld.GetPhysicsWorld().DestroyBody(Game::menuCharacter->GetBody());
+	theWorld.Remove(Game::menuCharacter);
 	LevelGenerator *levelGenerator = new LevelGenerator(4, 3, 60);
 	levelGenerator->execute();
 	this->_tmpMap = levelGenerator->getLevel();
@@ -125,6 +124,7 @@ void	Game::start(void) {
 	this->setHero(hero);
 	this->displayHUD();
 	hero->setStartingValues();
+	this->setHero(hero);
 	Game::started = 1;
 	Game::currentGame = this;
 }
@@ -384,8 +384,10 @@ void	Game::endingGame(void) {
 	Game::secretDoor = nullptr;
 	Game::bossDoor = nullptr;
 	Game::dealer = nullptr;
-	Game::currentGame->getShopkeeper()->getShop()->hideShop();
-	theWorld.Remove(Game::currentGame->getShopkeeper());
+	if (Game::currentGame->getShopkeeper()) {
+		Game::currentGame->getShopkeeper()->getShop()->hideShop();
+		theWorld.Remove(Game::currentGame->getShopkeeper());
+	}
 	Game::currentGame->setShopkeeper(nullptr);
 	Game::chest->reset();
 	Game::deadWaiting = true;

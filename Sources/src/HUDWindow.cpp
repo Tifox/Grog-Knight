@@ -240,16 +240,18 @@ void	HUDWindow::displayText(void) {
 			int		x, y, mult = 6;
 			Map		m = Game::currentGame->getCurrentMap();
 
-			x = ((((*i)->toFollow->GetBody()->GetWorldCenter().x + 0.5) - m.getXStart()) * 40) - 40;
-			y = -((((*i)->toFollow->GetBody()->GetWorldCenter().y - 0.5) - m.getYStart()) * 40) + 50;
-			if ((*i)->isFading) {
-				DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
-				(*i)->y += 1;
-				(*i)->colorA -= 0.02f;
-			} else if ((*i)->isTalk) {
-				DrawGameText((*i)->str, (*i)->font, x - 5, y - (*i)->y + 5, theCamera.GetRotation());
-			} else {
-				DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
+			if ((*i)->toFollow->GetBody()) {
+				x = ((((*i)->toFollow->GetBody()->GetWorldCenter().x + 0.5) - m.getXStart()) * 40) - 40;
+				y = -((((*i)->toFollow->GetBody()->GetWorldCenter().y - 0.5) - m.getYStart()) * 40) + 50;
+				if ((*i)->isFading) {
+					DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
+					(*i)->y += 1;
+					(*i)->colorA -= 0.02f;
+				} else if ((*i)->isTalk) {
+					DrawGameText((*i)->str, (*i)->font, x - 5, y - (*i)->y + 5, theCamera.GetRotation());
+				} else {
+					DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
+				}
 			}
 		}
 	}
@@ -352,6 +354,7 @@ void	HUDWindow::life(int life) {
 	std::list<HUDActor *>::iterator	i;
 	int		index;
 
+	if (!Game::deadWaiting) {
 	y = theCamera.GetWindowHeight() / 20 * 1;
 	size = theCamera.GetWindowWidth() / 20 * 0.6;
 	for (i = this->_hearts.begin(), index = 0; i != this->_hearts.end(); i++, index++) {
@@ -377,6 +380,7 @@ void	HUDWindow::life(int life) {
 		}
 		this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_empty_end.png", 
 			((x - theCamera.GetWindowWidth() / 30) + 1.3), y, Vector2(5, 15), 100));
+	}
 	}
 }
 

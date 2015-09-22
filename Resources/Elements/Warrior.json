@@ -2,7 +2,6 @@
 	"infos": {
 		"name": "Warrior",
 		"id": 0,
-		"HP": 75,
 		"maxHP": 75,
 		"mana": 80,
 		"maxMana": 80,
@@ -24,6 +23,7 @@
 			"armor": "ChestArmor",
 			"ring": "NiceRing",
 			"specialMove": "blink",
+			"specialAttack": "whirlwind",
 			"inventorySlots": 2
 		},
 		"executeAction": {
@@ -106,6 +106,9 @@
 		},
 		"specialMove": {
 			"subscribe": "specialmove"
+		},
+		"specialAttack": {
+			"subscribe": "specialattack"
 		},
 		"down": {
 			"subscribe": "down"

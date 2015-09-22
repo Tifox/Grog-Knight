@@ -110,6 +110,12 @@
 			"controller" : "",
 			"key" : "UP_ARROW"
 		},
+		"Special Attack" : 
+		{
+			"broadcast" : "specialattack",
+			"controller" : "",
+			"key" : "Y"
+		},
 		"Special Move" : 
 		{
 			"broadcast" : "specialmove",

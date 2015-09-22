@@ -37,7 +37,7 @@ MenuCharacter::MenuCharacter(void) : Characters("MenuCharacter") {
 	this->_character = "Warrior";
 	// THIS IS TMP; DO NOT JUDGE ME
 	Elements		*tmp;
-	tmp = new Elements(); tmp->addAttribute("Name", "Axe_000"); this->_equipSelection["Weapon"] = tmp;
+	tmp = new Elements(); tmp->addAttribute("Name", "Sword_000"); this->_equipSelection["Weapon"] = tmp;
 	tmp = new Elements(); tmp->addAttribute("Name", "Ring_000"); this->_equipSelection["ring"] = tmp;
 	tmp = new Elements(); tmp->addAttribute("Name", "Armor_000"); this->_equipSelection["Armor"] = tmp;
 	// END OF NASTY CODE. Well, actually no. But u know what i mean
@@ -106,6 +106,8 @@ void	MenuCharacter::trigger(std::string name, int status) {
 		Game::isInMenu = 0;
 		Game::menuCharacter = this;
 		Game::asToStart = 1;
+	} else if (name == "kitchen") {
+		this->_kitchen();
 	}
 }
 
@@ -582,6 +584,10 @@ void		MenuCharacter::_cleanCloset(void) {
 	this->_isBlock = 0;
 	this->_chooseEquipment = 0;
 	//this->_showTextInfo("Press enter to choose a new character");
+}
+
+void		MenuCharacter::_kitchen(void) {
+	
 }
 
 std::string		MenuCharacter::getHeroType(void) { return this->_character; };

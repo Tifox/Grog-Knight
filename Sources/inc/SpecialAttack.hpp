@@ -36,21 +36,26 @@
 
  class Characters;
 
- class SpecialAttack {
+ class SpecialAttack : public MessageListener {
 
      public:
          SpecialAttack(void);
          SpecialAttack(Characters*);
-         ~SpecialAttack();
+         ~SpecialAttack(void);
 
          Characters* character;
 
          void			_setCategory(std::string category);
+		 void			ReceiveMessage(Message *m);
+		 void			_whirlwind(void);
 
-		 virtual void	_whirlwind(void);
 
      private:
          std::string		_category;
+		int					_previousSpeed;
+		int					_previousDmg;
+		int					_previousResistance;
+		std::string			_currentAttack;
 
  };
 

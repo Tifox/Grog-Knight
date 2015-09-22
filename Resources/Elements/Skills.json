@@ -1,0 +1,65 @@
+{
+	1: {
+		"Warrior": {
+			"charge",
+			"dash",
+			"stomp"
+		},
+		"Mage" : {
+			"blink",
+			"fly",
+			"totem"
+		},
+		"Archer": {
+			"shunpo",
+			"wallJump",
+			"disengage"
+		}
+	},
+	2 : {
+		"Warrior": {
+			"whirlwind",
+			"shockwave",
+			"throw_weapon"
+		},
+		"Mage": {
+			"ice_projectile",
+			"fire_projectile",
+			"shield"
+		},
+		"Archer": {
+			"rapid_fire",
+			"smoke_cloud",
+			"execute"
+		}
+	},
+	3: {
+		"Warrior": {
+			"passive_sword",
+			"passive_hammer",
+			"passive_spear"
+		},
+		"Mage": {
+			"passive_ice",
+			"passive_fire",
+			"passive_thunder"
+		},
+		"Archer": {
+			"passive_bow",
+			"passive_dague",
+			"passive_both"
+		}
+	},
+	4: {
+		"Warrior": {
+			"berserk"
+		},
+		"Mage": {
+			"ulti_mage"
+		},
+		"Archer": {
+			"ulti_dagger",
+			"ulti_bow"
+		}
+	}
+}

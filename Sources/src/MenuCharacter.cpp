@@ -44,6 +44,7 @@ MenuCharacter::MenuCharacter(void) : Characters("MenuCharacter") {
 	theSwitchboard.SubscribeTo(this, "enterPressed");
 	theSwitchboard.SubscribeTo(this, "chooseEquipment");
 	theSwitchboard.SubscribeTo(this, "returnPressed");
+	this->_getSkills();
 }
 
 MenuCharacter::~MenuCharacter(void) {
@@ -106,8 +107,14 @@ void	MenuCharacter::trigger(std::string name, int status) {
 		Game::isInMenu = 0;
 		Game::menuCharacter = this;
 		Game::asToStart = 1;
-	} else if (name == "kitchen") {
-		this->_kitchen();
+	} else if (name == "skills") {
+		if (status == 1)
+			this->_showTextInfo("Press enter to choose your skills");
+		else if (!status) {
+			Game::getHUD()->removeText("Press enter to choose your skills");
+			theWorld.Remove(this->_image);
+			this->_image = nullptr;
+		}
 	}
 }
 
@@ -156,8 +163,15 @@ void	MenuCharacter::ReceiveMessage(Message *m) {
 			theWorld.Remove(this->_image);
 			this->_isBlock = 1;
 			this->_chooseEquipment = 1;
+			this->_image = nullptr;
 		} else if (this->_currentTrigger == "equipment" && this->_chooseEquipment == 1) {
 			this->_updateSelection();
+		} else if (this->_currentTrigger == "skills") {
+			theCamera.MoveTo(Vector3(131, -19.5, 12.5), 0.5, true, "chooseSkills");
+			Game::getHUD()->removeText("Press enter to choose your skills");
+			theWorld.Remove(this->_image);
+			this->_image = nullptr;
+			this->_kitchen();
 		}
 	} else if (m->GetMessageName() == "chooseEquipment") {
 		this->_equipmentChoose();
@@ -587,7 +601,38 @@ void		MenuCharacter::_cleanCloset(void) {
 }
 
 void		MenuCharacter::_kitchen(void) {
-	
+}
+
+void		MenuCharacter::_hideKitchen(void) {
+}
+
+void		MenuCharacter::_getSkills(void) {
+	std::ifstream		moves("Resources/Elements/SpecialMoves.json"), attacks("Resources/Elements/SpecialAttack.json"),
+			tree("Resources/Elements/Skills.json");
+	std::string			moveFile, attackFile, treeFile, tmp;
+	Json::Reader		reader;
+	Json::Value			jsonTmp;
+	Json::ValueIterator		it;
+
+	if (moves.is_open() && attacks.is_open() && tree.is_open()) {
+		for (; std::getline(moves, tmp); )
+			moveFile += tmp;
+		for (; std::getline(attacks, tmp); )
+			attackFile += tmp;
+		for (; std::getline(tree, tmp); )
+			treeFile += tmp;
+	} else {
+		Log::error("Cannot find the Special Moves / Attacks file.");
+	}
+	reader.parse(moveFile, jsonTmp, false);
+	for (it = jsonTmp.begin(); it != jsonTmp.end(); it++)
+		this->_skills[it.key().asString()] = *it;
+	reader.parse(attackFile, jsonTmp, false);
+	for (it = jsonTmp.begin(); it != jsonTmp.end(); it++)
+		this->_skills[it.key().asString()] = (*it);
+	reader.parse(treeFile, this->_skillTree, false);
+	// TODO:
+	// Iterator over tree, while using this->_skills[name]
 }
 
 std::string		MenuCharacter::getHeroType(void) { return this->_character; };

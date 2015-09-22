@@ -71,6 +71,8 @@ class		MenuCharacter : public Characters {
 		void			_flavorInfo(std::string n);
 		void			_cleanCloset(void);
 		void			_kitchen(void);
+		void			_hideKitchen(void);
+		void			_getSkills(void);
 
 	private:
 		HUDActor			*_image;
@@ -91,5 +93,7 @@ class		MenuCharacter : public Characters {
 		int								_chooseEquipment;
 		std::map<std::string, Elements *> _equipSelection;
 		MenuCharacter::itemInfo				*_currentItemInfo;
+		Json::Value							_skills;
+		Json::Value							_skillTree;
 };
 #endif

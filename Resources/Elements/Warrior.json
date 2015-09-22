@@ -22,7 +22,7 @@
 			"weapon": "Sword",
 			"armor": "ChestArmor",
 			"ring": "NiceRing",
-			"specialMove": "blink",
+			"specialMove": "shunpo",
 			"specialAttack": "whirlwind",
 			"inventorySlots": 2
 		},

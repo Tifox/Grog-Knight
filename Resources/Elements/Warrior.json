@@ -23,7 +23,7 @@
 			"weapon": "Sword",
 			"armor": "ChestArmor",
 			"ring": "NiceRing",
-			"specialMove": "blink",
+			"specialMove": "stomp",
 			"inventorySlots": 2
 		},
 		"executeAction": {

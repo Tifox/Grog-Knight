@@ -54,6 +54,7 @@ class MenuCharacter;
 # include "Shop.hpp"
 # include "DrugList.hpp"
 # include "ControllerInputManager.hpp"
+# include "Render.hpp"
 
 class ArmorList;
 class EnemyList;
@@ -120,6 +121,7 @@ class Game {
 
 		Maps		*maps;
 		Menu		*menu;
+		DebugDraw	dd;
 		std::vector<Room*>				*gameMap;
 		Tooltip 						*tooltip;
 		static int						currentIds;

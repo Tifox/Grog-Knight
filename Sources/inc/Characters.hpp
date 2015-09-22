@@ -122,6 +122,7 @@ class Characters : public Elements {
 		void						subscribeToAll(void);
 		t_buff						buff;
 		int							inSpecialMap;
+		Elements*					hookedTo;
 
 	//Moved in order to get loot infos outside of class
 		Json::Value		_getAttr(std::string category, std::string key);

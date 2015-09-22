@@ -62,8 +62,6 @@ void	Map::setMap(std::vector<int> map) { this->_map.push_back(map); };
 void	Map::setXStart(int x) { this->_xStart = x; };
 void	Map::setYStart(int y) { this->_yStart = y; };
 void	Map::setUsed(int n) { this->_isUsed = n; };
-std::list<Enemy *>	Map::getEnemies(void) { return this->_enemies; };
-std::vector<std::vector<int> >	Map::getPhysicMap(void) { return this->_physicMap; };
 
 /* GETTERS */
 
@@ -74,6 +72,9 @@ int		Map::getYMid(void) { return this->_yStart - (this->_height / 2); };
 int		Map::getXStart(void) { return this->_xStart; };
 int		Map::getYStart(void) { return this->_yStart; };
 int		Map::getIsUsed(void) { return this->_isUsed; };
+std::list<Enemy *>	Map::getEnemies(void) { return this->_enemies; };
+std::vector<std::vector<int> >	Map::getPhysicMap(void) { return this->_physicMap; };
+std::vector<std::vector<Elements*> >	Map::getObjectMap(void) { return this->_objectMap; };
 
 //! Display the map
 /**
@@ -91,6 +92,7 @@ Map		Map::display(void) {
 	if (!this->_isUsed) {
 		for (v = 0; v < this->_height; v++) {
 			this->_physicMap.push_back(std::vector<int>(this->getWidth()));
+			this->_objectMap.push_back(std::vector<Elements*>(this->getWidth()));
 		}
 	}
 	for (layers = this->_map.begin(), v = 0; layers != this->_map.end(); layers++, v++) {
@@ -120,6 +122,7 @@ Map		Map::display(void) {
 				if (this->_properties.find(*it) == this->_properties.end()) {
 					elem->addAttribute("physic", "TRUE");
 					this->_physicMap[-(y - this->_yStart)][x - this->_xStart] = 1;
+					this->_objectMap[-(y - this->_yStart)][x - this->_xStart] = elem;
 				} else {
 					std::map<std::string, Json::Value>::iterator	it2;
 					int												isPhysic = 1, isAnimated = 0;
@@ -139,8 +142,10 @@ Map		Map::display(void) {
 					}
 					if (isPhysic == 1) {
 						elem->addAttribute("physic", "TRUE");
+						this->_objectMap[-(y - this->_yStart)][x - this->_xStart] = elem;
 						this->_physicMap[-(y - this->_yStart)][x - this->_xStart] = 1;
 					} else {
+						this->_objectMap[-(y - this->_yStart)][x - this->_xStart] = nullptr;
 						this->_physicMap[-(y - this->_yStart)][x - this->_xStart] = 0;
 					}
 					if (isAnimated == 1) {

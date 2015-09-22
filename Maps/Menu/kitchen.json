@@ -7725,6 +7725,14 @@
                 {
                  "physic":"0"
                 },
+             "20973":
+                {
+                 "trigger":"skills"
+                },
+             "20976":
+                {
+                 "trigger":"skills"
+                },
              "21006":
                 {
                  "physic":"0"

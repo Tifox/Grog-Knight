@@ -43,9 +43,13 @@ Weapon::Weapon(std::string name) : _name(name) {
 Weapon::Weapon(Weapon* weapon) {
 	this->_name = weapon->getName();
 	this->addAttribute("name", this->_name);
+	this->_displayName = weapon->getDisplayName();
+	this->addAttribute("displayName", this->_displayName);
 	this->SetLayer(70);
 	this->_flavor = weapon->getFlavor();
 	this->addAttribute("flavor", this->_flavor);
+	this->_equipable = weapon->getEquipable();
+	this->addAttribute("equipable", this->_equipable);
 	this->_damage = weapon->getDamage();
 	this->_recovery = weapon->getRecovery();
 	this->_active = weapon->getActive();
@@ -70,6 +74,7 @@ Weapon::Weapon(Weapon* weapon) {
 
 Weapon::Weapon(Weapon* w, Characters* c, int i) {
 	this->_name = w->getName();
+	this->_displayName = w->getDisplayName();
 	this->_flavor = w->getFlavor();
 	this->_damage = w->getDamage();
 	this->_recovery = w->getRecovery();
@@ -77,6 +82,7 @@ Weapon::Weapon(Weapon* w, Characters* c, int i) {
 	this->_size = w->getSize();
 	this->_attack = w->getAttack();
 	this->_pushback = w->getPushback();
+	this->_equipable = w->getEquipable();
 	this->SetSize(1);
 	this->_critRate = w->getCritRate();
 	this->SetName("HeroWeaponHitbox");
@@ -108,6 +114,7 @@ Weapon::Weapon(Weapon* w, Characters* c, int i) {
 
 Weapon::Weapon(Weapon* w, Characters* c) {
 	this->_name = w->getName();
+	this->_displayName = w->getDisplayName();
 	this->_flavor = w->getFlavor();
 	this->_damage = w->getDamage();
 	this->_recovery = w->getRecovery();
@@ -115,6 +122,7 @@ Weapon::Weapon(Weapon* w, Characters* c) {
 	this->_size = w->getSize();
 	this->_attack = w->getAttack();
 	this->_pushback = w->getPushback();
+	this->_equipable = w->getEquipable();
 	this->SetSize(1);
 	this->_critRate = w->getCritRate();
 	this->SetName("HeroWeaponHitbox");
@@ -231,7 +239,8 @@ void    Weapon::_parseJson(std::string file) {
 	if (this->_name != json["infos"].get("name", "").asString())
 		Log::warning("The class name is different with the name in the config file: " + this->_name + "/" + json["infos"].get("name", "").asString());
 	this->_name = json["infos"].get("name", "").asString();
-
+	this->_displayName = json["infos"].get("displayName", "").asString();
+	this->_price = json["infos"].get("price", "").asInt();
 	this->_flavor = json["infos"].get("flavor", "").asString();
 	this->_active = json["infos"].get("active", "").asFloat();
 	this->_recovery = json["infos"].get("recovery", "").asFloat();
@@ -243,6 +252,7 @@ void    Weapon::_parseJson(std::string file) {
 	this->_sprite = json["infos"].get("sprites", "").asString();
 	this->_critRate = json["infos"].get("critRate", "").asInt();
 	this->_type = json["infos"].get("type", "").asString();
+	this->_equipable = json["infos"].get("equipable", "").asString();
 	this->addAttribute("sprite", this->_sprite);
 	this->addAttribute("type3", "Weapon");
 }
@@ -299,11 +309,14 @@ void	Weapon::ReceiveMessage(Message *m) {
 
 /* GETTERS */
 std::string		Weapon::getName(void)      { return this->_name; }
+std::string		Weapon::getDisplayName(void)      { return this->_displayName; }
 std::string		Weapon::getFlavor(void)    { return this->_flavor; }
 std::string		Weapon::getSprite(void)    { return this->_sprite; }
 std::string		Weapon::getAttack(void)    { return this->_attack; }
 std::string 	Weapon::getType(void)	   { return this->_type; }
+std::string 	Weapon::getEquipable(void)	   { return this->_equipable; }
 int				Weapon::getLootLevel(void) { return this->_lootLevel; }
+int				Weapon::getPrice(void) 	   { return this->_price; }
 float			Weapon::getActive(void)    { return this->_active; }
 int				Weapon::getSize(void)      { return this->_size; }
 int				Weapon::getDamage(void)	   { return this->_damage; }

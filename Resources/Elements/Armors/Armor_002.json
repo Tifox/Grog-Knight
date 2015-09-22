@@ -1,0 +1,16 @@
+{
+    "infos": {
+   	    "name": "Armor_002",
+		"displayName": "Solid Armor",
+		"flavor": "Looks like this thing is an armor.\nMaybe.",
+		"price": 20,
+		"sprites": "Resources/Images/Armors/Armor_002.png",
+		"lootLevel": 3
+	},
+	"bonus": {
+		"hpBuff": 50,
+		"dmgReduc": 0,
+		"bonusSpeed": 0,
+		"bonusDmg": 0
+	}
+}

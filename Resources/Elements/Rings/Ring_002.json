@@ -1,0 +1,16 @@
+{
+    "infos": {
+   	    "name": "Ring_002",
+		"displayName": "Ring of Boredom",
+		"price": 20,
+		"flavor": "A pretty shitty one actually...",
+		"sprites": "Resources/Images/Rings/Ring_002.png",
+		"lootLevel": 3
+	},
+	"bonus": {
+		"hpBuff": 0,
+		"dmgReduc": 0,
+		"bonusSpeed": 0,
+		"bonusDmg": 0
+	}
+}

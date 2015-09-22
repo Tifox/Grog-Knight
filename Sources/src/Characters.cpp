@@ -80,7 +80,6 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_speAttReady = 1;
 	this->_hasDashed = 0;
 	this->SetLayer(100);
-	this->_readFile(name);
 	this->_eqMove = new SpecialMoves(this);
 	this->_eqAtt = new SpecialAttack(this);
 	this->_isStomping = false;
@@ -88,6 +87,9 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_isDisengaging = false;
 	this->buff.bonusDmg = 0;
 	this->buff.bonusSpeed = 0;
+	this->buff.dmgReduc = 0;
+	this->buff.critBuff = 0;
+	this->_readFile(name);
 }
 
 //! Basic destructor
@@ -142,16 +144,19 @@ void	Characters::_parseJson(std::string file) {
 	this->addAttribute("talk", json["infos"].get("talk", "").asString());
 	this->_size = json["infos"].get("size", "").asFloat();
 	this->SetSize(this->_size);
-	this->_hp = json["infos"].get("HP", "").asInt();
 	if (json["infos"].get("maxHP", "").isConvertibleTo(Json::ValueType::intValue))
 		this->_maxHp = json["infos"].get("maxHP", "").asInt();
-	if (json["infos"].get("mana", "").isConvertibleTo(Json::ValueType::intValue))
-		this->_mana = json["infos"].get("mana", "").asInt();
-	if (json["infos"].get("maxMana", "").isConvertibleTo(Json::ValueType::intValue))
-		this->_maxMana = json["infos"].get("maxMana", "").asInt();
 	this->_hitboxType = json["infos"].get("hitboxType", "").asString();
 	this->_hitbox = json["infos"].get("hitbox", "").asString();
 	this->addAttribute("spritesFrame", json["infos"].get("sprites", "").asString());
+	if (json["infos"].get("damage", "").isConvertibleTo(Json::ValueType::stringValue))
+		this->addAttribute("damage", json["infos"].get("damage", "").asString());
+	this->buff.critBuff = json["infos"].get("baseCrit", 0).asInt();
+	this->buff.bonusDmg = json["infos"].get("baseDamage", 0).asInt();
+	this->_maxHp += (this->_maxHp * json["Stats"].get("HPMult", 0).asFloat()) * this->_level;
+	this->_hp = this->_maxHp;
+	this->buff.critBuff += (this->buff.critBuff * json["Stats"].get("critMult", 0).asFloat() * this->_level);
+	this->buff.bonusDmg += (this->buff.bonusDmg * json["Stats"].get("damageMult", 0).asFloat() * this->_level);
 
 	for (i = json["Actions"].begin(); i != json["Actions"].end(); i++) {
 		for (v = (*i).begin(); v != (*i).end(); v++) {
@@ -439,10 +444,9 @@ void	Characters::ReceiveMessage(Message *m) {
 		if (!strncmp(attrName.c_str(), m->GetMessageName().c_str(), strlen(attrName.c_str()))) {
 			// Get the key status (1 = Pressed, 0 = Released)
 			status = (m->GetMessageName().substr(strlen(attrName.c_str()), 7) == "Pressed" ? 1 : 0);
-			if (this->_actionFlag == false && status == 1)
-				return;
-			else if (status == 1)
-				this->_actionFlag = false;
+			//if (this->_actionFlag == false && status == 1)
+				//return;
+			this->_actionFlag = false;
 			if (this->_canMove == false)
 				return;
 			if (attrName == "forward") {
@@ -834,6 +838,9 @@ void	Characters::_executeAction(int status) {
 void	Characters::_forward(int status) {
 	this->_setCategory("forward");
 	if (status == 1) {
+		if (this->_forwardFlag == true)
+			return;
+		this->_forwardFlag = true;
 		this->_orientation = RIGHT;
 		this->_latOrientation = RIGHT;
 		if ((this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() ||
@@ -870,6 +877,9 @@ void	Characters::_forward(int status) {
 		if (!this->_isJump && !this->_isAttacking && this->_isDashing == false)
 			this->AnimCallback("base");
 	} else {
+		if (this->_forwardFlag == true)
+			return;
+		this->_forwardFlag = true;
 		if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed != this->_getAttr("forward", "force").asInt() * -2)
 			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
 		else if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed == this->_getAttr("forward", "force").asInt() * -2)
@@ -888,6 +898,9 @@ void	Characters::_forward(int status) {
 void	Characters::_backward(int status) {
 	this->_setCategory("backward");
 	if (status == 1) {
+		if (this->_backwardFlag == true)
+			return;
+		this->_backwardFlag = true;
 		if (this->getAttribute("type") == "Hero") {
 			this->_orientation = LEFT;
 			this->_latOrientation = LEFT;
@@ -925,6 +938,9 @@ void	Characters::_backward(int status) {
 		if (!this->_isJump && !this->_isAttacking && !this->_isDashing) 
 			this->AnimCallback("base");
 	} else {
+		if (this->_backwardFlag == true)
+			return;
+		this->_backwardFlag = true;
 		if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed != this->_getAttr("forward", "force").asInt() * -2)
 			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
 		else if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed == this->_getAttr("forward", "force").asInt() * -2)
@@ -1152,8 +1168,6 @@ void	Characters::_specialMove(int status) {
 			this->_totemDeletionSent = 1;
 			theSwitchboard.SubscribeTo(this, "removeTotem");
 			theSwitchboard.DeferredBroadcast(new Message("removeTotem"), 3);
-	}
-	if (status == 0) {
 		if (this->_speMove == "dash")
 			this->_eqMove->_dash();
 		else if (this->_speMove == "charge")
@@ -1164,7 +1178,13 @@ void	Characters::_specialMove(int status) {
 			this->_eqMove->_blink();
 		else if (this->_speMove == "fly")
 			this->_eqMove->_fly();
-		else if (this->_speMove == "totem") {
+		else if (this->_speMove == "shunpo")
+			this->_eqMove->_shunpo();
+		else if (this->_speMove == "disengage")
+			this->_eqMove->_disengage();
+	}
+	if (status == 0) {
+		if (this->_speMove == "totem") {
 			this->_totemDeletionSent = 0;
 			theSwitchboard.UnsubscribeFrom(this, "removeTotem");
 			if (this->_totemPlaced == 0)
@@ -1172,10 +1192,6 @@ void	Characters::_specialMove(int status) {
 			else
 				this->_totemPlaced = 0;
 		}
-		else if (this->_speMove == "shunpo")
-			this->_eqMove->_shunpo();
-		else if (this->_speMove == "disengage")
-			this->_eqMove->_disengage();
 	}
 }
 
@@ -1192,8 +1208,10 @@ void	Characters::_specialAttack(int status) {
  * @param The Weapon object
  */
 void	Characters::equipWeapon(Weapon* weapon) {
-	this->_weapon = new Weapon(weapon);
-	Game::getHUD()->items(this->_weapon);
+	if (weapon->getEquipable() == this->getAttribute("class")) {
+		this->_weapon = new Weapon(weapon);
+		Game::getHUD()->items(this->_weapon);
+	}
 }
 
 //! Unequip a weapon
@@ -1212,17 +1230,18 @@ void	Characters::unequipWeapon(void) {
  */
 void	Characters::equipArmor(Armor* armor) {
 	this->_armor = new Armor(armor);
-	if (this->_armor->getAttribute("hpBuff") != ""){
+
+	if (this->_armor->getAttribute("hpBuff") != "")
 		this->_maxHp += std::stoi(this->_armor->getAttribute("hpBuff"));
-	}
-	if (this->_armor->getAttribute("manaBuff") != ""){
-		this->_maxMana += std::stoi(this->_armor->getAttribute("manaBuff"));
-	}
+	if (this->_armor->getAttribute("dmgReduc") != "")
+		this->buff.dmgReduc += std::stoi(this->_armor->getAttribute("dmgReduc"));
+	if (this->_armor->getAttribute("bonusSpeed") != "")
+		this->buff.bonusSpeed += std::stoi(this->_armor->getAttribute("bonusSpeed"));
+	if (this->_armor->getAttribute("bonusDmg") != "")
+		this->buff.bonusDmg += std::stoi(this->_armor->getAttribute("bonusDmg"));
 	Game::getHUD()->items(this->_armor);
 	Game::getHUD()->setMaxHP(this->_maxHp);
 	Game::getHUD()->life(this->_hp);
-	Game::getHUD()->setMaxMana(this->_maxMana);
-	Game::getHUD()->mana(this->_mana);
 }
 
 //! Unequip a armor
@@ -1237,16 +1256,15 @@ void	Characters::unequipArmor(void) {
 		if (this->_hp > this->_maxHp)
 			this->_hp = this->_maxHp;
 	}
-	if (this->_armor->getAttribute("manaBuff") != "") {
-		this->_maxMana -= std::stoi(this->_armor->getAttribute("manaBuff"));
-		if (this->_mana > this->_maxMana)
-			this->_mana = this->_maxMana;
-	}
+	if (this->_armor->getAttribute("dmgReduc") != "")
+		this->buff.dmgReduc -= std::stoi(this->_armor->getAttribute("dmgReduc"));
+	if (this->_armor->getAttribute("bonusSpeed") != "")
+		this->buff.bonusSpeed -= std::stoi(this->_armor->getAttribute("bonusSpeed"));
+	if (this->_armor->getAttribute("bonusDmg") != "")
+		this->buff.bonusDmg -= std::stoi(this->_armor->getAttribute("bonusDmg"));
 	Game::getHUD()->items(this->_armor);
 	Game::getHUD()->setMaxHP(this->_maxHp);
 	Game::getHUD()->life(this->_hp);
-	Game::getHUD()->setMaxMana(this->_maxMana);
-	Game::getHUD()->mana(this->_mana);
 }
 
 //! Equip a ring
@@ -1256,17 +1274,18 @@ void	Characters::unequipArmor(void) {
  */
 void	Characters::equipRing(Ring* ring) {
 	this->_ring = new Ring(ring);
-	if (this->_ring->getAttribute("hpBuff") != "") {
+
+	if (this->_ring->getAttribute("hpBuff") != "")
 		this->_maxHp += std::stoi(this->_ring->getAttribute("hpBuff"));
-	}
-	if (this->_ring->getAttribute("manaBuff") != "") {
-		this->_maxMana += std::stoi(this->_ring->getAttribute("manaBuff"));
-	}
+	if (this->_ring->getAttribute("dmgReduc") != "")
+		this->buff.dmgReduc += std::stoi(this->_ring->getAttribute("dmgReduc"));
+	if (this->_ring->getAttribute("bonusSpeed") != "")
+		this->buff.bonusSpeed += std::stoi(this->_ring->getAttribute("bonusSpeed"));
+	if (this->_ring->getAttribute("bonusDmg") != "")
+		this->buff.bonusDmg += std::stoi(this->_ring->getAttribute("bonusDmg"));
 	Game::getHUD()->items(this->_ring);
 	Game::getHUD()->setMaxHP(this->_maxHp);
 	Game::getHUD()->life(this->_hp);
-	Game::getHUD()->setMaxMana(this->_maxMana);
-	Game::getHUD()->mana(this->_mana);
 }
 
 //! Unequip a ring
@@ -1281,11 +1300,12 @@ void	Characters::unequipRing(void) {
 		if (this->_hp > this->_maxHp)
 			this->_hp = this->_maxHp;
 	}
-	if (this->_ring->getAttribute("manaBuff") != "") {
-		this->_maxMana -= std::stoi(this->_ring->getAttribute("manaBuff"));
-		if (this->_mana > this->_maxMana)
-			this->_mana = this->_maxMana;
-	}
+	if (this->_ring->getAttribute("dmgReduc") != "")
+		this->buff.dmgReduc -= std::stoi(this->_ring->getAttribute("dmgReduc"));
+	if (this->_ring->getAttribute("bonusSpeed") != "")
+		this->buff.bonusSpeed -= std::stoi(this->_ring->getAttribute("bonusSpeed"));
+	if (this->_ring->getAttribute("bonusDmg") != "")
+		this->buff.bonusDmg -= std::stoi(this->_ring->getAttribute("bonusDmg"));
 }
 
 //! Set basics hp
@@ -1299,18 +1319,6 @@ void						Characters::setHP(int hp) {
 	else
 		this->_hp = hp;
 	Game::getHUD()->life(this->_hp);
-};
-
-//! Set basics mana
-/**
- * Set Mana to the Character.
- * @param mana The Mana number
- */
-void						Characters::setMana(int mana) {
-	if (mana > this->_maxMana)
-		this->_mana = this->_maxMana;
-	else
-		this->_mana = mana;
 };
 
 //! Set invincibility
@@ -1337,7 +1345,6 @@ void						Characters::_destroyEnemy(void) {
  */
 void						Characters::destroyTarget(void) {
 	if (this->_target != nullptr) {
-	  //		std::cout << "destroyTarget (Characters.cpp l.1077)" << std::endl;
 		Game::addToDestroyList(this->_target);
 		this->_target = nullptr;
 	}
@@ -1360,8 +1367,10 @@ void						Characters::_heroDeath(void) {
 	ghost->SetSprite("Resources/Images/Ghost/ghost_000.png", 0);
 	ghost->LoadSpriteFrames("Resources/Images/Ghost/ghost_000.png");
 	ghost->MoveTo(Vector2(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y + 7), 4);
+	ghost->SetLayer(101);
 	theWorld.Add(ghost);
 	ghost->PlaySpriteAnimation(0.2f, SAT_OneShot, 0, 10, "ghost");
+	this->_ghost = ghost;
 }
 
 /**
@@ -1398,10 +1407,9 @@ Characters::Orientation		Characters::getOrientation(void) { return this->_orient
 std::string					Characters::getLastAction(void) { return this->_lastAction; };
 Elements*					Characters::getItem(void) { return this->_item; }
 int							Characters::getHP(void) { return this->_hp; };
-int							Characters::getMana(void) { return this->_mana; };
-int							Characters::getMaxMana(void) { return this->_maxMana; };
 int							Characters::getMaxHP(void) { return this->_maxHp; };
 int							Characters::getGold(void) { return this->_gold; };
+Actor						*Characters::getGhost(void) { return this->_ghost; };
 void						Characters::setGold(int n) { this->_gold = n; };
 void						Characters::setLevel(int n) { this->_level = n; };
 void						Characters::changeCanMove(void) { this->_canMove = (this->_canMove ? false : true); };

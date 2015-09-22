@@ -142,7 +142,6 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, Characters *toFollow,
 	t->y = 0;
 	if (isTalk) {
 		Elements	*test;
-
 		test = new Elements();
 		test->SetSize(2.5, 0.7);
 		test->SetPosition(toFollow->GetBody()->GetWorldCenter().x, 
@@ -195,6 +194,19 @@ void	HUDWindow::removeText(std::string str) {
 	}
 }
 
+void	HUDWindow::updateText(std::string org, std::string newStr) {
+	std::list<HUDWindow::Text *>::iterator	i;
+
+	for (i = this->_text.begin(); i != this->_text.end(); i++) {
+		if ((*i)->str == org)
+			break ;
+	}
+	if (i != this->_text.end()) {
+		(*i)->str = newStr;
+	}
+
+}
+
 //! Remove a text with an object
 /**
  * Remove a text from the screen with a HUDWindow::Text
@@ -226,18 +238,20 @@ void	HUDWindow::displayText(void) {
 			DrawGameText((*i)->str, (*i)->font, (*i)->x, (*i)->y, theCamera.GetRotation());
 		else {
 			int		x, y, mult = 6;
-			Map		m = Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX];
+			Map		m = Game::currentGame->getCurrentMap();
 
-			x = ((((*i)->toFollow->GetBody()->GetWorldCenter().x + 0.5) - m.getXStart()) * 40) - 40;
-			y = -((((*i)->toFollow->GetBody()->GetWorldCenter().y - 0.5) - m.getYStart()) * 40) + 50;
-			if ((*i)->isFading) {
-				DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
-				(*i)->y += 1;
-				(*i)->colorA -= 0.02f;
-			} else if ((*i)->isTalk) {
-				DrawGameText((*i)->str, (*i)->font, x - 5, y - (*i)->y + 5, theCamera.GetRotation());
-			} else {
-				DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
+			if ((*i)->toFollow->GetBody()) {
+				x = ((((*i)->toFollow->GetBody()->GetWorldCenter().x + 0.5) - m.getXStart()) * 40) - 40;
+				y = -((((*i)->toFollow->GetBody()->GetWorldCenter().y - 0.5) - m.getYStart()) * 40) + 50;
+				if ((*i)->isFading) {
+					DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
+					(*i)->y += 1;
+					(*i)->colorA -= 0.02f;
+				} else if ((*i)->isTalk) {
+					DrawGameText((*i)->str, (*i)->font, x - 5, y - (*i)->y + 5, theCamera.GetRotation());
+				} else {
+					DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
+				}
 			}
 		}
 	}
@@ -335,60 +349,38 @@ HUDActor	*HUDWindow::addImage(std::string path, int x, int y, Vector2 size, int 
  * @todo Empty heart, half-heart.
  */
 void	HUDWindow::life(int life) {
-	int		x, v, sLife = life, y, size;
+	int		x, v, y, size, j;
+	float percent;
 	std::list<HUDActor *>::iterator	i;
 	int		index;
 
-	y = theCamera.GetWindowHeight() / 20 * 0.9;
+	if (!Game::deadWaiting) {
+	y = theCamera.GetWindowHeight() / 20 * 1;
 	size = theCamera.GetWindowWidth() / 20 * 0.6;
 	for (i = this->_hearts.begin(), index = 0; i != this->_hearts.end(); i++, index++) {
 		(*(i))->ChangeColorTo(Color(0, 0, 0, 0), 0);
 		theWorld.Remove(*(i));
 	}
 	this->_hearts.clear();
-	for (x = theCamera.GetWindowWidth() / 20 * 3; life > 0; x += theCamera.GetWindowWidth() / 35) {
-		if (x == theCamera.GetWindowWidth() / 20 * 3) {
-			this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp.png", (x - theCamera.GetWindowWidth() / 30), y, size - 2));
-		} if (life >= 25) {
-			this->_hearts.push_back(this->addImage("Resources/Images/HUD/heart.png", x, y, size, 100));
-			life -= 25;
+	percent = life * 100 / this->_maxHP;
+	x = theCamera.GetWindowWidth() / 20 * 3;
+	this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp.png", (x - theCamera.GetWindowWidth() / 30), y, size - 2));
+	x += size - 2;
+	if (percent > 0)
+		this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_begin.png", 
+			((x - theCamera.GetWindowWidth() / 30)), y, Vector2(5, 15), 100));
+	x += 1.3;
+	for (j = 1; j < percent; x += 1.3, j++)
+			this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_middle.png", (x - theCamera.GetWindowWidth() / 30), y, Vector2(1.3, 15), 100));
+	this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_end.png", 
+			((x - theCamera.GetWindowWidth() / 30) + 1.3), y, Vector2(5, 15), 100));
+	if (percent < 100) {
+		for (; percent < 100; percent++, x += 1.3) {
+			this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_empty_middle.png", (x - theCamera.GetWindowWidth() / 30), y, Vector2(1.3, 15), 100));
 		}
+		this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_empty_end.png", 
+			((x - theCamera.GetWindowWidth() / 30) + 1.3), y, Vector2(5, 15), 100));
 	}
-	if (sLife < this->_maxHP) {
-		for (v = 0; (this->_maxHP - sLife) > v; v += 25, x += theCamera.GetWindowWidth() / 35) {
-			this->_hearts.push_back(this->addImage("Resources/Images/HUD/empty_heart.png", x, y + 2, size - 3, 105));
-		}
-	}
-}
-
-//! Display mana function
-/**
- * Show the mana in the HUD
- * Same way as HUDWindow::life, this function handle the sprites, and the Empty mana
- * @param mana The Mana point.
- */
-void	HUDWindow::mana(int mana) {
-	std::list<HUDActor *>::iterator	i;
-	float								x = theCamera.GetWindowWidth() / 20 * 3.05;
-	int									y, max = this->_maxMana;
-	float								 yHeight = theCamera.GetWindowHeight() / 20 * 1.56, size = theCamera.GetWindowWidth() / 20 * 0.25;
-
-	for (i = this->_mana.begin(); i != this->_mana.end(); i++)
-		theWorld.Remove(*(i));
-	this->_mana.clear();
-	this->_mana.push_back(this->addImage("Resources/Images/HUD/mp.png", (x - theCamera.GetWindowWidth() / 30), yHeight, size * 2));
-	x -= theCamera.GetWindowWidth() / 80 * 0.8;
-	this->_mana.push_back(this->addImage("Resources/Images/HUD/mp_bar_first.png", x, yHeight, size));
-	x += theCamera.GetWindowWidth() / 80;
-	for (y = 0; y < (mana - 1); y += 10, x += theCamera.GetWindowWidth() / 80) {
-		this->_mana.push_back(this->addImage("Resources/Images/HUD/mp_bar_mid.png", x, yHeight, size));
-	}
-	if (y == max)
-		this->_mana.push_back(this->addImage("Resources/Images/HUD/mp_bar_full_end.png", x, yHeight, size));
-	else {
-		for (; y < max; y += 10, x += theCamera.GetWindowWidth() / 80)
-			this->_mana.push_back(this->addImage("Resources/Images/HUD/mp_bar_empty.png", x, yHeight, size));
-		this->_mana.push_back(this->addImage("Resources/Images/HUD/mp_bar_empty_end.png", x, yHeight, size));
 	}
 }
 
@@ -400,7 +392,7 @@ void	HUDWindow::mana(int mana) {
  */
 void	HUDWindow::gold(int gold) {
 	float								x = theCamera.GetWindowWidth() / 20 * 2.37;
-	int									y = theCamera.GetWindowHeight() / 20 * 2.2;
+	int									y = theCamera.GetWindowHeight() / 20 * 1.9;
 	float								size = theCamera.GetWindowWidth() / 20 * 0.41;
 
 	this->addImage("Resources/Images/HUD/xp.png", x, y, Vector2(size + 3.5, size), 100);
@@ -775,7 +767,6 @@ void	HUDWindow::clearHUD(void) {
 }
 
 void	HUDWindow::setGame(Game *g) { this->_g = g; };
-void	HUDWindow::setMaxMana(int m) { this->_maxMana = m; };
 void	HUDWindow::setMaxHP(int h) { this->_maxHP = h; };
 
 int		HUDWindow::isToggled = 0;

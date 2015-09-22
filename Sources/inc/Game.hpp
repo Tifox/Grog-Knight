@@ -93,6 +93,7 @@ class Game {
 		Shopkeeper	*getShopkeeper(void);
 		void		setShopkeeper(Shopkeeper *s);
 		void	menuInGame(void);
+		void	endingGame(void);
 		std::map<std::string, Json::Value>	getSave(void);
 
 		static bool	endGame;
@@ -160,6 +161,8 @@ class Game {
 		static Door						*secretReturnDoor;
 		static bool						toggleMenu;
 		static bool						stopPattern;
+		static bool						deadWaiting;
+		static int						World;
 
 	private:
 		float				beginXHero;

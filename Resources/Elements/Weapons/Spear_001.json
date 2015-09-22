@@ -1,0 +1,20 @@
+{
+    "infos": {
+   	    "name": "Spear_001",
+		"displayName": "Halberd",
+		"flavor": "This must sting...",
+		"type": "Spear",
+		"equipable": "Warrior",
+		"price": 15,
+		"hitbox": "SWORD",
+		"size": 1,
+	 	"critRate": 5,
+		"damage": 5,
+		"recovery": 1,
+		"pushback": 5,
+		"active": 0.2,
+		"attack": "melee",
+		"sprites": "Resources/Images/Weapons/Spear_001.png",
+		"lootLevel": 2
+	}
+}

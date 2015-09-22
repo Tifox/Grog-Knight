@@ -42,6 +42,7 @@ class Chest: public Elements {
 		void		makeChoices(void);
 		void		updateItems(void);
 		int			isUsed(void);
+		void		reset(void);
 		std::map<int, std::string>	getItems(void);
 		int							getGold(void);
 		void		applySave(std::map<std::string, Json::Value> save);

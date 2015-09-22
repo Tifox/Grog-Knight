@@ -2,14 +2,15 @@
 	"infos": {
 		"name": "Enemy",
 		"id": 1,
-		"HP": 10,
+		"maxHP": 10,
 		"sprites": "Resources/Images/Enemy/enemy_000.png",
 		"size": 1.3,
 		"maxSpeed": 5,
 		"hitboxType": "special",
 		"hitbox": "enemyHitbox",
 		"level": 1,
-		"flying": false
+		"flying": false,
+		"damage": "20"
 	},
 	"Actions": {
 		"breath": {

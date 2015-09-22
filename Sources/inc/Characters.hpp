@@ -58,6 +58,8 @@ class HUDTargeting;
 typedef struct s_buff {
   		int bonusDmg;
   		int bonusSpeed;
+		int dmgReduc;
+		int critBuff;
 }				t_buff;
 
 class Characters : public Elements {
@@ -107,6 +109,7 @@ class Characters : public Elements {
 		int								getMaxInventory(void);
 		Inventory						*getInventory(void);
 		void							destroyTarget(void);
+		Actor							*getGhost(void);
 
 		// Virtual function, overwritten in childs
 		virtual void	actionCallback(std::string name, int status) {};
@@ -186,6 +189,7 @@ class Characters : public Elements {
 		Inventory*		_inventory;
 		HUDTargeting*	_target;
 		Actor			*_blast;
+		Actor			*_ghost;
 		Characters::Orientation				_orientation;
 		Characters::Orientation				_latOrientation;
 		std::list<Elements*>				_grounds;

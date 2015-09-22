@@ -35,6 +35,7 @@ Menu::Menu(void) : _currentChoice("Start Game"), _fadeActor(nullptr) {
 	theSwitchboard.SubscribeTo(this, "deletePressed");
 	theSwitchboard.SubscribeTo(this, "escapePressed");
 	theSwitchboard.SubscribeTo(this, "moveMenu");
+	theSwitchboard.SubscribeTo(this, "PauseGame");
 }
 
 //! Basic destructor
@@ -80,6 +81,10 @@ void	Menu::showMenu(Game *game) {
 void	Menu::ReceiveMessage(Message *m) {
 	std::list<std::string>::iterator	it;
 
+	if (m->GetMessageName() == "PauseGame")
+		Game::currentGame->endingGame();
+	if (m->GetMessageName() == "enterPressed" && Game::deadWaiting)
+		Game::currentGame->menuInGame();
 	if (Game::toggleMenu == false)
 		return;
 	if (m->GetMessageName() == "moveMenu")

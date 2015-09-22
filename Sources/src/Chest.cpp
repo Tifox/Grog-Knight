@@ -88,6 +88,7 @@ void	Chest::displayChestContent(void) {
 			this->_choicePointer = tmp;
 	}
 	tmp = w->addImage("Resources/Images/gold.png", x, y, 80, 150);
+	w->setText(std::to_string(this->_gold) + "G", x - (std::to_string(this->_gold).length() / 2) * 10, y + 50, Vector3(0, 0, 0), 1);
 	this->_choices.push_back(tmp);
 	this->_interfaceElem.push_back(tmp);
 	this->makeChoices();
@@ -113,6 +114,8 @@ void	Chest::removeInterface(void) {
 	Game::currentGame->getHero()->subscribeToAll();
 	if (this->_isUsed == 1)
 		this->PlaySpriteAnimation(0.4f, SAT_OneShot, 2, 0);
+	Game::getHUD()->removeText(std::to_string(this->_gold) + "G");
+	Game::getHUD()->removeText("0G");
 }
 
 void	Chest::ReceiveMessage(Message *m) {
@@ -158,7 +161,9 @@ void	Chest::ReceiveMessage(Message *m) {
 			this->updateItems();
 		} else {
 			if (Game::currentGame->getHero()->getGold()) {
+				j = this->_gold;
 				this->_gold += Game::currentGame->getHero()->getGold();
+				Game::getHUD()->updateText(std::to_string(j) + "G", std::to_string(this->_gold) + "G");
 				Game::currentGame->getHero()->setGold(0);
 				Game::getHUD()->updateGold(0);
 				this->_isUsed = 1;
@@ -216,5 +221,6 @@ void		Chest::applySave(std::map<std::string, Json::Value> save) {
 }
 
 int		Chest::isUsed(void) { return this->_isUsed; };
+void	Chest::reset(void) { this->_isUsed = 0; };
 int		Chest::getGold(void) { return this->_gold; };
 std::map<int, std::string>	Chest::getItems(void) { return this->_chestItems; };

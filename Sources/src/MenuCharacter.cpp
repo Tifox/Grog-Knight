@@ -37,9 +37,9 @@ MenuCharacter::MenuCharacter(void) : Characters("MenuCharacter") {
 	this->_character = "Warrior";
 	// THIS IS TMP; DO NOT JUDGE ME
 	Elements		*tmp;
-	tmp = new Elements(); tmp->addAttribute("Name", "Sword"); this->_equipSelection["Weapon"] = tmp;
-	tmp = new Elements(); tmp->addAttribute("Name", "SmallRing"); this->_equipSelection["ring"] = tmp;
-	tmp = new Elements(); tmp->addAttribute("Name", "ChestArmor"); this->_equipSelection["Armor"] = tmp;
+	tmp = new Elements(); tmp->addAttribute("Name", "Axe_000"); this->_equipSelection["Weapon"] = tmp;
+	tmp = new Elements(); tmp->addAttribute("Name", "Ring_000"); this->_equipSelection["ring"] = tmp;
+	tmp = new Elements(); tmp->addAttribute("Name", "Armor_000"); this->_equipSelection["Armor"] = tmp;
 	// END OF NASTY CODE. Well, actually no. But u know what i mean
 	theSwitchboard.SubscribeTo(this, "enterPressed");
 	theSwitchboard.SubscribeTo(this, "chooseEquipment");
@@ -98,9 +98,11 @@ void	MenuCharacter::trigger(std::string name, int status) {
 			this->_closeCloset();
 		}
 	} else if (name == "startGame") {
+		this->unsubscribeFromAll();
+		theSwitchboard.UnsubscribeFrom(this, "enterPressed");
 		theSwitchboard.UnsubscribeFrom(this, "chooseEquipment");
 		theSwitchboard.UnsubscribeFrom(this, "returnPressed");
-		theSwitchboard.UnsubscribeFrom(this, "enterPressed");
+
 		Game::isInMenu = 0;
 		Game::menuCharacter = this;
 		Game::asToStart = 1;
@@ -146,7 +148,7 @@ void	MenuCharacter::ReceiveMessage(Message *m) {
 				this->_makeItChoice();
 				this->_isBlock = 1;
 			}
-			} else if (this->_currentTrigger == "equipment" && this->_chooseEquipment == 0) {
+		} else if (this->_currentTrigger == "equipment" && this->_chooseEquipment == 0) {
 			theCamera.MoveTo(Vector3(78.5, -19.5, 12.5), 0.5, true, "chooseEquipment");
 			Game::getHUD()->removeText("Press enter to choose your equipment");
 			theWorld.Remove(this->_image);
@@ -263,8 +265,8 @@ void	MenuCharacter::_up(int status) {
 void	MenuCharacter::_down(int status) {
 	if (status == 1 && this->_currentTrigger == "equipment") {
 		std::list<Elements *>::iterator		it = std::find(this->_backCloset.begin(), this->_backCloset.end(), this->_closetChoice);
-		if (it != this->_backCloset.end()) {
-			this->_closetChoice = *(++it);
+		if ((++it) != this->_backCloset.end()) {
+			this->_closetChoice = *(it);
 			this->_closetBackChoiceUpdate();
 		}
 	}

@@ -99,6 +99,8 @@ void	Game::start(void) {
 	Game::currentGame = this;
 	Hero			*hero = new Hero(Game::menuCharacter->getHeroType());
 
+	theWorld.GetPhysicsWorld().DestroyBody(Game::menuCharacter->GetBody());
+	theWorld.Remove(Game::menuCharacter);
 	LevelGenerator *levelGenerator = new LevelGenerator(4, 3, 60);
 	levelGenerator->execute();
 	this->_tmpMap = levelGenerator->getLevel();
@@ -122,6 +124,7 @@ void	Game::start(void) {
 	this->setHero(hero);
 	this->displayHUD();
 	hero->setStartingValues();
+	this->setHero(hero);
 	Game::started = 1;
 	Game::currentGame = this;
 }
@@ -129,8 +132,14 @@ void	Game::start(void) {
 void	Game::menuInGame(void) {
 	theWorld.SetBackgroundColor(*(new Color(0, 0, 0)));
 
+	theWorld.ResumePhysics();
+	Game::currentIds = 0;
+	Game::elementMap.clear();
 	InGameMenu	*menu = new InGameMenu();
-	Game::currentGame = this;
+	Game::endGame = false;
+	Game::deadWaiting = 0;
+	if (Game::currentGame == nullptr)
+		Game::currentGame = this;
 	MenuCharacter	*charac = new MenuCharacter();
 
 	this->_save = Quit::getSave();
@@ -142,7 +151,14 @@ void	Game::menuInGame(void) {
 						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 18.502), 1, true, "moveMenu");
 	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 	charac->display();
-	Game::addHUDWindow(new HUDWindow());
+	if (Game::getHUD() == nullptr)
+		Game::addHUDWindow(new HUDWindow());
+	else {
+		Game::getHUD()->removeText("Press Enter to restart.");
+		Game::getHUD()->removeText("YOU ARE DEAD");
+		theWorld.Remove(this->getHero()->getGhost());
+		delete this->getHero();
+	}
 	this->setHero(static_cast<Characters *>(charac));
 	Game::started = 1;
 	Game::isInMenu = 1;
@@ -226,7 +242,7 @@ int		Game::getNextId(void) {
 void	Game::checkHeroPosition(void) {
 	Game::currentGame->_controller->flag = 0;
 	Game::currentGame->_controller->tick();
-	if (Game::started == 1) {
+	if (Game::started == 1 && Game::currentGame->getHero() != nullptr) {
 		Game::currentGame->moveCamera();
 		Game::currentGame->simulateHeroItemContact();
 		Game::currentGame->getHero()->characterLoop();
@@ -353,6 +369,32 @@ void	Game::addToDestroyList(Elements *m) {
 	Game::bodiesToDestroy.push_back(m);
 }
 
+void	Game::endingGame(void) {
+	int		i;
+	for (i = 0; i < Game::elementMap.size(); i++) {
+		if (Game::elementMap[i] && Game::elementMap[i]->getAttribute("type") != "Hero") {
+			theWorld.Remove(Game::elementMap[i]);
+		}
+	}
+	Game::elementMap.clear();
+	Game::getHUD()->setText("Press Enter to restart.", 500, 500);
+	theWorld.Remove(Game::currentGame->getHero());
+	Game::ended = false;
+	Game::endGame = false;
+	Game::secretDoor = nullptr;
+	Game::bossDoor = nullptr;
+	Game::dealer = nullptr;
+	if (Game::currentGame->getShopkeeper()) {
+		Game::currentGame->getShopkeeper()->getShop()->hideShop();
+		theWorld.Remove(Game::currentGame->getShopkeeper());
+	}
+	Game::currentGame->setShopkeeper(nullptr);
+	Game::chest->reset();
+	Game::deadWaiting = true;
+	Game::currentIds = 0;
+	// Chest, Shop Items
+}
+
 //! Intern callback for destroying an element.
 /**
  * Called after each tick() in order to destroy all elements set to destroy.
@@ -366,18 +408,21 @@ bool	Game::destroyAllBodies(void) {
 	if (Game::endGame == true) {
 		Game::ended = true;
 		theWorld.PausePhysics();
-		int i;
+		int i, j = 0, k;
 		Game::getHUD()->setText("YOU ARE DEAD", 400, 400, Vector3(1, 0, 0), 1, "dead");
-		for (i = 0; i < Game::elementMap.size(); i++) {
+		Game::getHUD()->clearHUD();
+		k = Game::elementMap.size();
+		theSwitchboard.DeferredBroadcast(new Message("PauseGame"), 1);
+		for (i = 0; i < k; i++) {
 			if (Game::elementMap[i] && Game::elementMap[i]->getAttribute("type") != "Hero") {
-				Game::elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1, "PauseGame");
+				if (Game::elementMap[i]->getAttribute("transparency") == "")
+					Game::elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1);
 				if (Game::elementMap[i]->getAttribute("physic") != "") {
-					theWorld.GetPhysicsWorld().DestroyBody((Game::elementMap[i])->GetBody());
+					if (Game::elementMap[i]->GetBody() != 0)
+						theWorld.GetPhysicsWorld().DestroyBody((Game::elementMap[i])->GetBody());
 				}
-				theWorld.Remove(Game::elementMap[i]);
 			}
 		}
-		Game::elementMap.clear();
 		return true;
 	} else {
 		for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
@@ -497,6 +542,8 @@ void	Game::removeHUDWindow(HUDWindow *w) {
  * assuming this object is the first added to the list.
  */
 HUDWindow	*Game::getHUD(void) {
+	if (Game::windows.size() == 0)
+		return nullptr;
 	return Game::windows.front();
 }
 
@@ -530,7 +577,6 @@ void		Game::reloadingHUD(void) {
 		Game::getHUD()->minimap();
 		Game::getHUD()->life(this->getHero()->getHP());
 		Game::getHUD()->bag();
-		Game::getHUD()->mana(this->getHero()->getMana());
 		Game::getHUD()->items(this->getHero()->getWeapon());
 		Game::getHUD()->items(this->getHero()->getArmor());
 		Game::getHUD()->items(this->getHero()->getRing());
@@ -590,3 +636,5 @@ Vector2						Game::spawnChest = Vector2();
 Chest						*Game::chest = nullptr;
 bool						Game::toggleMenu = true;
 bool						Game::stopPattern = false;
+bool						Game::deadWaiting = false;
+int							Game::World = 1;

@@ -32,11 +32,11 @@
  */
 Drug::Drug(std::string name) : _name(name) {
 	this->_readFile(name);
-	this->_name = getName();
+	this->_name = getDisplayName();
 	this->_flavor = getFlavor();
 	this->_effect = getEffect();
 	this->addAttribute("type3", "Drug");
-	this->addAttribute("name", this->_name);
+	this->addAttribute("displayName", this->_name);
 	this->addAttribute("flavor", this->_flavor);
 }
 
@@ -47,11 +47,11 @@ Drug::Drug(std::string name) : _name(name) {
  */
 
 Drug::Drug(Drug* Drug) {
-	this->_name = Drug->getName();
+	this->_name = Drug->getDisplayName();
 	this->_flavor = Drug->getFlavor();
 	this->_effect = Drug->getEffect();
 	this->addAttribute("type3", "Drug");
-	this->addAttribute("name", this->_name);
+	this->addAttribute("displayName", this->_name);
 	this->addAttribute("flavor", this->_flavor);
 }
 
@@ -148,7 +148,7 @@ void	Drug::ReceiveMessage(Message *m) {
 }
 
 /* GETTERS */
-std::string		Drug::getName(void) { return this->_name; }
+std::string		Drug::getDisplayName(void) { return this->_name; }
 std::string		Drug::getFlavor(void) { return this->_flavor; }
 int 			Drug::getEffect(void) { return this->_effect; }
 
@@ -161,7 +161,8 @@ void			Drug::pot(int status) {
 
 	if (status == 1) {
 		Game::getHUD()->setText(":)", hero, Vector3(0, 255, 0), 1, 0);
-		hero->buff.bonusDmg = hero->getWeapon()->getDamage();
+		hero->buff.bonusDmg += hero->getWeapon()->getDamage();
+
 		this->_curDrug = "pot";
 		theSwitchboard.SubscribeTo(this, "endBonus");
 		theSwitchboard.SubscribeTo(this, "endMalus");
@@ -169,9 +170,10 @@ void			Drug::pot(int status) {
 		theSwitchboard.DeferredBroadcast(new Message("endMalus"), 30);
 	} else if(status == 0) {
 		Game::getHUD()->setText(":(", hero, Vector3(255, 0, 0), 1, 0);
-		hero->buff.bonusDmg = -(hero->getWeapon()->getDamage() / getEffect());
+		hero->buff.bonusDmg -= hero->getWeapon()->getDamage();
+		hero->buff.bonusDmg += -(hero->getWeapon()->getDamage() / getEffect());
 	} else if(status == 2) {
-		hero->buff.bonusDmg = 0;
+		hero->buff.bonusDmg -= -(hero->getWeapon()->getDamage() / getEffect());
 	}
 }
 
@@ -180,7 +182,7 @@ void			Drug::cocaine(int status) {
 
 	if (status == 1) {
 		Game::getHUD()->setText(":)", hero, Vector3(0, 255, 0), 1, 0);
-		hero->buff.bonusSpeed = hero->_getAttr("forward", "force").asInt();
+		hero->buff.bonusSpeed += hero->_getAttr("forward", "force").asInt();
 		this->_curDrug = "cocaine";
 		theSwitchboard.SubscribeTo(this, "endBonus");
 		theSwitchboard.SubscribeTo(this, "endMalus");
@@ -188,9 +190,10 @@ void			Drug::cocaine(int status) {
 		theSwitchboard.DeferredBroadcast(new Message("endMalus"), 30);
 	} else if(status == 0) {
 		Game::getHUD()->setText(":(", hero, Vector3(255, 0, 0), 1, 0);
-		hero->buff.bonusSpeed = -(hero->_getAttr("forward", "force").asInt() / getEffect());
+		hero->buff.bonusSpeed -= hero->_getAttr("forward", "force").asInt();
+		hero->buff.bonusSpeed += -(hero->_getAttr("forward", "force").asInt() / getEffect());
 	} else if(status == 2) {
-		hero->buff.bonusSpeed = 0;
+		hero->buff.bonusSpeed -= -(hero->_getAttr("forward", "force").asInt() / getEffect());
 	}
 }
 
@@ -228,9 +231,9 @@ void			Drug::mdma(int status) {
 		theSwitchboard.DeferredBroadcast(new Message("endMalus"), 30);
 	} else if(status == 0) {
 		Game::getHUD()->setText(":(", hero, Vector3(255, 0, 0), 1, 0);
-		hero->buff.bonusSpeed = (hero->_getAttr("forward", "force").asInt() * -(getEffect()));
+		hero->buff.bonusSpeed += (hero->_getAttr("forward", "force").asInt() * -(getEffect()));
 	} else if(status == 2) {
-		hero->buff.bonusSpeed = 0;
+		hero->buff.bonusSpeed -= (hero->_getAttr("forward", "force").asInt() * -(getEffect()));
 	}
 }
 

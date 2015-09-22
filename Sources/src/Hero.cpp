@@ -80,6 +80,8 @@ void	Hero::init(void) {
 void	Hero::actionCallback(std::string name, int status) {
 	std::string 	orientation;
 	float				x = 2, y = 1;
+	std::string type = this->_weapon->getType();
+
 	if (name == "attack" && status == 0 && this->_canAttack == true &&
 		this->_fullChargedAttack == false && this->_isLoadingAttack == 0 &&
 		this->_isAttacking == 1) {
@@ -99,8 +101,9 @@ void	Hero::actionCallback(std::string name, int status) {
 			this->changeSizeTo(Vector2(x, y));
 		this->_setCategory("attack");
 
-		std::string type = this->_weapon->getType();
-
+		if (type == "Axe") {
+			this->changeSizeTo(Vector2(2,1));
+		}
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 								  this->_getAttr("beginFrame" + type + "_" + orientation).asInt(),
 								  this->_getAttr("endFrame" + type + "_" + orientation).asInt(), "base");
@@ -126,19 +129,23 @@ void	Hero::actionCallback(std::string name, int status) {
 			this->changeSizeTo(Vector2(2, 2));
 		this->_canAttack = false;
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-								  this->_getAttr("beginFrame_" + orientation).asInt(),
-								  this->_getAttr("endFrame_" + orientation).asInt(), "base");
+								  this->_getAttr("beginFrame" + type + "_" + orientation).asInt(),
+								  this->_getAttr("endFrame" + type + "_" + orientation).asInt(), "base");
 	} else if (name == "loadAttack_charge") {
 		if (this->_latOrientation == RIGHT) {
 			orientation = "right";
 		} else if (this->_latOrientation == LEFT)
 			orientation = "left";
 		this->_setCategory("loadAttack_charge");
-		if (this->getAttribute("class") == "Warrior")
-			this->changeSizeTo(Vector2(2, 2));
+		if (this->getAttribute("class") == "Warrior") {
+			if (type == "Sword")
+				this->changeSizeTo(Vector2(2, 2));
+			else if (type == "Axe")
+				this->changeSizeTo(Vector2(2, 1.5));
+		}
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-								  this->_getAttr("beginFrame_" + orientation).asInt(),
-								  this->_getAttr("endFrame_" + orientation).asInt());
+								  this->_getAttr("beginFrame" + type + "_" + orientation).asInt(),
+								  this->_getAttr("endFrame" + type + "_" + orientation).asInt());
 	} else if (name == "dash") {
 		if (this->_latOrientation == RIGHT) {
 			orientation = "right";
@@ -187,20 +194,14 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		if (elem->getAttribute("type2") == "Consumable") {
 			if (elem->getAttribute("type3") == "HP") {
 				if (this->_hp != this->_maxHp) {
+					elem->ChangeColorTo(Color(0,0,0,0), 0);
 					Game::addToDestroyList(elem);
 					this->setHP(this->getHP() + stoi(elem->getAttribute("value")));
 					Game::currentGame->tooltip->tip(elem, this);
 					Game::getHUD()->life(this->getHP());
 				}
-			} else if (elem->getAttribute("type3") == "mana") {
-				if (this->_mana < this->_maxMana) {
-					Game::addToDestroyList(elem);
-					this->setMana(this->getMana() + stoi(elem->getAttribute("value")));
-					Game::currentGame->tooltip->tip(elem, this);
-					Game::getHUD()->mana(this->getMana());
-				}
-			}
-			if (elem->getAttribute("type3") == "gold") {
+			} if (elem->getAttribute("type3") == "gold") {
+				elem->ChangeColorTo(Color(0,0,0,0), 0);
 				Game::addToDestroyList(elem);
 				this->_gold += stoi(elem->getAttribute("value"));
 				Game::currentGame->tooltip->tip(elem, this);
@@ -210,6 +211,7 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		else if (elem->getAttribute("type2") == "Equipment") {
 			Game::currentGame->tooltip->clearInfo();
 			Game::currentGame->tooltip->info(elem);
+			std::cout << "HERO EQUIPMENT ===> " << elem->getAttribute("displayName") << std::endl;
 			this->_item = elem;
 		}
 	}
@@ -295,42 +297,51 @@ void	Hero::EndContact(Elements *elem, b2Contact *contact) {
  * @todo monster damage should not be hard-written to 25
  */
 void	Hero::_takeDamage(Elements* elem) {
-  this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-  Game::stopRunning(this);
-  this->_isRunning = 0;
-  this->_isLoadingAttack = 0;
-  this->_isAttacking = 0;
-  this->_fullChargedAttack = false;
-  this->_attackPressed = 0;
-  this->_isJump = 1;
-  if (this->getAttribute("class") == "Warrior")
-	  this->changeSizeTo(Vector2(1, 1));
-  if (this->_invincibility == false) {
-	  this->_canMove = 0;
-	  this->setHP(this->getHP() - 25);
-	  theSwitchboard.DeferredBroadcast(new Message("canMove"), 0.4f);
-	  theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1.5f);
-	  Game::getHUD()->life(this->getHP());
-  }
-  if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
-	this->ApplyLinearImpulse(Vector2(4, 4), Vector2(0, 0));
-	this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-							  this->_getAttr("takeDamage", "beginFrame_left").asInt(),
-							  this->_getAttr("takeDamage", "endFrame_left").asInt(),
-							  "takeDamage");
-  }
-  else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x) {
-	this->ApplyLinearImpulse(Vector2(-4, 4), Vector2(0, 0));
-	this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-							  this->_getAttr("takeDamage", "beginFrame_right").asInt(),
-							  this->_getAttr("takeDamage", "endFrame_right").asInt(),
-							  "takeDamage");
-  }
-  this->SetColor(1,0,0,0.8f);
-  theSwitchboard.SubscribeTo(this, "colorDamageBlink1");
-  theSwitchboard.SubscribeTo(this, "colorDamageBlink2");
-  theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
-  this->_invincibility = true;
+	int damage;
+
+	this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+	Game::stopRunning(this);
+	this->_isRunning = 0;
+	this->_isLoadingAttack = 0;
+	this->_isAttacking = 0;
+	this->_fullChargedAttack = false;
+	this->_attackPressed = 0;
+	this->_isJump = 1;
+	if (elem->getAttribute("speType") == "spikes") {
+		damage = 25;
+	} else
+		damage = atoi(elem->getAttribute("damage").c_str());
+	damage -= this->buff.dmgReduc;
+	if (damage < 0)
+		damage = 0;
+	if (this->getAttribute("class") == "Warrior")
+		this->changeSizeTo(Vector2(1, 1));
+	if (this->_invincibility == false) {
+		this->_canMove = 0;
+		this->setHP(this->getHP() - damage);
+		theSwitchboard.DeferredBroadcast(new Message("canMove"), 0.4f);
+		theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1.5f);
+		Game::getHUD()->life(this->getHP());
+	}
+	if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
+		this->ApplyLinearImpulse(Vector2(4, 4), Vector2(0, 0));
+		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
+								  this->_getAttr("takeDamage", "beginFrame_left").asInt(),
+								  this->_getAttr("takeDamage", "endFrame_left").asInt(),
+								  "takeDamage");
+	}
+	else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x) {
+		this->ApplyLinearImpulse(Vector2(-4, 4), Vector2(0, 0));
+		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
+								  this->_getAttr("takeDamage", "beginFrame_right").asInt(),
+								  this->_getAttr("takeDamage", "endFrame_right").asInt(),
+								  "takeDamage");
+	}
+	this->SetColor(1,0,0,0.8f);
+	theSwitchboard.SubscribeTo(this, "colorDamageBlink1");
+	theSwitchboard.SubscribeTo(this, "colorDamageBlink2");
+	theSwitchboard.DeferredBroadcast(new Message("colorDamageBlink1"), 0.1f);
+	this->_invincibility = true;
 }
 
 void	Hero::setStartingValues(void) {

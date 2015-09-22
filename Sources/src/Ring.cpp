@@ -42,18 +42,24 @@ Ring::Ring(std::string name) : _name(name) {
 
 Ring::Ring(Ring* Ring) {
 	this->_name = Ring->getName();
+	this->_displayName = Ring->getDisplayName();
 	this->_flavor = Ring->getFlavor();
 	this->_sprite = Ring->getSprite();
 	this->SetLayer(70);
 	this->addAttribute("type3", "Ring");
 	this->addAttribute("name", this->_name);
+	this->addAttribute("displayName", this->_displayName);
 	this->addAttribute("flavor", this->_flavor);
 	this->addAttribute("sprite", this->_sprite);
 	this->_lootLevel = Ring->getLootLevel();
 	if (Ring->getAttribute("hpBuff") != "")
 		this->addAttribute("hpBuff", Ring->getAttribute("hpBuff"));
-	if (Ring->getAttribute("manaBuff") != "")
-		this->addAttribute("manaBuff", Ring->getAttribute("manaBuff"));
+	if (Ring->getAttribute("dmgReduc") != "")
+		this->addAttribute("dmgReduc", Ring->getAttribute("dmgReduc"));
+	if (Ring->getAttribute("bonusSpeed") != "")
+		this->addAttribute("bonusSpeed", Ring->getAttribute("bonusSpeed"));
+	if (Ring->getAttribute("bonusDmg") != "")
+		this->addAttribute("bonusDmg", Ring->getAttribute("bonusDmg"));
 }
 
 
@@ -97,9 +103,11 @@ void    Ring::_parseJson(std::string file) {
 		Log::error("Error in json syntax :\n" + read.getFormattedErrorMessages());
 	if (this->_name != json["infos"].get("name", "").asString())
 		Log::warning("The class name is different with the name in the config file: " + this->_name + "/" + json["infos"].get("name", "").asString());
+	this->_displayName = json["infos"].get("displayName", "").asString();
 	this->_name = json["infos"].get("name", "").asString();
 	this->_flavor = json["infos"].get("flavor", "").asString();
 	this->_lootLevel = json["infos"].get("lootLevel", "").asInt();
+	this->_price = json["infos"].get("price", "").asInt();
 	this->_sprite = json["infos"].get("sprites", "").asString();
 	for (i = json["bonus"].begin(); i != json["bonus"].end(); i++)
 		this->addAttribute( i.key().asString(), (*i).asString());
@@ -141,7 +149,9 @@ void	Ring::ReceiveMessage(Message *m) {
 std::string		Ring::getName(void) { return this->_name; }
 std::string		Ring::getFlavor(void) { return this->_flavor; }
 std::string		Ring::getSprite(void) { return this->_sprite; }
+std::string		Ring::getDisplayName(void) { return this->_displayName; }
 int				Ring::getLootLevel(void) { return this->_lootLevel; }
+int				Ring::getPrice(void) { return this->_price; }
 
 /* SETTERS */
 

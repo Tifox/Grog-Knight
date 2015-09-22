@@ -22,7 +22,6 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":1,
  "orientation":"orthogonal",
  "properties":
     {
@@ -7726,9 +7725,13 @@
                 {
                  "physic":"0"
                 },
-             "20956":
+             "20973":
                 {
-                 "trigger":"startGame"
+                 "trigger":"skills"
+                },
+             "20976":
+                {
+                 "trigger":"skills"
                 },
              "21006":
                 {
@@ -11333,6 +11336,14 @@
              "6478":
                 {
                  "physic":"0"
+                },
+             "6555":
+                {
+                 "trigger":"skills"
+                },
+             "6558":
+                {
+                 "trigger":"skills"
                 }
             },
          "tilewidth":16

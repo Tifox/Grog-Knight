@@ -70,6 +70,7 @@ class		MenuCharacter : public Characters {
 		void			_showSelectInfo(Elements *obj);
 		void			_flavorInfo(std::string n);
 		void			_cleanCloset(void);
+		void			_kitchen(void);
 
 	private:
 		HUDActor			*_image;

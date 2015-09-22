@@ -34,13 +34,14 @@
  }
 
  //! Main constructor
- SpecialMoves::SpecialMoves(Characters* charac) : character(charac) {
+ SpecialMoves::SpecialMoves(Characters* charac) {
 	 std::string		file;
 	 std::stringstream 	buffer;
 	 std::ifstream		fd;
 	 Json::Reader		read;
 	 Json::Value		json;
 	 Json::ValueIterator i, v;
+	 this->character = charac;
 	 std::map<std::string, Json::Value>	tmp;
 	 file = "Resources/Elements/SpecialMoves.json";
 	 fd.open(file.c_str());

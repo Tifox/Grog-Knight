@@ -354,7 +354,6 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->_speMoveReady = 1;
 	}
 	else if (m->GetMessageName() == "speAttReady") {
-		std::cout <<  "speattready" << std::endl;
 		this->_speAttReady = 1;
 	}
 	else if (m->GetMessageName().substr(0, 10) == "chooseItem") {
@@ -368,12 +367,6 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->_isDashing = false;
 		this->GetBody()->SetGravityScale(1);
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-	}
-	else if (m->GetMessageName() == "whirlwindEnd") {
-		theSwitchboard.UnsubscribeFrom(this, "whirlwindEnd");
-		this->_isWhirlwinding = false;
-		Game::currentGame->getHero()->buff.bonusSpeed = 0;
-		std::cout << "whirlwindEnd" << std::endl;
 	}
 	else if (m->GetMessageName() == "disengageEnd") {
 		theSwitchboard.UnsubscribeFrom(this, "disengageEnd");

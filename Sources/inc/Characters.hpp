@@ -28,6 +28,7 @@
 
 # include "Inventory.hpp"
 # include "SpecialMoves.hpp"
+# include "SpecialAttack.hpp"
 # include "Weapon.hpp"
 # include "Armor.hpp"
 # include "Ring.hpp"
@@ -39,6 +40,7 @@ class Weapon;
 class Armor;
 class Ring;
 class SpecialMoves;
+class SpecialAttack;
 class HUDTargeting;
 
 # ifdef __APPLE__
@@ -67,6 +69,7 @@ class Characters : public Elements {
 		friend	class	Pattern;
 		friend	class	PassivePattern;
 		friend	class	SpecialMoves;
+		friend  class	SpecialAttack;
 		friend	class	HUDWindow;
 
 		enum Orientation {
@@ -152,7 +155,9 @@ class Characters : public Elements {
 		int				_isLoadingAttack;
 		bool			_fullChargedAttack;
 		int				_speMoveReady;
+		int				_speAttReady;
 		bool			_canAttack;
+		bool			_isWhirlwinding;
 		bool			_isCharging;
 		bool			_isStomping;
 		bool			_isFlying;
@@ -170,7 +175,9 @@ class Characters : public Elements {
 		bool			_isTouchingBossDoor;
 		bool			_isTouchingDealer;
 		std::string		_speMove;
+		std::string		_speAtt;
 		SpecialMoves*	_eqMove;
+		SpecialAttack*	_eqAtt;
 		Weapon*			_weapon;
 		Armor*			_armor;
 		Ring*			_ring;
@@ -212,6 +219,7 @@ class Characters : public Elements {
 		virtual void 	_executeAction(int status);
 		virtual void	_run(void);
 		virtual void	_specialMove(int status);
+		virtual void	_specialAttack(int status);
 		virtual void	_callTrigger(std::string name, int status);
 		void			_destroyEnemy(void);
 		Elements*		getItem(void);

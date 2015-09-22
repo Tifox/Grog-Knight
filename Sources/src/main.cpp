@@ -67,7 +67,6 @@ int		main(int ac, char **av) {
 	Game::currentGame = game;
 	if (ac > 1 && (std::string(av[1]) == "--no-menu")) {
 		game->start();
-		theWorld.GetPhysicsWorld().SetDebugDraw(&game->dd);
 		theWorld.StartGame();
 	}
 	else {

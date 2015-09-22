@@ -75,7 +75,8 @@ class	Map {
 		int		getScore(void);
 		void	destroyMap(void);
 		std::list<Enemy *>		getEnemies(void);
-		std::vector<std::vector<int> >	getPhysicMap(void);
+		std::vector<std::vector<int> >		getPhysicMap(void);
+		std::vector<std::vector<Elements*> >	getObjectMap(void);
 		void	callAllPatterns(void);
 		void	removeEnemy(Enemy *e);
 		std::map<std::string, int>		doors;
@@ -101,6 +102,7 @@ class	Map {
 		std::list<Enemy *>		_enemies;
 		std::map<int, std::map<std::string, Json::Value> >	_properties;
 		std::vector<std::vector<int> >		_physicMap;
+		std::vector<std::vector<Elements*> >	_objectMap;
 };
 
 

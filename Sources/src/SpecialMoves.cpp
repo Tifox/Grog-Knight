@@ -190,9 +190,6 @@
  	int range = this->character->_getAttr("blinkRange").asInt();
  	std::vector<std::vector<int>> t = m.getPhysicMap();
  	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speMoveReady == 1) {
- 		this->character->_speMoveReady = 0;
- 		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
- 				this->character->_getAttr("cooldown").asFloat());
  		if (this->character->_orientation == Characters::UP) {
  			while (range > 0) {
  				if (y - range > 0 && !t[y - range][x])
@@ -230,12 +227,17 @@
  					break;
  				range--;
  			}
- 			if (range > 0)
+ 			if (range > 0) {
+				this->character->_speMoveReady = 0;
+				theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
+												 this->character->_getAttr("cooldown").asFloat());
+				this->character->_grounds.clear();
  				this->character->GetBody()->SetTransform(b2Vec2(this->character->GetBody()->GetWorldCenter().x - range,
  							this->character->GetBody()->GetWorldCenter().y), 0);
+			}
  		}
  		if (range > 0) {
- 			b2PolygonShape box = Game::hList->getHitbox(this->character->_hitbox);
+  			b2PolygonShape box = Game::hList->getHitbox(this->character->_hitbox);
  			b2Shape *shape = &box;
  			this->character->GetBody()->DestroyFixture(this->character->GetBody()->GetFixtureList());
  			this->character->GetBody()->CreateFixture(shape, 1);

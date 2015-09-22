@@ -34,30 +34,32 @@
 
  #include "Characters.hpp"
 
- class Characters;
+class Characters;
 
- class SpecialMoves {
+class SpecialMoves {
 
-     public:
-         SpecialMoves(void);
-         SpecialMoves(Characters*);
-         ~SpecialMoves();
+public:
+	SpecialMoves(void);
+	SpecialMoves(Characters*);
+	~SpecialMoves();
 
-         Characters* character;
+	Characters* character;
 
-         void			_setCategory(std::string category);
+	void			_setCategory(std::string category);
 
-         virtual void	_dash(void);
-         virtual void	_charge(void);
-         virtual void	_stomp(void);
-         virtual void	_blink(void);
-         virtual void	_fly(void);
-         virtual void   _totem(void);
-         virtual void	_shunpo(void);
-	 virtual void	_disengage(void);
-   
-     private:
-         std::string		_category;
+	virtual void	_dash(void);
+	virtual void	_charge(void);
+	virtual void	_stomp(void);
+	virtual void	_blink(void);
+	virtual void	_fly(void);
+	virtual void   _totem(void);
+	virtual void	_shunpo(void);
+	virtual void	_disengage(void);
+
+
+private:
+	std::string		_category;
+
 
  };
 

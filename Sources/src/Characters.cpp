@@ -82,8 +82,10 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_isStomping = false;
 	this->_flyTrigger = false;
 	this->_isDisengaging = false;
+	this->buff.cur = "";
 	this->buff.bonusDmg = 0;
 	this->buff.bonusSpeed = 0;
+	this->buff.drugSpeed = 0;
 	this->buff.dmgReduc = 0;
 }
 
@@ -844,7 +846,7 @@ void	Characters::_forward(int status) {
 		}
 		Game::startRunning(this);
 		if (this->_isRunning == 2 && this->_isDashing == false)
-			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
+			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed + this->buff.drugSpeed, this->GetBody()->GetLinearVelocity().y));
 		this->_isRunning = 1;
 	} else if (status == 0 && this->_latOrientation == RIGHT) {
 	  if (this->_isDashing == false)
@@ -857,10 +859,10 @@ void	Characters::_forward(int status) {
 		if (this->_forwardFlag == true)
 			return;
 		this->_forwardFlag = true;
-		if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed != this->_getAttr("forward", "force").asInt() * -2)
-			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
-		else if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed == this->_getAttr("forward", "force").asInt() * -2)
-			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
+		if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.cur != "mdma")
+			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed + this->buff.drugSpeed, this->GetBody()->GetLinearVelocity().y));
+		else if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.cur == "mdma")
+			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed + this->buff.drugSpeed, this->GetBody()->GetLinearVelocity().y));
 	}
 	return ;
 }
@@ -905,7 +907,7 @@ void	Characters::_backward(int status) {
 		}
 		Game::startRunning(this);
 		if (this->_isRunning == 1 && this->_isDashing == false)
-			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
+			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed - this->buff.drugSpeed, this->GetBody()->GetLinearVelocity().y));
 		this->_isRunning = 2;
 	} else if (status == 0 && this->_latOrientation == LEFT) {
 	  if (this->_isDashing == false)
@@ -918,10 +920,10 @@ void	Characters::_backward(int status) {
 		if (this->_backwardFlag == true)
 			return;
 		this->_backwardFlag = true;
-		if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed != this->_getAttr("forward", "force").asInt() * -2)
-			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
-		else if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed == this->_getAttr("forward", "force").asInt() * -2)
-			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
+		if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.cur != "mdma")
+			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed - this->buff.drugSpeed, this->GetBody()->GetLinearVelocity().y));
+		else if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.cur == "mdma")
+			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed - this->buff.drugSpeed, this->GetBody()->GetLinearVelocity().y));
 	}
 	return ;
 }

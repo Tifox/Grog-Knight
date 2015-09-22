@@ -54,9 +54,11 @@ class HUDTargeting;
 # endif
 
 typedef struct s_buff {
-  		int bonusDmg;
-  		int bonusSpeed;
-		int dmgReduc;
+		std::string cur;
+  		int 		bonusDmg;
+  		int 		bonusSpeed;
+  		int 		drugSpeed;
+		int 		dmgReduc;
 }				t_buff;
 
 class Characters : public Elements {

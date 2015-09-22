@@ -101,7 +101,7 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 	  	Characters *h = Game::currentGame->getHero();
 		this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
 		Game::stopRunning(this);
-		if (this->takeDamage(w->getDamage() + h->buff.bonusDmg, w->getCritRate()) == 1) {
+		if (this->takeDamage(w->getDamage() + h->buff.bonusDmg, (w->getCritRate() + h->buff.critBuff)) == 1) {
 			if (this->GetBody()->GetWorldCenter().x > h->GetBody()->GetWorldCenter().x) {
 				this->ApplyLinearImpulse(Vector2(w->getPushback(), w->getPushback()), Vector2(0,0));
 			} else {
@@ -118,7 +118,7 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 		Characters *h = Game::currentGame->getHero();
 		this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
 		Game::stopRunning(this);
-		if (this->takeDamage(p->getDamage() + h->buff.bonusDmg, p->getCritRate()) == 1) {
+		if (this->takeDamage(w->getDamage() + h->buff.bonusDmg, (w->getCritRate() + h->buff.critBuff)) == 1) {
 			if (this->GetBody()->GetWorldCenter().x > h->GetBody()->GetWorldCenter().x) {
 				this->ApplyLinearImpulse(Vector2(p->getPushback(), p->getPushback()), Vector2(0,0));
 			} else {
@@ -173,12 +173,18 @@ void	Enemy::EndContact(Elements *m, b2Contact *contact) {
  * @param damage The damage amount
  */
 int		Enemy::takeDamage(int damage, int critRate) {
+	std::cout << damage << ", " << critRate << std::endl;
+	std::cout << this->_hp << std::endl;
 	if (this->_hp <= 0)
 		return 0;
 	this->actionCallback("takeDamage", 0);
 	if ((rand() % critRate + 1) ==  critRate) {
 		damage *= 2 ;
-		Game::getHUD()->setText("Crit !", Game::currentGame->getHero(),
+		Game::getHUD()->setText("Crit ! (" + std::to_string(damage) + ")", this,
+								Vector3(255, 0, 0), 1, 0);
+	} else {
+		// The following display damage with any hit. This is debug code, don't forget to remove it with beta.
+		Game::getHUD()->setText(std::to_string(damage), this,
 								Vector3(255, 0, 0), 1, 0);
 	}
 	if (this->_hp - damage <= 0) {

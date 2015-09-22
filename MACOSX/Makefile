@@ -35,6 +35,7 @@ SRCS =	../Sources/src/Armor.cpp \
 		../Sources/src/RingList.cpp \
 		../Sources/src/Room.cpp \
 		../Sources/src/SpecialMoves.cpp \
+		../Sources/src/SpecialAttack.cpp \
 		../Sources/src/Tooltip.cpp \
 		../Sources/src/Weapon.cpp \
 		../Sources/src/WeaponList.cpp \

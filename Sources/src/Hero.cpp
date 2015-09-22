@@ -38,6 +38,7 @@ Hero::Hero(std::string name) : Characters(name) {
 	theSwitchboard.SubscribeTo(this, "dropItem");
 	theSwitchboard.SubscribeTo(this, "attackReady");
 	theSwitchboard.SubscribeTo(this, "speMoveReady");
+	theSwitchboard.SubscribeTo(this, "speAttReady");
 	theSwitchboard.SubscribeTo(this, "changeCharacter");
 	theSwitchboard.SubscribeTo(this, "lockTarget");
 	theSwitchboard.SubscribeTo(this, "unlockTarget");
@@ -210,7 +211,6 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		else if (elem->getAttribute("type2") == "Equipment") {
 			Game::currentGame->tooltip->clearInfo();
 			Game::currentGame->tooltip->info(elem);
-			std::cout << "HERO EQUIPMENT ===> " << elem->getAttribute("displayName") << std::endl;
 			this->_item = elem;
 		}
 	}
@@ -349,4 +349,5 @@ void	Hero::setStartingValues(void) {
 	this->equipArmor(Game::menuCharacter->getArmor());
 	this->equipRing(Game::menuCharacter->getRing());
 	this->_speMove = this->_getAttr("specialMove").asString();
+	this->_speAtt = this->_getAttr("specialAttack").asString();
 }

@@ -1,3 +1,4 @@
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -74,17 +75,23 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_isStomping = 0;
 	this->_isCharging = 0;
 	this->_isDashing = 0;
+	this->_isWhirlwinding = false;
 	this->_speMoveReady = 1;
+	this->_speAttReady = 1;
 	this->_hasDashed = 0;
 	this->SetLayer(100);
-	this->_readFile(name);
 	this->_eqMove = new SpecialMoves(this);
+	this->_eqAtt = new SpecialAttack(this);
 	this->_isStomping = false;
 	this->_flyTrigger = false;
 	this->_isDisengaging = false;
+	this->buff.cur = "";
 	this->buff.bonusDmg = 0;
 	this->buff.bonusSpeed = 0;
+	this->buff.drugSpeed = 0;
 	this->buff.dmgReduc = 0;
+	this->buff.critBuff = 0;
+	this->_readFile(name);
 }
 
 //! Basic destructor
@@ -139,7 +146,6 @@ void	Characters::_parseJson(std::string file) {
 	this->addAttribute("talk", json["infos"].get("talk", "").asString());
 	this->_size = json["infos"].get("size", "").asFloat();
 	this->SetSize(this->_size);
-	this->_hp = json["infos"].get("HP", "").asInt();
 	if (json["infos"].get("maxHP", "").isConvertibleTo(Json::ValueType::intValue))
 		this->_maxHp = json["infos"].get("maxHP", "").asInt();
 	this->_hitboxType = json["infos"].get("hitboxType", "").asString();
@@ -147,6 +153,13 @@ void	Characters::_parseJson(std::string file) {
 	this->addAttribute("spritesFrame", json["infos"].get("sprites", "").asString());
 	if (json["infos"].get("damage", "").isConvertibleTo(Json::ValueType::stringValue))
 		this->addAttribute("damage", json["infos"].get("damage", "").asString());
+	this->buff.critBuff = json["infos"].get("baseCrit", 0).asInt();
+	this->buff.bonusDmg = json["infos"].get("baseDamage", 0).asInt();
+	this->_maxHp += (this->_maxHp * json["Stats"].get("HPMult", 0).asFloat()) * this->_level;
+	this->_hp = this->_maxHp;
+	this->buff.critBuff += (this->buff.critBuff * json["Stats"].get("critMult", 0).asFloat() * this->_level);
+	this->buff.bonusDmg += (this->buff.bonusDmg * json["Stats"].get("damageMult", 0).asFloat() * this->_level);
+
 	for (i = json["Actions"].begin(); i != json["Actions"].end(); i++) {
 		for (v = (*i).begin(); v != (*i).end(); v++) {
 			tmp[v.key().asString()] = (*v);
@@ -340,6 +353,9 @@ void	Characters::ReceiveMessage(Message *m) {
 	else if (m->GetMessageName() == "speMoveReady") {
 		this->_speMoveReady = 1;
 	}
+	else if (m->GetMessageName() == "speAttReady") {
+		this->_speAttReady = 1;
+	}
 	else if (m->GetMessageName().substr(0, 10) == "chooseItem") {
 		if (this->_isChoosingItem == 1)
 			return;
@@ -444,6 +460,8 @@ void	Characters::ReceiveMessage(Message *m) {
 				this->_pickupItem(status);
 			} if (attrName == "specialmove") {
 				this->_specialMove(status);
+			} if (attrName == "specialattack") {
+				this->_specialAttack(status);
 			} if (attrName == "action") {
 				this->_executeAction(status);
 			}
@@ -844,7 +862,7 @@ void	Characters::_forward(int status) {
 		}
 		Game::startRunning(this);
 		if (this->_isRunning == 2 && this->_isDashing == false)
-			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
+			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed + this->buff.drugSpeed, this->GetBody()->GetLinearVelocity().y));
 		this->_isRunning = 1;
 	} else if (status == 0 && this->_latOrientation == RIGHT) {
 	  if (this->_isDashing == false)
@@ -857,10 +875,10 @@ void	Characters::_forward(int status) {
 		if (this->_forwardFlag == true)
 			return;
 		this->_forwardFlag = true;
-		if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed != this->_getAttr("forward", "force").asInt() * -2)
-			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
-		else if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed == this->_getAttr("forward", "force").asInt() * -2)
-			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
+		if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.cur != "mdma")
+			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed + this->buff.drugSpeed, this->GetBody()->GetLinearVelocity().y));
+		else if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.cur == "mdma")
+			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed + this->buff.drugSpeed, this->GetBody()->GetLinearVelocity().y));
 	}
 	return ;
 }
@@ -905,7 +923,7 @@ void	Characters::_backward(int status) {
 		}
 		Game::startRunning(this);
 		if (this->_isRunning == 1 && this->_isDashing == false)
-			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
+			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed - this->buff.drugSpeed, this->GetBody()->GetLinearVelocity().y));
 		this->_isRunning = 2;
 	} else if (status == 0 && this->_latOrientation == LEFT) {
 	  if (this->_isDashing == false)
@@ -918,10 +936,10 @@ void	Characters::_backward(int status) {
 		if (this->_backwardFlag == true)
 			return;
 		this->_backwardFlag = true;
-		if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed != this->_getAttr("forward", "force").asInt() * -2)
-			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
-		else if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.bonusSpeed == this->_getAttr("forward", "force").asInt() * -2)
-			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed, this->GetBody()->GetLinearVelocity().y));
+		if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.cur != "mdma")
+			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed - this->buff.drugSpeed, this->GetBody()->GetLinearVelocity().y));
+		else if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.cur == "mdma")
+			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed - this->buff.drugSpeed, this->GetBody()->GetLinearVelocity().y));
 	}
 	return ;
 }
@@ -1169,6 +1187,13 @@ void	Characters::_specialMove(int status) {
 			else
 				this->_totemPlaced = 0;
 		}
+	}
+}
+
+void	Characters::_specialAttack(int status) {
+	if (status == 0) {
+		if (this->_speAtt == "whirlwind")
+			this->_eqAtt->_whirlwind();
 	}
 }
 

@@ -115,6 +115,7 @@ void	Chest::removeInterface(void) {
 	if (this->_isUsed == 1)
 		this->PlaySpriteAnimation(0.4f, SAT_OneShot, 2, 0);
 	Game::getHUD()->removeText(std::to_string(this->_gold) + "G");
+	Game::getHUD()->removeText("0G");
 }
 
 void	Chest::ReceiveMessage(Message *m) {
@@ -162,7 +163,7 @@ void	Chest::ReceiveMessage(Message *m) {
 			if (Game::currentGame->getHero()->getGold()) {
 				j = this->_gold;
 				this->_gold += Game::currentGame->getHero()->getGold();
-				Game::getHUD()->updateText(std::to_string(j), std::to_string(this->_gold) + "G");
+				Game::getHUD()->updateText(std::to_string(j) + "G", std::to_string(this->_gold) + "G");
 				Game::currentGame->getHero()->setGold(0);
 				Game::getHUD()->updateGold(0);
 				this->_isUsed = 1;

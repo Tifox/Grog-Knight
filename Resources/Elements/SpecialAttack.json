@@ -1,0 +1,8 @@
+{
+	"whirlwind": {
+		"subscribe": "specialattack",
+		"cooldown": 1,
+		"time": 2,
+		"uptime": 2
+	}
+}

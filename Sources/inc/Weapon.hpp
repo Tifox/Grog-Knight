@@ -45,6 +45,8 @@ public:
 	Weapon(Weapon* weapon, Characters* c, int i);
 	~Weapon(void);
 
+	void			setActive(float f);
+
 	void			attack(Characters *c);
 	void			BeginContact(Elements *elem, b2Contact *contact);
 	void			EndContact(Elements *elem, b2Contact *contact);

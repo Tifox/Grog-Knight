@@ -231,16 +231,20 @@ void			Drug::mdma(int status) {
 		theSwitchboard.DeferredBroadcast(new Message("endMalus"), 30);
 	} else if(status == 0) {
 		Game::getHUD()->setText(":(", hero, Vector3(255, 0, 0), 1, 0);
-		hero->buff.bonusSpeed += (hero->_getAttr("forward", "force").asInt() * -(getEffect()));
+		hero->buff.cur = "mdma";
+		hero->buff.drugSpeed = (hero->_getAttr("forward", "force").asInt() + hero->buff.bonusSpeed) * -(getEffect());
+
 	} else if(status == 2) {
-		hero->buff.bonusSpeed -= (hero->_getAttr("forward", "force").asInt() * -(getEffect()));
+		hero->buff.drugSpeed = 0;
+		hero->buff.cur = "";
+
 	}
 }
 
 
 void			Drug::mushroom(int status) {
 
-	/* Don't forget Druglist.cpp && mushroom.json */
+	/* Don't forget Druglist.cpp */
 
 
 	Characters *hero = Game::currentGame->getHero();

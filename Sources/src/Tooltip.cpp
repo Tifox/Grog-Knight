@@ -81,7 +81,7 @@ void 	Tooltip::info(Elements *elem) {
 	float	y = 30;
 
 	clearInfo();
-	if (this->_name == "" && this->_flavor == "" && this->_hp == "" /*&& this->_mana == ""*/) {
+	if (this->_name == "" && this->_flavor == "" && this->_hp == "" && this->_reduc == "" && this->_speed == "" && this->_dmg == "") {
 		HUDWindow *hud = Game::getHUD();
 		this->_name = elem->getAttribute("displayName");
 		this->_flavor = elem->getAttribute("flavor");
@@ -91,7 +91,7 @@ void 	Tooltip::info(Elements *elem) {
 			b = atoi((elem->getAttribute("hpBuff").c_str())) - atoi(Game::currentGame->getHero()->getArmor()->getAttribute("hpBuff").c_str());
 			this->_hp = std::to_string(b) + " HP";
 			b = atoi((elem->getAttribute("dmgReduc").c_str())) - atoi(Game::currentGame->getHero()->getArmor()->getAttribute("dmgReduc").c_str());
-			this->_reduc = std::to_string(b) + " Tank";
+			this->_reduc = std::to_string(b) + " Resist";
 			b = atoi((elem->getAttribute("bonusSpeed").c_str())) - atoi(Game::currentGame->getHero()->getArmor()->getAttribute("bonusSpeed").c_str());
 			this->_speed = std::to_string(b) + " Speed";
 			b = atoi((elem->getAttribute("bonusDmg").c_str())) - atoi(Game::currentGame->getHero()->getArmor()->getAttribute("bonusDmg").c_str());
@@ -101,7 +101,7 @@ void 	Tooltip::info(Elements *elem) {
 			b = atoi((elem->getAttribute("hpBuff").c_str())) - atoi(Game::currentGame->getHero()->getRing()->getAttribute("hpBuff").c_str());
 			this->_hp = std::to_string(b) + " HP";
 			b = atoi((elem->getAttribute("dmgReduc").c_str())) - atoi(Game::currentGame->getHero()->getRing()->getAttribute("dmgReduc").c_str());
-			this->_reduc = std::to_string(b) + " Tank";
+			this->_reduc = std::to_string(b) + " Resist";
 			b = atoi((elem->getAttribute("bonusSpeed").c_str())) - atoi(Game::currentGame->getHero()->getRing()->getAttribute("bonusSpeed").c_str());
 			this->_speed = std::to_string(b) + " Speed";
 			b = atoi((elem->getAttribute("bonusDmg").c_str())) - atoi(Game::currentGame->getHero()->getRing()->getAttribute("bonusDmg").c_str());

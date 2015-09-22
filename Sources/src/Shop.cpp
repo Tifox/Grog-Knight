@@ -119,6 +119,12 @@ Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
 		this->addAttribute("displayName",Game::wList->getWeapon(name)->getDisplayName());
 		if (Game::wList->getWeapon(name)->getAttribute("hpBuff") != "")
 			this->addAttribute("hpBuff", Game::wList->getWeapon(name)->getAttribute("hpBuff"));
+		if (Game::wList->getWeapon(name)->getAttribute("dmgReduc") != "")
+			this->addAttribute("dmgReduc", Game::wList->getWeapon(name)->getAttribute("dmgReduc"));
+		if (Game::wList->getWeapon(name)->getAttribute("bonusSpeed") != "")
+			this->addAttribute("bonusSpeed", Game::wList->getWeapon(name)->getAttribute("bonusSpeed"));
+		if (Game::wList->getWeapon(name)->getAttribute("bonusDmg") != "")
+			this->addAttribute("bonusDmg", Game::wList->getWeapon(name)->getAttribute("bonusDmg"));
 	}
 	else if (Game::aList->checkExists(name) == 1) {
 		this->SetSprite(Game::aList->getArmor(name)->getSprite());
@@ -128,6 +134,12 @@ Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
 		this->addAttribute("displayName",Game::aList->getArmor(name)->getDisplayName());
 		if (Game::aList->getArmor(name)->getAttribute("hpBuff") != "")
 			this->addAttribute("hpBuff", Game::aList->getArmor(name)->getAttribute("hpBuff"));
+		if (Game::aList->getArmor(name)->getAttribute("dmgReduc") != "")
+			this->addAttribute("dmgReduc", Game::aList->getArmor(name)->getAttribute("dmgReduc"));
+		if (Game::aList->getArmor(name)->getAttribute("bonusSpeed") != "")
+			this->addAttribute("bonusSpeed", Game::aList->getArmor(name)->getAttribute("bonusSpeed"));
+		if (Game::aList->getArmor(name)->getAttribute("bonusDmg") != "")
+			this->addAttribute("bonusDmg", Game::aList->getArmor(name)->getAttribute("bonusDmg"));
   }
 	else if (Game::rList->checkExists(name) == 1) {
 		this->addAttribute("flavor", Game::rList->getRing(name)->getFlavor());
@@ -137,6 +149,12 @@ Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
 		this->addAttribute("displayName",Game::rList->getRing(name)->getDisplayName());
 		if (Game::rList->getRing(name)->getAttribute("hpBuff") != "")
 			this->addAttribute("hpBuff", Game::rList->getRing(name)->getAttribute("hpBuff"));
+		if (Game::rList->getRing(name)->getAttribute("dmgReduc") != "")
+			this->addAttribute("dmgReduc", Game::rList->getRing(name)->getAttribute("dmgReduc"));
+		if (Game::rList->getRing(name)->getAttribute("bonusSpeed") != "")
+			this->addAttribute("bonusSpeed", Game::rList->getRing(name)->getAttribute("bonusSpeed"));
+		if (Game::rList->getRing(name)->getAttribute("bonusDmg") != "")
+			this->addAttribute("bonusDmg", Game::rList->getRing(name)->getAttribute("bonusDmg"));
 	}
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	this->SetIsSensor(true);

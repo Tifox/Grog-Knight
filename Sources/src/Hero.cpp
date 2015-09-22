@@ -211,7 +211,6 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		else if (elem->getAttribute("type2") == "Equipment") {
 			Game::currentGame->tooltip->clearInfo();
 			Game::currentGame->tooltip->info(elem);
-			std::cout << "HERO EQUIPMENT ===> " << elem->getAttribute("displayName") << std::endl;
 			this->_item = elem;
 		}
 	}

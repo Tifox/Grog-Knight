@@ -1,0 +1,16 @@
+{
+    "infos": {
+   	    "name": "Armor_004",
+		"displayName": "Wool Armor",
+		"flavor": "The sheep could have killed\nyou easily",
+		"price": 10,
+		"sprites": "Resources/Images/Armors/Armor_004.png",
+		"lootLevel": 2
+	},
+	"bonus": {
+		"hpBuff": 20,
+		"dmgReduc": 2,
+		"bonusSpeed": 2,
+		"bonusDmg": 5
+	}
+}

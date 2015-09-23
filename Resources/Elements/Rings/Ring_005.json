@@ -1,0 +1,16 @@
+{
+    "infos": {
+   	    "name": "Ring_005",
+		"displayName": "Ringing Ring",
+		"flavor": "Answer the damn phone",
+		"price": 10,
+		"sprites": "Resources/Images/Rings/Ring_005.png",
+		"lootLevel": 3
+	},
+	"bonus": {
+		"hpBuff": 0,
+		"dmgReduc": 1,
+		"bonusSpeed": 2,
+		"bonusDmg": 5
+	}
+}

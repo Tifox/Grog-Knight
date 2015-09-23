@@ -243,13 +243,21 @@ void	Game::checkHeroPosition(void) {
 	Game::currentGame->_controller->flag = 0;
 	Game::currentGame->_controller->tick();
 	if (Game::started == 1 && Game::currentGame->getHero() != nullptr) {
+		std::list<Enemy*> en = Game::currentGame->getCurrentMap().getEnemies();
 		Game::currentGame->moveCamera();
 		Game::currentGame->simulateHeroItemContact();
 		Game::currentGame->getHero()->characterLoop();
+		if (!en.empty()) {
+			std::list<Enemy*>::iterator it = en.begin();
+			for (it; it != en.end(); it++) {
+				if (*it != nullptr)
+					(*it)->characterLoop();
+			}
+		}
 		Game::currentGame->reloadingHUD();
 		if (Game::asToStart == 1)
 			Game::currentGame->start();
-			Game::asToStart = 0;
+		Game::asToStart = 0;
 	}
 }
 

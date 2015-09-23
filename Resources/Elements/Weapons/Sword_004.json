@@ -1,0 +1,20 @@
+{
+    "infos": {
+   	    "name": "Sword_004",
+		"displayName": "Diamond Sword",
+		"flavor": "There's a diamond encrusted\nin the hilt",
+		"type": "Sword",
+		"equipable": "Warrior",
+		"price": 10,
+		"hitbox": "SWORD",
+		"size": 1,
+	 	"critRate": 5,
+		"damage": 5,
+		"recovery": 1,
+		"pushback": 5,
+		"active": 0.2,
+		"attack": "melee",
+		"sprites": "Resources/Images/Weapons/Sword_004.png",
+		"lootLevel": 2
+	}
+}

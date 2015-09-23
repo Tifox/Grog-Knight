@@ -1,0 +1,21 @@
+{
+    "infos": {
+   	    "name": "Dagger_002",
+		"displayName": "Small Dagger",
+		"flavor": "For long arms",
+		"equipable": "Archer",
+		"type": "Dagger",
+		"hitbox": "SWORD",
+		"price": 10,
+		"size": 1,
+	 	"critRate": 5,
+		"damage": 5,
+		"recovery": 1,
+		"pushback": 5,
+		"active": 0.2,
+		"attack": "melee",
+		"sprites": "Resources/Images/Weapons/Dagger_002.png",
+		"lootLevel": 3,
+		"starterLevel": 3
+	}
+}

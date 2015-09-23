@@ -15,6 +15,7 @@
 		"active": 0.2,
 		"attack": "melee",
 		"sprites": "Resources/Images/Weapons/Spear_001.png",
-		"lootLevel": 2
+		"lootLevel": 2,
+		"starterLevel": 2
 	}
 }

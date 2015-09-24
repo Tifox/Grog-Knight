@@ -297,16 +297,18 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->_isAttacking = false;
 	}
 	else if (m->GetMessageName() == "moveHeroDown") {
-		if (this->_latOrientation == RIGHT && this->_canMove && this->_isAttacking == false)
+		this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
+		if (this->_latOrientation == RIGHT && this->_canMove && this->_isAttacking == false) {
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-					this->_getAttr("jump", "fallingFrame_right").asInt(),
-					this->_getAttr("jump", "endFrame_right").asInt() - 3, "jump");
-		else if (this->_latOrientation == LEFT && this->_canMove && this->_isAttacking == false)
+									  this->_getAttr("jump", "fallingFrame_right").asInt(),
+									  this->_getAttr("jump", "fallingFrame_right").asInt(), "jump");
+		}
+		else if (this->_latOrientation == LEFT && this->_canMove && this->_isAttacking == false) {
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-					this->_getAttr("jump", "fallingFrame_left").asInt(),
-					this->_getAttr("jump", "endFrame_left").asInt() - 3, "jump");
-	}
-	else if (m->GetMessageName() == "destroyEnemy" + this->GetName()) {
+									  this->_getAttr("jump", "fallingFrame_left").asInt(),
+									  this->_getAttr("jump", "fallingFrame_left").asInt(), "jump");
+		}
+	} else if (m->GetMessageName() == "destroyEnemy" + this->GetName()) {
 		new Loot(this);
 		this->_destroyEnemy();
 		return;
@@ -501,22 +503,18 @@ void	Characters::AnimCallback(String s) {
 			}
 		} else if (this->_grounds.size() == 0 && this->getAttribute("type") == "Hero") {
 			this->_setCategory("jump");
+			this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 			if (this->_latOrientation == LEFT && this->_isDashing == false) {
-			  this->changeSizeTo(Vector2(1,1));
+				this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-						this->_getAttr("fallingFrame_left").asInt(),
-						this->_getAttr("fallingFrame_left").asInt(), "base");
+										  this->_getAttr("fallingFrame_left").asInt(),
+										  this->_getAttr("fallingFrame_left").asInt(), "base");
 			} else if (this->_latOrientation == RIGHT && this->_isDashing == false) {
-			  this->changeSizeTo(Vector2(1,1));
+				this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-						this->_getAttr("fallingFrame_right").asInt(),
-						this->_getAttr("fallingFrame_right").asInt(), "base");
-			} else {
-				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-						this->_getAttr("beginFrame_right").asInt(),
-						this->_getAttr("endFrame_right").asInt(), "base");
+										  this->_getAttr("fallingFrame_right").asInt(),
+										  this->_getAttr("fallingFrame_right").asInt(), "base");
 			}
-
 		} else if (this->_isAttacking == 0) {
 			if (this->_isLoadingAttack == 0) {
 				if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
@@ -526,10 +524,9 @@ void	Characters::AnimCallback(String s) {
 				} else if (this->_isRunning == 2) {
 					this->_setCategory("backward");
 				}
-				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(),
-						SAT_Loop,
-						this->_getAttr("beginFrame").asInt(),
-						this->_getAttr("endFrame").asInt());
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
+										  this->_getAttr("beginFrame").asInt(),
+										  this->_getAttr("endFrame").asInt());
 			} else if (this->_fullChargedAttack == true) {
 				std::string orientation;
 				if (this->_latOrientation == RIGHT) {
@@ -540,27 +537,25 @@ void	Characters::AnimCallback(String s) {
 				if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
 					this->changeSizeTo(Vector2(this->_getAttr("loadX").asInt(), this->_getAttr("loadY").asInt()));
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-						this->_getAttr("holdFrameLoad" + orientation).asInt() - 1,
-						this->_getAttr("holdFrameLoad" + orientation).asInt(), "loadAttack_charge");
+										  this->_getAttr("holdFrameLoad" + orientation).asInt() - 1,
+										  this->_getAttr("holdFrameLoad" + orientation).asInt(), "loadAttack_charge");
 			}
 		}
-		if (this->getAttribute("class") == "Warrior" && !this->_isLoadingAttack)
-			this->changeSizeTo(Vector2(1, 1));
+		this->changeSizeTo(Vector2(this->_getAttr("x").asFloat(), this->_getAttr("y").asFloat()));
 		if (this->_isDashing == true) {
 			this->_isDashing = false;
 			this->_canMove = 1;
 		}
 	} else if (s == "endDash") {
 		this->_setCategory("dash");
-		//this->_isRunning = 0;
 		std::string orientation;
 		if (this->_latOrientation == RIGHT)
 			orientation = "right";
 		else if (this->_latOrientation == LEFT)
 			orientation = "left";
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-				this->_getAttr("endFrame_" + orientation).asInt() - 1,
-				this->_getAttr("endFrame_" + orientation).asInt(), "base");
+								  this->_getAttr("endFrame_" + orientation).asInt() - 1,
+								  this->_getAttr("endFrame_" + orientation).asInt(), "base");
 	}
 }
 
@@ -603,20 +598,19 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				if (this->_latOrientation == RIGHT && this->_isAttacking == false &&
 					this->_isLoadingAttack == 0 && this->_isDashing == false &&
 					this->_isStomping == false) {
-					if (this->getAttribute("class") == "Warrior")
-						this->changeSizeTo(Vector2(1, 1));
-					this->PlaySpriteAnimation(0.1f, SAT_OneShot,
-							this->_getAttr("jump", "endFrame_right").asInt() - 2,
-							this->_getAttr("jump", "endFrame_right").asInt(), "base");
+					this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
+					this->PlaySpriteAnimation(this->_getAttr("jump", "time").asFloat(), SAT_OneShot,
+											  this->_getAttr("jump", "fallingFrame_right").asInt(),
+											  this->_getAttr("jump", "endFrame_right").asInt(), "base");
 				} else if (this->_latOrientation == LEFT &&
 						   this->_isAttacking == false &&
 						   this->_isLoadingAttack == 0 &&
 						   this->_isStomping == false) {
-					if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
-						this->changeSizeTo(Vector2(1, 1));
-					this->PlaySpriteAnimation(0.1f, SAT_OneShot,
-							this->_getAttr("jump", "endFrame_left").asInt() - 2,
-							this->_getAttr("jump", "endFrame_left").asInt(), "base");
+					if (this->_isDashing == false)
+						this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
+					this->PlaySpriteAnimation(this->_getAttr("jump", "time").asFloat(), SAT_OneShot,
+											  this->_getAttr("jump", "fallingFrame_left").asInt(),
+											  this->_getAttr("jump", "endFrame_left").asInt(), "base");
 				}
 			}
 			this->_grounds.push_back(elem);
@@ -696,21 +690,19 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 				this->_isJump++;
 				if (this->_lastAction == "forward" && this->_canMove &&
 						this->_isAttacking == false && this->_isLoadingAttack == 0) {
-					if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
-						this->changeSizeTo(Vector2(1, 1));
-					if (this->_isDashing == false)
-					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-							this->_getAttr("jump", "fallingFrame_right").asInt(),
-							this->_getAttr("jump", "endFrame_right").asInt() - 3, "jump");
-				} else if (this->_lastAction == "backward" && this->_canMove &&
-						this->_isAttacking == false && this->_isLoadingAttack == 0) {
-					if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
-						this->changeSizeTo(Vector2(1, 1));
 					if (this->_isDashing == false) {
-					  this->changeSizeTo(Vector2(1,1));
-					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-							this->_getAttr("jump", "fallingFrame_left").asInt(),
-							this->_getAttr("jump", "endFrame_left").asInt() - 3, "jump");
+						this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
+						this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+												  this->_getAttr("jump", "fallingFrame_right").asInt(),
+												  this->_getAttr("jump", "fallingFrame_right").asInt(), "jump");
+					}
+				} else if (this->_lastAction == "backward" && this->_canMove &&
+						   this->_isAttacking == false && this->_isLoadingAttack == 0) {
+					if (this->_isDashing == false) {
+						this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
+						this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+												  this->_getAttr("jump", "fallingFrame_left").asInt(),
+												  this->_getAttr("jump", "fallingFrame_left").asInt(), "jump");
 					}
 				}
 			}
@@ -848,9 +840,10 @@ void	Characters::_forward(int status) {
 		else if (this->_isJump && !this->_isLoadingAttack && !this->_isFlying) {
 			this->_setCategory("jump");
 			if (this->GetSpriteFrame() >= this->_getAttr("beginFrame_left").asInt() && this->GetSpriteFrame() <= this->_getAttr("endFrame_left").asInt())
+				this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-						this->GetSpriteFrame() - 8,
-						this->_getAttr("endFrame_right").asInt() - 3, "jump");
+										  this->_getAttr("fallingFrame_right").asInt(),
+										  this->_getAttr("fallingFrame_right").asInt(), "jump");
 			this->_setCategory("forward");
 		} else if (this->_isLoadingAttack) {
 			this->_setCategory(this->_weapon->getType());
@@ -908,9 +901,10 @@ void	Characters::_backward(int status) {
 		else if (this->_isJump && !this->_isLoadingAttack) {
 			this->_setCategory("jump");
 			if (this->GetSpriteFrame() >= this->_getAttr("beginFrame_right").asInt() && this->GetSpriteFrame() <= this->_getAttr("endFrame_right").asInt())
+				this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-						this->GetSpriteFrame() + 8,
-						this->_getAttr("endFrame_left").asInt() - 3, "jump");
+										  this->_getAttr("fallingFrame_left").asInt(),
+										  this->_getAttr("fallingFrame_left").asInt(), "jump");
 			this->_setCategory("backward");
 		} else if (this->_isLoadingAttack) {
 			this->_setCategory(this->_weapon->getType());
@@ -960,44 +954,46 @@ void	Characters::_jump(int status) {
 				this->GetBody()->SetGravityScale(1);
 				if (this->_wallsLeft.size() > 0 && this->_wallsRight.size() == 0) {
 					this->GetBody()->SetLinearVelocity(b2Vec2(5, this->_getAttr("rejump").asFloat()));
+					this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-							this->_getAttr("beginFrame_right").asInt(),
-							this->_getAttr("endFrame_right").asInt() - 3, "jump");
+											  this->_getAttr("beginFrame_right").asInt(),
+											  this->_getAttr("endFrame_right").asInt() - 3, "jump");
 				} else if (this->_wallsRight.size() > 0 && this->_wallsLeft.size() == 0) {
 					this->GetBody()->SetLinearVelocity(b2Vec2(-5, this->_getAttr("rejump").asFloat()));
+						this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-							this->_getAttr("beginFrame_left").asInt(),
-							this->_getAttr("endFrame_left").asInt() - 3, "jump");
+											  this->_getAttr("beginFrame_left").asInt(),
+											  this->_getAttr("endFrame_left").asInt() - 3, "jump");
 				} else
 					this->GetBody()->SetLinearVelocity(b2Vec2(0, this->_getAttr("rejump").asFloat()));
 				Game::stopRunning(this);
 			} else if (this->_isJump == 0 || (this->_isJump < this->_getAttr("max").asInt())) {
 				if (this->_isJump >= 1) {
 					this->GetBody()->SetLinearVelocity(b2Vec2(this->GetBody()->GetLinearVelocity().x,
-								this->_getAttr("rejump").asFloat()));
+															  this->_getAttr("rejump").asFloat()));
 					if (this->_isAttacking == false && this->_isLoadingAttack == 0) {
-						if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
-							this->changeSizeTo(Vector2(1, 1));
+						if (this->_isDashing == false)
+							this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 						if (this->_latOrientation == RIGHT) {
+							this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 							this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-									this->_getAttr("beginFrame_right").asInt(),
-									this->_getAttr("endFrame_right").asInt() - 3, "jump");
+													  this->_getAttr("beginFrame_right").asInt(),
+													  this->_getAttr("fallingFrame_right").asInt(), "jump");
 						}
 					}
 				} else {
 					this->ApplyLinearImpulse(Vector2(0, this->_getAttr("force").asFloat()), Vector2(0, 0));
 				}
 				if (this->_isAttacking == false && this->_isLoadingAttack == 0) {
-					if (this->getAttribute("class") == "Warrior")
-						this->changeSizeTo(Vector2(1, 1));
+					this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 					if (this->_latOrientation == RIGHT) {
 						this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 								this->_getAttr("beginFrame_right").asInt(),
-								this->_getAttr("endFrame_right").asInt() - 3, "jump");
+								this->_getAttr("fallingFrame_right").asInt(), "jump");
 					} else if (this->_latOrientation == LEFT) {
 						this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 								this->_getAttr("beginFrame_left").asInt(),
-								this->_getAttr("endFrame_left").asInt() - 3, "jump");
+								this->_getAttr("fallingFrame_left").asInt(), "jump");
 					}
 				}
 				if (this->_grounds.size() == 0)

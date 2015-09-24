@@ -70,6 +70,12 @@ void	SpecialAttack::ReceiveMessage(Message *m) {
 			Game::currentGame->getHero()->buff.bonusSpeed = this->_previousSpeed;
 			Game::currentGame->getHero()->_isWhirlwinding = false;
 			this->_currentAttack = "";
+			this->character->_speAttReady = 0;
+		}
+		else if (this->_currentAttack == "shockwave") {
+			this->_currentAttack = "";
+			std::cout << "message" << std::endl;
+			this->character->_speAttReady = 1;
 		}
 		if (this->_currentAttack == "rapidFire") {
 			Game::currentGame->getHero()->_isWhirlwinding = false;
@@ -78,13 +84,11 @@ void	SpecialAttack::ReceiveMessage(Message *m) {
 		}
 	}
 }
-
 void	SpecialAttack::_whirlwind(void) {
 	this->character->_setCategory("whirlwind");
 	Weapon *currentWeapon = Game::currentGame->getHero()->getWeapon();
 	Characters *hero = Game::currentGame->getHero();
 	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speAttReady == 1 && currentWeapon->getType() == "Sword") {
-		this->character->_speAttReady = 0;
 		this->character->_isWhirlwinding = true;
 		currentWeapon->setActive(this->character->_getAttr("whirlwind", "uptime").asFloat());
 		new Weapon (Game::currentGame->getHero()->_weapon, Game::currentGame->getHero(), 1);
@@ -96,6 +100,24 @@ void	SpecialAttack::_whirlwind(void) {
 		theSwitchboard.DeferredBroadcast(new Message("SpecialAttackEnd"),
 				this->character->_getAttr("whirlwind", "uptime").asFloat());
 		this->_currentAttack = "whirlwind";
+	}
+}
+
+
+void	SpecialAttack::_shockwave(void) {
+	this->character->_setCategory("shockwave");
+	Weapon *currentWeapon = Game::currentGame->getHero()->getWeapon();
+	Characters *hero = Game::currentGame->getHero();
+	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speAttReady == 1 && currentWeapon->getType() == "Axe") {
+		this->character->_speAttReady = 0;
+		this->character->_isShockWaving = true;
+		theSwitchboard.DeferredBroadcast(new Message("speAttReady"),
+				this->character->_getAttr("cooldown").asFloat());
+		int dmg = this->character->_getAttr("shockwave", "damage").asInt();
+		Projectile *wave = new Projectile(currentWeapon, dmg);
+		this->_currentAttack = "shockwave";
+		theSwitchboard.DeferredBroadcast(new Message("speAttReady"),
+				this->character->_getAttr("cooldown").asFloat());
 	}
 }
 

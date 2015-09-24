@@ -23,7 +23,7 @@
 			"armor": "ChestArmor",
 			"ring": "NiceRing",
 			"specialMove": "shunpo",
-			"specialAttack": "whirlwind",
+			"specialAttack": "shockwave",
 			"inventorySlots": 2
 		},
 		"executeAction": {

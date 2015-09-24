@@ -35,18 +35,15 @@ MenuCharacter::MenuCharacter(void) : Characters("MenuCharacter") {
 	this->_isBlock = 0;
 	this->_chooseEquipment = 0;
 	this->_character = "Warrior";
-	this->_characLvl = 5;
 	// THIS IS TMP; DO NOT JUDGE ME
 	Elements		*tmp;
-	tmp = new Elements(); tmp->addAttribute("Name", "Bow_000"); this->_equipSelection["Weapon"] = tmp;
+	tmp = new Elements(); tmp->addAttribute("Name", "Axe_000"); this->_equipSelection["Weapon"] = tmp;
 	tmp = new Elements(); tmp->addAttribute("Name", "Ring_000"); this->_equipSelection["ring"] = tmp;
 	tmp = new Elements(); tmp->addAttribute("Name", "Armor_000"); this->_equipSelection["Armor"] = tmp;
 	// END OF NASTY CODE. Well, actually no. But u know what i mean
 	theSwitchboard.SubscribeTo(this, "enterPressed");
 	theSwitchboard.SubscribeTo(this, "chooseEquipment");
 	theSwitchboard.SubscribeTo(this, "returnPressed");
-	this->_skillsLvl = std::vector<int>(4);
-	this->_skillsLvl[0] = 5; this->_skillsLvl[1] = 15; this->_skillsLvl[2] = 25; this->_skillsLvl[3] = 50;
 	this->_getSkills();
 }
 
@@ -514,23 +511,23 @@ void		MenuCharacter::_showSelectInfo(Elements *obj) {
 	if (this->_closetChoice->getAttribute("number") == "1") {
 		Ring	*item = new Ring(obj->getAttribute("Name"));
 		name = item->getSprite();
-		hud->setText(item->getName(), (ww - (ww / 7)) - (item->getName().length() / 2 * 6), 
+		hud->setText(item->getDisplayName(), (ww - (ww / 7)) - (item->getDisplayName().length() / 2 * 6), 
 			(wh / 3), Vector3(0.68, 0.68, 0.68), 1, "BigGamefont");
-		this->_currentItemInfo->textInfo.push_back(item->getName());
+		this->_currentItemInfo->textInfo.push_back(item->getDisplayName());
 		this->_flavorInfo(item->getFlavor());
 	} else if (this->_closetChoice->getAttribute("number") == "2") {
 		Armor	*item = new Armor(obj->getAttribute("Name"));
 		name = item->getSprite();
-		hud->setText(item->getName(), (ww - (ww / 7)) - (item->getName().length() / 2 * 6), 
+		hud->setText(item->getDisplayName(), (ww - (ww / 7)) - (item->getDisplayName().length() / 2 * 6), 
 			(wh / 3), Vector3(0.68, 0.68, 0.68), 1, "BigGamefont");
-		this->_currentItemInfo->textInfo.push_back(item->getName());
+		this->_currentItemInfo->textInfo.push_back(item->getDisplayName());
 		this->_flavorInfo(item->getFlavor());
 	} else if (this->_closetChoice->getAttribute("number") == "3") {
 		Weapon	*item = new Weapon(obj->getAttribute("Name"));
 		name = item->getSprite();
-		hud->setText(item->getName(), (ww - (ww / 7)) - (item->getName().length() / 2 * 6), 
+		hud->setText(item->getDisplayName(), (ww - (ww / 7)) - (item->getDisplayName().length() / 2 * 6), 
 			(wh / 3), Vector3(0.68, 0.68, 0.68), 1, "BigGamefont");
-		this->_currentItemInfo->textInfo.push_back(item->getName());
+		this->_currentItemInfo->textInfo.push_back(item->getDisplayName());
 		this->_flavorInfo(item->getFlavor());
 	}
 
@@ -600,35 +597,13 @@ void		MenuCharacter::_cleanCloset(void) {
 	this->_choicePointer = nullptr;
 	this->_isBlock = 0;
 	this->_chooseEquipment = 0;
+	//this->_showTextInfo("Press enter to choose a new character");
 }
 
 void		MenuCharacter::_kitchen(void) {
-	Json::ValueIterator		it, it2;
-	float						x, y, i;
-	Elements				*tmp;
-
-	for (it = this->_skillTree.begin(), x = 125.75, i = 0; it != this->_skillTree.end(); it++, x += 3.75, i++) {
-		for (it2 = (*it)[this->_character].begin(), y = -16.75; it2 != (*it)[this->_character].end(); it2++, y -= 3.5) {
-			tmp = new Elements();
-			if (i == 3)
-				y -= 3.5;
-			tmp->SetPosition(x, y); tmp->SetSprite("Resources/Images/Skills/" + it2->asString() + ".png"); tmp->SetSize(1.6);
-			tmp->addAttribute("skill", it2->asString()); tmp->addAttribute("palier", std::to_string(i));
-			theWorld.Add(tmp); this->_kitchenSkills.push_back(tmp);
-		   if (this->_characLvl < this->_skillsLvl[i]) {
-				tmp = new Elements();
-				tmp->SetPosition(x, y); tmp->SetSprite("Resources/Images/kitchen_gray.png"); tmp->SetSize(3);
-				theWorld.Add(tmp); this->_kitchenSkills.push_back(tmp);
-			}
-		}
-	}
 }
 
 void		MenuCharacter::_hideKitchen(void) {
-	std::list<Elements *>::iterator		it;
-
-	for (it = this->_kitchenSkills.begin(); it != this->_kitchenSkills.end(); it++)
-		theWorld.Remove(*it);
 }
 
 void		MenuCharacter::_getSkills(void) {
@@ -645,9 +620,9 @@ void		MenuCharacter::_getSkills(void) {
 		for (; std::getline(attacks, tmp); )
 			attackFile += tmp;
 		for (; std::getline(tree, tmp); )
-			treeFile += tmp + "\n";
+			treeFile += tmp;
 	} else {
-		Log::error("Cannot find the Special Moves / Attack / Skills file.");
+		Log::error("Cannot find the Special Moves / Attacks file.");
 	}
 	reader.parse(moveFile, jsonTmp, false);
 	for (it = jsonTmp.begin(); it != jsonTmp.end(); it++)
@@ -655,8 +630,7 @@ void		MenuCharacter::_getSkills(void) {
 	reader.parse(attackFile, jsonTmp, false);
 	for (it = jsonTmp.begin(); it != jsonTmp.end(); it++)
 		this->_skills[it.key().asString()] = (*it);
-	if (!reader.parse(treeFile, this->_skillTree))
-		std::cout << reader.getFormattedErrorMessages() << std::endl;
+	reader.parse(treeFile, this->_skillTree, false);
 	// TODO:
 	// Iterator over tree, while using this->_skills[name]
 }

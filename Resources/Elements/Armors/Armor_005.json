@@ -1,0 +1,16 @@
+{
+    "infos": {
+   	    "name": "Armor_005",
+		"displayName": "Spiked Armor",
+		"flavor": "It hurts enemies, but you too",
+		"price": 10,
+		"sprites": "Resources/Images/Armors/Armor_005.png",
+		"lootLevel": 3
+	},
+	"bonus": {
+		"hpBuff": 0,
+		"dmgReduc": 5,
+		"bonusSpeed": 1,
+		"bonusDmg": 15
+	}
+}

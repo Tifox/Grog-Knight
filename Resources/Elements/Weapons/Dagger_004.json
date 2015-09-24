@@ -1,0 +1,21 @@
+{
+    "infos": {
+   	    "name": "Dagger_004",
+		"displayName": "Heavy Dagger",
+		"flavor": "Its trying to help\nbut its slowing you down",
+		"equipable": "Archer",
+		"type": "Dagger",
+		"hitbox": "SWORD",
+		"price": 10,
+		"size": 1,
+	 	"critRate": 5,
+		"damage": 5,
+		"recovery": 1,
+		"pushback": 5,
+		"active": 0.2,
+		"attack": "melee",
+		"sprites": "Resources/Images/Weapons/Dagger_004.png",
+		"lootLevel": 1,
+		"starterLevel": 1
+	}
+}

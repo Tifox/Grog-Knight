@@ -90,10 +90,13 @@ class		MenuCharacter : public Characters {
 		std::list<Weapon *>				_weaponList;
 		std::list<Armor *>				_armorList;
 		std::list<Elements *>			_equipSelectionBack;
+		std::list<Elements *>			_kitchenSkills;
 		int								_chooseEquipment;
 		std::map<std::string, Elements *> _equipSelection;
 		MenuCharacter::itemInfo				*_currentItemInfo;
 		Json::Value							_skills;
 		Json::Value							_skillTree;
+		std::vector<int>					_skillsLvl;
+		int									_characLvl;
 };
 #endif

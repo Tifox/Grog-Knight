@@ -15,6 +15,7 @@
 		"recovery": 0.5,
 		"attack": "ranged",
 		"sprites": "Resources/Images/Weapons/Bow_001.png",
-		"lootLevel": 2
+		"lootLevel": 2,
+		"starterLevel": 2
 	}
 }

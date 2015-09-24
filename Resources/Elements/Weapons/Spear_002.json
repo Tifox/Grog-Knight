@@ -1,0 +1,21 @@
+{
+    "infos": {
+   	    "name": "Spear_002",
+		"displayName": "Long Spear",
+		"flavor": "Used during wartimes",
+		"equipable": "Warrior",
+		"type": "Spear",
+		"price": 10,
+		"hitbox": "SWORD",
+		"size": 1,
+	 	"critRate": 5,
+		"damage": 5,
+		"recovery": 1,
+		"pushback": 5,
+		"active": 0.2,
+		"attack": "melee",
+		"sprites": "Resources/Images/Weapons/Spear_002.png",
+		"lootLevel": 3,
+		"starterLevel": 3
+	}
+}

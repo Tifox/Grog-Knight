@@ -1,0 +1,20 @@
+{
+    "infos": {
+   	    "name": "Axe_005",
+		"displayName": "King's Axe",
+		"flavor": "A weapon designed for\na ruler",
+		"equipable": "Warrior",
+		"type": "Axe",
+		"hitbox": "SWORD",
+		"price": 10,
+		"size": 1,
+	 	"critRate": 5,
+		"damage": 5,
+		"recovery": 0.1,
+		"pushback": 5,
+		"active": 0.2,
+		"attack": "melee",
+		"sprites": "Resources/Images/Weapons/Axe_005.png",
+		"lootLevel": 3
+	}
+}

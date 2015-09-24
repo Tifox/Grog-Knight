@@ -5,7 +5,8 @@
 		"flavor": "Legends pretend it can\nprotect its user",
 		"price": 15,
 		"sprites": "Resources/Images/Armors/Armor_001.png",
-		"lootLevel": 2
+		"lootLevel": 2,
+		"starterLevel": 2
 	},
 		"bonus": {
 			"hpBuff": 10,

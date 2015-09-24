@@ -5,7 +5,8 @@
 		"flavor": "Hey look, its a FUCKING RING.\nFUCK YOU TOO IM NOT A DESIGNER",
 		"price": 10,
 		"sprites": "Resources/Images/Rings/Ring_000.png",
-		"lootLevel": 1
+		"lootLevel": 1,
+		"starterLevel": 1
 	},
 	"bonus": {
 		"hpBuff": 0,

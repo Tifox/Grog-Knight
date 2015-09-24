@@ -1,0 +1,16 @@
+{
+    "infos": {
+   	    "name": "Ring_004",
+		"displayName": "Sacred Ring",
+		"flavor": "A gift from the church",
+		"price": 10,
+		"sprites": "Resources/Images/Rings/Ring_004.png",
+		"lootLevel": 2
+	},
+	"bonus": {
+		"hpBuff": 0,
+		"dmgReduc": 1,
+		"bonusSpeed": 2,
+		"bonusDmg": 5
+	}
+}

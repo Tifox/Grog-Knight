@@ -1,0 +1,20 @@
+{
+    "infos": {
+   	    "name": "Axe_003",
+		"displayName": "Silver Axe",
+		"flavor": "Mostly used to kill vampires",
+		"equipable": "Warrior",
+		"type": "Axe",
+		"hitbox": "SWORD",
+		"price": 10,
+		"size": 1,
+	 	"critRate": 5,
+		"damage": 5,
+		"recovery": 0.1,
+		"pushback": 5,
+		"active": 0.2,
+		"attack": "melee",
+		"sprites": "Resources/Images/Weapons/Axe_003.png",
+		"lootLevel": 1
+	}
+}

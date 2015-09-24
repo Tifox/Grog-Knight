@@ -5,7 +5,8 @@
 		"price": 20,
 		"flavor": "A pretty shitty one actually...",
 		"sprites": "Resources/Images/Rings/Ring_002.png",
-		"lootLevel": 3
+		"lootLevel": 3,
+		"starterLevel": 3
 	},
 	"bonus": {
 		"hpBuff": 0,

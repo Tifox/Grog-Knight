@@ -76,12 +76,13 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_isCharging = 0;
 	this->_isDashing = 0;
 	this->_isWhirlwinding = false;
+	this->_isRapidFiring = false;
 	this->_speMoveReady = 1;
 	this->_speAttReady = 1;
 	this->_hasDashed = 0;
 	this->SetLayer(100);
-	this->_eqMove = new SpecialMoves(this);
-	this->_eqAtt = new SpecialAttack(this);
+	// this->_eqMove = new SpecialMoves(this);
+	// this->_eqAtt = new SpecialAttack(this);
 	this->_isStomping = false;
 	this->_flyTrigger = false;
 	this->_isDisengaging = false;
@@ -1192,6 +1193,8 @@ void	Characters::_specialAttack(int status) {
 	if (status == 0) {
 		if (this->_speAtt == "whirlwind")
 			this->_eqAtt->_whirlwind();
+		if (this->_speAtt == "rapidFire")
+			this->_eqAtt->_rapidFire();
 	}
 }
 

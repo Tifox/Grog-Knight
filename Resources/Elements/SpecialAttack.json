@@ -4,5 +4,12 @@
 		"cooldown": 1,
 		"time": 2,
 		"uptime": 2
+	},
+	"rapidFire": {
+		"subscribe": "specialattack",
+		"cooldown": 10,
+		"time": 2,
+		"uptime": 2,
+		"interval": 0.2
 	}
 }

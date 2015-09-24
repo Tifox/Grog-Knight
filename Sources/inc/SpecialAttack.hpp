@@ -47,7 +47,8 @@
 
          void			_setCategory(std::string category);
 		 void			ReceiveMessage(Message *m);
-		 void			_whirlwind(void);
+         void           _whirlwind(void);
+         void           _rapidFire(void);
 
 
      private:

@@ -161,6 +161,7 @@ class Characters : public Elements {
 		int				_speAttReady;
 		bool			_canAttack;
 		bool			_isWhirlwinding;
+		bool			_isRapidFiring;
 		bool			_isCharging;
 		bool			_isStomping;
 		bool			_isFlying;

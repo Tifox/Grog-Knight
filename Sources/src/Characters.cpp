@@ -532,15 +532,15 @@ void	Characters::AnimCallback(String s) {
 			} else if (this->_fullChargedAttack == true) {
 				std::string orientation;
 				if (this->_latOrientation == RIGHT) {
-					orientation = "right";
+					orientation = "Right";
 				} else if (this->_latOrientation == LEFT)
-					orientation = "left";
-				this->_setCategory("loadAttack_charge");
+					orientation = "Left";
+				this->_setCategory(this->_weapon->getType());
 				if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
-					this->changeSizeTo(Vector2(2, 2));
+					this->changeSizeTo(Vector2(this->_getAttr("loadX").asInt(), this->_getAttr("loadY").asInt()));
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-						this->_getAttr("endFrame_" + orientation).asInt(),
-						this->_getAttr("endFrame_" + orientation).asInt(), "loadAttack_charge");
+						this->_getAttr("holdFrameLoad" + orientation).asInt() - 1,
+						this->_getAttr("holdFrameLoad" + orientation).asInt(), "loadAttack_charge");
 			}
 		}
 		if (this->getAttribute("class") == "Warrior" && !this->_isLoadingAttack)
@@ -852,12 +852,11 @@ void	Characters::_forward(int status) {
 						this->_getAttr("endFrame_right").asInt() - 3, "jump");
 			this->_setCategory("forward");
 		} else if (this->_isLoadingAttack) {
-			this->_setCategory("loadAttack_charge");
-			if (this->getAttribute("class") == "Warrior")
-				this->changeSizeTo(Vector2(2, 2));
+			this->_setCategory(this->_weapon->getType());
+			this->changeSizeTo(Vector2(this->_getAttr("loadX").asInt(), this->_getAttr("loadY").asInt()));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-					this->_getAttr("endFrame_right").asInt(),
-					this->_getAttr("endFrame_right").asInt(), "loadAttack_charge");
+					this->_getAttr("holdFrameLoadRight").asInt() - 1,
+					this->_getAttr("holdFrameLoadRight").asInt(), "loadAttack_charge");
 			this->_setCategory("forward");
 		}
 		Game::startRunning(this);
@@ -913,12 +912,11 @@ void	Characters::_backward(int status) {
 						this->_getAttr("endFrame_left").asInt() - 3, "jump");
 			this->_setCategory("backward");
 		} else if (this->_isLoadingAttack) {
-			this->_setCategory("loadAttack_charge");
-			if (this->getAttribute("class") == "Warrior")
-				this->changeSizeTo(Vector2(2, 2));
+			this->_setCategory(this->_weapon->getType());
+			this->changeSizeTo(Vector2(this->_getAttr("loadX").asInt(), this->_getAttr("loadY").asInt()));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-					this->_getAttr("endFrame_left").asInt(),
-					this->_getAttr("endFrame_left").asInt(), "loadAttack_charge");
+					this->_getAttr("holdFrameLoadLeft").asInt() - 1,
+					this->_getAttr("holdFrameLoadLeft").asInt(), "loadAttack_charge");
 			this->_setCategory("backward");
 		}
 		Game::startRunning(this);

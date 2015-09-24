@@ -79,73 +79,49 @@ void	Hero::init(void) {
  */
 void	Hero::actionCallback(std::string name, int status) {
 	std::string 	orientation;
+	std::string 	o2;
 	float				x = 2, y = 1;
 	std::string type = this->_weapon->getType();
 
+	if (this->_latOrientation == RIGHT) {
+		orientation = "Right";
+	} else if (this->_latOrientation == LEFT) {
+		orientation = "Left";
+	}
+	this->_setCategory(type);
 	if (name == "attack" && status == 0 && this->_canAttack == true &&
 		this->_fullChargedAttack == false && this->_isLoadingAttack == 0 &&
 		this->_isAttacking == 1) {
 		this->_canAttack = false;
-		if (this->_orientation == RIGHT) {
-			orientation = "right";
-		} else if (this->_orientation == LEFT) {
-			orientation = "left";
-		} else if (this->_orientation == UP) {
-			x = 1.5f; y = 2;
-			orientation = "up";
+		this->changeSizeTo(Vector2(this->_getAttr("x").asFloat(), this->_getAttr("y").asFloat()));
+		if (this->_orientation == UP) {
+			this->changeSizeTo(Vector2(this->_getAttr("upX").asFloat(), this->_getAttr("upY").asFloat()));
+			o2 = "Up";
 		} else if (this->_orientation == DOWN) {
-			x = 1; y = 2.5f;
-			orientation = "down";
-		}
-		if (this->getAttribute("class") == "Warrior")
-			this->changeSizeTo(Vector2(x, y));
-		this->_setCategory("attack");
-
-		if (type == "Axe") {
-			this->changeSizeTo(Vector2(2,1));
+			this->changeSizeTo(Vector2(this->_getAttr("downX").asFloat(), this->_getAttr("downY").asFloat()));
+			o2 = "Down";
 		}
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-								  this->_getAttr("beginFrame" + type + "_" + orientation).asInt(),
-								  this->_getAttr("endFrame" + type + "_" + orientation).asInt(), "base");
-
+								  this->_getAttr("beginFrame" + orientation + o2).asInt(),
+								  this->_getAttr("endFrame" +  orientation + o2).asInt(), "base");
 	} else if (name == "attack" && status == 0 &&
 			   this->_canAttack == true &&
 			   this->_fullChargedAttack == true) {
-		if (this->_orientation == RIGHT) {
-			orientation = "right";
-		} else if (this->_orientation == LEFT) {
-			orientation = "left";
-		} else if (this->_orientation == UP) {
-			x = 1.5f; y = 2;
-			orientation = "up";
-		} else if (this->_orientation == DOWN) {
-			x = 1; y = 2.5f;
-			orientation = "down";
-		}
-		this->_setCategory("loadAttack_done");
 		this->_isLoadingAttack = 0;
 		this->_fullChargedAttack = false;
-		if (this->getAttribute("class") == "Warrior")
-			this->changeSizeTo(Vector2(2, 2));
+		this->changeSizeTo(Vector2(this->_getAttr("loadX").asFloat(), this->_getAttr("loadY").asFloat()));
 		this->_canAttack = false;
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-								  this->_getAttr("beginFrame" + type + "_" + orientation).asInt(),
-								  this->_getAttr("endFrame" + type + "_" + orientation).asInt(), "base");
+								  this->_getAttr("holdFrameLoad" + orientation).asInt(),
+								  this->_getAttr("endFrameLoad" + orientation).asInt(), "base");
 	} else if (name == "loadAttack_charge") {
-		if (this->_latOrientation == RIGHT) {
-			orientation = "right";
-		} else if (this->_latOrientation == LEFT)
-			orientation = "left";
-		this->_setCategory("loadAttack_charge");
-		if (this->getAttribute("class") == "Warrior") {
-			if (type == "Sword")
-				this->changeSizeTo(Vector2(2, 2));
-			else if (type == "Axe")
-				this->changeSizeTo(Vector2(2, 1.5));
-		}
+//			else if (type == "Axe")
+//				this->changeSizeTo(Vector2(2, 1.5));
+//	}
+		this->changeSizeTo(Vector2(this->_getAttr("loadX").asFloat(), this->_getAttr("loadY").asFloat()));
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-								  this->_getAttr("beginFrame" + type + "_" + orientation).asInt(),
-								  this->_getAttr("endFrame" + type + "_" + orientation).asInt());
+								  this->_getAttr("beginFrameLoad" + orientation).asInt(),
+								  this->_getAttr("holdFrameLoad" + orientation).asInt());
 	} else if (name == "dash") {
 		if (this->_latOrientation == RIGHT) {
 			orientation = "right";

@@ -48,6 +48,9 @@ Hero::Hero(std::string name) : Characters(name) {
 	theSwitchboard.SubscribeTo(this, "chooseItem3");
 	theSwitchboard.SubscribeTo(this, "chooseItem4");
 	this->addAttribute("type", "Hero");
+	this->_eqMove = new SpecialMoves(static_cast<Characters*>(this));
+	this->_eqAtt = new SpecialAttack(static_cast<Characters*>(this));
+
 	this->_inventory = new Inventory(this->_getAttr("starting", "inventorySlots").asInt());
 	return ;
 }

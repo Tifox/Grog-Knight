@@ -1,65 +1,65 @@
 {
-	1: {
-		"Warrior": {
+	"1": {
+		"Warrior": [
 			"charge",
 			"dash",
 			"stomp"
-		},
-		"Mage" : {
+		],
+		"Mage" : [
 			"blink",
 			"fly",
 			"totem"
-		},
-		"Archer": {
+		],
+		"Archer": [
 			"shunpo",
 			"wallJump",
 			"disengage"
-		}
+		]
 	},
-	2 : {
-		"Warrior": {
+	"2" : {
+		"Warrior": [
 			"whirlwind",
 			"shockwave",
 			"throw_weapon"
-		},
-		"Mage": {
+		],
+		"Mage": [
 			"ice_projectile",
 			"fire_projectile",
 			"shield"
-		},
-		"Archer": {
+		],
+		"Archer": [
 			"rapid_fire",
 			"smoke_cloud",
 			"execute"
-		}
+		]
 	},
-	3: {
-		"Warrior": {
+	"3": {
+		"Warrior": [
 			"passive_sword",
 			"passive_hammer",
 			"passive_spear"
-		},
-		"Mage": {
+		],
+		"Mage": [
 			"passive_ice",
 			"passive_fire",
 			"passive_thunder"
-		},
-		"Archer": {
+		],
+		"Archer": [
 			"passive_bow",
 			"passive_dague",
 			"passive_both"
-		}
+		]
 	},
-	4: {
-		"Warrior": {
+	"4": {
+		"Warrior": [
 			"berserk"
-		},
-		"Mage": {
+		],
+		"Mage": [
 			"ulti_mage"
-		},
-		"Archer": {
+		],
+		"Archer": [
 			"ulti_dagger",
 			"ulti_bow"
-		}
+		]
 	}
 }

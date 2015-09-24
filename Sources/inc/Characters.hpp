@@ -92,6 +92,7 @@ class Characters : public Elements {
 		virtual void	trigger(std::string name, int status) {};
 		Characters::Orientation			getOrientation(void);
 		std::string						getLastAction(void);
+		Characters::Orientation			getLatOrientation(void);
 		int								getGold(void);
 		void							setGold(int);
 		void							setDrug(std::string name);
@@ -172,6 +173,7 @@ class Characters : public Elements {
 		std::string		_currentTrigger;
 		bool			_speMoveIsSet;
 		bool			_isDisengaging;
+		bool			_isShockWaving;
 		bool			_isTouchingChest;
 		bool			_isTouchingSecretDoor;
 		bool			_isTouchingBossDoor;

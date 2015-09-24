@@ -31,7 +31,7 @@
  * @param w Weapon* (weapon object which called the attack)
  * @param c Characters* (Characters object which currently carries the weapon)
  */
-Projectile::Projectile(Weapon* w, Characters* c){
+ Projectile::Projectile(Weapon* w, Characters* c){
 
 	this->_name = w->getName();
 	this->_flavor = w->getFlavor();
@@ -58,6 +58,42 @@ Projectile::Projectile(Weapon* w, Characters* c){
 	this->addAttribute("physic", "1");
 	this->_initDirection(w, c);
 	theSwitchboard.DeferredBroadcast(new Message("attackReady"), this->_recovery);
+	theWorld.Add(this);
+}
+
+Projectile::Projectile(Weapon* w, int dmg) {
+
+	int xDecal = 0, yDecal = 0, xOrient = 0, yOrient = 0;
+	Characters *c = Game::currentGame->getHero();
+
+	this->_name = "shockwave";
+	this->_damage = dmg;
+	this->_critRate = 0;
+	this->_pushback = w->getPushback();
+	this->SetSize(0.5f);
+	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
+	this->SetSprite("Resources/Images/shockwave.png");
+	this->SetDensity(1);
+	this->SetFriction(0);
+	this->SetRestitution(0.0f);
+	this->SetFixedRotation(true);
+	this->SetIsSensor(true);
+	this->addAttribute("type", "ShockWave");
+	this->Tag("projectile");
+	this->addAttribute("physic", "1");
+
+	if (c->getLatOrientation() == Characters::RIGHT) {
+		xOrient = xDecal = 1;
+		this->SetRotation(135.0f);
+	} else if (c->getLatOrientation() == Characters::LEFT) {
+		xOrient = xDecal = -1;
+		this->SetRotation(-43.0f);
+	}
+	this->SetPosition(c->GetBody()->GetWorldCenter().x + xDecal, c->GetBody()->GetWorldCenter().y + yDecal);
+	this->InitPhysics();
+	this->GetBody()->SetGravityScale(0.0f);
+	this->GetBody()->SetBullet(true);
+	this->ApplyLinearImpulse(Vector2(3 * xOrient, 3 * yOrient), Vector2(0, 0));
 	theWorld.Add(this);
 }
 
@@ -108,7 +144,7 @@ int             Projectile::getPushback(void) { return this->_pushback; }
 float           Projectile::getRecovery(void) { return this->_recovery; }
 int				Projectile::getCritRate(void) { return this->_critRate; }
 
-void	Projectile::ReceiveMessage(Message *m) {
+void			Projectile::ReceiveMessage(Message *m) {
 }
 
 //! Overload from b2Body's BeginContact
@@ -120,7 +156,13 @@ void	Projectile::ReceiveMessage(Message *m) {
  * @param contact The b2Contact object of the collision. See Box2D docs for more info.
  */
 void	Projectile::BeginContact(Elements *m, b2Contact *c) {
-  if (m->getAttribute("type") == "Object" || m->getAttribute("type") == "Hero")
-		return;
+	if (this->_name == "shockwave") {
+		if (m->getAttribute("type") == "Object" || m->getAttribute("type") == "Hero" || m->getAttribute("type") == "Dealer" || m->getAttribute("type") == "Door" || m->getAttribute("type") == "Enemy")
+			return;
+	}
+	else
+		if (m->getAttribute("type") == "Object" || m->getAttribute("type") == "Hero")
+			return;
 	Game::addToDestroyList(this);
 }
+

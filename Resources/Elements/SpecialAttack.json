@@ -1,8 +1,13 @@
 {
 	"whirlwind": {
 		"subscribe": "specialattack",
-		"cooldown": 1,
+		"cooldown": 6,
 		"time": 2,
 		"uptime": 2
+	},
+	"shockwave": {
+		"subscribe": "specialatttack",
+		"cooldown": 1,
+		"damage": 25
 	}
 }

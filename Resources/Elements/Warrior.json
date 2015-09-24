@@ -23,7 +23,7 @@
 			"armor": "ChestArmor",
 			"ring": "NiceRing",
 			"specialMove": "blink",
-			"specialAttack": "whirlwind",
+			"specialAttack": "shockwave",
 			"inventorySlots": 2
 		},
 		"executeAction": {

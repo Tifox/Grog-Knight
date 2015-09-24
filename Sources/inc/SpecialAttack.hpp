@@ -33,6 +33,8 @@
  # endif
 
  #include "Characters.hpp"
+ #include "Projectile.hpp"
+ #include "Weapon.hpp"
 
  class Characters;
 
@@ -45,10 +47,10 @@
 
          Characters* character;
 
-         void			_setCategory(std::string category);
-		 void			ReceiveMessage(Message *m);
-		 void			_whirlwind(void);
-
+        void			_setCategory(std::string category);
+		void			ReceiveMessage(Message *m);
+		void			_whirlwind(void);
+		void			_shockwave(void);
 
      private:
          std::string		_category;

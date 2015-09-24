@@ -77,12 +77,13 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_isDashing = 0;
 	this->_isWhirlwinding = false;
 	this->_isShockWaving = false;
+	this->_isRapidFiring = false;
 	this->_speMoveReady = 1;
 	this->_speAttReady = 1;
 	this->_hasDashed = 0;
 	this->SetLayer(100);
-	this->_eqMove = new SpecialMoves(this);
-	this->_eqAtt = new SpecialAttack(this);
+	// this->_eqMove = new SpecialMoves(this);
+	// this->_eqAtt = new SpecialAttack(this);
 	this->_isStomping = false;
 	this->_flyTrigger = false;
 	this->_isDisengaging = false;
@@ -842,7 +843,7 @@ void	Characters::_forward(int status) {
 		if ((this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() ||
 					(this->GetSpriteFrame() >= this->_getAttr("backward", "beginFrame").asInt() &&
 					 this->GetSpriteFrame() <= this->_getAttr("backward", "endFrame").asInt()))  &&
-				!this->_isJump && !this->_isLoadingAttack && !this->_isFlying)
+			!this->_isJump && !this->_isLoadingAttack)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 					this->_getAttr("beginFrame").asInt(), this->_getAttr("endFrame").asInt());
 		else if (this->_isJump && !this->_isLoadingAttack && !this->_isFlying) {
@@ -1197,6 +1198,8 @@ void	Characters::_specialAttack(int status) {
 			this->_eqAtt->_whirlwind();
 		else if (this->_speAtt == "shockwave")
 			this->_eqAtt->_shockwave();
+		if (this->_speAtt == "rapidFire")
+			this->_eqAtt->_rapidFire();
 	}
 }
 

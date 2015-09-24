@@ -24,7 +24,11 @@
 			"armor": "Robes",
 			"ring": "SmallRing",
 			"specialMove": "disengage",
+			"specialAttack": "rapidFire",
 			"inventorySlots": 3
+		},
+		"executeAction": {
+			"subscribe": "action"
 		},
 		"forward": {
 			"subscribe": "forward",
@@ -89,6 +93,9 @@
 		},
 		"specialMove": {
 			"subscribe": "specialmove"
+		},
+		"specialAttack": {
+			"subscribe": "specialattack"
 		},
 		"down": {
 			"subscribe": "down"

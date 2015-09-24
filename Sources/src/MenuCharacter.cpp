@@ -35,15 +35,19 @@ MenuCharacter::MenuCharacter(void) : Characters("MenuCharacter") {
 	this->_isBlock = 0;
 	this->_chooseEquipment = 0;
 	this->_character = "Warrior";
+	this->_characLvl = 5;
 	// THIS IS TMP; DO NOT JUDGE ME
 	Elements		*tmp;
-	tmp = new Elements(); tmp->addAttribute("Name", "Sword_000"); this->_equipSelection["Weapon"] = tmp;
+	tmp = new Elements(); tmp->addAttribute("Name", "Bow_000"); this->_equipSelection["Weapon"] = tmp;
 	tmp = new Elements(); tmp->addAttribute("Name", "Ring_000"); this->_equipSelection["ring"] = tmp;
 	tmp = new Elements(); tmp->addAttribute("Name", "Armor_000"); this->_equipSelection["Armor"] = tmp;
 	// END OF NASTY CODE. Well, actually no. But u know what i mean
 	theSwitchboard.SubscribeTo(this, "enterPressed");
 	theSwitchboard.SubscribeTo(this, "chooseEquipment");
 	theSwitchboard.SubscribeTo(this, "returnPressed");
+	this->_skillsLvl = std::vector<int>(4);
+	this->_skillsLvl[0] = 5; this->_skillsLvl[1] = 15; this->_skillsLvl[2] = 25; this->_skillsLvl[3] = 50;
+	this->_getSkills();
 }
 
 MenuCharacter::~MenuCharacter(void) {
@@ -106,8 +110,14 @@ void	MenuCharacter::trigger(std::string name, int status) {
 		Game::isInMenu = 0;
 		Game::menuCharacter = this;
 		Game::asToStart = 1;
-	} else if (name == "kitchen") {
-		this->_kitchen();
+	} else if (name == "skills") {
+		if (status == 1)
+			this->_showTextInfo("Press enter to choose your skills");
+		else if (!status) {
+			Game::getHUD()->removeText("Press enter to choose your skills");
+			theWorld.Remove(this->_image);
+			this->_image = nullptr;
+		}
 	}
 }
 
@@ -156,8 +166,15 @@ void	MenuCharacter::ReceiveMessage(Message *m) {
 			theWorld.Remove(this->_image);
 			this->_isBlock = 1;
 			this->_chooseEquipment = 1;
+			this->_image = nullptr;
 		} else if (this->_currentTrigger == "equipment" && this->_chooseEquipment == 1) {
 			this->_updateSelection();
+		} else if (this->_currentTrigger == "skills") {
+			theCamera.MoveTo(Vector3(131, -19.5, 12.5), 0.5, true, "chooseSkills");
+			Game::getHUD()->removeText("Press enter to choose your skills");
+			theWorld.Remove(this->_image);
+			this->_image = nullptr;
+			this->_kitchen();
 		}
 	} else if (m->GetMessageName() == "chooseEquipment") {
 		this->_equipmentChoose();
@@ -583,11 +600,65 @@ void		MenuCharacter::_cleanCloset(void) {
 	this->_choicePointer = nullptr;
 	this->_isBlock = 0;
 	this->_chooseEquipment = 0;
-	//this->_showTextInfo("Press enter to choose a new character");
 }
 
 void		MenuCharacter::_kitchen(void) {
-	
+	Json::ValueIterator		it, it2;
+	float						x, y, i;
+	Elements				*tmp;
+
+	for (it = this->_skillTree.begin(), x = 125.75, i = 0; it != this->_skillTree.end(); it++, x += 3.75, i++) {
+		for (it2 = (*it)[this->_character].begin(), y = -16.75; it2 != (*it)[this->_character].end(); it2++, y -= 3.5) {
+			tmp = new Elements();
+			if (i == 3)
+				y -= 3.5;
+			tmp->SetPosition(x, y); tmp->SetSprite("Resources/Images/Skills/" + it2->asString() + ".png"); tmp->SetSize(1.6);
+			tmp->addAttribute("skill", it2->asString()); tmp->addAttribute("palier", std::to_string(i));
+			theWorld.Add(tmp); this->_kitchenSkills.push_back(tmp);
+		   if (this->_characLvl < this->_skillsLvl[i]) {
+				tmp = new Elements();
+				tmp->SetPosition(x, y); tmp->SetSprite("Resources/Images/kitchen_gray.png"); tmp->SetSize(3);
+				theWorld.Add(tmp); this->_kitchenSkills.push_back(tmp);
+			}
+		}
+	}
+}
+
+void		MenuCharacter::_hideKitchen(void) {
+	std::list<Elements *>::iterator		it;
+
+	for (it = this->_kitchenSkills.begin(); it != this->_kitchenSkills.end(); it++)
+		theWorld.Remove(*it);
+}
+
+void		MenuCharacter::_getSkills(void) {
+	std::ifstream		moves("Resources/Elements/SpecialMoves.json"), attacks("Resources/Elements/SpecialAttack.json"),
+			tree("Resources/Elements/Skills.json");
+	std::string			moveFile, attackFile, treeFile, tmp;
+	Json::Reader		reader;
+	Json::Value			jsonTmp;
+	Json::ValueIterator		it;
+
+	if (moves.is_open() && attacks.is_open() && tree.is_open()) {
+		for (; std::getline(moves, tmp); )
+			moveFile += tmp;
+		for (; std::getline(attacks, tmp); )
+			attackFile += tmp;
+		for (; std::getline(tree, tmp); )
+			treeFile += tmp + "\n";
+	} else {
+		Log::error("Cannot find the Special Moves / Attack / Skills file.");
+	}
+	reader.parse(moveFile, jsonTmp, false);
+	for (it = jsonTmp.begin(); it != jsonTmp.end(); it++)
+		this->_skills[it.key().asString()] = *it;
+	reader.parse(attackFile, jsonTmp, false);
+	for (it = jsonTmp.begin(); it != jsonTmp.end(); it++)
+		this->_skills[it.key().asString()] = (*it);
+	if (!reader.parse(treeFile, this->_skillTree))
+		std::cout << reader.getFormattedErrorMessages() << std::endl;
+	// TODO:
+	// Iterator over tree, while using this->_skills[name]
 }
 
 std::string		MenuCharacter::getHeroType(void) { return this->_character; };

@@ -1,12 +1,12 @@
 {
 	"infos": {
 		"name": "Ring_001",
-		"lvlRequired": 1,
 		"displayName": "Ring of Union",
+		"flavor": "Legends says you can wear it\nBut it does nothing",
 		"price": 15,
 		"sprites": "Resources/Images/Rings/Ring_001.png",
 		"lootLevel": 2,
-		"flavor": "Legends says you can wear it\nBut it does nothing"
+		"starterLevel": 2
 	},
 	"bonus": {
 		"hpBuff": 0,

@@ -61,6 +61,10 @@ SpecialAttack::SpecialAttack(Characters* charac) {
 }
 
 void	SpecialAttack::ReceiveMessage(Message *m) {
+	if (m->GetMessageName() == "RapidFire") {
+			Game::currentGame->getHero()->getWeapon()->attack(this->character);
+			theSwitchboard.DeferredBroadcast(new Message("RapidFire"), this->character->_getAttr("rapidFire", "interval").asFloat());
+	}
 	if (m->GetMessageName() == "SpecialAttackEnd") {
 		if (this->_currentAttack == "whirlwind") {
 			Game::currentGame->getHero()->buff.bonusSpeed = this->_previousSpeed;
@@ -72,6 +76,11 @@ void	SpecialAttack::ReceiveMessage(Message *m) {
 			this->_currentAttack = "";
 			std::cout << "message" << std::endl;
 			this->character->_speAttReady = 1;
+		}
+		if (this->_currentAttack == "rapidFire") {
+			Game::currentGame->getHero()->_isWhirlwinding = false;
+			theSwitchboard.UnsubscribeFrom(this, "RapidFire");
+			this->_currentAttack = "";
 		}
 	}
 }
@@ -94,6 +103,7 @@ void	SpecialAttack::_whirlwind(void) {
 	}
 }
 
+
 void	SpecialAttack::_shockwave(void) {
 	this->character->_setCategory("shockwave");
 	Weapon *currentWeapon = Game::currentGame->getHero()->getWeapon();
@@ -108,5 +118,24 @@ void	SpecialAttack::_shockwave(void) {
 		this->_currentAttack = "shockwave";
 		theSwitchboard.DeferredBroadcast(new Message("speAttReady"),
 				this->character->_getAttr("cooldown").asFloat());
+	}
+}
+
+void	SpecialAttack::_rapidFire(void) {
+	this->character->_setCategory("rapidFire");
+	Weapon *currentWeapon = Game::currentGame->getHero()->getWeapon();
+	Characters *hero = Game::currentGame->getHero();
+
+	theSwitchboard.SubscribeTo(this, "RapidFire");
+
+	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speAttReady == 1 && currentWeapon->getType() == "Bow") {
+		this->character->_speAttReady = 0;
+		this->character->_isRapidFiring = true;
+		theSwitchboard.DeferredBroadcast(new Message("speAttReady"),
+				this->character->_getAttr("cooldown").asFloat());
+		theSwitchboard.DeferredBroadcast(new Message("SpecialAttackEnd"),
+				this->character->_getAttr("rapidFire", "uptime").asFloat());
+		theSwitchboard.DeferredBroadcast(new Message("RapidFire"), 0);
+		this->_currentAttack = "rapidFire";
 	}
 }

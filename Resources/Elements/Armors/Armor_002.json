@@ -5,7 +5,8 @@
 		"flavor": "Looks like this thing is an armor.\nMaybe.",
 		"price": 20,
 		"sprites": "Resources/Images/Armors/Armor_002.png",
-		"lootLevel": 3
+		"lootLevel": 3,
+		"starterLevel": 3
 	},
 	"bonus": {
 		"hpBuff": 50,

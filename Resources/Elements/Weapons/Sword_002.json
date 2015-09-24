@@ -1,0 +1,21 @@
+{
+    "infos": {
+   	    "name": "Sword_002",
+		"displayName": "Black Sword",
+		"flavor": "Enemy of the man...",
+		"type": "Sword",
+		"equipable": "Warrior",
+		"price": 10,
+		"hitbox": "SWORD",
+		"size": 1,
+	 	"critRate": 5,
+		"damage": 5,
+		"recovery": 1,
+		"pushback": 5,
+		"active": 0.2,
+		"attack": "melee",
+		"sprites": "Resources/Images/Weapons/Sword_002.png",
+		"lootLevel": 3,
+		"starterLevel": 3
+	}
+}

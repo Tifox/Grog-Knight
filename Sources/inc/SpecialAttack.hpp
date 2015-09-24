@@ -51,6 +51,8 @@
 		void			ReceiveMessage(Message *m);
 		void			_whirlwind(void);
 		void			_shockwave(void);
+		void           _rapidFire(void);
+
 
      private:
          std::string		_category;

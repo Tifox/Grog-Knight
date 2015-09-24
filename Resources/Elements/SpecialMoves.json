@@ -8,14 +8,16 @@
 		"endFrame_right": 78,
 		"beginFrame_left": 79,
 		"endFrame_left": 83,
-		"time": 0.05
+		"time": 0.05,
+		"description": "A short-distance dash"
 	},
 	"charge": {
 		"subscribe": "specialmove",
 		"cooldown": 1,
 		"chargeSpeed": 20,
 		"time": 0.1,
-		"uptime": 1
+		"uptime": 1,
+		"description": "Charge to an enemy. Very men, Much damage"
 	},
 	"stomp": {
 		"subscribe": "specialmove",
@@ -25,13 +27,15 @@
 		"endFrame_right": 87,
 		"beginFrame_left": 84,
 		"endFrame_left": 87,
-		"time": 0.1
+		"time": 0.1,
+		"description": "Fall with force on the ground"
 	},
 	"blink": {
 		"subscribe": "specialmove",
 		"time": 0.1,
 		"cooldown": 0,
-		"blinkRange": 4
+		"blinkRange": 4,
+		"description": "Short-range teleport"
 	},
 	"fly": {
 		"subscribe": "specialmove",
@@ -42,20 +46,23 @@
 		"fallingFrame_left": 44,
 		"endFrame_right": 44,
 		"endFrame_left": 44,
-		"time": 0.1
+		"time": 0.1,
+		"description": "Flying instead of jump"
 	},
 	"wallJump": {
 		"subscribe": "specialmove",
 		"time": 0.1,
 		"maxJump": 1,
-		"force": 6
+		"force": 6,
+		"description": "Jump on walls"
 	},
 	"shunpo": {
 		"subscribe": "specialmove",
 		"damageScale": 2,
 		"time": 0.1,
 		"range": 10,
-		"cooldown": 1
+		"cooldown": 1,
+		"description": "Select a target, and teleport/hit them"
 	},
 	 "disengage": {
 		"subscribe": "specialmove",
@@ -63,6 +70,7 @@
 		"disengageSpeed": 30,
 		"djump": 8,
 		"uptime": 0.1,
-		"time": 0.1
+		"time": 0.1,
+		"description": "Short range backward jump"
 	 }
 }

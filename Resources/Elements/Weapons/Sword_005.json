@@ -1,0 +1,20 @@
+{
+    "infos": {
+   	    "name": "Sword_005",
+		"displayName": "Cursed Sword",
+		"flavor": "Would the curse carry\nover to me?",
+		"type": "Sword",
+		"equipable": "Warrior",
+		"price": 10,
+		"hitbox": "SWORD",
+		"size": 1,
+	 	"critRate": 5,
+		"damage": 5,
+		"recovery": 1,
+		"pushback": 5,
+		"active": 0.2,
+		"attack": "melee",
+		"sprites": "Resources/Images/Weapons/Sword_005.png",
+		"lootLevel": 3
+	}
+}

@@ -129,6 +129,7 @@ class Characters : public Elements {
 		void						subscribeToAll(void);
 		t_buff						buff;
 		int							inSpecialMap;
+		Elements*					hookedTo;
 
 	//Moved in order to get loot infos outside of class
 		Json::Value		_getAttr(std::string category, std::string key);
@@ -161,6 +162,7 @@ class Characters : public Elements {
 		int				_speAttReady;
 		bool			_canAttack;
 		bool			_isWhirlwinding;
+		bool			_isRapidFiring;
 		bool			_isCharging;
 		bool			_isStomping;
 		bool			_isFlying;

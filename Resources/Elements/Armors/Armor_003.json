@@ -1,0 +1,16 @@
+{
+    "infos": {
+   	    "name": "Armor_003",
+		"displayName": "Paper Armor",
+		"flavor": "It's already teared apart",
+		"price": 10,
+		"sprites": "Resources/Images/Armors/Armor_003.png",
+		"lootLevel": 1
+	},
+	"bonus": {
+		"hpBuff": 0,
+		"dmgReduc": 1,
+		"bonusSpeed": 3,
+		"bonusDmg": 0
+	}
+}

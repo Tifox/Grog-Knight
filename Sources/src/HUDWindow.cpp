@@ -241,6 +241,9 @@ void	HUDWindow::displayText(void) {
 			Map		m = Game::currentGame->getCurrentMap();
 
 			if ((*i)->toFollow->GetBody()) {
+				if ((*i)->colorA < 0) {
+					this->removeText((*i)->str); return ;
+				}
 				x = ((((*i)->toFollow->GetBody()->GetWorldCenter().x + 0.5) - m.getXStart()) * 40) - 40;
 				y = -((((*i)->toFollow->GetBody()->GetWorldCenter().y - 0.5) - m.getYStart()) * 40) + 50;
 				if ((*i)->isFading) {
@@ -774,6 +777,15 @@ void	HUDWindow::clearHUD(void) {
 	this->removeText(this->_gold);
 	if (this->_g)
 		this->removeText("Lvl " + std::to_string(this->_g->getHero()->getLevel()));
+}
+
+void	HUDWindow::ReceiveMessage(Message *m) {
+	std::string		s = m->GetMessageName();
+	if (!strncmp(s.c_str(), "delete", 6)) {
+		std::string text = s.substr(6, s.size() - 6);
+		std::cout << "Receive delete for " << text << std::endl;
+
+	}
 }
 
 void	HUDWindow::setGame(Game *g) { this->_g = g; };

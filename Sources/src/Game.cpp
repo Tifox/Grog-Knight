@@ -122,8 +122,8 @@ void	Game::start(void) {
 	hero->setLevel(this->_save["level"].asInt());
 	Game::chest->applySave(this->_save);
 	this->setHero(hero);
-	this->displayHUD();
 	hero->setStartingValues();
+	this->displayHUD();
 	this->setHero(hero);
 	Game::started = 1;
 	Game::currentGame = this;
@@ -569,6 +569,7 @@ void		Game::displayHUD(void) {
 	w->showHud();
 	w->setMaxHP(hero->getMaxHP());
 	w->gold(hero->getGold());
+	w->spells();
 	// Work
    //w->setText("Burp.", this->_hero, Vector3(0, 0, 0), 0, 1);
 	/*w->removeText("Burp.");*/

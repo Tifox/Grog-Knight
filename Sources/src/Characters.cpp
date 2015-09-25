@@ -1418,3 +1418,5 @@ std::list<std::string>		Characters::getSubscribes(void) { return this->_subsc; }
 int							Characters::getLevel(void) { return this->_level; };
 int							Characters::getMaxInventory(void) { return this->_inventory->getSlots(); };
 Inventory					*Characters::getInventory(void) { return this->_inventory; };
+std::string					Characters::getSpeMove(void) { return this->_speMove; };
+std::string					Characters::getSpeAtt(void) { return this->_speAtt; };

@@ -36,6 +36,7 @@ MenuCharacter::MenuCharacter(void) : Characters("MenuCharacter") {
 	this->_chooseEquipment = 0;
 	this->_character = "Warrior";
 	this->_characLvl = 15;
+	this->_descriptionBackground = this->_iconBackground = this->_icon = nullptr;
 	// THIS IS TMP; DO NOT JUDGE ME
 	Elements		*tmp;
 	tmp = new Elements(); tmp->addAttribute("Name", "Axe_000"); this->_equipSelection["Weapon"] = tmp;
@@ -701,7 +702,11 @@ void		MenuCharacter::_kitchen(void) {
 void		MenuCharacter::_hideKitchen(void) {
 	std::list<Elements *>::iterator		it;
 	int									i;
+	HUDWindow	*h = Game::getHUD();
+	std::list<std::string>::iterator	it2;
 
+	for (it2 = this->_description.begin(); it2 != this->_description.end(); it2++)
+		h->removeText(*it2);
 	if (this->_target != nullptr)
 		theWorld.Remove(this->_target);
 	this->_target = nullptr;
@@ -710,15 +715,59 @@ void		MenuCharacter::_hideKitchen(void) {
 	this->_currentTrigger = "skills";
 	this->_showTextInfo("Press enter to choose your skills");
 	this->_isBlock = 0;
+	theWorld.Remove(this->_descriptionBackground);
+	theWorld.Remove(this->_iconBackground);
+	theWorld.Remove(this->_icon);
+	this->_descriptionBackground = this->_iconBackground = nullptr;
 }
 
 void		MenuCharacter::_makeSkillChoice(void) {
+	HUDWindow	*h = Game::getHUD();
+	std::list<std::string>::iterator	it;
+
+	for (it = this->_description.begin(); it != this->_description.end(); it++)
+		h->removeText(*it);
+
 	if (this->_target != nullptr)
 		theWorld.Remove(this->_target);
 	this->_target = new Actor();
 	this->_target->SetSize(3); this->_target->SetSprite("Resources/Images/kitchen_target.png");
 	this->_target->SetPosition(this->_choicePointer->GetPosition().X, this->_choicePointer->GetPosition().Y);
 	theWorld.Add(this->_target);
+
+	if (this->_descriptionBackground == nullptr) {
+		this->_descriptionBackground = new Elements();
+		this->_descriptionBackground->SetPosition(118, -19.5); this->_descriptionBackground->SetSize(8, 10);
+		this->_descriptionBackground->SetSprite("Resources/Images/kitchen_skills_background.png");
+		theWorld.Add(this->_descriptionBackground);
+	}
+	if (this->_iconBackground == nullptr) {
+		this->_iconBackground = new Elements();
+		this->_iconBackground->SetPosition(118, -17.5); this->_iconBackground->SetSize(3);
+		this->_iconBackground->SetSprite("Resources/HUD/spell.png");
+		theWorld.Add(this->_iconBackground);
+	}
+	if (this->_icon != nullptr)
+		theWorld.Remove(this->_icon);
+	this->_icon = new Elements(); this->_icon->SetPosition(118, -17.5); this->_icon->SetSize(2);
+	this->_icon->SetSprite("Resources/Images/Skills/" + this->_choicePointer->getAttribute("skill") + ".png");
+	theWorld.Add(this->_icon);
+	h->setText(this->_skills[this->_choicePointer->getAttribute("skill")].get("displayName", "NAME").asString(), 
+		110, 240, Vector3(0, 0, 0), 1);
+	this->_description.push_back(this->_skills[this->_choicePointer->getAttribute("skill")].get("displayName", "NAME").asString());
+	std::string tmp = this->_skills[this->_choicePointer->getAttribute("skill")].get("description", "DEFAULT").asString();
+	int			x, y, Y;
+
+	for (x = y = 0, Y = 370; x < tmp.size(); x++) {
+		if (tmp[x] == '\n') {
+			h->setText(tmp.substr(y, (x - y)), 50, Y, Vector3(0, 0, 0), 1);
+			this->_description.push_back(tmp.substr(y, (x - y)));
+			y = ++x;
+			Y += 15;
+		}
+	}
+	h->setText(tmp.substr(y, (x - y)), 50, Y, Vector3(0, 0, 0), 1);
+	this->_description.push_back(tmp.substr(y, (x - y)));
 }
 
 void		MenuCharacter::_getSkills(void) {
@@ -746,8 +795,6 @@ void		MenuCharacter::_getSkills(void) {
 	for (it = jsonTmp.begin(); it != jsonTmp.end(); it++)
 		this->_skills[it.key().asString()] = (*it);
 	reader.parse(treeFile, this->_skillTree, false);
-	// TODO:
-	// Iterator over tree, while using this->_skills[name]
 }
 
 std::string		MenuCharacter::getHeroType(void) { return this->_character; };

@@ -102,5 +102,9 @@ class		MenuCharacter : public Characters {
 		std::vector<std::list<Elements *> >	_skillsChoices;
 		std::vector<std::string>			_finalSkillChoices;
 		std::vector<Elements *>			_finalSkillTargets;
+		Elements						*_descriptionBackground;
+		Elements						*_iconBackground;
+		Elements						*_icon;
+		std::list<std::string>			_description;
 };
 #endif

@@ -3,18 +3,24 @@
 		"subscribe": "specialattack",
 		"cooldown": 6,
 		"time": 2,
-		"uptime": 2
+		"uptime": 2,
+		"description": "Wiggle wiggle wiggle",
+		"displayName": "WhirlWind"
 	},
 	"shockwave": {
 		"subscribe": "specialatttack",
 		"cooldown": 1,
-		"damage": 25
+		"damage": 25,
+		"description": "Fall with force on the ground,\nMake a shockwave around you",
+		"displayName": "Shockwave"
 	},
 	"rapidFire": {
 		"subscribe": "specialattack",
 		"cooldown": 10,
 		"time": 2,
 		"uptime": 2,
-		"interval": 0.2
+		"interval": 0.2,
+		"description": "Attack is temporarly more rapid.",
+		"displayName": "Rapid Fire"
 	}
 }

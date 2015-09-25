@@ -55,6 +55,7 @@ class		MenuCharacter : public Characters {
 		Ring			*getRing(void);
 		Armor			*getArmor(void);
 		std::vector<std::string>	getSkills(void);
+		int							getLevel(void);
 
 	protected:
 		virtual void	_forward(int status);
@@ -75,6 +76,7 @@ class		MenuCharacter : public Characters {
 		void			_hideKitchen(void);
 		void			_getSkills(void);
 		void			_makeSkillChoice(void);
+		void			_levels(void);
 
 	private:
 		HUDActor			*_image;
@@ -107,5 +109,7 @@ class		MenuCharacter : public Characters {
 		Elements						*_iconBackground;
 		Elements						*_icon;
 		std::list<std::string>			_description;
+		Elements						*_levelsBackground;
+		Elements						*_lvlUp;
 };
 #endif

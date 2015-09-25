@@ -297,6 +297,7 @@ void	Hero::_takeDamage(Elements* elem) {
 	if (this->_invincibility == false) {
 		this->_canMove = 0;
 		this->setHP(this->getHP() - damage);
+		Game::getHUD()->setText(std::to_string(damage), this, Vector3(1, 0, 0), 1, 0);
 		theSwitchboard.DeferredBroadcast(new Message("canMove"), 0.4f);
 		theSwitchboard.DeferredBroadcast(new Message("endInvincibility"), 1.5f);
 		Game::getHUD()->life(this->getHP());

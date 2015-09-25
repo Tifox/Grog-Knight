@@ -112,7 +112,8 @@ void		Quit::doSave(Hero *h) {
 	}
 
 	jsonFile.open(".save", std::ofstream::trunc);
-	root["level"] = h->getLevel();
+	//root["level"] = h->getLevel();
+	root["level"] = 15;
 	root["key"] = KEY;
 
 	if (Game::chest != nullptr) {
@@ -147,6 +148,8 @@ std::map<std::string, Json::Value>		Quit::getSave(void) {
 		Quit::cheater();
 	result["chest"] = root["chest"];
 	result["level"] = root["level"];
+	Quit::level = root["level"].asInt();
+	Quit::gold = root["chest"]["gold"].asInt();
 	return result;
 }
 
@@ -267,3 +270,6 @@ std::string base64_decode(std::string const& encoded_string) {
 
 	return ret;
 }
+
+int		Quit::level = 0;
+int		Quit::gold = 0;

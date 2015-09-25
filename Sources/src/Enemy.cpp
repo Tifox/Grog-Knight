@@ -203,7 +203,7 @@ int		Enemy::takeDamage(int damage, int critRate) {
 		} else {
 			// The following display damage with any hit. This is debug code, don't forget to remove it with beta.
 			Game::getHUD()->setText(std::to_string(damage), this,
-									Vector3(255, 0, 0), 1, 0);
+									Vector3(1, 1, 1), 1, 0);
 		}
 	}
 	if (this->_hp - damage <= 0) {

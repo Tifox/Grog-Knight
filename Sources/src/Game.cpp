@@ -119,7 +119,7 @@ void	Game::start(void) {
 	this->displayHero(*(hero));
 	hero->init();
 	hero->setGold(0);
-	hero->setLevel(this->_save["level"].asInt());
+	hero->setLevel(Game::menuCharacter->getLevel());
 	Game::chest->applySave(this->_save);
 	this->setHero(hero);
 	hero->setStartingValues();
@@ -140,9 +140,9 @@ void	Game::menuInGame(void) {
 	Game::deadWaiting = 0;
 	if (Game::currentGame == nullptr)
 		Game::currentGame = this;
+	this->_save = Quit::getSave();
 	MenuCharacter	*charac = new MenuCharacter();
 
-	this->_save = Quit::getSave();
 
 	menu->showMaps();
 	charac->setXStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid() - 10);
@@ -249,7 +249,7 @@ void	Game::checkHeroPosition(void) {
 		Game::currentGame->getHero()->characterLoop();
 		if (!en.empty()) {
 			std::list<Enemy*>::iterator it = en.begin();
-			for (it; it != en.end(); it++) {
+			for (; it != en.end(); it++) {
 				if (*it != nullptr)
 					(*it)->characterLoop();
 			}

@@ -88,7 +88,7 @@ void	SpecialAttack::_whirlwind(void) {
 	this->character->_setCategory("whirlwind");
 	Weapon *currentWeapon = Game::currentGame->getHero()->getWeapon();
 	Characters *hero = Game::currentGame->getHero();
-	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speAttReady == 1 && currentWeapon->getType() == "Sword") {
+	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speAttReady == 1 /*&& currentWeapon->getType() == "Sword"*/) {
 		this->character->_isWhirlwinding = true;
 		currentWeapon->setActive(this->character->_getAttr("whirlwind", "uptime").asFloat());
 		new Weapon (Game::currentGame->getHero()->_weapon, Game::currentGame->getHero(), 1);

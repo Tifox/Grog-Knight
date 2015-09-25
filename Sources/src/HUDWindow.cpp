@@ -752,7 +752,17 @@ void	HUDWindow::character(void) {
 
 void	HUDWindow::spells(void) {
 	this->addImage("Resources/HUD/spells_bg.png", (theCamera.GetWindowWidth() / 20) * 7, theCamera.GetWindowHeight() / 20 * 1.5, 
-			Vector2(theCamera.GetWindowWidth() / 15, theCamera.GetWindowHeight() / 10 * 1.2), 5);
+			Vector2(theCamera.GetWindowWidth() / 15 * 0.8, theCamera.GetWindowHeight() / 10 * 1.2), 15);
+	this->addImage("Resources/HUD/spell_bg.png", (theCamera.GetWindowWidth() / 20) * 7 + 3, theCamera.GetWindowHeight() / 20, 
+			Vector2(theCamera.GetWindowWidth() / 25), 15);
+	this->addImage("Resources/Images/Skills/" + Game::currentGame->getHero()->getSpeMove() + ".png", (theCamera.GetWindowWidth() / 20) * 7 + 1, theCamera.GetWindowHeight() / 20 * 0.9, 
+			Vector2(theCamera.GetWindowWidth() / 35), 15);
+	this->setText("Y", (theCamera.GetWindowWidth() / 20) * 7.28, theCamera.GetWindowHeight() / 20 * 1.5, Vector3(0.2, 0.12, 0), 1, "MediumGamefont");
+	this->addImage("Resources/HUD/spell_bg.png", (theCamera.GetWindowWidth() / 20) * 7 + 3, theCamera.GetWindowHeight() / 20 * 2.1, 
+			Vector2(theCamera.GetWindowWidth() / 25), 15);
+	this->addImage("Resources/Images/Skills/" + Game::currentGame->getHero()->getSpeAtt() + ".png", (theCamera.GetWindowWidth() / 20) * 7 + 1, theCamera.GetWindowHeight() / 20 * 1.9, 
+			Vector2(theCamera.GetWindowWidth() / 35), 15);
+	this->setText("T", (theCamera.GetWindowWidth() / 20) * 7.28, theCamera.GetWindowHeight() / 20 * 2.57, Vector3(0.2, 0.12, 0), 1, "MediumGamefont");
 }
 
 void	HUDWindow::clearHUD(void) {

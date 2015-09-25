@@ -113,6 +113,8 @@ class Characters : public Elements {
 		Inventory						*getInventory(void);
 		void							destroyTarget(void);
 		Actor							*getGhost(void);
+		std::string						getSpeMove(void);
+		std::string						getSpeAtt(void);
 
 		// Virtual function, overwritten in childs
 		virtual void	actionCallback(std::string name, int status) {};

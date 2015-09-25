@@ -54,6 +54,7 @@ class		MenuCharacter : public Characters {
 		Weapon			*getWeapon(void);
 		Ring			*getRing(void);
 		Armor			*getArmor(void);
+		std::vector<std::string>	getSkills(void);
 
 	protected:
 		virtual void	_forward(int status);

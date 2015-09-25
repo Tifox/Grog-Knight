@@ -47,9 +47,11 @@ MenuCharacter::MenuCharacter(void) : Characters("MenuCharacter") {
 	theSwitchboard.SubscribeTo(this, "chooseEquipment");
 	theSwitchboard.SubscribeTo(this, "returnPressed");
 	this->_skillsLvl = std::vector<int>(4); this->_finalSkillChoices = std::vector<std::string>(4);
+	std::fill(this->_finalSkillChoices.begin(), this->_finalSkillChoices.end(), "");
 	this->_finalSkillTargets = std::vector<Elements *>(4);
 	this->_skillsChoices = std::vector<std::list<Elements *> >(4);
 	this->_skillsLvl[0] = 5; this->_skillsLvl[1] = 15; this->_skillsLvl[2] = 25; this->_skillsLvl[3] = 50;
+	this->_finalSkillChoices[0] = "dash"; this->_finalSkillChoices[1] = "shockwave";
 	this->_getSkills();
 	this->_kitchen();
 }
@@ -801,3 +803,4 @@ std::string		MenuCharacter::getHeroType(void) { return this->_character; };
 Weapon			*MenuCharacter::getWeapon(void) { return new Weapon(this->_equipSelection["Weapon"]->getAttribute("Name")); };
 Ring			*MenuCharacter::getRing(void) { return new Ring(this->_equipSelection["ring"]->getAttribute("Name")); };
 Armor			*MenuCharacter::getArmor(void) { return new Armor(this->_equipSelection["Armor"]->getAttribute("Name")); };
+std::vector<std::string>	MenuCharacter::getSkills(void) { return this->_finalSkillChoices; };

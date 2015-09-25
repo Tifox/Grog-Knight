@@ -327,6 +327,12 @@ void	Hero::setStartingValues(void) {
 	this->equipWeapon(Game::menuCharacter->getWeapon());
 	this->equipArmor(Game::menuCharacter->getArmor());
 	this->equipRing(Game::menuCharacter->getRing());
-	this->_speMove = this->_getAttr("specialMove").asString();
-	this->_speAtt = this->_getAttr("specialAttack").asString();
+	if (Game::menuCharacter->getSkills()[0] != "") {
+		this->_speMove = Game::menuCharacter->getSkills()[0];
+		Log::info("Special Move: " + Game::menuCharacter->getSkills()[0]);
+	}
+	if (Game::menuCharacter->getSkills()[1] != "") {
+		this->_speAtt = Game::menuCharacter->getSkills()[1];
+		Log::info("Special Attack: " + Game::menuCharacter->getSkills()[1]);
+	}
 }

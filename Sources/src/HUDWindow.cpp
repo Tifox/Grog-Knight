@@ -760,12 +760,12 @@ void	HUDWindow::spells(void) {
 			Vector2(theCamera.GetWindowWidth() / 25), 15);
 	this->addImage("Resources/Images/Skills/" + Game::currentGame->getHero()->getSpeMove() + ".png", (theCamera.GetWindowWidth() / 20) * 7 + 1, theCamera.GetWindowHeight() / 20 * 0.9, 
 			Vector2(theCamera.GetWindowWidth() / 35), 15);
-	this->setText("Y", (theCamera.GetWindowWidth() / 20) * 7.28, theCamera.GetWindowHeight() / 20 * 1.5, Vector3(0.2, 0.12, 0), 1, "MediumGamefont");
+	this->setText("T", (theCamera.GetWindowWidth() / 20) * 7.28, theCamera.GetWindowHeight() / 20 * 1.5, Vector3(0.2, 0.12, 0), 1, "MediumGamefont");
 	this->addImage("Resources/HUD/spell_bg.png", (theCamera.GetWindowWidth() / 20) * 7 + 3, theCamera.GetWindowHeight() / 20 * 2.1, 
 			Vector2(theCamera.GetWindowWidth() / 25), 15);
 	this->addImage("Resources/Images/Skills/" + Game::currentGame->getHero()->getSpeAtt() + ".png", (theCamera.GetWindowWidth() / 20) * 7 + 1, theCamera.GetWindowHeight() / 20 * 1.9, 
 			Vector2(theCamera.GetWindowWidth() / 35), 15);
-	this->setText("T", (theCamera.GetWindowWidth() / 20) * 7.28, theCamera.GetWindowHeight() / 20 * 2.57, Vector3(0.2, 0.12, 0), 1, "MediumGamefont");
+	this->setText("Y", (theCamera.GetWindowWidth() / 20) * 7.28, theCamera.GetWindowHeight() / 20 * 2.57, Vector3(0.2, 0.12, 0), 1, "MediumGamefont");
 }
 
 void	HUDWindow::clearHUD(void) {
@@ -777,15 +777,6 @@ void	HUDWindow::clearHUD(void) {
 	this->removeText(this->_gold);
 	if (this->_g)
 		this->removeText("Lvl " + std::to_string(this->_g->getHero()->getLevel()));
-}
-
-void	HUDWindow::ReceiveMessage(Message *m) {
-	std::string		s = m->GetMessageName();
-	if (!strncmp(s.c_str(), "delete", 6)) {
-		std::string text = s.substr(6, s.size() - 6);
-		std::cout << "Receive delete for " << text << std::endl;
-
-	}
 }
 
 void	HUDWindow::setGame(Game *g) { this->_g = g; };

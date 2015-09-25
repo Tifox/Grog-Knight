@@ -94,10 +94,10 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 	if (m->getAttribute("type") == "ground") {
 	  //	Game::startRunning(this);
 	} else if (m->getAttribute("type") == "HeroWeaponHitBox") {
-	  if (this->_lastHitID == m->getId())
-		return;
-	  else
-		this->_lastHitID = m->getId();
+		if (this->_lastHitID == m->getId())
+			return;
+		else
+			this->_lastHitID = m->getId();
 	  	Characters *h = Game::currentGame->getHero();
 		this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
 		Game::stopRunning(this);
@@ -111,14 +111,14 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 			this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		}
 	} else if (m->getAttribute("type") == "HeroProjectile") {
-	  if (this->_lastHitID == m->getId())
-		return;
-	  else
-		this->_lastHitID = m->getId();
+		if (this->_lastHitID == m->getId())
+			return;
+		else
+			this->_lastHitID = m->getId();
 		Characters *h = Game::currentGame->getHero();
 		this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
 		Game::stopRunning(this);
-		if (this->takeDamage(w->getDamage() + h->buff.bonusDmg, (w->getCritRate() + h->buff.critBuff)) == 1) {
+		if (this->takeDamage(p->getDamage() + h->buff.bonusDmg, (w->getCritRate() + h->buff.critBuff)) == 1) {
 			if (this->GetBody()->GetWorldCenter().x > h->GetBody()->GetWorldCenter().x) {
 				this->ApplyLinearImpulse(Vector2(p->getPushback(), p->getPushback()), Vector2(0,0));
 			} else {
@@ -192,8 +192,6 @@ void	Enemy::EndContact(Elements *m, b2Contact *contact) {
  * @param damage The damage amount
  */
 int		Enemy::takeDamage(int damage, int critRate) {
-	std::cout << damage << ", " << critRate << std::endl;
-	std::cout << this->_hp << std::endl;
 	if (this->_hp <= 0)
 		return 0;
 	this->actionCallback("takeDamage", 0);

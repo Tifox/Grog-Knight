@@ -82,8 +82,6 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_speAttReady = 1;
 	this->_hasDashed = 0;
 	this->SetLayer(100);
-	// this->_eqMove = new SpecialMoves(this);
-	// this->_eqAtt = new SpecialAttack(this);
 	this->_isStomping = false;
 	this->_flyTrigger = false;
 	this->_isDisengaging = false;
@@ -298,6 +296,7 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->_isAttacking = false;
 	}
 	else if (m->GetMessageName() == "moveHeroDown") {
+		this->_setCategory("jump");
 		this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 		if (this->_latOrientation == RIGHT && this->_canMove && this->_isAttacking == false) {
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
@@ -542,7 +541,10 @@ void	Characters::AnimCallback(String s) {
 										  this->_getAttr("holdFrameLoad" + orientation).asInt(), "loadAttack_charge");
 			}
 		}
-		this->changeSizeTo(Vector2(this->_getAttr("x").asFloat(), this->_getAttr("y").asFloat()));
+		if (this->_isRunning != 0)
+			this->changeSizeTo(Vector2(this->_getAttr("breath", "x").asFloat(), this->_getAttr("breath", "y").asFloat()));
+		else
+			this->changeSizeTo(Vector2(this->_getAttr("x").asFloat(), this->_getAttr("y").asFloat()));
 		if (this->_isDashing == true) {
 			this->_isDashing = false;
 			this->_canMove = 1;

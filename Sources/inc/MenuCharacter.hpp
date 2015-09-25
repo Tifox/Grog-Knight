@@ -73,6 +73,7 @@ class		MenuCharacter : public Characters {
 		void			_kitchen(void);
 		void			_hideKitchen(void);
 		void			_getSkills(void);
+		void			_makeSkillChoice(void);
 
 	private:
 		HUDActor			*_image;
@@ -98,5 +99,8 @@ class		MenuCharacter : public Characters {
 		Json::Value							_skillTree;
 		std::vector<int>					_skillsLvl;
 		int									_characLvl;
+		std::vector<std::list<Elements *> >	_skillsChoices;
+		std::vector<std::string>			_finalSkillChoices;
+		std::vector<Elements *>			_finalSkillTargets;
 };
 #endif

@@ -7725,13 +7725,17 @@
                 {
                  "physic":"0"
                 },
-             "20973":
+             "20967":
                 {
                  "trigger":"skills"
                 },
-             "20976":
+             "20984":
                 {
                  "trigger":"skills"
+                },
+             "21002":
+                {
+                 "trigger":"startGame"
                 },
              "21006":
                 {

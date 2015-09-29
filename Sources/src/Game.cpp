@@ -650,5 +650,5 @@ Chest						*Game::chest = nullptr;
 bool						Game::toggleMenu = true;
 bool						Game::stopPattern = false;
 bool						Game::deadWaiting = false;
-int							Game::World = 1;
+int							Game::World = 0;
 Boss						*Game::boss = nullptr;

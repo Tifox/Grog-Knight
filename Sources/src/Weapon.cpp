@@ -91,11 +91,11 @@ Weapon::Weapon(Weapon* w, Characters* c, int i) {
 	else
 		this->addAttribute("type", "WeaponHitBox");
 	this->SetDrawShape(ADS_Square);
-	this->SetColor(1, 1, 1, 0);
+	this->SetColor(1, 1, 1, 1);
 	this->addAttribute("physic", "1");
 	this->_hitboxType = "special";
 	this->_hitbox = "octogonHitbox";
-	this->SetDensity(0);
+	this->SetDensity(0.0001);
 	this->SetFixedRotation(true);
 	this->Tag("weaponhitbox");
 	this->SetIsSensor(true);
@@ -191,7 +191,7 @@ void	Weapon::_initDirection(Weapon* w, Characters* c) {
 	b2DistanceJoint *joint1 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef1);
 	b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
 }
-//! Seter
+//! Setter
 
 void	Weapon::setActive(float f) {
 	this->_active = f;

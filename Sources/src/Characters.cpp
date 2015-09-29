@@ -302,13 +302,14 @@ void	Characters::ReceiveMessage(Message *m) {
 	}
 	else if (m->GetMessageName() == "moveHeroDown") {
 		this->_setCategory("jump");
-		this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
-		if (this->_latOrientation == RIGHT && this->_canMove && this->_isAttacking == false) {
+		if (this->_latOrientation == RIGHT && this->_canMove && this->_isAttacking == false && !this->_isWhirlwinding) {
+			this->changeSizeTo(Vector2(this->_getAttr("x").asFloat(), this->_getAttr("y").asFloat()));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 									  this->_getAttr("jump", "fallingFrame_right").asInt(),
 									  this->_getAttr("jump", "fallingFrame_right").asInt(), "jump");
 		}
-		else if (this->_latOrientation == LEFT && this->_canMove && this->_isAttacking == false) {
+		else if (this->_latOrientation == LEFT && this->_canMove && this->_isAttacking == false && !this->_isWhirlwinding) {
+			this->changeSizeTo(Vector2(this->_getAttr("x").asFloat(), this->_getAttr("y").asFloat()));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 									  this->_getAttr("jump", "fallingFrame_left").asInt(),
 									  this->_getAttr("jump", "fallingFrame_left").asInt(), "jump");
@@ -492,7 +493,7 @@ void	Characters::AnimCallback(String s) {
 	if (s == "base" || s == "takeDamage") {
 		this->_isAttacking = 0;
 		if (this->_isRunning == 0 && this->_isAttacking == 0 && this->_isLoadingAttack == 0 &&
-				this->_grounds.size() > 0) {
+				this->_grounds.size() > 0 && !this->_isWhirlwinding) {
 			if (this->_latOrientation == LEFT) {
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 						this->_getAttr("beginFrame_left").asInt(),
@@ -509,18 +510,18 @@ void	Characters::AnimCallback(String s) {
 		} else if (this->_grounds.size() == 0 && this->getAttribute("type") == "Hero") {
 			this->_setCategory("jump");
 			this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
-			if (this->_latOrientation == LEFT && this->_isDashing == false) {
+			if (this->_latOrientation == LEFT && this->_isDashing == false && !this->_isWhirlwinding) {
 				this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 										  this->_getAttr("fallingFrame_left").asInt(),
 										  this->_getAttr("fallingFrame_left").asInt(), "base");
-			} else if (this->_latOrientation == RIGHT && this->_isDashing == false) {
+			} else if (this->_latOrientation == RIGHT && this->_isDashing == false && !this->_isWhirlwinding) {
 				this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 										  this->_getAttr("fallingFrame_right").asInt(),
 										  this->_getAttr("fallingFrame_right").asInt(), "base");
 			}
-		} else if (this->_isAttacking == 0) {
+		} else if (this->_isAttacking == 0 && !this->_isWhirlwinding) {
 			if (this->_isLoadingAttack == 0) {
 				if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
 					this->changeSizeTo(Vector2(1, 1));
@@ -539,16 +540,16 @@ void	Characters::AnimCallback(String s) {
 				} else if (this->_latOrientation == LEFT)
 					orientation = "Left";
 				this->_setCategory(this->_weapon->getType());
-				if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
+				if (this->getAttribute("class") == "Warrior" && this->_isDashing == false && !this->_isWhirlwinding)
 					this->changeSizeTo(Vector2(this->_getAttr("loadX").asInt(), this->_getAttr("loadY").asInt()));
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 										  this->_getAttr("holdFrameLoad" + orientation).asInt() - 1,
 										  this->_getAttr("holdFrameLoad" + orientation).asInt(), "loadAttack_charge");
 			}
 		}
-		if (this->_isRunning != 0)
+		if (this->_isRunning != 0 && !this->_isWhirlwinding)
 			this->changeSizeTo(Vector2(this->_getAttr("breath", "x").asFloat(), this->_getAttr("breath", "y").asFloat()));
-		else
+		else if (!this->_isWhirlwinding)
 			this->changeSizeTo(Vector2(this->_getAttr("x").asFloat(), this->_getAttr("y").asFloat()));
 		if (this->_isDashing == true) {
 			this->_isDashing = false;
@@ -564,7 +565,7 @@ void	Characters::AnimCallback(String s) {
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 								  this->_getAttr("endFrame_" + orientation).asInt() - 1,
 								  this->_getAttr("endFrame_" + orientation).asInt(), "base");
-	}
+	} 
 }
 
 //! Collision function
@@ -589,7 +590,7 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 	}
 	if (elem->getAttributes()["type"] == "ground") {
 		if (this->_isAttacking == 0 && this->_isLoadingAttack == 0) {
-			if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
+			if (this->getAttribute("class") == "Warrior" && this->_isDashing == false && !this->_isWhirlwinding)
 				this->changeSizeTo(Vector2(1, 1));
 		}
 		if (this->GetBody()->GetWorldCenter().y - 0.905 >= elem->GetBody()->GetWorldCenter().y) {
@@ -605,7 +606,7 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				this->_hasDashed = 0;
 				if (this->_latOrientation == RIGHT && this->_isAttacking == false &&
 					this->_isLoadingAttack == 0 && this->_isDashing == false &&
-					this->_isStomping == false) {
+					this->_isStomping == false && !this->_isWhirlwinding) {
 					this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 					this->PlaySpriteAnimation(this->_getAttr("jump", "time").asFloat(), SAT_OneShot,
 											  this->_getAttr("jump", "fallingFrame_right").asInt(),
@@ -613,7 +614,7 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				} else if (this->_latOrientation == LEFT &&
 						   this->_isAttacking == false &&
 						   this->_isLoadingAttack == 0 &&
-						   this->_isStomping == false) {
+						   this->_isStomping == false && !this->_isWhirlwinding) {
 					if (this->_isDashing == false)
 						this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 					this->PlaySpriteAnimation(this->_getAttr("jump", "time").asFloat(), SAT_OneShot,
@@ -698,7 +699,7 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 				this->_isJump++;
 				if (this->_lastAction == "forward" && this->_canMove &&
 						this->_isAttacking == false && this->_isLoadingAttack == 0) {
-					if (this->_isDashing == false) {
+					if (this->_isDashing == false && !this->_isWhirlwinding) {
 						this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 						this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 												  this->_getAttr("jump", "fallingFrame_right").asInt(),
@@ -706,7 +707,7 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 					}
 				} else if (this->_lastAction == "backward" && this->_canMove &&
 						   this->_isAttacking == false && this->_isLoadingAttack == 0) {
-					if (this->_isDashing == false) {
+					if (this->_isDashing == false && !this->_isWhirlwinding) {
 						this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 						this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 												  this->_getAttr("jump", "fallingFrame_left").asInt(),
@@ -843,10 +844,10 @@ void	Characters::_forward(int status) {
 		if ((this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() ||
 					(this->GetSpriteFrame() >= this->_getAttr("backward", "beginFrame").asInt() &&
 					 this->GetSpriteFrame() <= this->_getAttr("backward", "endFrame").asInt()))  &&
-			!this->_isJump && !this->_isLoadingAttack)
+			!this->_isJump && !this->_isLoadingAttack && !this->_isWhirlwinding)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-					this->_getAttr("beginFrame").asInt(), this->_getAttr("endFrame").asInt());
-		else if (this->_isJump && !this->_isLoadingAttack && !this->_isFlying) {
+									  this->_getAttr("beginFrame").asInt(), this->_getAttr("endFrame").asInt());
+		else if (this->_isJump && !this->_isLoadingAttack && !this->_isFlying && !this->_isWhirlwinding) {
 			this->_setCategory("jump");
 			if (this->GetSpriteFrame() >= this->_getAttr("beginFrame_left").asInt() && this->GetSpriteFrame() <= this->_getAttr("endFrame_left").asInt())
 				this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
@@ -903,11 +904,11 @@ void	Characters::_backward(int status) {
 			this->_latOrientation = LEFT;
 		}
 		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() &&
-				!this->_isJump && !this->_isLoadingAttack)
+			!this->_isJump && !this->_isLoadingAttack && !this->_isWhirlwinding)
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-					this->_getAttr("beginFrame").asInt(),
-					this->_getAttr("endFrame").asInt());
-		else if (this->_isJump && !this->_isLoadingAttack) {
+									  this->_getAttr("beginFrame").asInt(),
+									  this->_getAttr("endFrame").asInt());
+		else if (this->_isJump && !this->_isLoadingAttack && !this->_isWhirlwinding) {
 			this->_setCategory("jump");
 			if (this->GetSpriteFrame() >= this->_getAttr("beginFrame_right").asInt() && this->GetSpriteFrame() <= this->_getAttr("endFrame_right").asInt())
 				this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
@@ -980,7 +981,7 @@ void	Characters::_jump(int status) {
 				if (this->_isJump >= 1) {
 					this->GetBody()->SetLinearVelocity(b2Vec2(this->GetBody()->GetLinearVelocity().x,
 															  this->_getAttr("rejump").asFloat()));
-					if (this->_isAttacking == false && this->_isLoadingAttack == 0) {
+					if (this->_isAttacking == false && this->_isLoadingAttack == 0 && !this->_isWhirlwinding) {
 						if (this->_isDashing == false)
 							this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 						if (this->_latOrientation == RIGHT) {
@@ -993,7 +994,7 @@ void	Characters::_jump(int status) {
 				} else {
 					this->ApplyLinearImpulse(Vector2(0, this->_getAttr("force").asFloat()), Vector2(0, 0));
 				}
-				if (this->_isAttacking == false && this->_isLoadingAttack == 0) {
+				if (this->_isAttacking == false && this->_isLoadingAttack == 0 && !this->_isWhirlwinding) {
 					this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 					if (this->_latOrientation == RIGHT) {
 						this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,

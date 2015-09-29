@@ -595,6 +595,10 @@ void		Game::reloadingHUD(void) {
 	}
 }
 
+void		Game::addBoss(std::string n, int x, int y) {
+	Game::boss = new Boss(n, x, y);
+}
+
 /* SETTERS */
 void		Game::setHero(Characters * h) { this->_hero = h; };
 Characters*	Game::getHero(void) { return this->_hero; };
@@ -647,3 +651,4 @@ bool						Game::toggleMenu = true;
 bool						Game::stopPattern = false;
 bool						Game::deadWaiting = false;
 int							Game::World = 1;
+Boss						*Game::boss = nullptr;

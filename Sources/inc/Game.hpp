@@ -67,6 +67,7 @@ class Menu;
 class Dealer;
 class Chest;
 class Door;
+class Boss;
 
 class Game {
 
@@ -114,6 +115,7 @@ class Game {
 		static void	showText(void);
 		static void	addHUDWindow(HUDWindow *);
 		static void	removeHUDWindow(HUDWindow *);
+		static void	addBoss(std::string n, int x, int y);
 		static HUDWindow*	getHUD(void);
 		static int			lol;
 		static Game*		currentGame;
@@ -163,6 +165,8 @@ class Game {
 		static bool						stopPattern;
 		static bool						deadWaiting;
 		static int						World;
+		static Boss						*boss;
+		static void						newBoss(std::string n, int x, int y);
 
 	private:
 		float				beginXHero;

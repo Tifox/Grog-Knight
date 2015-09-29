@@ -18,46 +18,23 @@
  */
 
 /**
- * File: Enemy.hpp
- * Creation: 2015-02-23 14:25
- * Manon Budin <mbudin@student.42.fr>
+ * File: Boss.hpp
+ * Creation: 2015-09-29 18:09
+ * Louis Solofrizzo <louis@ne02ptzero.me>
  */
 
-
-#ifndef __Enemy__
-# define __Enemy__
-
+#ifndef __BOSS__
+# define __BOSS__
+class	Characters;
 # include "Characters.hpp"
-# include "Loot.hpp"
-# include "Map.hpp"
-# include "Pattern.hpp"
-# include "PassivePattern.hpp"
 
-class Enemy : public Characters {
-public:
-	Enemy();
-	Enemy(std::string);
-	~Enemy();
+class	Boss : public Characters {
+	public:
+		Boss(std::string name, int x, int y);
+		~Boss(void);
 
-	int				takeDamage(int damage, int critRate);
-	void			actionCallback(std::string name, int status);
-	void			init(void);
-	void			BeginContact(Elements* m, b2Contact* contact);
-	void			EndContact(Elements *m, b2Contact *contact);
-	bool			toBeDeleted(void);
-	void			setMap(Map *m);
-	Map				*getMap(void);
-	void			setPattern(CPattern *p);
-	CPattern		*getPattern(void);
-	bool			dead(void);
-
-protected:
-	int				_lastHitID;
-	int				_isTakingDamage;
-	bool			isDead;
-	Map				*_map;
-	CPattern			*_pattern;
-	int				_lastElement;
+	private:
 };
+
 
 #endif

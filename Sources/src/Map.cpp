@@ -178,15 +178,18 @@ Map		Map::display(void) {
 				}
 				if (elem->getAttribute("spawnEnemy") != "") {
 					if (!this->_isUsed) {
-						int		level = 1;
-						//if (elem->getAttribute("enemyLevel") == "+1")
-							//level++;
-						//else if (elem->getAttribute("enemyLevel") == "-1")
-							/*level--;*/
+						int level = Game::World;
+						if (elem->getAttribute("enemyLevel") == "+1") {
+							level++;
+						}
+						else if (elem->getAttribute("enemyLevel") == "-1")
+							level--;
+						if (level < 0)
+							level = 0;
 						if (elem->getAttribute("isFlying") != "")
-							tmp = new Enemy(Game::eList->getEnemyRandom(true));
+							tmp = new Enemy(Game::eList->getEnemyRandom(level, "true"));
 						else
-							tmp = new Enemy(Game::eList->getEnemyRandom(false));
+							tmp = new Enemy(Game::eList->getEnemyRandom(level, "false"));
 						PassivePattern	*p = new PassivePattern();
 						tmp->setXStart(x);
 						tmp->setYStart(y);

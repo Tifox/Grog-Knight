@@ -60,7 +60,8 @@
 		int					_previousDmg;
 		int					_previousResistance;
 		std::string			_currentAttack;
-
+	 	Weapon*				_left;
+	 	Weapon*				_right;
  };
 
  #endif

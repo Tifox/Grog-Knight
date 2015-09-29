@@ -18,58 +18,27 @@
  */
 
 /**
- * File: EnemyList.hpp
- * Creation: 2015-02-18 14:00
+ * File: Boss.hpp
+ * Creation: 2015-09-25 14:25
  * Vincent Rey <vrey@student.42.fr>
  */
 
 
-#ifndef __EnemyList__
-# define __EnemyList__
+#ifndef __Boss__
+# define __Boss__
 
-# include "Log.hpp"
-# include <sstream>
+# include "Characters.hpp"
 
-# ifdef __APPLE__
-#  include "../../Tools/jsoncpp/include/json/json.h"
-# else
-#  include "json/json.h"
-# endif
-
-# include <list>
-# include "../../Angel/Angel.h"
-# ifndef __Elements__
-# include "Elements.hpp"
-#endif
-
-
-class EnemyList: public Elements {
+class Boss : public Characters {
 public:
-	EnemyList(void);
-	~EnemyList(void);
+	Boss();
+	Boss(std::string);
+	~Boss();
 
-	std::string		getEnemyRandom(std::string flying);
-	std::string		getEnemyRandom(int level, std::string flying);
+	void			BeginContact(Elements* m, b2Contact* contact);
+	void			EndContact(Elements *m, b2Contact *contact);
 
-	class EnemyData {
-	public:
-		EnemyData(std::string);
-		~EnemyData();
-		std::string	getName();
-		int			getLevel();
-		std::string	isFlying();
-
-	private:
-		std::string _name;
-		int			_level;
-		std::string	_flying;
-		void		_readFile(std::string name);
-		void		_parseJson(std::string file);
-	};
-
-private:
-	std::list<EnemyData*> _allEnemies;
-
+protected:
 };
 
 #endif

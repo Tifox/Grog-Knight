@@ -104,7 +104,8 @@ SRCS =	./Sources/src/Armor.cpp \
 		./Sources/src/Chest.cpp \
 		./Sources/src/Door.cpp \
 		./Sources/src/DrugList.cpp \
-		./Sources/src/ControllerInputManager.cpp
+		./Sources/src/ControllerInputManager.cpp \
+		./Sources/src/Boss.cpp
 
 SYSOBJS = $(patsubst %.cpp,%.o,$(SYSSRCS))
 OBJS = $(patsubst %.cpp,%.o,$(SRCS))

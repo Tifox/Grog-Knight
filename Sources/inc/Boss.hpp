@@ -33,6 +33,12 @@ class	Boss : public Characters {
 		Boss(std::string name, int x, int y);
 		~Boss(void);
 
+		virtual void	ReceiveMessage(Message *m);
+		virtual void	AnimCallback(String s);
+		virtual void	BeginContact(Elements *elem, b2Contact *contact);
+		virtual void	EndContact(Elements *elem, b2Contact *contact);
+
+
 	private:
 };
 

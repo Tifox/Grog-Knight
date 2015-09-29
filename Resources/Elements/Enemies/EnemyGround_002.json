@@ -1,6 +1,6 @@
 {
 	"infos": {
-		"name": "EnemyGround_000",
+		"name": "EnemyGround_002",
 		"id": 1,
 		"maxHP": 10,
 		"sprites": "Resources/Images/Enemy/EnemyGround_002/enemy_000.png",

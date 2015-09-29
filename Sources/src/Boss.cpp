@@ -23,12 +23,30 @@
  * Louis Solofrizzo <louis@ne02ptzero.me>
  */
 
-#include "Boss.hpp"
+#include "../inc/Boss.hpp"
 
 Boss::Boss(std::string name, int x, int y) : Characters("Bosses/" + name) {
-	std::cout << "HERE" << std::endl;
+	this->setXStart(x);
+	this->setYStart(y);
+	this->display();
 }
 
 Boss::~Boss(void) {
+	;
+}
+
+void		Boss::ReceiveMessage(Message *m) {
+	;
+}
+
+void		Boss::AnimCallback(String s) {
+	;
+}
+
+void		Boss::BeginContact(Elements *elem, b2Contact *contact) {
+	;
+}
+
+void		Boss::EndContact(Elements *elem, b2Contact *contact) {
 	;
 }

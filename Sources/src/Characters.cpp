@@ -130,18 +130,20 @@ void	Characters::_parseJson(std::string file) {
 	Json::Value		json;
 	Json::ValueIterator i, v;
 	std::map<std::string, Json::Value>	tmp;
+	std::string							type;
 
 	if (!read.parse(file, json))
 		Log::error("Error in json syntax :\n" + read.getFormattedErrorMessages());
 	if (!strncmp("Enemies/", this->_name.c_str(), 8)) {
 		if (this->_name.substr(8, json["infos"].get("name", "").asString().length()) != json["infos"].get("name", "").asString())
-			Log::error("The class name is different with the name in the config file.");
+			Log::error("The class name is different with the name in the config file (" + this->_name + ").");
 	} else {
 		if (json["infos"].get("name", "").asString() != this->_name)
 			Log::warning("The class name is different with the name in the config file.");
 	}
+	if (json["infos"].get("type", "").isConvertibleTo(Json::ValueType::stringValue))
+		type = json["infos"].get("type", "").asString();
 	this->_name = json["infos"].get("name", "").asString();
-	this->_id = json["infos"].get("id", "").asInt();
 	this->_talk = json["infos"].get("talk", "").asString();
 	this->addAttribute("talk", json["infos"].get("talk", "").asString());
 	this->_size = json["infos"].get("size", "").asFloat();
@@ -151,14 +153,17 @@ void	Characters::_parseJson(std::string file) {
 	this->_hitboxType = json["infos"].get("hitboxType", "").asString();
 	this->_hitbox = json["infos"].get("hitbox", "").asString();
 	this->addAttribute("spritesFrame", json["infos"].get("sprites", "").asString());
-	if (json["infos"].get("damage", "").isConvertibleTo(Json::ValueType::stringValue))
-		this->addAttribute("damage", json["infos"].get("damage", "").asString());
-	this->buff.critBuff = json["infos"].get("baseCrit", 0).asInt();
-	this->buff.bonusDmg = json["infos"].get("baseDamage", 0).asInt();
-	this->_maxHp += (this->_maxHp * json["Stats"].get("HPMult", 0).asFloat()) * this->_level;
-	this->_hp = this->_maxHp;
-	this->buff.critBuff += (this->buff.critBuff * json["Stats"].get("critMult", 0).asFloat() * this->_level);
-	this->buff.bonusDmg += (this->buff.bonusDmg * json["Stats"].get("damageMult", 0).asFloat() * this->_level);
+	if (type != "Boss") {
+		this->_id = json["infos"].get("id", "").asInt();
+		if (json["infos"].get("damage", "").isConvertibleTo(Json::ValueType::stringValue))
+			this->addAttribute("damage", json["infos"].get("damage", "").asString());
+		this->buff.critBuff = json["infos"].get("baseCrit", 0).asInt();
+		this->buff.bonusDmg = json["infos"].get("baseDamage", 0).asInt();
+		this->_maxHp += (this->_maxHp * json["Stats"].get("HPMult", 0).asFloat()) * this->_level;
+		this->_hp = this->_maxHp;
+		this->buff.critBuff += (this->buff.critBuff * json["Stats"].get("critMult", 0).asFloat() * this->_level);
+		this->buff.bonusDmg += (this->buff.bonusDmg * json["Stats"].get("damageMult", 0).asFloat() * this->_level);
+	}
 
 	for (i = json["Actions"].begin(); i != json["Actions"].end(); i++) {
 		for (v = (*i).begin(); v != (*i).end(); v++) {
@@ -785,6 +790,7 @@ void	Characters::_executeAction(int status) {
 		this->destroyTarget();
 		Game::currentGame->maps->bossMap->display();
 		theCamera.SetPosition(Game::currentGame->maps->bossMap->getXMid(), Game::currentGame->maps->bossMap->getYMid() + 1.8);
+		Game::addBoss("Boss" + std::to_string(Game::World), Game::currentGame->maps->bossMap->getXMid(), Game::currentGame->maps->bossMap->getYMid());
 		this->GetBody()->SetTransform(b2Vec2(Game::currentGame->maps->bossMap->getXMid() - 10, Game::currentGame->maps->bossMap->getYMid() + 1.8), 0);
 	} else if (this->_isTouchingSecretDoor == true) {
 		this->destroyTarget();

@@ -251,8 +251,6 @@ Map		Map::display(void) {
 							Game::secretReturnDoor = new Door("SecretReturn");
 						}
 					}
-				} else if (elem->getAttribute("spawnBoss") != "") {
-					Game::addBoss("Boss" + std::to_string(Game::World), x, y);
 				}
 				elem->display();
 				this->_elemOfTheMap.push_back(elem);

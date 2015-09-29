@@ -1,0 +1,42 @@
+{
+	"infos": {
+		"name": "Boss1",
+		"hp": 1000,
+		"sprites": "Resources/Images/Boss/Boss1/boss_000.png",
+		"size": 4,
+		"hitbox": "circle",
+		"type": "Boss"
+	},
+	"Actions": {
+		"breath": {
+			"beginFrame_right": 0,
+			"beginFrame_left": 0,
+			"endFrame_right": 0,
+			"endFrame_left": 0,
+			"beginFrame": 0,
+			"endFrame": 0,
+			"time": 0.1,
+			"x": 4,
+			"y": 4
+		},
+		"jump": {
+			"beginFrame": 6,
+			"endFrame": 13,
+			"time": 0.1,
+			"x": 4,
+			"y": 4,
+			"fallingFrame_right":1,
+			"fallingFrame_left":1
+		},
+		"hit": {
+			"beginFrame": 1,
+			"endFrame": 5,
+			"time": 0.1
+		},
+		"death": {
+			"beginFrame": 14,
+			"endFrame": 26,
+			"time": 0.1
+		}
+	}
+}

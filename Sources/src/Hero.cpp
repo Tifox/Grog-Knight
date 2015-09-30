@@ -47,6 +47,7 @@ Hero::Hero(std::string name) : Characters(name) {
 	theSwitchboard.SubscribeTo(this, "chooseItem2");
 	theSwitchboard.SubscribeTo(this, "chooseItem3");
 	theSwitchboard.SubscribeTo(this, "chooseItem4");
+	theSwitchboard.SubscribeTo(this, "endStomp");
 	this->addAttribute("type", "Hero");
 	this->_eqMove = new SpecialMoves(static_cast<Characters*>(this));
 	this->_eqAtt = new SpecialAttack(static_cast<Characters*>(this));

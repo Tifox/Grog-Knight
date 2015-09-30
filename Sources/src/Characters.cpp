@@ -390,6 +390,9 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->_invincibility = false;
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 	}
+	else if (m->GetMessageName() == "endStomp") {
+		this->_canMove = 1;
+	}
 	else if (m->GetMessageName() == "stompEnd") {
 		std::string orientation;
 		theSwitchboard.UnsubscribeFrom(this, "stompEnd");
@@ -404,7 +407,8 @@ void	Characters::ReceiveMessage(Message *m) {
 			orientation = "left";
 		this->PlaySpriteAnimation(0.3f, SAT_OneShot,
 								  this->_getAttr("beginFrame_" + orientation).asInt() + 2,
-								  this->_getAttr("endFrame_" + orientation).asInt(), "stompEnd");
+								  this->_getAttr("endFrame_" + orientation).asInt());
+		theSwitchboard.DeferredBroadcast(new Message("endStomp"), 0.2f);
 		Actor* blast = new Actor();
 		blast->SetPosition(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y);
 		blast->SetSprite("Resources/Images/Blast/blast_000.png", 0);

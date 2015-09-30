@@ -164,13 +164,14 @@
  		this->character->_speMoveReady = 0;
  		this->character->GetBody()->SetBullet(true);
  		this->character->_invincibility = true;
- 		this->character->actionCallback("stomp", 0);
  		this->character->_isStomping = true;
  		this->character->_isCharging = true;
  		theSwitchboard.SubscribeTo(this->character, "stompEnd");
  		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
- 				this->character->_getAttr("cooldown").asFloat());
+										 this->character->_getAttr("cooldown").asFloat());
  		this->character->GetBody()->SetLinearVelocity(b2Vec2(0, -this->character->_getAttr("stompSpeed").asInt()));
+		this->character->_canMove = 0;
+ 		this->character->actionCallback("stomp", 0);
  	}
  }
 

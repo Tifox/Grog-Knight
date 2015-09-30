@@ -404,7 +404,7 @@ void	Characters::ReceiveMessage(Message *m) {
 			orientation = "left";
 		this->PlaySpriteAnimation(0.3f, SAT_OneShot,
 								  this->_getAttr("beginFrame_" + orientation).asInt() + 2,
-								  this->_getAttr("endFrame_" + orientation).asInt());
+								  this->_getAttr("endFrame_" + orientation).asInt(), "stompEnd");
 		Actor* blast = new Actor();
 		blast->SetPosition(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y);
 		blast->SetSprite("Resources/Images/Blast/blast_000.png", 0);
@@ -494,6 +494,7 @@ void	Characters::AnimCallback(String s) {
 		this->_isAttacking = 0;
 		if (this->_isRunning == 0 && this->_isAttacking == 0 && this->_isLoadingAttack == 0 &&
 				this->_grounds.size() > 0 && !this->_isWhirlwinding) {
+			this->changeSizeTo(Vector2(this->_getAttr("x").asFloat(), this->_getAttr("y").asFloat()));
 			if (this->_latOrientation == LEFT) {
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 						this->_getAttr("beginFrame_left").asInt(),
@@ -532,7 +533,7 @@ void	Characters::AnimCallback(String s) {
 				}
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 										  this->_getAttr("beginFrame").asInt(),
-										  this->_getAttr("endFrame").asInt());
+										  this->_getAttr("endFrame").asInt(), "");
 			} else if (this->_fullChargedAttack == true) {
 				std::string orientation;
 				if (this->_latOrientation == RIGHT) {
@@ -540,17 +541,16 @@ void	Characters::AnimCallback(String s) {
 				} else if (this->_latOrientation == LEFT)
 					orientation = "Left";
 				this->_setCategory(this->_weapon->getType());
-				if (this->getAttribute("class") == "Warrior" && this->_isDashing == false && !this->_isWhirlwinding)
-					this->changeSizeTo(Vector2(this->_getAttr("loadX").asInt(), this->_getAttr("loadY").asInt()));
+				this->changeSizeTo(Vector2(this->_getAttr("loadX").asInt(), this->_getAttr("loadY").asInt()));
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 										  this->_getAttr("holdFrameLoad" + orientation).asInt() - 1,
 										  this->_getAttr("holdFrameLoad" + orientation).asInt(), "loadAttack_charge");
 			}
 		}
+		else {
 		if (this->_isRunning != 0 && !this->_isWhirlwinding)
-			this->changeSizeTo(Vector2(this->_getAttr("breath", "x").asFloat(), this->_getAttr("breath", "y").asFloat()));
-		else if (!this->_isWhirlwinding)
 			this->changeSizeTo(Vector2(this->_getAttr("x").asFloat(), this->_getAttr("y").asFloat()));
+		}
 		if (this->_isDashing == true) {
 			this->_isDashing = false;
 			this->_canMove = 1;
@@ -565,7 +565,10 @@ void	Characters::AnimCallback(String s) {
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 								  this->_getAttr("endFrame_" + orientation).asInt() - 1,
 								  this->_getAttr("endFrame_" + orientation).asInt(), "base");
-	} 
+	} else if (s == "stompEnd") {
+		this->_canMove = 1;
+		this->AnimCallback("base");
+	}
 }
 
 //! Collision function
@@ -844,13 +847,15 @@ void	Characters::_forward(int status) {
 		if ((this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() ||
 					(this->GetSpriteFrame() >= this->_getAttr("backward", "beginFrame").asInt() &&
 					 this->GetSpriteFrame() <= this->_getAttr("backward", "endFrame").asInt()))  &&
-			!this->_isJump && !this->_isLoadingAttack && !this->_isWhirlwinding)
+			!this->_isJump && !this->_isLoadingAttack && !this->_isWhirlwinding) {
+			this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 									  this->_getAttr("beginFrame").asInt(), this->_getAttr("endFrame").asInt());
+		}
 		else if (this->_isJump && !this->_isLoadingAttack && !this->_isFlying && !this->_isWhirlwinding) {
 			this->_setCategory("jump");
+			this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 			if (this->GetSpriteFrame() >= this->_getAttr("beginFrame_left").asInt() && this->GetSpriteFrame() <= this->_getAttr("endFrame_left").asInt())
-				this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 										  this->_getAttr("fallingFrame_right").asInt(),
 										  this->_getAttr("fallingFrame_right").asInt(), "jump");
@@ -904,14 +909,15 @@ void	Characters::_backward(int status) {
 			this->_latOrientation = LEFT;
 		}
 		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() &&
-			!this->_isJump && !this->_isLoadingAttack && !this->_isWhirlwinding)
+			!this->_isJump && !this->_isLoadingAttack && !this->_isWhirlwinding) {
+			this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 									  this->_getAttr("beginFrame").asInt(),
 									  this->_getAttr("endFrame").asInt());
-		else if (this->_isJump && !this->_isLoadingAttack && !this->_isWhirlwinding) {
+		} else if (this->_isJump && !this->_isLoadingAttack && !this->_isWhirlwinding) {
 			this->_setCategory("jump");
+			this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 			if (this->GetSpriteFrame() >= this->_getAttr("beginFrame_right").asInt() && this->GetSpriteFrame() <= this->_getAttr("endFrame_right").asInt())
-				this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 										  this->_getAttr("fallingFrame_left").asInt(),
 										  this->_getAttr("fallingFrame_left").asInt(), "jump");
@@ -933,7 +939,7 @@ void	Characters::_backward(int status) {
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, this->GetBody()->GetLinearVelocity().y));
 	  Game::stopRunning(this);
 		this->_isRunning = 0;
-		if (!this->_isJump && !this->_isAttacking && !this->_isDashing) 
+		if (!this->_isJump && !this->_isAttacking && !this->_isDashing)
 			this->AnimCallback("base");
 	} else {
 		if (this->_backwardFlag == true)

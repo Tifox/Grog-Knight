@@ -575,7 +575,6 @@ void	Characters::AnimCallback(String s) {
 			orientation = "Left";
 		if (this->_isCharging == true) {
 			this->changeSizeTo(Vector2(this->_getAttr(this->_weapon->getType(), "chargeX").asFloat(), this->_getAttr(this->_weapon->getType(), "chargeY").asFloat()));
-//			this->SetSprite("Resources/Images/Hero/hero_" + this->_getAttr(this->_weapon->getType(), "endFrameCharge" + orientation).asString() + ".png");
 		}
 		else
 			this->AnimCallback("base");
@@ -645,7 +644,7 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 			}
 		} else if (this->GetBody()->GetWorldCenter().y <= elem->GetBody()->GetWorldCenter().y - 0.905) {
 			this->_ceiling.push_back(elem);
-		} else if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
+		} else if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x && elem->getAttribute("speType") != "canCross") {
 			if (this->_isCharging == 1) {
 				theSwitchboard.Broadcast(new Message("chargeEnd"));
 			}
@@ -653,11 +652,16 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				contact->SetEnabled(false);
 			else {
 				if (this->_speMove == "wallJump" && this->_grounds.size() == 0) {
-					this->GetBody()->SetGravityScale(0.3);
+					this->changeSizeTo(Vector2(this->_getAttr("jump", "holdX").asInt(), this->_getAttr("jump", "holdY").asInt()));
+					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
+											  this->_getAttr("jump", "holdFrame_left").asInt(),
+											  this->_getAttr("jump", "holdFrame_left").asInt(), "jump");
+					this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+					this->GetBody()->SetGravityScale(0.1);
 				}
 			}
 			this->_wallsLeft.push_back(elem);
-		} else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x) {
+		} else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x && elem->getAttribute("speType") != "canCross") {
 			if (this->_isCharging == 1) {
 				theSwitchboard.Broadcast(new Message("chargeEnd"));
 			}
@@ -665,7 +669,12 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				contact->SetEnabled(false);
 			else {
 				if (this->_speMove == "wallJump" && this->_grounds.size() == 0) {
-					this->GetBody()->SetGravityScale(0.3);
+					this->changeSizeTo(Vector2(this->_getAttr("jump", "holdX").asInt(), this->_getAttr("jump", "holdY").asInt()));
+					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
+											  this->_getAttr("jump", "holdFrame_right").asInt(),
+											  this->_getAttr("jump", "holdFrame_right").asInt(), "jump");
+					this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+					this->GetBody()->SetGravityScale(0.1);
 				}
 			}
 			this->_wallsRight.push_back(elem);
@@ -733,8 +742,10 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 		}
 		else
 			this->_grounds.remove(elem);
-		if (this->_wallsLeft.size() == 0 && this->_wallsRight.size() == 0 && this->_speMove == "wallJump")
+		if (this->_wallsLeft.size() == 0 && this->_wallsRight.size() == 0 && this->_speMove == "wallJump" && this->_grounds.size() == 0) {
 			this->GetBody()->SetGravityScale(1);
+			this->AnimCallback("base");
+		}
 	}
 }
 
@@ -984,14 +995,14 @@ void	Characters::_jump(int status) {
 					this->GetBody()->SetLinearVelocity(b2Vec2(5, this->_getAttr("rejump").asFloat()));
 					this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-											  this->_getAttr("beginFrame_right").asInt(),
-											  this->_getAttr("endFrame_right").asInt() - 3, "jump");
+											  this->_getAttr("holdFrame_left").asInt(),
+											  this->_getAttr("rejumpFrame_left").asInt(), "base");
 				} else if (this->_wallsRight.size() > 0 && this->_wallsLeft.size() == 0) {
 					this->GetBody()->SetLinearVelocity(b2Vec2(-5, this->_getAttr("rejump").asFloat()));
-						this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
+					this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-											  this->_getAttr("beginFrame_left").asInt(),
-											  this->_getAttr("endFrame_left").asInt() - 3, "jump");
+											  this->_getAttr("holdFrame_right").asInt(),
+											  this->_getAttr("rejumpFrame_right").asInt(), "base");
 				} else
 					this->GetBody()->SetLinearVelocity(b2Vec2(0, this->_getAttr("rejump").asFloat()));
 				Game::stopRunning(this);

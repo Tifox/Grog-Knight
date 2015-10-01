@@ -72,6 +72,47 @@ Weapon::Weapon(Weapon* weapon) {
  * @param i left or right spawn
  */
 
+Weapon::Weapon(Weapon* w, Characters* c, int i, std::string str) {
+	this->_name = w->getName();
+	this->_displayName = w->getDisplayName();
+	this->_flavor = w->getFlavor();
+	this->_damage = w->getDamage();
+	this->_recovery = w->getRecovery();
+	this->_active = w->getActive();
+	this->_size = w->getSize();
+	this->_attack = w->getAttack();
+	this->_pushback = w->getPushback();
+	this->_equipable = w->getEquipable();
+	this->SetSize(1);
+	this->_critRate = w->getCritRate();
+	this->SetName("HeroWeaponHitbox");
+	if (c->getAttributes()["type"] == "Hero")
+		this->addAttribute("type", "HeroWeaponHitBox");
+	else
+		this->addAttribute("type", "WeaponHitBox");
+	this->SetDrawShape(ADS_Square);
+	this->SetColor(1, 1, 1, 0);
+	this->addAttribute("physic", "1");
+	this->_hitboxType = "special";
+	this->_hitbox = "octogonHitbox";
+	this->SetDensity(0);
+	this->SetFixedRotation(true);
+	this->Tag("weaponhitbox");
+	this->SetIsSensor(true);
+	theSwitchboard.SubscribeTo(this, "deleteWeapon" + this->GetName());
+	theSwitchboard.DeferredBroadcast(new Message("deleteWeapon" + this->GetName()), w->getActive());
+	this->SetPosition(c->GetBody()->GetWorldCenter().x + i, c->GetBody()->GetWorldCenter().y);
+	Game::bodiesToCreate.push_back(this);
+}
+
+//! Constructor called when stomping, create a hitbox on each side of the char
+/**
+ * Hitbox for the stomp
+ * @param w the weapon currently used to deal the damage
+ * @param c the character for the localisation
+ * @param i left or right spawn
+ */
+
 Weapon::Weapon(Weapon* w, Characters* c, int i) {
 	this->_name = w->getName();
 	this->_displayName = w->getDisplayName();
@@ -91,7 +132,7 @@ Weapon::Weapon(Weapon* w, Characters* c, int i) {
 	else
 		this->addAttribute("type", "WeaponHitBox");
 	this->SetDrawShape(ADS_Square);
-	this->SetColor(1, 1, 1, 1);
+	this->SetColor(1, 1, 1, 0);
 	this->addAttribute("physic", "1");
 	this->_hitboxType = "special";
 	this->_hitbox = "octogonHitbox";
@@ -102,7 +143,38 @@ Weapon::Weapon(Weapon* w, Characters* c, int i) {
 	theSwitchboard.SubscribeTo(this, "deleteWeapon" + this->GetName());
 	theSwitchboard.DeferredBroadcast(new Message("deleteWeapon" + this->GetName()), w->getActive());
 	this->SetPosition(c->GetBody()->GetWorldCenter().x + i, c->GetBody()->GetWorldCenter().y);
-	Game::bodiesToCreate.push_back(this);
+	this->_initDirection2(w, c, i);
+	theWorld.Add(this);
+}
+
+void	Weapon::_initDirection2(Weapon* w, Characters* c, int i) {
+	float xDecal = 0;
+	float yDecal = 0;
+	float xjoint1 = 0;
+	float xjoint2 = 0;
+	float yjoint1 = 0;
+	float yjoint2 = 0;
+	if (i == 1 || i == -1) {
+		yjoint1 = 0.4f;
+		yjoint2 = -0.4f;
+		xDecal = -0.5f;
+		if (i == 1) {
+			xDecal = 0.5f;
+		}
+	}
+	this->SetPosition(c->GetBody()->GetWorldCenter().x + xDecal, c->GetBody()->GetWorldCenter().y + yDecal);
+	this->InitPhysics();
+	this->GetBody()->SetBullet(true);
+	b2DistanceJointDef jointDef1;
+	jointDef1.Initialize(c->GetBody(), this->GetBody(), b2Vec2(c->GetBody()->GetWorldCenter().x + xjoint1, c->GetBody()->GetWorldCenter().y + yjoint1),
+						 this->GetBody()->GetWorldCenter());
+	jointDef1.collideConnected = false;
+	b2DistanceJointDef jointDef2;
+	jointDef2.Initialize(c->GetBody(), this->GetBody(), b2Vec2(c->GetBody()->GetWorldCenter().x + xjoint2, c->GetBody()->GetWorldCenter().y + yjoint2),
+						 this->GetBody()->GetWorldCenter());
+	jointDef2.collideConnected = false;
+	b2DistanceJoint *joint1 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef1);
+	b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
 }
 
 //! Constructor called when attacking, creates the defined hitbox

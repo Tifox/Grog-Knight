@@ -127,7 +127,6 @@ void	SpecialAttack::_whirlwind(void) {
 		currentWeapon->setActive(this->character->_getAttr("whirlwind", "uptime").asFloat());
 		this->_right = new Weapon (Game::currentGame->getHero()->_weapon, Game::currentGame->getHero(), 1);
 		this->_left = new Weapon (Game::currentGame->getHero()->_weapon, Game::currentGame->getHero(), -1);
-		theSwitchboard.DeferredBroadcast(new Message("linkWeapon"), 0.1);
 		this->_previousSpeed = hero->buff.bonusSpeed;
 		hero->_invincibility = true;
 		hero->buff.bonusSpeed = -(hero->_getAttr("forward", "force").asInt() / 2);

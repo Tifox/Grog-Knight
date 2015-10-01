@@ -638,8 +638,8 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 			this->_grounds.push_back(elem);
 			if (this->_isStomping == true) {
 				theSwitchboard.Broadcast(new Message("stompEnd"));
-				new Weapon(this->_weapon, this, 1);
-				new Weapon(this->_weapon, this, -1);
+				new Weapon(this->_weapon, this, 1, "stompArea");
+				new Weapon(this->_weapon, this, -1, "stompArea");
 				this->_isStomping = false;
 			}
 		} else if (this->GetBody()->GetWorldCenter().y <= elem->GetBody()->GetWorldCenter().y - 0.905) {

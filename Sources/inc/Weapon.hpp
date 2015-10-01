@@ -43,6 +43,7 @@ public:
 	Weapon(Weapon* weapon);
 	Weapon(Weapon* weapon, Characters* c);
 	Weapon(Weapon* weapon, Characters* c, int i);
+	Weapon(Weapon* weapon, Characters* c, int i, std::string str);
 	~Weapon(void);
 
 	void			setActive(float f);
@@ -87,6 +88,7 @@ private:
 	int				_critRate;
 	int				_price;
 	void			_initDirection(Weapon* w, Characters* c);
+	void			_initDirection2(Weapon* w, Characters* c, int i);
 	void			_readFile(std::string name);
 	void			_readFileFromFilename(std::string name);
 	void			_parseJson(std::string file);

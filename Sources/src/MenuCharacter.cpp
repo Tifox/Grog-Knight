@@ -52,7 +52,7 @@ MenuCharacter::MenuCharacter(void) : Characters("MenuCharacter") {
 	this->_finalSkillTargets = std::vector<Elements *>(4);
 	this->_skillsChoices = std::vector<std::list<Elements *> >(4);
 	this->_skillsLvl[0] = 5; this->_skillsLvl[1] = 15; this->_skillsLvl[2] = 25; this->_skillsLvl[3] = 50;
-	this->_finalSkillChoices[0] = "charge"; this->_finalSkillChoices[1] = "rapidFire";
+	this->_finalSkillChoices[0] = "walljump"; this->_finalSkillChoices[1] = "rapidFire";
 	this->_getSkills();
 	this->_kitchen();
 }

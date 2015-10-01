@@ -1,3 +1,4 @@
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -122,24 +123,24 @@ void	SpecialAttack::_whirlwind(void) {
 	Weapon *currentWeapon = Game::currentGame->getHero()->getWeapon();
 	Characters *hero = Game::currentGame->getHero();
 	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speAttReady == 1 /*&& currentWeapon->getType() == "Sword"*/) {
-		this->character->_isWhirlwinding = true;
-		currentWeapon->setActive(this->character->_getAttr("whirlwind", "uptime").asFloat());
-		this->_right = new Weapon (Game::currentGame->getHero()->_weapon, Game::currentGame->getHero(), 1);
-		this->_left = new Weapon (Game::currentGame->getHero()->_weapon, Game::currentGame->getHero(), -1);
-		theSwitchboard.DeferredBroadcast(new Message("linkWeapon"), 0.1);
-		this->_previousSpeed = hero->buff.bonusSpeed;
-		hero->_invincibility = true;
-		hero->buff.bonusSpeed = -(hero->_getAttr("forward", "force").asInt() / 2);
-		hero->_canAttack = false;
-		theSwitchboard.DeferredBroadcast(new Message("speAttReady"),
-				this->character->_getAttr("cooldown").asFloat());
-		theSwitchboard.DeferredBroadcast(new Message("SpecialAttackEnd"),
-				this->character->_getAttr("whirlwind", "uptime").asFloat());
-		hero->changeSizeTo(Vector2(hero->_getAttr("x").asFloat(), hero->_getAttr("y").asFloat()));
-		hero->PlaySpriteAnimation(hero->_getAttr("time").asFloat(), SAT_Loop,
-								  hero->_getAttr("beginFrame").asInt(),
-								  hero->_getAttr("endFrame").asInt(), "base");
-		this->_currentAttack = "whirlwind";
+	  this->character->_speAttReady = 0;
+	  this->character->_isWhirlwinding = true;
+	  currentWeapon->setActive(this->character->_getAttr("whirlwind", "uptime").asFloat());
+	  this->_right = new Weapon (Game::currentGame->getHero()->_weapon, Game::currentGame->getHero(), 1);
+	  this->_left = new Weapon (Game::currentGame->getHero()->_weapon, Game::currentGame->getHero(), -1);
+	  this->_previousSpeed = hero->buff.bonusSpeed;
+	  hero->_invincibility = true;
+	  hero->buff.bonusSpeed = -(hero->_getAttr("forward", "force").asInt() / 2);
+	  hero->_canAttack = false;
+	  theSwitchboard.DeferredBroadcast(new Message("SpecialAttackEnd"),
+					   this->character->_getAttr("whirlwind", "uptime").asFloat());
+	  theSwitchboard.DeferredBroadcast(new Message("speAttReady"),
+					   this->character->_getAttr("cooldown").asFloat());
+	  hero->changeSizeTo(Vector2(hero->_getAttr("x").asFloat(), hero->_getAttr("y").asFloat()));
+	  hero->PlaySpriteAnimation(hero->_getAttr("time").asFloat(), SAT_Loop,
+				    hero->_getAttr("beginFrame").asInt(),
+				    hero->_getAttr("endFrame").asInt(), "base");
+	  this->_currentAttack = "whirlwind";
 	}
 }
 
@@ -174,12 +175,21 @@ void	SpecialAttack::_rapidFire(void) {
 	this->character->_setCategory("rapidFire");
 	Weapon *currentWeapon = Game::currentGame->getHero()->getWeapon();
 	Characters *hero = Game::currentGame->getHero();
+	std::string orientation;
 
 	theSwitchboard.SubscribeTo(this, "RapidFire");
 
 	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speAttReady == 1 && currentWeapon->getType() == "Bow") {
 		this->character->_speAttReady = 0;
 		this->character->_isRapidFiring = true;
+		if (hero->_latOrientation == Characters::RIGHT)
+		  orientation = "right";
+		else if (hero->_latOrientation == Characters::LEFT)
+		  orientation = "left";
+		hero->changeSizeTo(Vector2(hero->_getAttr("x").asInt(), hero->_getAttr("y").asInt()));
+		hero->PlaySpriteAnimation(hero->_getAttr("time").asFloat(), SAT_OneShot,
+								  hero->_getAttr("beginFrame_" + orientation).asInt(),
+								  hero->_getAttr("endFrame_" + orientation).asInt(), "base");
 		theSwitchboard.DeferredBroadcast(new Message("speAttReady"),
 				this->character->_getAttr("cooldown").asFloat());
 		theSwitchboard.DeferredBroadcast(new Message("SpecialAttackEnd"),

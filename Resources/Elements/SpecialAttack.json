@@ -1,3 +1,4 @@
+
 {
 	"whirlwind": {
 		"subscribe": "specialattack",
@@ -22,7 +23,7 @@
 		"endFrame_left": 107,
 		"time": 0.1,
 		"x":2,
-		"y":1.5,
+		"y":2,
 		"description": "Fall with force on the ground,\nMake a shockwave around you",
 		"displayName": "Shockwave"
 	},
@@ -32,6 +33,13 @@
 		"time": 2,
 		"uptime": 2,
 		"interval": 0.2,
+		"beginFrame_right": 21,
+		"endFrame_right": 25,
+		"beginFrame_left": 26,
+		"endFrame_left": 30,
+		"time": 0.1,
+		"x":1,
+		"y":1,
 		"description": "Attack is temporarly more rapid.",
 		"displayName": "Rapid Fire"
 	}

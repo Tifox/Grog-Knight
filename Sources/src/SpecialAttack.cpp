@@ -123,23 +123,24 @@ void	SpecialAttack::_whirlwind(void) {
 	Weapon *currentWeapon = Game::currentGame->getHero()->getWeapon();
 	Characters *hero = Game::currentGame->getHero();
 	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speAttReady == 1 /*&& currentWeapon->getType() == "Sword"*/) {
-		this->character->_isWhirlwinding = true;
-		currentWeapon->setActive(this->character->_getAttr("whirlwind", "uptime").asFloat());
-		this->_right = new Weapon (Game::currentGame->getHero()->_weapon, Game::currentGame->getHero(), 1);
-		this->_left = new Weapon (Game::currentGame->getHero()->_weapon, Game::currentGame->getHero(), -1);
-		this->_previousSpeed = hero->buff.bonusSpeed;
-		hero->_invincibility = true;
-		hero->buff.bonusSpeed = -(hero->_getAttr("forward", "force").asInt() / 2);
-		hero->_canAttack = false;
-		theSwitchboard.DeferredBroadcast(new Message("speAttReady"),
-				this->character->_getAttr("cooldown").asFloat());
-		theSwitchboard.DeferredBroadcast(new Message("SpecialAttackEnd"),
-				this->character->_getAttr("whirlwind", "uptime").asFloat());
-		hero->changeSizeTo(Vector2(hero->_getAttr("x").asFloat(), hero->_getAttr("y").asFloat()));
-		hero->PlaySpriteAnimation(hero->_getAttr("time").asFloat(), SAT_Loop,
-								  hero->_getAttr("beginFrame").asInt(),
-								  hero->_getAttr("endFrame").asInt(), "base");
-		this->_currentAttack = "whirlwind";
+	  this->character->_speAttReady = 0;
+	  this->character->_isWhirlwinding = true;
+	  currentWeapon->setActive(this->character->_getAttr("whirlwind", "uptime").asFloat());
+	  this->_right = new Weapon (Game::currentGame->getHero()->_weapon, Game::currentGame->getHero(), 1);
+	  this->_left = new Weapon (Game::currentGame->getHero()->_weapon, Game::currentGame->getHero(), -1);
+	  this->_previousSpeed = hero->buff.bonusSpeed;
+	  hero->_invincibility = true;
+	  hero->buff.bonusSpeed = -(hero->_getAttr("forward", "force").asInt() / 2);
+	  hero->_canAttack = false;
+	  theSwitchboard.DeferredBroadcast(new Message("SpecialAttackEnd"),
+					   this->character->_getAttr("whirlwind", "uptime").asFloat());
+	  theSwitchboard.DeferredBroadcast(new Message("speAttReady"),
+					   this->character->_getAttr("cooldown").asFloat());
+	  hero->changeSizeTo(Vector2(hero->_getAttr("x").asFloat(), hero->_getAttr("y").asFloat()));
+	  hero->PlaySpriteAnimation(hero->_getAttr("time").asFloat(), SAT_Loop,
+				    hero->_getAttr("beginFrame").asInt(),
+				    hero->_getAttr("endFrame").asInt(), "base");
+	  this->_currentAttack = "whirlwind";
 	}
 }
 

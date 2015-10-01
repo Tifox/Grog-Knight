@@ -169,6 +169,8 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 				new Weapon(this->_weapon, this, -1);
 			}
 		}
+	} else if (elem->getAttribute("type") == "projectile") {
+		this->_takeDamage(elem);
 	}
 	else if (elem->getAttribute("type") == "Object") {
 		if (elem->getAttribute("type2") == "Consumable") {
@@ -193,6 +195,9 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 			Game::currentGame->tooltip->info(elem);
 			this->_item = elem;
 		}
+	}
+	else if (elem->getAttribute("boss") == "true") {
+		this->_takeDamage(elem);
 	}
 	if (elem->getAttribute("type") == "ground" &&
 		elem->getAttribute("speType") == "spikes") {
@@ -288,7 +293,9 @@ void	Hero::_takeDamage(Elements* elem) {
 	this->_isJump = 1;
 	if (elem->getAttribute("speType") == "spikes") {
 		damage = 25;
-	} else
+	} else if (elem->getAttribute("boss") == "true")
+		damage = 50;
+	else
 		damage = atoi(elem->getAttribute("damage").c_str());
 	damage -= this->buff.dmgReduc;
 	if (damage < 0)

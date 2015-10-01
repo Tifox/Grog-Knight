@@ -26,7 +26,9 @@
 #ifndef __BOSS__
 # define __BOSS__
 class	Characters;
+class	HUDWindow;
 # include "Characters.hpp"
+# include "Projectile.hpp"
 
 class	Boss : public Characters {
 	public:
@@ -37,10 +39,17 @@ class	Boss : public Characters {
 		virtual void	AnimCallback(String s);
 		virtual void	BeginContact(Elements *elem, b2Contact *contact);
 		virtual void	EndContact(Elements *elem, b2Contact *contact);
-
+		void			lifeBar(void);
+		void			createProjectile(Vector2 force, Vector2 init);
 
 	private:
+		HUDWindow		*_h;
+		std::list<HUDActor *>	_lifeList;
+		int						_lastHitID;
+		int						_inactive;
+		int						_flag;
 };
 
+# include "HUDWindow.hpp"
 
 #endif

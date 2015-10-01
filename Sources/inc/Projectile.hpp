@@ -35,6 +35,7 @@ public:
 	Projectile(float x, float y, int direction, std::string owner);
 	Projectile(Weapon *w, Characters *c);
 	Projectile(Weapon *w, int dmg);
+	Projectile(std::string img, int dmg, Vector2 pos, Vector2 force, Vector2 init, std::string name = "projectile");
 	~Projectile();
 
 	std::string     getName(void);

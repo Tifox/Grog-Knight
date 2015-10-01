@@ -78,7 +78,7 @@ Projectile::Projectile(Weapon* w, int dmg) {
 	this->SetRestitution(0.0f);
 	this->SetFixedRotation(true);
 	this->SetIsSensor(true);
-	this->addAttribute("type", "ShockWave");
+	this->addAttribute("type", "Shockwave");
 	this->Tag("projectile");
 	this->addAttribute("physic", "1");
 
@@ -94,6 +94,28 @@ Projectile::Projectile(Weapon* w, int dmg) {
 	this->GetBody()->SetGravityScale(0.0f);
 	this->GetBody()->SetBullet(true);
 	this->ApplyLinearImpulse(Vector2(3 * xOrient, 3 * yOrient), Vector2(0, 0));
+	theWorld.Add(this);
+}
+
+Projectile::Projectile(std::string img, int dmg, Vector2 pos, Vector2 force, Vector2 init, std::string name) : Elements() {
+	this->_name = name;
+	this->addAttribute("damage", std::to_string(dmg));
+	this->SetSize(0.5f);
+	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
+	this->SetDensity(1);
+	this->SetSprite(img);
+	this->SetFriction(0);
+	this->SetRestitution(0);
+	this->SetFixedRotation(true);
+	this->SetIsSensor(true);
+	this->addAttribute("type", "projectile");
+	this->Tag("projectile");
+	this->SetPosition(pos.X, pos.Y);
+	this->InitPhysics();
+	this->SetLayer(105);
+	this->GetBody()->SetGravityScale(0);
+	this->GetBody()->SetBullet(true);
+	this->ApplyLinearImpulse(Vector2(force.X, force.Y), Vector2(init.X, init.Y));
 	theWorld.Add(this);
 }
 
@@ -130,8 +152,6 @@ Projectile::~Projectile(void) {
 	return;
 }
 
-void	Projectile::EndContact(Elements *elem, b2Contact *contact) {
-}
 
 /* GETTERS */
 std::string     Projectile::getName(void) { return this->_name; }
@@ -160,9 +180,16 @@ void	Projectile::BeginContact(Elements *m, b2Contact *c) {
 		if (m->getAttribute("type") == "Object" || m->getAttribute("type") == "Hero" || m->getAttribute("type") == "Dealer" || m->getAttribute("type") == "Door" || m->getAttribute("type") == "Enemy")
 			return;
 	}
-	else
+	else if (this->_name == "bossProjectile" && m->getAttribute("boss") == "true") {
+		c->SetEnabled(false);
+		c->enableContact = false;
+	}
+	else {
 		if (m->getAttribute("type") == "Object" || m->getAttribute("type") == "Hero")
 			return;
+	} 
 	Game::addToDestroyList(this);
 }
 
+void	Projectile::EndContact(Elements *m, b2Contact *c) {
+}

@@ -245,7 +245,7 @@ void	HUDWindow::displayText(void) {
 					this->removeText((*i)->str); return ;
 				}
 				x = ((((*i)->toFollow->GetBody()->GetWorldCenter().x + 0.5) - m.getXStart()) * 40) - 40;
-				y = -((((*i)->toFollow->GetBody()->GetWorldCenter().y - 0.5) - m.getYStart()) * 40) + 50;
+				y = -((((*i)->toFollow->GetBody()->GetWorldCenter().y + (((*i)->toFollow->GetSize().Y) / 4)) - m.getYStart()) * 40) + 50;
 				if ((*i)->isFading) {
 					DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
 					(*i)->y += 1;
@@ -358,32 +358,32 @@ void	HUDWindow::life(int life) {
 	int		index;
 
 	if (!Game::deadWaiting) {
-	y = theCamera.GetWindowHeight() / 20 * 1;
-	size = theCamera.GetWindowWidth() / 20 * 0.6;
-	for (i = this->_hearts.begin(), index = 0; i != this->_hearts.end(); i++, index++) {
-		(*(i))->ChangeColorTo(Color(0, 0, 0, 0), 0);
-		theWorld.Remove(*(i));
-	}
-	this->_hearts.clear();
-	percent = life * 100 / this->_maxHP;
-	x = theCamera.GetWindowWidth() / 20 * 3;
-	this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp.png", (x - theCamera.GetWindowWidth() / 30), y, size - 2));
-	x += size - 2;
-	if (percent > 0)
-		this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_begin.png", 
-			((x - theCamera.GetWindowWidth() / 30)), y, Vector2(5, 15), 100));
-	x += 1.3;
-	for (j = 1; j < percent; x += 1.3, j++)
-			this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_middle.png", (x - theCamera.GetWindowWidth() / 30), y, Vector2(1.3, 15), 100));
-	this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_end.png", 
-			((x - theCamera.GetWindowWidth() / 30) + 1.3), y, Vector2(5, 15), 100));
-	if (percent < 100) {
-		for (; percent < 100; percent++, x += 1.3) {
-			this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_empty_middle.png", (x - theCamera.GetWindowWidth() / 30), y, Vector2(1.3, 15), 100));
+		y = theCamera.GetWindowHeight() / 20 * 1;
+		size = theCamera.GetWindowWidth() / 20 * 0.6;
+		for (i = this->_hearts.begin(), index = 0; i != this->_hearts.end(); i++, index++) {
+			(*(i))->ChangeColorTo(Color(0, 0, 0, 0), 0);
+			theWorld.Remove(*(i));
 		}
-		this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_empty_end.png", 
+		this->_hearts.clear();
+		percent = life * 100 / this->_maxHP;
+		x = theCamera.GetWindowWidth() / 20 * 3;
+		this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp.png", (x - theCamera.GetWindowWidth() / 30), y, size - 2));
+		x += size - 2;
+		if (percent > 0)
+			this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_begin.png", 
+				((x - theCamera.GetWindowWidth() / 30)), y, Vector2(5, 15), 100));
+		x += 1.3;
+		for (j = 1; j < percent; x += 1.3, j++)
+			this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_middle.png", (x - theCamera.GetWindowWidth() / 30), y, Vector2(1.3, 15), 100));
+		this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_end.png", 
 			((x - theCamera.GetWindowWidth() / 30) + 1.3), y, Vector2(5, 15), 100));
-	}
+		if (percent < 100) {
+			for (; percent < 100; percent++, x += 1.3) {
+				this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_empty_middle.png", (x - theCamera.GetWindowWidth() / 30), y, Vector2(1.3, 15), 100));
+			}
+			this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_empty_end.png", 
+				((x - theCamera.GetWindowWidth() / 30) + 1.3), y, Vector2(5, 15), 100));
+		}
 	}
 }
 

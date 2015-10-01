@@ -151,6 +151,7 @@ void	Characters::_parseJson(std::string file) {
 	this->_hitboxType = json["infos"].get("hitboxType", "").asString();
 	this->_hitbox = json["infos"].get("hitbox", "").asString();
 	this->addAttribute("spritesFrame", json["infos"].get("sprites", "").asString());
+	this->_hp = this->_maxHp;
 	if (type != "Boss") {
 		this->_id = json["infos"].get("id", "").asInt();
 		if (json["infos"].get("damage", "").isConvertibleTo(Json::ValueType::stringValue))
@@ -158,7 +159,6 @@ void	Characters::_parseJson(std::string file) {
 		this->buff.critBuff = json["infos"].get("baseCrit", 0).asInt();
 		this->buff.bonusDmg = json["infos"].get("baseDamage", 0).asInt();
 		this->_maxHp += (this->_maxHp * json["Stats"].get("HPMult", 0).asFloat()) * this->_level;
-		this->_hp = this->_maxHp;
 		this->buff.critBuff += (this->buff.critBuff * json["Stats"].get("critMult", 0).asFloat() * this->_level);
 		this->buff.bonusDmg += (this->buff.bonusDmg * json["Stats"].get("damageMult", 0).asFloat() * this->_level);
 	}

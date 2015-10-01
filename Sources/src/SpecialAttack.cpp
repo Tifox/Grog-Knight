@@ -1,3 +1,4 @@
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -174,12 +175,21 @@ void	SpecialAttack::_rapidFire(void) {
 	this->character->_setCategory("rapidFire");
 	Weapon *currentWeapon = Game::currentGame->getHero()->getWeapon();
 	Characters *hero = Game::currentGame->getHero();
+	std::string orientation;
 
 	theSwitchboard.SubscribeTo(this, "RapidFire");
 
 	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speAttReady == 1 && currentWeapon->getType() == "Bow") {
 		this->character->_speAttReady = 0;
 		this->character->_isRapidFiring = true;
+		if (hero->_latOrientation == Characters::RIGHT)
+		  orientation = "right";
+		else if (hero->_latOrientation == Characters::LEFT)
+		  orientation = "left";
+		hero->changeSizeTo(Vector2(hero->_getAttr("x").asInt(), hero->_getAttr("y").asInt()));
+		hero->PlaySpriteAnimation(hero->_getAttr("time").asFloat(), SAT_OneShot,
+								  hero->_getAttr("beginFrame_" + orientation).asInt(),
+								  hero->_getAttr("endFrame_" + orientation).asInt(), "base");
 		theSwitchboard.DeferredBroadcast(new Message("speAttReady"),
 				this->character->_getAttr("cooldown").asFloat());
 		theSwitchboard.DeferredBroadcast(new Message("SpecialAttackEnd"),

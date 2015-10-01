@@ -203,6 +203,19 @@ void	Maps::displayLevel(std::vector<std::vector<int> > map) {
 		rX += 27;
 	}
 }
+// void	Maps::tagSpecialMaps(void) {
+// 	int x, y, startMap;
+// 	int rant = rand() % Game::currentGame->levelGenerator->getNbMaps();
+// 	for (startMap = 0; startMap < rant;) {
+// 		if (x >= this->_XYMap[y].size()) {
+// 			x = 0;
+// 			y++;
+// 		} else
+// 			x++;
+// 		if (this->_XYMap[y][x] != 0)
+// 			startMap++;
+// 	}
+// }
 
 Map		*Maps::getMapByDoor(int n) {
 	int		random, i;

@@ -88,6 +88,15 @@ Map		Map::display(void) {
 	Elements					*elem;
 	int							v = 0;
 
+	LevelGenerator				*lg;
+
+	if (Game::currentGame != nullptr)
+		lg = Game::currentGame->levelGenerator;
+	else
+		lg = nullptr;
+	if (lg != nullptr) {
+		std::cout << lg->getSpecialRoom(Game::currentY, Game::currentX) << std::endl;
+	}
 	// Allocation for the _physicMap
 	if (!this->_isUsed) {
 		for (v = 0; v < this->_height; v++) {

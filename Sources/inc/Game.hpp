@@ -121,6 +121,7 @@ class Game {
 		static Game*		currentGame;
 
 		Maps		*maps;
+		LevelGenerator *levelGenerator;
 		Menu		*menu;
 		std::vector<Room*>				*gameMap;
 		Tooltip 						*tooltip;

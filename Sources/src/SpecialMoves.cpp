@@ -147,6 +147,16 @@
  			this->character->GetBody()->SetLinearVelocity(b2Vec2(-this->character->_getAttr("chargeSpeed").asInt(), 0));
  		else if (this->character->_latOrientation == Characters::RIGHT)
  			this->character->GetBody()->SetLinearVelocity(b2Vec2(this->character->_getAttr("chargeSpeed").asInt(), 0));
+		this->character->_setCategory(this->character->getWeapon()->getType());
+		std::string o;
+		if (this->character->_latOrientation == Characters::LEFT)
+			o = "Left";
+		else
+			o = "Right";
+		this->character->changeSizeTo(Vector2(this->character->_getAttr("chargeX").asFloat(), this->character->_getAttr("chargeY").asFloat()));
+		this->character->PlaySpriteAnimation(this->character->_getAttr("time").asFloat(), SAT_OneShot,
+								  this->character->_getAttr("beginFrameCharge" + o).asInt(),
+								  this->character->_getAttr("endFrameCharge" + o).asInt(), "chargeHold");
  	}
  }
 
@@ -170,7 +180,6 @@
  		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
 										 this->character->_getAttr("cooldown").asFloat());
  		this->character->GetBody()->SetLinearVelocity(b2Vec2(0, -this->character->_getAttr("stompSpeed").asInt()));
-		this->character->_canMove = 0;
  		this->character->actionCallback("stomp", 0);
  	}
  }

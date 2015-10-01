@@ -30,6 +30,7 @@
 # include <list>
 # include <iostream>
 class	Enemy;
+class	LevelGenerator;
 # include "Dealer.hpp"
 # include "Game.hpp"
 

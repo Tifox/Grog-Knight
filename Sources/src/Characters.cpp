@@ -1,4 +1,3 @@
-
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -82,7 +81,6 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_speAttReady = 1;
 	this->_hasDashed = 0;
 	this->SetLayer(100);
-	this->_isStomping = false;
 	this->_flyTrigger = false;
 	this->_isDisengaging = false;
 	this->buff.cur = "";
@@ -389,9 +387,7 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->_isCharging = false;
 		this->_invincibility = false;
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-	}
-	else if (m->GetMessageName() == "endStomp") {
-		this->_canMove = 1;
+		this->AnimCallback("base");
 	}
 	else if (m->GetMessageName() == "stompEnd") {
 		std::string orientation;
@@ -408,7 +404,6 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->PlaySpriteAnimation(0.3f, SAT_OneShot,
 								  this->_getAttr("beginFrame_" + orientation).asInt() + 2,
 								  this->_getAttr("endFrame_" + orientation).asInt());
-		theSwitchboard.DeferredBroadcast(new Message("endStomp"), 0.2f);
 		Actor* blast = new Actor();
 		blast->SetPosition(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y);
 		blast->SetSprite("Resources/Images/Blast/blast_000.png", 0);
@@ -572,6 +567,18 @@ void	Characters::AnimCallback(String s) {
 	} else if (s == "stompEnd") {
 		this->_canMove = 1;
 		this->AnimCallback("base");
+	} else if (s == "chargeHold") {
+		std::string orientation;
+		if (this->_latOrientation == RIGHT) {
+			orientation = "Right";
+		} else if (this->_latOrientation == LEFT)
+			orientation = "Left";
+		if (this->_isCharging == true) {
+			this->changeSizeTo(Vector2(this->_getAttr(this->_weapon->getType(), "chargeX").asFloat(), this->_getAttr(this->_weapon->getType(), "chargeY").asFloat()));
+//			this->SetSprite("Resources/Images/Hero/hero_" + this->_getAttr(this->_weapon->getType(), "endFrameCharge" + orientation).asString() + ".png");
+		}
+		else
+			this->AnimCallback("base");
 	}
 }
 
@@ -597,7 +604,7 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 	}
 	if (elem->getAttributes()["type"] == "ground") {
 		if (this->_isAttacking == 0 && this->_isLoadingAttack == 0) {
-			if (this->getAttribute("class") == "Warrior" && this->_isDashing == false && !this->_isWhirlwinding)
+			if (this->getAttribute("class") == "Warrior" && this->_isDashing == false && !this->_isWhirlwinding && !this->_isCharging)
 				this->changeSizeTo(Vector2(1, 1));
 		}
 		if (this->GetBody()->GetWorldCenter().y - 0.905 >= elem->GetBody()->GetWorldCenter().y) {
@@ -613,7 +620,7 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				this->_hasDashed = 0;
 				if (this->_latOrientation == RIGHT && this->_isAttacking == false &&
 					this->_isLoadingAttack == 0 && this->_isDashing == false &&
-					this->_isStomping == false && !this->_isWhirlwinding) {
+					this->_isStomping == false && !this->_isWhirlwinding && !this->_isCharging) {
 					this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 					this->PlaySpriteAnimation(this->_getAttr("jump", "time").asFloat(), SAT_OneShot,
 											  this->_getAttr("jump", "fallingFrame_right").asInt(),
@@ -621,7 +628,7 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				} else if (this->_latOrientation == LEFT &&
 						   this->_isAttacking == false &&
 						   this->_isLoadingAttack == 0 &&
-						   this->_isStomping == false && !this->_isWhirlwinding) {
+						   this->_isStomping == false && !this->_isWhirlwinding && !this->_isCharging) {
 					if (this->_isDashing == false)
 						this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 					this->PlaySpriteAnimation(this->_getAttr("jump", "time").asFloat(), SAT_OneShot,
@@ -634,6 +641,7 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				theSwitchboard.Broadcast(new Message("stompEnd"));
 				new Weapon(this->_weapon, this, 1);
 				new Weapon(this->_weapon, this, -1);
+				this->_isStomping = false;
 			}
 		} else if (this->GetBody()->GetWorldCenter().y <= elem->GetBody()->GetWorldCenter().y - 0.905) {
 			this->_ceiling.push_back(elem);
@@ -706,7 +714,7 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 				this->_isJump++;
 				if (this->_lastAction == "forward" && this->_canMove &&
 						this->_isAttacking == false && this->_isLoadingAttack == 0) {
-					if (this->_isDashing == false && !this->_isWhirlwinding) {
+					if (this->_isDashing == false && !this->_isWhirlwinding && !this->_isCharging) {
 						this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 						this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 												  this->_getAttr("jump", "fallingFrame_right").asInt(),
@@ -714,7 +722,7 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 					}
 				} else if (this->_lastAction == "backward" && this->_canMove &&
 						   this->_isAttacking == false && this->_isLoadingAttack == 0) {
-					if (this->_isDashing == false && !this->_isWhirlwinding) {
+					if (this->_isDashing == false && !this->_isWhirlwinding && !this->_isCharging) {
 						this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 						this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 												  this->_getAttr("jump", "fallingFrame_left").asInt(),
@@ -851,12 +859,12 @@ void	Characters::_forward(int status) {
 		if ((this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() ||
 					(this->GetSpriteFrame() >= this->_getAttr("backward", "beginFrame").asInt() &&
 					 this->GetSpriteFrame() <= this->_getAttr("backward", "endFrame").asInt()))  &&
-			!this->_isJump && !this->_isLoadingAttack && !this->_isWhirlwinding) {
+			!this->_isJump && !this->_isLoadingAttack && !this->_isWhirlwinding && !this->_isCharging) {
 			this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 									  this->_getAttr("beginFrame").asInt(), this->_getAttr("endFrame").asInt());
 		}
-		else if (this->_isJump && !this->_isLoadingAttack && !this->_isFlying && !this->_isWhirlwinding) {
+		else if (this->_isJump && !this->_isLoadingAttack && !this->_isFlying && !this->_isWhirlwinding && !this->_isCharging) {
 			this->_setCategory("jump");
 			this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 			if (this->GetSpriteFrame() >= this->_getAttr("beginFrame_left").asInt() && this->GetSpriteFrame() <= this->_getAttr("endFrame_left").asInt())
@@ -913,12 +921,12 @@ void	Characters::_backward(int status) {
 			this->_latOrientation = LEFT;
 		}
 		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() &&
-			!this->_isJump && !this->_isLoadingAttack && !this->_isWhirlwinding) {
+			!this->_isJump && !this->_isLoadingAttack && !this->_isWhirlwinding && !this->_isCharging) {
 			this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
 									  this->_getAttr("beginFrame").asInt(),
 									  this->_getAttr("endFrame").asInt());
-		} else if (this->_isJump && !this->_isLoadingAttack && !this->_isWhirlwinding) {
+		} else if (this->_isJump && !this->_isLoadingAttack && !this->_isWhirlwinding && !this->_isCharging) {
 			this->_setCategory("jump");
 			this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 			if (this->GetSpriteFrame() >= this->_getAttr("beginFrame_right").asInt() && this->GetSpriteFrame() <= this->_getAttr("endFrame_right").asInt())
@@ -991,7 +999,7 @@ void	Characters::_jump(int status) {
 				if (this->_isJump >= 1) {
 					this->GetBody()->SetLinearVelocity(b2Vec2(this->GetBody()->GetLinearVelocity().x,
 															  this->_getAttr("rejump").asFloat()));
-					if (this->_isAttacking == false && this->_isLoadingAttack == 0 && !this->_isWhirlwinding) {
+					if (this->_isAttacking == false && this->_isLoadingAttack == 0 && !this->_isWhirlwinding && !this->_isCharging) {
 						if (this->_isDashing == false)
 							this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 						if (this->_latOrientation == RIGHT) {
@@ -1004,7 +1012,7 @@ void	Characters::_jump(int status) {
 				} else {
 					this->ApplyLinearImpulse(Vector2(0, this->_getAttr("force").asFloat()), Vector2(0, 0));
 				}
-				if (this->_isAttacking == false && this->_isLoadingAttack == 0 && !this->_isWhirlwinding) {
+				if (this->_isAttacking == false && this->_isLoadingAttack == 0 && !this->_isWhirlwinding && !this->_isCharging) {
 					this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 					if (this->_latOrientation == RIGHT) {
 						this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,

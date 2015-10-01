@@ -353,7 +353,7 @@ void	Menu::listMenu(void) {
 			this->_window->setText(*it, x - ((*it).length() / 2 * 6), y, Vector3(255, 255, 255), 1);
 		}
 	}
-	this->_window->setText("Grog Like", (theCamera.GetWindowWidth() / 2) - 200, (theCamera.GetWindowHeight() / 2) - 100,
+	this->_window->setText("Grog Knight", (theCamera.GetWindowWidth() / 2) - 200, (theCamera.GetWindowHeight() / 2) - 100,
 			Vector3(255.0f, 255.0f, 255.0f), 1, "title");
 }
 

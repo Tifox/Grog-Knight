@@ -101,7 +101,7 @@ void	Game::start(void) {
 
 	theWorld.GetPhysicsWorld().DestroyBody(Game::menuCharacter->GetBody());
 	theWorld.Remove(Game::menuCharacter);
-	LevelGenerator *levelGenerator = new LevelGenerator(4, 3, 60);
+	this->levelGenerator = new LevelGenerator(4, 3, 60);
 	levelGenerator->execute();
 	this->_tmpMap = levelGenerator->getLevel();
 	this->maps->displayLevel(this->_tmpMap);

@@ -51,8 +51,8 @@
 		"jump": {
 			"subscribe": "jump",
 			"max": 3,
-			"force": 8,
-			"rejump": 12,
+			"force": 6,
+			"rejump": 10,
 			"beginFrame_right": 48,
 			"beginFrame_left": 55,
 			"holdFrame_right": 62,
@@ -67,7 +67,7 @@
 			"y": 1,
 			"holdX": 1,
 			"holdY": 1,
-			"time": 0.05
+			"time": 0.12
 		},
 		"pickupItem": {
 			"subscribe": "pickupItem",
@@ -98,13 +98,13 @@
 			"beginFrameLoadLeft": 26,
 			"holdFrameLoadLeft": 28,
 			"endFrameLoadLeft": 30,
-			"loadX":1,
+			"loadX":1.2,
 			"loadY":1,
-			"upX":1,
+			"upX":1.2,
 			"upY":1,
-			"downX":1,
+			"downX":1.2,
 			"downY":1,
-			"x":1,
+			"x":1.2,
 			"y":1,
 			"time": 0.05
 		 },

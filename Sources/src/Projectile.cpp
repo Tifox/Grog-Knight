@@ -45,6 +45,7 @@
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	this->SetSprite("Resources/Images/arrow.png");
 	this->SetDensity(1);
+	this->SetLayer(110);
 	this->SetFriction(0);
 	this->SetRestitution(0.0f);
 	this->SetFixedRotation(true);
@@ -178,7 +179,8 @@ void			Projectile::ReceiveMessage(Message *m) {
  */
 void	Projectile::BeginContact(Elements *m, b2Contact *c) {
 	if (this->_name == "shockwave") {
-		if (m->getAttribute("type") == "Object" || m->getAttribute("type") == "Hero" || m->getAttribute("type") == "Dealer" || m->getAttribute("type") == "Door" || m->getAttribute("type") == "Enemy")
+ 		if (m->getAttribute("type") == "Object" || m->getAttribute("type") == "Hero" || m->getAttribute("type") == "Dealer" ||
+ 			m->getAttribute("type") == "Door" || m->getAttribute("type") == "Enemy")
 			return;
 	}
 	else if (this->_name == "bossProjectile" && m->getAttribute("boss") == "true") {
@@ -188,9 +190,10 @@ void	Projectile::BeginContact(Elements *m, b2Contact *c) {
 		return ;
 	}
 	else {
-		if (m->getAttribute("type") == "Object" || m->getAttribute("type") == "Hero")
+		//here we put the arrow travelling through enemies (instead of 1!=1)
+		if (m->getAttribute("type") != "ground" && ((m->getAttribute("type") != "Enemy" || (m->getAttribute("type") == "Enemy" && static_cast<Enemy*>(m)->dead() == true)) || 1 != 1))
 			return;
-	} 
+	}
 	Game::addToDestroyList(this);
 }
 

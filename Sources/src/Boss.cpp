@@ -39,6 +39,9 @@ Boss::Boss(std::string name, int x, int y) : Characters("Bosses/" + name), _inac
 	theSwitchboard.SubscribeTo(this, "attack");
 	theSwitchboard.SubscribeTo(this, "phase1");
 	theSwitchboard.SubscribeTo(this, "phase2");
+	this->_x = 0;
+	this->_y = 2;
+	this->_stade = 0;
 }
 
 Boss::~Boss(void) {
@@ -47,32 +50,39 @@ Boss::~Boss(void) {
 
 void		Boss::ReceiveMessage(Message *m) {
 	float	percent = this->_hp * 100 / this->_maxHp;
-	int		x = this->GetBody()->GetWorldCenter().x, y = this->GetBody()->GetWorldCenter().y, size = this->GetSize().X / 2 + 1;
+	int		x = this->GetBody()->GetWorldCenter().x, y = this->GetBody()->GetWorldCenter().y, size = this->GetSize().X / 2;
 
 	if (m->GetMessageName() == "attack") {
-		if (percent > 50)
-			this->ReceiveMessage(new Message("phase1"));
-		else 
+		//if (percent > 50)
+			//this->ReceiveMessage(new Message("phase1"));
+		//else 
 			this->ReceiveMessage(new Message("phase2"));
 	} else if (m->GetMessageName() == "phase1") {
-		new Projectile("Resources/Images/boss_projectile.png", 20, Vector2((x + size), y), Vector2(2, 0), Vector2(-1, 0), "bossProjectile");
-		new Projectile("Resources/Images/boss_projectile.png", 20, Vector2(x, (y + size)), Vector2(0, 2), Vector2(0, 0), "bossProjectile");
-		new Projectile("Resources/Images/boss_projectile.png", 20, Vector2((x - size), y), Vector2(-2, 0), Vector2(0, 0), "bossProjectile");
-		new Projectile("Resources/Images/boss_projectile.png", 20, Vector2(x, (y - (size + 1))), Vector2(0, -2), Vector2(0, 0), "bossProjectile");
+		new Projectile("Resources/Images/boss_projectile.png", 20, Vector2(x, y), Vector2(2, 0), Vector2(-1, 0), "bossProjectile");
+		new Projectile("Resources/Images/boss_projectile.png", 20, Vector2(x, y), Vector2(0, 2), Vector2(0, 0), "bossProjectile");
+		new Projectile("Resources/Images/boss_projectile.png", 20, Vector2(x, y), Vector2(-2, 0), Vector2(0, 0), "bossProjectile");
+		new Projectile("Resources/Images/boss_projectile.png", 20, Vector2(x, y), Vector2(0, -2), Vector2(0, 0), "bossProjectile");
 		theSwitchboard.DeferredBroadcast(new Message("attack"), 0.5);
 	} else if (m->GetMessageName() == "phase2") {
-		switch (this->_flag) {
-			case 0: this->createProjectile(Vector2(x, (y + size)), Vector2(0, 2)); break;
-			case 1: this->createProjectile(Vector2(x + size, (y + size)), Vector2(1, 1)); break;
-			case 2: this->createProjectile(Vector2(x + size, (y)), Vector2(2, 0)); break;
-			case 3: this->createProjectile(Vector2(x + size, (y - size)), Vector2(1, -1)); break;
-			case 4: this->createProjectile(Vector2(x, (y - size - 1)), Vector2(0, -2)); break;
-			case 5: this->createProjectile(Vector2(x - size, (y - size)), Vector2(-1, -1)); break;
-			case 6: this->createProjectile(Vector2(x - size, (y)), Vector2(-2, 0)); break;
-			case 7: this->createProjectile(Vector2(x - size, (y + size)), Vector2(-1, 1)); break;
+		if (!this->_stade) {
+			this->_y -= ORIENT; this->_x += ORIENT;
+			if (this->_x >= 2)
+				this->_stade++;
+		} else if (this->_stade == 1) {
+			this->_x -= ORIENT; this->_y -= ORIENT;
+			if (this->_y <= -2)
+				this->_stade++;
+		} else if (this->_stade == 2) {
+			this->_x -= ORIENT; this->_y += ORIENT;
+			if (this->_x <= -2)
+				this->_stade++;
+		} else {
+			this->_y += ORIENT; this->_x += ORIENT;
+			if (this->_y >= 2)
+				this->_stade = 0;
 		}
-		this->_flag = (this->_flag == 7 ? 0 : this->_flag + 1);
-		theSwitchboard.DeferredBroadcast(new Message("attack"), 0.05);
+		this->createProjectile(Vector2(x, y), Vector2(this->_x, this->_y));
+		theSwitchboard.DeferredBroadcast(new Message("attack"), 0.02);
 	}
 }
 

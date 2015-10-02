@@ -298,7 +298,7 @@ void	Hero::_takeDamage(Elements* elem) {
 	if (elem->getAttribute("speType") == "spikes") {
 		damage = 25;
 	} else if (elem->getAttribute("boss") == "true")
-		damage = 50;
+		damage = 0;
 	else
 		damage = atoi(elem->getAttribute("damage").c_str());
 	damage -= this->buff.dmgReduc;

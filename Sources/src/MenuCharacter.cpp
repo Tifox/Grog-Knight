@@ -69,6 +69,8 @@ void	MenuCharacter::actionCallback(std::string name, int status) {
 }
 
 void	MenuCharacter::BeginContact(Elements *elem, b2Contact *contact) {
+	if (!elem)
+		return ;
 	contact->SetEnabled(false);
 	if (elem->getAttribute("trigger") != "") {
 		if (this->_currentTrigger == elem->getAttribute("trigger"))
@@ -83,6 +85,8 @@ void	MenuCharacter::BeginContact(Elements *elem, b2Contact *contact) {
 }
 
 void	MenuCharacter::EndContact(Elements *elem, b2Contact *contact) {
+	if (!elem)
+		return ;
 }
 
 void	MenuCharacter::trigger(std::string name, int status) {

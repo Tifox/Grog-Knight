@@ -102,18 +102,19 @@ Projectile::Projectile(std::string img, int dmg, Vector2 pos, Vector2 force, Vec
 	this->_toDestroy = false;
 	this->addAttribute("damage", std::to_string(dmg));
 	this->SetSize(0.5f);
-	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
+	this->SetShapeType(PhysicsActor::SHAPETYPE_CIRCLE);
 	this->SetDensity(1);
 	this->SetSprite(img);
 	this->SetFriction(0);
+	this->SetIsSensor(true);
 	this->SetRestitution(0);
 	this->SetFixedRotation(true);
-	this->SetIsSensor(true);
 	this->addAttribute("type", "projectile");
+	this->addAttribute("spe", "bossProjectile");
 	this->Tag("projectile");
 	this->SetPosition(pos.X, pos.Y);
 	this->InitPhysics();
-	this->SetLayer(105);
+	this->SetLayer(99);
 	this->GetBody()->SetGravityScale(0);
 	this->GetBody()->SetBullet(true);
 	this->ApplyLinearImpulse(Vector2(force.X, force.Y), Vector2(init.X, init.Y));
@@ -177,24 +178,33 @@ void			Projectile::ReceiveMessage(Message *m) {
  * @param contact The b2Contact object of the collision. See Box2D docs for more info.
  */
 void	Projectile::BeginContact(Elements *m, b2Contact *c) {
+	if (!m)
+		return ;
+	if (this->_name == "bossProjectile" && m->getAttribute("type") == "Hero")
+		this->_toDestroy = true;
 	if (this->_name == "shockwave") {
 		if (m->getAttribute("type") == "Object" || m->getAttribute("type") == "Hero" || m->getAttribute("type") == "Dealer" || m->getAttribute("type") == "Door" || m->getAttribute("type") == "Enemy")
 			return;
 	}
+	if (this->_name == "bossProjectile" && m->getAttribute("spe") == "bossProjectile") {
+		c->SetEnabled(false);
+		c->enableContact = false;
+		return ;
+	}
 	else if (this->_name == "bossProjectile" && m->getAttribute("boss") == "true") {
 		c->SetEnabled(false);
 		c->enableContact = false;
-		this->_toDestroy = true;
 		return ;
-	}
-	else {
+	} else {
 		if (m->getAttribute("type") == "Object" || m->getAttribute("type") == "Hero")
 			return;
-	} 
+	}
 	Game::addToDestroyList(this);
 }
 
 void	Projectile::EndContact(Elements *m, b2Contact *c) {
+	if (!m)
+		return ;
 	if (this->_toDestroy)
 		Game::addToDestroyList(this);
 }

@@ -155,7 +155,8 @@ void	Elements::display(void) {
  		this->setBox(Game::hList->getHitbox(this->_hitbox));
 	} else if (this->getAttribute("hitbox") == "circle") {
 		this->SetShapeType(PhysicsActor::SHAPETYPE_CIRCLE);
-		this->SetDensity(3.0f);
+		this->SetDensity(0);
+		this->SetIsSensor(true);
 	} else {
 		this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	}

@@ -29,6 +29,7 @@ class	Characters;
 class	HUDWindow;
 # include "Characters.hpp"
 # include "Projectile.hpp"
+# define ORIENT 0.1f
 
 class	Boss : public Characters {
 	public:
@@ -47,7 +48,9 @@ class	Boss : public Characters {
 		std::list<HUDActor *>	_lifeList;
 		int						_lastHitID;
 		int						_inactive;
-		int						_flag;
+		float						_x;
+		float						_y;
+		int							_stade;
 };
 
 # include "HUDWindow.hpp"

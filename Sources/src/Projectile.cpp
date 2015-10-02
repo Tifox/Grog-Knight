@@ -99,6 +99,7 @@ Projectile::Projectile(Weapon* w, int dmg) {
 
 Projectile::Projectile(std::string img, int dmg, Vector2 pos, Vector2 force, Vector2 init, std::string name) : Elements() {
 	this->_name = name;
+	this->_toDestroy = false;
 	this->addAttribute("damage", std::to_string(dmg));
 	this->SetSize(0.5f);
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
@@ -183,6 +184,8 @@ void	Projectile::BeginContact(Elements *m, b2Contact *c) {
 	else if (this->_name == "bossProjectile" && m->getAttribute("boss") == "true") {
 		c->SetEnabled(false);
 		c->enableContact = false;
+		this->_toDestroy = true;
+		return ;
 	}
 	else {
 		if (m->getAttribute("type") == "Object" || m->getAttribute("type") == "Hero")
@@ -192,4 +195,6 @@ void	Projectile::BeginContact(Elements *m, b2Contact *c) {
 }
 
 void	Projectile::EndContact(Elements *m, b2Contact *c) {
+	if (this->_toDestroy)
+		Game::addToDestroyList(this);
 }

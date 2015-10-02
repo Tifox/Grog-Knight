@@ -590,6 +590,8 @@ void	Characters::AnimCallback(String s) {
  * @param contact The b2Contact object of the collision. See Box2D docs for more info.
  */
 void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
+	if (!elem)
+		return ;
 	if (this->_hp <= 0 && this->getAttribute("type") == "Hero") {
 		this->_heroDeath();
 		return;
@@ -705,6 +707,8 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
  * @param: contact The b2Contact object of the collided element. See Box2D docs for more info.
  */
 void	Characters::EndContact(Elements *elem, b2Contact *contact) {
+	if (!elem)
+		return ;
 	if (elem->getAttribute("trigger") != "") {
 		this->_callTrigger(elem->getAttribute("trigger"), 1);
 	} if (elem->getAttribute("triggerOn") != "") {

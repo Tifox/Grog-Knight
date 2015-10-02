@@ -157,6 +157,8 @@ void	Hero::actionCallback(std::string name, int status) {
  */
 void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 	Characters::BeginContact(elem, contact);
+	if (!elem)
+		return ;
 	if (elem->getAttribute("type") == "Enemy" && elem->isDead() == false) {
 		if (this->_invincibility == false)
 			this->_takeDamage(elem);
@@ -241,6 +243,8 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
  */
 void	Hero::EndContact(Elements *elem, b2Contact *contact) {
 	Characters::EndContact(elem, contact);
+	if (!elem)
+		return ;
 	if (elem->getAttribute("type") == "Object") {
 		if (elem->getAttributes()["type2"] == "Equipment") {
 			this->_item = nullptr;

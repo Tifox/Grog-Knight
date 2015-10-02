@@ -147,14 +147,14 @@ int	LevelGenerator::getNbMaps(void) {
 }
 
 std::string							LevelGenerator::getSpecialRoom(int i, int j) {
-	if (this->roomMap[i][j]->getSpecialType() == BOSS) {
-		return "bossMap";
-	}
-	else if (this->roomMap[i][j]->getSpecialType() == CHEST) {
-		return "secretMap";
-	}
-	else if (this->roomMap[i][j]->getSpecialType() == ITEM) {
-		return "dealer";
+	if (this->roomMap[i][j]) {
+		if (this->roomMap[i][j]->getSpecialType() == BOSS) {
+			return "bossMap";
+		} else if (this->roomMap[i][j]->getSpecialType() == CHEST) {
+			return "secretMap";
+		} else if (this->roomMap[i][j]->getSpecialType() == ITEM) {
+			return "dealer";
+		}
 	}
 	return "";
 }

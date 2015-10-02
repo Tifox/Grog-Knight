@@ -66,6 +66,7 @@ private:
 	int			_pushback;
 	float		_recovery;
 	int			_critRate;
+	bool		_toDestroy;
 
 };
 #endif

@@ -53,9 +53,9 @@ void		Boss::ReceiveMessage(Message *m) {
 	int		x = this->GetBody()->GetWorldCenter().x, y = this->GetBody()->GetWorldCenter().y, size = this->GetSize().X / 2;
 
 	if (m->GetMessageName() == "attack") {
-		//if (percent > 50)
-			//this->ReceiveMessage(new Message("phase1"));
-		//else 
+		if (percent > 50)
+			this->ReceiveMessage(new Message("phase1"));
+		else 
 			this->ReceiveMessage(new Message("phase2"));
 	} else if (m->GetMessageName() == "phase1") {
 		new Projectile("Resources/Images/boss_projectile.png", 20, Vector2(x, y), Vector2(2, 0), Vector2(-1, 0), "bossProjectile");
@@ -64,24 +64,12 @@ void		Boss::ReceiveMessage(Message *m) {
 		new Projectile("Resources/Images/boss_projectile.png", 20, Vector2(x, y), Vector2(0, -2), Vector2(0, 0), "bossProjectile");
 		theSwitchboard.DeferredBroadcast(new Message("attack"), 0.5);
 	} else if (m->GetMessageName() == "phase2") {
-		if (!this->_stade) {
-			this->_y -= ORIENT; this->_x += ORIENT;
-			if (this->_x >= 2)
-				this->_stade++;
-		} else if (this->_stade == 1) {
-			this->_x -= ORIENT; this->_y -= ORIENT;
-			if (this->_y <= -2)
-				this->_stade++;
-		} else if (this->_stade == 2) {
-			this->_x -= ORIENT; this->_y += ORIENT;
-			if (this->_x <= -2)
-				this->_stade++;
+		new Projectile("Resources/Images/boss_projectile.png", 20, Vector2(x, y), Vector2(2, 0), Vector2(0, 0), "bossProjectile", this->_stade);
+		if (this->_stade >= 360) {
+			this->_stade = 5;
 		} else {
-			this->_y += ORIENT; this->_x += ORIENT;
-			if (this->_y >= 2)
-				this->_stade = 0;
+			this->_stade += 5;
 		}
-		this->createProjectile(Vector2(x, y), Vector2(this->_x, this->_y));
 		theSwitchboard.DeferredBroadcast(new Message("attack"), 0.02);
 	}
 }

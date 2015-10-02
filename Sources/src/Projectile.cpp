@@ -98,7 +98,7 @@ Projectile::Projectile(Weapon* w, int dmg) {
 	theWorld.Add(this);
 }
 
-Projectile::Projectile(std::string img, int dmg, Vector2 pos, Vector2 force, Vector2 init, std::string name) : Elements() {
+Projectile::Projectile(std::string img, int dmg, Vector2 pos, Vector2 force, Vector2 init, std::string name, int rotat) : Elements() {
 	this->_name = name;
 	this->_toDestroy = false;
 	this->addAttribute("damage", std::to_string(dmg));
@@ -115,10 +115,17 @@ Projectile::Projectile(std::string img, int dmg, Vector2 pos, Vector2 force, Vec
 	this->Tag("projectile");
 	this->SetPosition(pos.X, pos.Y);
 	this->InitPhysics();
+	if (rotat != -1) {
+		this->GetBody()->SetTransform(b2Vec2(pos.X, pos.Y), rotat);
+	}
 	this->SetLayer(99);
 	this->GetBody()->SetGravityScale(0);
 	this->GetBody()->SetBullet(true);
-	this->ApplyLinearImpulse(Vector2(force.X, force.Y), Vector2(init.X, init.Y));
+	if (rotat != -1) {
+		this->ApplyLocalForce(Vector2(75, 0), Vector2(0, 0));
+	} else {
+		this->ApplyLinearImpulse(Vector2(force.X, force.Y), Vector2(init.X, init.Y));
+	}
 	theWorld.Add(this);
 }
 

@@ -52,25 +52,35 @@ void		Boss::ReceiveMessage(Message *m) {
 	float	percent = this->_hp * 100 / this->_maxHp;
 	int		x = this->GetBody()->GetWorldCenter().x, y = this->GetBody()->GetWorldCenter().y, size = this->GetSize().X / 2;
 
-	if (m->GetMessageName() == "attack") {
-		if (percent > 50)
-			this->ReceiveMessage(new Message("phase1"));
-		else 
-			this->ReceiveMessage(new Message("phase2"));
-	} else if (m->GetMessageName() == "phase1") {
-		new Projectile("Resources/Images/boss_projectile.png", 20, Vector2(x, y), Vector2(2, 0), Vector2(-1, 0), "bossProjectile");
-		new Projectile("Resources/Images/boss_projectile.png", 20, Vector2(x, y), Vector2(0, 2), Vector2(0, 0), "bossProjectile");
-		new Projectile("Resources/Images/boss_projectile.png", 20, Vector2(x, y), Vector2(-2, 0), Vector2(0, 0), "bossProjectile");
-		new Projectile("Resources/Images/boss_projectile.png", 20, Vector2(x, y), Vector2(0, -2), Vector2(0, 0), "bossProjectile");
-		theSwitchboard.DeferredBroadcast(new Message("attack"), 0.5);
-	} else if (m->GetMessageName() == "phase2") {
-		new Projectile("Resources/Images/boss_projectile.png", 20, Vector2(x, y), Vector2(2, 0), Vector2(0, 0), "bossProjectile", this->_stade);
-		if (this->_stade >= 360) {
-			this->_stade = 5;
-		} else {
-			this->_stade += 5;
+	if (percent > 0) {
+		if (m->GetMessageName() == "attack") {
+			if (percent > 50)
+				this->ReceiveMessage(new Message("phase1"));
+			else 
+				this->ReceiveMessage(new Message("phase2"));
+		} else if (m->GetMessageName() == "phase1") {
+			new Projectile("Resources/Images/boss_projectile.png", 20, Vector2(x, y), Vector2(2, 0), Vector2(-1, 0), "bossProjectile");
+			new Projectile("Resources/Images/boss_projectile.png", 20, Vector2(x, y), Vector2(0, 2), Vector2(0, 0), "bossProjectile");
+			new Projectile("Resources/Images/boss_projectile.png", 20, Vector2(x, y), Vector2(-2, 0), Vector2(0, 0), "bossProjectile");
+			new Projectile("Resources/Images/boss_projectile.png", 20, Vector2(x, y), Vector2(0, -2), Vector2(0, 0), "bossProjectile");
+			theSwitchboard.DeferredBroadcast(new Message("attack"), 0.5);
+		} else if (m->GetMessageName() == "phase2") {
+			new Projectile("Resources/Images/boss_projectile.png", 20, Vector2(x, y), Vector2(2, 0), Vector2(0, 0), "bossProjectile", this->_stade);
+			if (this->_stade >= 360) {
+				this->_stade = 5;
+			} else {
+				this->_stade += 5;
+			}
+			theSwitchboard.DeferredBroadcast(new Message("attack"), 0.02);
 		}
-		theSwitchboard.DeferredBroadcast(new Message("attack"), 0.02);
+	} else {
+		std::list<HUDActor *>::iterator		it;
+		for (it = this->_lifeList.begin(); it != this->_lifeList.end(); it++)
+			theWorld.Remove(*it);
+		this->_h->removeText(this->_name);
+		this->_setCategory("death");
+		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot, 
+			this->_getAttr("endFrame").asInt(), this->_getAttr("beginFrame").asInt(), "delete");
 	}
 }
 
@@ -87,6 +97,13 @@ void		Boss::AnimCallback(String s) {
 		this->_setCategory("breath");
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot, 
 			this->_getAttr("endFrame").asInt(), this->_getAttr("beginFrame").asInt(), "idle");
+	} else if (s == "delete") {
+		int									stade;
+		int		x = this->GetBody()->GetWorldCenter().x, y = this->GetBody()->GetWorldCenter().y;
+
+		for (stade = 0; stade < 360; stade += 5)
+			new Projectile("Resources/Images/boss_projectile.png", 20, Vector2(x, y), Vector2(2, 0), Vector2(0, 0), "bossProjectile", stade);
+		Game::addToDestroyList(this);
 	}
 }
 
@@ -114,7 +131,7 @@ void		Boss::BeginContact(Elements *elem, b2Contact *contact) {
 			theSwitchboard.Broadcast(new Message("attack"));
 			this->_inactive = 1;
 		}
-		damage += h->buff.bonusDmg;
+		damage += h->buff.bonusDmg * 4;
 		crit += h->buff.critBuff;
 		if (crit && (rand() % (crit + 1) == crit)) {
 			damage *= 2;

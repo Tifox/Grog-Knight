@@ -100,6 +100,7 @@ Projectile::Projectile(Weapon* w, int dmg) {
 
 Projectile::Projectile(std::string img, int dmg, Vector2 pos, Vector2 force, Vector2 init, std::string name) : Elements() {
 	this->_name = name;
+	this->SetName(name);
 	this->_toDestroy = false;
 	this->addAttribute("damage", std::to_string(dmg));
 	this->SetSize(0.5f);
@@ -107,8 +108,7 @@ Projectile::Projectile(std::string img, int dmg, Vector2 pos, Vector2 force, Vec
 	this->SetDensity(1);
 	this->SetSprite(img);
 	this->SetFriction(0);
-	this->SetIsSensor(true);
-	this->SetRestitution(0);
+	this->SetRestitution(1);
 	this->SetFixedRotation(true);
 	this->addAttribute("type", "projectile");
 	this->addAttribute("spe", "bossProjectile");
@@ -119,6 +119,8 @@ Projectile::Projectile(std::string img, int dmg, Vector2 pos, Vector2 force, Vec
 	this->GetBody()->SetGravityScale(0);
 	this->GetBody()->SetBullet(true);
 	this->ApplyLinearImpulse(Vector2(force.X, force.Y), Vector2(init.X, init.Y));
+	theSwitchboard.SubscribeTo(this, "deleteProj" + this->GetName());
+	theSwitchboard.DeferredBroadcast(new Message("deleteProj" + this->GetName()), 3);
 	theWorld.Add(this);
 }
 
@@ -168,6 +170,10 @@ float           Projectile::getRecovery(void) { return this->_recovery; }
 int				Projectile::getCritRate(void) { return this->_critRate; }
 
 void			Projectile::ReceiveMessage(Message *m) {
+	if (m->GetMessageName() == "deleteProj" + this->GetName()) {
+		theSwitchboard.UnsubscribeFrom(this, "deleteProj" + this->GetName());
+		Game::addToDestroyList(this);
+	}
 }
 
 //! Overload from b2Body's BeginContact
@@ -202,7 +208,7 @@ void	Projectile::BeginContact(Elements *m, b2Contact *c) {
 		if (m->getAttribute("type") != "ground" && ((m->getAttribute("type") != "Enemy" || (m->getAttribute("type") == "Enemy" && static_cast<Enemy*>(m)->dead() == true)) || 1 != 1))
 			return;
 	}
-	Game::addToDestroyList(this);
+//	Game::addToDestroyList(this);
 }
 
 void	Projectile::EndContact(Elements *m, b2Contact *c) {

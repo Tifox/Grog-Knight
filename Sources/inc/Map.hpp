@@ -82,6 +82,10 @@ class	Map {
 		void	removeEnemy(Enemy *e);
 		std::map<std::string, int>		doors;
 
+		std::string		getName(void);
+		std::string		getSpecial(void);
+		void			setSpecial(std::string);
+
 	private:
 		int					_mapCount;
 		std::string			_name;
@@ -99,6 +103,8 @@ class	Map {
 		int					_xStart;
 		int					_yStart;
 		int					_isUsed;
+		std::string			_special;
+
 		std::list<Elements *>	_elemOfTheMap;
 		std::list<Enemy *>		_enemies;
 		std::map<int, std::map<std::string, Json::Value> >	_properties;

@@ -52,9 +52,10 @@ class Maps {
 
 		void	readMaps(void);
 		int		rstrncmp(char *str, char *str2, int n);
+		int		tagCurrentMap(int nb);
 		std::map<int, Map *>	_maps;
 		Map		*getMapByDoor(int n);
-		void	displayLevel(std::vector<std::vector<int> > map);
+		int		displayLevel(std::vector<std::vector<int> > map);
 		Map*				bossMap;
 		Map*				secretMap;
 		std::vector<std::vector<Map> >	getMapXY(void);

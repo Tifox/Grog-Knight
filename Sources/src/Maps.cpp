@@ -86,8 +86,10 @@ void	Maps::readMaps(void) {
 			//std::cout << file.c_str() << std::endl;
 
 			this->_root.clear();
-			if (!this->_reader.parse(buffer.str(), this->_root))
+			if (!this->_reader.parse(buffer.str(), this->_root)) {
+				std::cout << file.c_str() << std::endl;
 				std::cout << this->_reader.getFormattedErrorMessages() << std::endl;
+			}
 			else
 				this->_getMap();
 			buffer.str("");
@@ -168,11 +170,100 @@ void	Maps::_getMap(void) {
 	this->_root.clear();
 }
 
-
+int		Maps::tagCurrentMap(int nb) {
+	std::cout << "Number of rooms (maps.cpp l.172) " << nb << std::endl;
+	if (nb < 12)
+		return -1;
+	int x = 0, y = 0, i = 0;
+	//tag starting room
+	int rdm1 = (rand() % nb);
+	std::cout << "rdm1: " << rdm1 << std::endl;
+	for (; i <= rdm1; x++) {
+		std::cout << x << ", " << y << std::endl;
+		if (this->_XYMap[y][x].getName() != "") {
+			std::cout << "Map found" << std::endl;
+			if (i == rdm1) {
+				Game::currentX = x;
+				Game::currentY = y;
+				this->_XYMap[y][x].setSpecial("starter");
+				break ;
+			}
+			i++;
+		}
+		if (x == 15) {
+			x = 0;
+			y++;
+		}
+	}
+	//tag boss room
+	x = 0; y = 0; i = 0;
+	int rdm2 = (rand() % nb);
+	while (rdm2 == rdm1)
+		rdm2 = (rand() % nb);
+	std::cout << "rdm2: " << rdm2 << std::endl;
+	for (; i <= rdm2; x++) {
+		std::cout << x << ", " << y << std::endl;
+		if (this->_XYMap[y][x].getName() != "") {
+			std::cout << "Map found" << std::endl;
+			if (i == rdm2) {
+				this->_XYMap[y][x].setSpecial("boss");
+				break ;
+			}
+			i++;
+		}
+		if (x == 15) {
+			x = 0;
+			y++;
+		}
+	}
+	//tag dealer room
+	x = 0; y = 0; i = 0;
+	int rdm3 = (rand() % nb);
+	while (rdm3 == rdm1 || rdm3 == rdm2)
+		rdm3 = (rand() % nb);
+	std::cout << "rdm3: " << rdm3 << std::endl;
+	for (; i <= rdm3; x++) {
+		std::cout << x << ", " << y << std::endl;
+		if (this->_XYMap[y][x].getName() != "") {
+			std::cout << "Map found" << std::endl;
+			if (i == rdm3) {
+				this->_XYMap[y][x].setSpecial("dealer");
+				break ;
+			}
+			i++;
+		}
+		if (x == 15) {
+			x = 0;
+			y++;
+		}
+	}
+	//tag secret room
+	x = 0; y = 0; i = 0;
+	int rdm4 = (rand() % nb);
+	while (rdm4 == rdm1 || rdm4 == rdm2 || rdm4 == rdm3)
+		rdm4 = (rand() % nb);
+	std::cout << "rdm4: " << rdm4 << std::endl;
+	for (; i <= rdm4; x++) {
+		std::cout << x << ", " << y << std::endl;
+		if (this->_XYMap[y][x].getName() != "") {
+			std::cout << "Map found" << std::endl;
+			if (i == rdm4) {
+				this->_XYMap[y][x].setSpecial("secret");
+				break ;
+			}
+			i++;
+		}
+		if (x == 15) {
+			x = 0;
+			y++;
+		}
+	}
+		return 0;
+}
 
 //! Display an entire level
-void	Maps::displayLevel(std::vector<std::vector<int> > map) {
-	int		i, x, y, rX, rY, maxX, maxY;
+int		Maps::displayLevel(std::vector<std::vector<int> > map) {
+	int		i, x, y, rX, rY, maxX, maxY, nb;
 	Map		*tmp;
 
 	for (maxX = maxY = 0; maxY < (map.size() - 1); maxY++) {
@@ -182,7 +273,7 @@ void	Maps::displayLevel(std::vector<std::vector<int> > map) {
 	}
 	// Last allocation (y <= maxY), so + 1
 	this->_XYMap.push_back(std::vector<Map>(16));
-
+	nb = 0;
 	for (x = y = rX = rY = 0; y <= maxY; x++) {
 		if (x > maxX) {
 			y++;
@@ -197,11 +288,13 @@ void	Maps::displayLevel(std::vector<std::vector<int> > map) {
 			tmp->setXStart(rX);
 			tmp->setYStart(rY);
 			this->_XYMap[y][x] = *tmp;
+			nb++;
 		} else {
 			//this->_XYMap[y][x] = *(new Map());
 		}
 		rX += 27;
 	}
+	return this->tagCurrentMap(nb);
 }
 // void	Maps::tagSpecialMaps(void) {
 // 	int x, y, startMap;

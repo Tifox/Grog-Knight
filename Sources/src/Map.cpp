@@ -34,7 +34,7 @@ Map::Map(void) : _mapCount(0), _isUsed(0) {
 /**
  * @param name The name of the map
  */
-Map::Map(std::string name) : _name(name), _mapCount(0), _isUsed(0) {
+Map::Map(std::string name) : _name(name), _mapCount(0), _isUsed(0), _special("") {
 	return ;
 }
 
@@ -90,13 +90,7 @@ Map		Map::display(void) {
 
 	LevelGenerator				*lg;
 
-	if (Game::currentGame != nullptr)
-		lg = Game::currentGame->levelGenerator;
-	else
-		lg = nullptr;
-	if (lg != nullptr) {
-		std::cout << lg->getSpecialRoom(Game::currentY, Game::currentX) << std::endl;
-	}
+	std::cout << this->_special << std::endl;
 	// Allocation for the _physicMap
 	if (!this->_isUsed) {
 		for (v = 0; v < this->_height; v++) {
@@ -227,7 +221,7 @@ Map		Map::display(void) {
 						shop->spawn();
 						Game::currentGame->setShopkeeper(shop);
 					}
-				} else if (elem->getAttribute("spawnDealer") != "") {
+				} else if (elem->getAttribute("spawnDealer") != "" && this->_special == "dealer") {
 					// Check if dealer is already spawn
 					// Tag map as Dealer host
 					// Pause Dealer Object in quit
@@ -245,20 +239,20 @@ Map		Map::display(void) {
 						Game::chest->spawn();
 					}
 				} else if (elem->getAttribute("spawnDoor") != "") {
-					if (elem->getAttribute("doorType") == "boss") {
+					if (elem->getAttribute("doorType") == "boss" && this->_special == "boss") {
 						if (Game::bossDoor == nullptr) {
 							Game::spawnBossDoor = Vector2(x, y);
 							Game::bossDoor = new Door("Boss");
 						}
-					} else if (elem->getAttribute("doorType") == "secret") {
+					} else if (elem->getAttribute("doorType") == "secret" && this->_special == "secret") {
 						if (Game::secretDoor == nullptr) {
 							Game::spawnSecretDoor = Vector2(x, y);
 							Game::secretDoor = new Door("Secret");
 						}
-						if (elem->getAttribute("speType") == "return") {
-							Game::spawnSecretReturnDoor = Vector2(x, y);
-							Game::secretReturnDoor = new Door("SecretReturn");
-						}
+					}
+					if (elem->getAttribute("speType") == "return") {
+						Game::spawnSecretReturnDoor = Vector2(x, y);
+						Game::secretReturnDoor = new Door("SecretReturn");
 					}
 				}
 				elem->display();
@@ -302,4 +296,16 @@ void	Map::callAllPatterns(void) {
 
 void	Map::removeEnemy(Enemy *e) {
 	this->_enemies.remove(e);
+}
+
+void			Map::setSpecial(std::string spe) {
+	this->_special = spe;
+}
+
+std::string		Map::getSpecial(void) {
+	return this->_special;
+}
+
+std::string		Map::getName(void) {
+	return this->_name;
 }

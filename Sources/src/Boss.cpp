@@ -126,7 +126,7 @@ void		Boss::BeginContact(Elements *elem, b2Contact *contact) {
 	} else if (type == "Hero" && h->getCharging() == true) {
 		damage = h->getWeapon()->getDamage(); crit = h->getWeapon()->getCritRate();
 	}
-	if (damage) {
+	if (damage && this->_hp > 0) {
 		if (!this->_inactive) {
 			theSwitchboard.Broadcast(new Message("attack"));
 			this->_inactive = 1;

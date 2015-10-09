@@ -1,0 +1,17 @@
+{
+    "infos": {
+   	    "name": "Ring_007",
+		"displayName": "Infiltrator Ring",
+		"flavor": "Yames bonds ring",
+		"price": 10,
+		"sprites": "Resources/Images/Rings/Ring_000.png",
+		"lootLevel": 1,
+		"starterLevel": 1
+	},
+	"bonus": {
+		"hpBuff": 0,
+		"dmgReduc": 1,
+		"bonusSpeed": 2,
+		"bonusDmg": 5
+	}
+}

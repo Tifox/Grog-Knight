@@ -64,6 +64,7 @@ public:
 	int				getCritRate(void);
 	int				getSize(void);
 	int				getLootLevel(void);
+	int				getStarterLevel(void);
 	int				getDamage(void);
 	int				getPrice(void);
 	int				getPushback(void);
@@ -80,6 +81,7 @@ private:
 	std::string		_type;
 	std::string		_equipable;
 	int				_lootLevel;
+	int				_starterLevel;
 	float			_recovery;
 	float			_active;
 	int				_size;

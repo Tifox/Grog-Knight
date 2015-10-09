@@ -55,6 +55,7 @@ public:
 	int				getLootLevel(void);
 	int				getHp(void);
 	int				getPrice(void);
+	int				getStarterLevel(void);
 
 
 private:
@@ -66,6 +67,7 @@ private:
 	std::string		_flavor;
 	std::string		_sprite;
 	int				_lootLevel;
+	int				_starterLevel;
 	int 			_hp;
 	int 			_price;
 	void			_readFile(std::string name);

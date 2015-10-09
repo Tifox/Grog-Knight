@@ -54,6 +54,7 @@ public:
 	std::string		getSprite(void);
 	int				getLootLevel(void);
 	int				getPrice(void);
+	int				getStarterLevel(void);
 
 private:
 	std::map<std::string, std::map<std::string, Json::Value> >	_attr;
@@ -64,6 +65,7 @@ private:
 	std::string		_flavor;
 	std::string		_sprite;
 	int				_lootLevel;
+	int				_starterLevel;
 	int				_price;
 	void			_readFile(std::string name);
 	void			_parseJson(std::string file);

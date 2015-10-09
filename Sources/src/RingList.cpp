@@ -125,14 +125,17 @@ Ring		*RingList::getRingRandom(int level) {
 
 }
 
-std::list<Ring *>		RingList::get3Starters(int level) {
+std::list<Ring *>		RingList::get3Starters(int level, std::string hero) {
 	std::list<Ring *>		list;
 	Ring					*tmp;
+	std::list<Ring*>::iterator it;
 
-	while (list.size() < 3) {
-		tmp = this->getRingRandom();
-		if (std::find(list.begin(), list.end(), tmp) == list.end())
-			list.push_back(tmp);
+	for (it = this->_allRings.begin(); it != this->_allRings.end(); it++) {
+		if ((*it)->getStarterLevel() == level) {
+			list.push_back((*it));
+			if (list.size() > 3)
+				break ;
+		}
 	}
 	return list;
 }

@@ -325,6 +325,10 @@ void    Weapon::_parseJson(std::string file) {
 	this->_critRate = json["infos"].get("critRate", "").asInt();
 	this->_type = json["infos"].get("type", "").asString();
 	this->_equipable = json["infos"].get("equipable", "").asString();
+	if (json["infos"].get("starterLevel", "").isConvertibleTo(Json::ValueType::intValue))
+		this->_starterLevel = json["infos"].get("starterLevel", "").asInt();
+	else
+		this->_starterLevel = -1;
 	this->addAttribute("sprite", this->_sprite);
 	this->addAttribute("type3", "Weapon");
 }
@@ -395,6 +399,7 @@ int				Weapon::getDamage(void)	   { return this->_damage; }
 int				Weapon::getPushback(void)  { return this->_pushback; }
 float			Weapon::getRecovery(void)  { return this->_recovery; }
 int				Weapon::getCritRate(void)  { return this->_critRate; }
+int				Weapon::getStarterLevel(void)  { return this->_starterLevel; }
 
 /* SETTERS */
 

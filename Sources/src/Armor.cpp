@@ -109,6 +109,10 @@ void    Armor::_parseJson(std::string file) {
 	this->_lootLevel = json["infos"].get("lootLevel", "").asInt();
 	this->_price = json["infos"].get("price", "").asInt();
 	this->_sprite = json["infos"].get("sprites", "").asString();
+	if (json["infos"].get("starterLevel", "").isConvertibleTo(Json::ValueType::intValue))
+		this->_starterLevel = json["infos"].get("starterLevel", "").asInt();
+	else
+		this->_starterLevel = -1;
 	this->addAttribute("sprite", this->_sprite);
 	for (i = json["bonus"].begin(); i != json["bonus"].end(); i++)
 		this->addAttribute( i.key().asString(), (*i).asString());
@@ -152,6 +156,8 @@ std::string		Armor::getSprite(void) { return this->_sprite; }
 int				Armor::getLootLevel(void) { return this->_lootLevel; }
 int				Armor::getHp(void) { return this->_hp; }
 int				Armor::getPrice(void) { return this->_price; }
+int				Armor::getStarterLevel(void)  { return this->_starterLevel; }
+
 
 void	Armor::BeginContact(Elements *elem, b2Contact *contact) {
 }

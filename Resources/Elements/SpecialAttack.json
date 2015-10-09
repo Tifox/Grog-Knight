@@ -1,7 +1,7 @@
-
 {
 	"whirlwind": {
 		"subscribe": "specialattack",
+		"usable": "warrior",
 		"cooldown": 6,
 		"time": 0.1,
 		"uptime": 2,
@@ -15,6 +15,7 @@
 	},
 	"shockwave": {
 		"subscribe": "specialattack",
+		"usable": "warrior",
 		"cooldown": 1,
 		"damage": 25,
 		"beginFrame_right": 99,
@@ -29,6 +30,7 @@
 	},
 	"rapidFire": {
 		"subscribe": "specialattack",
+		"usable": "archer",
 		"cooldown": 10,
 		"time": 2,
 		"uptime": 2,

@@ -144,6 +144,10 @@ void	MenuCharacter::ReceiveMessage(Message *m) {
 				theCamera.MoveTo(Vector3(Game::currentGame->getCurrentMap().getXMid(),
 							Game::currentGame->getCurrentMap().getYMid() + 1.8, 18.002), 1, true);
 				this->_isBlock = 0;
+				this->_ringList.clear();
+				this->_weaponList.clear();
+				this->_armorList.clear();
+				this->_getSkills();
 				std::list<Elements *>::iterator	it;
 				for (it = this->_choices.begin(); it != this->_choices.end(); it++)
 					theWorld.Remove(*it);
@@ -434,9 +438,9 @@ void		MenuCharacter::_equipmentChoose(void) {
 	}
 	// Pool
 	if (!this->_ringList.size()) {
-		this->_ringList = (new RingList())->get3Starters(1);
-		this->_weaponList = (new WeaponList())->get3Starters(1);
-		this->_armorList = (new ArmorList())->get3Starters(1);
+		this->_ringList = (new RingList())->get3Starters(1, this->_character);
+		this->_weaponList = (new WeaponList())->get3Starters(1, this->_character);
+		this->_armorList = (new ArmorList())->get3Starters(1, this->_character);
 	}
 	this->_closetChoice = *(this->_backCloset.begin());
 	this->_closetBackChoiceUpdate();
@@ -831,8 +835,9 @@ void		MenuCharacter::_getSkills(void) {
 		Log::error("Cannot find the Special Moves / Attacks file.");
 	}
 	reader.parse(moveFile, jsonTmp, false);
-	for (it = jsonTmp.begin(); it != jsonTmp.end(); it++)
+	for (it = jsonTmp.begin(); it != jsonTmp.end(); it++) {
 		this->_skills[it.key().asString()] = *it;
+	}
 	reader.parse(attackFile, jsonTmp, false);
 	for (it = jsonTmp.begin(); it != jsonTmp.end(); it++)
 		this->_skills[it.key().asString()] = (*it);

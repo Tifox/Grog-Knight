@@ -125,14 +125,17 @@ Weapon		*WeaponList::getWeaponRandom(int level) {
 	return (*weapons.begin());
 }
 
-std::list<Weapon *>		WeaponList::get3Starters(int level) {
+std::list<Weapon *>		WeaponList::get3Starters(int level, std::string hero) {
 	std::list<Weapon *>		list;
 	Weapon					*tmp;
+	std::list<Weapon *>::iterator it;
 
-	while (list.size() < 3) {
-		tmp = this->getWeaponRandom();
-		if (std::find(list.begin(), list.end(), tmp) == list.end())
-			list.push_back(tmp);
+	for (it = this->_allWeapons.begin(); it != this->_allWeapons.end(); it++) {
+		if ((*it)->getStarterLevel() == level && (*it)->getEquipable() == hero) {
+			list.push_back((*it));
+			if (list.size() > 3)
+				break ;
+		}
 	}
 	return list;
 }

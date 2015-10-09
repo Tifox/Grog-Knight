@@ -109,6 +109,10 @@ void    Ring::_parseJson(std::string file) {
 	this->_lootLevel = json["infos"].get("lootLevel", "").asInt();
 	this->_price = json["infos"].get("price", "").asInt();
 	this->_sprite = json["infos"].get("sprites", "").asString();
+	if (json["infos"].get("starterLevel", "").isConvertibleTo(Json::ValueType::intValue))
+		this->_starterLevel = json["infos"].get("starterLevel", "").asInt();
+	else
+		this->_starterLevel = -1;
 	for (i = json["bonus"].begin(); i != json["bonus"].end(); i++)
 		this->addAttribute( i.key().asString(), (*i).asString());
 	this->addAttribute("type3", "Armor");
@@ -152,6 +156,7 @@ std::string		Ring::getSprite(void) { return this->_sprite; }
 std::string		Ring::getDisplayName(void) { return this->_displayName; }
 int				Ring::getLootLevel(void) { return this->_lootLevel; }
 int				Ring::getPrice(void) { return this->_price; }
+int				Ring::getStarterLevel(void)  { return this->_starterLevel; }
 
 /* SETTERS */
 

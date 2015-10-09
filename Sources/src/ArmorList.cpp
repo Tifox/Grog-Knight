@@ -129,14 +129,17 @@ Armor		*ArmorList::getArmorRandom(int level) {
 
 }
 
-std::list<Armor *>		ArmorList::get3Starters(int level) {
+std::list<Armor *>		ArmorList::get3Starters(int level, std::string name) {
 	std::list<Armor *>		list;
 	Armor					*tmp;
+	std::list<Armor*>::iterator it;
 
-	while (list.size() < 3) {
-		tmp = this->getArmorRandom();
-		if (std::find(list.begin(), list.end(), tmp) == list.end())
-			list.push_back(tmp);
+	for (it = this->_allArmors.begin(); it != this->_allArmors.end(); it++) {
+		if ((*it)->getStarterLevel() == level) {
+			list.push_back((*it));
+			if (list.size() > 3)
+				break ;
+		}
 	}
 	return list;
 }

@@ -71,10 +71,11 @@ Projectile::Projectile(Weapon* w, int dmg) {
 	this->_damage = dmg;
 	this->_critRate = 0;
 	this->_pushback = w->getPushback();
-	this->SetSize(0.5f);
+	this->SetSize(0.95f);
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
-	this->SetSprite("Resources/Images/shockwave.png");
-	this->SetDensity(1);
+	this->SetSprite("Resources/Images/Shockwave.png");
+	this->SetDensity(0.5);
+	this->SetLayer(101);
 	this->SetFriction(0);
 	this->SetRestitution(0.0f);
 	this->SetFixedRotation(true);
@@ -85,10 +86,8 @@ Projectile::Projectile(Weapon* w, int dmg) {
 
 	if (c->getLatOrientation() == Characters::RIGHT) {
 		xOrient = xDecal = 1;
-		this->SetRotation(135.0f);
 	} else if (c->getLatOrientation() == Characters::LEFT) {
 		xOrient = xDecal = -1;
-		this->SetRotation(-43.0f);
 	}
 	this->SetPosition(c->GetBody()->GetWorldCenter().x + xDecal, c->GetBody()->GetWorldCenter().y + yDecal);
 	this->InitPhysics();
@@ -211,8 +210,9 @@ void	Projectile::BeginContact(Elements *m, b2Contact *c) {
 		return ;
 	} else {
 		//here we put the arrow travelling through enemies (instead of 1!=1)
-		if (m->getAttribute("type") != "ground" && ((m->getAttribute("type") != "Enemy" || (m->getAttribute("type") == "Enemy" && static_cast<Enemy*>(m)->dead() == true)) || 1 != 1))
+		if (m->getAttribute("type") != "ground" && ((m->getAttribute("type") != "Enemy" || (m->getAttribute("type") == "Enemy" && static_cast<Enemy*>(m)->dead() == true)) || 1 != 1)) {
 			return;
+		}
 	}
 	Game::addToDestroyList(this);
 }

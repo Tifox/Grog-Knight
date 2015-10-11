@@ -105,6 +105,7 @@ void	Game::start(void) {
 	levelGenerator->execute();
 	this->_tmpMap = levelGenerator->getLevel();
 	while (this->maps->displayLevel(this->_tmpMap) == -1) {
+		sleep(1);
 		this->levelGenerator = new LevelGenerator(4, 3, 60);
 		levelGenerator->execute();
 		this->_tmpMap = levelGenerator->getLevel();

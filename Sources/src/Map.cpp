@@ -90,7 +90,6 @@ Map		Map::display(void) {
 
 	LevelGenerator				*lg;
 
-	std::cout << this->_special << std::endl;
 	// Allocation for the _physicMap
 	if (!this->_isUsed) {
 		for (v = 0; v < this->_height; v++) {

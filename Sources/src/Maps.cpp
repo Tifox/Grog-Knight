@@ -171,17 +171,13 @@ void	Maps::_getMap(void) {
 }
 
 int		Maps::tagCurrentMap(int nb) {
-	std::cout << "Number of rooms (maps.cpp l.172) " << nb << std::endl;
 	if (nb < 12)
 		return -1;
 	int x = 0, y = 0, i = 0;
 	//tag starting room
 	int rdm1 = (rand() % nb);
-	std::cout << "rdm1: " << rdm1 << std::endl;
 	for (; i <= rdm1; x++) {
-		std::cout << x << ", " << y << std::endl;
 		if (this->_XYMap[y][x].getName() != "") {
-			std::cout << "Map found" << std::endl;
 			if (i == rdm1) {
 				Game::currentX = x;
 				Game::currentY = y;
@@ -200,11 +196,8 @@ int		Maps::tagCurrentMap(int nb) {
 	int rdm2 = (rand() % nb);
 	while (rdm2 == rdm1)
 		rdm2 = (rand() % nb);
-	std::cout << "rdm2: " << rdm2 << std::endl;
 	for (; i <= rdm2; x++) {
-		std::cout << x << ", " << y << std::endl;
 		if (this->_XYMap[y][x].getName() != "") {
-			std::cout << "Map found" << std::endl;
 			if (i == rdm2) {
 				this->_XYMap[y][x].setSpecial("boss");
 				break ;
@@ -221,11 +214,8 @@ int		Maps::tagCurrentMap(int nb) {
 	int rdm3 = (rand() % nb);
 	while (rdm3 == rdm1 || rdm3 == rdm2)
 		rdm3 = (rand() % nb);
-	std::cout << "rdm3: " << rdm3 << std::endl;
 	for (; i <= rdm3; x++) {
-		std::cout << x << ", " << y << std::endl;
 		if (this->_XYMap[y][x].getName() != "") {
-			std::cout << "Map found" << std::endl;
 			if (i == rdm3) {
 				this->_XYMap[y][x].setSpecial("dealer");
 				break ;
@@ -242,11 +232,8 @@ int		Maps::tagCurrentMap(int nb) {
 	int rdm4 = (rand() % nb);
 	while (rdm4 == rdm1 || rdm4 == rdm2 || rdm4 == rdm3)
 		rdm4 = (rand() % nb);
-	std::cout << "rdm4: " << rdm4 << std::endl;
 	for (; i <= rdm4; x++) {
-		std::cout << x << ", " << y << std::endl;
 		if (this->_XYMap[y][x].getName() != "") {
-			std::cout << "Map found" << std::endl;
 			if (i == rdm4) {
 				this->_XYMap[y][x].setSpecial("secret");
 				break ;

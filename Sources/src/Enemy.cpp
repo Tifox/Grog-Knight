@@ -129,7 +129,7 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 			this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		}
 
-	} else if (m->getAttribute("type") == "ShockWave") {
+	} else if (m->getAttribute("type") == "Shockwave") {
 		if (this->_lastHitID == m->getId())
 		return;
 	  else
@@ -207,9 +207,8 @@ int		Enemy::takeDamage(int damage, int critRate) {
 		}
 	}
 	if (this->_hp - damage <= 0) {
-	  Game::stopRunning(this);
-	  this->GetBody()->SetLinearVelocity(b2Vec2(0,0));
-		this->_isDead = true;
+		Game::stopRunning(this);
+		this->GetBody()->SetLinearVelocity(b2Vec2(0,0));
 		Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX].removeEnemy(this);
 		this->actionCallback("death", 0);
 		this->_setCategory("death");
@@ -219,10 +218,10 @@ int		Enemy::takeDamage(int damage, int critRate) {
 		this->GetBody()->ResetMassData();
 		this->LoadSpriteFrames(this->_getAttr("newSprites").asString());
 		this->changeSizeTo(Vector2(this->_getAttr("size").asInt(),
-					this->_getAttr("size").asInt()));
+								   this->_getAttr("size").asInt()));
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-				this->_getAttr("beginFrame").asInt(),
-				this->_getAttr("endFrame").asInt());
+								  this->_getAttr("beginFrame").asInt(),
+								  this->_getAttr("endFrame").asInt());
 		theSwitchboard.SubscribeTo(this, "destroyEnemy" + this->GetName());
 		theSwitchboard.DeferredBroadcast(new Message("destroyEnemy" + this->GetName()), 0.5);
 		theSwitchboard.Broadcast(new Message(std::to_string(this->getId())));

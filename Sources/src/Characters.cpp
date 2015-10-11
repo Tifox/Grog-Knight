@@ -319,6 +319,7 @@ void	Characters::ReceiveMessage(Message *m) {
 	}
 	else if (m->GetMessageName() == "setToStatic" + this->GetName()) {
 		this->GetBody()->SetType(b2_staticBody);
+		this->_isDead = true;
 		return;
 	}
 	else if (m->GetMessageName() == "equipSelectedItem") {

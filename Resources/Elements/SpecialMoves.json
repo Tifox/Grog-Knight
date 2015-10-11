@@ -65,7 +65,7 @@
 		"sprite": "Resources/Images/totem.png",
 		"description": "Place your totem and re-use\nit to go back to that point",
 		"displayName": "Totem"
-	}
+	},
 	"wallJump": {
 		"subscribe": "specialmove",
 		"usable": "archer",

@@ -53,7 +53,7 @@
 			"max": 3,
 			"force": 6,
 			"rejump": 10,
-			"beginFrame_right": 48,
+			"beginFrame_right": 49,
 			"beginFrame_left": 55,
 			"holdFrame_right": 62,
 			"holdFrame_left": 66,

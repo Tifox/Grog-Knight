@@ -79,6 +79,8 @@ void	Shopkeeper::spawn(void) {
  * @param contact The Box2D contact object
  */
 void	Shopkeeper::BeginContact(Elements* elem, b2Contact *contact) {
+	if (!elem)
+		return;
 	HUDWindow *hud = Game::getHUD();
 	if (elem->getAttribute("type") != "ground") {
 		contact->SetEnabled(false);

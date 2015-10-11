@@ -199,6 +199,8 @@
  	int y = -((this->character->GetBody()->GetWorldCenter().y) - m.getYStart() - 0.5);
  	int range = this->character->_getAttr("blinkRange").asInt();
  	std::vector<std::vector<int>> t = m.getPhysicMap();
+	if (y >= 16)
+		y = 15;
  	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speMoveReady == 1) {
  		if (this->character->_orientation == Characters::UP) {
  			while (range > 0) {

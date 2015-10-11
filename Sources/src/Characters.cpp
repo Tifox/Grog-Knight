@@ -1407,6 +1407,7 @@ void						Characters::_heroDeath(void) {
 	ghost->MoveTo(Vector2(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y + 7), 4);
 	ghost->SetLayer(101);
 	theWorld.Add(ghost);
+	theSwitchboard.Broadcast(new Message("deleteBoss"));
 	ghost->PlaySpriteAnimation(0.2f, SAT_OneShot, 0, 10, "ghost");
 	this->_ghost = ghost;
 }

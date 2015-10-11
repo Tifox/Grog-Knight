@@ -39,6 +39,7 @@ Boss::Boss(std::string name, int x, int y) : Characters("Bosses/" + name), _inac
 	theSwitchboard.SubscribeTo(this, "attack");
 	theSwitchboard.SubscribeTo(this, "phase1");
 	theSwitchboard.SubscribeTo(this, "phase2");
+	theSwitchboard.SubscribeTo(this, "deleteBoss");
 	this->_x = 0;
 	this->_y = 2;
 	this->_stade = 0;
@@ -52,7 +53,9 @@ void		Boss::ReceiveMessage(Message *m) {
 	float	percent = this->_hp * 100 / this->_maxHp;
 	int		x = this->GetBody()->GetWorldCenter().x, y = this->GetBody()->GetWorldCenter().y, size = this->GetSize().X / 2;
 
-	if (percent > 0) {
+	if (m->GetMessageName() == "deleteBoss")
+		Game::addToDestroyList(this);
+	else if (percent > 0) {
 		if (m->GetMessageName() == "attack") {
 			if (percent > 50)
 				this->ReceiveMessage(new Message("phase1"));
@@ -121,7 +124,7 @@ void		Boss::BeginContact(Elements *elem, b2Contact *contact) {
 		damage = w->getDamage(); crit = w->getCritRate();
 	} else if (type == "HeroProjectile") {
 		damage = p->getDamage(); crit = p->getCritRate();
-	} else if (type == "ShockWave") {
+	} else if (type == "Shockwave") {
 		damage = p->getDamage(); crit = 0;
 	} else if (type == "Hero" && h->getCharging() == true) {
 		damage = h->getWeapon()->getDamage(); crit = h->getWeapon()->getCritRate();

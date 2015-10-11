@@ -73,6 +73,7 @@ class		MenuCharacter : public Characters {
 		void			_flavorInfo(std::string n);
 		void			_cleanCloset(void);
 		void			_kitchen(void);
+		void			_changeKitchen(void);
 		void			_hideKitchen(void);
 		void			_getSkills(void);
 		void			_makeSkillChoice(void);

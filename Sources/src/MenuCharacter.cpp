@@ -141,13 +141,14 @@ void	MenuCharacter::ReceiveMessage(Message *m) {
 				this->ClearSpriteInfo();
 				this->LoadSpriteFrames("Resources/Images/Menu/"+ this->_choicePointer->getAttribute("type") +"/perso_000.png");
 				this->_character = this->_choicePointer->getAttribute("type");
+				std::cout << this->_character << std::endl;
 				theCamera.MoveTo(Vector3(Game::currentGame->getCurrentMap().getXMid(),
 							Game::currentGame->getCurrentMap().getYMid() + 1.8, 18.002), 1, true);
 				this->_isBlock = 0;
 				this->_ringList.clear();
 				this->_weaponList.clear();
 				this->_armorList.clear();
-				this->_getSkills();
+				this->_changeKitchen();
 				std::list<Elements *>::iterator	it;
 				for (it = this->_choices.begin(); it != this->_choices.end(); it++)
 					theWorld.Remove(*it);
@@ -688,6 +689,31 @@ void		MenuCharacter::_cleanCloset(void) {
 	this->_choicePointer = nullptr;
 	this->_isBlock = 0;
 	this->_chooseEquipment = 0;
+}
+
+void		MenuCharacter::_changeKitchen(void) {
+	std::list<Elements *>::iterator		it;
+	int									i;
+	HUDWindow	*h = Game::getHUD();
+	std::list<std::string>::iterator	it2;
+
+	for (it2 = this->_description.begin(); it2 != this->_description.end(); it2++)
+		h->removeText(*it2);
+	if (this->_target != nullptr)
+		theWorld.Remove(this->_target);
+	this->_target = nullptr;
+	this->_isBlock = 0;
+	theWorld.Remove(this->_descriptionBackground);
+	theWorld.Remove(this->_iconBackground);
+	theWorld.Remove(this->_icon);
+	theWorld.Remove(this->_lvlUp);
+	theWorld.Remove(this->_levelsBackground);
+	Game::getHUD()->removeText(std::to_string(this->_characLvl));
+	Game::getHUD()->removeText(std::to_string(this->_characLvl * 4));
+	Game::getHUD()->removeText(std::to_string(Quit::gold));
+	this->_descriptionBackground = this->_iconBackground = this->_levelsBackground = this->_lvlUp = nullptr;
+	this->_getSkills();
+	this->_kitchen();
 }
 
 void		MenuCharacter::_kitchen(void) {

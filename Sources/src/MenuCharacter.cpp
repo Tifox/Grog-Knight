@@ -34,7 +34,7 @@ MenuCharacter::MenuCharacter(void) : Characters("MenuCharacter") {
 	this->_currentItemInfo = nullptr;
 	this->_isBlock = 0;
 	this->_chooseEquipment = 0;
-	this->_character = "Warrior";
+	this->_character = "Archer";
 	this->_characLvl = Quit::level;
 	this->_descriptionBackground = this->_iconBackground = this->_icon = nullptr;
 	this->_levelsBackground = this->_lvlUp = nullptr;

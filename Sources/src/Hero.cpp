@@ -337,9 +337,15 @@ void	Hero::_takeDamage(Elements* elem) {
 
 void	Hero::setStartingValues(void) {
 	this->_setCategory("starting");
-	this->equipWeapon(Game::menuCharacter->getWeapon());
-	this->equipArmor(Game::menuCharacter->getArmor());
-	this->equipRing(Game::menuCharacter->getRing());
+	if (Game::World == 0) {
+		this->equipWeapon(Game::menuCharacter->getWeapon());
+		this->equipArmor(Game::menuCharacter->getArmor());
+		this->equipRing(Game::menuCharacter->getRing());
+	} else {
+		this->equipWeapon(this->getWeapon());
+		this->equipArmor(this->getArmor());
+		this->equipRing(this->getRing());
+	}
 	if (Game::menuCharacter->getSkills()[0] != "") {
 		this->_speMove = Game::menuCharacter->getSkills()[0];
 		Log::info("Special Move: " + Game::menuCharacter->getSkills()[0]);

@@ -36,6 +36,7 @@ Menu::Menu(void) : _currentChoice("Start Game"), _fadeActor(nullptr) {
 	theSwitchboard.SubscribeTo(this, "escapePressed");
 	theSwitchboard.SubscribeTo(this, "moveMenu");
 	theSwitchboard.SubscribeTo(this, "PauseGame");
+	theSwitchboard.SubscribeTo(this, "bossEnd");
 }
 
 //! Basic destructor
@@ -83,12 +84,24 @@ void	Menu::ReceiveMessage(Message *m) {
 
 	if (m->GetMessageName() == "PauseGame")
 		Game::currentGame->endingGame();
-	if (m->GetMessageName() == "enterPressed" && Game::deadWaiting)
-		Game::currentGame->menuInGame();
+	if (m->GetMessageName() == "enterPressed" && Game::deadWaiting) {
+		if (!Game::lvlDone) {
+			Game::currentGame->menuInGame();
+		} else {
+			Game::lvlDone = 0;
+			Game::World++;
+			Game::currentGame->start();
+		}
+	}
 	if (Game::toggleMenu == false)
 		return;
 	if (m->GetMessageName() == "moveMenu")
 		this->_background_map->destroyMap();
+	if (m->GetMessageName() == "bossEnd") {
+		Game::endGame = true;
+		Game::lvlDone = 1;
+		Game::destroyAllBodies("LEVEL CLEARED");
+	}
 	if (this->_inMenu == 1) {
 		if (m->GetMessageName() == "enterPressed") {
 			if (this->_currentChoice == "Start Game") {

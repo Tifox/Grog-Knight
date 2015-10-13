@@ -32,7 +32,7 @@
  * Load the maps with Maps::Maps
  * @sa Maps
  */
-Game::Game(void) : _hero((new Characters())) {
+Game::Game(void) : _hero(nullptr) {
 	#ifdef __APPLE__
 		theWorld.Initialize(1024, 720, NAME, true, false);
 	#else
@@ -79,6 +79,9 @@ void	Game::grid(void) {
  * Let's start the game
  */
 void	Game::start(void) {
+	Hero			*hero = nullptr;
+
+	theWorld.ResumePhysics();
 	theWorld.SetBackgroundColor(*(new Color(0, 0, 0)));
 	Game::wList = new WeaponList();
 	Game::eList = new EnemyList();
@@ -89,18 +92,22 @@ void	Game::start(void) {
 
 	this->tooltip = new Tooltip();
 	int i;
-	for (i = 0; i < 3; i++) {
+	for (i = 0; i < 3; i++)
 		this->maps->_XYMap[0][i].destroyMap();
-	}
-
 	delete(Game::currentGame->maps);
 	this->maps = new Maps("Maps/");
 	this->maps->readMaps();
 	Game::currentGame = this;
-	Hero			*hero = new Hero(Game::menuCharacter->getHeroType());
+	if (Game::menuCharacter != nullptr) {
+		std::cout << "HERE" << std::endl;
+		hero = new Hero(Game::menuCharacter->getHeroType());
+	}
 
-	theWorld.GetPhysicsWorld().DestroyBody(Game::menuCharacter->GetBody());
-	theWorld.Remove(Game::menuCharacter);
+	if (Game::menuCharacter != nullptr) {
+		theWorld.GetPhysicsWorld().DestroyBody(Game::menuCharacter->GetBody());
+		theWorld.Remove(Game::menuCharacter);
+		std::cout << "HE2RE" << std::endl;
+	}
 	this->levelGenerator = new LevelGenerator(4, 3, 60);
 	levelGenerator->execute();
 	this->_tmpMap = levelGenerator->getLevel();
@@ -121,15 +128,23 @@ void	Game::start(void) {
 						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 9.001);
 	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 
-	this->displayHero(*(hero));
-	hero->init();
-	hero->setGold(0);
-	hero->setLevel(Game::menuCharacter->getLevel());
-	Game::chest->applySave(this->_save);
-	this->setHero(hero);
-	hero->setStartingValues();
+	if (hero) {
+		this->displayHero(*(hero));
+		hero->init();
+		hero->setGold(0);
+		hero->setLevel(Game::menuCharacter->getLevel());
+		Game::chest->applySave(this->_save);
+		this->setHero(hero);
+		hero->setStartingValues();
+		this->setHero(hero);
+	} else {
+		std::cout << "HERE" << std::endl;
+		Game::getHUD()->removeText("Press Enter to continue.");
+		Game::getHUD()->removeText("LEVEL CLEARED");
+		this->getHero()->GetBody()->SetTransform(b2Vec2(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
+						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid()), this->getHero()->GetBody()->GetAngle());
+	}
 	this->displayHUD();
-	this->setHero(hero);
 	Game::started = 1;
 	Game::currentGame = this;
 }
@@ -159,7 +174,7 @@ void	Game::menuInGame(void) {
 	if (Game::getHUD() == nullptr)
 		Game::addHUDWindow(new HUDWindow());
 	else {
-		Game::getHUD()->removeText("Press Enter to restart.");
+		Game::getHUD()->removeText("Press Enter to continue.");
 		Game::getHUD()->removeText("YOU ARE DEAD");
 		theWorld.Remove(this->getHero()->getGhost());
 		delete this->getHero();
@@ -390,15 +405,20 @@ void	Game::endingGame(void) {
 		}
 	}
 	Game::elementMap.clear();
-	Game::getHUD()->setText("Press Enter to restart.", 500, 500);
-	theWorld.Remove(Game::currentGame->getHero());
+	Game::getHUD()->setText("Press Enter to continue.", 500, 500);
+	if (!Game::lvlDone) {
+		theWorld.Remove(Game::currentGame->getHero());
+		Game::currentGame->setHero(nullptr);
+	}
+	Game::menuCharacter = nullptr;
 	Game::ended = false;
 	Game::endGame = false;
 	Game::secretDoor = nullptr;
 	Game::bossDoor = nullptr;
 	Game::dealer = nullptr;
 	if (Game::currentGame->getShopkeeper()) {
-		Game::currentGame->getShopkeeper()->getShop()->hideShop();
+		if (Game::currentGame->getShopkeeper()->getShop())
+			Game::currentGame->getShopkeeper()->getShop()->hideShop();
 		theWorld.Remove(Game::currentGame->getShopkeeper());
 	}
 	Game::currentGame->setShopkeeper(nullptr);
@@ -414,7 +434,7 @@ void	Game::endingGame(void) {
  * This function destroy each element in Game::bodiesToDestroy.
  * So, call this function outisde of this goal is useless.
  */
-bool	Game::destroyAllBodies(void) {
+bool	Game::destroyAllBodies(std::string msg) {
 	if (Game::ended == true) {
 		return true ;
 	}
@@ -422,7 +442,7 @@ bool	Game::destroyAllBodies(void) {
 		Game::ended = true;
 		theWorld.PausePhysics();
 		int i, j = 0, k;
-		Game::getHUD()->setText("YOU ARE DEAD", 400, 400, Vector3(1, 0, 0), 1, "dead");
+		Game::getHUD()->setText(msg, 400, 400, Vector3(1, 0, 0), 1, "dead");
 		Game::getHUD()->clearHUD();
 		k = Game::elementMap.size();
 		theSwitchboard.DeferredBroadcast(new Message("PauseGame"), 1);
@@ -640,6 +660,7 @@ int							Game::isWaitingForBind = 0;
 int							Game::reloadHUD = 0;
 int							Game::isPaused = 0;
 int							Game::asToStart = 0;
+int							Game::lvlDone = 0;
 MenuCharacter				*Game::menuCharacter = nullptr;
 Vector2						Game::spawnShop = Vector2();
 Vector2						Game::spawnBossDoor = Vector2();

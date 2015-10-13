@@ -111,8 +111,9 @@ void		SpecialAttack::ReceiveMessage(Message *m) {
 			this->_currentAttack = "";
 		}
 		if (this->_currentAttack == "rapidFire") {
-			Game::currentGame->getHero()->_isWhirlwinding = false;
+			Game::currentGame->getHero()->_isRapidFiring = false;
 			theSwitchboard.UnsubscribeFrom(this, "RapidFire");
+			c->AnimCallback("base");
 			this->_currentAttack = "";
 		}
 	}
@@ -187,9 +188,9 @@ void	SpecialAttack::_rapidFire(void) {
 		else if (hero->_latOrientation == Characters::LEFT)
 		  orientation = "left";
 		hero->changeSizeTo(Vector2(hero->_getAttr("x").asInt(), hero->_getAttr("y").asInt()));
-		hero->PlaySpriteAnimation(hero->_getAttr("time").asFloat(), SAT_OneShot,
+		hero->PlaySpriteAnimation(hero->_getAttr("time").asFloat(), SAT_Loop,
 								  hero->_getAttr("beginFrame_" + orientation).asInt(),
-								  hero->_getAttr("endFrame_" + orientation).asInt(), "base");
+								  hero->_getAttr("endFrame_" + orientation).asInt());
 		theSwitchboard.DeferredBroadcast(new Message("speAttReady"),
 				this->character->_getAttr("cooldown").asFloat());
 		theSwitchboard.DeferredBroadcast(new Message("SpecialAttackEnd"),

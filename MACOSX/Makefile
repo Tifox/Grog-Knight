@@ -85,7 +85,7 @@ FRAMEWORKS = -framework Cocoa \
 			 -framework ForceFeedback \
 			 -framework AGL
 
-LIBS_FLAG = -lAngel -lFtgl -lGlfw -lBox2d -lFreetype -lLua -lOgg -lVorbis -lHidUtilities -lGwen -lJson -lfmodex -lfmodexL \
+LIBS_FLAG = -lAngel -lFTGL -lGLFW -lBox2D -lFreeType -lLua -lOgg -lVorbis -lHIDUtilities -lGWEN -ljson -lfmodex -lfmodexL \
 			-lILU -lIL -lILUT -ljpeg -llcms -lmng -ltiff -lpng -lz
 
 LIBS_DIRS = -L../Angel/build \

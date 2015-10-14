@@ -90,6 +90,9 @@ void	Game::start(void) {
 	Game::dList = new DrugList();
 	Game::chest = new Chest();
 
+
+	Game::endGame = false;
+	Game::deadWaiting = 0;
 	this->tooltip = new Tooltip();
 	int i;
 	for (i = 0; i < 3; i++)
@@ -99,7 +102,6 @@ void	Game::start(void) {
 	this->maps->readMaps();
 	Game::currentGame = this;
 	if (Game::menuCharacter != nullptr) {
-		std::cout << "HERE" << std::endl;
 		hero = new Hero(Game::menuCharacter->getHeroType());
 	}
 
@@ -138,11 +140,12 @@ void	Game::start(void) {
 		hero->setStartingValues();
 		this->setHero(hero);
 	} else {
-		std::cout << "HERE" << std::endl;
+		// Enter next level
 		Game::getHUD()->removeText("Press Enter to continue.");
 		Game::getHUD()->removeText("LEVEL CLEARED");
 		this->getHero()->GetBody()->SetTransform(b2Vec2(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
 						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid()), this->getHero()->GetBody()->GetAngle());
+		this->getHero()->inSpecialMap = 0;
 	}
 	this->displayHUD();
 	Game::started = 1;
@@ -317,6 +320,7 @@ void	Game::moveCamera(void) {
 			Game::currentY++;
 			asChanged = true;
 		}
+		std::cout << this->_hero->GetBody()->GetWorldCenter().x << "," << this->_hero->GetBody()->GetWorldCenter().y << std::endl;
 		if (asChanged) {
 			this->_hero->destroyTarget();
 			this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();

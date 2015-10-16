@@ -40,7 +40,7 @@
 		"subscribe": "specialmove",
 		"usable": "mage",
 		"time": 0.1,
-		"cooldown": 0,
+		"cooldown": 4,
 		"blinkRange": 4,
 		"description": "Short-range teleport",
 		"displayName": "Blink"

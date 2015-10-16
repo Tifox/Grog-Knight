@@ -211,9 +211,11 @@
  					break;
  				range--;
  			}
- 			if (range > 0)
+ 			if (range > 0) {
  				this->character->GetBody()->SetTransform(b2Vec2(this->character->GetBody()->GetWorldCenter().x,
  							this->character->GetBody()->GetWorldCenter().y + range), 0);
+				goto speMoveReady;
+			}
  		}
  		else if (this->character->_orientation == Characters::DOWN) {
  			while (range > 0) {
@@ -222,9 +224,11 @@
  				range--;
  			}
  			range--;
- 			if (range > 0)
+ 			if (range > 0) {
  				this->character->GetBody()->SetTransform(b2Vec2(this->character->GetBody()->GetWorldCenter().x,
  							this->character->GetBody()->GetWorldCenter().y - range), 0);
+				goto speMoveReady;
+			}
  		}
  		else if (this->character->_orientation == Characters::RIGHT) {
  			while (range > 0) {
@@ -232,9 +236,11 @@
  					break;
  				range--;
  			}
- 			if (range > 0)
+ 			if (range > 0) {
  				this->character->GetBody()->SetTransform(b2Vec2(this->character->GetBody()->GetWorldCenter().x + range,
  							this->character->GetBody()->GetWorldCenter().y), 0);
+				goto speMoveReady;
+			}
  		}
  		else if (this->character->_orientation == Characters::LEFT) {
  			while (range > 0) {
@@ -244,12 +250,10 @@
  			}
  			if (range > 0) {
 				this->character->_speMoveReady = 0;
-				theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
-												 this->character->_getAttr("cooldown").asFloat());
-				Game::getHUD()->speMoveCooldown(this->character->_getAttr("cooldown").asFloat());
 				this->character->_grounds.clear();
  				this->character->GetBody()->SetTransform(b2Vec2(this->character->GetBody()->GetWorldCenter().x - range,
- 							this->character->GetBody()->GetWorldCenter().y), 0);
+ 					this->character->GetBody()->GetWorldCenter().y), 0);
+				goto speMoveReady;
 			}
  		}
  		if (range > 0) {
@@ -259,6 +263,12 @@
  			this->character->GetBody()->CreateFixture(shape, 1);
  		}
  	}
+	return ;
+speMoveReady:
+		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
+			this->character->_getAttr("cooldown").asFloat());
+		Game::getHUD()->speMoveCooldown(this->character->_getAttr("cooldown").asFloat());
+		return ;
  }
 
  //! Special move: fly

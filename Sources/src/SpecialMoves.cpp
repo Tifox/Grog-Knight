@@ -84,6 +84,7 @@
  		theSwitchboard.SubscribeTo(this->character, "disengageEnd");
 	        theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
  				this->character->_getAttr("cooldown").asFloat());
+		Game::getHUD()->speMoveCooldown(this->character->_getAttr("cooldown").asFloat());
 		theSwitchboard.DeferredBroadcast(new Message("disengageEnd"),
  				this->character->_getAttr("uptime").asFloat());
 		Weapon *currentWeapon = Game::currentGame->getHero()->getWeapon();
@@ -141,6 +142,7 @@
  		theSwitchboard.SubscribeTo(this->character, "chargeEnd");
  		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
  				this->character->_getAttr("cooldown").asFloat());
+		Game::getHUD()->speMoveCooldown(this->character->_getAttr("cooldown").asFloat());
  		theSwitchboard.DeferredBroadcast(new Message("chargeEnd"),
  				this->character->_getAttr("uptime").asFloat());
  		if (this->character->_latOrientation == Characters::LEFT)
@@ -179,6 +181,7 @@
  		theSwitchboard.SubscribeTo(this->character, "stompEnd");
  		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
 										 this->character->_getAttr("cooldown").asFloat());
+		Game::getHUD()->speMoveCooldown(this->character->_getAttr("cooldown").asFloat());
  		this->character->GetBody()->SetLinearVelocity(b2Vec2(0, -this->character->_getAttr("stompSpeed").asInt()));
  		this->character->actionCallback("stomp", 0);
  	}
@@ -243,6 +246,7 @@
 				this->character->_speMoveReady = 0;
 				theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
 												 this->character->_getAttr("cooldown").asFloat());
+				Game::getHUD()->speMoveCooldown(this->character->_getAttr("cooldown").asFloat());
 				this->character->_grounds.clear();
  				this->character->GetBody()->SetTransform(b2Vec2(this->character->GetBody()->GetWorldCenter().x - range,
  							this->character->GetBody()->GetWorldCenter().y), 0);
@@ -347,6 +351,7 @@ void	SpecialMoves::_shunpo(void) {
 			return;
 		this->character->_speMoveReady = false;
 		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"), this->character->_getAttr("shunpo", "cooldown").asFloat());
+		Game::getHUD()->speMoveCooldown(this->character->_getAttr("cooldown").asFloat());
 		if (this->character->_target->getCurrentEnemy()->getOrientation() == Characters::LEFT)
 			i = 1;
 		else

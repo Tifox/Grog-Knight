@@ -137,6 +137,7 @@ void	SpecialAttack::_whirlwind(void) {
 					   this->character->_getAttr("whirlwind", "uptime").asFloat());
 	  theSwitchboard.DeferredBroadcast(new Message("speAttReady"),
 					   this->character->_getAttr("cooldown").asFloat());
+		Game::getHUD()->speAttCooldown(this->character->_getAttr("cooldown").asFloat());
 	  hero->changeSizeTo(Vector2(hero->_getAttr("x").asFloat(), hero->_getAttr("y").asFloat()));
 	  hero->PlaySpriteAnimation(hero->_getAttr("time").asFloat(), SAT_Loop,
 				    hero->_getAttr("beginFrame").asInt(),
@@ -169,6 +170,7 @@ void	SpecialAttack::_shockwave(void) {
 								  hero->_getAttr("endFrame_" + orientation).asInt(), "base");
 		theSwitchboard.DeferredBroadcast(new Message("speAttReady"),
 										 this->character->_getAttr("cooldown").asFloat());
+		Game::getHUD()->speAttCooldown(this->character->_getAttr("cooldown").asFloat());
 	}
 }
 
@@ -193,6 +195,7 @@ void	SpecialAttack::_rapidFire(void) {
 								  hero->_getAttr("endFrame_" + orientation).asInt());
 		theSwitchboard.DeferredBroadcast(new Message("speAttReady"),
 				this->character->_getAttr("cooldown").asFloat());
+		Game::getHUD()->speAttCooldown(this->character->_getAttr("cooldown").asFloat());
 		theSwitchboard.DeferredBroadcast(new Message("SpecialAttackEnd"),
 				this->character->_getAttr("rapidFire", "uptime").asFloat());
 		theSwitchboard.DeferredBroadcast(new Message("RapidFire"), 0);

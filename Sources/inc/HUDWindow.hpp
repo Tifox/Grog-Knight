@@ -60,6 +60,7 @@ class	HUDWindow : public HUDActor {
 		HUDWindow(void);
 		~HUDWindow(void);
 
+		void	ReceiveMessage(Message *m);
 		HUDWindow::Text	*setText(std::string str, int x, int y);
 		HUDWindow::Text	*setText(std::string str, int x, int y, Vector3 color, int alpha);
 		HUDWindow::Text	*setText(std::string str, int x, int y, Vector3 color, int alpha, std::string font);
@@ -95,6 +96,8 @@ class	HUDWindow : public HUDActor {
 		void	deleteBigMap(int n);
 		void	updateBigMap(void);
 		void	addTotemToBigMap(void);
+		void	speAttCooldown(int time);
+		void	speMoveCooldown(int time);
 
 		static	int		isToggled;
 
@@ -111,6 +114,10 @@ class	HUDWindow : public HUDActor {
 		std::list<HUDActor *>	_bigMapList;
 		HUDActor				*_currentObjectMap;
 		HUDActor				*_currentTotemMap;
+		HUDActor				*_attackCooldown;
+		HUDActor				*_moveCooldown;
+		int						_cooldownAtt;
+		int						_cooldownMove;
 		void					_drawDoor(Vector2 size, Vector2 position);
 		int						_doNotDelete;
 };

@@ -29,13 +29,15 @@
 /**
  * Basic constructor
  */
-HUDWindow::HUDWindow(void) : HUDActor() {
+HUDWindow::HUDWindow(void) : HUDActor(), _cooldownAtt(0), _cooldownMove(0) {
 	RegisterFont("Resources/font.ttf", 14, "Gamefont");
 	RegisterFont("Resources/font.ttf", 20, "BigGamefont");
 	RegisterFont("Resources/font.ttf", 10, "MediumGamefont");
 	RegisterFont("Resources/Fonts/fail.otf", 80, "dead");
 	RegisterFont("Resources/Fonts/Market_Deco.ttf", 80, "title");
 	RegisterFont("Resources/Fonts/Market_Deco.ttf", 40, "smallTitle");
+	theSwitchboard.SubscribeTo(this, "speAttCooldownEnd");
+	theSwitchboard.SubscribeTo(this, "speMoveCooldownEnd");
 	this->_hearts.clear();
 	return;
 }
@@ -237,6 +239,7 @@ void	HUDWindow::displayText(void) {
 	std::list<HUDWindow::Text *>::iterator	i;
 
 	for (i = this->_text.begin(); i != this->_text.end(); i++) {
+		if (*i) {
 		glColor4f((*i)->colorR, (*i)->colorG, (*i)->colorB, (*i)->colorA);
 		if ((*i)->toFollow == nullptr && (*i)->isFading == 1)
 			(*i)->colorA -= 0.02f;
@@ -262,6 +265,7 @@ void	HUDWindow::displayText(void) {
 		}
 		if ((*i)->colorA < 0)
 			this->removeText((*i)->str);
+		}
 	}
 }
 
@@ -762,7 +766,7 @@ void	HUDWindow::character(void) {
 	this->addImage(this->_g->getHero()->getAttribute("spritesFrame"), theCamera.GetWindowWidth() / 20 * 1.1, theCamera.GetWindowHeight() / 20 * 1.5,
 			theCamera.GetWindowWidth() / 18, 4);
 	HUDActor	*bag = new HUDActor();
-	this->setText("Lvl " + std::to_string(this->_g->getHero()->getLevel()), theCamera.GetWindowWidth() / 20 * 0.2, theCamera.GetWindowHeight() / 20 * 0.9, Vector3(1, 1, 1), 1, "MediumGamefont");
+	this->setText(std::to_string(this->_g->getHero()->getLevel()), theCamera.GetWindowWidth() / 20 * 0.3, theCamera.GetWindowHeight() / 20 * 0.9, Vector3(1, 1, 1), 1, "MediumGamefont");
 }
 
 void	HUDWindow::spells(void) {
@@ -789,6 +793,68 @@ void	HUDWindow::clearHUD(void) {
 	this->removeText(this->_gold);
 	if (this->_g)
 		this->removeText("Lvl " + std::to_string(this->_g->getHero()->getLevel()));
+}
+
+void	HUDWindow::speAttCooldown(int time) {
+	HUDActor	*h = new HUDActor();
+  
+	h->SetPosition((theCamera.GetWindowWidth() / 20) * 7, theCamera.GetWindowHeight() / 20 * 2.1);
+	h->SetSize(theCamera.GetWindowWidth() / 27);
+	h->SetLayer(100);
+	h->SetColor(Color(0, 0, 0, 0.5));
+	h->ChangeSizeTo(Vector2(theCamera.GetWindowWidth() / 27, 0), time, false, "speAttCooldownEnd");
+	theWorld.Add(h);
+	this->_attackCooldown = h;
+	this->_cooldownAtt = time + 1;
+	theSwitchboard.SubscribeTo(this, "second");
+	this->ReceiveMessage(new Message("second"));
+}
+
+void	HUDWindow::speMoveCooldown(int time) {
+	HUDActor	*h = new HUDActor();
+  
+	h->SetPosition((theCamera.GetWindowWidth() / 20) * 7, theCamera.GetWindowHeight() / 20);
+	h->SetSize(theCamera.GetWindowWidth() / 27);
+	h->SetLayer(100);
+	h->SetColor(Color(0, 0, 0, 0.5));
+	h->ChangeSizeTo(Vector2(theCamera.GetWindowWidth() / 27, 0), time, false, "speMoveCooldownEnd");
+	theWorld.Add(h);
+	this->_moveCooldown = h;
+	this->_cooldownMove = time + 1;
+	theSwitchboard.SubscribeTo(this, "second");
+	this->ReceiveMessage(new Message("second"));
+}
+
+
+void	HUDWindow::ReceiveMessage(Message *m) {
+	static size_t		lastTimestamp = 0;
+	static HUDWindow::Text	*attText = nullptr;
+	static HUDWindow::Text	*moveText = nullptr;
+
+	if (m->GetMessageName() == "speAttCooldownEnd") {
+		theWorld.Remove(this->_attackCooldown);
+	} else if (m->GetMessageName() == "speMoveCooldownEnd") {
+		theWorld.Remove(this->_moveCooldown);
+	} else if (m->GetMessageName() == "second") {
+		if (lastTimestamp != time(NULL)) {
+			lastTimestamp = time(NULL);
+			this->removeText(attText);
+			if (this->_cooldownAtt >= 2) {
+				attText = this->setText(std::to_string(--this->_cooldownAtt), (theCamera.GetWindowWidth() / 20) * 7, theCamera.GetWindowHeight() / 20 * 2.1, Vector3(1, 0, 0), 1);
+				theSwitchboard.DeferredBroadcast(new Message("second"), 1);
+			}
+			this->removeText(moveText);
+			if (this->_cooldownMove >= 2) {
+				moveText = this->setText(std::to_string(--this->_cooldownMove), (theCamera.GetWindowWidth() / 20) * 7, theCamera.GetWindowHeight() / 20, Vector3(1, 0, 0), 1);
+				theSwitchboard.DeferredBroadcast(new Message("second"), 1);
+			}
+			if (this->_cooldownAtt < 1 && this->_cooldownMove < 1) {
+				theSwitchboard.UnsubscribeFrom(this, "second");
+				//this->removeText(attText);
+				//this->removeText(moveText);
+			}
+		}
+	}
 }
 
 void	HUDWindow::setGame(Game *g) { this->_g = g; };

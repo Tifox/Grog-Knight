@@ -91,6 +91,7 @@ void	Menu::ReceiveMessage(Message *m) {
 			Game::lvlDone = 0;
 			Game::World++;
 			Game::menuCharacter = nullptr;
+			Game::isInMenu = 0;
 			Game::currentGame->start();
 			Game::started = 1;
 		}

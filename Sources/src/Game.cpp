@@ -79,7 +79,7 @@ void	Game::grid(void) {
  * Let's start the game
  */
 void	Game::start(void) {
-	Hero			*hero = nullptr;
+	Hero			*hero = nullptr, *tmp = nullptr;
 
 	theWorld.ResumePhysics();
 	theWorld.SetBackgroundColor(*(new Color(0, 0, 0)));
@@ -103,12 +103,11 @@ void	Game::start(void) {
 	Game::currentGame = this;
 	if (Game::menuCharacter != nullptr) {
 		hero = new Hero(Game::menuCharacter->getHeroType());
-	}
-
-	if (Game::menuCharacter != nullptr) {
 		theWorld.GetPhysicsWorld().DestroyBody(Game::menuCharacter->GetBody());
 		theWorld.Remove(Game::menuCharacter);
-		std::cout << "HE2RE" << std::endl;
+	} else {
+		tmp = static_cast<Hero *>(this->getHero());
+		hero = new Hero(tmp->getAttribute("class"));
 	}
 	this->levelGenerator = new LevelGenerator(4, 3, 60);
 	levelGenerator->execute();
@@ -130,26 +129,28 @@ void	Game::start(void) {
 						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 9.001);
 	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 
-	if (hero) {
-		this->displayHero(*(hero));
-		hero->init();
-		hero->setGold(0);
+	this->displayHero(*(hero));
+	hero->init();		
+	if (Game::menuCharacter) {
 		hero->setLevel(Game::menuCharacter->getLevel());
-		Game::chest->applySave(this->_save);
-		this->setHero(hero);
-		hero->setStartingValues();
-		this->setHero(hero);
+		hero->setGold(0);
 	} else {
-		// Enter next level
-		Game::getHUD()->removeText("Press Enter to continue.");
-		Game::getHUD()->removeText("LEVEL CLEARED");
-		this->getHero()->GetBody()->SetTransform(b2Vec2(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
-						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid()), this->getHero()->GetBody()->GetAngle());
-		this->getHero()->inSpecialMap = 0;
+		hero->setLevel(tmp->getLevel());
+		hero->setGold(tmp->getGold());
+		hero->setHP(tmp->getHP());
+		hero->setInventory(tmp->getInventory());
+		Game::getHUD()->consumable(hero->getInventory()->getItems());
 	}
+	Game::chest->applySave(this->_save);
+	this->setHero(hero);
+	hero->setStartingValues(tmp);
+	this->setHero(hero);
 	this->displayHUD();
+	Game::getHUD()->removeText("Press Enter to continue.");
+	Game::getHUD()->removeText("LEVEL CLEARED");
 	Game::started = 1;
 	Game::currentGame = this;
+	Game::getHUD()->setText("World " + std::to_string(Game::World), 300, 200, Vector3(1, 1, 1), 10, "title")->isFading = 1;
 }
 
 void	Game::menuInGame(void) {
@@ -320,7 +321,6 @@ void	Game::moveCamera(void) {
 			Game::currentY++;
 			asChanged = true;
 		}
-		std::cout << this->_hero->GetBody()->GetWorldCenter().x << "," << this->_hero->GetBody()->GetWorldCenter().y << std::endl;
 		if (asChanged) {
 			this->_hero->destroyTarget();
 			this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
@@ -408,6 +408,7 @@ void	Game::endingGame(void) {
 			theWorld.Remove(Game::elementMap[i]);
 		}
 	}
+	Quit::doSave(static_cast<Hero *>(Game::currentGame->getHero()));
 	Game::elementMap.clear();
 	Game::getHUD()->setText("Press Enter to continue.", 500, 500);
 	if (!Game::lvlDone) {
@@ -427,6 +428,7 @@ void	Game::endingGame(void) {
 	}
 	Game::currentGame->setShopkeeper(nullptr);
 	Game::chest->reset();
+	Game::currentGame->tooltip->clearInfo();
 	Game::deadWaiting = true;
 	Game::currentIds = 0;
 	// Chest, Shop Items

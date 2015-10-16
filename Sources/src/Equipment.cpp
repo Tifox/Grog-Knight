@@ -150,14 +150,18 @@ Equipment::~Equipment(void) {
  * @param contact The Box2D contact object.
  */
 void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
+	if (!elem)
+		return ;
 	if (elem->getAttribute("type") != "ground" || elem->getAttribute("speType") == "spikes") {
 		contact->SetEnabled(false);
 		contact->enableContact = false;
-	} else if (this->GetBody()->GetWorldCenter().y - 1 > elem->GetBody()->GetWorldCenter().y) {
-	theSwitchboard.SubscribeTo(this, "setToStatic" + this->GetName());
-	theSwitchboard.Broadcast(new Message("setToStatic" + this->GetName()));
-	this->GetBody()->GetFixtureList()->SetDensity(0);
-	this->GetBody()->ResetMassData();
+	} else if (elem->getAttribute("physic") != "") {
+		if (this->GetBody()->GetWorldCenter().y - 1 > elem->GetBody()->GetWorldCenter().y) {
+			theSwitchboard.SubscribeTo(this, "setToStatic" + this->GetName());
+			theSwitchboard.Broadcast(new Message("setToStatic" + this->GetName()));
+			this->GetBody()->GetFixtureList()->SetDensity(0);
+			this->GetBody()->ResetMassData();
+		}
 	}
 }
 

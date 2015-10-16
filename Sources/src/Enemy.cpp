@@ -88,6 +88,8 @@ void	Enemy::actionCallback(std::string name, int status) {
  * @param contact The Box2D contact object
  */
 void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
+	if (!m)
+		return ;
 	Characters::BeginContact(m, contact);
 	Weapon* w = static_cast<Weapon*>(m);
 	Projectile* p = static_cast<Projectile*>(m);
@@ -176,6 +178,8 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 
 void	Enemy::EndContact(Elements *m, b2Contact *contact) {
 	Characters::EndContact(m, contact);
+	if (!m)
+		return ;
 	if (m->getAttribute("type") == "ground" && !this->_isDead && !this->_isTakingDamage && Game::stopPattern == false) {
 		if (this->_lastElement != m->getId()) {
 			this->_pattern->tick(Game::currentGame->getCurrentMap());

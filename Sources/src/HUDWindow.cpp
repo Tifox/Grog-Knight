@@ -63,6 +63,7 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y) {
 	t->colorR = t->colorG = t->colorB = t->colorA = 1;
 	t->font = "Gamefont";
 	t->toFollow = nullptr;
+	t->isFading = 0;
 	this->_text.push_back(t);
 	return t;
 }
@@ -86,6 +87,7 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 colo
 	t->colorB = color.Z;
 	t->colorA = alpha;
 	t->font = "Gamefont";
+	t->isFading = 0;
 	t->toFollow = nullptr;
 	this->_text.push_back(t);
 	return t;
@@ -111,6 +113,7 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 colo
 	t->colorB = color.Z;
 	t->colorA = alpha;
 	t->font = font;
+	t->isFading = 0;
 	t->toFollow = nullptr;
 	this->_text.push_back(t);
 	return t;
@@ -173,6 +176,7 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, Characters *toFollow,
 	return t;
 }
 
+
 //! Remove Text
 /**
  * This function remove the asked text from the screen.
@@ -234,6 +238,8 @@ void	HUDWindow::displayText(void) {
 
 	for (i = this->_text.begin(); i != this->_text.end(); i++) {
 		glColor4f((*i)->colorR, (*i)->colorG, (*i)->colorB, (*i)->colorA);
+		if ((*i)->toFollow == nullptr && (*i)->isFading == 1)
+			(*i)->colorA -= 0.02f;
 		if ((*i)->toFollow == nullptr)
 			DrawGameText((*i)->str, (*i)->font, (*i)->x, (*i)->y, theCamera.GetRotation());
 		else {
@@ -241,9 +247,6 @@ void	HUDWindow::displayText(void) {
 			Map		m = Game::currentGame->getCurrentMap();
 
 			if ((*i)->toFollow->GetBody()) {
-				if ((*i)->colorA < 0) {
-					this->removeText((*i)->str); return ;
-				}
 				x = ((((*i)->toFollow->GetBody()->GetWorldCenter().x + 0.5) - m.getXStart()) * 40) - 40;
 				y = -((((*i)->toFollow->GetBody()->GetWorldCenter().y + (((*i)->toFollow->GetSize().Y) / 4)) - m.getYStart()) * 40) + 50;
 				if ((*i)->isFading) {
@@ -257,6 +260,8 @@ void	HUDWindow::displayText(void) {
 				}
 			}
 		}
+		if ((*i)->colorA < 0)
+			this->removeText((*i)->str);
 	}
 }
 
@@ -609,11 +614,13 @@ void	HUDWindow::bigMap(void) {
 					if (x == Game::currentX && y == Game::currentY) {
 						this->_currentObjectMap = tmp;
 						tmp->SetColor(0, 1, 0, 0);
+					} if (map[y][x].getSpecial() != "" && map[y][x].getSpecial() != "starter") {
+						this->setText(std::string(1, map[y][x].getSpecial()[0] - 32), x2 - 2, y2 + 1, Vector3(1, 0, 0), 1);
 					} if (Game::currentGame->getHero()->_totem != nullptr) {
 						if (std::to_string(x) == Game::currentGame->getHero()->_totem->getAttribute("currentX") 
 							&& std::to_string(y) == Game::currentGame->getHero()->_totem->getAttribute("currentY")) {
-								this->setText("T", x2 - 2, y2 + 1, Vector3(1, 0, 0), 1);
-							}
+								this->setText("To", x2 - 2, y2 + 1, Vector3(1, 0, 0), 1);
+						}
 					} else
 						tmp->SetColor(1, 1, 1, 0);
 					tmp->SetDrawShape(ADS_Square);
@@ -648,7 +655,10 @@ void	HUDWindow::deleteBigMap(int n) {
 				(*it)->ChangeColorTo(Color(1, 1, 1, 0), 1);
 		}
 		theSwitchboard.DeferredBroadcast(new Message("deleteMapPressed"), 1);
-		this->removeText("T");
+		this->removeText("To");
+		this->removeText("B");
+		this->removeText("S");
+		this->removeText("D");
 	} else {
 		if (this->_doNotDelete == 0) {
 			for (it = this->_bigMapList.begin(); it != this->_bigMapList.end(); it++)
@@ -684,6 +694,8 @@ void	HUDWindow::updateBigMap(void) {
 					theWorld.Add(tmp);
 					this->_bigMapList.push_back(tmp);
 					tmp->ChangeColorTo(Color(0, 1, 0, 0.5), 0.5);
+					if (map[y][x].getSpecial() != "" && map[y][x].getSpecial() != "starter")
+						this->setText(std::string(1, map[y][x].getSpecial()[0] - 32), x2 - 2, y2 + 1, Vector3(1, 0, 0), 1);
 				}
 			}
 		}

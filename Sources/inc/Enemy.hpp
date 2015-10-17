@@ -48,7 +48,7 @@ public:
 	void			setMap(Map *m);
 	Map				*getMap(void);
 	void			setPattern(CPattern *p);
-	CPattern			*getPattern(void);
+	CPattern		*getPattern(void);
 	bool			dead(void);
 
 protected:

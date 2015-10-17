@@ -1,0 +1,21 @@
+{
+    "infos": {
+   	    "name": "Sword_000",
+		"displayName": "Sharp Sword",
+		"flavor": "Hey look, its a sword.\nA pretty shitty one actually...",
+		"type": "Sword",
+		"equipable": "Warrior",
+		"price": 10,
+		"hitbox": "SWORD",
+		"size": 1,
+	 	"critRate": 5,
+		"damage": 5,
+		"recovery": 1,
+		"pushback": 5,
+		"active": 0.2,
+		"attack": "melee",
+		"sprites": "Resources/Images/Weapons/Sword_000.png",
+		"lootLevel": 1,
+		"starterLevel": 1
+	}
+}

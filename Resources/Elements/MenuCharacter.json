@@ -13,14 +13,14 @@
 			"beginFrame": 0,
 			"endFrame": 7,
 			"time": 0.1,
-			"force": 12
+			"force": 20
 		},
 		"backward": {
 			"subscribe": "backward",
 			"beginFrame": 8,
 			"endFrame": 15,
 			"time": 0.1,
-			"force": 12
+			"force": 20
 		},
 		"breath": {
 			"beginFrame_right": 18,
@@ -34,6 +34,9 @@
 		},
 		"up": {
 			"subscribe": "up"
+		},
+		"jump": {
+			"subscribe": "jump"
 		}
 	}
 }

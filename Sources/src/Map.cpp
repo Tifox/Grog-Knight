@@ -34,7 +34,7 @@ Map::Map(void) : _mapCount(0), _isUsed(0) {
 /**
  * @param name The name of the map
  */
-Map::Map(std::string name) : _name(name), _mapCount(0), _isUsed(0) {
+Map::Map(std::string name) : _name(name), _mapCount(0), _isUsed(0), _special("") {
 	return ;
 }
 
@@ -62,8 +62,6 @@ void	Map::setMap(std::vector<int> map) { this->_map.push_back(map); };
 void	Map::setXStart(int x) { this->_xStart = x; };
 void	Map::setYStart(int y) { this->_yStart = y; };
 void	Map::setUsed(int n) { this->_isUsed = n; };
-std::list<Enemy *>	Map::getEnemies(void) { return this->_enemies; };
-std::vector<std::vector<int> >	Map::getPhysicMap(void) { return this->_physicMap; };
 
 /* GETTERS */
 
@@ -74,6 +72,9 @@ int		Map::getYMid(void) { return this->_yStart - (this->_height / 2); };
 int		Map::getXStart(void) { return this->_xStart; };
 int		Map::getYStart(void) { return this->_yStart; };
 int		Map::getIsUsed(void) { return this->_isUsed; };
+std::list<Enemy *>	Map::getEnemies(void) { return this->_enemies; };
+std::vector<std::vector<int> >	Map::getPhysicMap(void) { return this->_physicMap; };
+std::vector<std::vector<Elements*> >	Map::getObjectMap(void) { return this->_objectMap; };
 
 //! Display the map
 /**
@@ -87,10 +88,14 @@ Map		Map::display(void) {
 	Elements					*elem;
 	int							v = 0;
 
+	LevelGenerator				*lg;
+
 	// Allocation for the _physicMap
 	if (!this->_isUsed) {
-		for (v = 0; v < this->_height; v++)
+		for (v = 0; v < this->_height; v++) {
 			this->_physicMap.push_back(std::vector<int>(this->getWidth()));
+			this->_objectMap.push_back(std::vector<Elements*>(this->getWidth()));
+		}
 	}
 	for (layers = this->_map.begin(), v = 0; layers != this->_map.end(); layers++, v++) {
 		x = this->_xStart;
@@ -119,6 +124,7 @@ Map		Map::display(void) {
 				if (this->_properties.find(*it) == this->_properties.end()) {
 					elem->addAttribute("physic", "TRUE");
 					this->_physicMap[-(y - this->_yStart)][x - this->_xStart] = 1;
+					this->_objectMap[-(y - this->_yStart)][x - this->_xStart] = elem;
 				} else {
 					std::map<std::string, Json::Value>::iterator	it2;
 					int												isPhysic = 1, isAnimated = 0;
@@ -138,8 +144,10 @@ Map		Map::display(void) {
 					}
 					if (isPhysic == 1) {
 						elem->addAttribute("physic", "TRUE");
+						this->_objectMap[-(y - this->_yStart)][x - this->_xStart] = elem;
 						this->_physicMap[-(y - this->_yStart)][x - this->_xStart] = 1;
 					} else {
+						this->_objectMap[-(y - this->_yStart)][x - this->_xStart] = nullptr;
 						this->_physicMap[-(y - this->_yStart)][x - this->_xStart] = 0;
 					}
 					if (isAnimated == 1) {
@@ -172,10 +180,18 @@ Map		Map::display(void) {
 				}
 				if (elem->getAttribute("spawnEnemy") != "") {
 					if (!this->_isUsed) {
+						int level = Game::World;
+						if (elem->getAttribute("enemyLevel") == "+1") {
+							level++;
+						}
+						else if (elem->getAttribute("enemyLevel") == "-1")
+							level--;
+						if (level < 0)
+							level = 0;
 						if (elem->getAttribute("isFlying") != "")
-							tmp = new Enemy(Game::eList->getEnemyRandom(true));
+							tmp = new Enemy(Game::eList->getEnemyRandom(level, "true"));
 						else
-							tmp = new Enemy(Game::eList->getEnemyRandom(false));
+							tmp = new Enemy(Game::eList->getEnemyRandom(level, "false"));
 						PassivePattern	*p = new PassivePattern();
 						tmp->setXStart(x);
 						tmp->setYStart(y);
@@ -196,7 +212,7 @@ Map		Map::display(void) {
 						}
 					}
 				} else if (elem->getAttribute("spawnShop") != "") {
-					// Check if shop spawn 
+					// Check if shop spawn
 					if (Game::currentGame->getShopkeeper() == nullptr) {
 						Shopkeeper	*shop;
 						Game::spawnShop = Vector2(x, y);
@@ -204,7 +220,7 @@ Map		Map::display(void) {
 						shop->spawn();
 						Game::currentGame->setShopkeeper(shop);
 					}
-				} else if (elem->getAttribute("spawnDealer") != "") {
+				} else if (elem->getAttribute("spawnDealer") != "" && this->_special == "dealer") {
 					// Check if dealer is already spawn
 					// Tag map as Dealer host
 					// Pause Dealer Object in quit
@@ -212,6 +228,30 @@ Map		Map::display(void) {
 						Game::spawnDealer = Vector2(x, y);
 						Game::dealer = new Dealer("Dealer");
 						Game::dealer->spawn();
+					}
+				} else if (elem->getAttribute("spawnChest") != "") {
+					// Check if chest is already spawn
+					// Tag map as Chest host
+					// Pause Chest Object in quit
+					if (Game::chest->isSpawn == 0) {
+						Game::spawnChest = Vector2(x, y);
+						Game::chest->spawn();
+					}
+				} else if (elem->getAttribute("spawnDoor") != "") {
+					if (elem->getAttribute("doorType") == "boss" /*&& this->_special == "boss"*/) {
+						if (Game::bossDoor == nullptr) {
+							Game::spawnBossDoor = Vector2(x, y);
+							Game::bossDoor = new Door("Boss");
+						}
+					} else if (elem->getAttribute("doorType") == "secret" && this->_special == "secret") {
+						if (Game::secretDoor == nullptr) {
+							Game::spawnSecretDoor = Vector2(x, y);
+							Game::secretDoor = new Door("Secret");
+						}
+					}
+					if (elem->getAttribute("speType") == "return") {
+						Game::spawnSecretReturnDoor = Vector2(x, y);
+						Game::secretReturnDoor = new Door("SecretReturn");
 					}
 				}
 				elem->display();
@@ -255,4 +295,16 @@ void	Map::callAllPatterns(void) {
 
 void	Map::removeEnemy(Enemy *e) {
 	this->_enemies.remove(e);
+}
+
+void			Map::setSpecial(std::string spe) {
+	this->_special = spe;
+}
+
+std::string		Map::getSpecial(void) {
+	return this->_special;
+}
+
+std::string		Map::getName(void) {
+	return this->_name;
 }

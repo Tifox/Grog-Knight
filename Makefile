@@ -92,6 +92,7 @@ SRCS =	./Sources/src/Armor.cpp \
 		./Sources/src/RingList.cpp \
 		./Sources/src/Room.cpp \
 		./Sources/src/SpecialMoves.cpp \
+		./Sources/src/SpecialAttack.cpp \
 		./Sources/src/Tooltip.cpp \
 		./Sources/src/Weapon.cpp \
 		./Sources/src/WeaponList.cpp \
@@ -100,7 +101,11 @@ SRCS =	./Sources/src/Armor.cpp \
 		./Sources/src/Shop.cpp \
 		./Sources/src/MenuCharacter.cpp \
 		./Sources/src/Drug.cpp \
-		./Sources/src/DrugList.cpp 
+		./Sources/src/Chest.cpp \
+		./Sources/src/Door.cpp \
+		./Sources/src/DrugList.cpp \
+		./Sources/src/ControllerInputManager.cpp \
+		./Sources/src/Boss.cpp
 
 SYSOBJS = $(patsubst %.cpp,%.o,$(SYSSRCS))
 OBJS = $(patsubst %.cpp,%.o,$(SRCS))

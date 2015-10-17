@@ -53,9 +53,11 @@ public:
 	int								id(void);
 	std::vector<std::vector<int> >	getLevel(void);
 	std::vector<Room*>				*_rooms;
+	std::vector<std::vector <Room* > > roomMap;
 	int								getStartX();
 	int								getStartY();
 	int								getNbMaps();
+	std::string						getSpecialRoom(int i, int j);
 
 
 

@@ -37,27 +37,55 @@ Shop::Shop(void) {
 Shop::Shop(int x, int y, int lvl, int nb) {
 	int i;
 	int j;
+	int rant;
+	int rant2;
+	this->_items = std::vector<std::string>(nb);
 	for (i = 0; i < nb; i++) {
-		theSwitchboard.SubscribeTo(this, "deleteShopItem" + i);
-		int rant = rand() % 3;
-		if (rant == 0)
-			this->_items[i] = Game::wList->getWeaponRandom(lvl)->getName();
-		if (rant == 1)
-			this->_items[i] = Game::aList->getArmorRandom(lvl)->getName();
-		if (rant == 2)
-			this->_items[i] = Game::rList->getRingRandom(lvl)->getName();
-		// if (i != 0) {
-		// 	for (j = i; j >= 0; j--) {
-		// 		std::cout << j << std::endl;
-		// 		if (this->_items[j] == this->_items[i]) {
-		// 			i--;
-		// 			break;
-		// 		}
-		// 	}
-		// }
+		std::string item;
+		theSwitchboard.SubscribeTo(this, "deleteShopItem" + std::to_string(i));
+		rant = rand() % 3;
+		if (rant == 0) {
+			rant2 = rand() % 3;
+			if (rant2 == 1)
+				lvl--;
+			else if (rant2 == 3)
+				lvl++;
+			if (lvl < 1)
+				lvl = 1;
+			item = Game::wList->getWeaponRandom(lvl)->getName();
+		}
+		if (rant == 1) {
+			rant2 = rand() % 3;
+			if (rant2 == 1)
+				lvl--;
+			else if (rant2 == 3)
+				lvl++;
+			if (lvl < 1)
+				lvl = 1;
+			item = Game::aList->getArmorRandom(lvl)->getName();
+		}
+		if (rant == 2) {
+			rant2 = rand() % 3;
+			if (rant2 == 1)
+				lvl--;
+			else if (rant2 == 3)
+				lvl++;
+			if (lvl < 1)
+				lvl = 1;
+			item = Game::rList->getRingRandom(lvl)->getName();
+		}
+		if (i != 0) {
+			if (std::find(this->_items.begin(), this->_items.end(), item) == this->_items.end())
+				this->_items[i] = item;
+			else
+				i--;
+		}
+		else {
+			this->_items[i] = item;
+		}
 	}
-	this->_items[i] = "end";
 }
+
 //! Deletes the merchant when changing floor
 Shop::~Shop(void) {
 
@@ -65,18 +93,21 @@ Shop::~Shop(void) {
 
 //! Reveal the merchant when you enter the correct room
 void	Shop::revealShop(int x, int y) {
+	this->_shopItems = std::vector<ShopItem*>(this->_items.size());
   int i = 0;
-  for (i = 0; this->_items[i] != "end"; i++) {
+  for (i = 0, x -= 2; i < this->_items.size(); i++, x += 3) {
 	if (this->_items[i] != "bought") {
-		this->_shopItems[i] = new ShopItem(this->_items[i], x + i * 2 - 1, y, i);
+		this->_shopItems[i] = new ShopItem(this->_items[i], x, y - 7, i);
 	}
+	else
+		this->_shopItems[i] = nullptr;
   }
 }
 
 Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
 	this->SetPosition(x, y);
+	this->SetLayer(99);
 	this->addAttribute("type", "shopItem");
-	this->addAttribute("price", "10");
 	this->addAttribute("name", name);
 	this->addAttribute("number", std::to_string(num));
 	this->addAttribute("shopPosition", std::to_string(num));
@@ -84,28 +115,46 @@ Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
 		this->SetSprite(Game::wList->getWeapon(name)->getSprite());
 		this->addAttribute("flavor", Game::wList->getWeapon(name)->getFlavor());
 		this->addAttribute("type3", "Weapon");
+		this->addAttribute("price", std::to_string(Game::wList->getWeapon(name)->getPrice()));
+		this->addAttribute("displayName",Game::wList->getWeapon(name)->getDisplayName());
 		if (Game::wList->getWeapon(name)->getAttribute("hpBuff") != "")
 			this->addAttribute("hpBuff", Game::wList->getWeapon(name)->getAttribute("hpBuff"));
-		if (Game::wList->getWeapon(name)->getAttribute("manaBuff") != "")
-			this->addAttribute("manaBuff", Game::wList->getWeapon(name)->getAttribute("manaBuff"));
+		if (Game::wList->getWeapon(name)->getAttribute("dmgReduc") != "")
+			this->addAttribute("dmgReduc", Game::wList->getWeapon(name)->getAttribute("dmgReduc"));
+		if (Game::wList->getWeapon(name)->getAttribute("bonusSpeed") != "")
+			this->addAttribute("bonusSpeed", Game::wList->getWeapon(name)->getAttribute("bonusSpeed"));
+		if (Game::wList->getWeapon(name)->getAttribute("bonusDmg") != "")
+			this->addAttribute("bonusDmg", Game::wList->getWeapon(name)->getAttribute("bonusDmg"));
 	}
 	else if (Game::aList->checkExists(name) == 1) {
 		this->SetSprite(Game::aList->getArmor(name)->getSprite());
 		this->addAttribute("type3", "Armor");
 		this->addAttribute("flavor", Game::aList->getArmor(name)->getFlavor());
+		this->addAttribute("price", std::to_string(Game::aList->getArmor(name)->getPrice()));
+		this->addAttribute("displayName",Game::aList->getArmor(name)->getDisplayName());
 		if (Game::aList->getArmor(name)->getAttribute("hpBuff") != "")
 			this->addAttribute("hpBuff", Game::aList->getArmor(name)->getAttribute("hpBuff"));
-		if (Game::aList->getArmor(name)->getAttribute("manaBuff") != "")
-			this->addAttribute("manaBuff", Game::aList->getArmor(name)->getAttribute("manaBuff"));
+		if (Game::aList->getArmor(name)->getAttribute("dmgReduc") != "")
+			this->addAttribute("dmgReduc", Game::aList->getArmor(name)->getAttribute("dmgReduc"));
+		if (Game::aList->getArmor(name)->getAttribute("bonusSpeed") != "")
+			this->addAttribute("bonusSpeed", Game::aList->getArmor(name)->getAttribute("bonusSpeed"));
+		if (Game::aList->getArmor(name)->getAttribute("bonusDmg") != "")
+			this->addAttribute("bonusDmg", Game::aList->getArmor(name)->getAttribute("bonusDmg"));
   }
 	else if (Game::rList->checkExists(name) == 1) {
 		this->addAttribute("flavor", Game::rList->getRing(name)->getFlavor());
 		this->addAttribute("type3", "Ring");
 		this->SetSprite(Game::rList->getRing(name)->getSprite());
+		this->addAttribute("price", std::to_string(Game::rList->getRing(name)->getPrice()));
+		this->addAttribute("displayName",Game::rList->getRing(name)->getDisplayName());
 		if (Game::rList->getRing(name)->getAttribute("hpBuff") != "")
 			this->addAttribute("hpBuff", Game::rList->getRing(name)->getAttribute("hpBuff"));
-		if (Game::rList->getRing(name)->getAttribute("manaBuff") != "")
-			this->addAttribute("manaBuff", Game::rList->getRing(name)->getAttribute("manaBuff"));
+		if (Game::rList->getRing(name)->getAttribute("dmgReduc") != "")
+			this->addAttribute("dmgReduc", Game::rList->getRing(name)->getAttribute("dmgReduc"));
+		if (Game::rList->getRing(name)->getAttribute("bonusSpeed") != "")
+			this->addAttribute("bonusSpeed", Game::rList->getRing(name)->getAttribute("bonusSpeed"));
+		if (Game::rList->getRing(name)->getAttribute("bonusDmg") != "")
+			this->addAttribute("bonusDmg", Game::rList->getRing(name)->getAttribute("bonusDmg"));
 	}
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	this->SetIsSensor(true);
@@ -114,16 +163,32 @@ Shop::ShopItem::ShopItem(std::string name, int x, int y, int num): Elements() {
 }
 
 //! Hide the merchant when you leave the roomz`
+/**
+ * Not currently used
+ */
 void	Shop::hideShop(void) {
+	int i;
+	std::cout << "Here" << std::endl;
+	for (i = 0; i < this->_shopItems.size(); i++) {
+		std::cout << i << std::endl;
+		if (this->_shopItems[i] != nullptr) {
+			this->_shopItems[i]->GetBody()->SetActive(false);
+			this->_shopItems[i]->ChangeColorTo(Color(0, 0, 0, 0), 1);
+			theWorld.Remove(this->_shopItems[i]);
+			this->_shopItems[i] = nullptr;
+		}
+	}
 }
 
 void	Shop::ReceiveMessage(Message *m) {
 	int i;
-	for (i = 0; this->_items[i] != "end"; i++) {
-		if (m->GetMessageName() == "deleteShopItem" + i) {
+	for (i = 0; i < this->_items.size(); i++) {
+		if (m->GetMessageName() == "deleteShopItem" + std::to_string(i)) {
 			this->_items[i] = "bought";
 			this->_shopItems[i]->GetBody()->SetActive(false);
+			this->_shopItems[i]->ChangeColorTo(Color(0, 0, 0, 0), 0);
 			theWorld.Remove(this->_shopItems[i]);
+			this->_shopItems[i] = nullptr;
 			Game::currentGame->getShopkeeper()->displayText("A wise choice.");
 		}
 	}

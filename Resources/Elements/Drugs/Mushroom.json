@@ -1,0 +1,9 @@
+{
+	"infos": {
+		"name": "Mushroom",
+		"id": 0,
+		"flavor": "Pet you\nNot petting you.",
+		"sprites": "Resources/Images/gold.png",
+		"effect": 1
+	}
+}

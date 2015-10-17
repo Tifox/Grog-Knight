@@ -1,0 +1,21 @@
+{
+    "infos": {
+   	    "name": "Spear_000",
+		"displayName": "Light Spear",
+		"flavor": "Really not heavy\nDoes it actually hurts?",
+		"equipable": "Warrior",
+		"type": "Spear",
+		"price": 10,
+		"hitbox": "SWORD",
+		"size": 1,
+	 	"critRate": 5,
+		"damage": 5,
+		"recovery": 1,
+		"pushback": 5,
+		"active": 0.2,
+		"attack": "melee",
+		"sprites": "Resources/Images/Weapons/Spear_000.png",
+		"lootLevel": 1,
+		"starterLevel": 1
+	}
+}

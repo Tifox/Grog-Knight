@@ -29,13 +29,15 @@
 /**
  * Basic constructor
  */
-HUDWindow::HUDWindow(void) : HUDActor() {
+HUDWindow::HUDWindow(void) : HUDActor(), _cooldownAtt(0), _cooldownMove(0) {
 	RegisterFont("Resources/font.ttf", 14, "Gamefont");
 	RegisterFont("Resources/font.ttf", 20, "BigGamefont");
 	RegisterFont("Resources/font.ttf", 10, "MediumGamefont");
 	RegisterFont("Resources/Fonts/fail.otf", 80, "dead");
 	RegisterFont("Resources/Fonts/Market_Deco.ttf", 80, "title");
 	RegisterFont("Resources/Fonts/Market_Deco.ttf", 40, "smallTitle");
+	theSwitchboard.SubscribeTo(this, "speAttCooldownEnd");
+	theSwitchboard.SubscribeTo(this, "speMoveCooldownEnd");
 	this->_hearts.clear();
 	return;
 }
@@ -63,6 +65,7 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y) {
 	t->colorR = t->colorG = t->colorB = t->colorA = 1;
 	t->font = "Gamefont";
 	t->toFollow = nullptr;
+	t->isFading = 0;
 	this->_text.push_back(t);
 	return t;
 }
@@ -86,6 +89,7 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 colo
 	t->colorB = color.Z;
 	t->colorA = alpha;
 	t->font = "Gamefont";
+	t->isFading = 0;
 	t->toFollow = nullptr;
 	this->_text.push_back(t);
 	return t;
@@ -111,6 +115,7 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 colo
 	t->colorB = color.Z;
 	t->colorA = alpha;
 	t->font = font;
+	t->isFading = 0;
 	t->toFollow = nullptr;
 	this->_text.push_back(t);
 	return t;
@@ -142,28 +147,27 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, Characters *toFollow,
 	t->y = 0;
 	if (isTalk) {
 		Elements	*test;
-
 		test = new Elements();
 		test->SetSize(2.5, 0.7);
 		test->SetPosition(toFollow->GetBody()->GetWorldCenter().x, 
-			(toFollow->GetBody()->GetWorldCenter().y + 1));
+				(toFollow->GetBody()->GetWorldCenter().y + 1));
 		test->SetSprite("Resources/Images/HUD/talk.png");
 		test->SetDrawShape(ADS_Square);
-/*		test->SetFixedRotation(true);
-		test->SetLayer(1500);
-		test->SetDensity(0.001f);
-		test->SetRestitution(0);
-		test->SetFriction(0);
-		test->SetIsSensor(true);*/
+		/*		test->SetFixedRotation(true);
+				test->SetLayer(1500);
+				test->SetDensity(0.001f);
+				test->SetRestitution(0);
+				test->SetFriction(0);
+				test->SetIsSensor(true);*/
 		test->InitPhysics();
 		b2DistanceJointDef jointDef1;
 		b2DistanceJointDef jointDef2;
 		jointDef1.Initialize(toFollow->GetBody(), test->GetBody(), 
 				b2Vec2(toFollow->GetBody()->GetWorldCenter().x + 0.4f, 
-				toFollow->GetBody()->GetWorldCenter().y + 0.4f), test->GetBody()->GetWorldCenter());
+					toFollow->GetBody()->GetWorldCenter().y + 0.4f), test->GetBody()->GetWorldCenter());
 		jointDef1.collideConnected = false;
 		jointDef2.Initialize(toFollow->GetBody(), test->GetBody(), 
-			b2Vec2(toFollow->GetBody()->GetWorldCenter().x - 0.4f, test->GetBody()->GetWorldCenter().y - 0.4f), test->GetBody()->GetWorldCenter());
+				b2Vec2(toFollow->GetBody()->GetWorldCenter().x - 0.4f, test->GetBody()->GetWorldCenter().y - 0.4f), test->GetBody()->GetWorldCenter());
 		jointDef2.collideConnected = false;
 		b2DistanceJoint *joint1 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef1);
 		b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
@@ -174,17 +178,22 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, Characters *toFollow,
 	return t;
 }
 
+
 //! Remove Text
 /**
  * This function remove the asked text from the screen.
  * @param str The text content message
  */
-void	HUDWindow::removeText(std::string str) {
-	std::list<HUDWindow::Text *>::iterator	i;
+void	HUDWindow::removeText(std::string str, int last) {
+	std::list<HUDWindow::Text *>::iterator	i, t = this->_text.end();
 
 	for (i = this->_text.begin(); i != this->_text.end(); i++) {
-		if ((*i)->str == str)
-			break ;
+		if ((*i)->str == str) {
+			if (last) {
+				this->_text.erase(i);
+			} else
+				break ;
+		}
 	}
 	if (i != this->_text.end()) {
 		if (this->_dialog[str]) {
@@ -193,6 +202,19 @@ void	HUDWindow::removeText(std::string str) {
 		}
 		this->_text.erase(i);
 	}
+}
+
+void	HUDWindow::updateText(std::string org, std::string newStr) {
+	std::list<HUDWindow::Text *>::iterator	i;
+
+	for (i = this->_text.begin(); i != this->_text.end(); i++) {
+		if ((*i)->str == org)
+			break ;
+	}
+	if (i != this->_text.end()) {
+		(*i)->str = newStr;
+	}
+
 }
 
 //! Remove a text with an object
@@ -221,24 +243,32 @@ void	HUDWindow::displayText(void) {
 	std::list<HUDWindow::Text *>::iterator	i;
 
 	for (i = this->_text.begin(); i != this->_text.end(); i++) {
-		glColor4f((*i)->colorR, (*i)->colorG, (*i)->colorB, (*i)->colorA);
-		if ((*i)->toFollow == nullptr)
-			DrawGameText((*i)->str, (*i)->font, (*i)->x, (*i)->y, theCamera.GetRotation());
-		else {
-			int		x, y, mult = 6;
-			Map		m = Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX];
+		if (*i) {
+			glColor4f((*i)->colorR, (*i)->colorG, (*i)->colorB, (*i)->colorA);
+			if ((*i)->toFollow == nullptr && (*i)->isFading == 1)
+				(*i)->colorA -= 0.02f;
+			if ((*i)->toFollow == nullptr)
+				DrawGameText((*i)->str, (*i)->font, (*i)->x, (*i)->y, theCamera.GetRotation());
+			else {
+				int		x, y, mult = 6;
+				Map		m = Game::currentGame->getCurrentMap();
 
-			x = ((((*i)->toFollow->GetBody()->GetWorldCenter().x + 0.5) - m.getXStart()) * 40) - 40;
-			y = -((((*i)->toFollow->GetBody()->GetWorldCenter().y - 0.5) - m.getYStart()) * 40) + 50;
-			if ((*i)->isFading) {
-				DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
-				(*i)->y += 1;
-				(*i)->colorA -= 0.05f;
-			} else if ((*i)->isTalk) {
-				DrawGameText((*i)->str, (*i)->font, x - 5, y - (*i)->y + 5, theCamera.GetRotation());
-			} else {
-				DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
+				if ((*i)->toFollow->GetBody()) {
+					x = ((((*i)->toFollow->GetBody()->GetWorldCenter().x + 0.5) - m.getXStart()) * 40) - 40;
+					y = -((((*i)->toFollow->GetBody()->GetWorldCenter().y + (((*i)->toFollow->GetSize().Y) / 4)) - m.getYStart()) * 40) + 50;
+					if ((*i)->isFading) {
+						DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
+						(*i)->y += 1;
+						(*i)->colorA -= 0.02f;
+					} else if ((*i)->isTalk) {
+						DrawGameText((*i)->str, (*i)->font, x - 5, y - (*i)->y + 5, theCamera.GetRotation());
+					} else {
+						DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
+					}
+				}
 			}
+			if ((*i)->colorA < 0)
+				this->removeText((*i)->str);
 		}
 	}
 }
@@ -335,60 +365,38 @@ HUDActor	*HUDWindow::addImage(std::string path, int x, int y, Vector2 size, int 
  * @todo Empty heart, half-heart.
  */
 void	HUDWindow::life(int life) {
-	int		x, v, sLife = life, y, size;
+	int		x, v, y, size, j;
+	float percent;
 	std::list<HUDActor *>::iterator	i;
 	int		index;
 
-	y = theCamera.GetWindowHeight() / 20 * 0.9;
-	size = theCamera.GetWindowWidth() / 20 * 0.6;
-	for (i = this->_hearts.begin(), index = 0; i != this->_hearts.end(); i++, index++) {
-		(*(i))->ChangeColorTo(Color(0, 0, 0, 0), 0);
-		theWorld.Remove(*(i));
-	}
-	this->_hearts.clear();
-	for (x = theCamera.GetWindowWidth() / 20 * 3; life > 0; x += theCamera.GetWindowWidth() / 35) {
-		if (x == theCamera.GetWindowWidth() / 20 * 3) {
-			this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp.png", (x - theCamera.GetWindowWidth() / 30), y, size - 2));
-		} if (life >= 25) {
-			this->_hearts.push_back(this->addImage("Resources/Images/HUD/heart.png", x, y, size, 100));
-			life -= 25;
+	if (!Game::deadWaiting) {
+		y = theCamera.GetWindowHeight() / 20 * 1;
+		size = theCamera.GetWindowWidth() / 20 * 0.6;
+		for (i = this->_hearts.begin(), index = 0; i != this->_hearts.end(); i++, index++) {
+			(*(i))->ChangeColorTo(Color(0, 0, 0, 0), 0);
+			theWorld.Remove(*(i));
 		}
-	}
-	if (sLife < this->_maxHP) {
-		for (v = 0; (this->_maxHP - sLife) > v; v += 25, x += theCamera.GetWindowWidth() / 35) {
-			this->_hearts.push_back(this->addImage("Resources/Images/HUD/empty_heart.png", x, y + 2, size - 3, 105));
+		this->_hearts.clear();
+		percent = life * 100 / this->_maxHP;
+		x = theCamera.GetWindowWidth() / 20 * 3;
+		this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp.png", (x - theCamera.GetWindowWidth() / 30), y, size - 2));
+		x += size - 2;
+		if (percent > 0)
+			this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_begin.png", 
+						((x - theCamera.GetWindowWidth() / 30)), y, Vector2(5, 15), 100));
+		x += 1.3;
+		for (j = 1; j < percent; x += 1.3, j++)
+			this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_middle.png", (x - theCamera.GetWindowWidth() / 30), y, Vector2(1.3, 15), 100));
+		this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_end.png", 
+					((x - theCamera.GetWindowWidth() / 30) + 1.3), y, Vector2(5, 15), 100));
+		if (percent < 100) {
+			for (; percent < 100; percent++, x += 1.3) {
+				this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_empty_middle.png", (x - theCamera.GetWindowWidth() / 30), y, Vector2(1.3, 15), 100));
+			}
+			this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_empty_end.png", 
+						((x - theCamera.GetWindowWidth() / 30) + 1.3), y, Vector2(5, 15), 100));
 		}
-	}
-}
-
-//! Display mana function
-/**
- * Show the mana in the HUD
- * Same way as HUDWindow::life, this function handle the sprites, and the Empty mana
- * @param mana The Mana point.
- */
-void	HUDWindow::mana(int mana) {
-	std::list<HUDActor *>::iterator	i;
-	float								x = theCamera.GetWindowWidth() / 20 * 3.05;
-	int									y, max = this->_maxMana;
-	float								 yHeight = theCamera.GetWindowHeight() / 20 * 1.56, size = theCamera.GetWindowWidth() / 20 * 0.25;
-
-	for (i = this->_mana.begin(); i != this->_mana.end(); i++)
-		theWorld.Remove(*(i));
-	this->_mana.clear();
-	this->_mana.push_back(this->addImage("Resources/Images/HUD/mp.png", (x - theCamera.GetWindowWidth() / 30), yHeight, size * 2));
-	x -= theCamera.GetWindowWidth() / 80 * 0.8;
-	this->_mana.push_back(this->addImage("Resources/Images/HUD/mp_bar_first.png", x, yHeight, size));
-	x += theCamera.GetWindowWidth() / 80;
-	for (y = 0; y < (mana - 1); y += 10, x += theCamera.GetWindowWidth() / 80) {
-		this->_mana.push_back(this->addImage("Resources/Images/HUD/mp_bar_mid.png", x, yHeight, size));
-	}
-	if (y == max)
-		this->_mana.push_back(this->addImage("Resources/Images/HUD/mp_bar_full_end.png", x, yHeight, size));
-	else {
-		for (; y < max; y += 10, x += theCamera.GetWindowWidth() / 80)
-			this->_mana.push_back(this->addImage("Resources/Images/HUD/mp_bar_empty.png", x, yHeight, size));
-		this->_mana.push_back(this->addImage("Resources/Images/HUD/mp_bar_empty_end.png", x, yHeight, size));
 	}
 }
 
@@ -400,7 +408,7 @@ void	HUDWindow::mana(int mana) {
  */
 void	HUDWindow::gold(int gold) {
 	float								x = theCamera.GetWindowWidth() / 20 * 2.37;
-	int									y = theCamera.GetWindowHeight() / 20 * 2.2;
+	int									y = theCamera.GetWindowHeight() / 20 * 1.9;
 	float								size = theCamera.GetWindowWidth() / 20 * 0.41;
 
 	this->addImage("Resources/Images/HUD/xp.png", x, y, Vector2(size + 3.5, size), 100);
@@ -614,11 +622,13 @@ void	HUDWindow::bigMap(void) {
 					if (x == Game::currentX && y == Game::currentY) {
 						this->_currentObjectMap = tmp;
 						tmp->SetColor(0, 1, 0, 0);
+					} if (map[y][x].getSpecial() != "" && map[y][x].getSpecial() != "starter") {
+						this->setText(std::string(1, map[y][x].getSpecial()[0] - 32), x2 - 2, y2 + 1, Vector3(1, 0, 0), 1);
 					} if (Game::currentGame->getHero()->_totem != nullptr) {
 						if (std::to_string(x) == Game::currentGame->getHero()->_totem->getAttribute("currentX") 
-							&& std::to_string(y) == Game::currentGame->getHero()->_totem->getAttribute("currentY")) {
-								this->setText("T", x2 - 2, y2 + 1, Vector3(1, 0, 0), 1);
-							}
+								&& std::to_string(y) == Game::currentGame->getHero()->_totem->getAttribute("currentY")) {
+							this->setText("To", x2 - 2, y2 + 1, Vector3(1, 0, 0), 1);
+						}
 					} else
 						tmp->SetColor(1, 1, 1, 0);
 					tmp->SetDrawShape(ADS_Square);
@@ -653,7 +663,10 @@ void	HUDWindow::deleteBigMap(int n) {
 				(*it)->ChangeColorTo(Color(1, 1, 1, 0), 1);
 		}
 		theSwitchboard.DeferredBroadcast(new Message("deleteMapPressed"), 1);
-		this->removeText("T");
+		this->removeText("To");
+		this->removeText("B");
+		this->removeText("S");
+		this->removeText("D");
 	} else {
 		if (this->_doNotDelete == 0) {
 			for (it = this->_bigMapList.begin(); it != this->_bigMapList.end(); it++)
@@ -672,7 +685,7 @@ void	HUDWindow::updateBigMap(void) {
 
 		for (it = this->_bigMapList.begin(); it != this->_bigMapList.end(); it++) {
 			if ((*it)->GetPosition() == this->_currentObjectMap->GetPosition() &&
-			(*it) != this->_currentObjectMap)
+					(*it) != this->_currentObjectMap)
 				theWorld.Remove(*it);
 		}
 		this->_currentObjectMap->ChangeColorTo(Color(1, 1, 1, 0.5), 0.5);
@@ -689,6 +702,8 @@ void	HUDWindow::updateBigMap(void) {
 					theWorld.Add(tmp);
 					this->_bigMapList.push_back(tmp);
 					tmp->ChangeColorTo(Color(0, 1, 0, 0.5), 0.5);
+					if (map[y][x].getSpecial() != "" && map[y][x].getSpecial() != "starter")
+						this->setText(std::string(1, map[y][x].getSpecial()[0] - 32), x2 - 2, y2 + 1, Vector3(1, 0, 0), 1);
 				}
 			}
 		}
@@ -755,12 +770,29 @@ void	HUDWindow::character(void) {
 	this->addImage(this->_g->getHero()->getAttribute("spritesFrame"), theCamera.GetWindowWidth() / 20 * 1.1, theCamera.GetWindowHeight() / 20 * 1.5,
 			theCamera.GetWindowWidth() / 18, 4);
 	HUDActor	*bag = new HUDActor();
-	this->setText("Lvl " + std::to_string(this->_g->getHero()->getLevel()), theCamera.GetWindowWidth() / 20 * 0.2, theCamera.GetWindowHeight() / 20 * 0.9, Vector3(1, 1, 1), 1, "MediumGamefont");
+	this->setText(std::to_string(this->_g->getHero()->getLevel()), theCamera.GetWindowWidth() / 20 * 0.3, theCamera.GetWindowHeight() / 20 * 0.9, Vector3(1, 1, 1), 1, "MediumGamefont");
 }
 
 void	HUDWindow::spells(void) {
 	this->addImage("Resources/HUD/spells_bg.png", (theCamera.GetWindowWidth() / 20) * 7, theCamera.GetWindowHeight() / 20 * 1.5, 
-			Vector2(theCamera.GetWindowWidth() / 15, theCamera.GetWindowHeight() / 10 * 1.2), 5);
+			Vector2(theCamera.GetWindowWidth() / 15 * 0.8, theCamera.GetWindowHeight() / 10 * 1.2), 15);
+	this->addImage("Resources/HUD/spell_bg.png", (theCamera.GetWindowWidth() / 20) * 7 + 3, theCamera.GetWindowHeight() / 20, 
+			Vector2(theCamera.GetWindowWidth() / 25), 15);
+	this->addImage("Resources/Images/Skills/" + Game::currentGame->getHero()->getSpeMove() + ".png", (theCamera.GetWindowWidth() / 20) * 7 + 1, theCamera.GetWindowHeight() / 20 * 0.9, 
+			Vector2(theCamera.GetWindowWidth() / 35), 15);
+	this->setText("T", (theCamera.GetWindowWidth() / 20) * 7.28, theCamera.GetWindowHeight() / 20 * 1.5, Vector3(0.2, 0.12, 0), 1, "MediumGamefont");
+	this->addImage("Resources/HUD/spell_bg.png", (theCamera.GetWindowWidth() / 20) * 7 + 3, theCamera.GetWindowHeight() / 20 * 2.1, 
+			Vector2(theCamera.GetWindowWidth() / 25), 15);
+	this->addImage("Resources/Images/Skills/" + Game::currentGame->getHero()->getSpeAtt() + ".png", (theCamera.GetWindowWidth() / 20) * 7 + 1, theCamera.GetWindowHeight() / 20 * 1.9, 
+			Vector2(theCamera.GetWindowWidth() / 35), 15);
+	this->setText("Y", (theCamera.GetWindowWidth() / 20) * 7.28, theCamera.GetWindowHeight() / 20 * 2.57, Vector3(0.2, 0.12, 0), 1, "MediumGamefont");
+}
+
+void	HUDWindow::spellText(void) {
+	if (Game::started && Game::isInMenu == 0) {
+		this->setText("Y", (theCamera.GetWindowWidth() / 20) * 7.28, theCamera.GetWindowHeight() / 20 * 2.57, Vector3(0.2, 0.12, 0), 1, "MediumGamefont");
+		this->setText("T", (theCamera.GetWindowWidth() / 20) * 7.28, theCamera.GetWindowHeight() / 20 * 1.5, Vector3(0.2, 0.12, 0), 1, "MediumGamefont");
+	}
 }
 
 void	HUDWindow::clearHUD(void) {
@@ -771,11 +803,72 @@ void	HUDWindow::clearHUD(void) {
 	}
 	this->removeText(this->_gold);
 	if (this->_g)
-		this->removeText("Lvl " + std::to_string(this->_g->getHero()->getLevel()));
+		this->removeText(std::to_string(this->_g->getHero()->getLevel()));
+}
+
+void	HUDWindow::speAttCooldown(int time) {
+	HUDActor	*h = new HUDActor();
+
+	h->SetPosition((theCamera.GetWindowWidth() / 20) * 7 + 2, theCamera.GetWindowHeight() / 20 * 2.05);
+	h->SetSize(theCamera.GetWindowWidth() / 27);
+	h->SetLayer(100);
+	h->SetSprite("Resources/HUD/spell_cooldown.png");
+	theWorld.Add(h);
+	this->_attackCooldown = h;
+	this->_cooldownAtt = time + 1;
+	theSwitchboard.SubscribeTo(this, "second");
+	this->ReceiveMessage(new Message("second"));
+}
+
+void	HUDWindow::speMoveCooldown(int time) {
+	HUDActor	*h = new HUDActor();
+
+	h->SetPosition((theCamera.GetWindowWidth() / 20) * 7 + 2, theCamera.GetWindowHeight() / 21);
+	h->SetSize(theCamera.GetWindowWidth() / 27);
+	h->SetLayer(100);
+	h->SetSprite("Resources/HUD/spell_cooldown.png");
+	theWorld.Add(h);
+	this->_moveCooldown = h;
+	this->_cooldownMove = time + 1;
+	theSwitchboard.SubscribeTo(this, "second");
+	this->ReceiveMessage(new Message("second"));
+}
+
+
+void	HUDWindow::ReceiveMessage(Message *m) {
+	static size_t		lastTimestamp = 0;
+	static HUDWindow::Text	*attText = nullptr;
+	static HUDWindow::Text	*moveText = nullptr;
+
+	if (m->GetMessageName() == "speAttCooldownEnd") {
+	} else if (m->GetMessageName() == "speMoveCooldownEnd") {
+	} else if (m->GetMessageName() == "second") {
+		if (lastTimestamp != time(NULL)) {
+			lastTimestamp = time(NULL);
+			if (attText)
+				this->removeText(attText);
+			attText = nullptr;
+			if (this->_cooldownAtt >= 2) {
+				attText = this->setText(std::to_string(--this->_cooldownAtt), (theCamera.GetWindowWidth() / 20) * 7, theCamera.GetWindowHeight() / 20 * 2.1, Vector3(1, 0, 0), 1);
+				theSwitchboard.DeferredBroadcast(new Message("second"), 1);
+			}
+			if (moveText)
+				this->removeText(moveText);
+			moveText = nullptr;
+			if (this->_cooldownMove >= 2) {
+				moveText = this->setText(std::to_string(--this->_cooldownMove), (theCamera.GetWindowWidth() / 20) * 7, theCamera.GetWindowHeight() / 20, Vector3(1, 0, 0), 1);
+				theSwitchboard.DeferredBroadcast(new Message("second"), 1);
+			}
+			if (this->_cooldownAtt < 1 && this->_cooldownMove < 1) {
+				theSwitchboard.UnsubscribeFrom(this, "second");
+			}
+		}
+	}
 }
 
 void	HUDWindow::setGame(Game *g) { this->_g = g; };
-void	HUDWindow::setMaxMana(int m) { this->_maxMana = m; };
 void	HUDWindow::setMaxHP(int h) { this->_maxHP = h; };
+HUDActor	*HUDWindow::getAttCooldown(void) { return this->_attackCooldown; };
+HUDActor	*HUDWindow::getMoveCooldown(void) { return this->_moveCooldown; };
 
 int		HUDWindow::isToggled = 0;

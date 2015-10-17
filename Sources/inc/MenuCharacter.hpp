@@ -54,6 +54,8 @@ class		MenuCharacter : public Characters {
 		Weapon			*getWeapon(void);
 		Ring			*getRing(void);
 		Armor			*getArmor(void);
+		std::vector<std::string>	getSkills(void);
+		int							getLevel(void);
 
 	protected:
 		virtual void	_forward(int status);
@@ -70,6 +72,12 @@ class		MenuCharacter : public Characters {
 		void			_showSelectInfo(Elements *obj);
 		void			_flavorInfo(std::string n);
 		void			_cleanCloset(void);
+		void			_kitchen(void);
+		void			_changeKitchen(void);
+		void			_hideKitchen(int reload = 0);
+		void			_getSkills(void);
+		void			_makeSkillChoice(void);
+		void			_levels(void);
 
 	private:
 		HUDActor			*_image;
@@ -87,8 +95,22 @@ class		MenuCharacter : public Characters {
 		std::list<Weapon *>				_weaponList;
 		std::list<Armor *>				_armorList;
 		std::list<Elements *>			_equipSelectionBack;
+		std::list<Elements *>			_kitchenSkills;
 		int								_chooseEquipment;
 		std::map<std::string, Elements *> _equipSelection;
 		MenuCharacter::itemInfo				*_currentItemInfo;
+		Json::Value							_skills;
+		Json::Value							_skillTree;
+		std::vector<int>					_skillsLvl;
+		int									_characLvl;
+		std::vector<std::list<Elements *> >	_skillsChoices;
+		std::vector<std::string>			_finalSkillChoices;
+		std::vector<Elements *>			_finalSkillTargets;
+		Elements						*_descriptionBackground;
+		Elements						*_iconBackground;
+		Elements						*_icon;
+		std::list<std::string>			_description;
+		Elements						*_levelsBackground;
+		Elements						*_lvlUp;
 };
 #endif

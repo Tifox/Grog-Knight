@@ -28,6 +28,7 @@
 
 # include "Inventory.hpp"
 # include "SpecialMoves.hpp"
+# include "SpecialAttack.hpp"
 # include "Weapon.hpp"
 # include "Armor.hpp"
 # include "Ring.hpp"
@@ -39,6 +40,7 @@ class Weapon;
 class Armor;
 class Ring;
 class SpecialMoves;
+class SpecialAttack;
 class HUDTargeting;
 
 # ifdef __APPLE__
@@ -53,6 +55,15 @@ class HUDTargeting;
 #  include "Elements.hpp"
 # endif
 
+typedef struct s_buff {
+		std::string cur;
+  		int 		bonusDmg;
+  		int 		bonusSpeed;
+  		int 		drugSpeed;
+		int 		dmgReduc;
+		int 		critBuff;
+}				t_buff;
+
 class Characters : public Elements {
 
 	public:
@@ -60,6 +71,7 @@ class Characters : public Elements {
 		friend	class	Pattern;
 		friend	class	PassivePattern;
 		friend	class	SpecialMoves;
+		friend  class	SpecialAttack;
 		friend	class	HUDWindow;
 
 		enum Orientation {
@@ -68,9 +80,6 @@ class Characters : public Elements {
 			LEFT,
 			RIGHT
 		};
-
-
-  			int bonusDmg;
 
 		Characters(void);
 		Characters(std::string name);
@@ -83,6 +92,7 @@ class Characters : public Elements {
 		virtual void	trigger(std::string name, int status) {};
 		Characters::Orientation			getOrientation(void);
 		std::string						getLastAction(void);
+		Characters::Orientation			getLatOrientation(void);
 		int								getGold(void);
 		void							setGold(int);
 		void							setDrug(std::string name);
@@ -94,6 +104,7 @@ class Characters : public Elements {
 		int								getMaxHP(void);
 		int								getLevel(void);
 		void							setLevel(int);
+		void							setInvincibility(bool invincibility);
 		Weapon							*getWeapon(void);
 		Armor							*getArmor(void);
 		Ring							*getRing(void);
@@ -101,6 +112,9 @@ class Characters : public Elements {
 		int								getMaxInventory(void);
 		Inventory						*getInventory(void);
 		void							destroyTarget(void);
+		Actor							*getGhost(void);
+		std::string						getSpeMove(void);
+		std::string						getSpeAtt(void);
 
 		// Virtual function, overwritten in childs
 		virtual void	actionCallback(std::string name, int status) {};
@@ -114,7 +128,11 @@ class Characters : public Elements {
 		void			changeCanMove(void);
 		std::list<std::string>		getSubscribes(void);
 		void						unsubscribeFromAll(void);
+		void						UnsubscribeFromAll(void);
 		void						subscribeToAll(void);
+		t_buff						buff;
+		int							inSpecialMap;
+		Elements*					hookedTo;
 
 	//Moved in order to get loot infos outside of class
 		Json::Value		_getAttr(std::string category, std::string key);
@@ -133,6 +151,7 @@ class Characters : public Elements {
 		int				_isAttacking;
 		int				_hp;
 		int				_gold;
+		int				_isChoosingItem;
 		int				_maxHp;
 		int 			_mana;
 		int 			_maxMana;
@@ -143,7 +162,10 @@ class Characters : public Elements {
 		int				_isLoadingAttack;
 		bool			_fullChargedAttack;
 		int				_speMoveReady;
+		int				_speAttReady;
 		bool			_canAttack;
+		bool			_isWhirlwinding;
+		bool			_isRapidFiring;
 		bool			_isCharging;
 		bool			_isStomping;
 		bool			_isFlying;
@@ -154,10 +176,17 @@ class Characters : public Elements {
 		int				_hasDashed;
 		int				_level;
 		std::string		_currentTrigger;
+		bool			_speMoveIsSet;
 		bool			_isDisengaging;
-
+		bool			_isShockWaving;
+		bool			_isTouchingChest;
+		bool			_isTouchingSecretDoor;
+		bool			_isTouchingBossDoor;
+		bool			_isTouchingDealer;
 		std::string		_speMove;
+		std::string		_speAtt;
 		SpecialMoves*	_eqMove;
+		SpecialAttack*	_eqAtt;
 		Weapon*			_weapon;
 		Armor*			_armor;
 		Ring*			_ring;
@@ -169,6 +198,7 @@ class Characters : public Elements {
 		Inventory*		_inventory;
 		HUDTargeting*	_target;
 		Actor			*_blast;
+		Actor			*_ghost;
 		Characters::Orientation				_orientation;
 		Characters::Orientation				_latOrientation;
 		std::list<Elements*>				_grounds;
@@ -177,8 +207,10 @@ class Characters : public Elements {
 		std::list<Elements*> 				_ceiling;
 		std::list<Elements*> 				_wallsRight;
 		std::list<std::string>				_subsc;
+		bool			_execFlag;
 		bool			_forwardFlag;
 		bool			_backwardFlag;
+		bool			_actionFlag;
 		bool			_doFlyFlag;
 
 		Json::Value		_getAttr(std::string key);
@@ -193,14 +225,11 @@ class Characters : public Elements {
 		virtual void	_jump(int status);
 		virtual void	_attack(int status);
 		virtual void	_pickupItem(int status);
+		virtual void 	_executeAction(int status);
 		virtual void	_run(void);
 		virtual void	_specialMove(int status);
+		virtual void	_specialAttack(int status);
 		virtual void	_callTrigger(std::string name, int status);
-		// virtual void	_dash(void);
-		// virtual void	_charge(void);
-		// virtual void	_stomp(void);
-		// virtual void	_blink(void);
-		// virtual void	_fly(void);
 		void			_destroyEnemy(void);
 		Elements*		getItem(void);
 
@@ -222,5 +251,6 @@ class Characters : public Elements {
 # include "Game.hpp"
 # include "Enemy.hpp"
 # include "MenuCharacter.hpp"
+# include "Boss.hpp"
 
 #endif

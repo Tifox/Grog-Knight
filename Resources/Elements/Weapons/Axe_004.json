@@ -1,0 +1,21 @@
+{
+    "infos": {
+   	    "name": "Axe_004",
+		"displayName": "Sharp-edged Axe",
+		"flavor": "Good stuff mate",
+		"equipable": "Warrior",
+		"type": "Axe",
+		"hitbox": "SWORD",
+		"price": 10,
+		"size": 1,
+	 	"critRate": 5,
+		"damage": 5,
+		"recovery": 0.1,
+		"pushback": 5,
+		"active": 0.2,
+		"attack": "melee",
+		"sprites": "Resources/Images/Weapons/Axe_004.png",
+		"lootLevel": 2
+
+	}
+}

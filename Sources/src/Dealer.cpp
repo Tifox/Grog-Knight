@@ -69,7 +69,7 @@ void	Dealer::BeginContact(Elements* elem, b2Contact *contact) {
 		contact->enableContact = false;
 	}
 	if (elem->getAttribute("type") == "Hero" && this->_give == false) {
-		theSwitchboard.SubscribeTo(this, "enterPressed");
+		theSwitchboard.SubscribeTo(this, "giveDrug");
 		this->PlaySpriteAnimation(this->_getAttr("give", "time").asFloat(), SAT_Loop,
 								  this->_getAttr("give", "beginFrame").asInt(),
 								  this->_getAttr("give", "endFrame").asInt(), "base");
@@ -107,14 +107,14 @@ void	Dealer::EndContact(Elements *elem, b2Contact *contact) {
 void	Dealer::ReceiveMessage(Message *m) {
 	HUDWindow *hud = Game::getHUD();
 
-	if (m->GetMessageName() == "enterPressed" && Game::isPaused == 0) {
+	if (m->GetMessageName() == "giveDrug" && Game::isPaused == 0) {
 		this->_give = true;
-		theSwitchboard.UnsubscribeFrom(this, "enterPressed");
+		theSwitchboard.UnsubscribeFrom(this, "giveDrug");
 		this->AnimCallback("base");
 		hud->removeText("HI BUD YOU WANNA SOME DRUGS?");
 		hud->setText("Here you go buddy. See ya.", this, Vector3(255, 51, 255), 0, 0);
 		Drug *drug = new Drug(Game::dList->getDrugRandom());
-		Game::currentGame->getHero()->setDrug(drug->getName());
+		Game::currentGame->getHero()->setDrug(drug->getDisplayName());
 		theSwitchboard.SubscribeTo(Game::currentGame->getHero(), "drugPressed");
 		Game::currentGame->tooltip->talk(this);
 	}

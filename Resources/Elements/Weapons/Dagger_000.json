@@ -1,0 +1,21 @@
+{
+    "infos": {
+   	    "name": "Dagger_000",
+		"displayName": "Smart Dagger",
+		"flavor": "So smat it doesnt want\nto hurt enemies",
+		"equipable": "Archer",
+		"type": "Dagger",
+		"hitbox": "SWORD",
+		"price": 10,
+		"size": 1,
+	 	"critRate": 5,
+		"damage": 5,
+		"recovery": 1,
+		"pushback": 5,
+		"active": 0.2,
+		"attack": "melee",
+		"sprites": "Resources/Images/Weapons/Dagger_000.png",
+		"lootLevel": 1,
+		"starterLevel": 1
+	}
+}

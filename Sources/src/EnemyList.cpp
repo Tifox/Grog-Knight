@@ -58,7 +58,7 @@ EnemyList::EnemyData::EnemyData(std::string res) {
 
 std::string		EnemyList::EnemyData::getName() { return this->_name; }
 int				EnemyList::EnemyData::getLevel() { return this->_level; }
-bool	 		EnemyList::EnemyData::isFlying() { return this->_flying; }
+std::string		EnemyList::EnemyData::isFlying() { return this->_flying; }
 
 //! Json parser to get the infos on the enemy
 /**
@@ -92,7 +92,7 @@ void	EnemyList::EnemyData::_parseJson(std::string file) {
 	if (!read.parse(file, json))
 		Log::error("Error in json syntax :\n" + read.getFormattedErrorMessages());
 	this->_level = json["infos"].get("level", "").asInt();
-	this->_flying = json["infos"].get("flying", "").asBool();
+	this->_flying = json["infos"].get("flying", "").asString();
 }
 
 //! Destructor
@@ -108,7 +108,7 @@ EnemyList::~EnemyList(void) {
  * Returns a enemy, no matter its level - will check whether the enemy is flying
  * @param flying
  */
-std::string		EnemyList::getEnemyRandom(bool flying) {
+std::string		EnemyList::getEnemyRandom(std::string flying) {
 	std::list<EnemyData*>::iterator it;
 	std::list<EnemyData*> enemies;
 
@@ -139,7 +139,7 @@ std::string		EnemyList::getEnemyRandom(bool flying) {
  * @param level the enemy level queried
  * @param flying a boolean that asks whether the enemy should be flying or not
  */
-std::string		EnemyList::getEnemyRandom(int level, bool flying) {
+std::string		EnemyList::getEnemyRandom(int level, std::string flying) {
 	std::list<EnemyData*>::iterator it;
 	std::list<EnemyData*> enemies;
 
@@ -149,6 +149,8 @@ std::string		EnemyList::getEnemyRandom(int level, bool flying) {
 		}
 	}
 	int	i = 0;
+	if (!enemies.size())
+		Log::error("Error loading enemies for required level " + std::to_string(level));
 	int value = (rand() % enemies.size());
 	for (it = enemies.begin(); it != enemies.end(); it++) {
 		if (i == value) {

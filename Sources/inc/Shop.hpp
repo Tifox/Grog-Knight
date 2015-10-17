@@ -45,8 +45,8 @@ private:
 	int	_nbItems;
 	int	_lvlItems;
 
-	std::map<int, std::string> _items;
-	std::map<int, ShopItem*> _shopItems;
+	std::vector<std::string> _items;
+	std::vector<ShopItem*> _shopItems;
 
 };
 

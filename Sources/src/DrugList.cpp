@@ -58,7 +58,7 @@ int			DrugList::checkExists(std::string name) {
 	std::list<Drug*>::iterator it;
 
 	for (it = this->_allDrugs.begin(); it != this->_allDrugs.end(); it++) {
-		if (name == (*it)->getName()) {
+		if (name == (*it)->getDisplayName()) {
 			return 1;
 		}
 	}
@@ -76,7 +76,7 @@ Drug		*DrugList::getDrug(std::string name) {
 	std::list<Drug*>::iterator it;
 
 	for (it = this->_allDrugs.begin(); it != this->_allDrugs.end(); it++) {
-		if (name == (*it)->getName()) {
+		if (name == (*it)->getDisplayName()) {
 			return ((*it));
 		}
 	}
@@ -106,12 +106,16 @@ void		DrugList::useDrug(std::string name) {
 	std::list<Drug*>::iterator it;
 
 	for (it = this->_allDrugs.begin(); it != this->_allDrugs.end(); it++) {
-		if (name == (*it)->getName()) {
+		if (name == (*it)->getDisplayName()) {
 			Game::currentGame->tooltip->info(getDrug(name));
 			if (name == "Pot")
 				getDrug(name)->pot(1);
 			if (name == "Cocaine")
 				getDrug(name)->cocaine(1);
+			if (name == "Morphine")
+				getDrug(name)->morphine(1);
+			if (name == "Mdma")
+				getDrug(name)->mdma(1);
 			}
 	}
 	removeDrug(name);

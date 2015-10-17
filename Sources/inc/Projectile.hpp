@@ -34,6 +34,8 @@ class Projectile: public Elements {
 public:
 	Projectile(float x, float y, int direction, std::string owner);
 	Projectile(Weapon *w, Characters *c);
+	Projectile(Weapon *w, int dmg);
+	Projectile(std::string img, int dmg, Vector2 pos, Vector2 force, Vector2 init, std::string name = "projectile", int rotat = -1);
 	~Projectile();
 
 	std::string     getName(void);
@@ -47,6 +49,7 @@ public:
     int             attackReady(void);
 	int				getCritRate(void);
 
+	void	WaveContact(Elements *m, b2Contact *contact);
 	void	BeginContact(Elements *elem, b2Contact *contact);
 	void	EndContact(Elements *elem, b2Contact *contact);
 	void	ReceiveMessage(Message *m);
@@ -63,6 +66,7 @@ private:
 	int			_pushback;
 	float		_recovery;
 	int			_critRate;
+	bool		_toDestroy;
 
 };
 #endif

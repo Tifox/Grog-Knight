@@ -2,28 +2,40 @@
 	"infos": {
 		"name": "Warrior",
 		"id": 0,
-		"HP": 75,
 		"maxHP": 75,
 		"mana": 80,
 		"maxMana": 80,
 		"sprites": "Resources/Images/Hero/hero_000.png",
 		"size": 1.3,
 		"hitboxType": "special",
-		"hitbox": "heroHitbox"
+		"hitbox": "heroHitbox",
+		"baseCrit": 2,
+		"baseDamage": 30
+	},
+	"Stats": {
+		"critMult": 0.2,
+		"damageMult": 0.5,
+		"HPMult": 0.1
 	},
 	"Actions": {
 		"starting": {
 			"weapon": "Sword",
 			"armor": "ChestArmor",
 			"ring": "NiceRing",
-			"specialMove": "totem",
+			"specialMove": "shunpo",
+			"specialAttack": "shockwave",
 			"inventorySlots": 2
+		},
+		"executeAction": {
+			"subscribe": "action"
 		},
 		"forward": {
 			"subscribe": "forward",
 			"beginFrame": 20,
 			"endFrame": 27,
 			"time": 0.1,
+			"x": 1,
+			"y": 1,
 			"force": 8
 		},
 		"backward": {
@@ -31,6 +43,8 @@
 			"beginFrame": 28,
 			"endFrame": 35,
 			"time": 0.1,
+			"x": 1,
+			"y": 1,
 			"force": 8
 		},
 		"jump": {
@@ -44,6 +58,8 @@
 			"fallingFrame_left": 16,
 			"endFrame_right": 11,
 			"endFrame_left": 19,
+			"x": 1,
+			"y": 1,
 			"time": 0.1
 		},
 		"pickupItem": {
@@ -53,86 +69,119 @@
 			"time": 0.1
 		},
 		"attack": {
-			"subscribe": "attack",
-			"beginFrameSword_right": 36,
-			"endFrameSword_right": 39,
-			"beginFrameSword_left": 43,
-			"endFrameSword_left": 40,
-			"beginFrameAxe_right": 88,
-			"endFrameAxe_right": 91,
-			"beginFrameAxe_left": 92,
-			"endFrameAxe_left": 95,
-			"beginFrameSword_up": 61,
-			"endFrameSword_up": 63,
-			"beginFrameSword_down": 58,
-			"endFrameSword_down": 60,
-			"time": 0.05
+			"subscribe": "attack"
 		},
-		"loadAttack_charge": {
-			"beginFrame_right": 64,
-			"holdFrame_right": 65,
-			"endFrame_right": 66,
-			"beginFrame_left": 69,
-			"holdFrame_left": 70,
-			"endFrame_left": 71,
-			"time": 0.1
-		},
-		"loadAttack_done": {
-			"beginFrame_right": 66,
-			"endFrame_right": 68,
-			"beginFrame_left": 71,
-			"endFrame_left": 73,
-			"time": 0.1
-		},
+		"Sword": {
+			"beginFrameRight": 36,
+			"endFrameRight": 39,
+			"beginFrameLeft": 43,
+			"endFrameLeft": 40,
+			"beginFrameRightUp": 61,
+			"endFrameRightUp": 63,
+			"beginFrameRightDown": 58,
+			"endFrameRightDown": 60,
+			"beginFrameLeftUp": 120,
+			"endFrameLeftUp": 122,
+			"beginFrameLeftDown": 123,
+			"endFrameLeftDown": 125,
+			"beginFrameLoadRight": 64,
+			"holdFrameLoadRight": 66,
+			"endFrameLoadRight": 68,
+			"beginFrameLoadLeft": 69,
+			"holdFrameLoadLeft": 71,
+			"endFrameLoadLeft": 73,
+			"beginFrameChargeRight": 126,
+			"endFrameChargeRight": 129,
+			"beginFrameChargeLeft": 130,
+			"endFrameChargeLeft": 133,
+			"loadX":2,
+			"loadY":2,
+			"chargeX":2,
+			"chargeY":1,
+			"upX":1.5,
+			"upY":2,
+			"downX":1,
+			"downY":2.5,
+			"x":2,
+			"y":1,
+			"time": 0.07
+		 },
+		"Axe": {
+			"subscribe": "test",
+			"beginFrameRight": 88,
+			"endFrameRight": 91,
+			"beginFrameLeft": 92,
+			"endFrameLeft": 95,
+			"beginFrameRightUp": 114,
+			"endFrameRightUp": 116,
+			"beginFrameRightDown": 108,
+			"endFrameRightDown": 110,
+			"beginFrameLeftUp": 117,
+			"endFrameLeftUp": 119,
+			"beginFrameLeftDown": 111,
+			"endFrameLeftDown": 113,
+			"beginFrameLoadRight": 96,
+			"holdFrameLoadRight": 99,
+			"endFrameLoadRight": 101,
+			"beginFrameLoadLeft": 102,
+			"holdFrameLoadLeft": 105,
+			"endFrameLoadLeft": 107,
+			"beginFrameChargeRight": 134,
+			"endFrameChargeRight": 137,
+			"beginFrameChargeLeft": 138,
+			"endFrameChargeLeft": 141,
+			"loadX":2,
+			"loadY":2,
+			"chargeX":2,
+			"chargeY":1,
+			"upX":1.5,
+			"upY":2,
+			"downX":1.5,
+			"downY":2,
+			"x":2,
+			"y":1.5,
+			"time": 0.07
+		 },
+		"Spear": {
+			"beginFrameRight": 150,
+			"endFrameRight": 152,
+			"beginFrameLeft": 153,
+			"endFrameLeft": 155,
+			"beginFrameRightUp": 162,
+			"endFrameRightUp": 164,
+			"beginFrameRightDown": 156,
+			"endFrameRightDown": 158,
+			"beginFrameLeftUp": 165,
+			"endFrameLeftUp": 167,
+			"beginFrameLeftDown": 159,
+			"endFrameLeftDown": 161,
+			"beginFrameLoadRight": 64,
+			"holdFrameLoadRight": 65,
+			"endFrameLoadRight": 66,
+			"beginFrameLoadLeft": 69,
+			"holdFrameLoadLeft": 70,
+			"endFrameLoadLeft": 71,
+			"beginFrameChargeRight": 142,
+			"endFrameChargeRight": 145,
+			"beginFrameChargeLeft": 146,
+			"endFrameChargeLeft": 149,
+			"loadX":2,
+			"loadY":2,
+			"chargeX":3,
+			"chargeY":1,
+			"upX":1.5,
+			"upY":2.5,
+			"downX":1.5,
+			"downY":2.5,
+			"x":3,
+			"y":1,
+			"time": 0.15
+		 },
 		"specialMove": {
 			"subscribe": "specialmove"
 		},
-		"dash": {
-			"cooldown": 1,
-			"dashSpeed": 30,
-			"uptime": 0.15,
-			"beginFrame_right": 74,
-			"endFrame_right": 78,
-			"beginFrame_left": 79,
-			"endFrame_left": 83,
-			"time": 0.05
-		},
-		"charge": {
-			"cooldown": 1,
-			"chargeSpeed": 20,
-			"uptime": 1
-		},
-		"stomp": {
-			"cooldown": 0,
-			"stompSpeed": 50,
-			"beginFrame_right": 84,
-			"endFrame_right": 87,
-			"beginFrame_left": 84,
-			"endFrame_left": 87,
-			"time": 0.1
-		},
-		"blink": {
-			"cooldown": 0,
-			"blinkRange": 4
-		},
-		"fly": {
-			"force": 4,
-			"beginFrame_right": 44,
-			"beginFrame_left": 44,
-			"fallingFrame_right": 44,
-			"fallingFrame_left": 44,
-			"endFrame_right": 44,
-			"endFrame_left": 44,
-			"time": 0.1
-		},
-		"wallJump": {
-			"maxJump": 1,
-			"force": 6
-		},
-		"shunpo": {
-			"damageScale": 2,
-			"range": 10,
-			"cooldown": 1
+		"specialAttack": {
+			"subscribe": "specialattack"
 		},
 		"down": {
 			"subscribe": "down"
@@ -151,6 +200,8 @@
 			"endFrame_right": 1,
 			"beginFrame_left": 2,
 			"endFrame_left": 3,
+			"x": 1,
+			"y": 1,
 			"time": 0.3
 		},
 		"takeDamage": {

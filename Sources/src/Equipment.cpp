@@ -62,12 +62,21 @@ Equipment::Equipment(Characters* c): Object() {
 Equipment::Equipment(Weapon *w, Characters* c): Object() {
 	this->addAttribute("type2", "Equipment");
 	this->addAttribute("type3", "Weapon");
+	this->addAttribute("hitbox", "heroHitbox");
+	this->addAttribute("hitboxType", "special");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_weapon = new Weapon(w);
+	this->SetLayer(15);
+	this->_ring = nullptr;
+	this->_armor = nullptr;
 	this->_name = w->getName();
 	this->addAttribute("name", w->getName());
+	this->_displayName = w->getDisplayName();
+	this->addAttribute("displayName", w->getDisplayName());
 	this->_flavor = w->getFlavor();
 	this->addAttribute("flavor", w->getFlavor());
+	this->_equipable = w->getEquipable();
+	this->addAttribute("equipable", w->getEquipable());
 	this->SetSprite(this->_weapon->getSprite());
 	this->SetName("loot");
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
@@ -79,18 +88,23 @@ Equipment::Equipment(Weapon *w, Characters* c): Object() {
 Equipment::Equipment(Armor *w, Characters* c): Object() {
   	this->addAttribute("type2", "Equipment");
 	this->addAttribute("type3", "Armor");
+	this->addAttribute("hitbox", "heroHitbox");
+	this->addAttribute("hitboxType", "special");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_armor = new Armor(w);
+	this->SetLayer(15);
+	this->_weapon = nullptr;
+	this->_ring = nullptr;
 	this->_name = w->getName();
 	this->addAttribute("name", w->getName());
+	this->_displayName = w->getDisplayName();
+	this->addAttribute("displayName", w->getDisplayName());
 	this->_flavor = w->getFlavor();
 	this->addAttribute("flavor", w->getFlavor());
 	this->SetSprite(this->_armor->getSprite());
 	this->SetName("loot");
 	if (w->getAttribute("hpBuff") != "")
 		this->addAttribute("hpBuff", w->getAttribute("hpBuff"));
-	if (w->getAttribute("manaBuff") != "")
-		this->addAttribute("manaBuff", w->getAttribute("manaBuff"));	
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	Game::bodiesToCreate.push_back(this);
@@ -99,18 +113,23 @@ Equipment::Equipment(Armor *w, Characters* c): Object() {
 Equipment::Equipment(Ring *w, Characters* c): Object() {
 	this->addAttribute("type2", "Equipment");
 	this->addAttribute("type3", "Ring");
+	this->addAttribute("hitbox", "heroHitbox");
+	this->addAttribute("hitboxType", "special");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	this->_ring = new Ring(w);
+	this->SetLayer(15);
+	this->_armor = nullptr;
+	this->_weapon = nullptr;
 	this->_name = w->getName();
 	this->addAttribute("name", w->getName());
+	this->_displayName = w->getDisplayName();
+	this->addAttribute("displayName", w->getDisplayName());
 	this->_flavor = w->getFlavor();
 	this->addAttribute("flavor", w->getFlavor());
 	this->SetSprite(this->_ring->getSprite());
 	this->SetName("loot");
 	if (w->getAttribute("hpBuff") != "")
 		this->addAttribute("hpBuff", w->getAttribute("hpBuff"));
-	if (w->getAttribute("manaBuff") != "")
-		this->addAttribute("manaBuff", w->getAttribute("manaBuff"));	
 	theSwitchboard.SubscribeTo(this, "DeleteEquipment" + this->GetName());
 	this->SetShapeType(PhysicsActor::SHAPETYPE_BOX);
 	Game::bodiesToCreate.push_back(this);
@@ -131,9 +150,18 @@ Equipment::~Equipment(void) {
  * @param contact The Box2D contact object.
  */
 void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
-	if (elem->getAttribute("type") != "ground") {
+	if (!elem)
+		return ;
+	if (elem->getAttribute("type") != "ground" || elem->getAttribute("speType") == "spikes") {
 		contact->SetEnabled(false);
 		contact->enableContact = false;
+	} else if (elem->getAttribute("physic") != "") {
+		if (this->GetBody()->GetWorldCenter().y - 1 > elem->GetBody()->GetWorldCenter().y) {
+			theSwitchboard.SubscribeTo(this, "setToStatic" + this->GetName());
+			theSwitchboard.Broadcast(new Message("setToStatic" + this->GetName()));
+			this->GetBody()->GetFixtureList()->SetDensity(0);
+			this->GetBody()->ResetMassData();
+		}
 	}
 }
 
@@ -145,9 +173,6 @@ void	Equipment::BeginContact(Elements *elem, b2Contact *contact) {
  * @param contact The Box2D contact object
  */
 void	Equipment::EndContact(Elements *elem, b2Contact *contact) {
-	// if (elem->getAttributes()["type"] == "Hero"){
-	// 	Game::getHUD()->removeText(this->_weapon->getFlavor());
-	// }
 }
 
 /*GETTERS*/
@@ -159,7 +184,7 @@ Ring*		Equipment::getRing(void) { return this->_ring; }
 
 std::string	Equipment::getName(void) { return this->_name; }
 
-
+int			Equipment::getPrice(void) { return this->_price; }
 
 //! Intern broadcasts function.
 /**
@@ -167,6 +192,18 @@ std::string	Equipment::getName(void) { return this->_name; }
  * @param m The Broadcasted message. (See Angel2D docs for more info.)
  */
 void		Equipment::ReceiveMessage(Message *m) {
-	if (m->GetMessageName() == "DeleteEquipment" + this->GetName())
+	if (m->GetMessageName() == "DeleteEquipment" + this->GetName()) {
+		if (this->_ring != nullptr) {
+			Game::addToDestroyList(this->_ring);
+		} else if (this->_armor != nullptr) {
+			Game::addToDestroyList(this->_armor);
+		} else if (this->_weapon != nullptr) {
+			Game::addToDestroyList(this->_weapon);
+		}
+		this->ChangeColorTo(Color(1,1,1,0), 0);
 		Game::addToDestroyList(this);
+	}
+	if (m->GetMessageName() == "setToStatic" + this->GetName()) {
+		this->GetBody()->SetType(b2_staticBody);
+	}
 }

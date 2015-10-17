@@ -88,20 +88,22 @@ void	Enemy::actionCallback(std::string name, int status) {
  * @param contact The Box2D contact object
  */
 void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
+	if (!m)
+		return ;
 	Characters::BeginContact(m, contact);
 	Weapon* w = static_cast<Weapon*>(m);
 	Projectile* p = static_cast<Projectile*>(m);
 	if (m->getAttribute("type") == "ground") {
 	  //	Game::startRunning(this);
 	} else if (m->getAttribute("type") == "HeroWeaponHitBox") {
-	  if (this->_lastHitID == m->getId())
-		return;
-	  else
-		this->_lastHitID = m->getId();
+		if (this->_lastHitID == m->getId())
+			return;
+		else
+			this->_lastHitID = m->getId();
 	  	Characters *h = Game::currentGame->getHero();
 		this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
 		Game::stopRunning(this);
-		if (this->takeDamage(w->getDamage() + h->bonusDmg, w->getCritRate()) == 1) {
+		if (this->takeDamage(w->getDamage() + h->buff.bonusDmg, (w->getCritRate() + h->buff.critBuff)) == 1) {
 			if (this->GetBody()->GetWorldCenter().x > h->GetBody()->GetWorldCenter().x) {
 				this->ApplyLinearImpulse(Vector2(w->getPushback(), w->getPushback()), Vector2(0,0));
 			} else {
@@ -111,14 +113,33 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 			this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		}
 	} else if (m->getAttribute("type") == "HeroProjectile") {
-	  if (this->_lastHitID == m->getId())
+		if (this->_lastHitID == m->getId())
+			return;
+		else
+			this->_lastHitID = m->getId();
+		Characters *h = Game::currentGame->getHero();
+		this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
+		Game::stopRunning(this);
+		if (this->takeDamage(p->getDamage() + h->buff.bonusDmg, (w->getCritRate() + h->buff.critBuff)) == 1) {
+			if (this->GetBody()->GetWorldCenter().x > h->GetBody()->GetWorldCenter().x) {
+				this->ApplyLinearImpulse(Vector2(p->getPushback(), p->getPushback()), Vector2(0,0));
+			} else {
+				this->ApplyLinearImpulse(Vector2(-p->getPushback(), p->getPushback()), Vector2(0,0));
+			}
+		}
+		else {
+			this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+		}
+
+	} else if (m->getAttribute("type") == "Shockwave") {
+		if (this->_lastHitID == m->getId())
 		return;
 	  else
 		this->_lastHitID = m->getId();
 		Characters *h = Game::currentGame->getHero();
 		this->GetBody()->SetLinearVelocity(b2Vec2(-2, 2));
 		Game::stopRunning(this);
-		if (this->takeDamage(p->getDamage() + h->bonusDmg, p->getCritRate()) == 1) {
+		if (this->takeDamage(static_cast<Projectile*>(m)->getDamage(), 0)) {
 			if (this->GetBody()->GetWorldCenter().x > h->GetBody()->GetWorldCenter().x) {
 				this->ApplyLinearImpulse(Vector2(p->getPushback(), p->getPushback()), Vector2(0,0));
 			} else {
@@ -157,9 +178,11 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 
 void	Enemy::EndContact(Elements *m, b2Contact *contact) {
 	Characters::EndContact(m, contact);
-	if (m->getAttribute("type") == "ground" && !this->_isDead && !this->_isTakingDamage) {
+	if (!m)
+		return ;
+	if (m->getAttribute("type") == "ground" && !this->_isDead && !this->_isTakingDamage && Game::stopPattern == false) {
 		if (this->_lastElement != m->getId()) {
-			this->_pattern->tick(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX]);
+			this->_pattern->tick(Game::currentGame->getCurrentMap());
 			this->_lastElement = m->getId();
 		}
 	}
@@ -176,33 +199,37 @@ int		Enemy::takeDamage(int damage, int critRate) {
 	if (this->_hp <= 0)
 		return 0;
 	this->actionCallback("takeDamage", 0);
-	if ((rand() % critRate + 1) ==  critRate) {
-		damage *= 2 ;
-		Game::getHUD()->setText("Crit !", Game::currentGame->getHero(),
-								Vector3(255, 0, 0), 1, 0);
+	if (critRate != 0) {
+		if ((rand() % critRate + 1) ==  critRate) {
+			damage *= 2 ;
+			Game::getHUD()->setText("Crit ! (" + std::to_string(damage) + ")", this,
+									Vector3(255, 0, 0), 1, 0);
+		} else {
+			// The following display damage with any hit. This is debug code, don't forget to remove it with beta.
+			Game::getHUD()->setText(std::to_string(damage), this,
+									Vector3(1, 1, 1), 1, 0);
+		}
 	}
 	if (this->_hp - damage <= 0) {
-	  Game::stopRunning(this);
-	  this->GetBody()->SetLinearVelocity(b2Vec2(0,0));
-		this->_isDead = true;
+		Game::stopRunning(this);
+		this->GetBody()->SetLinearVelocity(b2Vec2(0,0));
 		Game::currentGame->maps->_XYMap[Game::currentY][Game::currentX].removeEnemy(this);
 		this->actionCallback("death", 0);
 		this->_setCategory("death");
 		theSwitchboard.SubscribeTo(this, "setToStatic" + this->GetName());
 		theSwitchboard.Broadcast(new Message("setToStatic" + this->GetName()));
-		//		this->GetBody()->GetFixtureList()->SetSensor(true);
 		this->GetBody()->GetFixtureList()->SetDensity(0);
-//		this->GetBody()->SetGravityScale(0);
 		this->GetBody()->ResetMassData();
 		this->LoadSpriteFrames(this->_getAttr("newSprites").asString());
 		this->changeSizeTo(Vector2(this->_getAttr("size").asInt(),
-					this->_getAttr("size").asInt()));
+								   this->_getAttr("size").asInt()));
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-				this->_getAttr("beginFrame").asInt(),
-				this->_getAttr("endFrame").asInt());
+								  this->_getAttr("beginFrame").asInt(),
+								  this->_getAttr("endFrame").asInt());
 		theSwitchboard.SubscribeTo(this, "destroyEnemy" + this->GetName());
 		theSwitchboard.DeferredBroadcast(new Message("destroyEnemy" + this->GetName()), 0.5);
 		theSwitchboard.Broadcast(new Message(std::to_string(this->getId())));
+		this->_hp = 0;
 		return 0;
 	}
 	this->_hp -= damage;

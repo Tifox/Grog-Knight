@@ -48,8 +48,8 @@ public:
 	EnemyList(void);
 	~EnemyList(void);
 
-	std::string		getEnemyRandom(bool flying);
-	std::string		getEnemyRandom(int level, bool flying);
+	std::string		getEnemyRandom(std::string flying);
+	std::string		getEnemyRandom(int level, std::string flying);
 
 	class EnemyData {
 	public:
@@ -57,12 +57,12 @@ public:
 		~EnemyData();
 		std::string	getName();
 		int			getLevel();
-		bool		isFlying();
+		std::string	isFlying();
 
 	private:
 		std::string _name;
 		int			_level;
-		bool		_flying;
+		std::string	_flying;
 		void		_readFile(std::string name);
 		void		_parseJson(std::string file);
 	};

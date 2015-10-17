@@ -1,0 +1,21 @@
+{
+    "infos": {
+   	    "name": "Bow_000",
+		"displayName": "String Bow",
+		"flavor": "This bow is supposed to\nshoot arrows. Supposed.",
+		"price": 10,
+		"equipable": "Archer",
+		"type": "Bow",
+		"hitbox": "PROJECTILE",
+		"size": 0.5,
+		"active": 0.1,
+	 	"critRate": 5,
+		"damage": 2,
+	 	"pushback": 1,
+		"recovery": 0.5,
+		"attack": "ranged",
+		"sprites": "Resources/Images/Weapons/Bow_000.png",
+		"lootLevel": 1,
+		"starterLevel": 1
+	}
+}

@@ -68,6 +68,7 @@ void	Quit::writeBindings(std::map<std::string, std::list<t_bind *> > binds) {
 				// Json file
 				root[it->first][(*it2)->name]["broadcast"] = (*it2)->broadcast;
 				root[it->first][(*it2)->name]["key"] = (*it2)->realKey;
+				root[it->first][(*it2)->name]["controller"] = (*it2)->controller;
 
 				// Lua file
 				if (!Quit::isUpper((*it2)->broadcast)) {
@@ -78,6 +79,8 @@ void	Quit::writeBindings(std::map<std::string, std::list<t_bind *> > binds) {
 				}
 			}
 		}
+		// Yeah yeah, nasty AF.
+		luaFile << "\n;; Controller\n\n\tP1BUTTON_A = +buttonAPressed\n\tP1BUTTON_A = -buttonAReleased\n\tP1BUTTON_B = +buttonBPressed\n\tP1BUTTON_B = -buttonBReleased\n\tP1BUTTON_X = +buttonXPressed\n\tP1BUTTON_X = -buttonXReleased\n\tP1BUTTON_Y = +buttonYPressed\n\tP1BUTTON_Y = -buttonYReleased\n\tP1BUTTON_START = buttonSTARTPressed\n\tP1BUTTON_BACK = buttonBACKPressed\n\tP1BUTTON_RIGHTBUMPER = buttonRBPressed\n\tP1BUTTON_LEFTBUMPER = buttonLBPressed";
 		jsonFile << root << std::endl;
 	}
 }
@@ -93,15 +96,33 @@ int		Quit::isUpper(std::string s) {
 }
 
 void		Quit::doSave(Hero *h) {
-	Json::Value		root;
+	Json::Value		root, chest;
 	std::ofstream	jsonFile;
 	std::stringstream	string;
+	std::map<int, std::string>		items;
+	std::map<int, std::string>::iterator		it;
+
+	if (Game::currentGame->getSave().size() == 0)
+		return ;
+
+	if (Game::chest != nullptr)
+		items = Game::chest->getItems();
+	else {
+		root["chest"] = Game::currentGame->getSave()["chest"];
+	}
 
 	jsonFile.open(".save", std::ofstream::trunc);
-	root["gold"] = h->getGold();
-	std::cout << h->getGold() << std::endl;
-	root["level"] = h->getLevel();
+	//root["level"] = h->getLevel();
+	root["level"] = 15;
 	root["key"] = KEY;
+
+	if (Game::chest != nullptr) {
+		for (it = items.begin(); it != items.end(); it++) {
+			if (it->second != "")
+				root["chest"][std::to_string(it->first)] = it->second;
+		}
+		root["chest"]["gold"] = Game::chest->getGold();
+	}
 
 	string << root << std::endl;
 	jsonFile << base64_encode((unsigned char *)string.str().c_str(), string.str().length()) << std::endl;
@@ -125,8 +146,10 @@ std::map<std::string, Json::Value>		Quit::getSave(void) {
 	reader.parse(base64_decode(fileContent), root, false);
 	if (root["key"].asString() != KEY)
 		Quit::cheater();
-	result["gold"] = root["gold"];
+	result["chest"] = root["chest"];
 	result["level"] = root["level"];
+	Quit::level = root["level"].asInt();
+	Quit::gold = root["chest"]["gold"].asInt();
 	return result;
 }
 
@@ -247,3 +270,6 @@ std::string base64_decode(std::string const& encoded_string) {
 
 	return ret;
 }
+
+int		Quit::level = 0;
+int		Quit::gold = 0;

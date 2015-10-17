@@ -1,0 +1,47 @@
+{
+	"whirlwind": {
+		"subscribe": "specialattack",
+		"usable": "warrior",
+		"cooldown": 6,
+		"time": 0.1,
+		"uptime": 2,
+		"beginFrame": 36,
+		"endFrame": 43,
+		"time": 0.1,
+		"x":2,
+		"y":1,
+		"description": "Wiggle wiggle wiggle",
+		"displayName": "WhirlWind"
+	},
+	"shockwave": {
+		"subscribe": "specialattack",
+		"usable": "warrior",
+		"cooldown": 1,
+		"damage": 25,
+		"beginFrame_right": 99,
+		"endFrame_right": 101,
+		"beginFrame_left": 105,
+		"endFrame_left": 107,
+		"time": 0.1,
+		"x":2,
+		"y":2,
+		"description": "Fall with force on the ground,\nMake a shockwave around you",
+		"displayName": "Shockwave"
+	},
+	"rapidFire": {
+		"subscribe": "specialattack",
+		"usable": "archer",
+		"cooldown": 10,
+		"uptime": 2,
+		"interval": 0.2,
+		"beginFrame_right": 21,
+		"endFrame_right": 25,
+		"beginFrame_left": 26,
+		"endFrame_left": 30,
+		"time": 0.05,
+		"x":1,
+		"y":1,
+		"description": "Attack is temporarly more rapid.",
+		"displayName": "Rapid Fire"
+	}
+}

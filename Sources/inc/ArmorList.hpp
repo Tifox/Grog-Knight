@@ -56,7 +56,7 @@ public:
 	Armor*					getArmor(std::string);
 	Armor*					getArmorRandom(void);
 	Armor*					getArmorRandom(int level);
-	std::list<Armor *>		get3Starters(int level);
+	std::list<Armor *>		get3Starters(int level, std::string name);
 
 private:
 	std::list<Armor*> _allArmors;

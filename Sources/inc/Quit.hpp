@@ -54,6 +54,8 @@ class	Quit {
 		static void		doSave(Hero *h);
 		static std::map<std::string, Json::Value>		getSave(void);
 		static void		cheater(void);
+		static int		level;
+		static int		gold;
 };
 
 #endif

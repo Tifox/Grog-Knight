@@ -40,6 +40,7 @@ public:
 	Inventory(int slots);
 
 	void			changeItemFocus(void);
+	void			chooseItemFocus(int n);
 	std::string		getCurrentFocus(void);
 	int				addItemToInventory(std::string item);
 	std::string		dropSelectedItem(void);

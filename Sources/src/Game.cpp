@@ -32,7 +32,7 @@
  * Load the maps with Maps::Maps
  * @sa Maps
  */
-Game::Game(void) : _hero((new Characters())) {
+Game::Game(void) : _hero(nullptr) {
 	#ifdef __APPLE__
 		theWorld.Initialize(1024, 720, NAME, true, false);
 	#else
@@ -44,6 +44,7 @@ Game::Game(void) : _hero((new Characters())) {
 	ContactFilter *gFilter = new ContactFilter();
 	theWorld.GetPhysicsWorld().SetContactFilter(gFilter);
 	this->maps = new Maps("Maps/");
+	this->_controller = new ControllerInputManager();
 	return ;
 }
 
@@ -78,61 +79,100 @@ void	Game::grid(void) {
  * Let's start the game
  */
 void	Game::start(void) {
+	Hero			*hero = nullptr, *tmp = nullptr;
+
+	theWorld.ResumePhysics();
 	theWorld.SetBackgroundColor(*(new Color(0, 0, 0)));
 	Game::wList = new WeaponList();
 	Game::eList = new EnemyList();
 	Game::aList = new ArmorList();
 	Game::rList = new RingList();
 	Game::dList = new DrugList();
+	Game::chest = new Chest();
 
+
+	Game::endGame = false;
+	Game::deadWaiting = 0;
+	Game::stopPattern = false;
 	this->tooltip = new Tooltip();
 	int i;
-	for (i = 0; i < 3; i++) {
+	for (i = 0; i < 3; i++)
 		this->maps->_XYMap[0][i].destroyMap();
-	}
-
 	delete(Game::currentGame->maps);
 	this->maps = new Maps("Maps/");
 	this->maps->readMaps();
 	Game::currentGame = this;
-	std::map<std::string, Json::Value>	save = Quit::getSave();
-	Hero			*hero = new Hero(Game::menuCharacter->getHeroType());
-
-	
-
-	LevelGenerator *levelGenerator = new LevelGenerator(4, 3, 60);
+	if (Game::menuCharacter != nullptr) {
+		hero = new Hero(Game::menuCharacter->getHeroType());
+		theWorld.GetPhysicsWorld().DestroyBody(Game::menuCharacter->GetBody());
+		theWorld.Remove(Game::menuCharacter);
+	} else {
+		tmp = static_cast<Hero *>(this->getHero());
+		hero = new Hero(tmp);
+	}
+	this->levelGenerator = new LevelGenerator(4, 3, 60);
 	levelGenerator->execute();
 	this->_tmpMap = levelGenerator->getLevel();
-	this->maps->displayLevel(this->_tmpMap);
+	while (this->maps->displayLevel(this->_tmpMap) == -1) {
+		sleep(1);
+		this->levelGenerator = new LevelGenerator(4, 3, 60);
+		levelGenerator->execute();
+		this->_tmpMap = levelGenerator->getLevel();
+	}
 
 //	Log::info("NbMaps: " + std::to_string(levelGenerator->getNbMaps()));
 //	Log::info("NbEnemy:" + trouver le nombre d ennemy);
 //	Log::info("NbMaps: " + info sur la sauvegarde (nivau du hero, gold etc...));
 
-	Game::currentX = levelGenerator->getStartX();
-	Game::currentY = levelGenerator->getStartY();
+//	Game::currentX = levelGenerator->getStartX();
+//	Game::currentY = levelGenerator->getStartY();
 	theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
 						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 9.001);
 	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 
 	this->displayHero(*(hero));
 	hero->init();
-	hero->setGold(save["gold"].asInt());
-	hero->setLevel(save["level"].asInt());
+	if (Game::menuCharacter) {
+		hero->setLevel(Game::menuCharacter->getLevel());
+		hero->setGold(0);
+	} else {
+		hero->setLevel(tmp->getLevel());
+		hero->setGold(tmp->getGold());
+		hero->setHP(tmp->getHP());
+		Game::getHUD()->consumable(hero->getInventory()->getItems());
+	}
+	Game::chest->applySave(this->_save);
+	this->setHero(hero);
+	hero->setStartingValues(tmp);
 	this->setHero(hero);
 	this->displayHUD();
-	hero->setStartingValues();
+	Game::getHUD()->removeText("Press Enter to continue.");
+	Game::getHUD()->removeText("LEVEL CLEARED");
 	Game::started = 1;
 	Game::currentGame = this;
-
+	Game::getHUD()->setText("World " + std::to_string(Game::World + 1), 300, 200, Vector3(1, 1, 1), 5, "title")->isFading = 1;
+	if (tmp) {
+		tmp->UnsubscribeFromAll();
+		theWorld.GetPhysicsWorld().DestroyBody(tmp->GetBody());
+		theWorld.Remove(tmp);
+		Game::delElement(tmp);
+	}
 }
 
 void	Game::menuInGame(void) {
 	theWorld.SetBackgroundColor(*(new Color(0, 0, 0)));
 
+	theWorld.ResumePhysics();
+	Game::currentIds = 0;
+	Game::elementMap.clear();
 	InGameMenu	*menu = new InGameMenu();
-	Game::currentGame = this;
+	Game::endGame = false;
+	Game::deadWaiting = 0;
+	if (Game::currentGame == nullptr)
+		Game::currentGame = this;
+	this->_save = Quit::getSave();
 	MenuCharacter	*charac = new MenuCharacter();
+
 
 	menu->showMaps();
 	charac->setXStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid() - 10);
@@ -141,10 +181,27 @@ void	Game::menuInGame(void) {
 						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 18.502), 1, true, "moveMenu");
 	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 	charac->display();
-	Game::addHUDWindow(new HUDWindow());
+	if (Game::getHUD() == nullptr)
+		Game::addHUDWindow(new HUDWindow());
+	else {
+		Game::getHUD()->removeText("Press Enter to continue.");
+		Game::getHUD()->removeText("YOU ARE DEAD");
+		theWorld.Remove(this->getHero()->getGhost());
+		delete this->getHero();
+	}
 	this->setHero(static_cast<Characters *>(charac));
 	Game::started = 1;
 	Game::isInMenu = 1;
+}
+
+Map		Game::getCurrentMap(void) {
+	if (this->_hero->inSpecialMap == 0)
+		return (this->maps->getMapXY()[Game::currentY][Game::currentX]);
+	else if (this->_hero->inSpecialMap == 1)
+		return *(this->maps->bossMap);
+	else if (this->_hero->inSpecialMap == 2) {
+		return *(this->maps->secretMap);
+	}
 }
 
 //! Read the maps
@@ -213,14 +270,24 @@ int		Game::getNextId(void) {
 }
 
 void	Game::checkHeroPosition(void) {
-	if (Game::started == 1) {
+	Game::currentGame->_controller->flag = 0;
+	Game::currentGame->_controller->tick();
+	if (Game::started == 1 && Game::currentGame->getHero() != nullptr) {
+		std::list<Enemy*> en = Game::currentGame->getCurrentMap().getEnemies();
 		Game::currentGame->moveCamera();
 		Game::currentGame->simulateHeroItemContact();
 		Game::currentGame->getHero()->characterLoop();
+		if (!en.empty()) {
+			std::list<Enemy*>::iterator it = en.begin();
+			for (; it != en.end(); it++) {
+				if (*it != nullptr)
+					(*it)->characterLoop();
+			}
+		}
 		Game::currentGame->reloadingHUD();
 		if (Game::asToStart == 1)
 			Game::currentGame->start();
-			Game::asToStart = 0;
+		Game::asToStart = 0;
 	}
 }
 
@@ -242,33 +309,35 @@ void	Game::moveCamera(void) {
 	bool	asChanged = false;
 	Map		&tmp = this->maps->_XYMap[Game::currentY][Game::currentX];
 
-   if (this->_hero->GetBody()->GetWorldCenter().x >= (tmp.getXStart() + tmp.getWidth() - 0.5)) {
-		this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
-		Game::currentX++;
-		asChanged = true;
-	} else if (this->_hero->GetBody()->GetWorldCenter().x <= (tmp.getXStart() - 1)) {
-		this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
+	if (this->_hero->inSpecialMap == 0) {
+		if (this->_hero->GetBody()->GetWorldCenter().x >= (tmp.getXStart() + tmp.getWidth() - 0.5)) {
+			this->getCurrentMap().destroyMap();
+			Game::currentX++;
+			asChanged = true;
+		} else if (this->_hero->GetBody()->GetWorldCenter().x <= (tmp.getXStart() - 1)) {
+			this->getCurrentMap().destroyMap();
 		Game::currentX--;
 		asChanged = true;
-	} else if (this->_hero->GetBody()->GetWorldCenter().y >= tmp.getYStart()) {
-		this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
-		Game::currentY--;
-		asChanged = true;
-	} else if (this->_hero->GetBody()->GetWorldCenter().y <= (tmp.getYStart() - tmp.getHeight())) {
-		this->maps->getMapXY()[Game::currentY][Game::currentX].destroyMap();
-		Game::currentY++;
-		asChanged = true;
-	}
-	if (asChanged) {
-		this->_hero->destroyTarget();
-		this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
-		theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
-			this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
-		if (Game::isInMenu == 0) {
-			Game::getHUD()->updateBigMap();
-			Game::getHUD()->minimap();
+		} else if (this->_hero->GetBody()->GetWorldCenter().y >= tmp.getYStart()) {
+			this->getCurrentMap().destroyMap();
+			Game::currentY--;
+			asChanged = true;
+		} else if (this->_hero->GetBody()->GetWorldCenter().y <= (tmp.getYStart() - tmp.getHeight())) {
+			this->getCurrentMap().destroyMap();
+			Game::currentY++;
+			asChanged = true;
 		}
-		asChanged = false;
+		if (asChanged) {
+			this->_hero->destroyTarget();
+			this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
+			theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
+								  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8);
+			if (Game::isInMenu == 0) {
+				Game::getHUD()->updateBigMap();
+				Game::getHUD()->minimap();
+			}
+			asChanged = false;
+		}
 	}
 }
 
@@ -338,42 +407,78 @@ void	Game::addToDestroyList(Elements *m) {
 	Game::bodiesToDestroy.push_back(m);
 }
 
+void	Game::endingGame(void) {
+	int		i;
+	for (i = 0; i < Game::elementMap.size(); i++) {
+		if (Game::elementMap[i] && Game::elementMap[i]->getAttribute("type") != "Hero") {
+			theWorld.Remove(Game::elementMap[i]);
+		}
+	}
+	Quit::doSave(static_cast<Hero *>(Game::currentGame->getHero()));
+	Game::elementMap.clear();
+	Game::getHUD()->deleteBigMap(0);
+	Game::getHUD()->setText("Press Enter to continue.", 500, 500);
+	if (!Game::lvlDone) {
+		theWorld.Remove(Game::currentGame->getHero());
+	}
+	Game::menuCharacter = nullptr;
+	Game::ended = false;
+	Game::endGame = false;
+	Game::secretDoor = nullptr;
+	Game::bossDoor = nullptr;
+	Game::dealer = nullptr;
+	if (Game::currentGame->getShopkeeper()) {
+		if (Game::currentGame->getShopkeeper()->getShop())
+			Game::currentGame->getShopkeeper()->getShop()->hideShop();
+		theWorld.Remove(Game::currentGame->getShopkeeper());
+	}
+	Game::currentGame->setShopkeeper(nullptr);
+	Game::chest->reset();
+	Game::currentGame->tooltip->clearInfo();
+	Game::deadWaiting = true;
+	Game::currentIds = 0;
+	// Chest, Shop Items
+}
+
 //! Intern callback for destroying an element.
 /**
  * Called after each tick() in order to destroy all elements set to destroy.
  * This function destroy each element in Game::bodiesToDestroy.
  * So, call this function outisde of this goal is useless.
  */
-bool	Game::destroyAllBodies(void) {
+bool	Game::destroyAllBodies(std::string msg) {
 	if (Game::ended == true) {
 		return true ;
 	}
 	if (Game::endGame == true) {
 		Game::ended = true;
 		theWorld.PausePhysics();
-		int i;
-		Game::getHUD()->setText("YOU ARE DEAD", 400, 400, Vector3(1, 0, 0), 1, "dead");
-		for (i = 0; i < Game::elementMap.size(); i++) {
+		int i, j = 0, k;
+		Game::getHUD()->setText(msg, 400, 400, Vector3(1, 0, 0), 1, "dead");
+		Game::getHUD()->clearHUD();
+		k = Game::elementMap.size();
+		theSwitchboard.DeferredBroadcast(new Message("PauseGame"), 1);
+		for (i = 0; i < k; i++) {
 			if (Game::elementMap[i] && Game::elementMap[i]->getAttribute("type") != "Hero") {
-				Game::elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1, "PauseGame");
+				if (Game::elementMap[i]->getAttribute("transparency") == "")
+					Game::elementMap[i]->ChangeColorTo(Color(0, 0, 0, 1), 1);
 				if (Game::elementMap[i]->getAttribute("physic") != "") {
-					theWorld.GetPhysicsWorld().DestroyBody((Game::elementMap[i])->GetBody());
+					if (Game::elementMap[i]->GetBody() != 0)
+						theWorld.GetPhysicsWorld().DestroyBody((Game::elementMap[i])->GetBody());
 				}
-				theWorld.Remove(Game::elementMap[i]);
 			}
 		}
-		Game::elementMap.clear();
 		return true;
 	} else {
 		for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
 			if ((*it)->getAttribute("physic") != "") {
-			  if ((*it)->GetBody()) {
-				(*it)->GetBody()->SetActive(false);
-				theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
-			  }
+				if ((*it)->GetBody()) {
+					(*it)->GetBody()->SetActive(false);
+					theWorld.GetPhysicsWorld().DestroyBody((*it)->GetBody());
+				}
 			}
-		  theWorld.Remove(*it);
-		  Game::delElement(*it);
+			theWorld.Remove(*it);
+			Game::delElement(*it);
 		}
 		Game::bodiesToDestroy.clear();
 		for (std::list<Elements*>::iterator it = Game::bodiesToCreate.begin(); it != Game::bodiesToCreate.end(); it++) {
@@ -482,6 +587,8 @@ void	Game::removeHUDWindow(HUDWindow *w) {
  * assuming this object is the first added to the list.
  */
 HUDWindow	*Game::getHUD(void) {
+	if (Game::windows.size() == 0)
+		return nullptr;
 	return Game::windows.front();
 }
 
@@ -499,6 +606,7 @@ void		Game::displayHUD(void) {
 	w->showHud();
 	w->setMaxHP(hero->getMaxHP());
 	w->gold(hero->getGold());
+	w->spells();
 	// Work
    //w->setText("Burp.", this->_hero, Vector3(0, 0, 0), 0, 1);
 	/*w->removeText("Burp.");*/
@@ -515,7 +623,6 @@ void		Game::reloadingHUD(void) {
 		Game::getHUD()->minimap();
 		Game::getHUD()->life(this->getHero()->getHP());
 		Game::getHUD()->bag();
-		Game::getHUD()->mana(this->getHero()->getMana());
 		Game::getHUD()->items(this->getHero()->getWeapon());
 		Game::getHUD()->items(this->getHero()->getArmor());
 		Game::getHUD()->items(this->getHero()->getRing());
@@ -525,11 +632,16 @@ void		Game::reloadingHUD(void) {
 	}
 }
 
+void		Game::addBoss(std::string n, int x, int y) {
+	Game::boss = new Boss(n, x, y);
+}
+
 /* SETTERS */
 void		Game::setHero(Characters * h) { this->_hero = h; };
 Characters*	Game::getHero(void) { return this->_hero; };
 Shopkeeper*	Game::getShopkeeper(void) { return this->_shopkeeper; };
 void		Game::setShopkeeper(Shopkeeper *s) { this->_shopkeeper = s; };
+std::map<std::string, Json::Value>		Game::getSave(void) { return this->_save; };
 
 // Set for the statics
 int Game::currentIds = 0;
@@ -560,7 +672,21 @@ int							Game::isWaitingForBind = 0;
 int							Game::reloadHUD = 0;
 int							Game::isPaused = 0;
 int							Game::asToStart = 0;
+int							Game::lvlDone = 0;
 MenuCharacter				*Game::menuCharacter = nullptr;
 Vector2						Game::spawnShop = Vector2();
+Vector2						Game::spawnBossDoor = Vector2();
+Vector2						Game::spawnSecretDoor = Vector2();
+Vector2						Game::spawnSecretReturnDoor = Vector2();
 Vector2						Game::spawnDealer = Vector2();
 Dealer						*Game::dealer = nullptr;
+Door						*Game::bossDoor = nullptr;
+Door						*Game::secretDoor = nullptr;
+Door						*Game::secretReturnDoor = nullptr;
+Vector2						Game::spawnChest = Vector2();
+Chest						*Game::chest = nullptr;
+bool						Game::toggleMenu = true;
+bool						Game::stopPattern = false;
+bool						Game::deadWaiting = false;
+int							Game::World = 0;
+Boss						*Game::boss = nullptr;

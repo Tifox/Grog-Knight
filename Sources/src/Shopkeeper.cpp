@@ -63,11 +63,13 @@ void	Shopkeeper::spawn(void) {
 	this->setYStart(Game::spawnShop.Y);
 	this->addAttribute("shopkeeper", "1");
 	this->display();
-	this->_shop->revealShop(Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getXMid() - 1, Game::currentGame->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 3);
+	this->_shop->revealShop(Game::currentGame->getCurrentMap().getXMid() - 1, Game::currentGame->getCurrentMap().getYMid() + 3);
 	this->_currentPhrase = "Greetings, traveler.";
 	theSwitchboard.DeferredBroadcast(new Message("removeShopkeeperText"), 3);
 	Game::getHUD()->setText(this->_currentPhrase, this, Vector3(255, 51, 255), 0, 0);
 }
+
+
 
 //! Begin collision function
 /**
@@ -77,6 +79,8 @@ void	Shopkeeper::spawn(void) {
  * @param contact The Box2D contact object
  */
 void	Shopkeeper::BeginContact(Elements* elem, b2Contact *contact) {
+	if (!elem)
+		return;
 	HUDWindow *hud = Game::getHUD();
 	if (elem->getAttribute("type") != "ground") {
 		contact->SetEnabled(false);
@@ -111,3 +115,5 @@ void	Shopkeeper::ReceiveMessage(Message *m) {
 			this->removeText();
 	}
 }
+
+Shop	*Shopkeeper::getShop(void) { return this->_shop; };

@@ -35,13 +35,6 @@
  * would be better ?
  */
 Consumable::Consumable(void) {
-	this->addAttribute("type2", "Consumable");
-	this->addAttribute("type3", "HP");
-	this->addAttribute("value", "25");
-	this->SetSprite("Resources/Images/heart.png");
-	this->SetPosition(45, -27);
-	this->InitPhysics();
-	theWorld.Add(this);
 }
 
 
@@ -55,23 +48,6 @@ Consumable::Consumable(void) {
  * would be better ?
  */
 Consumable::Consumable(Characters* c) {
-	this->addAttribute("type2", "Consumable");
-	if (rand() % 3 == 1) {
-		this->addAttribute("type3", "HP");
-		this->addAttribute("value", "25");
-		this->SetSprite("Resources/Images/heart.png");
-	}
-	else if (rand() %3 == 2 ){
-		this->addAttribute("type3", "gold");
-		this->addAttribute("value", "50");
-		this->SetSprite("Resources/Images/gold.png");
-	} else {
-		this->addAttribute("type3", "mana");
-		this->addAttribute("value", "50");
-		this->SetSprite("Resources/Images/mana.png");
-	}
-	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
-	Game::bodiesToCreate.push_back(this);
 }
 
 //! Third override, used to create consumable based on a Characters* position)
@@ -86,12 +62,11 @@ Consumable::Consumable(std::string type, std::string value, Characters* c) {
 	this->addAttribute("type2", "Consumable");
 	this->addAttribute("type3", type);
 	this->addAttribute("value", value);
+	this->SetLayer(15);
 	if (type == "HP")
 		this->SetSprite("Resources/Images/heart.png");
 	else if (type == "gold")
 		this->SetSprite("Resources/Images/gold.png");
-	else
-		this->SetSprite("Resources/Images/mana.png");
 	this->SetPosition(c->GetBody()->GetWorldCenter().x, c->GetBody()->GetWorldCenter().y);
 	Game::bodiesToCreate.push_back(this);
 }
@@ -105,10 +80,13 @@ Consumable::Consumable(std::string type, std::string value, Characters* c) {
  * @todo This function is actually doing nothing.
  */
 void	Consumable::BeginContact(Elements *elem, b2Contact *contact) {
-	if (elem->getAttribute("type") != "ground") {
+	if (!elem)
+		return ;
+	if (elem->getAttribute("type") != "ground" || elem->getAttribute("speType") == "spikes") {
 		contact->SetEnabled(false);
 		contact->enableContact = false;
-	}
+	} else
+		this->GetBody()->SetGravityScale(0);
 }
 
 //! Destructor

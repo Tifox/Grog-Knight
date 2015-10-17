@@ -1,0 +1,21 @@
+{
+    "infos": {
+   	    "name": "Bow_001",
+		"displayName": "Baguette Bow",
+		"flavor": "Is this the infamous\nBaguette Bow?",
+		"type": "Bow",
+		"equipable": "Archer",
+		"hitbox": "PROJECTILE",
+		"size": 0.5,
+		"price": 15,
+		"active": 0.1,
+	 	"critRate": 5,
+		"damage": 2,
+	 	"pushback": 1,
+		"recovery": 0.5,
+		"attack": "ranged",
+		"sprites": "Resources/Images/Weapons/Bow_001.png",
+		"lootLevel": 2,
+		"starterLevel": 2
+	}
+}

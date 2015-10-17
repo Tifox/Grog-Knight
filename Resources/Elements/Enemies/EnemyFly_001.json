@@ -1,0 +1,68 @@
+{
+	"infos": {
+		"name": "EnemyFly_001",
+		"id": 1,
+		"maxHP": 10,
+		"sprites": "Resources/Images/Enemy/EnemyFly_001/enemy_000.png",
+		"size": 1.3,
+		"maxSpeed": 5,
+		"hitboxType": "special",
+		"hitbox": "enemyHitbox",
+		"level": 1,
+		"flying": true,
+		"damage": "20"
+	},
+	"Actions": {
+		"breath": {
+				"beginFrame": 1,
+				"endFrame": 4,
+				"beginFrame_right": 1,
+				"endFrame_right": 4,
+				"beginFrame_left": 1,
+				"endFrame_left": 4,
+				"x": 1,
+				"y": 1,
+				"time": 0.1
+			},
+		"jump": {
+				"beginFrame": 1,
+				"endFrame": 4,
+				"beginFrame_right": 1,
+				"endFrame_right": 4,
+				"beginFrame_left": 1,
+				"endFrame_left": 4,
+				"fallingFrame_right":1,
+				"fallingFrame_left":1,
+				"x": 1,
+				"y": 1,
+				"time": 0.1
+			},
+		"loot": {
+				"consumableRate": 50,
+				"equipmentRate": 25,
+				"HPReward": 25,
+				"XPReward": 20,
+				"EqReward": 1
+			},
+		"death": {
+				"newSprites": "Resources/Images/Explosion/explode_000.png",
+				"beginFrame": 0,
+				"endFrame": 5,
+				"size": 2,
+				"time": 0.1
+		},
+		"forward": {
+				"beginFrame": 0,
+				"endFrame": 6,
+				"time": 0.05,
+				"force": 3
+		},
+		"backward": {
+				"beginFrame": 0,
+				"endFrame": 6,
+				"time": 0.05,
+				"force": 3
+		}
+	}
+}
+

@@ -64,7 +64,6 @@ int		main(int ac, char **av) {
 	srand(time(NULL));
 	game->readMaps();
 	MouseDebugger l;
-
 	Game::currentGame = game;
 	if (ac > 1 && (std::string(av[1]) == "--no-menu")) {
 		game->start();
@@ -72,6 +71,7 @@ int		main(int ac, char **av) {
 	}
 	else {
 		game->menu = menu;
+		Game::isInMenu = 1;
 		menu->showMenu(game);
 	}
 	return 0;

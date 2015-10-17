@@ -1,0 +1,17 @@
+{
+	"infos": {
+		"name": "Ring_001",
+		"displayName": "Ring of Union",
+		"flavor": "Legends says you can wear it\nBut it does nothing",
+		"price": 15,
+		"sprites": "Resources/Images/Rings/Ring_001.png",
+		"lootLevel": 2,
+		"starterLevel": 2
+	},
+	"bonus": {
+		"hpBuff": 0,
+		"dmgReduc": 0,
+		"bonusSpeed": 0,
+		"bonusDmg": 0
+	}
+}

@@ -52,14 +52,19 @@ public:
 
 	void	pot(int status);
 	void	cocaine(int status);
+	void	morphine(int status);
+	void	mdma(int status);
+	void	mushroom(int status);
+
 
 
 	void			ReceiveMessage(Message *m);
 
-	std::string		getName(void);
+	std::string		getDisplayName(void);
 	std::string		getType(void);
 	std::string		getFlavor(void);
 	std::string		getSprite(void);
+	int 			getEffect(void);
 
 
 private:
@@ -72,6 +77,7 @@ private:
 	std::string		_flavor;
 	std::string		_sprite;
 	std::string 	_curDrug;
+	int 			_effect;
 	void			_readFile(std::string name);
 	void			_parseJson(std::string file);
 

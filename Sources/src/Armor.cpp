@@ -42,8 +42,11 @@ Armor::Armor(std::string name) : _name(name) {
 
 Armor::Armor(Armor* Armor) {
 	this->_name = Armor->getName();
-	this->addAttribute("type3", "Armor");
+	this->_displayName = Armor->getDisplayName();
 	this->addAttribute("name", this->_name);
+	this->addAttribute("displayName", this->_displayName);
+	this->addAttribute("type3", "Armor");
+	this->SetLayer(70);
 	this->_flavor = Armor->getFlavor();
 	this->_sprite = Armor->getSprite();
 	this->addAttribute("sprite", this->_sprite);
@@ -51,8 +54,12 @@ Armor::Armor(Armor* Armor) {
 	this->_lootLevel = Armor->getLootLevel();
 	if (Armor->getAttribute("hpBuff") != "")
 		this->addAttribute("hpBuff", Armor->getAttribute("hpBuff"));
-	if (Armor->getAttribute("manaBuff") != "")
-		this->addAttribute("manaBuff", Armor->getAttribute("manaBuff"));
+	if (Armor->getAttribute("dmgReduc") != "")
+		this->addAttribute("dmgReduc", Armor->getAttribute("dmgReduc"));
+	if (Armor->getAttribute("bonusSpeed") != "")
+		this->addAttribute("bonusSpeed", Armor->getAttribute("bonusSpeed"));
+	if (Armor->getAttribute("bonusDmg") != "")
+		this->addAttribute("bonusDmg", Armor->getAttribute("bonusDmg"));
 }
 
 
@@ -97,9 +104,15 @@ void    Armor::_parseJson(std::string file) {
 	if (this->_name != json["infos"].get("name", "").asString())
 		Log::warning("The class name is different with the name in the config file: " + this->_name + "/" + json["infos"].get("name", "").asString());
 	this->_name = json["infos"].get("name", "").asString();
+	this->_displayName = json["infos"].get("displayName", "").asString();
 	this->_flavor = json["infos"].get("flavor", "").asString();
 	this->_lootLevel = json["infos"].get("lootLevel", "").asInt();
+	this->_price = json["infos"].get("price", "").asInt();
 	this->_sprite = json["infos"].get("sprites", "").asString();
+	if (json["infos"].get("starterLevel", "").isConvertibleTo(Json::ValueType::intValue))
+		this->_starterLevel = json["infos"].get("starterLevel", "").asInt();
+	else
+		this->_starterLevel = -1;
 	this->addAttribute("sprite", this->_sprite);
 	for (i = json["bonus"].begin(); i != json["bonus"].end(); i++)
 		this->addAttribute( i.key().asString(), (*i).asString());
@@ -126,21 +139,27 @@ Json::Value     Armor::_getAttr(std::string category, std::string key) {
 }
 
 void	Armor::ReceiveMessage(Message *m) {
-
+	if (m->GetMessageName() == "DeleteEquipment" + this->GetName()) {
+		this->SetLayer(0);
+		Game::addToDestroyList(this);
+	}
+	if (m->GetMessageName() == "setToStatic" + this->GetName()) {
+		this->GetBody()->SetType(b2_staticBody);
+	}
 }
 
 /* GETTERS */
 std::string		Armor::getName(void) { return this->_name; }
+std::string		Armor::getDisplayName(void) { return this->_displayName; }
 std::string		Armor::getFlavor(void) { return this->_flavor; }
 std::string		Armor::getSprite(void) { return this->_sprite; }
 int				Armor::getLootLevel(void) { return this->_lootLevel; }
 int				Armor::getHp(void) { return this->_hp; }
+int				Armor::getPrice(void) { return this->_price; }
+int				Armor::getStarterLevel(void)  { return this->_starterLevel; }
+
 
 void	Armor::BeginContact(Elements *elem, b2Contact *contact) {
-	if (elem->getAttribute("type") != "ground") {
-		contact->SetEnabled(false);
-		contact->enableContact = false;
-	}
 }
 
 void	Armor::EndContact(Elements *elem, b2Contact *contact) {

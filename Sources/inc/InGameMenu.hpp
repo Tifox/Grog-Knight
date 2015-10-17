@@ -33,7 +33,7 @@ class		InGameMenu {
 	public:
 		InGameMenu();
 		~InGameMenu();
-		void	showMaps();
+		void	showMaps(void);
 
 	private:
 		Maps*	_maps;

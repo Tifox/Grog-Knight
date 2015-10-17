@@ -1,0 +1,21 @@
+{
+    "infos": {
+   	    "name": "Sword_001",
+		"displayName": "Kitchen Knife",
+		"flavor": "It was the Arthas Menethil's knife.\nFor cutting ham.\nAnd Zombies. \nOr maybe not.",
+		"equipable": "Warrior",
+		"type": "Sword",
+		"hitbox": "SWORD",
+		"price": 15,
+		"size": 1,
+	 	"critRate": 5,
+		"damage": 5,
+		"recovery": 1,
+		"pushback": 5,
+		"active": 0.2,
+		"attack": "melee",
+		"sprites": "Resources/Images/Weapons/Sword_001.png",
+		"lootLevel": 2,
+		"starterLevel": 2
+	}
+}

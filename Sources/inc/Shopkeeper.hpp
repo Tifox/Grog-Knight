@@ -43,6 +43,7 @@ public:
 	void			spawn();
 	void			displayText(std::string say);
 	void			removeText(void);
+	Shop			*getShop();
 
 private:
 	Shop*			_shop;

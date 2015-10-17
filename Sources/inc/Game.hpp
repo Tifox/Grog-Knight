@@ -53,6 +53,7 @@ class MenuCharacter;
 # include "InGameMenu.hpp"
 # include "Shop.hpp"
 # include "DrugList.hpp"
+# include "ControllerInputManager.hpp"
 
 class ArmorList;
 class EnemyList;
@@ -64,6 +65,9 @@ class Hitbox;
 class HUDWindow;
 class Menu;
 class Dealer;
+class Chest;
+class Door;
+class Boss;
 
 class Game {
 
@@ -79,6 +83,7 @@ class Game {
 		void	displayEnemy(Elements & Enemy);
 		void	displayObject(Elements & Object);
 		void	showMap(void);
+		Map		getCurrentMap(void);
 		void	changeCharacter(std::string);
 		void	displayHUD(void);
 		void	setHero(Characters *h);
@@ -89,10 +94,12 @@ class Game {
 		Shopkeeper	*getShopkeeper(void);
 		void		setShopkeeper(Shopkeeper *s);
 		void	menuInGame(void);
+		void	endingGame(void);
+		std::map<std::string, Json::Value>	getSave(void);
 
 		static bool	endGame;
 		static bool	ended;
-		static bool	destroyAllBodies(void);
+		static bool	destroyAllBodies(std::string msg = "YOU ARE DEAD");
 		static void checkHeroPosition(void);
 		static void	addToDestroyList(Elements *m);
 
@@ -108,11 +115,13 @@ class Game {
 		static void	showText(void);
 		static void	addHUDWindow(HUDWindow *);
 		static void	removeHUDWindow(HUDWindow *);
+		static void	addBoss(std::string n, int x, int y);
 		static HUDWindow*	getHUD(void);
 		static int			lol;
 		static Game*		currentGame;
 
 		Maps		*maps;
+		LevelGenerator *levelGenerator;
 		Menu		*menu;
 		std::vector<Room*>				*gameMap;
 		Tooltip 						*tooltip;
@@ -141,10 +150,25 @@ class Game {
 		static int						reloadHUD;
 		static int						asToStart;
 		static int						isPaused;
+		static int						lvlDone;
 		static MenuCharacter			*menuCharacter;
 		static Vector2					spawnDealer;
+		static Vector2					spawnSecretDoor;
+		static Vector2					spawnBossDoor;
+		static Vector2					spawnSecretReturnDoor;
 		static Vector2					spawnShop;
+		static Vector2					spawnChest;
 		static Dealer					*dealer;
+		static Chest					*chest;
+		static Door						*bossDoor;
+		static Door						*secretDoor;
+		static Door						*secretReturnDoor;
+		static bool						toggleMenu;
+		static bool						stopPattern;
+		static bool						deadWaiting;
+		static int						World;
+		static Boss						*boss;
+		static void						newBoss(std::string n, int x, int y);
 
 	private:
 		float				beginXHero;
@@ -152,8 +176,12 @@ class Game {
 		std::vector<std::vector<int> >	_tmpMap;
 		Characters	*_hero;
 		Shopkeeper	*_shopkeeper;
+		ControllerInputManager		*_controller;
+		std::map<std::string, Json::Value>	_save;
 };
 
 # include "Dealer.hpp"
+# include "Chest.hpp"
+# include "Door.hpp"
 
 #endif

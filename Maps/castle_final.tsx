@@ -541,12 +541,20 @@
  <tile id="108">
   <properties>
    <property name="physic" value="0"/>
+   <property name="spawnChest" value="true"/>
   </properties>
  </tile>
  <tile id="109">
   <properties>
    <property name="hitbox" value="upperHalfHitbox"/>
    <property name="speType" value="spikes"/>
+  </properties>
+ </tile>
+ <tile id="115">
+  <properties>
+   <property name="physic" value="0"/>
+   <property name="spawnChest" value="true"/>
+   <property name="transparency" value="100"/>
   </properties>
  </tile>
  <tile id="117">
@@ -567,6 +575,7 @@
  <tile id="127">
   <properties>
    <property name="physic" value="0"/>
+   <property name="speType" value="chest"/>
   </properties>
  </tile>
 </tileset>

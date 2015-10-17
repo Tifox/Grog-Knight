@@ -44,17 +44,25 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->addAttribute("class", name);
 	this->SetDensity(1.0f);
 	this->SetName(name);
+	this->inSpecialMap = false;
 	this->SetFriction(1);
 	this->SetRestitution(0.0f);
 	this->SetFixedRotation(true);
+	this->_execFlag = 0;
 	this->_orientation = RIGHT;
 	this->_latOrientation = RIGHT;
 	this->_canMove = true;
 	this->_canAttack = true;
 	this->_canJump = true;
 	this->_isFlying = false;
+	this->_isTouchingBossDoor = false;
+	this->_isTouchingSecretDoor = false;
+	this->_isTouchingChest = false;
+	this->_isTouchingDealer = false;
+	this->_isChoosingItem = 0;
 	this->_invincibility = false;
 	this->_grounds.clear();
+	this->_speMoveIsSet = false;
 	this->_item = nullptr;
 	this->_shopItem = "";
 	this->_drug = "";
@@ -66,14 +74,22 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_isStomping = 0;
 	this->_isCharging = 0;
 	this->_isDashing = 0;
+	this->_isWhirlwinding = false;
+	this->_isShockWaving = false;
+	this->_isRapidFiring = false;
 	this->_speMoveReady = 1;
+	this->_speAttReady = 1;
 	this->_hasDashed = 0;
 	this->SetLayer(100);
-	this->_readFile(name);
-	this->_eqMove = new SpecialMoves(this);
-	this->_isStomping = false;
 	this->_flyTrigger = false;
 	this->_isDisengaging = false;
+	this->buff.cur = "";
+	this->buff.bonusDmg = 0;
+	this->buff.bonusSpeed = 0;
+	this->buff.drugSpeed = 0;
+	this->buff.dmgReduc = 0;
+	this->buff.critBuff = 0;
+	this->_readFile(name);
 }
 
 //! Basic destructor
@@ -112,32 +128,40 @@ void	Characters::_parseJson(std::string file) {
 	Json::Value		json;
 	Json::ValueIterator i, v;
 	std::map<std::string, Json::Value>	tmp;
+	std::string							type;
 
 	if (!read.parse(file, json))
 		Log::error("Error in json syntax :\n" + read.getFormattedErrorMessages());
 	if (!strncmp("Enemies/", this->_name.c_str(), 8)) {
 		if (this->_name.substr(8, json["infos"].get("name", "").asString().length()) != json["infos"].get("name", "").asString())
-			Log::error("The class name is different with the name in the config file.");
+			Log::error("The class name is different with the name in the config file (" + this->_name + ").");
 	} else {
 		if (json["infos"].get("name", "").asString() != this->_name)
 			Log::warning("The class name is different with the name in the config file.");
 	}
+	if (json["infos"].get("type", "").isConvertibleTo(Json::ValueType::stringValue))
+		type = json["infos"].get("type", "").asString();
 	this->_name = json["infos"].get("name", "").asString();
-	this->_id = json["infos"].get("id", "").asInt();
 	this->_talk = json["infos"].get("talk", "").asString();
 	this->addAttribute("talk", json["infos"].get("talk", "").asString());
 	this->_size = json["infos"].get("size", "").asFloat();
 	this->SetSize(this->_size);
-	this->_hp = json["infos"].get("HP", "").asInt();
 	if (json["infos"].get("maxHP", "").isConvertibleTo(Json::ValueType::intValue))
 		this->_maxHp = json["infos"].get("maxHP", "").asInt();
-	if (json["infos"].get("mana", "").isConvertibleTo(Json::ValueType::intValue))
-		this->_mana = json["infos"].get("mana", "").asInt();
-	if (json["infos"].get("maxMana", "").isConvertibleTo(Json::ValueType::intValue))
-		this->_maxMana = json["infos"].get("maxMana", "").asInt();
 	this->_hitboxType = json["infos"].get("hitboxType", "").asString();
 	this->_hitbox = json["infos"].get("hitbox", "").asString();
 	this->addAttribute("spritesFrame", json["infos"].get("sprites", "").asString());
+	this->_hp = this->_maxHp;
+	if (type != "Boss") {
+		this->_id = json["infos"].get("id", "").asInt();
+		if (json["infos"].get("damage", "").isConvertibleTo(Json::ValueType::stringValue))
+			this->addAttribute("damage", json["infos"].get("damage", "").asString());
+		this->buff.critBuff = json["infos"].get("baseCrit", 0).asInt();
+		this->buff.bonusDmg = json["infos"].get("baseDamage", 0).asInt();
+		this->_maxHp += (this->_maxHp * json["Stats"].get("HPMult", 0).asFloat()) * this->_level;
+		this->buff.critBuff += (this->buff.critBuff * json["Stats"].get("critMult", 0).asFloat() * this->_level);
+		this->buff.bonusDmg += (this->buff.bonusDmg * json["Stats"].get("damageMult", 0).asFloat() * this->_level);
+	}
 
 	for (i = json["Actions"].begin(); i != json["Actions"].end(); i++) {
 		for (v = (*i).begin(); v != (*i).end(); v++) {
@@ -275,22 +299,27 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->_isAttacking = false;
 	}
 	else if (m->GetMessageName() == "moveHeroDown") {
-		if (this->_latOrientation == RIGHT && this->_canMove && this->_isAttacking == false)
+		this->_setCategory("jump");
+		if (this->_latOrientation == RIGHT && this->_canMove && this->_isAttacking == false && !this->_isWhirlwinding) {
+			this->changeSizeTo(Vector2(this->_getAttr("x").asFloat(), this->_getAttr("y").asFloat()));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-					this->_getAttr("jump", "fallingFrame_right").asInt(),
-					this->_getAttr("jump", "endFrame_right").asInt() - 3, "jump");
-		else if (this->_latOrientation == LEFT && this->_canMove && this->_isAttacking == false)
+									  this->_getAttr("jump", "fallingFrame_right").asInt(),
+									  this->_getAttr("jump", "fallingFrame_right").asInt(), "jump");
+		}
+		else if (this->_latOrientation == LEFT && this->_canMove && this->_isAttacking == false && !this->_isWhirlwinding) {
+			this->changeSizeTo(Vector2(this->_getAttr("x").asFloat(), this->_getAttr("y").asFloat()));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-					this->_getAttr("jump", "fallingFrame_left").asInt(),
-					this->_getAttr("jump", "endFrame_left").asInt() - 3, "jump");
-	}
-	else if (m->GetMessageName() == "destroyEnemy" + this->GetName()) {
+									  this->_getAttr("jump", "fallingFrame_left").asInt(),
+									  this->_getAttr("jump", "fallingFrame_left").asInt(), "jump");
+		}
+	} else if (m->GetMessageName() == "destroyEnemy" + this->GetName()) {
 		new Loot(this);
 		this->_destroyEnemy();
 		return;
 	}
 	else if (m->GetMessageName() == "setToStatic" + this->GetName()) {
 		this->GetBody()->SetType(b2_staticBody);
+		this->_isDead = true;
 		return;
 	}
 	else if (m->GetMessageName() == "equipSelectedItem") {
@@ -327,10 +356,21 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->_inventory->changeItemFocus();
 	}
 	else if (m->GetMessageName() == "dropItem") {
-		new Loot(this, this->_inventory->dropSelectedItem());
+			new Loot(this, this->_inventory->dropSelectedItem());
 	}
 	else if (m->GetMessageName() == "speMoveReady") {
 		this->_speMoveReady = 1;
+		theWorld.Remove(Game::getHUD()->getMoveCooldown());
+	}
+	else if (m->GetMessageName() == "speAttReady") {
+		this->_speAttReady = 1;
+		theWorld.Remove(Game::getHUD()->getAttCooldown());
+	}
+	else if (m->GetMessageName().substr(0, 10) == "chooseItem") {
+		if (this->_isChoosingItem == 1)
+			return;
+		this->_isChoosingItem = 1;
+		this->_inventory->chooseItemFocus(atoi(m->GetMessageName().substr(10, 1).c_str()));
 	}
 	else if (m->GetMessageName() == "dashEnd") {
 		theSwitchboard.UnsubscribeFrom(this, "dashEnd");
@@ -350,6 +390,7 @@ void	Characters::ReceiveMessage(Message *m) {
 		this->_isCharging = false;
 		this->_invincibility = false;
 		this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+		this->AnimCallback("base");
 	}
 	else if (m->GetMessageName() == "stompEnd") {
 		std::string orientation;
@@ -398,13 +439,20 @@ void	Characters::ReceiveMessage(Message *m) {
 		Game::getHUD()->bigMap();
 	} else if (m->GetMessageName() == "deleteMapPressed") {
 		Game::getHUD()->deleteBigMap(1);
+	} else if (m->GetMessageName() == "escapePressed") {
+		theSwitchboard.UnsubscribeFrom(this, "escapePressed");
+		Game::toggleMenu = true;
+		this->subscribeToAll();
+		Game::chest->removeInterface();
 	}
 	for (i = this->_attr.begin(); i != this->_attr.end(); i++) {
 		attrName = this->_getAttr(i->first, "subscribe").asString();
 		if (!strncmp(attrName.c_str(), m->GetMessageName().c_str(), strlen(attrName.c_str()))) {
-
 			// Get the key status (1 = Pressed, 0 = Released)
 			status = (m->GetMessageName().substr(strlen(attrName.c_str()), 7) == "Pressed" ? 1 : 0);
+			//if (this->_actionFlag == false && status == 1)
+				//return;
+			this->_actionFlag = false;
 			if (this->_canMove == false)
 				return;
 			if (attrName == "forward") {
@@ -423,6 +471,10 @@ void	Characters::ReceiveMessage(Message *m) {
 				this->_pickupItem(status);
 			} if (attrName == "specialmove") {
 				this->_specialMove(status);
+			} if (attrName == "specialattack") {
+				this->_specialAttack(status);
+			} if (attrName == "action") {
+				this->_executeAction(status);
 			}
 			this->_lastAction = attrName;
 			this->actionCallback(attrName, status);
@@ -443,7 +495,8 @@ void	Characters::AnimCallback(String s) {
 	if (s == "base" || s == "takeDamage") {
 		this->_isAttacking = 0;
 		if (this->_isRunning == 0 && this->_isAttacking == 0 && this->_isLoadingAttack == 0 &&
-				this->_grounds.size() > 0) {
+				this->_grounds.size() > 0 && !this->_isWhirlwinding) {
+			this->changeSizeTo(Vector2(this->_getAttr("x").asFloat(), this->_getAttr("y").asFloat()));
 			if (this->_latOrientation == LEFT) {
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 						this->_getAttr("beginFrame_left").asInt(),
@@ -459,23 +512,19 @@ void	Characters::AnimCallback(String s) {
 			}
 		} else if (this->_grounds.size() == 0 && this->getAttribute("type") == "Hero") {
 			this->_setCategory("jump");
-			if (this->_latOrientation == LEFT && this->_isDashing == false) {
-			  this->changeSizeTo(Vector2(1,1));
+			this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
+			if (this->_latOrientation == LEFT && this->_isDashing == false && !this->_isWhirlwinding) {
+				this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-						this->_getAttr("fallingFrame_left").asInt(),
-						this->_getAttr("fallingFrame_left").asInt(), "base");
-			} else if (this->_latOrientation == RIGHT && this->_isDashing == false) {
-			  this->changeSizeTo(Vector2(1,1));
+										  this->_getAttr("fallingFrame_left").asInt(),
+										  this->_getAttr("fallingFrame_left").asInt(), "base");
+			} else if (this->_latOrientation == RIGHT && this->_isDashing == false && !this->_isWhirlwinding) {
+				this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-						this->_getAttr("fallingFrame_right").asInt(),
-						this->_getAttr("fallingFrame_right").asInt(), "base");
-			} else {
-				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-						this->_getAttr("beginFrame_right").asInt(),
-						this->_getAttr("endFrame_right").asInt(), "base");
+										  this->_getAttr("fallingFrame_right").asInt(),
+										  this->_getAttr("fallingFrame_right").asInt(), "base");
 			}
-
-		} else if (this->_isAttacking == 0) {
+		} else if (this->_isAttacking == 0 && !this->_isWhirlwinding) {
 			if (this->_isLoadingAttack == 0) {
 				if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
 					this->changeSizeTo(Vector2(1, 1));
@@ -484,41 +533,54 @@ void	Characters::AnimCallback(String s) {
 				} else if (this->_isRunning == 2) {
 					this->_setCategory("backward");
 				}
-				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(),
-						SAT_Loop,
-						this->_getAttr("beginFrame").asInt(),
-						this->_getAttr("endFrame").asInt());
+				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
+										  this->_getAttr("beginFrame").asInt(),
+										  this->_getAttr("endFrame").asInt(), "");
 			} else if (this->_fullChargedAttack == true) {
 				std::string orientation;
 				if (this->_latOrientation == RIGHT) {
-					orientation = "right";
+					orientation = "Right";
 				} else if (this->_latOrientation == LEFT)
-					orientation = "left";
-				this->_setCategory("loadAttack_charge");
-				if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
-					this->changeSizeTo(Vector2(2, 2));
+					orientation = "Left";
+				this->_setCategory(this->_weapon->getType());
+				this->changeSizeTo(Vector2(this->_getAttr("loadX").asInt(), this->_getAttr("loadY").asInt()));
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-						this->_getAttr("endFrame_" + orientation).asInt(),
-						this->_getAttr("endFrame_" + orientation).asInt(), "loadAttack_charge");
+										  this->_getAttr("holdFrameLoad" + orientation).asInt() - 1,
+										  this->_getAttr("holdFrameLoad" + orientation).asInt(), "loadAttack_charge");
 			}
 		}
-		if (this->getAttribute("class") == "Warrior" && !this->_isLoadingAttack)
-			this->changeSizeTo(Vector2(1, 1));
+		else {
+		if (this->_isRunning != 0 && !this->_isWhirlwinding)
+			this->changeSizeTo(Vector2(this->_getAttr("x").asFloat(), this->_getAttr("y").asFloat()));
+		}
 		if (this->_isDashing == true) {
 			this->_isDashing = false;
 			this->_canMove = 1;
 		}
 	} else if (s == "endDash") {
 		this->_setCategory("dash");
-		//this->_isRunning = 0;
 		std::string orientation;
 		if (this->_latOrientation == RIGHT)
 			orientation = "right";
 		else if (this->_latOrientation == LEFT)
 			orientation = "left";
 		this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-				this->_getAttr("endFrame_" + orientation).asInt() - 1,
-				this->_getAttr("endFrame_" + orientation).asInt(), "base");
+								  this->_getAttr("endFrame_" + orientation).asInt() - 1,
+								  this->_getAttr("endFrame_" + orientation).asInt(), "base");
+	} else if (s == "stompEnd") {
+		this->_canMove = 1;
+		this->AnimCallback("base");
+	} else if (s == "chargeHold") {
+		std::string orientation;
+		if (this->_latOrientation == RIGHT) {
+			orientation = "Right";
+		} else if (this->_latOrientation == LEFT)
+			orientation = "Left";
+		if (this->_isCharging == true) {
+			this->changeSizeTo(Vector2(this->_getAttr(this->_weapon->getType(), "chargeX").asFloat(), this->_getAttr(this->_weapon->getType(), "chargeY").asFloat()));
+		}
+		else
+			this->AnimCallback("base");
 	}
 }
 
@@ -531,6 +593,8 @@ void	Characters::AnimCallback(String s) {
  * @param contact The b2Contact object of the collision. See Box2D docs for more info.
  */
 void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
+	if (!elem)
+		return ;
 	if (this->_hp <= 0 && this->getAttribute("type") == "Hero") {
 		this->_heroDeath();
 		return;
@@ -542,10 +606,9 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 	} if (elem->getAttribute("triggerOff") != "") {
 		this->trigger(elem->getAttribute("triggerOff"), 0);
 	}
-
 	if (elem->getAttributes()["type"] == "ground") {
 		if (this->_isAttacking == 0 && this->_isLoadingAttack == 0) {
-			if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
+			if (this->getAttribute("class") == "Warrior" && this->_isDashing == false && !this->_isWhirlwinding && !this->_isCharging)
 				this->changeSizeTo(Vector2(1, 1));
 		}
 		if (this->GetBody()->GetWorldCenter().y - 0.905 >= elem->GetBody()->GetWorldCenter().y) {
@@ -561,32 +624,32 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				this->_hasDashed = 0;
 				if (this->_latOrientation == RIGHT && this->_isAttacking == false &&
 					this->_isLoadingAttack == 0 && this->_isDashing == false &&
-					this->_isStomping == false) {
-					if (this->getAttribute("class") == "Warrior")
-						this->changeSizeTo(Vector2(1, 1));
-					this->PlaySpriteAnimation(0.1f, SAT_OneShot,
-							this->_getAttr("jump", "endFrame_right").asInt() - 2,
-							this->_getAttr("jump", "endFrame_right").asInt(), "base");
+					this->_isStomping == false && !this->_isWhirlwinding && !this->_isCharging) {
+					this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
+					this->PlaySpriteAnimation(this->_getAttr("jump", "time").asFloat(), SAT_OneShot,
+											  this->_getAttr("jump", "fallingFrame_right").asInt(),
+											  this->_getAttr("jump", "endFrame_right").asInt(), "base");
 				} else if (this->_latOrientation == LEFT &&
 						   this->_isAttacking == false &&
 						   this->_isLoadingAttack == 0 &&
-						   this->_isStomping == false) {
-					if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
-						this->changeSizeTo(Vector2(1, 1));
-					this->PlaySpriteAnimation(0.1f, SAT_OneShot,
-							this->_getAttr("jump", "endFrame_left").asInt() - 2,
-							this->_getAttr("jump", "endFrame_left").asInt(), "base");
+						   this->_isStomping == false && !this->_isWhirlwinding && !this->_isCharging) {
+					if (this->_isDashing == false)
+						this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
+					this->PlaySpriteAnimation(this->_getAttr("jump", "time").asFloat(), SAT_OneShot,
+											  this->_getAttr("jump", "fallingFrame_left").asInt(),
+											  this->_getAttr("jump", "endFrame_left").asInt(), "base");
 				}
 			}
 			this->_grounds.push_back(elem);
 			if (this->_isStomping == true) {
 				theSwitchboard.Broadcast(new Message("stompEnd"));
-				new Weapon(this->_weapon, this, 1);
-				new Weapon(this->_weapon, this, -1);
+				new Weapon(this->_weapon, this, 1, "stompArea");
+				new Weapon(this->_weapon, this, -1, "stompArea");
+				this->_isStomping = false;
 			}
 		} else if (this->GetBody()->GetWorldCenter().y <= elem->GetBody()->GetWorldCenter().y - 0.905) {
 			this->_ceiling.push_back(elem);
-		} else if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x) {
+		} else if (this->GetBody()->GetWorldCenter().x >= elem->GetBody()->GetWorldCenter().x && elem->getAttribute("speType") != "canCross") {
 			if (this->_isCharging == 1) {
 				theSwitchboard.Broadcast(new Message("chargeEnd"));
 			}
@@ -594,11 +657,16 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				contact->SetEnabled(false);
 			else {
 				if (this->_speMove == "wallJump" && this->_grounds.size() == 0) {
-					this->GetBody()->SetGravityScale(0.3);
+					this->changeSizeTo(Vector2(this->_getAttr("jump", "holdX").asInt(), this->_getAttr("jump", "holdY").asInt()));
+					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
+											  this->_getAttr("jump", "holdFrame_left").asInt(),
+											  this->_getAttr("jump", "holdFrame_left").asInt(), "jump");
+					this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+					this->GetBody()->SetGravityScale(0.1);
 				}
 			}
 			this->_wallsLeft.push_back(elem);
-		} else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x) {
+		} else if (this->GetBody()->GetWorldCenter().x < elem->GetBody()->GetWorldCenter().x && elem->getAttribute("speType") != "canCross") {
 			if (this->_isCharging == 1) {
 				theSwitchboard.Broadcast(new Message("chargeEnd"));
 			}
@@ -606,7 +674,12 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 				contact->SetEnabled(false);
 			else {
 				if (this->_speMove == "wallJump" && this->_grounds.size() == 0) {
-					this->GetBody()->SetGravityScale(0.3);
+					this->changeSizeTo(Vector2(this->_getAttr("jump", "holdX").asInt(), this->_getAttr("jump", "holdY").asInt()));
+					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
+											  this->_getAttr("jump", "holdFrame_right").asInt(),
+											  this->_getAttr("jump", "holdFrame_right").asInt(), "jump");
+					this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+					this->GetBody()->SetGravityScale(0.1);
 				}
 			}
 			this->_wallsRight.push_back(elem);
@@ -637,6 +710,8 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
  * @param: contact The b2Contact object of the collided element. See Box2D docs for more info.
  */
 void	Characters::EndContact(Elements *elem, b2Contact *contact) {
+	if (!elem)
+		return ;
 	if (elem->getAttribute("trigger") != "") {
 		this->_callTrigger(elem->getAttribute("trigger"), 1);
 	} if (elem->getAttribute("triggerOn") != "") {
@@ -655,29 +730,29 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
 				this->_isJump++;
 				if (this->_lastAction == "forward" && this->_canMove &&
 						this->_isAttacking == false && this->_isLoadingAttack == 0) {
-					if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
-						this->changeSizeTo(Vector2(1, 1));
-					if (this->_isDashing == false)
-					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-							this->_getAttr("jump", "fallingFrame_right").asInt(),
-							this->_getAttr("jump", "endFrame_right").asInt() - 3, "jump");
+					if (this->_isDashing == false && !this->_isWhirlwinding && !this->_isCharging) {
+						this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
+						this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+												  this->_getAttr("jump", "fallingFrame_right").asInt(),
+												  this->_getAttr("jump", "fallingFrame_right").asInt(), "jump");
+					}
 				} else if (this->_lastAction == "backward" && this->_canMove &&
-						this->_isAttacking == false && this->_isLoadingAttack == 0) {
-					if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
-						this->changeSizeTo(Vector2(1, 1));
-					if (this->_isDashing == false) {
-					  this->changeSizeTo(Vector2(1,1));
-					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-							this->_getAttr("jump", "fallingFrame_left").asInt(),
-							this->_getAttr("jump", "endFrame_left").asInt() - 3, "jump");
+						   this->_isAttacking == false && this->_isLoadingAttack == 0) {
+					if (this->_isDashing == false && !this->_isWhirlwinding && !this->_isCharging) {
+						this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
+						this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
+												  this->_getAttr("jump", "fallingFrame_left").asInt(),
+												  this->_getAttr("jump", "fallingFrame_left").asInt(), "jump");
 					}
 				}
 			}
 		}
 		else
 			this->_grounds.remove(elem);
-		if (this->_wallsLeft.size() == 0 && this->_wallsRight.size() == 0 && this->_speMove == "wallJump")
+		if (this->_wallsLeft.size() == 0 && this->_wallsRight.size() == 0 && this->_speMove == "wallJump" && this->_grounds.size() == 0) {
 			this->GetBody()->SetGravityScale(1);
+			this->AnimCallback("base");
+		}
 	}
 }
 
@@ -710,9 +785,11 @@ void	Characters::_tryFly(void) {
 }
 
 void	Characters::_resetBroadcastFlags(void) {
+	this->_actionFlag = true;
 	this->_forwardFlag = false;
 	this->_backwardFlag = false;
 	this->_doFlyFlag = false;
+	this->_isChoosingItem = 0;
 }
 
 /****************************/
@@ -720,6 +797,65 @@ void	Characters::_resetBroadcastFlags(void) {
 /*          ACTIONS         */
 /*                          */
 /****************************/
+
+//! Execute action
+/**
+ * The character will execute an action depending on what he currently touches
+ * if nothing is touched, drug is used
+ */
+void	Characters::_executeAction(int status) {
+	if (status == 1 && this->_execFlag == 1)
+		return;
+	if (status == 0) {
+		this->_execFlag = 0;
+		return;
+	}
+	this->_execFlag = 1;
+	if (this->_isTouchingChest == true && Game::chest->isUsed() == 0) {
+		theCamera.MoveTo(Vector3(Game::spawnChest.X, Game::spawnChest.Y, 4), true);
+		Game::toggleMenu = false;
+		this->unsubscribeFromAll();
+		theSwitchboard.SubscribeTo(this, "escapePressed");
+		Game::chest->displayInterface();
+	} else if (this->_isTouchingBossDoor == true) {
+		Game::stopPattern = true;
+		Game::currentGame->getCurrentMap().destroyMap();
+		this->inSpecialMap = 1;
+		this->destroyTarget();
+		Game::currentGame->maps->bossMap->display();
+		theCamera.SetPosition(Game::currentGame->maps->bossMap->getXMid(), Game::currentGame->maps->bossMap->getYMid() + 1.8);
+		Game::addBoss("Boss" + std::to_string(Game::World), Game::currentGame->maps->bossMap->getXMid(), Game::currentGame->maps->bossMap->getYMid());
+		this->GetBody()->SetTransform(b2Vec2(Game::currentGame->maps->bossMap->getXMid() - 10, Game::currentGame->maps->bossMap->getYMid() + 1.8), 0);
+	} else if (this->_isTouchingSecretDoor == true) {
+		this->destroyTarget();
+		if (this->inSpecialMap == 2) {
+			Game::stopPattern = false;
+			Game::currentGame->maps->secretMap->destroyMap();
+			this->inSpecialMap = 0;
+			theCamera.SetPosition(Game::currentGame->getCurrentMap().getXMid(), Game::currentGame->getCurrentMap().getYMid() + 1.8);
+			this->GetBody()->SetTransform(b2Vec2(Game::spawnSecretDoor.X, Game::spawnSecretDoor.Y), 0);
+ 			b2PolygonShape box = Game::hList->getHitbox(this->_hitbox);
+ 			b2Shape *shape = &box;
+ 			this->GetBody()->DestroyFixture(this->GetBody()->GetFixtureList());
+ 			this->GetBody()->CreateFixture(shape, 1);
+		} else {
+			Game::stopPattern = true;
+			this->inSpecialMap = 2;
+			Game::currentGame->maps->secretMap->display();
+			theCamera.SetPosition(Game::currentGame->getCurrentMap().getXMid(), Game::currentGame->getCurrentMap().getYMid() + 1.8);
+			this->GetBody()->SetTransform(b2Vec2(Game::spawnSecretReturnDoor.X, Game::spawnSecretReturnDoor.Y), 0);
+ 			b2PolygonShape box = Game::hList->getHitbox(this->_hitbox);
+ 			b2Shape *shape = &box;
+ 			this->GetBody()->DestroyFixture(this->GetBody()->GetFixtureList());
+ 			this->GetBody()->CreateFixture(shape, 1);
+		}
+	}
+	if(this->_isTouchingDealer == true)
+		theSwitchboard.Broadcast(new Message("giveDrug"));
+	if (this->_drug != "")
+		theSwitchboard.Broadcast(new Message("drugPressed"));
+}
+
 
 //! Forward action
 /**
@@ -732,37 +868,39 @@ void	Characters::_resetBroadcastFlags(void) {
  */
 void	Characters::_forward(int status) {
 	this->_setCategory("forward");
-	if (this->_forwardFlag == true && status == 1)
-		return ;
-	this->_forwardFlag = true;
 	if (status == 1) {
+		if (this->_forwardFlag == true)
+			return;
+		this->_forwardFlag = true;
 		this->_orientation = RIGHT;
 		this->_latOrientation = RIGHT;
 		if ((this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() ||
 					(this->GetSpriteFrame() >= this->_getAttr("backward", "beginFrame").asInt() &&
 					 this->GetSpriteFrame() <= this->_getAttr("backward", "endFrame").asInt()))  &&
-				!this->_isJump && !this->_isLoadingAttack && !this->_isFlying)
+			!this->_isJump && !this->_isLoadingAttack && !this->_isWhirlwinding && !this->_isCharging) {
+			this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-					this->_getAttr("beginFrame").asInt(), this->_getAttr("endFrame").asInt());
-		else if (this->_isJump && !this->_isLoadingAttack && !this->_isFlying) {
+									  this->_getAttr("beginFrame").asInt(), this->_getAttr("endFrame").asInt());
+		}
+		else if (this->_isJump && !this->_isLoadingAttack && !this->_isFlying && !this->_isWhirlwinding && !this->_isCharging) {
 			this->_setCategory("jump");
+			this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 			if (this->GetSpriteFrame() >= this->_getAttr("beginFrame_left").asInt() && this->GetSpriteFrame() <= this->_getAttr("endFrame_left").asInt())
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-						this->GetSpriteFrame() - 8,
-						this->_getAttr("endFrame_right").asInt() - 3, "jump");
+										  this->_getAttr("fallingFrame_right").asInt(),
+										  this->_getAttr("fallingFrame_right").asInt(), "jump");
 			this->_setCategory("forward");
 		} else if (this->_isLoadingAttack) {
-			this->_setCategory("loadAttack_charge");
-			if (this->getAttribute("class") == "Warrior")
-				this->changeSizeTo(Vector2(2, 2));
+			this->_setCategory(this->_weapon->getType());
+			this->changeSizeTo(Vector2(this->_getAttr("loadX").asInt(), this->_getAttr("loadY").asInt()));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-					this->_getAttr("endFrame_right").asInt(),
-					this->_getAttr("endFrame_right").asInt(), "loadAttack_charge");
+					this->_getAttr("holdFrameLoadRight").asInt() - 1,
+					this->_getAttr("holdFrameLoadRight").asInt(), "loadAttack_charge");
 			this->_setCategory("forward");
 		}
 		Game::startRunning(this);
 		if (this->_isRunning == 2 && this->_isDashing == false)
-			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
+			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed + this->buff.drugSpeed, this->GetBody()->GetLinearVelocity().y));
 		this->_isRunning = 1;
 	} else if (status == 0 && this->_latOrientation == RIGHT) {
 	  if (this->_isDashing == false)
@@ -772,8 +910,13 @@ void	Characters::_forward(int status) {
 		if (!this->_isJump && !this->_isAttacking && this->_isDashing == false)
 			this->AnimCallback("base");
 	} else {
-	  if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false)
-			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
+		if (this->_forwardFlag == true)
+			return;
+		this->_forwardFlag = true;
+		if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.cur != "mdma")
+			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed + this->buff.drugSpeed, this->GetBody()->GetLinearVelocity().y));
+		else if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.cur == "mdma")
+			this->GetBody()->SetLinearVelocity(b2Vec2(this->_getAttr("force").asFloat() + this->buff.bonusSpeed + this->buff.drugSpeed, this->GetBody()->GetLinearVelocity().y));
 	}
 	return ;
 }
@@ -787,38 +930,39 @@ void	Characters::_forward(int status) {
  */
 void	Characters::_backward(int status) {
 	this->_setCategory("backward");
-	if (this->_backwardFlag == true && status == 1)
-		return ;
-	this->_backwardFlag = true;
 	if (status == 1) {
+		if (this->_backwardFlag == true)
+			return;
+		this->_backwardFlag = true;
 		if (this->getAttribute("type") == "Hero") {
 			this->_orientation = LEFT;
 			this->_latOrientation = LEFT;
 		}
 		if (this->GetSpriteFrame() < this->_getAttr("beginFrame").asInt() &&
-				!this->_isJump && !this->_isLoadingAttack)
+			!this->_isJump && !this->_isLoadingAttack && !this->_isWhirlwinding && !this->_isCharging) {
+			this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_Loop,
-					this->_getAttr("beginFrame").asInt(),
-					this->_getAttr("endFrame").asInt());
-		else if (this->_isJump && !this->_isLoadingAttack) {
+									  this->_getAttr("beginFrame").asInt(),
+									  this->_getAttr("endFrame").asInt());
+		} else if (this->_isJump && !this->_isLoadingAttack && !this->_isWhirlwinding && !this->_isCharging) {
 			this->_setCategory("jump");
+			this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 			if (this->GetSpriteFrame() >= this->_getAttr("beginFrame_right").asInt() && this->GetSpriteFrame() <= this->_getAttr("endFrame_right").asInt())
 				this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-						this->GetSpriteFrame() + 8,
-						this->_getAttr("endFrame_left").asInt() - 3, "jump");
+										  this->_getAttr("fallingFrame_left").asInt(),
+										  this->_getAttr("fallingFrame_left").asInt(), "jump");
 			this->_setCategory("backward");
 		} else if (this->_isLoadingAttack) {
-			this->_setCategory("loadAttack_charge");
-			if (this->getAttribute("class") == "Warrior")
-				this->changeSizeTo(Vector2(2, 2));
+			this->_setCategory(this->_weapon->getType());
+			this->changeSizeTo(Vector2(this->_getAttr("loadX").asInt(), this->_getAttr("loadY").asInt()));
 			this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-					this->_getAttr("endFrame_left").asInt(),
-					this->_getAttr("endFrame_left").asInt(), "loadAttack_charge");
+					this->_getAttr("holdFrameLoadLeft").asInt() - 1,
+					this->_getAttr("holdFrameLoadLeft").asInt(), "loadAttack_charge");
 			this->_setCategory("backward");
 		}
 		Game::startRunning(this);
 		if (this->_isRunning == 1 && this->_isDashing == false)
-			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
+			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed - this->buff.drugSpeed, this->GetBody()->GetLinearVelocity().y));
 		this->_isRunning = 2;
 	} else if (status == 0 && this->_latOrientation == LEFT) {
 	  if (this->_isDashing == false)
@@ -828,9 +972,13 @@ void	Characters::_backward(int status) {
 		if (!this->_isJump && !this->_isAttacking && !this->_isDashing)
 			this->AnimCallback("base");
 	} else {
-		if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false) {
-			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat(), this->GetBody()->GetLinearVelocity().y));
-		}
+		if (this->_backwardFlag == true)
+			return;
+		this->_backwardFlag = true;
+		if (this->_wallsLeft.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.cur != "mdma")
+			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed - this->buff.drugSpeed, this->GetBody()->GetLinearVelocity().y));
+		else if (this->_wallsRight.size() == 0 && this->_canMove == true && this->_isRunning != 0 && this->_isDashing == false && this->buff.cur == "mdma")
+			this->GetBody()->SetLinearVelocity(b2Vec2(-this->_getAttr("force").asFloat() - this->buff.bonusSpeed - this->buff.drugSpeed, this->GetBody()->GetLinearVelocity().y));
 	}
 	return ;
 }
@@ -852,44 +1000,46 @@ void	Characters::_jump(int status) {
 				this->GetBody()->SetGravityScale(1);
 				if (this->_wallsLeft.size() > 0 && this->_wallsRight.size() == 0) {
 					this->GetBody()->SetLinearVelocity(b2Vec2(5, this->_getAttr("rejump").asFloat()));
+					this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-							this->_getAttr("beginFrame_right").asInt(),
-							this->_getAttr("endFrame_right").asInt() - 3, "jump");
+											  this->_getAttr("holdFrame_left").asInt(),
+											  this->_getAttr("rejumpFrame_left").asInt(), "base");
 				} else if (this->_wallsRight.size() > 0 && this->_wallsLeft.size() == 0) {
 					this->GetBody()->SetLinearVelocity(b2Vec2(-5, this->_getAttr("rejump").asFloat()));
+					this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 					this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-							this->_getAttr("beginFrame_left").asInt(),
-							this->_getAttr("endFrame_left").asInt() - 3, "jump");
+											  this->_getAttr("holdFrame_right").asInt(),
+											  this->_getAttr("rejumpFrame_right").asInt(), "base");
 				} else
 					this->GetBody()->SetLinearVelocity(b2Vec2(0, this->_getAttr("rejump").asFloat()));
 				Game::stopRunning(this);
 			} else if (this->_isJump == 0 || (this->_isJump < this->_getAttr("max").asInt())) {
 				if (this->_isJump >= 1) {
 					this->GetBody()->SetLinearVelocity(b2Vec2(this->GetBody()->GetLinearVelocity().x,
-								this->_getAttr("rejump").asFloat()));
-					if (this->_isAttacking == false && this->_isLoadingAttack == 0) {
-						if (this->getAttribute("class") == "Warrior" && this->_isDashing == false)
-							this->changeSizeTo(Vector2(1, 1));
+															  this->_getAttr("rejump").asFloat()));
+					if (this->_isAttacking == false && this->_isLoadingAttack == 0 && !this->_isWhirlwinding && !this->_isCharging) {
+						if (this->_isDashing == false)
+							this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 						if (this->_latOrientation == RIGHT) {
+							this->changeSizeTo(Vector2(this->_getAttr("x").asInt(), this->_getAttr("y").asInt()));
 							this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
-									this->_getAttr("beginFrame_right").asInt(),
-									this->_getAttr("endFrame_right").asInt() - 3, "jump");
+													  this->_getAttr("beginFrame_right").asInt(),
+													  this->_getAttr("fallingFrame_right").asInt(), "jump");
 						}
 					}
 				} else {
 					this->ApplyLinearImpulse(Vector2(0, this->_getAttr("force").asFloat()), Vector2(0, 0));
 				}
-				if (this->_isAttacking == false && this->_isLoadingAttack == 0) {
-					if (this->getAttribute("class") == "Warrior")
-						this->changeSizeTo(Vector2(1, 1));
+				if (this->_isAttacking == false && this->_isLoadingAttack == 0 && !this->_isWhirlwinding && !this->_isCharging) {
+					this->changeSizeTo(Vector2(this->_getAttr("jump", "x").asFloat(), this->_getAttr("jump", "y").asFloat()));
 					if (this->_latOrientation == RIGHT) {
 						this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 								this->_getAttr("beginFrame_right").asInt(),
-								this->_getAttr("endFrame_right").asInt() - 3, "jump");
+								this->_getAttr("fallingFrame_right").asInt(), "jump");
 					} else if (this->_latOrientation == LEFT) {
 						this->PlaySpriteAnimation(this->_getAttr("time").asFloat(), SAT_OneShot,
 								this->_getAttr("beginFrame_left").asInt(),
-								this->_getAttr("endFrame_left").asInt() - 3, "jump");
+								this->_getAttr("fallingFrame_left").asInt(), "jump");
 					}
 				}
 				if (this->_grounds.size() == 0)
@@ -1013,7 +1163,7 @@ void	Characters::_pickupItem(int status) {
 	  this->_inventory->addItemToInventory(this->_shopItem);
 	}
 	theSwitchboard.Broadcast(new Message("deleteShopItem" +
-										 this->_shopItemNumber));
+										 std::to_string(this->_shopItemNumber)));
 	theSwitchboard.DeferredBroadcast(new Message("removeShopkeeperText"), 3);
 	this->_shopItem = "";
 	  this->_gold -= this->_shopItemPrice;
@@ -1037,6 +1187,9 @@ void	Characters::_pickupItem(int status) {
 										 this->_item->GetName()));
 	this->_item = nullptr;
   }
+  else {
+	  theSwitchboard.Broadcast(new Message("dropItem"));
+  }
 }
 
 //! Executes special move
@@ -1046,13 +1199,11 @@ void	Characters::_pickupItem(int status) {
  */
 
 void	Characters::_specialMove(int status) {
-	if (status == 1) {
+	if (status == 1 && this->_speMoveReady) {
 		if (this->_speMove == "totem" && this->_totemDeletionSent == 0 && this->_totem != nullptr)
 			this->_totemDeletionSent = 1;
 			theSwitchboard.SubscribeTo(this, "removeTotem");
 			theSwitchboard.DeferredBroadcast(new Message("removeTotem"), 3);
-	}
-	if (status == 0) {
 		if (this->_speMove == "dash")
 			this->_eqMove->_dash();
 		else if (this->_speMove == "charge")
@@ -1063,7 +1214,14 @@ void	Characters::_specialMove(int status) {
 			this->_eqMove->_blink();
 		else if (this->_speMove == "fly")
 			this->_eqMove->_fly();
-		else if (this->_speMove == "totem") {
+		else if (this->_speMove == "shunpo")
+			this->_eqMove->_shunpo();
+		else if (this->_speMove == "disengage")
+			this->_eqMove->_disengage();
+		this->_speMoveReady = 0;
+	}
+	if (status == 0) {
+		if (this->_speMove == "totem") {
 			this->_totemDeletionSent = 0;
 			theSwitchboard.UnsubscribeFrom(this, "removeTotem");
 			if (this->_totemPlaced == 0)
@@ -1071,10 +1229,17 @@ void	Characters::_specialMove(int status) {
 			else
 				this->_totemPlaced = 0;
 		}
-		else if (this->_speMove == "shunpo")
-			this->_eqMove->_shunpo();
-		else if (this->_speMove == "disengage")
-			this->_eqMove->_disengage();
+	}
+}
+
+void	Characters::_specialAttack(int status) {
+	if (status == 0) {
+		if (this->_speAtt == "whirlwind")
+			this->_eqAtt->_whirlwind();
+		else if (this->_speAtt == "shockwave")
+			this->_eqAtt->_shockwave();
+		if (this->_speAtt == "rapidFire")
+			this->_eqAtt->_rapidFire();
 	}
 }
 
@@ -1084,8 +1249,10 @@ void	Characters::_specialMove(int status) {
  * @param The Weapon object
  */
 void	Characters::equipWeapon(Weapon* weapon) {
-	this->_weapon = new Weapon(weapon);
-	Game::getHUD()->items(this->_weapon);
+	if (weapon->getEquipable() == this->getAttribute("class")) {
+		this->_weapon = new Weapon(weapon);
+		Game::getHUD()->items(this->_weapon);
+	}
 }
 
 //! Unequip a weapon
@@ -1104,19 +1271,18 @@ void	Characters::unequipWeapon(void) {
  */
 void	Characters::equipArmor(Armor* armor) {
 	this->_armor = new Armor(armor);
-	if (this->_armor->getAttribute("hpBuff") != ""){
+
+	if (this->_armor->getAttribute("hpBuff") != "")
 		this->_maxHp += std::stoi(this->_armor->getAttribute("hpBuff"));
-		this->_hp += std::stoi(this->_armor->getAttribute("hpBuff"));
-	}
-	if (this->_armor->getAttribute("manaBuff") != ""){
-		this->_maxMana += std::stoi(this->_armor->getAttribute("manaBuff"));
-		this->_mana += std::stoi(this->_armor->getAttribute("manaBuff"));
-	}
+	if (this->_armor->getAttribute("dmgReduc") != "")
+		this->buff.dmgReduc += std::stoi(this->_armor->getAttribute("dmgReduc"));
+	if (this->_armor->getAttribute("bonusSpeed") != "")
+		this->buff.bonusSpeed += std::stoi(this->_armor->getAttribute("bonusSpeed"));
+	if (this->_armor->getAttribute("bonusDmg") != "")
+		this->buff.bonusDmg += std::stoi(this->_armor->getAttribute("bonusDmg"));
 	Game::getHUD()->items(this->_armor);
 	Game::getHUD()->setMaxHP(this->_maxHp);
 	Game::getHUD()->life(this->_hp);
-	Game::getHUD()->setMaxMana(this->_maxMana);
-	Game::getHUD()->mana(this->_mana);
 }
 
 //! Unequip a armor
@@ -1131,16 +1297,15 @@ void	Characters::unequipArmor(void) {
 		if (this->_hp > this->_maxHp)
 			this->_hp = this->_maxHp;
 	}
-	if (this->_armor->getAttribute("manaBuff") != "") {
-		this->_maxMana -= std::stoi(this->_armor->getAttribute("manaBuff"));
-		if (this->_mana > this->_maxMana)
-			this->_mana = this->_maxMana;
-	}
+	if (this->_armor->getAttribute("dmgReduc") != "")
+		this->buff.dmgReduc -= std::stoi(this->_armor->getAttribute("dmgReduc"));
+	if (this->_armor->getAttribute("bonusSpeed") != "")
+		this->buff.bonusSpeed -= std::stoi(this->_armor->getAttribute("bonusSpeed"));
+	if (this->_armor->getAttribute("bonusDmg") != "")
+		this->buff.bonusDmg -= std::stoi(this->_armor->getAttribute("bonusDmg"));
 	Game::getHUD()->items(this->_armor);
 	Game::getHUD()->setMaxHP(this->_maxHp);
 	Game::getHUD()->life(this->_hp);
-	Game::getHUD()->setMaxMana(this->_maxMana);
-	Game::getHUD()->mana(this->_mana);
 }
 
 //! Equip a ring
@@ -1150,19 +1315,18 @@ void	Characters::unequipArmor(void) {
  */
 void	Characters::equipRing(Ring* ring) {
 	this->_ring = new Ring(ring);
-	if (this->_ring->getAttribute("hpBuff") != "") {
+
+	if (this->_ring->getAttribute("hpBuff") != "")
 		this->_maxHp += std::stoi(this->_ring->getAttribute("hpBuff"));
-		this->_hp += std::stoi(this->_ring->getAttribute("hpBuff"));
-	}
-	if (this->_ring->getAttribute("manaBuff") != "") {
-		this->_maxMana += std::stoi(this->_ring->getAttribute("manaBuff"));
-		this->_mana += std::stoi(this->_ring->getAttribute("manaBuff"));
-	}
+	if (this->_ring->getAttribute("dmgReduc") != "")
+		this->buff.dmgReduc += std::stoi(this->_ring->getAttribute("dmgReduc"));
+	if (this->_ring->getAttribute("bonusSpeed") != "")
+		this->buff.bonusSpeed += std::stoi(this->_ring->getAttribute("bonusSpeed"));
+	if (this->_ring->getAttribute("bonusDmg") != "")
+		this->buff.bonusDmg += std::stoi(this->_ring->getAttribute("bonusDmg"));
 	Game::getHUD()->items(this->_ring);
 	Game::getHUD()->setMaxHP(this->_maxHp);
 	Game::getHUD()->life(this->_hp);
-	Game::getHUD()->setMaxMana(this->_maxMana);
-	Game::getHUD()->mana(this->_mana);
 }
 
 //! Unequip a ring
@@ -1177,11 +1341,12 @@ void	Characters::unequipRing(void) {
 		if (this->_hp > this->_maxHp)
 			this->_hp = this->_maxHp;
 	}
-	if (this->_ring->getAttribute("manaBuff") != "") {
-		this->_maxMana -= std::stoi(this->_ring->getAttribute("manaBuff"));
-		if (this->_mana > this->_maxMana)
-			this->_mana = this->_maxMana;
-	}
+	if (this->_ring->getAttribute("dmgReduc") != "")
+		this->buff.dmgReduc -= std::stoi(this->_ring->getAttribute("dmgReduc"));
+	if (this->_ring->getAttribute("bonusSpeed") != "")
+		this->buff.bonusSpeed -= std::stoi(this->_ring->getAttribute("bonusSpeed"));
+	if (this->_ring->getAttribute("bonusDmg") != "")
+		this->buff.bonusDmg -= std::stoi(this->_ring->getAttribute("bonusDmg"));
 }
 
 //! Set basics hp
@@ -1194,18 +1359,16 @@ void						Characters::setHP(int hp) {
 		this->_hp = this->_maxHp;
 	else
 		this->_hp = hp;
+	Game::getHUD()->life(this->_hp);
 };
 
-//! Set basics mana
+//! Set invincibility
 /**
- * Set Mana to the Character.
- * @param mana The Mana number
+ * Set invincibility to the Character.
+ * @param invincibility 
  */
-void						Characters::setMana(int mana) {
-	if (mana > this->_maxMana)
-		this->_mana = this->_maxMana;
-	else
-		this->_mana = mana;
+void						Characters::setInvincibility(bool invincibility) {
+	this->_invincibility = invincibility;
 };
 
 //! Destroy an Enemy.
@@ -1223,7 +1386,6 @@ void						Characters::_destroyEnemy(void) {
  */
 void						Characters::destroyTarget(void) {
 	if (this->_target != nullptr) {
-	  //		std::cout << "destroyTarget (Characters.cpp l.1077)" << std::endl;
 		Game::addToDestroyList(this->_target);
 		this->_target = nullptr;
 	}
@@ -1246,8 +1408,11 @@ void						Characters::_heroDeath(void) {
 	ghost->SetSprite("Resources/Images/Ghost/ghost_000.png", 0);
 	ghost->LoadSpriteFrames("Resources/Images/Ghost/ghost_000.png");
 	ghost->MoveTo(Vector2(this->GetBody()->GetWorldCenter().x, this->GetBody()->GetWorldCenter().y + 7), 4);
+	ghost->SetLayer(101);
 	theWorld.Add(ghost);
+	theSwitchboard.Broadcast(new Message("deleteBoss"));
 	ghost->PlaySpriteAnimation(0.2f, SAT_OneShot, 0, 10, "ghost");
+	this->_ghost = ghost;
 }
 
 /**
@@ -1260,6 +1425,16 @@ void						Characters::unsubscribeFromAll(void) {
 		theSwitchboard.UnsubscribeFrom(this, *it);
 	}
 }
+
+void						Characters::UnsubscribeFromAll(void) {
+	StringSet sub;
+
+	sub = theSwitchboard.GetSubscriptionsFor(this);
+	for (StringSet::iterator k = sub.begin(); k != sub.end(); k++) {
+		theSwitchboard.UnsubscribeFrom(this, *k);
+	}
+}
+
 
 /**
  * Subscribe the character to all the broadcasts
@@ -1282,12 +1457,12 @@ void						Characters::_callTrigger(std::string name, int s) {
 /* GETTERS */
 Characters::Orientation		Characters::getOrientation(void) { return this->_orientation; }
 std::string					Characters::getLastAction(void) { return this->_lastAction; };
+Characters::Orientation		Characters::getLatOrientation(void) { return this->_latOrientation; }
 Elements*					Characters::getItem(void) { return this->_item; }
 int							Characters::getHP(void) { return this->_hp; };
-int							Characters::getMana(void) { return this->_mana; };
-int							Characters::getMaxMana(void) { return this->_maxMana; };
 int							Characters::getMaxHP(void) { return this->_maxHp; };
 int							Characters::getGold(void) { return this->_gold; };
+Actor						*Characters::getGhost(void) { return this->_ghost; };
 void						Characters::setGold(int n) { this->_gold = n; };
 void						Characters::setLevel(int n) { this->_level = n; };
 void						Characters::changeCanMove(void) { this->_canMove = (this->_canMove ? false : true); };
@@ -1300,3 +1475,5 @@ std::list<std::string>		Characters::getSubscribes(void) { return this->_subsc; }
 int							Characters::getLevel(void) { return this->_level; };
 int							Characters::getMaxInventory(void) { return this->_inventory->getSlots(); };
 Inventory					*Characters::getInventory(void) { return this->_inventory; };
+std::string					Characters::getSpeMove(void) { return this->_speMove; };
+std::string					Characters::getSpeAtt(void) { return this->_speAtt; };

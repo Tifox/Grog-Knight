@@ -99,6 +99,9 @@ class	HUDWindow : public HUDActor {
 		void	speAttCooldown(int time);
 		void	speMoveCooldown(int time);
 
+		HUDActor	*getAttCooldown(void);
+		HUDActor	*getMoveCooldown(void);
+
 		static	int		isToggled;
 
 	private:

@@ -360,9 +360,11 @@ void	Characters::ReceiveMessage(Message *m) {
 	}
 	else if (m->GetMessageName() == "speMoveReady") {
 		this->_speMoveReady = 1;
+		theWorld.Remove(Game::getHUD()->getMoveCooldown());
 	}
 	else if (m->GetMessageName() == "speAttReady") {
 		this->_speAttReady = 1;
+		theWorld.Remove(Game::getHUD()->getAttCooldown());
 	}
 	else if (m->GetMessageName().substr(0, 10) == "chooseItem") {
 		if (this->_isChoosingItem == 1)

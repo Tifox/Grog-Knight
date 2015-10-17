@@ -150,24 +150,24 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, Characters *toFollow,
 		test = new Elements();
 		test->SetSize(2.5, 0.7);
 		test->SetPosition(toFollow->GetBody()->GetWorldCenter().x, 
-			(toFollow->GetBody()->GetWorldCenter().y + 1));
+				(toFollow->GetBody()->GetWorldCenter().y + 1));
 		test->SetSprite("Resources/Images/HUD/talk.png");
 		test->SetDrawShape(ADS_Square);
-/*		test->SetFixedRotation(true);
-		test->SetLayer(1500);
-		test->SetDensity(0.001f);
-		test->SetRestitution(0);
-		test->SetFriction(0);
-		test->SetIsSensor(true);*/
+		/*		test->SetFixedRotation(true);
+				test->SetLayer(1500);
+				test->SetDensity(0.001f);
+				test->SetRestitution(0);
+				test->SetFriction(0);
+				test->SetIsSensor(true);*/
 		test->InitPhysics();
 		b2DistanceJointDef jointDef1;
 		b2DistanceJointDef jointDef2;
 		jointDef1.Initialize(toFollow->GetBody(), test->GetBody(), 
 				b2Vec2(toFollow->GetBody()->GetWorldCenter().x + 0.4f, 
-				toFollow->GetBody()->GetWorldCenter().y + 0.4f), test->GetBody()->GetWorldCenter());
+					toFollow->GetBody()->GetWorldCenter().y + 0.4f), test->GetBody()->GetWorldCenter());
 		jointDef1.collideConnected = false;
 		jointDef2.Initialize(toFollow->GetBody(), test->GetBody(), 
-			b2Vec2(toFollow->GetBody()->GetWorldCenter().x - 0.4f, test->GetBody()->GetWorldCenter().y - 0.4f), test->GetBody()->GetWorldCenter());
+				b2Vec2(toFollow->GetBody()->GetWorldCenter().x - 0.4f, test->GetBody()->GetWorldCenter().y - 0.4f), test->GetBody()->GetWorldCenter());
 		jointDef2.collideConnected = false;
 		b2DistanceJoint *joint1 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef1);
 		b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
@@ -240,31 +240,31 @@ void	HUDWindow::displayText(void) {
 
 	for (i = this->_text.begin(); i != this->_text.end(); i++) {
 		if (*i) {
-		glColor4f((*i)->colorR, (*i)->colorG, (*i)->colorB, (*i)->colorA);
-		if ((*i)->toFollow == nullptr && (*i)->isFading == 1)
-			(*i)->colorA -= 0.02f;
-		if ((*i)->toFollow == nullptr)
-			DrawGameText((*i)->str, (*i)->font, (*i)->x, (*i)->y, theCamera.GetRotation());
-		else {
-			int		x, y, mult = 6;
-			Map		m = Game::currentGame->getCurrentMap();
+			glColor4f((*i)->colorR, (*i)->colorG, (*i)->colorB, (*i)->colorA);
+			if ((*i)->toFollow == nullptr && (*i)->isFading == 1)
+				(*i)->colorA -= 0.02f;
+			if ((*i)->toFollow == nullptr)
+				DrawGameText((*i)->str, (*i)->font, (*i)->x, (*i)->y, theCamera.GetRotation());
+			else {
+				int		x, y, mult = 6;
+				Map		m = Game::currentGame->getCurrentMap();
 
-			if ((*i)->toFollow->GetBody()) {
-				x = ((((*i)->toFollow->GetBody()->GetWorldCenter().x + 0.5) - m.getXStart()) * 40) - 40;
-				y = -((((*i)->toFollow->GetBody()->GetWorldCenter().y + (((*i)->toFollow->GetSize().Y) / 4)) - m.getYStart()) * 40) + 50;
-				if ((*i)->isFading) {
-					DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
-					(*i)->y += 1;
-					(*i)->colorA -= 0.02f;
-				} else if ((*i)->isTalk) {
-					DrawGameText((*i)->str, (*i)->font, x - 5, y - (*i)->y + 5, theCamera.GetRotation());
-				} else {
-					DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
+				if ((*i)->toFollow->GetBody()) {
+					x = ((((*i)->toFollow->GetBody()->GetWorldCenter().x + 0.5) - m.getXStart()) * 40) - 40;
+					y = -((((*i)->toFollow->GetBody()->GetWorldCenter().y + (((*i)->toFollow->GetSize().Y) / 4)) - m.getYStart()) * 40) + 50;
+					if ((*i)->isFading) {
+						DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
+						(*i)->y += 1;
+						(*i)->colorA -= 0.02f;
+					} else if ((*i)->isTalk) {
+						DrawGameText((*i)->str, (*i)->font, x - 5, y - (*i)->y + 5, theCamera.GetRotation());
+					} else {
+						DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
+					}
 				}
 			}
-		}
-		if ((*i)->colorA < 0)
-			this->removeText((*i)->str);
+			if ((*i)->colorA < 0)
+				this->removeText((*i)->str);
 		}
 	}
 }
@@ -380,18 +380,18 @@ void	HUDWindow::life(int life) {
 		x += size - 2;
 		if (percent > 0)
 			this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_begin.png", 
-				((x - theCamera.GetWindowWidth() / 30)), y, Vector2(5, 15), 100));
+						((x - theCamera.GetWindowWidth() / 30)), y, Vector2(5, 15), 100));
 		x += 1.3;
 		for (j = 1; j < percent; x += 1.3, j++)
 			this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_middle.png", (x - theCamera.GetWindowWidth() / 30), y, Vector2(1.3, 15), 100));
 		this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_end.png", 
-			((x - theCamera.GetWindowWidth() / 30) + 1.3), y, Vector2(5, 15), 100));
+					((x - theCamera.GetWindowWidth() / 30) + 1.3), y, Vector2(5, 15), 100));
 		if (percent < 100) {
 			for (; percent < 100; percent++, x += 1.3) {
 				this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_empty_middle.png", (x - theCamera.GetWindowWidth() / 30), y, Vector2(1.3, 15), 100));
 			}
 			this->_hearts.push_back(this->addImage("Resources/Images/HUD/hp_empty_end.png", 
-				((x - theCamera.GetWindowWidth() / 30) + 1.3), y, Vector2(5, 15), 100));
+						((x - theCamera.GetWindowWidth() / 30) + 1.3), y, Vector2(5, 15), 100));
 		}
 	}
 }
@@ -622,8 +622,8 @@ void	HUDWindow::bigMap(void) {
 						this->setText(std::string(1, map[y][x].getSpecial()[0] - 32), x2 - 2, y2 + 1, Vector3(1, 0, 0), 1);
 					} if (Game::currentGame->getHero()->_totem != nullptr) {
 						if (std::to_string(x) == Game::currentGame->getHero()->_totem->getAttribute("currentX") 
-							&& std::to_string(y) == Game::currentGame->getHero()->_totem->getAttribute("currentY")) {
-								this->setText("To", x2 - 2, y2 + 1, Vector3(1, 0, 0), 1);
+								&& std::to_string(y) == Game::currentGame->getHero()->_totem->getAttribute("currentY")) {
+							this->setText("To", x2 - 2, y2 + 1, Vector3(1, 0, 0), 1);
 						}
 					} else
 						tmp->SetColor(1, 1, 1, 0);
@@ -681,7 +681,7 @@ void	HUDWindow::updateBigMap(void) {
 
 		for (it = this->_bigMapList.begin(); it != this->_bigMapList.end(); it++) {
 			if ((*it)->GetPosition() == this->_currentObjectMap->GetPosition() &&
-			(*it) != this->_currentObjectMap)
+					(*it) != this->_currentObjectMap)
 				theWorld.Remove(*it);
 		}
 		this->_currentObjectMap->ChangeColorTo(Color(1, 1, 1, 0.5), 0.5);
@@ -797,12 +797,11 @@ void	HUDWindow::clearHUD(void) {
 
 void	HUDWindow::speAttCooldown(int time) {
 	HUDActor	*h = new HUDActor();
-  
-	h->SetPosition((theCamera.GetWindowWidth() / 20) * 7, theCamera.GetWindowHeight() / 20 * 2.1);
+
+	h->SetPosition((theCamera.GetWindowWidth() / 20) * 7 + 2, theCamera.GetWindowHeight() / 20 * 2.05);
 	h->SetSize(theCamera.GetWindowWidth() / 27);
 	h->SetLayer(100);
-	h->SetColor(Color(0, 0, 0, 0.5));
-	h->ChangeSizeTo(Vector2(theCamera.GetWindowWidth() / 27, 0), time, false, "speAttCooldownEnd");
+	h->SetSprite("Resources/HUD/spell_cooldown.png");
 	theWorld.Add(h);
 	this->_attackCooldown = h;
 	this->_cooldownAtt = time + 1;
@@ -812,12 +811,11 @@ void	HUDWindow::speAttCooldown(int time) {
 
 void	HUDWindow::speMoveCooldown(int time) {
 	HUDActor	*h = new HUDActor();
-  
-	h->SetPosition((theCamera.GetWindowWidth() / 20) * 7, theCamera.GetWindowHeight() / 20);
+
+	h->SetPosition((theCamera.GetWindowWidth() / 20) * 7 + 2, theCamera.GetWindowHeight() / 21);
 	h->SetSize(theCamera.GetWindowWidth() / 27);
 	h->SetLayer(100);
-	h->SetColor(Color(0, 0, 0, 0.5));
-	h->ChangeSizeTo(Vector2(theCamera.GetWindowWidth() / 27, 0), time, false, "speMoveCooldownEnd");
+	h->SetSprite("Resources/HUD/spell_cooldown.png");
 	theWorld.Add(h);
 	this->_moveCooldown = h;
 	this->_cooldownMove = time + 1;
@@ -832,9 +830,7 @@ void	HUDWindow::ReceiveMessage(Message *m) {
 	static HUDWindow::Text	*moveText = nullptr;
 
 	if (m->GetMessageName() == "speAttCooldownEnd") {
-		theWorld.Remove(this->_attackCooldown);
 	} else if (m->GetMessageName() == "speMoveCooldownEnd") {
-		theWorld.Remove(this->_moveCooldown);
 	} else if (m->GetMessageName() == "second") {
 		if (lastTimestamp != time(NULL)) {
 			lastTimestamp = time(NULL);
@@ -861,5 +857,7 @@ void	HUDWindow::ReceiveMessage(Message *m) {
 
 void	HUDWindow::setGame(Game *g) { this->_g = g; };
 void	HUDWindow::setMaxHP(int h) { this->_maxHP = h; };
+HUDActor	*HUDWindow::getAttCooldown(void) { return this->_attackCooldown; };
+HUDActor	*HUDWindow::getMoveCooldown(void) { return this->_moveCooldown; };
 
 int		HUDWindow::isToggled = 0;

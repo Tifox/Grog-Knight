@@ -258,7 +258,6 @@
  		}
 checkHitbox:
  		if (range > 0) {
-			std::cout << "H2re" << std::endl;
   			b2PolygonShape box = Game::hList->getHitbox(this->character->_hitbox);
  			b2Shape *shape = &box;
  			this->character->GetBody()->DestroyFixture(this->character->GetBody()->GetFixtureList());

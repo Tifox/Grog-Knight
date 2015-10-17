@@ -149,7 +149,7 @@ void	Game::start(void) {
 	Game::getHUD()->removeText("LEVEL CLEARED");
 	Game::started = 1;
 	Game::currentGame = this;
-	Game::getHUD()->setText("World " + std::to_string(Game::World), 300, 200, Vector3(1, 1, 1), 5, "title")->isFading = 1;
+	Game::getHUD()->setText("World " + std::to_string(Game::World + 1), 300, 200, Vector3(1, 1, 1), 5, "title")->isFading = 1;
 	if (tmp) {
 		tmp->UnsubscribeFromAll();
 		theWorld.GetPhysicsWorld().DestroyBody(tmp->GetBody());
@@ -419,7 +419,6 @@ void	Game::endingGame(void) {
 	Game::getHUD()->setText("Press Enter to continue.", 500, 500);
 	if (!Game::lvlDone) {
 		theWorld.Remove(Game::currentGame->getHero());
-		Game::currentGame->setHero(nullptr);
 	}
 	Game::menuCharacter = nullptr;
 	Game::ended = false;

@@ -87,6 +87,7 @@ void	Menu::ReceiveMessage(Message *m) {
 	if (m->GetMessageName() == "enterPressed" && Game::deadWaiting) {
 		if (!Game::lvlDone) {
 			Game::currentGame->menuInGame();
+			Game::World = 0;
 		} else {
 			Game::lvlDone = 0;
 			Game::World++;

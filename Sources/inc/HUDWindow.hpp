@@ -66,7 +66,7 @@ class	HUDWindow : public HUDActor {
 		HUDWindow::Text	*setText(std::string str, int x, int y, Vector3 color, int alpha, std::string font);
 		HUDWindow::Text	*setText(std::string str, Characters *toFollow, Vector3 color, int isFading, int isTalk, int isInMenu = 0);
 		void	updateText(std::string org, std::string newStr);
-		void	removeText(std::string str);
+		void	removeText(std::string str, int last = 0);
 		void	removeText(HUDWindow::Text *t);
 		void	displayText(void);
 		HUDActor	*addImage(std::string p, int x, int y);
@@ -98,6 +98,7 @@ class	HUDWindow : public HUDActor {
 		void	addTotemToBigMap(void);
 		void	speAttCooldown(int time);
 		void	speMoveCooldown(int time);
+		void	spellText(void);
 
 		HUDActor	*getAttCooldown(void);
 		HUDActor	*getMoveCooldown(void);

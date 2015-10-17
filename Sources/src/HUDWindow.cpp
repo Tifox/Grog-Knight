@@ -184,12 +184,16 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, Characters *toFollow,
  * This function remove the asked text from the screen.
  * @param str The text content message
  */
-void	HUDWindow::removeText(std::string str) {
-	std::list<HUDWindow::Text *>::iterator	i;
+void	HUDWindow::removeText(std::string str, int last) {
+	std::list<HUDWindow::Text *>::iterator	i, t = this->_text.end();
 
 	for (i = this->_text.begin(); i != this->_text.end(); i++) {
-		if ((*i)->str == str)
-			break ;
+		if ((*i)->str == str) {
+			if (last) {
+				this->_text.erase(i);
+			} else
+				break ;
+		}
 	}
 	if (i != this->_text.end()) {
 		if (this->_dialog[str]) {
@@ -782,6 +786,13 @@ void	HUDWindow::spells(void) {
 	this->addImage("Resources/Images/Skills/" + Game::currentGame->getHero()->getSpeAtt() + ".png", (theCamera.GetWindowWidth() / 20) * 7 + 1, theCamera.GetWindowHeight() / 20 * 1.9, 
 			Vector2(theCamera.GetWindowWidth() / 35), 15);
 	this->setText("Y", (theCamera.GetWindowWidth() / 20) * 7.28, theCamera.GetWindowHeight() / 20 * 2.57, Vector3(0.2, 0.12, 0), 1, "MediumGamefont");
+}
+
+void	HUDWindow::spellText(void) {
+	if (Game::started && Game::isInMenu == 0) {
+		this->setText("Y", (theCamera.GetWindowWidth() / 20) * 7.28, theCamera.GetWindowHeight() / 20 * 2.57, Vector3(0.2, 0.12, 0), 1, "MediumGamefont");
+		this->setText("T", (theCamera.GetWindowWidth() / 20) * 7.28, theCamera.GetWindowHeight() / 20 * 1.5, Vector3(0.2, 0.12, 0), 1, "MediumGamefont");
+	}
 }
 
 void	HUDWindow::clearHUD(void) {

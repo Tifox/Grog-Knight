@@ -304,6 +304,7 @@ void	Menu::ReceiveMessage(Message *m) {
 					}
 				}
 				this->_window->removeText("Bindings");
+				this->_window->spellText();
 				if (this->_lastMenu == 1) {
 					this->_inMenu = 1;
 					this->_currentChoice = "Start Game";
@@ -362,7 +363,7 @@ void	Menu::listMenu(void) {
 	this->_inMenu = 1;
 	for (it = this->_menuChoices.begin(); it != this->_menuChoices.end(); it++)
 		this->_window->removeText(*it);
-	this->_window->removeText("Grog Like");
+	this->_window->removeText("Grog Knight");
 	for (it = this->_menuChoices.begin(); it != this->_menuChoices.end(); it++, y += 20) {
 		if (this->_currentChoice == *it) {
 			this->_window->setText(*it, x - ((*it).length() / 2 * 6), y, Vector3(255, 0, 0), 1);
@@ -379,7 +380,7 @@ void	Menu::removeBaseMenu(void) {
 
 	for (it = this->_menuChoices.begin(); it != this->_menuChoices.end(); it++)
 		this->_window->removeText(*it);
-	this->_window->removeText("Grog Like");
+	this->_window->removeText("Grog Knight");
 }
 
 void	Menu::settings(int y) {
@@ -601,7 +602,7 @@ void	Menu::bindingMenu(int y) {
 		this->_window->removeText(it->first);
 		for (it2 = it->second.begin(); it2 != it->second.end(); it2++) {
 			this->_window->removeText((*it2)->name);
-			this->_window->removeText((*it2)->realKey);
+			this->_window->removeText((*it2)->realKey, 1);
 		}
 	}
 	this->_window->removeText("Bindings");

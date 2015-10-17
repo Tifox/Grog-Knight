@@ -93,6 +93,7 @@ void	Game::start(void) {
 
 	Game::endGame = false;
 	Game::deadWaiting = 0;
+	Game::stopPattern = false;
 	this->tooltip = new Tooltip();
 	int i;
 	for (i = 0; i < 3; i++)

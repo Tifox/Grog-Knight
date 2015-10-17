@@ -1,6 +1,6 @@
 ANGEL_DISABLE_FMOD := $(shell sed -rn 's/^[[:space:]]*\#define[[:space:]]+ANGEL_DISABLE_FMOD[[:space:]]+([[:digit:]])[[:space:]]*$$/\1/p' AngelConfig.h)
 ANGEL_DISABLE_DEVIL := $(shell sed -rn 's/^[[:space:]]*\#define[[:space:]]+ANGEL_DISABLE_DEVIL[[:space:]]+([[:digit:]])[[:space:]]*$$/\1/p' AngelConfig.h)
-CXX = g++ -g
+CXX = g++ -g -std=c++0x
 CXXFLAGS =
 TARGET = libangel.a
 ANGEL_FLAGS = -D ANGEL_RELEASE

@@ -238,7 +238,7 @@ Map		Map::display(void) {
 						Game::chest->spawn();
 					}
 				} else if (elem->getAttribute("spawnDoor") != "") {
-					if (elem->getAttribute("doorType") == "boss" && this->_special == "boss") {
+					if (elem->getAttribute("doorType") == "boss" /*&& this->_special == "boss"*/) {
 						if (Game::bossDoor == nullptr) {
 							Game::spawnBossDoor = Vector2(x, y);
 							Game::bossDoor = new Door("Boss");

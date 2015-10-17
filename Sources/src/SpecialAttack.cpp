@@ -34,8 +34,10 @@ SpecialAttack::SpecialAttack(void) {
 }
 
 SpecialAttack::~SpecialAttack(void) {
-
+	theSwitchboard.UnsubscribeFrom(this, "SpecialAttackEnd");
+	theSwitchboard.UnsubscribeFrom(this, "linkWeapon");
 }
+
 SpecialAttack::SpecialAttack(Characters* charac) {
 	std::string		file;
 	std::stringstream 	buffer;
@@ -175,6 +177,7 @@ void	SpecialAttack::_shockwave(void) {
 }
 
 void	SpecialAttack::_rapidFire(void) {
+	this->character = Game::currentGame->getHero();
 	this->character->_setCategory("rapidFire");
 	Weapon *currentWeapon = Game::currentGame->getHero()->getWeapon();
 	Characters *hero = Game::currentGame->getHero();
@@ -202,3 +205,4 @@ void	SpecialAttack::_rapidFire(void) {
 		this->_currentAttack = "rapidFire";
 	}
 }
+

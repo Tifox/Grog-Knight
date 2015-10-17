@@ -792,7 +792,7 @@ void	HUDWindow::clearHUD(void) {
 	}
 	this->removeText(this->_gold);
 	if (this->_g)
-		this->removeText("Lvl " + std::to_string(this->_g->getHero()->getLevel()));
+		this->removeText(std::to_string(this->_g->getHero()->getLevel()));
 }
 
 void	HUDWindow::speAttCooldown(int time) {
@@ -813,7 +813,6 @@ void	HUDWindow::speAttCooldown(int time) {
 void	HUDWindow::speMoveCooldown(int time) {
 	HUDActor	*h = new HUDActor();
   
-	std::cout << time << std::endl;
 	h->SetPosition((theCamera.GetWindowWidth() / 20) * 7, theCamera.GetWindowHeight() / 20);
 	h->SetSize(theCamera.GetWindowWidth() / 27);
 	h->SetLayer(100);
@@ -839,13 +838,15 @@ void	HUDWindow::ReceiveMessage(Message *m) {
 	} else if (m->GetMessageName() == "second") {
 		if (lastTimestamp != time(NULL)) {
 			lastTimestamp = time(NULL);
-			this->removeText(attText);
+			if (attText)
+				this->removeText(attText);
 			attText = nullptr;
 			if (this->_cooldownAtt >= 2) {
 				attText = this->setText(std::to_string(--this->_cooldownAtt), (theCamera.GetWindowWidth() / 20) * 7, theCamera.GetWindowHeight() / 20 * 2.1, Vector3(1, 0, 0), 1);
 				theSwitchboard.DeferredBroadcast(new Message("second"), 1);
 			}
-			this->removeText(moveText);
+			if (moveText)
+				this->removeText(moveText);
 			moveText = nullptr;
 			if (this->_cooldownMove >= 2) {
 				moveText = this->setText(std::to_string(--this->_cooldownMove), (theCamera.GetWindowWidth() / 20) * 7, theCamera.GetWindowHeight() / 20, Vector3(1, 0, 0), 1);

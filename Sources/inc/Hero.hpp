@@ -33,6 +33,7 @@ class Hero : public Characters {
 
 	public:
 		Hero(std::string);
+		Hero(Hero *);
 		~Hero();
 
 		void	init();
@@ -43,6 +44,8 @@ class Hero : public Characters {
 		void			setStartingValues(Hero *tmp = nullptr);
 
 		Inventory	*getInventory(void);
+		SpecialMoves *getEqMove(void);
+		SpecialAttack *getEqAtt(void);
 		void		setInventory(Inventory *i);
 };
 #endif

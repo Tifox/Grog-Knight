@@ -1197,7 +1197,7 @@ void	Characters::_pickupItem(int status) {
  */
 
 void	Characters::_specialMove(int status) {
-	if (status == 1) {
+	if (status == 1 && this->_speMoveReady) {
 		if (this->_speMove == "totem" && this->_totemDeletionSent == 0 && this->_totem != nullptr)
 			this->_totemDeletionSent = 1;
 			theSwitchboard.SubscribeTo(this, "removeTotem");
@@ -1216,6 +1216,7 @@ void	Characters::_specialMove(int status) {
 			this->_eqMove->_shunpo();
 		else if (this->_speMove == "disengage")
 			this->_eqMove->_disengage();
+		this->_speMoveReady = 0;
 	}
 	if (status == 0) {
 		if (this->_speMove == "totem") {
@@ -1422,6 +1423,16 @@ void						Characters::unsubscribeFromAll(void) {
 		theSwitchboard.UnsubscribeFrom(this, *it);
 	}
 }
+
+void						Characters::UnsubscribeFromAll(void) {
+	StringSet sub;
+
+	sub = theSwitchboard.GetSubscriptionsFor(this);
+	for (StringSet::iterator k = sub.begin(); k != sub.end(); k++) {
+		theSwitchboard.UnsubscribeFrom(this, *k);
+	}
+}
+
 
 /**
  * Subscribe the character to all the broadcasts

@@ -56,6 +56,35 @@ Hero::Hero(std::string name) : Characters(name) {
 	return ;
 }
 
+Hero::Hero(Hero *obj) : Characters(obj->getAttribute("class")) {
+	theSwitchboard.SubscribeTo(this, "canMove");
+	theSwitchboard.SubscribeTo(this, "endInvincibility");
+	theSwitchboard.SubscribeTo(this, "enableAttackHitbox");
+	theSwitchboard.SubscribeTo(this, "disableAttackHitbox");
+	theSwitchboard.SubscribeTo(this, "equipSelectedItem");
+	theSwitchboard.SubscribeTo(this, "dropItem");
+	theSwitchboard.SubscribeTo(this, "attackReady");
+	theSwitchboard.SubscribeTo(this, "speMoveReady");
+	theSwitchboard.SubscribeTo(this, "speAttReady");
+	theSwitchboard.SubscribeTo(this, "changeCharacter");
+	theSwitchboard.SubscribeTo(this, "lockTarget");
+	theSwitchboard.SubscribeTo(this, "unlockTarget");
+	theSwitchboard.SubscribeTo(this, "cycleInventory");
+	theSwitchboard.SubscribeTo(this, "chooseItem1");
+	theSwitchboard.SubscribeTo(this, "chooseItem2");
+	theSwitchboard.SubscribeTo(this, "chooseItem3");
+	theSwitchboard.SubscribeTo(this, "chooseItem4");
+	theSwitchboard.SubscribeTo(this, "endStomp");
+	this->addAttribute("type", "Hero");
+
+	delete obj->getEqMove();
+	delete obj->getEqAtt();
+	this->_eqMove = new SpecialMoves(static_cast<Characters*>(this));
+	this->_eqAtt = new SpecialAttack(static_cast<Characters*>(this));
+
+	this->_inventory = obj->getInventory();
+}
+
 //! Destructor
 /**
  * Basic Destructor
@@ -359,4 +388,6 @@ void	Hero::setStartingValues(Hero *tmp) {
 }
 
 Inventory	*Hero::getInventory(void) { return this->_inventory; };
+SpecialMoves *Hero::getEqMove(void) { return this->_eqMove; };
+SpecialAttack *Hero::getEqAtt(void) { return this->_eqAtt; };
 void		Hero::setInventory(Inventory *i) { this->_inventory = i; };

@@ -107,7 +107,7 @@ void	Game::start(void) {
 		theWorld.Remove(Game::menuCharacter);
 	} else {
 		tmp = static_cast<Hero *>(this->getHero());
-		hero = new Hero(tmp->getAttribute("class"));
+		hero = new Hero(tmp);
 	}
 	this->levelGenerator = new LevelGenerator(4, 3, 60);
 	levelGenerator->execute();
@@ -130,7 +130,7 @@ void	Game::start(void) {
 	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
 
 	this->displayHero(*(hero));
-	hero->init();		
+	hero->init();
 	if (Game::menuCharacter) {
 		hero->setLevel(Game::menuCharacter->getLevel());
 		hero->setGold(0);
@@ -138,7 +138,6 @@ void	Game::start(void) {
 		hero->setLevel(tmp->getLevel());
 		hero->setGold(tmp->getGold());
 		hero->setHP(tmp->getHP());
-		hero->setInventory(tmp->getInventory());
 		Game::getHUD()->consumable(hero->getInventory()->getItems());
 	}
 	Game::chest->applySave(this->_save);
@@ -150,7 +149,13 @@ void	Game::start(void) {
 	Game::getHUD()->removeText("LEVEL CLEARED");
 	Game::started = 1;
 	Game::currentGame = this;
-	Game::getHUD()->setText("World " + std::to_string(Game::World), 300, 200, Vector3(1, 1, 1), 10, "title")->isFading = 1;
+	Game::getHUD()->setText("World " + std::to_string(Game::World), 300, 200, Vector3(1, 1, 1), 5, "title")->isFading = 1;
+	if (tmp) {
+		tmp->UnsubscribeFromAll();
+		theWorld.GetPhysicsWorld().DestroyBody(tmp->GetBody());
+		theWorld.Remove(tmp);
+		Game::delElement(tmp);
+	}
 }
 
 void	Game::menuInGame(void) {
@@ -410,6 +415,7 @@ void	Game::endingGame(void) {
 	}
 	Quit::doSave(static_cast<Hero *>(Game::currentGame->getHero()));
 	Game::elementMap.clear();
+	Game::getHUD()->deleteBigMap(0);
 	Game::getHUD()->setText("Press Enter to continue.", 500, 500);
 	if (!Game::lvlDone) {
 		theWorld.Remove(Game::currentGame->getHero());

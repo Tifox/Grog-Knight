@@ -52,8 +52,7 @@ error_reporting(0);
 		<div class='out-window'></div>
 		<div id="header">
 			<div class='logo'>
-				<i class='fa fa-linux'></i>
-				<h1>Grog-Knight</h1>
+				<img src='/Grog-Knight/img/logo.png'>
 			</div>
 			<ul>
 				<li>Home</li>

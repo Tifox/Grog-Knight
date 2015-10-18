@@ -9,10 +9,10 @@
             pointStrokeColor: "#fff",
             pointHighlightFill: "#fff",
             pointHighlightStroke: "rgba(220,220,220,1)",';
-	echo "data: [".$res->infos->lvlRequired.",".$res->infos->critRate.",".$res->infos->damage.",".$res->infos->lootLevel.",".$res->infos->recovery."]}]};";
+	echo "data: [".$res->infos->starterLevel.",".$res->infos->critRate.",".$res->infos->damage.",".$res->infos->lootLevel.",".$res->infos->recovery."]}]};";
 	echo "</script>";
 	echo "<script type='text/javascript' id='runscripttwo'>";
-		echo "var baseHP = ".$hero->infos->HP.";";
+		echo "var baseHP = ".$hero->infos->maxHP.";";
 		echo "var baseCrit = ".$hero->infos->baseCrit.";";
 		echo "var baseDamage = ".$hero->infos->baseDamage.";";
 		echo "var baseSpeed = ".$hero->Actions->forward->force.";";
@@ -25,7 +25,7 @@
 			strokeColor: "rgba(220,220,220,0.8)",
 			highlightFill: "rgba(220,220,220,0.75)",
 			highlightStroke: "rgba(220,220,220,1)",';
-		echo "data: [".$hero->infos->HP.",".($hero->infos->baseCrit + $res->infos->critRate).",".($hero->infos->baseDamage + $res->infos->damage).",".$hero->Actions->forward->force."]}]}";
+		echo "data: [".$hero->infos->maxHP.",".($hero->infos->baseCrit + $res->infos->critRate).",".($hero->infos->baseDamage + $res->infos->damage).",".$hero->Actions->forward->force."]}]}";
 	echo "</script>";
 ?>
 <ul>

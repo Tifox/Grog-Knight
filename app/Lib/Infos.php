@@ -3,6 +3,7 @@
 class Infos {
 
 	private		$_path;
+	private		$_type;
 	private		$_currentResult;
 
 	public function __construct($path) {
@@ -19,6 +20,7 @@ class Infos {
 				$result[] = json_decode($content);
 			}
 		}
+		$this->_type = $type;
 		$this->_currentResult = $result;
 		return $result;
 	}
@@ -36,7 +38,7 @@ class Infos {
 
 	public function		imgHelper($path) {
 		$result = explode('/', $path);
-		return "/Grog-Knight/img/Images/".$result[count($result) - 1];
+		return "/Grog-Knight/img/Images/".$this->_type."/".$result[count($result) - 1];
 	}
 
 	public function		getAllImages() {

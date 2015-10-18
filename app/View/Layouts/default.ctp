@@ -56,9 +56,9 @@ error_reporting(0);
 			</div>
 			<ul>
 				<li>Home</li>
-				<li>Armors</li>
-				<li>Rings</li>
-				<li>Weapons</li>
+				<li><a href='/Grog-Knight/stuffs/index/Armors'>Armors</a></li>
+				<li><a href='/Grog-Knight/stuffs/index/Rings'>Rings</a></li>
+				<li><a href='/Grog-Knight/stuffs/index/Weapons'>Weapons</a></li>
 				<li>Git</li>
 			</ul>
 			<div class='character'>

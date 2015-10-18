@@ -38,7 +38,7 @@ class Infos {
 
 	public function		imgHelper($path) {
 		$result = explode('/', $path);
-		return "/Grog-Knight/img/Images/".$this->_type."/".$result[count($result) - 1];
+		return "/Grog-Knight/img/Images/".$result[count($result) - 2]."/".$result[count($result) - 1];
 	}
 
 	public function		getAllImages() {
@@ -47,6 +47,10 @@ class Infos {
 			$result[] = $this->imgHelper($r->infos->sprites);
 		}
 		return $result;
+	}
+
+	public function		update($type, $weapon, $infos) {
+		file_put_contents($this->_path."Elements/".$type."/".$weapon.".json", json_encode($infos, JSON_NUMERIC_CHECK | JSON_PRETTY_PRINT));
 	}
 
 	public function		getResult() { return $this->_currentResult; }

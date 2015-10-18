@@ -6,7 +6,7 @@ $(document).ready(function() {
 		transparentOn = 1;
 		$(".transparent").fadeIn(300);
 		$.ajax({
-			url: "/Grog-Knight/stuffs/getInfoOnWeapon/" + $(this).attr("id")
+			url: "/Grog-Knight/stuffs/getInfoOn/" + $(this).attr("id")
 		}).done(function(data) {
 			$(".out-window").html(data);
 			$(".out-window #chart").css({"height": "400px", "width": "400px"});
@@ -26,6 +26,8 @@ $(document).ready(function() {
 		$(".out-window").fadeOut(300);
 		transparentOn = 0;
 	});
+
+	/* Labels with a foreach, i > 0, Jquery incret with position ~70, speed, reduction*/
 
 	$(document).on("change", ".changeChart", function() {
 		currentChart.datasets[0].points[$(this).attr("id")].value = $(this).val();
@@ -48,17 +50,19 @@ $(document).ready(function() {
 
 	$(document).on("change", ".characterLevel", function() {
 		var k = $(this).val(), j;
-		var plusCrit = 0, plusDamage = 0, plusHP = 0;
+		var plusCrit = 0, plusDamage = 0, plusHP = 0, plusReduction = 0;
 
 		for (j = 0; j < k; j++) {
 			plusCrit += baseCrit * critMult;
 			plusDamage += baseDamage * damageMult;
 			plusHP += baseHP * HPMult;
+			plusReduction += baseDamageReduction * damageReductionMult;
 		}
 
 		currentChart2.datasets[0].bars[0].value = baseHP + plusHP;
 		currentChart2.datasets[0].bars[1].value = baseCrit + plusCrit;
 		currentChart2.datasets[0].bars[2].value = baseDamage + plusDamage;
+		currentChart2.datasets[0].bars[4].value = baseDamageReduction + plusReduction;
 		currentChart2.update();
 	});
 

@@ -10,12 +10,14 @@
 		"hitboxType": "special",
 		"hitbox": "heroHitbox",
 		"baseCrit": 2,
-		"baseDamage": 30
+		"baseDamage": 30,
+		"baseDamageReduction": 1
 	},
 	"Stats": {
 		"critMult": 0.2,
 		"damageMult": 0.5,
-		"HPMult": 0.1
+		"HPMult": 0.1,
+		"damageReductionMult": 0.5
 	},
 	"Actions": {
 		"starting": {

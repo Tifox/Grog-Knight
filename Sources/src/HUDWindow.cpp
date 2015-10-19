@@ -47,6 +47,7 @@ HUDWindow::HUDWindow(void) : HUDActor(), _cooldownAtt(0), _cooldownMove(0) {
 	fd.open("Resources/Dialogs/dialogs.json");
 	buffer << fd.rdbuf();
 	read.parse(buffer.str(), this->_dialogs);
+	this->_text.clear();
 	return;
 }
 
@@ -144,7 +145,10 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, Characters *toFollow,
 	HUDWindow::Text		*t = new HUDWindow::Text();
 
 	t->str = str;
-	t->toFollow = toFollow;
+	if (t->toFollow)
+		t->toFollow = toFollow;
+	else
+		t->toFollow = nullptr;
 	t->colorR = color.X;
 	t->colorG = color.Y;
 	t->colorB = color.Z;
@@ -251,32 +255,33 @@ void	HUDWindow::displayText(void) {
 	std::list<HUDWindow::Text *>::iterator	i;
 
 	for (i = this->_text.begin(); i != this->_text.end(); i++) {
-		if (*i) {
-			glColor4f((*i)->colorR, (*i)->colorG, (*i)->colorB, (*i)->colorA);
-			if ((*i)->toFollow == nullptr && (*i)->isFading == 1)
-				(*i)->colorA -= 0.02f;
-			if ((*i)->toFollow == nullptr)
-				DrawGameText((*i)->str, (*i)->font, (*i)->x, (*i)->y, theCamera.GetRotation());
-			else {
-				int		x, y, mult = 6;
-				Map		m = Game::currentGame->getCurrentMap();
+		glColor4f((*i)->colorR, (*i)->colorG, (*i)->colorB, (*i)->colorA);
+		if ((*i)->isFading)
+			(*i)->colorA -= 0.02f;
+		if ((*i)->colorA < 0) {
+			this->removeText((*i)->str); return ;
+		}
+		if ((*i)->toFollow == nullptr)
+			DrawGameText((*i)->str, (*i)->font, (*i)->x, (*i)->y, theCamera.GetRotation());
+		else {
+			int		x, y, mult = 6;
+			Map		m = Game::currentGame->getCurrentMap();
 
-				if ((*i)->toFollow->GetBody()) {
-					x = ((((*i)->toFollow->GetBody()->GetWorldCenter().x + 0.5) - m.getXStart()) * 40) - 40;
-					y = -((((*i)->toFollow->GetBody()->GetWorldCenter().y + (((*i)->toFollow->GetSize().Y) / 4)) - m.getYStart()) * 40) + 50;
-					if ((*i)->isFading) {
-						DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
-						(*i)->y += 1;
-						(*i)->colorA -= 0.02f;
-					} else if ((*i)->isTalk) {
-						DrawGameText((*i)->str, (*i)->font, x - 5, y - (*i)->y + 5, theCamera.GetRotation());
-					} else {
-						DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
-					}
+			if ((*i)->toFollow->GetBody()) {
+				if ((*i)->colorA < 0) {
+					this->removeText((*i)->str); return ;
+				}
+				x = ((((*i)->toFollow->GetBody()->GetWorldCenter().x + 0.5) - m.getXStart()) * 40) - 40;
+				y = -((((*i)->toFollow->GetBody()->GetWorldCenter().y + (((*i)->toFollow->GetSize().Y) / 4)) - m.getYStart()) * 40) + 50;
+				if ((*i)->isFading) {
+					DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
+					(*i)->y += 1;
+				} else if ((*i)->isTalk) {
+					DrawGameText((*i)->str, (*i)->font, x - 5, y - (*i)->y + 5, theCamera.GetRotation());
+				} else {
+					DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
 				}
 			}
-			if ((*i)->colorA < 0)
-				this->removeText((*i)->str);
 		}
 	}
 }

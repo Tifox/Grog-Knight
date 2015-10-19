@@ -32,6 +32,7 @@ MenuCharacter::MenuCharacter(void) : Characters("MenuCharacter") {
 	this->_currentTrigger = "";
 	this->_target = this->_target2 = nullptr;
 	this->_currentItemInfo = nullptr;
+	this->_image = nullptr;
 	this->_isBlock = 0;
 	this->_chooseEquipment = 0;
 	this->_character = "Warrior";

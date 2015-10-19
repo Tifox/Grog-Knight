@@ -7733,6 +7733,9 @@
                 {
                  "trigger":"skills"
                 },
+             "20999": {
+				"dialog": "goodbye"
+			 },
              "21002":
                 {
                  "trigger":"startGame"

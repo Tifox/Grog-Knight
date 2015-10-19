@@ -601,6 +601,8 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 	}
 	if (elem->getAttribute("trigger") != "") {
 		this->_callTrigger(elem->getAttribute("trigger"), 1);
+	} if (elem->getAttribute("dialog") != "") {
+		Game::getHUD()->dialog(elem->getAttribute("dialog"));
 	} if (elem->getAttribute("triggerOn") != "") {
 		this->trigger(elem->getAttribute("triggerOn"), 1);
 	} if (elem->getAttribute("triggerOff") != "") {

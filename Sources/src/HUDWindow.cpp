@@ -30,6 +30,11 @@
  * Basic constructor
  */
 HUDWindow::HUDWindow(void) : HUDActor(), _cooldownAtt(0), _cooldownMove(0) {
+	std::string			file;
+	std::stringstream 	buffer;
+	std::ifstream		fd;
+	Json::Reader		read;
+
 	RegisterFont("Resources/font.ttf", 14, "Gamefont");
 	RegisterFont("Resources/font.ttf", 20, "BigGamefont");
 	RegisterFont("Resources/font.ttf", 10, "MediumGamefont");
@@ -39,6 +44,9 @@ HUDWindow::HUDWindow(void) : HUDActor(), _cooldownAtt(0), _cooldownMove(0) {
 	theSwitchboard.SubscribeTo(this, "speAttCooldownEnd");
 	theSwitchboard.SubscribeTo(this, "speMoveCooldownEnd");
 	this->_hearts.clear();
+	fd.open("Resources/Dialogs/dialogs.json");
+	buffer << fd.rdbuf();
+	read.parse(buffer.str(), this->_dialogs);
 	return;
 }
 
@@ -79,7 +87,7 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y) {
  * @param color The color of the text (See Angel2d's Vector3 for more info)
  * @param alpha The transparency.
  */
-HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 color, int alpha) {
+HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 color, float alpha) {
 	HUDWindow::Text		*t = new HUDWindow::Text();
 	t->str = str;
 	t->x = x;
@@ -863,7 +871,69 @@ void	HUDWindow::ReceiveMessage(Message *m) {
 				theSwitchboard.UnsubscribeFrom(this, "second");
 			}
 		}
+	} else if (m->GetMessageName() == "enterPressed") {
+		if (this->_isInDialog) {
+			this->dialog(this->_currentDialog);
+		}
 	}
+}
+
+void	HUDWindow::dialog(std::string name) {
+	static		int		isCreated = 0;
+	if (isCreated == 0) {
+		if (std::find(this->_dialogPassed.begin(), this->_dialogPassed.end(), name) != this->_dialogPassed.end())
+			return ;
+		this->_createDialog();
+		isCreated = 1;
+		this->_isInDialog = 1;
+		this->_currentDialog = name;
+		theSwitchboard.SubscribeTo(this, "enterPressed");
+		this->_it = this->_dialogs[name].begin();
+		this->_dialogPassed.push_back(name);
+	} else {
+		this->removeText(this->_it->asString());
+		this->_it++;
+	}
+	if (this->_it == this->_dialogs[name].end()) {
+		isCreated = 0;
+		this->_cleanDialog();
+		theSwitchboard.UnsubscribeFrom(this, "enterPressed");
+	} else {
+		this->setText(this->_it->asString(), 400, theCamera.GetWindowHeight() - 100, Vector3(0, 0, 0), 1, "BigGamefont");
+	}
+}
+
+void	HUDWindow::_createDialog(void) {
+	Game::currentGame->getHero()->unsubscribeFromAll();
+	HUDActor	*fade = new HUDActor(), *charac = new HUDActor(), *dialog = new HUDActor();
+	fade->SetSize(theCamera.GetWindowWidth(), theCamera.GetWindowHeight());
+	fade->SetPosition(theCamera.GetWindowWidth() / 2, theCamera.GetWindowHeight() / 2);
+	fade->SetColor(0, 0, 0, 0.3);
+	fade->SetLayer(200);
+	theWorld.Add(fade);
+	this->_fade = fade;
+	charac->SetSize(400);
+	charac->SetPosition(200, theCamera.GetWindowHeight() - 200);
+	charac->LoadSpriteFrames(Game::currentGame->getHero()->getAttribute("spritesFrame"));
+	charac->SetLayer(202);
+	charac->PlaySpriteAnimation(0.3, SAT_Loop, 18, 19);
+	theWorld.Add(charac);
+	this->_perso = charac;
+	dialog->SetSize(theCamera.GetWindowWidth() * 1.5, 200);
+	dialog->SetPosition(100, theCamera.GetWindowHeight() - 100);
+	dialog->SetSprite("Resources/Images/big_dialog.png");
+	dialog->SetLayer(201);
+	theWorld.Add(dialog);
+	this->_backDialog = dialog;
+	this->setText("Press <Enter>", theCamera.GetWindowWidth() / 2 + 50, theCamera.GetWindowHeight() - 20, Vector3(0, 0, 0), 0.3f);
+}
+
+void	HUDWindow::_cleanDialog(void) {
+	Game::currentGame->getHero()->subscribeToAll();
+	theWorld.Remove(this->_fade);
+	theWorld.Remove(this->_perso);
+	theWorld.Remove(this->_backDialog);
+	this->removeText("Press <Enter>");
 }
 
 void	HUDWindow::setGame(Game *g) { this->_g = g; };

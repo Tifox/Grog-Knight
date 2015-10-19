@@ -77,6 +77,8 @@ void	MenuCharacter::BeginContact(Elements *elem, b2Contact *contact) {
 			this->_callTrigger(elem->getAttribute("trigger"), 0);
 		else
 			this->_callTrigger(elem->getAttribute("trigger"), 1);
+	} if (elem->getAttribute("dialog") != "") {
+		Game::getHUD()->dialog(elem->getAttribute("dialog"));
 	} if (elem->getAttribute("triggerOn") != "") {
 		this->trigger(elem->getAttribute("triggerOn"), 1);
 	} if (elem->getAttribute("triggerOff") != "") {
@@ -95,7 +97,7 @@ void	MenuCharacter::trigger(std::string name, int status) {
 	else
 		this->_currentTrigger = "";
 	if (name == "chooseCharacter") {
-		if (status == 1) {
+	   if (status == 1) {
 			this->_showTextInfo("Press enter to choose a new character");
 		} else {
 			Game::getHUD()->removeText("Press enter to choose a new character");
@@ -117,7 +119,9 @@ void	MenuCharacter::trigger(std::string name, int status) {
 		theSwitchboard.UnsubscribeFrom(this, "enterPressed");
 		theSwitchboard.UnsubscribeFrom(this, "chooseEquipment");
 		theSwitchboard.UnsubscribeFrom(this, "returnPressed");
-
+		if (this->_image != nullptr)
+			theWorld.Remove(this->_image);
+		Game::getHUD()->removeText("Press enter to choose your skills");
 		Game::isInMenu = 0;
 		Game::menuCharacter = this;
 		Game::asToStart = 1;
@@ -140,6 +144,7 @@ void	MenuCharacter::ReceiveMessage(Message *m) {
 			if (this->_isBlock) {
 				this->ClearSpriteInfo();
 				this->LoadSpriteFrames("Resources/Images/Menu/"+ this->_choicePointer->getAttribute("type") +"/perso_000.png");
+				this->addAttribute("spritesFrame", "Resources/Images/Menu/"+ this->_choicePointer->getAttribute("type") +"/perso_000.png");
 				if (this->_character != this->_choicePointer->getAttribute("type")) {
 					this->_character = this->_choicePointer->getAttribute("type");
 					this->_hideKitchen(1);

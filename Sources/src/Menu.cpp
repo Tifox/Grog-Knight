@@ -26,7 +26,7 @@
 # include "Menu.hpp"
 
 //! Basic constructor
-Menu::Menu(void) : _currentChoice("Start Game"), _fadeActor(nullptr) {
+Menu::Menu(void) : _currentChoice("Start Game"), _fadeActor(nullptr), _beer(nullptr) {
 	theSwitchboard.SubscribeTo(this, "enterPressed");
 	theSwitchboard.SubscribeTo(this, "downPressed");
 	theSwitchboard.SubscribeTo(this, "upPressed");
@@ -97,6 +97,10 @@ void	Menu::ReceiveMessage(Message *m) {
 			Game::started = 1;
 		}
 	}
+	if (m->GetMessageName() == "beerUp")
+		this->_beer->MoveTo(Vector2((theCamera.GetWindowWidth() / 2) - 100, (theCamera.GetWindowHeight() / 2) - 250), 2, true, "beerDown");
+	if (m->GetMessageName() == "beerDown")
+		this->_beer->MoveTo(Vector2((theCamera.GetWindowWidth() / 2) - 100, (theCamera.GetWindowHeight() / 2) - 200), 2, true, "beerUp");
 	if (Game::toggleMenu == false)
 		return;
 	if (m->GetMessageName() == "moveMenu")
@@ -111,6 +115,10 @@ void	Menu::ReceiveMessage(Message *m) {
 			if (this->_currentChoice == "Start Game") {
 				Game::isInMenu = 0;
 				Game::removeHUDWindow(this->_window);
+				theWorld.Remove(this->_logo);
+				theWorld.Remove(this->_beer);
+				theSwitchboard.UnsubscribeFrom(this, "beerUp");
+				theSwitchboard.UnsubscribeFrom(this, "beerDown");
 				this->_game->menuInGame();
 				this->_window = Game::getHUD();
 				this->_inMenu = 0;
@@ -363,7 +371,7 @@ void	Menu::listMenu(void) {
 	this->_inMenu = 1;
 	for (it = this->_menuChoices.begin(); it != this->_menuChoices.end(); it++)
 		this->_window->removeText(*it);
-	this->_window->removeText("Grog Knight");
+	theWorld.Remove(this->_logo);
 	for (it = this->_menuChoices.begin(); it != this->_menuChoices.end(); it++, y += 20) {
 		if (this->_currentChoice == *it) {
 			this->_window->setText(*it, x - ((*it).length() / 2 * 6), y, Vector3(255, 0, 0), 1);
@@ -371,8 +379,13 @@ void	Menu::listMenu(void) {
 			this->_window->setText(*it, x - ((*it).length() / 2 * 6), y, Vector3(255, 255, 255), 1);
 		}
 	}
-	this->_window->setText("Grog Knight", (theCamera.GetWindowWidth() / 2) - 200, (theCamera.GetWindowHeight() / 2) - 100,
-			Vector3(255.0f, 255.0f, 255.0f), 1, "title");
+	this->_logo = this->_window->addImage("Resources/Images/logo.png", (theCamera.GetWindowWidth() / 2), (theCamera.GetWindowHeight() / 2) - 200, 400);
+	if (this->_beer == nullptr) {
+		this->_beer = this->_window->addImage("Resources/Images/beer.png", (theCamera.GetWindowWidth() / 2) - 100, (theCamera.GetWindowHeight() / 2) - 250, 100, 105);
+		this->_beer->MoveTo(Vector2((theCamera.GetWindowWidth() / 2) - 100, (theCamera.GetWindowHeight() / 2) - 200), 2, true, "beerUp");
+		theSwitchboard.SubscribeTo(this, "beerUp");
+		theSwitchboard.SubscribeTo(this, "beerDown");
+	}
 }
 
 void	Menu::removeBaseMenu(void) {
@@ -380,7 +393,12 @@ void	Menu::removeBaseMenu(void) {
 
 	for (it = this->_menuChoices.begin(); it != this->_menuChoices.end(); it++)
 		this->_window->removeText(*it);
-	this->_window->removeText("Grog Knight");
+	theWorld.Remove(this->_logo);
+	std::cout << "here" << std::endl;
+	theWorld.Remove(this->_beer);
+	this->_beer = nullptr;
+	theSwitchboard.UnsubscribeFrom(this, "beerUp");
+	theSwitchboard.UnsubscribeFrom(this, "beerDown");
 }
 
 void	Menu::settings(int y) {

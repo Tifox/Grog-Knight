@@ -52,6 +52,7 @@
 		void			_whirlwind(void);
 		void			_shockwave(void);
 		void           _rapidFire(void);
+   void			_throwWeapon(void);
 
 
      private:

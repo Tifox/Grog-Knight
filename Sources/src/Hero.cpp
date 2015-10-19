@@ -171,7 +171,7 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 				new Weapon(this->_weapon, this, -1);
 			}
 		}
-	} else if (elem->getAttribute("type") == "projectile") {
+	} else if (elem->getAttribute("type") == "projectile" && elem->getAttribute("spe") != "throwSpear") {
 		this->_takeDamage(elem);
 	}
 	else if (elem->getAttribute("type") == "Object") {

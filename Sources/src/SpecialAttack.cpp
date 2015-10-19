@@ -123,7 +123,7 @@ void	SpecialAttack::_whirlwind(void) {
 	this->character->_setCategory("whirlwind");
 	Weapon *currentWeapon = Game::currentGame->getHero()->getWeapon();
 	Characters *hero = Game::currentGame->getHero();
-	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speAttReady == 1 /*&& currentWeapon->getType() == "Sword"*/) {
+	 if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speAttReady == 1 /*&& currentWeapon->getType() == "Sword"*/) {
 	  this->character->_speAttReady = 0;
 	  this->character->_isWhirlwinding = true;
 	  currentWeapon->setActive(this->character->_getAttr("whirlwind", "uptime").asFloat());
@@ -145,6 +145,26 @@ void	SpecialAttack::_whirlwind(void) {
 	}
 }
 
+void	SpecialAttack::_throwWeapon(void) {
+  this->character->_setCategory("throwWeapon");
+  b2Vec2 pos = this->character->GetBody()->GetWorldCenter();
+  Weapon *currentWeapon = this->character->getWeapon();
+  std::string orientation;
+  Characters *hero = Game::currentGame->getHero();
+  if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speAttReady == 1 && currentWeapon->getType() == "Spear") {
+    this->character->_speAttReady = 0;
+    if (hero->_latOrientation == Characters::RIGHT) { 
+      std::cout << "yo pepere" << std::endl;
+      new Projectile(currentWeapon->getSprite(), 50, Vector2(pos.x, pos.y), Vector2(1, 1.5f), Vector2(0, 0), "throwSpear", -1, 0.8);
+      
+    }
+    if (hero->_latOrientation == Characters::LEFT)       
+      new Projectile(currentWeapon->getSprite(), 50, Vector2(pos.x, pos.y), Vector2(-1, 1.5f), Vector2(0, 0), "throwSpear", 45, 0.8);
+  }
+  theSwitchboard.DeferredBroadcast(new Message("speAttReady"),
+				this->character->_getAttr("cooldown").asFloat());
+  this->_currentAttack = "throwWeapon";
+}
 
 void	SpecialAttack::_shockwave(void) {
 	this->character->_setCategory("shockwave");

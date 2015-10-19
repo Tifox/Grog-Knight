@@ -99,7 +99,7 @@ class Game {
 
 		static bool	endGame;
 		static bool	ended;
-		static bool	destroyAllBodies(void);
+		static bool	destroyAllBodies(std::string msg = "YOU ARE DEAD");
 		static void checkHeroPosition(void);
 		static void	addToDestroyList(Elements *m);
 
@@ -150,6 +150,7 @@ class Game {
 		static int						reloadHUD;
 		static int						asToStart;
 		static int						isPaused;
+		static int						lvlDone;
 		static MenuCharacter			*menuCharacter;
 		static Vector2					spawnDealer;
 		static Vector2					spawnSecretDoor;

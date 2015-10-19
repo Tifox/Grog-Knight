@@ -33,6 +33,7 @@ class Hero : public Characters {
 
 	public:
 		Hero(std::string);
+		Hero(Hero *);
 		~Hero();
 
 		void	init();
@@ -40,6 +41,11 @@ class Hero : public Characters {
 		virtual void	EndContact(Elements* m, b2Contact* contact);
 		virtual void	actionCallback(std::string name, int status);
 		void			_takeDamage(Elements* m);
-		void			setStartingValues(void);
+		void			setStartingValues(Hero *tmp = nullptr);
+
+		Inventory	*getInventory(void);
+		SpecialMoves *getEqMove(void);
+		SpecialAttack *getEqAtt(void);
+		void		setInventory(Inventory *i);
 };
 #endif

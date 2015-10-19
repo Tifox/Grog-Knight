@@ -53,9 +53,9 @@ void		Boss::ReceiveMessage(Message *m) {
 	float	percent = this->_hp * 100 / this->_maxHp;
 	int		x = this->GetBody()->GetWorldCenter().x, y = this->GetBody()->GetWorldCenter().y, size = this->GetSize().X / 2;
 
-	if (m->GetMessageName() == "deleteBoss")
+	if (m->GetMessageName() == "deleteBoss") {
 		Game::addToDestroyList(this);
-	else if (percent > 0) {
+	} else if (percent > 0) {
 		if (m->GetMessageName() == "attack") {
 			if (percent > 50)
 				this->ReceiveMessage(new Message("phase1"));
@@ -107,6 +107,7 @@ void		Boss::AnimCallback(String s) {
 		for (stade = 0; stade < 360; stade += 5)
 			new Projectile("Resources/Images/boss_projectile.png", 20, Vector2(x, y), Vector2(2, 0), Vector2(0, 0), "bossProjectile", stade);
 		Game::addToDestroyList(this);
+		theSwitchboard.DeferredBroadcast(new Message("bossEnd"), 3);
 	}
 }
 

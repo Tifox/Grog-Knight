@@ -74,7 +74,7 @@ class		MenuCharacter : public Characters {
 		void			_cleanCloset(void);
 		void			_kitchen(void);
 		void			_changeKitchen(void);
-		void			_hideKitchen(void);
+		void			_hideKitchen(int reload = 0);
 		void			_getSkills(void);
 		void			_makeSkillChoice(void);
 		void			_levels(void);

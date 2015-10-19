@@ -15,7 +15,6 @@
 		"active": 0.2,
 		"attack": "melee",
 		"sprites": "Resources/Images/Weapons/Axe_002.png",
-		"lootLevel": 3,
-		"starterLevel": 3
+		"lootLevel": 3
 	}
 }

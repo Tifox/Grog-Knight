@@ -88,6 +88,8 @@ void	Enemy::actionCallback(std::string name, int status) {
  * @param contact The Box2D contact object
  */
 void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
+	if (!m)
+		return ;
 	Characters::BeginContact(m, contact);
 	if (!m)
 		return ;

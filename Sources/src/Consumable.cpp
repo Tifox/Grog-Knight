@@ -80,6 +80,8 @@ Consumable::Consumable(std::string type, std::string value, Characters* c) {
  * @todo This function is actually doing nothing.
  */
 void	Consumable::BeginContact(Elements *elem, b2Contact *contact) {
+	if (!elem)
+		return ;
 	if (elem->getAttribute("type") != "ground" || elem->getAttribute("speType") == "spikes") {
 		contact->SetEnabled(false);
 		contact->enableContact = false;

@@ -140,15 +140,18 @@ void	MenuCharacter::ReceiveMessage(Message *m) {
 			if (this->_isBlock) {
 				this->ClearSpriteInfo();
 				this->LoadSpriteFrames("Resources/Images/Menu/"+ this->_choicePointer->getAttribute("type") +"/perso_000.png");
-				this->_character = this->_choicePointer->getAttribute("type");
-				std::cout << this->_character << std::endl;
+				if (this->_character != this->_choicePointer->getAttribute("type")) {
+					this->_character = this->_choicePointer->getAttribute("type");
+					this->_hideKitchen(1);
+					this->_kitchen();
+					Game::getHUD()->removeText("Press enter to choose your skills");
+				}
 				theCamera.MoveTo(Vector3(Game::currentGame->getCurrentMap().getXMid(),
 							Game::currentGame->getCurrentMap().getYMid() + 1.8, 18.002), 1, true);
 				this->_isBlock = 0;
 				this->_ringList.clear();
 				this->_weaponList.clear();
 				this->_armorList.clear();
-				this->_changeKitchen();
 				std::list<Elements *>::iterator	it;
 				for (it = this->_choices.begin(); it != this->_choices.end(); it++)
 					theWorld.Remove(*it);
@@ -721,6 +724,7 @@ void		MenuCharacter::_kitchen(void) {
 	float						x, y, i;
 	Elements				*tmp;
 
+	std::cout << this->_character << std::endl;
 	for (it = this->_skillTree.begin(), x = 125.75, i = 0; it != this->_skillTree.end(); it++, x += 3.75, i++) {
 		for (it2 = (*it)[this->_character].begin(), y = -16.75; it2 != (*it)[this->_character].end(); it2++, y -= 3.5) {
 			tmp = new Elements();
@@ -741,7 +745,7 @@ void		MenuCharacter::_kitchen(void) {
 	}
 }
 
-void		MenuCharacter::_hideKitchen(void) {
+void		MenuCharacter::_hideKitchen(int reload) {
 	std::list<Elements *>::iterator		it;
 	int									i;
 	HUDWindow	*h = Game::getHUD();
@@ -752,11 +756,20 @@ void		MenuCharacter::_hideKitchen(void) {
 	if (this->_target != nullptr)
 		theWorld.Remove(this->_target);
 	this->_target = nullptr;
-	theCamera.MoveTo(Vector3(Game::currentGame->getCurrentMap().getXMid(),
-				Game::currentGame->getCurrentMap().getYMid(), 18.502), 1, true);
-	this->_currentTrigger = "skills";
-	this->_showTextInfo("Press enter to choose your skills");
-	this->_isBlock = 0;
+	if (!reload) {
+		theCamera.MoveTo(Vector3(Game::currentGame->getCurrentMap().getXMid(),
+			Game::currentGame->getCurrentMap().getYMid(), 18.502), 1, true);
+		this->_currentTrigger = "skills";
+		this->_showTextInfo("Press enter to choose your skills");
+		this->_isBlock = 0;
+	} else {
+		for (it = this->_kitchenSkills.begin(); it != this->_kitchenSkills.end(); theWorld.Remove((*it)), it++);
+		for (i = 0; i < this->_skillsChoices.size(); i++) {
+			for (it = this->_skillsChoices[i].begin(); it != this->_skillsChoices[i].end(); theWorld.Remove(*it), it++);
+			this->_skillsChoices[i].clear();
+		}
+		this->_skillsChoices.clear();
+	}
 	theWorld.Remove(this->_descriptionBackground);
 	theWorld.Remove(this->_iconBackground);
 	theWorld.Remove(this->_icon);

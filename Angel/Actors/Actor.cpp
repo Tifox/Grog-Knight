@@ -261,7 +261,6 @@ void Actor::ChangeSizeTo(const Vector2& newSize, float duration, bool smooth, St
 	_sizeInterval = Interval<Vector2>(_size, newSize, duration, smooth);
 	_sizeIntervalMessage = onCompletionMessage;
 	_size = newSize;
-	std::cout << "Calling ChangeSizeTo with Vector2" << std::endl;
 }
 
 /* CODE BY LOUIS */

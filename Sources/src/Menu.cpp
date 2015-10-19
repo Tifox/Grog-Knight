@@ -36,6 +36,7 @@ Menu::Menu(void) : _currentChoice("Start Game"), _fadeActor(nullptr) {
 	theSwitchboard.SubscribeTo(this, "escapePressed");
 	theSwitchboard.SubscribeTo(this, "moveMenu");
 	theSwitchboard.SubscribeTo(this, "PauseGame");
+	theSwitchboard.SubscribeTo(this, "bossEnd");
 }
 
 //! Basic destructor
@@ -83,12 +84,28 @@ void	Menu::ReceiveMessage(Message *m) {
 
 	if (m->GetMessageName() == "PauseGame")
 		Game::currentGame->endingGame();
-	if (m->GetMessageName() == "enterPressed" && Game::deadWaiting)
-		Game::currentGame->menuInGame();
+	if (m->GetMessageName() == "enterPressed" && Game::deadWaiting) {
+		if (!Game::lvlDone) {
+			Game::currentGame->menuInGame();
+			Game::World = 0;
+		} else {
+			Game::lvlDone = 0;
+			Game::World++;
+			Game::menuCharacter = nullptr;
+			Game::isInMenu = 0;
+			Game::currentGame->start();
+			Game::started = 1;
+		}
+	}
 	if (Game::toggleMenu == false)
 		return;
 	if (m->GetMessageName() == "moveMenu")
 		this->_background_map->destroyMap();
+	if (m->GetMessageName() == "bossEnd") {
+		Game::endGame = true;
+		Game::lvlDone = 1;
+		Game::destroyAllBodies("LEVEL CLEARED");
+	}
 	if (this->_inMenu == 1) {
 		if (m->GetMessageName() == "enterPressed") {
 			if (this->_currentChoice == "Start Game") {
@@ -287,6 +304,7 @@ void	Menu::ReceiveMessage(Message *m) {
 					}
 				}
 				this->_window->removeText("Bindings");
+				this->_window->spellText();
 				if (this->_lastMenu == 1) {
 					this->_inMenu = 1;
 					this->_currentChoice = "Start Game";
@@ -345,7 +363,7 @@ void	Menu::listMenu(void) {
 	this->_inMenu = 1;
 	for (it = this->_menuChoices.begin(); it != this->_menuChoices.end(); it++)
 		this->_window->removeText(*it);
-	this->_window->removeText("Grog Like");
+	this->_window->removeText("Grog Knight");
 	for (it = this->_menuChoices.begin(); it != this->_menuChoices.end(); it++, y += 20) {
 		if (this->_currentChoice == *it) {
 			this->_window->setText(*it, x - ((*it).length() / 2 * 6), y, Vector3(255, 0, 0), 1);
@@ -362,7 +380,7 @@ void	Menu::removeBaseMenu(void) {
 
 	for (it = this->_menuChoices.begin(); it != this->_menuChoices.end(); it++)
 		this->_window->removeText(*it);
-	this->_window->removeText("Grog Like");
+	this->_window->removeText("Grog Knight");
 }
 
 void	Menu::settings(int y) {
@@ -584,7 +602,7 @@ void	Menu::bindingMenu(int y) {
 		this->_window->removeText(it->first);
 		for (it2 = it->second.begin(); it2 != it->second.end(); it2++) {
 			this->_window->removeText((*it2)->name);
-			this->_window->removeText((*it2)->realKey);
+			this->_window->removeText((*it2)->realKey, 1);
 		}
 	}
 	this->_window->removeText("Bindings");

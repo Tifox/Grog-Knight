@@ -32,7 +32,7 @@
  * Load the maps with Maps::Maps
  * @sa Maps
  */
-Game::Game(void) : _hero((new Characters())) {
+Game::Game(void) : _hero(nullptr) {
 	#ifdef __APPLE__
 		theWorld.Initialize(1024, 720, NAME, true, false);
 	#else
@@ -79,6 +79,9 @@ void	Game::grid(void) {
  * Let's start the game
  */
 void	Game::start(void) {
+	Hero			*hero = nullptr, *tmp = nullptr;
+
+	theWorld.ResumePhysics();
 	theWorld.SetBackgroundColor(*(new Color(0, 0, 0)));
 	Game::wList = new WeaponList();
 	Game::eList = new EnemyList();
@@ -87,20 +90,26 @@ void	Game::start(void) {
 	Game::dList = new DrugList();
 	Game::chest = new Chest();
 
+
+	Game::endGame = false;
+	Game::deadWaiting = 0;
+	Game::stopPattern = false;
 	this->tooltip = new Tooltip();
 	int i;
-	for (i = 0; i < 3; i++) {
+	for (i = 0; i < 3; i++)
 		this->maps->_XYMap[0][i].destroyMap();
-	}
-
 	delete(Game::currentGame->maps);
 	this->maps = new Maps("Maps/");
 	this->maps->readMaps();
 	Game::currentGame = this;
-	Hero			*hero = new Hero(Game::menuCharacter->getHeroType());
-
-	theWorld.GetPhysicsWorld().DestroyBody(Game::menuCharacter->GetBody());
-	theWorld.Remove(Game::menuCharacter);
+	if (Game::menuCharacter != nullptr) {
+		hero = new Hero(Game::menuCharacter->getHeroType());
+		theWorld.GetPhysicsWorld().DestroyBody(Game::menuCharacter->GetBody());
+		theWorld.Remove(Game::menuCharacter);
+	} else {
+		tmp = static_cast<Hero *>(this->getHero());
+		hero = new Hero(tmp);
+	}
 	this->levelGenerator = new LevelGenerator(4, 3, 60);
 	levelGenerator->execute();
 	this->_tmpMap = levelGenerator->getLevel();
@@ -123,15 +132,31 @@ void	Game::start(void) {
 
 	this->displayHero(*(hero));
 	hero->init();
-	hero->setGold(0);
-	hero->setLevel(Game::menuCharacter->getLevel());
+	if (Game::menuCharacter) {
+		hero->setLevel(Game::menuCharacter->getLevel());
+		hero->setGold(0);
+	} else {
+		hero->setLevel(tmp->getLevel());
+		hero->setGold(tmp->getGold());
+		hero->setHP(tmp->getHP());
+		Game::getHUD()->consumable(hero->getInventory()->getItems());
+	}
 	Game::chest->applySave(this->_save);
 	this->setHero(hero);
-	hero->setStartingValues();
-	this->displayHUD();
+	hero->setStartingValues(tmp);
 	this->setHero(hero);
+	this->displayHUD();
+	Game::getHUD()->removeText("Press Enter to continue.");
+	Game::getHUD()->removeText("LEVEL CLEARED");
 	Game::started = 1;
 	Game::currentGame = this;
+	Game::getHUD()->setText("World " + std::to_string(Game::World + 1), 300, 200, Vector3(1, 1, 1), 5, "title")->isFading = 1;
+	if (tmp) {
+		tmp->UnsubscribeFromAll();
+		theWorld.GetPhysicsWorld().DestroyBody(tmp->GetBody());
+		theWorld.Remove(tmp);
+		Game::delElement(tmp);
+	}
 }
 
 void	Game::menuInGame(void) {
@@ -159,7 +184,7 @@ void	Game::menuInGame(void) {
 	if (Game::getHUD() == nullptr)
 		Game::addHUDWindow(new HUDWindow());
 	else {
-		Game::getHUD()->removeText("Press Enter to restart.");
+		Game::getHUD()->removeText("Press Enter to continue.");
 		Game::getHUD()->removeText("YOU ARE DEAD");
 		theWorld.Remove(this->getHero()->getGhost());
 		delete this->getHero();
@@ -389,20 +414,27 @@ void	Game::endingGame(void) {
 			theWorld.Remove(Game::elementMap[i]);
 		}
 	}
+	Quit::doSave(static_cast<Hero *>(Game::currentGame->getHero()));
 	Game::elementMap.clear();
-	Game::getHUD()->setText("Press Enter to restart.", 500, 500);
-	theWorld.Remove(Game::currentGame->getHero());
+	Game::getHUD()->deleteBigMap(0);
+	Game::getHUD()->setText("Press Enter to continue.", 500, 500);
+	if (!Game::lvlDone) {
+		theWorld.Remove(Game::currentGame->getHero());
+	}
+	Game::menuCharacter = nullptr;
 	Game::ended = false;
 	Game::endGame = false;
 	Game::secretDoor = nullptr;
 	Game::bossDoor = nullptr;
 	Game::dealer = nullptr;
 	if (Game::currentGame->getShopkeeper()) {
-		Game::currentGame->getShopkeeper()->getShop()->hideShop();
+		if (Game::currentGame->getShopkeeper()->getShop())
+			Game::currentGame->getShopkeeper()->getShop()->hideShop();
 		theWorld.Remove(Game::currentGame->getShopkeeper());
 	}
 	Game::currentGame->setShopkeeper(nullptr);
 	Game::chest->reset();
+	Game::currentGame->tooltip->clearInfo();
 	Game::deadWaiting = true;
 	Game::currentIds = 0;
 	// Chest, Shop Items
@@ -414,7 +446,7 @@ void	Game::endingGame(void) {
  * This function destroy each element in Game::bodiesToDestroy.
  * So, call this function outisde of this goal is useless.
  */
-bool	Game::destroyAllBodies(void) {
+bool	Game::destroyAllBodies(std::string msg) {
 	if (Game::ended == true) {
 		return true ;
 	}
@@ -422,7 +454,7 @@ bool	Game::destroyAllBodies(void) {
 		Game::ended = true;
 		theWorld.PausePhysics();
 		int i, j = 0, k;
-		Game::getHUD()->setText("YOU ARE DEAD", 400, 400, Vector3(1, 0, 0), 1, "dead");
+		Game::getHUD()->setText(msg, 400, 400, Vector3(1, 0, 0), 1, "dead");
 		Game::getHUD()->clearHUD();
 		k = Game::elementMap.size();
 		theSwitchboard.DeferredBroadcast(new Message("PauseGame"), 1);
@@ -640,6 +672,7 @@ int							Game::isWaitingForBind = 0;
 int							Game::reloadHUD = 0;
 int							Game::isPaused = 0;
 int							Game::asToStart = 0;
+int							Game::lvlDone = 0;
 MenuCharacter				*Game::menuCharacter = nullptr;
 Vector2						Game::spawnShop = Vector2();
 Vector2						Game::spawnBossDoor = Vector2();

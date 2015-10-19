@@ -128,6 +128,7 @@ class Characters : public Elements {
 		void			changeCanMove(void);
 		std::list<std::string>		getSubscribes(void);
 		void						unsubscribeFromAll(void);
+		void						UnsubscribeFromAll(void);
 		void						subscribeToAll(void);
 		t_buff						buff;
 		int							inSpecialMap;

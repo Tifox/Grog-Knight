@@ -1240,6 +1240,8 @@ void	Characters::_specialAttack(int status) {
 			this->_eqAtt->_shockwave();
 		if (this->_speAtt == "rapidFire")
 			this->_eqAtt->_rapidFire();
+		else if (this->_speAtt == "throwWeapon")
+		  this->_eqAtt->_throwWeapon();
 	}
 }
 

@@ -196,8 +196,8 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 			if (this->_isStomping == true) {
 				this->GetBody()->SetLinearVelocity(b2Vec2(0, 3));
 				theSwitchboard.Broadcast(new Message("stompEnd"));
-				new Weapon(this->_weapon, this, 1);
-				new Weapon(this->_weapon, this, -1);
+				new Weapon(this->_weapon, this, 1, "stompArea");
+				new Weapon(this->_weapon, this, -1, "stompArea");
 			}
 		}
 	} else if (elem->getAttribute("type") == "projectile" && elem->getAttribute("spe") != "throwSpear") {
@@ -235,8 +235,6 @@ void	Hero::BeginContact(Elements* elem, b2Contact *contact) {
 		if (this->_isStomping == true) {
 			theSwitchboard.Broadcast(new Message("stompEnd"));
 			this->_invincibility = false;
-			new Weapon(this->_weapon, this, 1);
-			new Weapon(this->_weapon, this, 1);
 		}
 		if (this->_invincibility == false)
 			this->_takeDamage(elem);

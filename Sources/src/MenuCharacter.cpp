@@ -53,7 +53,7 @@ MenuCharacter::MenuCharacter(void) : Characters("MenuCharacter") {
 	this->_finalSkillTargets = std::vector<Elements *>(4);
 	this->_skillsChoices = std::vector<std::list<Elements *> >(4);
 	this->_skillsLvl[0] = 5; this->_skillsLvl[1] = 15; this->_skillsLvl[2] = 25; this->_skillsLvl[3] = 50;
-	this->_finalSkillChoices[0] = "blink"; this->_finalSkillChoices[1] = "throwWeapon";
+	this->_finalSkillChoices[0] = "dash"; this->_finalSkillChoices[1] = "whirlwind";
 	this->_getSkills();
 	this->_kitchen();
 }
@@ -150,7 +150,7 @@ void	MenuCharacter::ReceiveMessage(Message *m) {
 					this->_character = this->_choicePointer->getAttribute("type");
 					this->_hideKitchen(1);
 					this->_kitchen();
-					Game::getHUD()->removeText("Press enter to choose your skills");
+					Game::getHUD()->removeText(this->_textInfo);
 				}
 				theCamera.MoveTo(Vector3(Game::currentGame->getCurrentMap().getXMid(),
 							Game::currentGame->getCurrentMap().getYMid() + 1.8, 18.002), 1, true);
@@ -188,7 +188,7 @@ void	MenuCharacter::ReceiveMessage(Message *m) {
 			}
 		} else if (this->_currentTrigger == "equipment" && this->_chooseEquipment == 0) {
 			theCamera.MoveTo(Vector3(78.5, -19.5, 12.5), 0.5, true, "chooseEquipment");
-			Game::getHUD()->removeText("Press enter to choose your equipment");
+			Game::getHUD()->removeText(this->_textInfo);
 			theWorld.Remove(this->_image);
 			this->_isBlock = 1;
 			this->_chooseEquipment = 1;
@@ -197,7 +197,7 @@ void	MenuCharacter::ReceiveMessage(Message *m) {
 			this->_updateSelection();
 		} else if (this->_currentTrigger == "skills") {
 			theCamera.MoveTo(Vector3(131, -19.5, 12.5), 0.5, true, "chooseSkills");
-			Game::getHUD()->removeText("Press enter to choose your skills");
+			Game::getHUD()->removeText(this->_textInfo);
 			theWorld.Remove(this->_image);
 			this->_image = nullptr;
 			this->_currentTrigger = "skillsChoices";
@@ -392,8 +392,12 @@ void	MenuCharacter::_down(int status) {
 
 void	MenuCharacter::_showTextInfo(std::string text, std::string switchboard) {
 	int x = theCamera.GetWindowWidth(), y = theCamera.GetWindowHeight();
+	if (this->_image)
+		theWorld.Remove(this->_image);
+	Game::getHUD()->removeText(this->_textInfo);
 	this->_image = Game::getHUD()->addImage("Resources/Images/HUD/talk.png", x / 2, y - (y / 15), Vector2(x / 3, y / 10), 100);
 	Game::getHUD()->setText(text, (x / 2) - (x / 6) + (x / 20), y - (y / 15), Vector3(0, 0, 1), 1);
+	this->_textInfo = text;
 }
 
 void	MenuCharacter::_makeItChoice(void) {

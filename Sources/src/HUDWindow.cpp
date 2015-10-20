@@ -281,7 +281,7 @@ void	HUDWindow::displayText(void) {
 				} else {
 					DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
 				}
-			}
+			} 
 		}
 	}
 }

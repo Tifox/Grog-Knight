@@ -26,7 +26,7 @@
 # include "Menu.hpp"
 
 //! Basic constructor
-Menu::Menu(void) : _currentChoice("Start Game"), _fadeActor(nullptr), _beer(nullptr) {
+Menu::Menu(void) : _currentChoice("Start Game"), _fadeActor(nullptr), _beer(nullptr), _logo(nullptr) {
 	theSwitchboard.SubscribeTo(this, "enterPressed");
 	theSwitchboard.SubscribeTo(this, "downPressed");
 	theSwitchboard.SubscribeTo(this, "upPressed");
@@ -371,7 +371,8 @@ void	Menu::listMenu(void) {
 	this->_inMenu = 1;
 	for (it = this->_menuChoices.begin(); it != this->_menuChoices.end(); it++)
 		this->_window->removeText(*it);
-	theWorld.Remove(this->_logo);
+	if (this->_logo != nullptr)
+		theWorld.Remove(this->_logo);
 	for (it = this->_menuChoices.begin(); it != this->_menuChoices.end(); it++, y += 20) {
 		if (this->_currentChoice == *it) {
 			this->_window->setText(*it, x - ((*it).length() / 2 * 6), y, Vector3(255, 0, 0), 1);

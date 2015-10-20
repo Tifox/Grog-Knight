@@ -8026,6 +8026,9 @@
                 {
                  "trigger":"equipment"
                 },
+			"3036": {
+					"dialog": "bathroom"
+				},
              "3103":
                 {
                  "triggerOn":"chooseCharacter"

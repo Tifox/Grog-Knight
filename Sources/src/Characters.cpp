@@ -80,6 +80,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_speMoveReady = 1;
 	this->_speAttReady = 1;
 	this->_hasDashed = 0;
+	this->_isBlock = 0;
 	this->SetLayer(100);
 	this->_flyTrigger = false;
 	this->_isDisengaging = false;

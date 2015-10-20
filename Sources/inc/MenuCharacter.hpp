@@ -112,5 +112,6 @@ class		MenuCharacter : public Characters {
 		std::list<std::string>			_description;
 		Elements						*_levelsBackground;
 		Elements						*_lvlUp;
+		std::string						_textInfo;
 };
 #endif

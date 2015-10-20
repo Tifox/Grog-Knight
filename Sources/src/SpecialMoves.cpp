@@ -108,7 +108,7 @@
 
  void	SpecialMoves::_dash(void) {
    this->character->_setCategory("dash");
- 	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_hasDashed == 0 && this->character->_isDashing == false) {
+ 	if (this->character->_isAttacking == 0 && this->character->_canMove == 1) {
  		this->character->_isDashing = true;
  		this->character->GetBody()->SetGravityScale(0);
  		this->character->actionCallback("dash", 0);
@@ -117,7 +117,10 @@
  			this->character->_hasDashed = 1;
  		theSwitchboard.SubscribeTo(this->character, "dashEnd");
  		theSwitchboard.DeferredBroadcast(new Message("dashEnd"),
- 				this->character->_getAttr("uptime").asFloat());
+						 this->character->_getAttr("uptime").asFloat());
+ 		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"),
+						 this->character->_getAttr("cooldown").asFloat());
+		Game::getHUD()->speMoveCooldown(this->character->_getAttr("cooldown").asFloat());
  		if (this->character->_latOrientation == Characters::LEFT)
  			this->character->GetBody()->SetLinearVelocity(b2Vec2(-this->character->_getAttr("dashSpeed").asInt(), 0));
  		else if (this->character->_latOrientation == Characters::RIGHT)

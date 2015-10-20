@@ -1220,7 +1220,6 @@ void	Characters::_specialMove(int status) {
 			this->_eqMove->_shunpo();
 		else if (this->_speMove == "disengage")
 			this->_eqMove->_disengage();
-		this->_speMoveReady = 0;
 	}
 	if (status == 0) {
 		if (this->_speMove == "totem") {

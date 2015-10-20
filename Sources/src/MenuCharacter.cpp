@@ -184,15 +184,19 @@ void	MenuCharacter::ReceiveMessage(Message *m) {
 				this->_choices.push_back(elem);
 				theCamera.MoveTo(Vector3(34, -23, 5), 1, true);
 				this->_makeItChoice();
+				this->_forward(0); this->_backward(0);
 				this->_isBlock = 1;
 			}
 		} else if (this->_currentTrigger == "equipment" && this->_chooseEquipment == 0) {
-			theCamera.MoveTo(Vector3(78.5, -19.5, 12.5), 0.5, true, "chooseEquipment");
-			Game::getHUD()->removeText(this->_textInfo);
-			theWorld.Remove(this->_image);
-			this->_isBlock = 1;
-			this->_chooseEquipment = 1;
-			this->_image = nullptr;
+			if (this->getAttribute("closetReady") != "") {
+				theCamera.MoveTo(Vector3(78.5, -19.5, 12.5), 0.5, true, "chooseEquipment");
+				Game::getHUD()->removeText(this->_textInfo);
+				theWorld.Remove(this->_image);
+				this->_forward(0); this->_backward(0);
+				this->_isBlock = 1;
+				this->_chooseEquipment = 1;
+				this->_image = nullptr;
+			}
 		} else if (this->_currentTrigger == "equipment" && this->_chooseEquipment == 1) {
 			this->_updateSelection();
 		} else if (this->_currentTrigger == "skills") {
@@ -201,6 +205,7 @@ void	MenuCharacter::ReceiveMessage(Message *m) {
 			theWorld.Remove(this->_image);
 			this->_image = nullptr;
 			this->_currentTrigger = "skillsChoices";
+			this->_forward(0); this->_backward(0);
 			this->_isBlock = 1;
 			this->_choicePointer = *(this->_skillsChoices[0].begin());
 			this->_makeSkillChoice();
@@ -423,9 +428,9 @@ void		MenuCharacter::_openCloset(void) {
 	elem->SetPosition(79, -19.5);
 	theWorld.Add(elem);
 	if (this->_character == "Archer")
-		elem->PlaySpriteAnimation(0.3, SAT_OneShot, 1, 4);
+		elem->PlaySpriteAnimation(0.3, SAT_OneShot, 1, 4, "closetReady");
 	else if (this->_character == "Warrior")
-		elem->PlaySpriteAnimation(0.3, SAT_OneShot, 5, 8);
+		elem->PlaySpriteAnimation(0.3, SAT_OneShot, 5, 8, "closetReady");
 	this->_closet = elem;
 }
 

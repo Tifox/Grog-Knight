@@ -215,6 +215,9 @@ void	Elements::AnimCallback(String s) {
 		this->setFrameSprite((*this->_animIt)->frame);
 	} else if (s == "closeCloset") {
 		theWorld.Remove(this);
+		Game::currentGame->getHero()->removeAttr("closetReady");
+	} else if (s == "closetReady") {
+		Game::currentGame->getHero()->addAttribute("closetReady", "1");
 	}
 }
 

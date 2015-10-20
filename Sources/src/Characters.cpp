@@ -1200,7 +1200,7 @@ void	Characters::_pickupItem(int status) {
 
 void	Characters::_specialMove(int status) {
 	if (status == 1 && this->_speMoveReady) {
-		if (this->_speMove == "totem" && this->_totemDeletionSent == 0 && this->_totem != nullptr)
+	  if (this->_speMove == "totem" && this->_totemDeletionSent == 0 && this->_totem != nullptr)
 			this->_totemDeletionSent = 1;
 			theSwitchboard.SubscribeTo(this, "removeTotem");
 			theSwitchboard.DeferredBroadcast(new Message("removeTotem"), 3);

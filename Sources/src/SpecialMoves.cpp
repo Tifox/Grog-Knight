@@ -205,12 +205,13 @@
 	if (y >= 16)
 		y = 15;
  	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speMoveReady == 1) {
- 		if (this->character->_orientation == Characters::UP) {
+	  if (this->character->_orientation == Characters::UP) {
  			while (range > 0) {
  				if (y - range > 0 && !t[y - range][x])
  					break;
  				range--;
- 			}
+				goto speMoveReady;
+			}
  			if (range > 0) {
  				this->character->GetBody()->SetTransform(b2Vec2(this->character->GetBody()->GetWorldCenter().x,
  							this->character->GetBody()->GetWorldCenter().y + range), 0);
@@ -222,7 +223,8 @@
  				if (y + range < (t.size()) && !t[y + range - 1][x])
  					break;
  				range--;
- 			}
+				goto speMoveReady;
+			}
  			range--;
  			if (range > 0) {
  				this->character->GetBody()->SetTransform(b2Vec2(this->character->GetBody()->GetWorldCenter().x,
@@ -235,7 +237,8 @@
  				if (x + range < t[y].size() && !t[y][x + range])
  					break;
  				range--;
- 			}
+				goto speMoveReady;
+			}
  			if (range > 0) {
  				this->character->GetBody()->SetTransform(b2Vec2(this->character->GetBody()->GetWorldCenter().x + range,
  							this->character->GetBody()->GetWorldCenter().y), 0);
@@ -247,7 +250,8 @@
  				if (x - range > 0 && !t[y][x - range])
  					break;
  				range--;
- 			}
+				goto speMoveReady;
+			}
  			if (range > 0) {
 				this->character->_speMoveReady = 0;
 				this->character->_grounds.clear();

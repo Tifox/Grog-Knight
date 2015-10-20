@@ -766,10 +766,12 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
  * @sa Game::makeItRun
  */
 void	Characters::_run(void) {
-	if (this->_isRunning == 1)
-		this->_forward(2);
-	else if (this->_isRunning == 2)
-		this->_backward(2);
+	if (!this->_isBlock) {
+		if (this->_isRunning == 1)
+			this->_forward(2);
+		else if (this->_isRunning == 2)
+			this->_backward(2);
+	}
 }
 
 /****************************/
@@ -1424,6 +1426,8 @@ void						Characters::_heroDeath(void) {
 void						Characters::unsubscribeFromAll(void) {
 	std::list<std::string>::iterator	it;
 
+	this->ReceiveMessage(new Message("forwardReleased"));
+	this->ReceiveMessage(new Message("backwardReleased"));
 	for (it = this->_subsc.begin(); it != this->_subsc.end(); it++) {
 		theSwitchboard.UnsubscribeFrom(this, *it);
 	}

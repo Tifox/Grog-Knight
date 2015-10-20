@@ -86,7 +86,6 @@ class		MenuCharacter : public Characters {
 		Elements				*_choicePointer;
 		Actor				*_target;
 		Actor				*_target2;
-		int					_isBlock;
 		std::string			_character;
 		Elements			*_closet;
 		std::list<Elements *>	_backCloset;
@@ -113,5 +112,6 @@ class		MenuCharacter : public Characters {
 		Elements						*_levelsBackground;
 		Elements						*_lvlUp;
 		std::string						_textInfo;
+		int								_closetReady;
 };
 #endif

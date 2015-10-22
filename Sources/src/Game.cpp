@@ -99,6 +99,7 @@ void	Game::start(void) {
 	for (i = 0; i < 3; i++)
 		this->maps->_XYMap[0][i].destroyMap();
 	delete(Game::currentGame->maps);
+	Game::isInMenu = 0;
 	this->maps = new Maps("Maps/");
 	this->maps->readMaps();
 	Game::currentGame = this;
@@ -124,8 +125,6 @@ void	Game::start(void) {
 //	Log::info("NbEnemy:" + trouver le nombre d ennemy);
 //	Log::info("NbMaps: " + info sur la sauvegarde (nivau du hero, gold etc...));
 
-//	Game::currentX = levelGenerator->getStartX();
-//	Game::currentY = levelGenerator->getStartY();
 	theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
 						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 9.001);
 	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
@@ -163,6 +162,7 @@ void	Game::menuInGame(void) {
 	theWorld.SetBackgroundColor(*(new Color(0, 0, 0)));
 
 	theWorld.ResumePhysics();
+	Game::isInMenu = 1;
 	Game::currentIds = 0;
 	Game::elementMap.clear();
 	InGameMenu	*menu = new InGameMenu();
@@ -191,7 +191,6 @@ void	Game::menuInGame(void) {
 	}
 	this->setHero(static_cast<Characters *>(charac));
 	Game::started = 1;
-	Game::isInMenu = 1;
 }
 
 Map		Game::getCurrentMap(void) {

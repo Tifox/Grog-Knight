@@ -32,7 +32,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "image":"..\/Resources\/Images\/castle_2.png",
+         "image":"Resources\/Images\/castle_2.png",
          "imageheight":768,
          "imagewidth":288,
          "margin":0,

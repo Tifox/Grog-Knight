@@ -35,7 +35,7 @@ Maps::Maps(void) {
  * Constructor with a map directory
  * @param directory The path of the directory
  */
-Maps::Maps(std::string directory) : _directory(directory) {
+Maps::Maps(std::string directory) : _directory(directory), _startMapIsSet(0) {
 	return ;
 }
 
@@ -146,6 +146,9 @@ void	Maps::_getMap(void) {
 		this->secretMap->setXStart(0);
 		this->secretMap->setYStart(30);
 	}
+	if (this->_root["properties"].get("startMap", 0).isConvertibleTo(Json::ValueType::stringValue) && this->_root["properties"].get("startMap", 0).asString() == "true") {
+		this->startMap = map;
+	}
 	this->_maps[atoi(this->_root["properties"].get("number", 0).asString().c_str())] = map;
 	int			n = 0;
 	for (j = this->_root["properties"].begin(); j != this->_root["properties"].end(); j++) {
@@ -174,21 +177,23 @@ int		Maps::tagCurrentMap(int nb) {
 	if (nb < 12)
 		return -1;
 	int x = 0, y = 0, i = 0;
-	//tag starting room
+	////tag starting room
 	int rdm1 = (rand() % nb);
-	for (; i <= rdm1; x++) {
-		if (this->_XYMap[y][x].getName() != "") {
-			if (i == rdm1) {
-				Game::currentX = x;
-				Game::currentY = y;
-				this->_XYMap[y][x].setSpecial("starter");
-				break ;
+	if (!this->_startMapIsSet) {
+		for (; i <= rdm1; x++) {
+			if (this->_XYMap[y][x].getName() != "") {
+				if (i == rdm1) {
+					Game::currentX = x;
+					Game::currentY = y;
+					this->_XYMap[y][x].setSpecial("starter");
+					break ;
+				}
+				i++;
 			}
-			i++;
-		}
-		if (x == 15) {
-			x = 0;
-			y++;
+			if (x == 15) {
+				x = 0;
+				y++;
+			}
 		}
 	}
 	//tag boss room
@@ -245,7 +250,7 @@ int		Maps::tagCurrentMap(int nb) {
 			y++;
 		}
 	}
-		return 0;
+	return 0;
 }
 
 //! Display an entire level
@@ -271,7 +276,13 @@ int		Maps::displayLevel(std::vector<std::vector<int> > map) {
 		}
 		i = map[y][x];
 		if (i != 0) {
-			tmp = this->getMapByDoor(i);
+			if (i == 2 && !this->_startMapIsSet && Game::World == 0 && Game::isInMenu == 0) {
+				tmp = this->startMap;
+				Game::currentX = x;
+				Game::currentY = y;
+				this->_startMapIsSet = 1;
+			} else
+				tmp = this->getMapByDoor(i);
 			tmp->setXStart(rX);
 			tmp->setYStart(rY);
 			this->_XYMap[y][x] = *tmp;

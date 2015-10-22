@@ -22,7 +22,6 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":1,
  "orientation":"orthogonal",
  "properties":
     {
@@ -8018,6 +8017,10 @@
                 {
                  "physic":"0"
                 },
+             "3027":
+                {
+                 "dialog":"bathroom"
+                },
              "3041":
                 {
                  "trigger":"equipment"
@@ -8026,9 +8029,6 @@
                 {
                  "trigger":"equipment"
                 },
-			"3036": {
-					"dialog": "bathroom"
-				},
              "3103":
                 {
                  "triggerOn":"chooseCharacter"

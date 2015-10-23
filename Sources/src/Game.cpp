@@ -128,6 +128,11 @@ void	Game::start(void) {
 	theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
 						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 9.001);
 	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();
+	if (Game::World == 0) {
+		this->maps->cityMap->setXStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getXStart());
+		this->maps->cityMap->setYStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getYStart());
+		this->maps->cityMap->display();
+	}
 
 	this->displayHero(*(hero));
 	hero->init();
@@ -228,8 +233,13 @@ void	Game::showMap(void) {
  */
 void	Game::displayHero(Elements & Hero) {
 	//Here starts the game - parse the 1st map coordinates and hero start
-	Hero.setXStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid());
-	Hero.setYStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid());
+	if (Game::World) {
+		Hero.setXStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid());
+		Hero.setYStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid());
+   } else {
+		Hero.setXStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getXStart());
+		Hero.setYStart(this->maps->getMapXY()[Game::currentY][Game::currentX].getYStart() - 13);
+	}
 	Hero.addAttribute("hero", "1");
 	Hero.display();
 }

@@ -37,6 +37,7 @@ Menu::Menu(void) : _currentChoice("Start Game"), _fadeActor(nullptr), _beer(null
 	theSwitchboard.SubscribeTo(this, "moveMenu");
 	theSwitchboard.SubscribeTo(this, "PauseGame");
 	theSwitchboard.SubscribeTo(this, "bossEnd");
+	theSwitchboard.SubscribeTo(this, "startIntro");
 }
 
 //! Basic destructor
@@ -84,6 +85,8 @@ void	Menu::ReceiveMessage(Message *m) {
 
 	if (m->GetMessageName() == "PauseGame")
 		Game::currentGame->endingGame();
+	if (m->GetMessageName() == "startIntro")
+		this->introGame();
 	if (m->GetMessageName() == "enterPressed" && Game::deadWaiting) {
 		if (!Game::lvlDone) {
 			Game::currentGame->menuInGame();
@@ -677,6 +680,27 @@ int		Menu::_isUpper(std::string s) {
 			return 1;
 	}
 	return 0;
+}
+
+void	Menu::introGame(void) {
+	static		float phase = 1;
+	static		bool show = false;
+
+	if (phase > 0) {
+		Game::currentGame->maps->cityMap->destroyMap();
+		if (!show)
+			Game::currentGame->maps->cityMap->destroyMap();
+		else
+			Game::currentGame->maps->cityMap->display();
+		show = (show ? false : true);
+		theSwitchboard.DeferredBroadcast(new Message("startIntro"), phase);
+		phase -= 0.1;
+	} else {
+		Game::currentGame->maps->cityMap->destroyMap();
+		theSwitchboard.UnsubscribeFrom(this, "startIntro");
+		Game::getHUD()->dialog("start");
+		show = false;
+	}
 }
 
 std::map<std::string, std::list<t_bind *> >		Menu::getBindings(void) { return this->_bindingMenu; };

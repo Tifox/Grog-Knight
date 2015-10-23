@@ -57,6 +57,7 @@ class		Menu : public Actor {
 		void	parseBindings(void);
 		void	bindingMenu(int y = 0);
 		int		applyBindings(void);
+		void	introGame(void);
 
 		std::map<std::string, std::list<t_bind *> >		getBindings(void);
 

@@ -148,6 +148,8 @@ void	Maps::_getMap(void) {
 	}
 	if (this->_root["properties"].get("startMap", 0).isConvertibleTo(Json::ValueType::stringValue) && this->_root["properties"].get("startMap", 0).asString() == "true") {
 		this->startMap = map;
+	} else if (this->_root["properties"].get("special", 0).isConvertibleTo(Json::ValueType::stringValue) && this->_root["properties"].get("special", 0).asString() == "city") {
+		this->cityMap = map;
 	}
 	this->_maps[atoi(this->_root["properties"].get("number", 0).asString().c_str())] = map;
 	int			n = 0;

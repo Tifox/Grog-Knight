@@ -903,6 +903,8 @@ void	HUDWindow::dialog(std::string name) {
 		isCreated = 0;
 		this->_cleanDialog();
 		theSwitchboard.UnsubscribeFrom(this, "enterPressed");
+		if (name == "drink")
+			theSwitchboard.DeferredBroadcast(new Message("startIntro"), 1);
 	} else {
 		this->setText(this->_it->asString(), 400, theCamera.GetWindowHeight() - 100, Vector3(0, 0, 0), 1, "BigGamefont");
 	}
@@ -921,7 +923,7 @@ void	HUDWindow::_createDialog(void) {
 	charac->SetPosition(200, theCamera.GetWindowHeight() - 200);
 	charac->LoadSpriteFrames(Game::currentGame->getHero()->getAttribute("spritesFrame"));
 	charac->SetLayer(202);
-	charac->PlaySpriteAnimation(0.3, SAT_Loop, 18, 19);
+	charac->PlaySpriteAnimation(0.3, SAT_Loop, Game::currentGame->getHero()->_getAttr("breath", "beginFrame_right").asInt(), Game::currentGame->getHero()->_getAttr("breath", "endFrame_right").asInt());
 	theWorld.Add(charac);
 	this->_perso = charac;
 	dialog->SetSize(theCamera.GetWindowWidth() * 1.5, 200);

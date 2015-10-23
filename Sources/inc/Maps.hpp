@@ -59,6 +59,7 @@ class Maps {
 		Map*				bossMap;
 		Map*				secretMap;
 		Map					*startMap;
+		Map					*cityMap;
 		std::vector<std::vector<Map> >	getMapXY(void);
 		std::vector<std::vector<Map> > _XYMap;
 

@@ -55,6 +55,8 @@ class	HUDWindow : public HUDActor {
 			Characters		*toFollow;
 			int				isFading;
 			int				isTalk;
+			b2DistanceJoint *joint1;
+			b2DistanceJoint *joint2;
 	};
 
 		HUDWindow(void);

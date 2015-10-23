@@ -160,31 +160,26 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, Characters *toFollow,
 	if (isTalk) {
 		Elements	*test;
 		test = new Elements();
-		test->SetSize(2.5, 0.7);
+		if (Game::isInMenu)
+			test->SetSize(str.length() / 2.7, toFollow->GetSize().X / 2);
+		else
+			test->SetSize(str.length() / 4, toFollow->GetSize().X / 2);
 		test->SetPosition(toFollow->GetBody()->GetWorldCenter().x, 
-				(toFollow->GetBody()->GetWorldCenter().y + 1));
+				(toFollow->GetBody()->GetWorldCenter().y + toFollow->GetSize().Y));
 		test->SetSprite("Resources/Images/HUD/talk.png");
 		test->SetDrawShape(ADS_Square);
-		/*		test->SetFixedRotation(true);
-				test->SetLayer(1500);
-				test->SetDensity(0.001f);
-				test->SetRestitution(0);
-				test->SetFriction(0);
-				test->SetIsSensor(true);*/
-		test->InitPhysics();
-		b2DistanceJointDef jointDef1;
-		b2DistanceJointDef jointDef2;
-		jointDef1.Initialize(toFollow->GetBody(), test->GetBody(), 
-				b2Vec2(toFollow->GetBody()->GetWorldCenter().x + 0.4f, 
-					toFollow->GetBody()->GetWorldCenter().y + 0.4f), test->GetBody()->GetWorldCenter());
-		jointDef1.collideConnected = false;
-		jointDef2.Initialize(toFollow->GetBody(), test->GetBody(), 
-				b2Vec2(toFollow->GetBody()->GetWorldCenter().x - 0.4f, test->GetBody()->GetWorldCenter().y - 0.4f), test->GetBody()->GetWorldCenter());
-		jointDef2.collideConnected = false;
-		b2DistanceJoint *joint1 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef1);
-		b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
-		theWorld.Add(test);
+		test->SetFixedRotation(true);
+		test->SetLayer(1500);
+		test->SetDensity(0.001f);
+		test->SetRestitution(0);
+		test->SetFriction(0);
+		test->SetIsSensor(true);
+		test->addAttribute("isPhysic", "1");
+		t->joint1 = t->joint2 = nullptr;
+		Game::bodiesToCreate.push_back(test);
+		t->toFollow = toFollow;
 		this->_dialog[t->str] = test;
+		theSwitchboard.DeferredBroadcast(new Message("remove" + t->str), 4);
 	}
 	this->_text.push_back(t);
 	return t;
@@ -209,7 +204,19 @@ void	HUDWindow::removeText(std::string str, int last) {
 	}
 	if (i != this->_text.end()) {
 		if (this->_dialog[str]) {
-			Game::addToDestroyList(this->_dialog[str]);
+			if (theWorld.GetPhysicsWorld().IsLocked() == false) {
+				theWorld.GetPhysicsWorld().DestroyJoint((*i)->joint1);
+				theWorld.GetPhysicsWorld().DestroyJoint((*i)->joint2);
+				this->_dialog[str]->GetBody()->SetActive(false);
+				theWorld.GetPhysicsWorld().DestroyBody(this->_dialog[str]->GetBody());
+				theWorld.Remove(this->_dialog[str]);
+				this->_dialog[str]->ChangeColorTo(Color(0, 0, 0, 0), 0);
+			} else {
+				this->_dialog[str]->ChangeColorTo(Color(0, 0, 0, 0), 0);
+				Game::jointList.push_back((*i)->joint1);
+				Game::jointList.push_back((*i)->joint2);
+				Game::addToDestroyList(this->_dialog[str]);
+			}
 			this->_dialog.erase(this->_dialog.find(str));
 		}
 		this->_text.erase(i);
@@ -271,12 +278,32 @@ void	HUDWindow::displayText(void) {
 				if ((*i)->colorA < 0) {
 					this->removeText((*i)->str); return ;
 				}
-				x = ((((*i)->toFollow->GetBody()->GetWorldCenter().x + 0.5) - m.getXStart()) * 40) - 40;
-				y = -((((*i)->toFollow->GetBody()->GetWorldCenter().y + (((*i)->toFollow->GetSize().Y) / 4)) - m.getYStart()) * 40) + 50;
+				Vector2 v, pos = (*i)->toFollow->GetPosition();
+				pos.Y += (*i)->toFollow->GetSize().Y;
+				v = MathUtil::WorldToScreen(pos);
+				x = v.X - (*i)->str.length() * 2.5;
+				y = v.Y;
 				if ((*i)->isFading) {
 					DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
 					(*i)->y += 1;
 				} else if ((*i)->isTalk) {
+					if ((*i)->joint1 == nullptr && (*i)->joint2 == nullptr) {
+						theSwitchboard.SubscribeTo(this, "remove" + (*i)->str);
+						Elements *test = this->_dialog[(*i)->str];
+						b2DistanceJointDef jointDef1;
+						b2DistanceJointDef jointDef2;
+						jointDef1.Initialize((*i)->toFollow->GetBody(), test->GetBody(), 
+						b2Vec2((*i)->toFollow->GetBody()->GetWorldCenter().x + 0.4f, 
+							(*i)->toFollow->GetBody()->GetWorldCenter().y + 0.4f), test->GetBody()->GetWorldCenter());
+						jointDef1.collideConnected = false;
+						jointDef2.Initialize((*i)->toFollow->GetBody(), test->GetBody(), 
+							b2Vec2((*i)->toFollow->GetBody()->GetWorldCenter().x - 0.4f, test->GetBody()->GetWorldCenter().y - 0.4f), test->GetBody()->GetWorldCenter());
+						jointDef2.collideConnected = false;
+						b2DistanceJoint *joint1 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef1);
+						b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
+						(*i)->joint1 = joint1;
+						(*i)->joint2 = joint2;
+					}
 					DrawGameText((*i)->str, (*i)->font, x - 5, y - (*i)->y + 5, theCamera.GetRotation());
 				} else {
 					DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
@@ -880,6 +907,9 @@ void	HUDWindow::ReceiveMessage(Message *m) {
 		if (this->_isInDialog) {
 			this->dialog(this->_currentDialog);
 		}
+	} else if (m->GetMessageName().substr(0, 6) == "remove") {
+		std::string		message = m->GetMessageName().substr(6, m->GetMessageName().length() - 6);
+		this->removeText(message);
 	}
 }
 

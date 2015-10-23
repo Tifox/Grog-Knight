@@ -169,6 +169,7 @@ class Game {
 		static int						World;
 		static Boss						*boss;
 		static void						newBoss(std::string n, int x, int y);
+		static std::list<b2DistanceJoint *>	jointList;
 
 	private:
 		float				beginXHero;

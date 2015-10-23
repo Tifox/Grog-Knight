@@ -29,6 +29,7 @@ MenuCharacter::MenuCharacter(void) : Characters("MenuCharacter") {
 	this->addAttribute("type", "Hero");
 	this->addAttribute("physic", "1");
 	this->addAttribute("hero", "1");
+	this->addAttribute("name", "menuCharacter");
 	this->_currentTrigger = "";
 	this->_target = this->_target2 = nullptr;
 	this->_currentItemInfo = nullptr;
@@ -116,16 +117,18 @@ void	MenuCharacter::trigger(std::string name, int status) {
 			this->_closeCloset();
 		}
 	} else if (name == "startGame") {
-		this->unsubscribeFromAll();
-		theSwitchboard.UnsubscribeFrom(this, "enterPressed");
-		theSwitchboard.UnsubscribeFrom(this, "chooseEquipment");
-		theSwitchboard.UnsubscribeFrom(this, "returnPressed");
-		if (this->_image != nullptr)
-			theWorld.Remove(this->_image);
-		Game::getHUD()->removeText("Press enter to choose your skills");
-		Game::isInMenu = 0;
-		Game::menuCharacter = this;
-		Game::asToStart = 1;
+		if (this->canStart()) {
+			this->unsubscribeFromAll();
+			theSwitchboard.UnsubscribeFrom(this, "enterPressed");
+			theSwitchboard.UnsubscribeFrom(this, "chooseEquipment");
+			theSwitchboard.UnsubscribeFrom(this, "returnPressed");
+			if (this->_image != nullptr)
+				theWorld.Remove(this->_image);
+			Game::getHUD()->removeText("Press enter to choose your skills");
+			Game::isInMenu = 0;
+			Game::menuCharacter = this;
+			Game::asToStart = 1;
+		}
 	} else if (name == "skills") {
 		if (status == 1)
 			this->_showTextInfo("Press enter to choose your skills");
@@ -896,6 +899,17 @@ void		MenuCharacter::_getSkills(void) {
 	for (it = jsonTmp.begin(); it != jsonTmp.end(); it++)
 		this->_skills[it.key().asString()] = (*it);
 	reader.parse(treeFile, this->_skillTree, false);
+}
+
+bool		MenuCharacter::canStart(void) {
+	if (this->_equipSelection["Weapon"] && this->_equipSelection["ring"] && this->_equipSelection["Armor"] && 
+			this->_finalSkillChoices[0] != "" && this->_finalSkillChoices[1] != "")
+		return true;
+	if (!this->_equipSelection["Weapon"] || !this->_equipSelection["ring"] || this->_equipSelection["Armor"])
+		Game::getHUD()->setText("I cannot go yet, i miss some equipments !", this, Vector3(0, 0, 0), 0, 1);
+	else
+		Game::getHUD()->setText("I cannot go yet, i miss some spells !", this, Vector3(0, 0, 0), 0, 1);
+	return false;
 }
 
 std::string		MenuCharacter::getHeroType(void) { return this->_character; };

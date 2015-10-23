@@ -56,6 +56,7 @@ class		MenuCharacter : public Characters {
 		Armor			*getArmor(void);
 		std::vector<std::string>	getSkills(void);
 		int							getLevel(void);
+		bool						canStart(void);
 
 	protected:
 		virtual void	_forward(int status);

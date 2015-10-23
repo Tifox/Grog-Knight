@@ -479,6 +479,8 @@ bool	Game::destroyAllBodies(std::string msg) {
 		}
 		return true;
 	} else {
+		for (std::list<b2DistanceJoint *>::iterator it = Game::jointList.begin(); it != Game::jointList.end(); it++)
+			theWorld.GetPhysicsWorld().DestroyJoint(*it);
 		for (std::list<Elements*>::iterator it = Game::bodiesToDestroy.begin(); it != Game::bodiesToDestroy.end(); it++) {
 			if ((*it)->getAttribute("physic") != "") {
 				if ((*it)->GetBody()) {
@@ -490,6 +492,7 @@ bool	Game::destroyAllBodies(std::string msg) {
 			Game::delElement(*it);
 		}
 		Game::bodiesToDestroy.clear();
+		Game::jointList.clear();
 		for (std::list<Elements*>::iterator it = Game::bodiesToCreate.begin(); it != Game::bodiesToCreate.end(); it++) {
 		  (*it)->InitPhysics();
 		  theWorld.Add((*it));
@@ -617,7 +620,7 @@ void		Game::displayHUD(void) {
 	w->gold(hero->getGold());
 	w->spells();
 	// Work
-   //w->setText("Burp.", this->_hero, Vector3(0, 0, 0), 0, 1);
+   w->setText("Burp.", this->_hero, Vector3(0, 0, 0), 0, 1);
 	/*w->removeText("Burp.");*/
 }
 
@@ -659,6 +662,7 @@ std::list<Elements *>		Game::runningCharac;
 std::list<Elements *>		Game::bodiesToDestroy;
 std::list<Elements *>		Game::bodiesToCreate;
 std::list<HUDWindow *>		Game::windows;
+std::list<b2DistanceJoint *>	Game::jointList;
 ArmorList*					Game::aList;
 WeaponList*					Game::wList;
 RingList*					Game::rList;

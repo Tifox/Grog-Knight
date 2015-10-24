@@ -133,7 +133,7 @@ std::list<Weapon *>		WeaponList::get3Starters(int level, std::string hero) {
 	for (it = this->_allWeapons.begin(); it != this->_allWeapons.end(); it++) {
 		if ((*it)->getStarterLevel() == level && (*it)->getEquipable() == hero) {
 			list.push_back((*it));
-			if (list.size() > 3)
+			if (list.size() == 3)
 				break ;
 		}
 	}

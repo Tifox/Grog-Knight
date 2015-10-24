@@ -123,7 +123,7 @@ void		Boss::BeginContact(Elements *elem, b2Contact *contact) {
 		return ;
 	if (type == "HeroWeaponHitBox") {
 		damage = w->getDamage(); crit = w->getCritRate();
-	} else if (type == "HeroProjectile") {
+	} else if (type == "HeroProjectile" || elem->getAttribute("spe") == "throwWeapon") {
 		damage = p->getDamage(); crit = p->getCritRate();
 	} else if (type == "Shockwave") {
 		damage = p->getDamage(); crit = 0;

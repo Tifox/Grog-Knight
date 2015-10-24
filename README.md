@@ -4,6 +4,10 @@
 [![License](https://img.shields.io/badge/license-BSD-blue.svg)](LICENSE)
 [![Join the chat at https://gitter.im/Ne02ptzero/Grog-Like](https://img.shields.io/badge/chat-gitter-red.svg)](https://gitter.im/Ne02ptzero/Grog-Like?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+![Preview](http://i.imgur.com/pxoln1y.png)
+![Preview](http://i.imgur.com/krCtJAD.png)
+![Preview](http://i.imgur.com/AbRAfmi.png)
+
 ### First draft on open project thoughts and timeline
 
 Our goal is to create a video game based on the quite popular genre hybrid Rogue-Like. It is a very broad type of game, but the main idea behind it is always the same. A playthrough that isn’t too long (can be finished in an hour or so) but a huge replayability. Each time you run through the game, you’ll encounter different enemies, bosses, objects, map layout, and finishing a playthrough is rewarding in itself for the player as it unlocks new objects/enemies/levels in order to alter the gameplay for the next run. The death is permanent, and once your character dies, you have to restart from the beginning.
@@ -21,15 +25,36 @@ On the topic of our game, we are looking to create a 2D scrolling game with proc
 git clone --recursive http://github.com/Ne02ptzero/Grog-Knight
 ```
 
+**Compilation & Installation**:
+
+Linux:
+```
+make
+sudo make install
+```
+
+OSX:
+```
+make -C MACOSX
+```
+
 
 ## About:
 This project use [Angel2d](https://github.com/angel2d/angel2d), [Documentation](http://docs.angel2d.com/)
 
 ### Authors:
 
-*Vincent Rey* (N0ich) <vin100.rey@gmail.com>
+**Vincent Rey**-N0ich <vin100.rey@gmail.com>
 
-*Louis Solofrizzo* (Ne02ptzero) <louis@ne02ptzero.me>
+**Louis Solofrizzo**-Ne02ptzero <louis@ne02ptzero.me>
+
+**Manon Budin**-Fakoc
+
+**Valentin Diridollou**-Valouche
+
+**Lois Pearron**-lenscorwin
+
+**Ryad Kharif**-Fusiow
 
 ### Contributing
 [Rules Here :)](Contributing.md)

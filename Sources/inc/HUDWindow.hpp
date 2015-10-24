@@ -55,6 +55,8 @@ class	HUDWindow : public HUDActor {
 			Characters		*toFollow;
 			int				isFading;
 			int				isTalk;
+			b2DistanceJoint *joint1;
+			b2DistanceJoint *joint2;
 	};
 
 		HUDWindow(void);
@@ -62,7 +64,7 @@ class	HUDWindow : public HUDActor {
 
 		void	ReceiveMessage(Message *m);
 		HUDWindow::Text	*setText(std::string str, int x, int y);
-		HUDWindow::Text	*setText(std::string str, int x, int y, Vector3 color, int alpha);
+		HUDWindow::Text	*setText(std::string str, int x, int y, Vector3 color, float alpha);
 		HUDWindow::Text	*setText(std::string str, int x, int y, Vector3 color, int alpha, std::string font);
 		HUDWindow::Text	*setText(std::string str, Characters *toFollow, Vector3 color, int isFading, int isTalk, int isInMenu = 0);
 		void	updateText(std::string org, std::string newStr);
@@ -99,6 +101,7 @@ class	HUDWindow : public HUDActor {
 		void	speAttCooldown(int time);
 		void	speMoveCooldown(int time);
 		void	spellText(void);
+		void	dialog(std::string name);
 
 		HUDActor	*getAttCooldown(void);
 		HUDActor	*getMoveCooldown(void);
@@ -124,6 +127,17 @@ class	HUDWindow : public HUDActor {
 		int						_cooldownMove;
 		void					_drawDoor(Vector2 size, Vector2 position);
 		int						_doNotDelete;
+		Json::Value				_dialogs;
+		Json::ValueIterator		_it;
+		HUDActor				*_fade;
+		HUDActor				*_perso;
+		HUDActor				*_backDialog;
+		std::string				_currentDialog;
+		int						_isInDialog;
+		std::list<std::string>	_dialogPassed;
+		
+		void					_createDialog(void);
+		void					_cleanDialog(void);
 };
 
 #endif

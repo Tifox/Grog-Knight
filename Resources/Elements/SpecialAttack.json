@@ -28,6 +28,21 @@
 		"description": "Fall with force on the ground,\nMake a shockwave around you",
 		"displayName": "Shockwave"
 	},
+	"throwWeapon": {
+		"subscribe": "specialattack",
+		"usable": "warrior",
+		"cooldown": 15,
+		"damage": 25,
+		"beginFrame_right": 99,
+		"endFrame_right": 101,
+		"beginFrame_left": 105,
+		"endFrame_left": 107,
+		"time": 0.1,
+		"x":2,
+		"y":2,
+		"description": "throw your weapon",
+		"displayName": "throwWeapon"
+	},
 	"rapidFire": {
 		"subscribe": "specialattack",
 		"usable": "archer",

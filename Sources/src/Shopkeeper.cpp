@@ -66,7 +66,7 @@ void	Shopkeeper::spawn(void) {
 	this->_shop->revealShop(Game::currentGame->getCurrentMap().getXMid() - 1, Game::currentGame->getCurrentMap().getYMid() + 3);
 	this->_currentPhrase = "Greetings, traveler.";
 	theSwitchboard.DeferredBroadcast(new Message("removeShopkeeperText"), 3);
-	Game::getHUD()->setText(this->_currentPhrase, this, Vector3(255, 51, 255), 0, 0);
+	Game::getHUD()->setText(this->_currentPhrase, this, Vector3(0, 0, 0), 0, 1);
 }
 
 
@@ -102,7 +102,7 @@ void	Shopkeeper::displayText(std::string say) {
 	HUDWindow* hud = Game::getHUD();
 		hud->removeText(this->_currentPhrase);
 		this->_currentPhrase = say;
-		hud->setText(this->_currentPhrase, this, Vector3(255, 51, 255), 0, 0);
+		hud->setText(this->_currentPhrase, this, Vector3(0, 0, 0), 0, 1);
 }
 
 void	Shopkeeper::removeText(void) {

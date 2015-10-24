@@ -30,6 +30,11 @@
  * Basic constructor
  */
 HUDWindow::HUDWindow(void) : HUDActor(), _cooldownAtt(0), _cooldownMove(0) {
+	std::string			file;
+	std::stringstream 	buffer;
+	std::ifstream		fd;
+	Json::Reader		read;
+
 	RegisterFont("Resources/font.ttf", 14, "Gamefont");
 	RegisterFont("Resources/font.ttf", 20, "BigGamefont");
 	RegisterFont("Resources/font.ttf", 10, "MediumGamefont");
@@ -39,6 +44,10 @@ HUDWindow::HUDWindow(void) : HUDActor(), _cooldownAtt(0), _cooldownMove(0) {
 	theSwitchboard.SubscribeTo(this, "speAttCooldownEnd");
 	theSwitchboard.SubscribeTo(this, "speMoveCooldownEnd");
 	this->_hearts.clear();
+	fd.open("Resources/Dialogs/dialogs.json");
+	buffer << fd.rdbuf();
+	read.parse(buffer.str(), this->_dialogs);
+	this->_text.clear();
 	return;
 }
 
@@ -79,7 +88,7 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y) {
  * @param color The color of the text (See Angel2d's Vector3 for more info)
  * @param alpha The transparency.
  */
-HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 color, int alpha) {
+HUDWindow::Text		*HUDWindow::setText(std::string str, int x, int y, Vector3 color, float alpha) {
 	HUDWindow::Text		*t = new HUDWindow::Text();
 	t->str = str;
 	t->x = x;
@@ -136,7 +145,10 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, Characters *toFollow,
 	HUDWindow::Text		*t = new HUDWindow::Text();
 
 	t->str = str;
-	t->toFollow = toFollow;
+	if (t->toFollow)
+		t->toFollow = toFollow;
+	else
+		t->toFollow = nullptr;
 	t->colorR = color.X;
 	t->colorG = color.Y;
 	t->colorB = color.Z;
@@ -148,31 +160,26 @@ HUDWindow::Text		*HUDWindow::setText(std::string str, Characters *toFollow,
 	if (isTalk) {
 		Elements	*test;
 		test = new Elements();
-		test->SetSize(2.5, 0.7);
+		if (Game::isInMenu)
+			test->SetSize(str.length() / 2.7, toFollow->GetSize().X / 2);
+		else
+			test->SetSize(str.length() / 4, toFollow->GetSize().X / 2);
 		test->SetPosition(toFollow->GetBody()->GetWorldCenter().x, 
-				(toFollow->GetBody()->GetWorldCenter().y + 1));
+				(toFollow->GetBody()->GetWorldCenter().y + toFollow->GetSize().Y));
 		test->SetSprite("Resources/Images/HUD/talk.png");
 		test->SetDrawShape(ADS_Square);
-		/*		test->SetFixedRotation(true);
-				test->SetLayer(1500);
-				test->SetDensity(0.001f);
-				test->SetRestitution(0);
-				test->SetFriction(0);
-				test->SetIsSensor(true);*/
-		test->InitPhysics();
-		b2DistanceJointDef jointDef1;
-		b2DistanceJointDef jointDef2;
-		jointDef1.Initialize(toFollow->GetBody(), test->GetBody(), 
-				b2Vec2(toFollow->GetBody()->GetWorldCenter().x + 0.4f, 
-					toFollow->GetBody()->GetWorldCenter().y + 0.4f), test->GetBody()->GetWorldCenter());
-		jointDef1.collideConnected = false;
-		jointDef2.Initialize(toFollow->GetBody(), test->GetBody(), 
-				b2Vec2(toFollow->GetBody()->GetWorldCenter().x - 0.4f, test->GetBody()->GetWorldCenter().y - 0.4f), test->GetBody()->GetWorldCenter());
-		jointDef2.collideConnected = false;
-		b2DistanceJoint *joint1 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef1);
-		b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
-		theWorld.Add(test);
+		test->SetFixedRotation(true);
+		test->SetLayer(1500);
+		test->SetDensity(0.001f);
+		test->SetRestitution(0);
+		test->SetFriction(0);
+		test->SetIsSensor(true);
+		test->addAttribute("isPhysic", "1");
+		t->joint1 = t->joint2 = nullptr;
+		Game::bodiesToCreate.push_back(test);
+		t->toFollow = toFollow;
 		this->_dialog[t->str] = test;
+		theSwitchboard.DeferredBroadcast(new Message("remove" + t->str), 4);
 	}
 	this->_text.push_back(t);
 	return t;
@@ -197,7 +204,19 @@ void	HUDWindow::removeText(std::string str, int last) {
 	}
 	if (i != this->_text.end()) {
 		if (this->_dialog[str]) {
-			Game::addToDestroyList(this->_dialog[str]);
+			if (theWorld.GetPhysicsWorld().IsLocked() == false) {
+				theWorld.GetPhysicsWorld().DestroyJoint((*i)->joint1);
+				theWorld.GetPhysicsWorld().DestroyJoint((*i)->joint2);
+				this->_dialog[str]->GetBody()->SetActive(false);
+				theWorld.GetPhysicsWorld().DestroyBody(this->_dialog[str]->GetBody());
+				theWorld.Remove(this->_dialog[str]);
+				this->_dialog[str]->ChangeColorTo(Color(0, 0, 0, 0), 0);
+			} else {
+				this->_dialog[str]->ChangeColorTo(Color(0, 0, 0, 0), 0);
+				Game::jointList.push_back((*i)->joint1);
+				Game::jointList.push_back((*i)->joint2);
+				Game::addToDestroyList(this->_dialog[str]);
+			}
 			this->_dialog.erase(this->_dialog.find(str));
 		}
 		this->_text.erase(i);
@@ -243,32 +262,53 @@ void	HUDWindow::displayText(void) {
 	std::list<HUDWindow::Text *>::iterator	i;
 
 	for (i = this->_text.begin(); i != this->_text.end(); i++) {
-		if (*i) {
-			glColor4f((*i)->colorR, (*i)->colorG, (*i)->colorB, (*i)->colorA);
-			if ((*i)->toFollow == nullptr && (*i)->isFading == 1)
-				(*i)->colorA -= 0.02f;
-			if ((*i)->toFollow == nullptr)
-				DrawGameText((*i)->str, (*i)->font, (*i)->x, (*i)->y, theCamera.GetRotation());
-			else {
-				int		x, y, mult = 6;
-				Map		m = Game::currentGame->getCurrentMap();
+		glColor4f((*i)->colorR, (*i)->colorG, (*i)->colorB, (*i)->colorA);
+		if ((*i)->isFading)
+			(*i)->colorA -= 0.02f;
+		if ((*i)->colorA < 0) {
+			this->removeText((*i)->str); return ;
+		}
+		if ((*i)->toFollow == nullptr)
+			DrawGameText((*i)->str, (*i)->font, (*i)->x, (*i)->y, theCamera.GetRotation());
+		else {
+			int		x, y, mult = 6;
+			Map		m = Game::currentGame->getCurrentMap();
 
-				if ((*i)->toFollow->GetBody()) {
-					x = ((((*i)->toFollow->GetBody()->GetWorldCenter().x + 0.5) - m.getXStart()) * 40) - 40;
-					y = -((((*i)->toFollow->GetBody()->GetWorldCenter().y + (((*i)->toFollow->GetSize().Y) / 4)) - m.getYStart()) * 40) + 50;
-					if ((*i)->isFading) {
-						DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
-						(*i)->y += 1;
-						(*i)->colorA -= 0.02f;
-					} else if ((*i)->isTalk) {
-						DrawGameText((*i)->str, (*i)->font, x - 5, y - (*i)->y + 5, theCamera.GetRotation());
-					} else {
-						DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
-					}
+			if ((*i)->toFollow->GetBody()) {
+				if ((*i)->colorA < 0) {
+					this->removeText((*i)->str); return ;
 				}
-			}
-			if ((*i)->colorA < 0)
-				this->removeText((*i)->str);
+				Vector2 v, pos = (*i)->toFollow->GetPosition();
+				pos.Y += (*i)->toFollow->GetSize().Y;
+				v = MathUtil::WorldToScreen(pos);
+				x = v.X - (*i)->str.length() * 2.5;
+				y = v.Y;
+				if ((*i)->isFading) {
+					DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
+					(*i)->y += 1;
+				} else if ((*i)->isTalk) {
+					if ((*i)->joint1 == nullptr && (*i)->joint2 == nullptr) {
+						theSwitchboard.SubscribeTo(this, "remove" + (*i)->str);
+						Elements *test = this->_dialog[(*i)->str];
+						b2DistanceJointDef jointDef1;
+						b2DistanceJointDef jointDef2;
+						jointDef1.Initialize((*i)->toFollow->GetBody(), test->GetBody(), 
+						b2Vec2((*i)->toFollow->GetBody()->GetWorldCenter().x + 0.4f, 
+							(*i)->toFollow->GetBody()->GetWorldCenter().y + 0.4f), test->GetBody()->GetWorldCenter());
+						jointDef1.collideConnected = false;
+						jointDef2.Initialize((*i)->toFollow->GetBody(), test->GetBody(), 
+							b2Vec2((*i)->toFollow->GetBody()->GetWorldCenter().x - 0.4f, test->GetBody()->GetWorldCenter().y - 0.4f), test->GetBody()->GetWorldCenter());
+						jointDef2.collideConnected = false;
+						b2DistanceJoint *joint1 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef1);
+						b2DistanceJoint *joint2 = (b2DistanceJoint*)theWorld.GetPhysicsWorld().CreateJoint(&jointDef2);
+						(*i)->joint1 = joint1;
+						(*i)->joint2 = joint2;
+					}
+					DrawGameText((*i)->str, (*i)->font, x - 5, y - (*i)->y + 5, theCamera.GetRotation());
+				} else {
+					DrawGameText((*i)->str, (*i)->font, x, y - (*i)->y, theCamera.GetRotation());
+				}
+			} 
 		}
 	}
 }
@@ -783,7 +823,8 @@ void	HUDWindow::spells(void) {
 	this->setText("T", (theCamera.GetWindowWidth() / 20) * 7.28, theCamera.GetWindowHeight() / 20 * 1.5, Vector3(0.2, 0.12, 0), 1, "MediumGamefont");
 	this->addImage("Resources/HUD/spell_bg.png", (theCamera.GetWindowWidth() / 20) * 7 + 3, theCamera.GetWindowHeight() / 20 * 2.1, 
 			Vector2(theCamera.GetWindowWidth() / 25), 15);
-	this->addImage("Resources/Images/Skills/" + Game::currentGame->getHero()->getSpeAtt() + ".png", (theCamera.GetWindowWidth() / 20) * 7 + 1, theCamera.GetWindowHeight() / 20 * 1.9, 
+	if (Game::currentGame->getHero()->getSpeAtt() != "")
+		this->addImage("Resources/Images/Skills/" + Game::currentGame->getHero()->getSpeAtt() + ".png", (theCamera.GetWindowWidth() / 20) * 7 + 1, theCamera.GetWindowHeight() / 20 * 1.9, 
 			Vector2(theCamera.GetWindowWidth() / 35), 15);
 	this->setText("Y", (theCamera.GetWindowWidth() / 20) * 7.28, theCamera.GetWindowHeight() / 20 * 2.57, Vector3(0.2, 0.12, 0), 1, "MediumGamefont");
 }
@@ -863,7 +904,74 @@ void	HUDWindow::ReceiveMessage(Message *m) {
 				theSwitchboard.UnsubscribeFrom(this, "second");
 			}
 		}
+	} else if (m->GetMessageName() == "enterPressed") {
+		if (this->_isInDialog) {
+			this->dialog(this->_currentDialog);
+		}
+	} else if (m->GetMessageName().substr(0, 6) == "remove") {
+		std::string		message = m->GetMessageName().substr(6, m->GetMessageName().length() - 6);
+		this->removeText(message);
 	}
+}
+
+void	HUDWindow::dialog(std::string name) {
+	static		int		isCreated = 0;
+	if (isCreated == 0) {
+		if (std::find(this->_dialogPassed.begin(), this->_dialogPassed.end(), name) != this->_dialogPassed.end())
+			return ;
+		this->_createDialog();
+		isCreated = 1;
+		this->_isInDialog = 1;
+		this->_currentDialog = name;
+		theSwitchboard.SubscribeTo(this, "enterPressed");
+		this->_it = this->_dialogs[name].begin();
+		this->_dialogPassed.push_back(name);
+	} else {
+		this->removeText(this->_it->asString());
+		this->_it++;
+	}
+	if (this->_it == this->_dialogs[name].end()) {
+		isCreated = 0;
+		this->_cleanDialog();
+		theSwitchboard.UnsubscribeFrom(this, "enterPressed");
+		if (name == "drink")
+			theSwitchboard.DeferredBroadcast(new Message("startIntro"), 1);
+	} else {
+		this->setText(this->_it->asString(), 400, theCamera.GetWindowHeight() - 100, Vector3(0, 0, 0), 1, "BigGamefont");
+	}
+}
+
+void	HUDWindow::_createDialog(void) {
+	Game::currentGame->getHero()->unsubscribeFromAll();
+	HUDActor	*fade = new HUDActor(), *charac = new HUDActor(), *dialog = new HUDActor();
+	fade->SetSize(theCamera.GetWindowWidth(), theCamera.GetWindowHeight());
+	fade->SetPosition(theCamera.GetWindowWidth() / 2, theCamera.GetWindowHeight() / 2);
+	fade->SetColor(0, 0, 0, 0.3);
+	fade->SetLayer(200);
+	theWorld.Add(fade);
+	this->_fade = fade;
+	charac->SetSize(400);
+	charac->SetPosition(200, theCamera.GetWindowHeight() - 200);
+	charac->LoadSpriteFrames(Game::currentGame->getHero()->getAttribute("spritesFrame"));
+	charac->SetLayer(202);
+	charac->PlaySpriteAnimation(0.3, SAT_Loop, Game::currentGame->getHero()->_getAttr("breath", "beginFrame_right").asInt(), Game::currentGame->getHero()->_getAttr("breath", "endFrame_right").asInt());
+	theWorld.Add(charac);
+	this->_perso = charac;
+	dialog->SetSize(theCamera.GetWindowWidth() * 1.5, 200);
+	dialog->SetPosition(100, theCamera.GetWindowHeight() - 100);
+	dialog->SetSprite("Resources/Images/big_dialog.png");
+	dialog->SetLayer(201);
+	theWorld.Add(dialog);
+	this->_backDialog = dialog;
+	this->setText("Press <Enter>", theCamera.GetWindowWidth() / 2 + 50, theCamera.GetWindowHeight() - 20, Vector3(0, 0, 0), 0.3f);
+}
+
+void	HUDWindow::_cleanDialog(void) {
+	Game::currentGame->getHero()->subscribeToAll();
+	theWorld.Remove(this->_fade);
+	theWorld.Remove(this->_perso);
+	theWorld.Remove(this->_backDialog);
+	this->removeText("Press <Enter>");
 }
 
 void	HUDWindow::setGame(Game *g) { this->_g = g; };

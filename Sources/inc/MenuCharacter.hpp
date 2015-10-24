@@ -56,6 +56,7 @@ class		MenuCharacter : public Characters {
 		Armor			*getArmor(void);
 		std::vector<std::string>	getSkills(void);
 		int							getLevel(void);
+		bool						canStart(void);
 
 	protected:
 		virtual void	_forward(int status);
@@ -86,7 +87,6 @@ class		MenuCharacter : public Characters {
 		Elements				*_choicePointer;
 		Actor				*_target;
 		Actor				*_target2;
-		int					_isBlock;
 		std::string			_character;
 		Elements			*_closet;
 		std::list<Elements *>	_backCloset;
@@ -112,5 +112,7 @@ class		MenuCharacter : public Characters {
 		std::list<std::string>			_description;
 		Elements						*_levelsBackground;
 		Elements						*_lvlUp;
+		std::string						_textInfo;
+		int								_closetReady;
 };
 #endif

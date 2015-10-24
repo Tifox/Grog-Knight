@@ -80,6 +80,7 @@ Characters::Characters(std::string name) : _name(name), _isRunning(0), _isJump(0
 	this->_speMoveReady = 1;
 	this->_speAttReady = 1;
 	this->_hasDashed = 0;
+	this->_isBlock = 0;
 	this->SetLayer(100);
 	this->_flyTrigger = false;
 	this->_isDisengaging = false;
@@ -601,6 +602,8 @@ void	Characters::BeginContact(Elements *elem, b2Contact *contact) {
 	}
 	if (elem->getAttribute("trigger") != "") {
 		this->_callTrigger(elem->getAttribute("trigger"), 1);
+	} if (elem->getAttribute("dialog") != "") {
+		Game::getHUD()->dialog(elem->getAttribute("dialog"));
 	} if (elem->getAttribute("triggerOn") != "") {
 		this->trigger(elem->getAttribute("triggerOn"), 1);
 	} if (elem->getAttribute("triggerOff") != "") {
@@ -764,10 +767,12 @@ void	Characters::EndContact(Elements *elem, b2Contact *contact) {
  * @sa Game::makeItRun
  */
 void	Characters::_run(void) {
-	if (this->_isRunning == 1)
-		this->_forward(2);
-	else if (this->_isRunning == 2)
-		this->_backward(2);
+	if (!this->_isBlock) {
+		if (this->_isRunning == 1)
+			this->_forward(2);
+		else if (this->_isRunning == 2)
+			this->_backward(2);
+	}
 }
 
 /****************************/
@@ -1200,7 +1205,7 @@ void	Characters::_pickupItem(int status) {
 
 void	Characters::_specialMove(int status) {
 	if (status == 1 && this->_speMoveReady) {
-		if (this->_speMove == "totem" && this->_totemDeletionSent == 0 && this->_totem != nullptr)
+	  if (this->_speMove == "totem" && this->_totemDeletionSent == 0 && this->_totem != nullptr)
 			this->_totemDeletionSent = 1;
 			theSwitchboard.SubscribeTo(this, "removeTotem");
 			theSwitchboard.DeferredBroadcast(new Message("removeTotem"), 3);
@@ -1240,6 +1245,8 @@ void	Characters::_specialAttack(int status) {
 			this->_eqAtt->_shockwave();
 		if (this->_speAtt == "rapidFire")
 			this->_eqAtt->_rapidFire();
+		else if (this->_speAtt == "throwWeapon")
+		  this->_eqAtt->_throwWeapon();
 	}
 }
 
@@ -1421,6 +1428,8 @@ void						Characters::_heroDeath(void) {
 void						Characters::unsubscribeFromAll(void) {
 	std::list<std::string>::iterator	it;
 
+	this->ReceiveMessage(new Message("forwardReleased"));
+	this->ReceiveMessage(new Message("backwardReleased"));
 	for (it = this->_subsc.begin(); it != this->_subsc.end(); it++) {
 		theSwitchboard.UnsubscribeFrom(this, *it);
 	}

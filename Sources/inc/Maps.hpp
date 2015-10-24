@@ -58,6 +58,8 @@ class Maps {
 		int		displayLevel(std::vector<std::vector<int> > map);
 		Map*				bossMap;
 		Map*				secretMap;
+		Map					*startMap;
+		Map					*cityMap;
 		std::vector<std::vector<Map> >	getMapXY(void);
 		std::vector<std::vector<Map> > _XYMap;
 
@@ -67,6 +69,7 @@ class Maps {
 		std::string			_directory;
 		Json::Value			_root;
 		Json::Reader		_reader;
+		int					_startMapIsSet;
 		std::map<int, std::list<Map *> >	_mapByDoor;
 };
 

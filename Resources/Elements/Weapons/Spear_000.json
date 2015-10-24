@@ -9,7 +9,7 @@
 		"hitbox": "SWORD",
 		"size": 1,
 	 	"critRate": 5,
-		"damage": 5,
+		"damage": 1,
 		"recovery": 1,
 		"pushback": 5,
 		"active": 0.2,

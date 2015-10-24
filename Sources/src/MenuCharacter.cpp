@@ -29,18 +29,20 @@ MenuCharacter::MenuCharacter(void) : Characters("MenuCharacter") {
 	this->addAttribute("type", "Hero");
 	this->addAttribute("physic", "1");
 	this->addAttribute("hero", "1");
+	this->addAttribute("name", "menuCharacter");
 	this->_currentTrigger = "";
 	this->_target = this->_target2 = nullptr;
 	this->_currentItemInfo = nullptr;
+	this->_image = nullptr;
 	this->_isBlock = 0;
 	this->_chooseEquipment = 0;
-	this->_character = "Archer";
+	this->_character = "Warrior";
 	this->_characLvl = Quit::level;
 	this->_descriptionBackground = this->_iconBackground = this->_icon = nullptr;
 	this->_levelsBackground = this->_lvlUp = nullptr;
 	// THIS IS TMP; DO NOT JUDGE ME
 	Elements		*tmp;
-	tmp = new Elements(); tmp->addAttribute("Name", "Bow_000"); this->_equipSelection["Weapon"] = tmp;
+	tmp = new Elements(); tmp->addAttribute("Name", "Spear_000"); this->_equipSelection["Weapon"] = tmp;
 	tmp = new Elements(); tmp->addAttribute("Name", "Ring_000"); this->_equipSelection["ring"] = tmp;
 	tmp = new Elements(); tmp->addAttribute("Name", "Armor_000"); this->_equipSelection["Armor"] = tmp;
 	// END OF NASTY CODE. Well, actually no. But u know what i mean
@@ -52,7 +54,7 @@ MenuCharacter::MenuCharacter(void) : Characters("MenuCharacter") {
 	this->_finalSkillTargets = std::vector<Elements *>(4);
 	this->_skillsChoices = std::vector<std::list<Elements *> >(4);
 	this->_skillsLvl[0] = 5; this->_skillsLvl[1] = 15; this->_skillsLvl[2] = 25; this->_skillsLvl[3] = 50;
-	this->_finalSkillChoices[0] = "blink"; this->_finalSkillChoices[1] = "rapidFire";
+	this->_finalSkillChoices[0] = "charge"; //this->_finalSkillChoices[1] = "whirlwind";
 	this->_getSkills();
 	this->_kitchen();
 }
@@ -77,6 +79,8 @@ void	MenuCharacter::BeginContact(Elements *elem, b2Contact *contact) {
 			this->_callTrigger(elem->getAttribute("trigger"), 0);
 		else
 			this->_callTrigger(elem->getAttribute("trigger"), 1);
+	} if (elem->getAttribute("dialog") != "") {
+		Game::getHUD()->dialog(elem->getAttribute("dialog"));
 	} if (elem->getAttribute("triggerOn") != "") {
 		this->trigger(elem->getAttribute("triggerOn"), 1);
 	} if (elem->getAttribute("triggerOff") != "") {
@@ -95,7 +99,7 @@ void	MenuCharacter::trigger(std::string name, int status) {
 	else
 		this->_currentTrigger = "";
 	if (name == "chooseCharacter") {
-		if (status == 1) {
+	   if (status == 1) {
 			this->_showTextInfo("Press enter to choose a new character");
 		} else {
 			Game::getHUD()->removeText("Press enter to choose a new character");
@@ -113,14 +117,18 @@ void	MenuCharacter::trigger(std::string name, int status) {
 			this->_closeCloset();
 		}
 	} else if (name == "startGame") {
-		this->unsubscribeFromAll();
-		theSwitchboard.UnsubscribeFrom(this, "enterPressed");
-		theSwitchboard.UnsubscribeFrom(this, "chooseEquipment");
-		theSwitchboard.UnsubscribeFrom(this, "returnPressed");
-
-		Game::isInMenu = 0;
-		Game::menuCharacter = this;
-		Game::asToStart = 1;
+		if (this->canStart()) {
+			this->unsubscribeFromAll();
+			theSwitchboard.UnsubscribeFrom(this, "enterPressed");
+			theSwitchboard.UnsubscribeFrom(this, "chooseEquipment");
+			theSwitchboard.UnsubscribeFrom(this, "returnPressed");
+			if (this->_image != nullptr)
+				theWorld.Remove(this->_image);
+			Game::getHUD()->removeText("Press enter to choose your skills");
+			Game::isInMenu = 0;
+			Game::menuCharacter = this;
+			Game::asToStart = 1;
+		}
 	} else if (name == "skills") {
 		if (status == 1)
 			this->_showTextInfo("Press enter to choose your skills");
@@ -140,11 +148,12 @@ void	MenuCharacter::ReceiveMessage(Message *m) {
 			if (this->_isBlock) {
 				this->ClearSpriteInfo();
 				this->LoadSpriteFrames("Resources/Images/Menu/"+ this->_choicePointer->getAttribute("type") +"/perso_000.png");
+				this->addAttribute("spritesFrame", "Resources/Images/Menu/"+ this->_choicePointer->getAttribute("type") +"/perso_000.png");
 				if (this->_character != this->_choicePointer->getAttribute("type")) {
 					this->_character = this->_choicePointer->getAttribute("type");
 					this->_hideKitchen(1);
 					this->_kitchen();
-					Game::getHUD()->removeText("Press enter to choose your skills");
+					Game::getHUD()->removeText(this->_textInfo);
 				}
 				theCamera.MoveTo(Vector3(Game::currentGame->getCurrentMap().getXMid(),
 							Game::currentGame->getCurrentMap().getYMid() + 1.8, 18.002), 1, true);
@@ -178,23 +187,28 @@ void	MenuCharacter::ReceiveMessage(Message *m) {
 				this->_choices.push_back(elem);
 				theCamera.MoveTo(Vector3(34, -23, 5), 1, true);
 				this->_makeItChoice();
+				this->_forward(0); this->_backward(0);
 				this->_isBlock = 1;
 			}
 		} else if (this->_currentTrigger == "equipment" && this->_chooseEquipment == 0) {
-			theCamera.MoveTo(Vector3(78.5, -19.5, 12.5), 0.5, true, "chooseEquipment");
-			Game::getHUD()->removeText("Press enter to choose your equipment");
-			theWorld.Remove(this->_image);
-			this->_isBlock = 1;
-			this->_chooseEquipment = 1;
-			this->_image = nullptr;
+			if (this->getAttribute("closetReady") != "") {
+				theCamera.MoveTo(Vector3(78.5, -19.5, 12.5), 0.5, true, "chooseEquipment");
+				Game::getHUD()->removeText(this->_textInfo);
+				theWorld.Remove(this->_image);
+				this->_forward(0); this->_backward(0);
+				this->_isBlock = 1;
+				this->_chooseEquipment = 1;
+				this->_image = nullptr;
+			}
 		} else if (this->_currentTrigger == "equipment" && this->_chooseEquipment == 1) {
 			this->_updateSelection();
 		} else if (this->_currentTrigger == "skills") {
 			theCamera.MoveTo(Vector3(131, -19.5, 12.5), 0.5, true, "chooseSkills");
-			Game::getHUD()->removeText("Press enter to choose your skills");
+			Game::getHUD()->removeText(this->_textInfo);
 			theWorld.Remove(this->_image);
 			this->_image = nullptr;
 			this->_currentTrigger = "skillsChoices";
+			this->_forward(0); this->_backward(0);
 			this->_isBlock = 1;
 			this->_choicePointer = *(this->_skillsChoices[0].begin());
 			this->_makeSkillChoice();
@@ -270,6 +284,8 @@ void	MenuCharacter::_forward(int status) {
 		}
 	} else {
 		if (status == 1) {
+			if (this->_choicePointer == nullptr)
+				return ;
 			if (this->_currentTrigger == "skillsChoices") {
 				int		current = atoi(this->_choicePointer->getAttribute("palier").c_str());
 
@@ -279,7 +295,8 @@ void	MenuCharacter::_forward(int status) {
 					int									distance = std::distance(lst.begin(), it);
 
 					it = this->_skillsChoices[current + 1].begin();
-					std::advance(it, distance);
+					if (this->_skillsChoices[current + 1].size() > 1)
+						std::advance(it, distance);
 					this->_choicePointer = *(it);
 					this->_makeSkillChoice();
 				}
@@ -321,6 +338,8 @@ void	MenuCharacter::_backward(int status) {
 		}
 	} else {
 		if (status == 1) {
+			if (this->_choicePointer == nullptr)
+				return ;
 			if (this->_currentTrigger == "skillsChoices") {
 				int		current = atoi(this->_choicePointer->getAttribute("palier").c_str());
 
@@ -354,6 +373,8 @@ void	MenuCharacter::_up(int status) {
 			this->_closetBackChoiceUpdate();
 		}
 	} else if (status == 1 && this->_currentTrigger == "skillsChoices") {
+		if (this->_choicePointer == nullptr)
+			return ;
 		std::list<Elements *> 				lst = this->_skillsChoices[atoi(this->_choicePointer->getAttribute("palier").c_str())];
 		std::list<Elements *>::iterator		it = std::find(lst.begin(), lst.end(), this->_choicePointer);
 
@@ -372,6 +393,8 @@ void	MenuCharacter::_down(int status) {
 			this->_closetBackChoiceUpdate();
 		}
 	} else if (status == 1 && this->_currentTrigger == "skillsChoices") {
+		if (this->_choicePointer == nullptr)
+			return ;
 		std::list<Elements *> 				lst = this->_skillsChoices[atoi(this->_choicePointer->getAttribute("palier").c_str())];
 		std::list<Elements *>::iterator		it = std::find(lst.begin(), lst.end(), this->_choicePointer);
 
@@ -386,8 +409,12 @@ void	MenuCharacter::_down(int status) {
 
 void	MenuCharacter::_showTextInfo(std::string text, std::string switchboard) {
 	int x = theCamera.GetWindowWidth(), y = theCamera.GetWindowHeight();
+	if (this->_image)
+		theWorld.Remove(this->_image);
+	Game::getHUD()->removeText(this->_textInfo);
 	this->_image = Game::getHUD()->addImage("Resources/Images/HUD/talk.png", x / 2, y - (y / 15), Vector2(x / 3, y / 10), 100);
 	Game::getHUD()->setText(text, (x / 2) - (x / 6) + (x / 20), y - (y / 15), Vector3(0, 0, 1), 1);
+	this->_textInfo = text;
 }
 
 void	MenuCharacter::_makeItChoice(void) {
@@ -413,9 +440,9 @@ void		MenuCharacter::_openCloset(void) {
 	elem->SetPosition(79, -19.5);
 	theWorld.Add(elem);
 	if (this->_character == "Archer")
-		elem->PlaySpriteAnimation(0.3, SAT_OneShot, 1, 4);
+		elem->PlaySpriteAnimation(0.3, SAT_OneShot, 1, 4, "closetReady");
 	else if (this->_character == "Warrior")
-		elem->PlaySpriteAnimation(0.3, SAT_OneShot, 5, 8);
+		elem->PlaySpriteAnimation(0.3, SAT_OneShot, 5, 8, "closetReady");
 	this->_closet = elem;
 }
 
@@ -724,7 +751,6 @@ void		MenuCharacter::_kitchen(void) {
 	float						x, y, i;
 	Elements				*tmp;
 
-	std::cout << this->_character << std::endl;
 	for (it = this->_skillTree.begin(), x = 125.75, i = 0; it != this->_skillTree.end(); it++, x += 3.75, i++) {
 		for (it2 = (*it)[this->_character].begin(), y = -16.75; it2 != (*it)[this->_character].end(); it2++, y -= 3.5) {
 			tmp = new Elements();
@@ -740,6 +766,8 @@ void		MenuCharacter::_kitchen(void) {
 				theWorld.Add(tmp); this->_kitchenSkills.push_back(tmp);
 			} else {
 				this->_skillsChoices[i].push_back(tmp);
+				if (i == 0 && this->_currentTrigger == "skillsChoices")
+					this->_choicePointer = *(this->_skillsChoices[0].begin());
 			}
 		}
 	}
@@ -797,6 +825,17 @@ void		MenuCharacter::_levels(void) {
 		Game::getHUD()->removeText(std::to_string(Quit::gold));
 		Quit::gold -= this->_characLvl * 4;
 		this->_characLvl++;
+		this->_hideKitchen(1);
+		this->_kitchen();
+		this->_makeSkillChoice();
+		Elements	*tmp = new Elements();
+
+		tmp->SetPosition(144.3, -19.5); tmp->SetSprite("Resources/Images/kitchen_levels_background.png");
+		tmp->SetSize(8, 10); theWorld.Add(tmp); this->_levelsBackground = tmp;
+		tmp = new Elements();
+		tmp->SetPosition(144.35, -18.6); tmp->SetSprite("Resources/Images/level_up.png");
+		tmp->SetSize(3); theWorld.Add(tmp); this->_lvlUp = tmp;
+
 	}
 
 	Game::getHUD()->setText(std::to_string(this->_characLvl), 866 - std::to_string(this->_characLvl).size() * 3, 365, Vector3(0, 0, 0), 1, "BigGamefont");
@@ -881,6 +920,19 @@ void		MenuCharacter::_getSkills(void) {
 	for (it = jsonTmp.begin(); it != jsonTmp.end(); it++)
 		this->_skills[it.key().asString()] = (*it);
 	reader.parse(treeFile, this->_skillTree, false);
+}
+
+bool		MenuCharacter::canStart(void) {
+	int		max;
+	for (max = 0; this->_skillsChoices[max].size() > 0; max++);
+	if (this->_equipSelection["Weapon"] && this->_equipSelection["ring"] && this->_equipSelection["Armor"] && 
+			this->_finalSkillChoices.size() !=max)
+		return true;
+	if (!this->_equipSelection["Weapon"] || !this->_equipSelection["ring"] || this->_equipSelection["Armor"])
+		Game::getHUD()->setText("I cannot go yet, i miss some equipments !", this, Vector3(0, 0, 0), 0, 1);
+	else
+		Game::getHUD()->setText("I cannot go yet, i miss some spells !", this, Vector3(0, 0, 0), 0, 1);
+	return false;
 }
 
 std::string		MenuCharacter::getHeroType(void) { return this->_character; };

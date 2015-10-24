@@ -57,6 +57,7 @@ class		Menu : public Actor {
 		void	parseBindings(void);
 		void	bindingMenu(int y = 0);
 		int		applyBindings(void);
+		void	introGame(void);
 
 		std::map<std::string, std::list<t_bind *> >		getBindings(void);
 
@@ -71,6 +72,8 @@ class		Menu : public Actor {
 		std::map<std::string, std::map<std::string, int> >  _settingsValues;
 		std::list<std::string>								_elementsPauseMenu;
 		HUDActor											*_fadeActor;
+		HUDActor											*_logo;
+		HUDActor											*_beer;
 		std::list<std::string>								_pauseMenuText;
 		int													_lastMenu;
 		int													_isBinding;

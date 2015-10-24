@@ -22,7 +22,6 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":1,
  "orientation":"orthogonal",
  "properties":
     {
@@ -8017,6 +8016,10 @@
              "3023":
                 {
                  "physic":"0"
+                },
+             "3027":
+                {
+                 "dialog":"bathroom"
                 },
              "3041":
                 {

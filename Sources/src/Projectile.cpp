@@ -97,34 +97,39 @@ Projectile::Projectile(Weapon* w, int dmg) {
 	theWorld.Add(this);
 }
 
-Projectile::Projectile(std::string img, int dmg, Vector2 pos, Vector2 force, Vector2 init, std::string name, int rotat) : Elements() {
+Projectile::Projectile(std::string img, int dmg, Vector2 pos, Vector2 force, Vector2 init, std::string name, int rotat, float isGravity) : Elements() {
 	this->_name = name;
 	this->SetName(name);
 	this->_toDestroy = false;
 	this->addAttribute("damage", std::to_string(dmg));
-	this->SetSize(0.5f);
+	if (isGravity != 0) {
+		this->SetSize(1.0f);
+		this->SetDensity(0.2f);
+		this->SetRotation(220);
+	} else {
+		this->SetSize(0.5f);
+		this->SetDensity(1);
+	}
 	this->SetShapeType(PhysicsActor::SHAPETYPE_CIRCLE);
-	this->SetDensity(1);
 	this->SetSprite(img);
 	this->SetFriction(0);
 	this->SetRestitution(0);
 	this->SetIsSensor(true);
 	this->SetFixedRotation(true);
 	this->addAttribute("type", "projectile");
-	this->addAttribute("spe", "bossProjectile");
+	this->addAttribute("spe", name);
 	this->Tag("projectile");
 	this->SetPosition(pos.X, pos.Y);
+	if (rotat != -1)
+	  this->SetRotation(rotat);
 	this->InitPhysics();
-	if (rotat != -1) {
-		this->GetBody()->SetTransform(b2Vec2(pos.X, pos.Y), rotat);
-	}
 	this->SetLayer(99);
-	this->GetBody()->SetGravityScale(0);
+	this->GetBody()->SetGravityScale(isGravity);
 	this->GetBody()->SetBullet(true);
-	if (rotat != -1) {
-		this->ApplyLocalForce(Vector2(75, 0), Vector2(0, 0));
+	if (name != "throwSpear" && rotat != -1) {
+	  this->ApplyLocalForce(Vector2(75, 0), Vector2(0, 0));
 	} else {
-		this->ApplyLinearImpulse(Vector2(force.X, force.Y), Vector2(init.X, init.Y));
+	  this->ApplyLinearImpulse(Vector2(force.X, force.Y), Vector2(init.X, init.Y));
 	}
 	theWorld.Add(this);
 }
@@ -205,6 +210,10 @@ void	Projectile::BeginContact(Elements *m, b2Contact *c) {
 		return ;
 	}
 	else if (this->_name == "bossProjectile" && m->getAttribute("boss") == "true") {
+		c->SetEnabled(false);
+		c->enableContact = false;
+		return ;
+	} else if (this->_name == "throwSpear" && m->getAttribute("type") == "Hero") {
 		c->SetEnabled(false);
 		c->enableContact = false;
 		return ;

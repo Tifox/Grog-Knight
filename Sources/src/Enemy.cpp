@@ -91,6 +91,8 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 	if (!m)
 		return ;
 	Characters::BeginContact(m, contact);
+	if (!m)
+		return ;
 	Weapon* w = static_cast<Weapon*>(m);
 	Projectile* p = static_cast<Projectile*>(m);
 	if (m->getAttribute("type") == "ground") {
@@ -112,7 +114,7 @@ void	Enemy::BeginContact(Elements* m, b2Contact *contact) {
 		} else {
 			this->GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		}
-	} else if (m->getAttribute("type") == "HeroProjectile") {
+	} else if (m->getAttribute("type") == "HeroProjectile" || m->getAttribute("spe") == "throwSpear") {
 		if (this->_lastHitID == m->getId())
 			return;
 		else

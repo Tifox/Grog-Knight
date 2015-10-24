@@ -2,7 +2,7 @@
 	"dash": {
 		"subscribe": "specialmove",
 		"usable": "warrior",
-		"cooldown": 1,
+		"cooldown": 5,
 		"dashSpeed": 30,
 		"uptime": 0.15,
 		"beginFrame_right": 74,
@@ -16,7 +16,7 @@
 	"charge": {
 		"subscribe": "specialmove",
 		"usable": "warrior",
-		"cooldown": 1,
+		"cooldown": 5,
 		"chargeSpeed": 20,
 		"time": 0.1,
 		"uptime": 1,
@@ -26,7 +26,7 @@
 	"stomp": {
 		"subscribe": "specialmove",
 		"usable": "warrior",
-		"cooldown": 0,
+		"cooldown": 1,
 		"stompSpeed": 50,
 		"beginFrame_right": 84,
 		"endFrame_right": 87,

@@ -64,6 +64,8 @@ void	Dealer::init(void) {
 void	Dealer::BeginContact(Elements* elem, b2Contact *contact) {
 	HUDWindow *hud = Game::getHUD();
 
+	if (!elem)
+		return ;
 	if (elem->getAttribute("type") != "ground") {
 		contact->SetEnabled(false);
 		contact->enableContact = false;
@@ -73,14 +75,14 @@ void	Dealer::BeginContact(Elements* elem, b2Contact *contact) {
 		this->PlaySpriteAnimation(this->_getAttr("give", "time").asFloat(), SAT_Loop,
 								  this->_getAttr("give", "beginFrame").asInt(),
 								  this->_getAttr("give", "endFrame").asInt(), "base");
-		hud->setText("HI BUD YOU WANNA SOME DRUGS?", this, Vector3(255, 51, 255), 0, 0);
+		hud->setText("HI BUD YOU WANNA SOME DRUGS?", this, Vector3(0, 0, 0), 0, 1);
 		return; 
 	}
 	if (elem->getAttribute("type") == "Hero" && this->_give == true) {
 		this->PlaySpriteAnimation(this->_getAttr("give", "time").asFloat(), SAT_Loop,
 								  this->_getAttr("give", "beginFrame").asInt(),
 								  this->_getAttr("give", "endFrame").asInt(), "base");
-		hud->setText("Get out. Nothing to see here.", this, Vector3(255, 51, 255), 0, 0);
+		hud->setText("Get out. Nothing to see here.", this, Vector3(0, 0, 0), 0, 1);
 		return; 
 	}
 }
@@ -95,6 +97,8 @@ void	Dealer::BeginContact(Elements* elem, b2Contact *contact) {
 void	Dealer::EndContact(Elements *elem, b2Contact *contact) {
 	HUDWindow *hud = Game::getHUD();
 
+	if (!elem)
+		return ;
 	if (elem->getAttribute("type") == "Hero") {
 		this->AnimCallback("base");
 		hud->removeText("HI BUD YOU WANNA SOME DRUGS?");
@@ -112,7 +116,7 @@ void	Dealer::ReceiveMessage(Message *m) {
 		theSwitchboard.UnsubscribeFrom(this, "giveDrug");
 		this->AnimCallback("base");
 		hud->removeText("HI BUD YOU WANNA SOME DRUGS?");
-		hud->setText("Here you go buddy. See ya.", this, Vector3(255, 51, 255), 0, 0);
+		hud->setText("Here you go buddy. See ya.", this, Vector3(0, 0, 0), 0, 1);
 		Drug *drug = new Drug(Game::dList->getDrugRandom());
 		Game::currentGame->getHero()->setDrug(drug->getDisplayName());
 		theSwitchboard.SubscribeTo(Game::currentGame->getHero(), "drugPressed");

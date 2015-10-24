@@ -161,7 +161,9 @@
 		this->character->PlaySpriteAnimation(this->character->_getAttr("time").asFloat(), SAT_OneShot,
 								  this->character->_getAttr("beginFrameCharge" + o).asInt(),
 								  this->character->_getAttr("endFrameCharge" + o).asInt(), "chargeHold");
- 	}
+ 	} else {
+ 		theSwitchboard.Broadcast(new Message("speMoveReady"));
+	}
  }
 
  //! Special move: stomp

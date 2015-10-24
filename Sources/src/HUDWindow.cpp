@@ -823,7 +823,8 @@ void	HUDWindow::spells(void) {
 	this->setText("T", (theCamera.GetWindowWidth() / 20) * 7.28, theCamera.GetWindowHeight() / 20 * 1.5, Vector3(0.2, 0.12, 0), 1, "MediumGamefont");
 	this->addImage("Resources/HUD/spell_bg.png", (theCamera.GetWindowWidth() / 20) * 7 + 3, theCamera.GetWindowHeight() / 20 * 2.1, 
 			Vector2(theCamera.GetWindowWidth() / 25), 15);
-	this->addImage("Resources/Images/Skills/" + Game::currentGame->getHero()->getSpeAtt() + ".png", (theCamera.GetWindowWidth() / 20) * 7 + 1, theCamera.GetWindowHeight() / 20 * 1.9, 
+	if (Game::currentGame->getHero()->getSpeAtt() != "")
+		this->addImage("Resources/Images/Skills/" + Game::currentGame->getHero()->getSpeAtt() + ".png", (theCamera.GetWindowWidth() / 20) * 7 + 1, theCamera.GetWindowHeight() / 20 * 1.9, 
 			Vector2(theCamera.GetWindowWidth() / 35), 15);
 	this->setText("Y", (theCamera.GetWindowWidth() / 20) * 7.28, theCamera.GetWindowHeight() / 20 * 2.57, Vector3(0.2, 0.12, 0), 1, "MediumGamefont");
 }

@@ -138,7 +138,6 @@
  void	SpecialMoves::_charge(void) {
  	this->character->_setCategory("charge");
  	if (this->character->_isAttacking == 0 && this->character->_canMove == 1 && this->character->_speMoveReady == 1 && this->character->_grounds.size() > 0) {
- 		this->character->_speMoveReady = 0;
  		this->character->_invincibility = true;
  		this->character->_isCharging = true;
  		this->character->_canMove = 0;

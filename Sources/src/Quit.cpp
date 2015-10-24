@@ -112,8 +112,8 @@ void		Quit::doSave(Hero *h) {
 	}
 
 	jsonFile.open(".save", std::ofstream::trunc);
-	//root["level"] = h->getLevel();
-	root["level"] = 15;
+	root["level"] = h->getLevel();
+	//root["level"] = 15;
 	root["key"] = KEY;
 
 	if (Game::chest != nullptr) {

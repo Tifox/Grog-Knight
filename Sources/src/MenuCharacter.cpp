@@ -54,7 +54,7 @@ MenuCharacter::MenuCharacter(void) : Characters("MenuCharacter") {
 	this->_finalSkillTargets = std::vector<Elements *>(4);
 	this->_skillsChoices = std::vector<std::list<Elements *> >(4);
 	this->_skillsLvl[0] = 5; this->_skillsLvl[1] = 15; this->_skillsLvl[2] = 25; this->_skillsLvl[3] = 50;
-	this->_finalSkillChoices[0] = "dash"; this->_finalSkillChoices[1] = "whirlwind";
+	this->_finalSkillChoices[0] = "charge"; //this->_finalSkillChoices[1] = "whirlwind";
 	this->_getSkills();
 	this->_kitchen();
 }
@@ -284,6 +284,8 @@ void	MenuCharacter::_forward(int status) {
 		}
 	} else {
 		if (status == 1) {
+			if (this->_choicePointer == nullptr)
+				return ;
 			if (this->_currentTrigger == "skillsChoices") {
 				int		current = atoi(this->_choicePointer->getAttribute("palier").c_str());
 
@@ -293,7 +295,8 @@ void	MenuCharacter::_forward(int status) {
 					int									distance = std::distance(lst.begin(), it);
 
 					it = this->_skillsChoices[current + 1].begin();
-					std::advance(it, distance);
+					if (this->_skillsChoices[current + 1].size() > 1)
+						std::advance(it, distance);
 					this->_choicePointer = *(it);
 					this->_makeSkillChoice();
 				}
@@ -335,6 +338,8 @@ void	MenuCharacter::_backward(int status) {
 		}
 	} else {
 		if (status == 1) {
+			if (this->_choicePointer == nullptr)
+				return ;
 			if (this->_currentTrigger == "skillsChoices") {
 				int		current = atoi(this->_choicePointer->getAttribute("palier").c_str());
 
@@ -368,6 +373,8 @@ void	MenuCharacter::_up(int status) {
 			this->_closetBackChoiceUpdate();
 		}
 	} else if (status == 1 && this->_currentTrigger == "skillsChoices") {
+		if (this->_choicePointer == nullptr)
+			return ;
 		std::list<Elements *> 				lst = this->_skillsChoices[atoi(this->_choicePointer->getAttribute("palier").c_str())];
 		std::list<Elements *>::iterator		it = std::find(lst.begin(), lst.end(), this->_choicePointer);
 
@@ -386,6 +393,8 @@ void	MenuCharacter::_down(int status) {
 			this->_closetBackChoiceUpdate();
 		}
 	} else if (status == 1 && this->_currentTrigger == "skillsChoices") {
+		if (this->_choicePointer == nullptr)
+			return ;
 		std::list<Elements *> 				lst = this->_skillsChoices[atoi(this->_choicePointer->getAttribute("palier").c_str())];
 		std::list<Elements *>::iterator		it = std::find(lst.begin(), lst.end(), this->_choicePointer);
 
@@ -742,7 +751,6 @@ void		MenuCharacter::_kitchen(void) {
 	float						x, y, i;
 	Elements				*tmp;
 
-	std::cout << this->_character << std::endl;
 	for (it = this->_skillTree.begin(), x = 125.75, i = 0; it != this->_skillTree.end(); it++, x += 3.75, i++) {
 		for (it2 = (*it)[this->_character].begin(), y = -16.75; it2 != (*it)[this->_character].end(); it2++, y -= 3.5) {
 			tmp = new Elements();
@@ -758,6 +766,8 @@ void		MenuCharacter::_kitchen(void) {
 				theWorld.Add(tmp); this->_kitchenSkills.push_back(tmp);
 			} else {
 				this->_skillsChoices[i].push_back(tmp);
+				if (i == 0 && this->_currentTrigger == "skillsChoices")
+					this->_choicePointer = *(this->_skillsChoices[0].begin());
 			}
 		}
 	}
@@ -815,6 +825,17 @@ void		MenuCharacter::_levels(void) {
 		Game::getHUD()->removeText(std::to_string(Quit::gold));
 		Quit::gold -= this->_characLvl * 4;
 		this->_characLvl++;
+		this->_hideKitchen(1);
+		this->_kitchen();
+		this->_makeSkillChoice();
+		Elements	*tmp = new Elements();
+
+		tmp->SetPosition(144.3, -19.5); tmp->SetSprite("Resources/Images/kitchen_levels_background.png");
+		tmp->SetSize(8, 10); theWorld.Add(tmp); this->_levelsBackground = tmp;
+		tmp = new Elements();
+		tmp->SetPosition(144.35, -18.6); tmp->SetSprite("Resources/Images/level_up.png");
+		tmp->SetSize(3); theWorld.Add(tmp); this->_lvlUp = tmp;
+
 	}
 
 	Game::getHUD()->setText(std::to_string(this->_characLvl), 866 - std::to_string(this->_characLvl).size() * 3, 365, Vector3(0, 0, 0), 1, "BigGamefont");
@@ -902,8 +923,10 @@ void		MenuCharacter::_getSkills(void) {
 }
 
 bool		MenuCharacter::canStart(void) {
+	int		max;
+	for (max = 0; this->_skillsChoices[max].size() > 0; max++);
 	if (this->_equipSelection["Weapon"] && this->_equipSelection["ring"] && this->_equipSelection["Armor"] && 
-			this->_finalSkillChoices[0] != "" && this->_finalSkillChoices[1] != "")
+			this->_finalSkillChoices.size() !=max)
 		return true;
 	if (!this->_equipSelection["Weapon"] || !this->_equipSelection["ring"] || this->_equipSelection["Armor"])
 		Game::getHUD()->setText("I cannot go yet, i miss some equipments !", this, Vector3(0, 0, 0), 0, 1);

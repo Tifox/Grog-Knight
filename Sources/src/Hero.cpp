@@ -377,12 +377,6 @@ void	Hero::setStartingValues(Hero *tmp) {
 		this->_speMove = tmp->getSpeMove();
 		this->_speAtt = tmp->getSpeAtt();
 	}
-   /* if (Game::menuCharacter->getSkills()[0] != "") {*/
-		//Log::info("Special Move: " + Game::menuCharacter->getSkills()[0]);
-	//}
-	//if (Game::menuCharacter->getSkills()[1] != "") {
-		//Log::info("Special Attack: " + Game::menuCharacter->getSkills()[1]);
-	/*}*/
 }
 
 Inventory	*Hero::getInventory(void) { return this->_inventory; };

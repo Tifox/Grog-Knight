@@ -41,10 +41,10 @@ MenuCharacter::MenuCharacter(void) : Characters("MenuCharacter") {
 	this->_descriptionBackground = this->_iconBackground = this->_icon = nullptr;
 	this->_levelsBackground = this->_lvlUp = nullptr;
 	// THIS IS TMP; DO NOT JUDGE ME
-	Elements		*tmp;
-	tmp = new Elements(); tmp->addAttribute("Name", "Spear_000"); this->_equipSelection["Weapon"] = tmp;
-	tmp = new Elements(); tmp->addAttribute("Name", "Ring_000"); this->_equipSelection["ring"] = tmp;
-	tmp = new Elements(); tmp->addAttribute("Name", "Armor_000"); this->_equipSelection["Armor"] = tmp;
+   /* Elements		*tmp;*/
+	//tmp = new Elements(); tmp->addAttribute("Name", "Spear_000"); this->_equipSelection["Weapon"] = tmp;
+	//tmp = new Elements(); tmp->addAttribute("Name", "Ring_000"); this->_equipSelection["ring"] = tmp;
+	/*tmp = new Elements(); tmp->addAttribute("Name", "Armor_000"); this->_equipSelection["Armor"] = tmp;*/
 	// END OF NASTY CODE. Well, actually no. But u know what i mean
 	theSwitchboard.SubscribeTo(this, "enterPressed");
 	theSwitchboard.SubscribeTo(this, "chooseEquipment");
@@ -54,7 +54,7 @@ MenuCharacter::MenuCharacter(void) : Characters("MenuCharacter") {
 	this->_finalSkillTargets = std::vector<Elements *>(4);
 	this->_skillsChoices = std::vector<std::list<Elements *> >(4);
 	this->_skillsLvl[0] = 5; this->_skillsLvl[1] = 15; this->_skillsLvl[2] = 25; this->_skillsLvl[3] = 50;
-	this->_finalSkillChoices[0] = "charge"; //this->_finalSkillChoices[1] = "whirlwind";
+	//this->_finalSkillChoices[0] = "charge"; //this->_finalSkillChoices[1] = "whirlwind";
 	this->_getSkills();
 	this->_kitchen();
 }
@@ -153,7 +153,6 @@ void	MenuCharacter::ReceiveMessage(Message *m) {
 					this->_character = this->_choicePointer->getAttribute("type");
 					this->_hideKitchen(1);
 					this->_kitchen();
-					Game::getHUD()->removeText(this->_textInfo);
 				}
 				theCamera.MoveTo(Vector3(Game::currentGame->getCurrentMap().getXMid(),
 							Game::currentGame->getCurrentMap().getYMid() + 1.8, 18.002), 1, true);

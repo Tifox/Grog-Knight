@@ -121,10 +121,6 @@ void	Game::start(void) {
 		this->_tmpMap = levelGenerator->getLevel();
 	}
 
-//	Log::info("NbMaps: " + std::to_string(levelGenerator->getNbMaps()));
-//	Log::info("NbEnemy:" + trouver le nombre d ennemy);
-//	Log::info("NbMaps: " + info sur la sauvegarde (nivau du hero, gold etc...));
-
 	theCamera.SetPosition(this->maps->getMapXY()[Game::currentY][Game::currentX].getXMid(),
 						  this->maps->getMapXY()[Game::currentY][Game::currentX].getYMid() + 1.8, 9.001);
 	this->maps->_XYMap[Game::currentY][Game::currentX] = this->maps->getMapXY()[Game::currentY][Game::currentX].display();

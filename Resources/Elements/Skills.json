@@ -28,7 +28,7 @@
 			"shield"
 		],
 		"Archer": [
-			"rapid_fire",
+			"rapidFire",
 			"smoke_cloud",
 			"execute"
 		]

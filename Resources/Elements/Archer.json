@@ -52,7 +52,7 @@
 			"subscribe": "jump",
 			"max": 93,
 			"force": 6,
-			"rejump": 1,
+			"rejump": 10,
 			"beginFrame_right": 49,
 			"beginFrame_left": 55,
 			"holdFrame_right": 62,

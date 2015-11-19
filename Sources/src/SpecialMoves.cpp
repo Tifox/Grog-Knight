@@ -370,7 +370,7 @@ void	SpecialMoves::_shunpo(void) {
 			return;
 		this->character->_speMoveReady = false;
 		theSwitchboard.DeferredBroadcast(new Message("speMoveReady"), this->character->_getAttr("shunpo", "cooldown").asFloat());
-		Game::getHUD()->speMoveCooldown(this->character->_getAttr("cooldown").asFloat());
+		Game::getHUD()->speMoveCooldown(this->character->_getAttr("shunpo", "cooldown").asFloat());
 		if (this->character->_target->getCurrentEnemy()->getOrientation() == Characters::LEFT)
 			i = 1;
 		else

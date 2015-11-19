@@ -9,7 +9,7 @@
 		"price": 15,
 		"size": 1,
 	 	"critRate": 5,
-		"damage": 5,
+		"damage": 10,
 		"recovery": 1,
 		"pushback": 5,
 		"active": 0.2,

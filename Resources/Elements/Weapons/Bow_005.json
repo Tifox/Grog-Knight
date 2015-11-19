@@ -10,7 +10,7 @@
 		"size": 0.5,
 		"active": 0.1,
 	 	"critRate": 5,
-		"damage": 15,
+		"damage": 13,
 	 	"pushback": 1,
 		"recovery": 2,
 		"attack": "ranged",

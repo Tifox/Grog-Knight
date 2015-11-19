@@ -9,9 +9,9 @@
 		"starterLevel": 1
 	},
 	"bonus": {
-		"hpBuff": 0,
-		"dmgReduc": 1,
-		"bonusSpeed": 2,
+		"hpBuff": 10,
+		"dmgReduc": 0,
+		"bonusSpeed": 0,
 		"bonusDmg": 5
 	}
 }

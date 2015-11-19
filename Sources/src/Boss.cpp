@@ -25,7 +25,7 @@
 
 #include "../inc/Boss.hpp"
 
-Boss::Boss(std::string name, int x, int y) : Characters("Bosses/" + name), _inactive(0) {
+Boss::Boss(std::string name, int x, int y) : Characters("Bosses/Boss0"), _inactive(0) {
 	this->setXStart(x);
 	this->setYStart(y + 1);
 	this->addAttribute("hitbox", "circle");

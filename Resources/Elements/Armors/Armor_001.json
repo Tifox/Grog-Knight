@@ -10,7 +10,7 @@
 	},
 		"bonus": {
 			"hpBuff": 10,
-			"dmgReduc": 0,
+			"dmgReduc": 1,
 			"bonusSpeed": 0,
 			"bonusDmg": 0
 		}

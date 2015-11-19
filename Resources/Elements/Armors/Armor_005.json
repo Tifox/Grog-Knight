@@ -8,7 +8,7 @@
 		"lootLevel": 3
 	},
 	"bonus": {
-		"hpBuff": 0,
+		"hpBuff": 10,
 		"dmgReduc": 5,
 		"bonusSpeed": 1,
 		"bonusDmg": 15

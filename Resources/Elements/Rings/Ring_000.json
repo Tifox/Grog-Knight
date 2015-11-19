@@ -1,8 +1,8 @@
 {
     "infos": {
    	    "name": "Ring_000",
-		"displayName": "Ring of lack of ideas",
-		"flavor": "Hey look, its a FUCKING RING.\nFUCK YOU TOO IM NOT A DESIGNER",
+		"displayName": "Ring of the Damned",
+		"flavor": "Still better than no ring",
 		"price": 10,
 		"sprites": "Resources/Images/Rings/Ring_000.png",
 		"lootLevel": 1,

@@ -1,10 +1,10 @@
 {
     "infos": {
    	    "name": "Armor_006",
-		"displayName": "Stick Armor",
-		"flavor": "Hey look, its a ARMOR.\nA pretty shitty one actually...",
+		"displayName": "Tormented Armor",
+		"flavor": "Damn it feels good\nto be a bad guy",
 		"price": 10,
-		"sprites": "Resources/Images/Armors/Armor_000.png",
+		"sprites": "Resources/Images/Armors/Armor_006.png",
 		"lootLevel": 1,
 		"starterLevel": 1
 	},

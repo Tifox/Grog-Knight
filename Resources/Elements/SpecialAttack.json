@@ -25,7 +25,7 @@
 		"time": 0.1,
 		"x":2,
 		"y":2,
-		"description": "Fall with force on the ground,\nMake a shockwave around you",
+		"description": "Send a shockwave forward",
 		"displayName": "Shockwave"
 	},
 	"throwWeapon": {

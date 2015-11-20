@@ -51,7 +51,7 @@
 		},
 		"jump": {
 			"subscribe": "jump",
-			"max": 2,
+			"max": 3,
 			"force": 6,
 			"rejump": 10,
 			"beginFrame_right": 4,

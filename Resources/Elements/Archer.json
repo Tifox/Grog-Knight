@@ -50,7 +50,7 @@
 		},
 		"jump": {
 			"subscribe": "jump",
-			"max": 93,
+			"max": 3,
 			"force": 6,
 			"rejump": 10,
 			"beginFrame_right": 49,

@@ -29,7 +29,7 @@
 		],
 		"Archer": [
 			"rapidFire",
-			"smoke_cloud",
+			"smokeCloud",
 			"execute"
 		]
 	},
@@ -58,8 +58,7 @@
 			"ulti_mage"
 		],
 		"Archer": [
-			"ulti_dagger",
-			"ulti_bow"
+			"ulti_dagger"
 		]
 	}
 }

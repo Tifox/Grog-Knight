@@ -48,7 +48,7 @@ This project use [Angel2d](https://github.com/angel2d/angel2d), [Documentation](
 
 **Louis Solofrizzo**-Ne02ptzero <louis@ne02ptzero.me>
 
-**Manon Budin**-Fakoc
+**Manon Budin**-Josy
 
 **Valentin Diridollou**-Valouche
 
